@@ -1,6 +1,8 @@
 package hungteen.immortal;
 
 import com.mojang.logging.LogUtils;
+import hungteen.immortal.common.capability.CapabilityHandler;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -8,6 +10,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -27,15 +30,21 @@ import java.util.stream.Collectors;
 @Mod(Immortal.MOD_ID)
 public class Immortal {
 
-    // Directly reference a slf4j logger。
-    private static final Logger LOGGER = LogUtils.getLogger();
     // Mod ID.
     public static final String MOD_ID = "immortal";
     // Mod Version.
     public static final String MOD_VERSION = "0.1";
 
-    public Immortal()
-    {
+    public Immortal() {
+        //get mod event bus.
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
+
+        //get forge event bus.
+        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
+
+        ModConfigs.init();
     }
 
 }
