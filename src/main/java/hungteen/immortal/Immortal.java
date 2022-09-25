@@ -2,6 +2,8 @@ package hungteen.immortal;
 
 import com.mojang.logging.LogUtils;
 import hungteen.immortal.common.capability.CapabilityHandler;
+import hungteen.immortal.common.command.CommandHandler;
+import hungteen.immortal.common.impl.SpiritualRoots;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -32,8 +34,6 @@ public class Immortal {
 
     // Mod ID.
     public static final String MOD_ID = "immortal";
-    // Mod Version.
-    public static final String MOD_VERSION = "0.1";
 
     public Immortal() {
         //get mod event bus.
@@ -43,8 +43,18 @@ public class Immortal {
         //get forge event bus.
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
+        forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
 
         ModConfigs.init();
+
+        coreRegister();
+    }
+
+    /**
+     * register stuffs at {@link Immortal#Immortal()}.
+     */
+    public static void coreRegister() {
+        SpiritualRoots.SpiritualRoot.register();
     }
 
 }

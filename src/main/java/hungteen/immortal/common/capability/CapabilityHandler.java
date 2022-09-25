@@ -38,7 +38,7 @@ public class CapabilityHandler {
         }
     }
 
-    public static LazyOptional<PlayerCapability> getPlayerData(Player player){
+    public static LazyOptional<PlayerCapability> getPlayerCapability(Player player){
         return player.getCapability(PLAYER_CAP);
     }
 }

@@ -101,9 +101,9 @@ repositories {
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
+     flatDir {
+         dir 'F:\\projects\\idea\\HTLib\\build\\libs'
+     }
 }
 repositories {
     mavenCentral()
@@ -140,6 +140,8 @@ dependencies {
 
     //https://www.curseforge.com/minecraft/mc-mods/configured/files
     implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
+
+    implementation fg.deobf("hungteen:htlib:${htlib_version}")
 }
 
 task apiJar(type: Jar) {

@@ -1,6 +1,8 @@
 package hungteen.immortal.common.impl;
 
+import hungteen.immortal.Immortal;
 import hungteen.immortal.ModConfigs;
+import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 
 import java.util.ArrayList;
@@ -27,13 +29,16 @@ public class SpiritualRoots {
     public static final ISpiritualRoot ICE = new SpiritualRoot("ice", false, ModConfigs.getIceWeight());
 
 
-    private static final class SpiritualRoot implements ISpiritualRoot {
+    public record SpiritualRoot(String name, boolean isCommonRoot, int weight) implements ISpiritualRoot {
 
-        private final String name;
-        private final boolean isCommonRoot;
-        private final int weight;
+        /**
+         * {@link Immortal#coreRegister()}
+         */
+        public static void register(){
+            TYPES.forEach(type -> ImmortalAPI.get().registerSpiritualRoot(type));
+        }
 
-        SpiritualRoot(String name, boolean isCommonRoot, int weight) {
+        public SpiritualRoot(String name, boolean isCommonRoot, int weight) {
             this.name = name;
             this.isCommonRoot = isCommonRoot;
             this.weight = weight;
@@ -43,11 +48,6 @@ public class SpiritualRoots {
         @Override
         public String getName() {
             return name;
-        }
-
-        @Override
-        public boolean isCommonRoot() {
-            return isCommonRoot;
         }
 
         @Override
