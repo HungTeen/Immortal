@@ -1,19 +1,17 @@
 package hungteen.immortal.utils;
 
 import hungteen.htlib.util.WeightList;
-import hungteen.immortal.ModConfigs;
+import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
-import hungteen.immortal.common.capability.CapabilityHandler;
-import hungteen.immortal.common.capability.player.IPlayerCapability;
-import hungteen.immortal.common.capability.player.PlayerCapability;
-import hungteen.immortal.common.capability.player.PlayerDataManager;
+import hungteen.immortal.capability.CapabilityHandler;
+import hungteen.immortal.capability.player.PlayerCapability;
+import hungteen.immortal.capability.player.PlayerDataManager;
 import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class PlayerUtil {
      * 3. 否则依据权重在普通五行灵根中选择若干个。
      */
     public static void spawnSpiritualRoots(Player player){
-        final double[] rootChances = {ModConfigs.getNoRootChance(), ModConfigs.getOneRootChance(), ModConfigs.getTwoRootChance(), ModConfigs.getThreeRootChance(), ModConfigs.getFourRootChance()};
+        final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
         double chance = player.getRandom().nextDouble();
         for(int i = 0; i < rootChances.length; ++ i){
             if(chance < rootChances[i]){
@@ -94,6 +92,41 @@ public class PlayerUtil {
             return optional.map(PlayerCapability::get).orElse(null);
         }
         return null;
+    }
+
+    /* operations about spell */
+
+    public static void learnSpell(Player player, ISpell spell){
+        getOptManager(player).ifPresent(l -> l.learnSpell(spell));
+    }
+
+    public static void forgetSpell(Player player, ISpell spell){
+        getOptManager(player).ifPresent(l -> l.forgetSpell(spell));
+    }
+
+    public static void setSpellList(Player player, int pos, ISpell spell){
+        getOptManager(player).ifPresent(l -> l.setSpellList(pos, spell));
+    }
+
+    public static void removeSpellList(Player player, int pos, ISpell spell){
+        getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
+    }
+
+    public static void activateSpellAt(Player player, int pos){
+        getOptManager(player).ifPresent(l -> l.activateSpellAt(pos));
+    }
+
+    public static void activateSpell(Player player, ISpell spell, long num){
+        getOptManager(player).ifPresent(l -> l.activateSpell(spell, num));
+    }
+
+    public static boolean isSpellActivated(Player player, ISpell spell) {
+        final PlayerDataManager manager = getManager(player);
+        return manager != null && manager.isSpellActivated(spell);
+    }
+
+    public static void tick(Player player){
+        getOptManager(player).ifPresent(l -> l.tick());
     }
 
 }

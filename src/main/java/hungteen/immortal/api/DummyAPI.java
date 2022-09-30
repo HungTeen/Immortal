@@ -1,5 +1,6 @@
 package hungteen.immortal.api;
 
+import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import org.lwjgl.system.CallbackI;
 
@@ -21,6 +22,16 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<ISpiritualRoot> getSpiritualRoots() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void registerSpell(ISpell type) {
+
+    }
+
+    @Override
+    public List<ISpell> getSpells() {
         return new ArrayList<>();
     }
 }

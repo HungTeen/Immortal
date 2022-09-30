@@ -1,13 +1,12 @@
 package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
-import hungteen.immortal.Immortal;
+import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -19,7 +18,7 @@ public class ImmortalAPI {
 
     private static final Supplier<IImmortalAPI> LAZY_INSTANCE = Suppliers.memoize(() -> {
         try {
-            Class<?> classes = Class.forName("hungteen.immortal.common.impl.ImmortalAPIImpl");
+            Class<?> classes = Class.forName("hungteen.immortal.impl.ImmortalAPIImpl");
             Constructor<?> constructor = classes.getDeclaredConstructor();
             return (IImmortalAPI) constructor.newInstance();
         } catch (ReflectiveOperationException e) {
@@ -52,6 +51,16 @@ public class ImmortalAPI {
          * 获取灵根类型。
          */
         List<ISpiritualRoot> getSpiritualRoots();
+
+        /**
+         * 注册法术类型。
+         */
+        void registerSpell(ISpell type);
+
+        /**
+         * 获取法术类型。
+         */
+        List<ISpell> getSpells();
     }
 
 }
