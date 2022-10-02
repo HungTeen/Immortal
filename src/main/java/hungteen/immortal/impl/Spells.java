@@ -1,5 +1,6 @@
 package hungteen.immortal.impl;
 
+import com.sun.jdi.Type;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
@@ -22,19 +23,15 @@ public class Spells {
     private static final List<ISpell> TYPES = new ArrayList<>();
 
     public static final ISpell ITEM_CONTROLLING = new Spell(
-            "item_controlling", Arrays.asList(), Arrays.asList(), 0, 10, 100
+            "item_controlling", Arrays.asList(), Arrays.asList(), 0, 10, 300
     );
 
     public static final ISpell BLOCK_CONTROLLING = new Spell(
-            "block_controlling", Arrays.asList(), Arrays.asList(ITEM_CONTROLLING), 0, 40, 100
-    );
-
-    public static final ISpell ENTITY_CONTROLLING = new Spell(
-            "entity_controlling", Arrays.asList(), Arrays.asList(BLOCK_CONTROLLING), 0, 100, 100
+            "block_controlling", Arrays.asList(), Arrays.asList(ITEM_CONTROLLING), 0, 40, 150
     );
 
     public static final ISpell FLY_WITH_SWORD = new Spell(
-            "fly_with_sword", Arrays.asList(), Arrays.asList(ENTITY_CONTROLLING), 0, 20, 200
+            "fly_with_sword", Arrays.asList(), Arrays.asList(ITEM_CONTROLLING), 0, 20, 200
     );
 
 
@@ -54,6 +51,7 @@ public class Spells {
             this.realm = realm;
             this.cost = cost;
             this.duration = duration;
+            TYPES.add(this);
         }
 
         @Override

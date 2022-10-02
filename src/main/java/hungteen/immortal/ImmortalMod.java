@@ -2,6 +2,7 @@ package hungteen.immortal;
 
 import hungteen.immortal.capability.CapabilityHandler;
 import hungteen.immortal.command.CommandHandler;
+import hungteen.immortal.entity.ImmortalEntities;
 import hungteen.immortal.impl.Spells;
 import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.network.NetworkHandler;
@@ -46,6 +47,7 @@ public class ImmortalMod {
      * register forge stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
+        ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
     }
 

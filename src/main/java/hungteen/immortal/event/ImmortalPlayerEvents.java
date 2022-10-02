@@ -3,8 +3,16 @@ package hungteen.immortal.event;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.capability.player.PlayerDataManager;
 import hungteen.immortal.event.handler.PlayerEventHandler;
+import hungteen.immortal.impl.Spells;
+import hungteen.immortal.network.EmptyClickPacket;
+import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.utils.PlayerUtil;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.item.ItemEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -62,16 +70,38 @@ public class ImmortalPlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific ev) {
+        if(! ev.getPlayer().level.isClientSide) {
+            PlayerEventHandler.rayTrace(ev.getPlayer());
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem ev) {
-        System.out.println("item" + ev.getPlayer().level.isClientSide);
+        if(! ev.getPlayer().level.isClientSide) {
+            PlayerEventHandler.rayTrace(ev.getPlayer());
+        }
     }
 
     @SubscribeEvent
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock ev) {
+        if(! ev.getPlayer().level.isClientSide) {
+            PlayerEventHandler.rayTrace(ev.getPlayer());
+        }
+    }
+
+    /**
+     * Ony Client side !
+     */
+    @SubscribeEvent
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty ev) {
-        System.out.println("empty" + ev.getPlayer().level.isClientSide);
+        NetworkHandler.sendToServer(new EmptyClickPacket());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTossItem(ItemTossEvent ev) {
+        if(! ev.getPlayer().level.isClientSide){
+            PlayerEventHandler.onTossItem(ev.getPlayer(), ev.getEntityItem());
+        }
     }
 
 }

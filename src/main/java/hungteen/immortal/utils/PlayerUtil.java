@@ -3,6 +3,7 @@ package hungteen.immortal.utils;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.capability.CapabilityHandler;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -117,7 +119,10 @@ public class PlayerUtil {
     }
 
     public static void activateSpell(Player player, ISpell spell, long num){
-        getOptManager(player).ifPresent(l -> l.activateSpell(spell, num));
+        getOptManager(player).ifPresent(l -> {
+            l.activateSpell(spell, num);
+            MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent(player, spell));
+        });
     }
 
     public static boolean isSpellActivated(Player player, ISpell spell) {
