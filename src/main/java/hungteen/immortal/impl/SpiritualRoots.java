@@ -56,8 +56,13 @@ public class SpiritualRoots {
         }
 
         @Override
+        public String getModID() {
+            return Util.id();
+        }
+
+        @Override
         public Component getComponent() {
-            return new TranslatableComponent("misc." + Util.id() +".root." + getName()).withStyle(color);
+            return new TranslatableComponent("misc." + getModID() +".root." + getName()).withStyle(color);
         }
 
         @Override

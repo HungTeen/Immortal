@@ -1,5 +1,7 @@
 package hungteen.immortal.api;
 
+import hungteen.immortal.api.interfaces.IEffectRune;
+import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import org.lwjgl.system.CallbackI;
@@ -32,6 +34,26 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<ISpell> getSpells() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void registerEffectRune(IEffectRune type) {
+
+    }
+
+    @Override
+    public List<IEffectRune> getEffectRunes() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void registerGetterRune(IGetterRune type) {
+
+    }
+
+    @Override
+    public List<IGetterRune> getGetterRunes() {
         return new ArrayList<>();
     }
 }

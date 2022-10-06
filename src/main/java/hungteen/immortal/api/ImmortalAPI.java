@@ -1,6 +1,8 @@
 package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
+import hungteen.immortal.api.interfaces.IEffectRune;
+import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
@@ -61,6 +63,26 @@ public class ImmortalAPI {
          * 获取法术类型。
          */
         List<ISpell> getSpells();
+
+        /**
+         * 注册效果符文类型。
+         */
+        void registerEffectRune(IEffectRune type);
+
+        /**
+         * 获取效果符文类型。
+         */
+        List<IEffectRune> getEffectRunes();
+
+        /**
+         * 注册取值符文类型。
+         */
+        void registerGetterRune(IGetterRune type);
+
+        /**
+         * 获取取值符文类型。
+         */
+        List<IGetterRune> getGetterRunes();
     }
 
 }

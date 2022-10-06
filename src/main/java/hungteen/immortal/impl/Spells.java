@@ -85,8 +85,13 @@ public class Spells {
         }
 
         @Override
+        public String getModID() {
+            return Util.id();
+        }
+
+        @Override
         public Component getComponent() {
-            return new TranslatableComponent("misc." + Util.id() +".spell." + getName());
+            return new TranslatableComponent("misc." + getModID() +".spell." + getName());
         }
 
     }

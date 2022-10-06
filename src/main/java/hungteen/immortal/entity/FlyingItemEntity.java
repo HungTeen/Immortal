@@ -62,7 +62,6 @@ public class FlyingItemEntity extends HTEntity {
 
         if(! this.level.isClientSide){
             if(this.getControllingPassenger() != null){
-                if(this.tickCount % 20 == 0) System.out.println(this.getDeltaMovement());
                 this.updateMotion(this.getControllingPassenger());
 
             } else{

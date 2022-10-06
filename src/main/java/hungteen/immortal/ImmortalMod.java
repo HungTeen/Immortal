@@ -1,13 +1,19 @@
 package hungteen.immortal;
 
+import hungteen.immortal.block.ImmortalBlocks;
+import hungteen.immortal.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.capability.CapabilityHandler;
 import hungteen.immortal.command.CommandHandler;
 import hungteen.immortal.entity.ImmortalEntities;
+import hungteen.immortal.impl.EffectRunes;
+import hungteen.immortal.impl.GetterRunes;
 import hungteen.immortal.impl.Spells;
 import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.item.ImmortalItems;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +37,8 @@ public class ImmortalMod {
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::setUp);
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
+        modBus.addGenericListener(Item.class, ImmortalBlocks::registerBlockItem);
+        modBus.addGenericListener(Item.class, ImmortalItems::registerItems);
 
         //get forge event bus.
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
@@ -47,7 +55,10 @@ public class ImmortalMod {
      * register forge stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
+        ImmortalItems.ITEMS.register(modBus);
+        ImmortalBlocks.BLOCKS.register(modBus);
         ImmortalEntities.ENTITY_TYPES.register(modBus);
+        ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
     }
 
@@ -57,6 +68,8 @@ public class ImmortalMod {
     public static void coreRegister() {
         SpiritualRoots.SpiritualRoot.register();
         Spells.Spell.register();
+        EffectRunes.EffectRune.register();
+        GetterRunes.GetterRune.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
