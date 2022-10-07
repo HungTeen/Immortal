@@ -79,7 +79,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', '${mod_id}'
 
-            args '--mod', 'examplemod', '--all',
+            args '--mod', 'immortal', '--all',
                     '--output', file('src/generated/resources/'),
                     '--existing', file('src/main/resources/'),
                     '--existing', file('src/generated/resources/')

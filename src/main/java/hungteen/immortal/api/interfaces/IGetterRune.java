@@ -4,7 +4,6 @@ import hungteen.htlib.interfaces.INameEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import r.s.O;
 
 import java.util.Optional;
 

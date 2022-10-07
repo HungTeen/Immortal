@@ -1,5 +1,8 @@
 package hungteen.immortal.client;
 
+import hungteen.htlib.util.BlockUtil;
+import hungteen.immortal.block.ImmortalBlocks;
+import hungteen.immortal.block.plants.GourdGrownBlock;
 import hungteen.immortal.client.render.entity.FlyingItemEntityRender;
 import hungteen.immortal.entity.FlyingItemEntity;
 import hungteen.immortal.entity.ImmortalEntities;
@@ -46,16 +49,21 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
-//        ev.enqueueWork(() -> {
+        ev.enqueueWork(() -> {
 //            PVZKeyBinds.register();
 //            PVZWoodType.register();
-//            registerBlockRender();
+            registerBlockRender();
 //            registerScreen();
-//        });
+        });
     }
 
     public static void registerBlockRender(){
-//        ItemBlockRenderTypes.setRenderLayer(PVZBlocks.PEA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_STEM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_ATTACHED_STEM.get(), RenderType.cutout());
+        BlockUtil.getFilterBlocks(b -> b instanceof GourdGrownBlock).forEach(block -> {
+            ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+        });
+
     }
 
     public static void registerScreen() {

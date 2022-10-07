@@ -11,12 +11,12 @@ import net.minecraft.world.item.Items;
  **/
 public class ItemTabs {
 
-//    public static final CreativeModeTab MATERIALS = new CreativeModeTab("immortal_materials") {
-//        @Override
-//        public ItemStack makeIcon() {
-//            return null;
-//        }
-//    };
+    public static final CreativeModeTab MATERIALS = new CreativeModeTab("immortal_materials") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack((ImmortalItems.GOURD_SEEDS.get()));
+        }
+    };
 
     public static final CreativeModeTab RUNE = new CreativeModeTab("immortal_rune") {
         @Override
