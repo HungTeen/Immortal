@@ -3,9 +3,10 @@ package hungteen.immortal.item;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.block.ImmortalBlocks;
-import hungteen.immortal.item.rune.EffectRuneItem;
-import hungteen.immortal.item.rune.GetterRuneItem;
-import hungteen.immortal.item.rune.RuneItem;
+import hungteen.immortal.item.artifacts.FlameGourd;
+import hungteen.immortal.item.runes.EffectRuneItem;
+import hungteen.immortal.item.runes.GetterRuneItem;
+import hungteen.immortal.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -47,6 +48,9 @@ public class ImmortalItems {
 //    public static final RegistryObject<Item> GET_SELF_ENTITY_RUNE = rune("get_self_entity_rune");
 //    public static final RegistryObject<Item> GET_SELF_ITEM_RUNE = rune("get_self_item_rune");
 //    public static final RegistryObject<Item> GET_OWNER_ENTITY_RUNE = rune("get_owner_entity_rune");
+
+    /* Artifact Tab Items */
+    public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(0));
 
     /**
      * register items.

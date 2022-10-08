@@ -1,8 +1,12 @@
 package hungteen.immortal.client;
 
+import hungteen.htlib.client.particle.HTTextureParticle;
+import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
 import hungteen.immortal.block.ImmortalBlocks;
 import hungteen.immortal.block.plants.GourdGrownBlock;
+import hungteen.immortal.client.particle.ImmortalFlameParticle;
+import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.client.render.entity.FlyingItemEntityRender;
 import hungteen.immortal.entity.FlyingItemEntity;
 import hungteen.immortal.entity.ImmortalEntities;
@@ -33,6 +37,7 @@ public class ClientRegister {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* misc entity */
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
+        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
     }
 
     @SubscribeEvent
@@ -44,6 +49,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerFactories(ParticleFactoryRegisterEvent event) {
         ParticleEngine manager = Minecraft.getInstance().particleEngine;
+        manager.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
 //        manager.register(PVZParticles.POTATO_EXPLOSION.get(), (sprite) -> new PotatoExplosionParticle.Provider(sprite));
     }
 

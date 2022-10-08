@@ -3,9 +3,12 @@ package hungteen.immortal.event.handler;
 import hungteen.immortal.capability.player.PlayerDataManager;
 import hungteen.immortal.entity.FlyingItemEntity;
 import hungteen.immortal.entity.ImmortalEntities;
+import hungteen.immortal.entity.SpiritualFlame;
 import hungteen.immortal.event.ImmortalLivingEvents;
 import hungteen.immortal.event.ImmortalPlayerEvents;
 import hungteen.immortal.impl.Spells;
+import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.item.artifacts.FlameGourd;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.server.level.ServerLevel;
@@ -83,9 +86,14 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
+        /* 御物术，空手获取远处的物品实体 */
         if(player.getMainHandItem().isEmpty() && result.getEntity() instanceof ItemEntity && PlayerUtil.isSpellActivated(player, Spells.ITEM_CONTROLLING)){
             player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
             result.getEntity().discard();
+        }
+        /* 火葫芦 收 灵火 */
+        if(result.getEntity() instanceof SpiritualFlame && player.getMainHandItem().getItem() instanceof FlameGourd){
+            FlameGourd.rightClickFlame(player, player.getMainHandItem());
         }
     }
 

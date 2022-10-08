@@ -1,4 +1,4 @@
-package hungteen.immortal.item.rune;
+package hungteen.immortal.item.runes;
 
 import hungteen.immortal.api.interfaces.IEffectRune;
 

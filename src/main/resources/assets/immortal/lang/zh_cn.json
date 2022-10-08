@@ -49,5 +49,16 @@
   "misc.immortal.root.wind": "风",
   "misc.immortal.root.electric": "雷",
   "misc.immortal.root.drug": "毒",
-  "misc.immortal.root.ice": "冰"
+  "misc.immortal.root.ice": "冰",
+
+  "misc.immortal.artifact.level_1" : "低阶法器",
+  "misc.immortal.artifact.level_2" : "中阶法器",
+  "misc.immortal.artifact.level_3" : "高阶法器",
+  "misc.immortal.artifact.level_4" : "低阶法宝",
+  "misc.immortal.artifact.level_5" : "中阶法宝",
+  "misc.immortal.artifact.level_6" : "高阶法宝",
+  "misc.immortal.artifact.level_7" : "低阶灵宝",
+  "misc.immortal.artifact.level_8" : "中阶灵宝",
+  "misc.immortal.artifact.level_9" : "高阶灵宝",
+  "misc.immortal.artifact.ancient" : "古宝"
 }

@@ -1,8 +1,6 @@
-package hungteen.immortal.item.rune;
+package hungteen.immortal.item.runes;
 
 import hungteen.immortal.api.interfaces.IGetterRune;
-import hungteen.immortal.item.ItemTabs;
-import net.minecraft.world.item.Item;
 
 /**
  * @program: Immortal

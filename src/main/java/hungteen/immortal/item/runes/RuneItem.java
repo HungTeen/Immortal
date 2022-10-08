@@ -1,6 +1,5 @@
-package hungteen.immortal.item.rune;
+package hungteen.immortal.item.runes;
 
-import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.item.ItemTabs;
 import net.minecraft.world.item.Item;
 
@@ -12,6 +11,6 @@ import net.minecraft.world.item.Item;
 public class RuneItem extends Item {
 
     public RuneItem() {
-        super(new Properties().tab(ItemTabs.RUNE));
+        super(new Properties().tab(ItemTabs.RUNES));
     }
 }

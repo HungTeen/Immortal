@@ -3,6 +3,7 @@ package hungteen.immortal;
 import hungteen.immortal.block.ImmortalBlocks;
 import hungteen.immortal.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.capability.CapabilityHandler;
+import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.command.CommandHandler;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.entity.ImmortalEntities;
@@ -63,6 +64,7 @@ public class ImmortalMod {
         ImmortalBlocks.BLOCKS.register(modBus);
         ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
+        ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
     }
 

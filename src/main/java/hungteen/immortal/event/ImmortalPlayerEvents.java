@@ -90,7 +90,7 @@ public class ImmortalPlayerEvents {
     }
 
     /**
-     * Ony Client side !
+     * Only Client side !
      */
     @SubscribeEvent
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty ev) {

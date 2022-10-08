@@ -49,6 +49,17 @@
   "misc.immortal.root.wind": "Wind",
   "misc.immortal.root.electric": "Electric",
   "misc.immortal.root.drug": "Drug",
-  "misc.immortal.root.ice": "Ice"
+  "misc.immortal.root.ice": "Ice",
+
+  "misc.immortal.artifact.level_1" : "Uncommon Tool",
+  "misc.immortal.artifact.level_2" : "Rare Tool",
+  "misc.immortal.artifact.level_3" : "Epic Tool",
+  "misc.immortal.artifact.level_4" : "Uncommon Artifact",
+  "misc.immortal.artifact.level_5" : "Rare Artifact",
+  "misc.immortal.artifact.level_6" : "Epic Artifact",
+  "misc.immortal.artifact.level_7" : "Uncommon Spiritual Artifact",
+  "misc.immortal.artifact.level_8" : "Rare Spiritual Artifact",
+  "misc.immortal.artifact.level_9" : "Epic Spiritual Artifact",
+  "misc.immortal.artifact.ancient" : "Ancient Artifact"
 
 }
