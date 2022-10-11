@@ -27,9 +27,12 @@ public class ImmortalBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Util.id());
 
-    /* Plant blocks */
+    /* Plant Blocks */
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
+
+    /* Entity Blocks */
+    public static final RegistryObject<Block> SPIRITUAL_STOVE = BLOCKS.register("spiritual_stove", () -> new SpiritualStove(0));
 
     /**
      * register blocks.

@@ -12,6 +12,7 @@ import hungteen.immortal.impl.GetterRunes;
 import hungteen.immortal.impl.Spells;
 import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.item.ImmortalItems;
+import hungteen.immortal.menu.ImmortalMenus;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
@@ -65,6 +66,7 @@ public class ImmortalMod {
         ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         ImmortalParticles.PARTICLE_TYPES.register(modBus);
+        ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
     }
 

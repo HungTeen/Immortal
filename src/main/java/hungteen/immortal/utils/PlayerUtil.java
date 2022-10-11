@@ -96,10 +96,10 @@ public class PlayerUtil {
         return null;
     }
 
-    /* operations about spell */
+    /* Operations About Spells */
 
-    public static void learnSpell(Player player, ISpell spell){
-        getOptManager(player).ifPresent(l -> l.learnSpell(spell));
+    public static void learnSpell(Player player, ISpell spell, int level) {
+        getOptManager(player).ifPresent(l -> l.learnSpell(spell, level));
     }
 
     public static void forgetSpell(Player player, ISpell spell){
@@ -114,8 +114,8 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
     }
 
-    public static void activateSpellAt(Player player, int pos){
-        getOptManager(player).ifPresent(l -> l.activateSpellAt(pos));
+    public static void activateSpellAt(Player player){
+        getOptManager(player).ifPresent(l -> l.activateSpellAt());
     }
 
     public static void activateSpell(Player player, ISpell spell, long num){
@@ -125,9 +125,41 @@ public class PlayerUtil {
         });
     }
 
+    public static void selectSpell(Player player, long num){
+        getOptManager(player).ifPresent(l -> {
+            l.selectSpell(num);
+        });
+    }
+
+    public static void nextSpell(Player player, long num){
+        getOptManager(player).ifPresent(l -> {
+            l.nextSpell(num);
+        });
+    }
+
+    public static int getSpellSelectedPosition(Player player) {
+        final PlayerDataManager manager = getManager(player);
+        return manager != null ? manager.getSelectedSpellPosition() : 0;
+    }
+
+    @Nullable
+    public static ISpell getSpellAt(Player player, int pos) {
+        final PlayerDataManager manager = getManager(player);
+        return manager != null ? manager.getSpellAt(pos) : null;
+    }
+
     public static boolean isSpellActivated(Player player, ISpell spell) {
         final PlayerDataManager manager = getManager(player);
         return manager != null && manager.isSpellActivated(spell);
+    }
+
+    public static boolean learnedSpell(Player player, ISpell spell) {
+        return learnedSpell(player, spell, 1);
+    }
+
+    public static boolean learnedSpell(Player player, ISpell spell, int level) {
+        final PlayerDataManager manager = getManager(player);
+        return manager != null && manager.learnedSpell(spell, level);
     }
 
     public static void tick(Player player){

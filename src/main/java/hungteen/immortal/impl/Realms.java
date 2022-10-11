@@ -14,27 +14,29 @@ public class Realms {
 
 //    private static final List<IRealm> TYPES = new ArrayList<>();
 
+    public static final IRealm MORTALITY = new Realm("mortality", 0, 0);
+
     /* 炼气 */
 
-    public static final IRealm MEDITATION_STAGE1 = new Realm("meditation_stage1", 10, 0);
+    public static final IRealm MEDITATION_STAGE1 = new Realm("meditation_stage1", 10, 1);
 
-    public static final IRealm MEDITATION_STAGE2 = new Realm("meditation_stage2", 30, 1);
+    public static final IRealm MEDITATION_STAGE2 = new Realm("meditation_stage2", 30, 2);
 
-    public static final IRealm MEDITATION_STAGE3 = new Realm("meditation_stage3", 60, 2);
+    public static final IRealm MEDITATION_STAGE3 = new Realm("meditation_stage3", 60, 3);
 
-    public static final IRealm MEDITATION_STAGE4 = new Realm("meditation_stage4", 100, 3);
+    public static final IRealm MEDITATION_STAGE4 = new Realm("meditation_stage4", 100, 4);
 
-    public static final IRealm MEDITATION_STAGE5 = new Realm("meditation_stage5", 150, 4);
+    public static final IRealm MEDITATION_STAGE5 = new Realm("meditation_stage5", 150, 5);
 
-    public static final IRealm MEDITATION_STAGE6 = new Realm("meditation_stage6", 210, 5);
+    public static final IRealm MEDITATION_STAGE6 = new Realm("meditation_stage6", 210, 6);
 
-    public static final IRealm MEDITATION_STAGE7 = new Realm("meditation_stage7", 300, 6);
+    public static final IRealm MEDITATION_STAGE7 = new Realm("meditation_stage7", 300, 7);
 
-    public static final IRealm MEDITATION_STAGE8 = new Realm("meditation_stage8", 400, 7);
+    public static final IRealm MEDITATION_STAGE8 = new Realm("meditation_stage8", 400, 8);
 
-    public static final IRealm MEDITATION_STAGE9 = new Realm("meditation_stage9", 500, 8);
+    public static final IRealm MEDITATION_STAGE9 = new Realm("meditation_stage9", 500, 9);
 
-    public static final IRealm MEDITATION_STAGE10 = new Realm("meditation_stage10", 600, 9);
+    public static final IRealm MEDITATION_STAGE10 = new Realm("meditation_stage10", 600, 10);
 
     /* 筑基 */
 

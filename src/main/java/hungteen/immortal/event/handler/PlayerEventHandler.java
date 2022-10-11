@@ -87,7 +87,7 @@ public class PlayerEventHandler {
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
         /* 御物术，空手获取远处的物品实体 */
-        if(player.getMainHandItem().isEmpty() && result.getEntity() instanceof ItemEntity && PlayerUtil.isSpellActivated(player, Spells.ITEM_CONTROLLING)){
+        if(player.getMainHandItem().isEmpty() && result.getEntity() instanceof ItemEntity && PlayerUtil.isSpellActivated(player, Spells.ITEM_PICKING)){
             player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
             result.getEntity().discard();
         }
@@ -98,7 +98,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceBlock(Player player, BlockHitResult result) {
-        if(player.getMainHandItem().isEmpty() && PlayerUtil.isSpellActivated(player, Spells.BLOCK_CONTROLLING)){
+        if(player.getMainHandItem().isEmpty() && PlayerUtil.isSpellActivated(player, Spells.ITEM_PICKING)){
             final BlockState state = player.level.getBlockState(result.getBlockPos());
             // ban bedrock like blocks.
             if(state.getDestroySpeed(player.level, result.getBlockPos()) >= 0){

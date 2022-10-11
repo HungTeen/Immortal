@@ -58,6 +58,7 @@ public class FlameGourd extends ArtifactItem {
                 final SpiritualFlame flame = (SpiritualFlame) ((EntityHitResult) hitResult).getEntity();
                 // 等级不匹配 爆炸。
                 if(flame.getFlameLevel() > flameGourd.getMaxFlameLevel()){
+                    // TODO 更专业的爆炸
                     if(! player.level.isClientSide){
                         player.level.explode(flame, player.getX(), player.getY(), player.getZ(), 10, true, Explosion.BlockInteraction.BREAK);
                     }

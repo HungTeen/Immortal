@@ -13,7 +13,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.commands.EffectCommands;
 import net.minecraft.server.commands.LocateCommand;
+import net.minecraft.server.commands.SetBlockCommand;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
@@ -58,8 +60,9 @@ public class ImmortalCommand {
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.literal("learn")
                                         .then(Commands.literal(spell.getName())
-                                                .executes(command -> learnSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
-                                        ))
+                                                .then(Commands.argument("level", IntegerArgumentType.integer())
+                                                        .executes(command -> learnSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "level")))
+                                                )))
                                 .then(Commands.literal("forget")
                                         .then(Commands.literal(spell.getName())
                                                 .executes(command -> forgetSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
@@ -68,9 +71,15 @@ public class ImmortalCommand {
                                         .then(Commands.literal(spell.getName())
                                                 .executes(command -> activateSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
                                         ))
+                                .then(Commands.literal("set")
+                                        .then(Commands.literal(spell.getName())
+                                                .then(Commands.argument("pos", IntegerArgumentType.integer(0, 7))
+                                                    .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
+                                                )))
                         ));
             });
         }
+
         dispatcher.register(builder);
     }
 
@@ -109,9 +118,9 @@ public class ImmortalCommand {
         return targets.size();
     }
 
-    private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell) {
+    private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell, int level) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.learnSpell(player, spell);
+            PlayerUtil.learnSpell(player, spell, level);
             source.sendSuccess(new TextComponent(spell.getName()), true);
         }
         return targets.size();
@@ -128,6 +137,14 @@ public class ImmortalCommand {
     private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.activateSpell(player, spell, player.level.getGameTime() + spell.getDuration());
+            source.sendSuccess(new TextComponent(spell.getName()), true);
+        }
+        return targets.size();
+    }
+
+    private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell, int pos) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.setSpellList(player, pos, spell);
             source.sendSuccess(new TextComponent(spell.getName()), true);
         }
         return targets.size();

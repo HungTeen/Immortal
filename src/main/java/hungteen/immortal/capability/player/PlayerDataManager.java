@@ -12,8 +12,10 @@ import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -26,8 +28,11 @@ public class PlayerDataManager {
 
     private final Player player;
     private final HashSet<ISpiritualRoot> spiritualRoots = new HashSet<>();
-    private final HashMap<ISpell, Long> learnSpells = new HashMap<>();
+    private final HashMap<ISpell, Integer> learnSpells = new HashMap<>();
+    /* Store the end time of specific spells */
+    private final HashMap<ISpell, Long> activateSpells = new HashMap<>();
     private ISpell[] spellList = new ISpell[Constants.SPELL_NUMS];
+    private int selectedSpellPosition = 0;
 
 
     public PlayerDataManager(Player player){
@@ -50,9 +55,16 @@ public class PlayerDataManager {
         {
             CompoundTag nbt = new CompoundTag();
             this.learnSpells.forEach((p1, p2) -> {
-                nbt.putLong(p1.getName(), p2);
+                nbt.putInt(p1.getName(), p2);
             });
             tag.put("LearnSpells", nbt);
+        }
+        {
+            CompoundTag nbt = new CompoundTag();
+            this.activateSpells.forEach((p1, p2) -> {
+                nbt.putLong(p1.getName(), p2);
+            });
+            tag.put("ActivateSpells", nbt);
         }
         {
             CompoundTag nbt = new CompoundTag();
@@ -61,6 +73,7 @@ public class PlayerDataManager {
                     nbt.putInt(spellList[i].getName(), i);
                 }
             }
+            nbt.putInt("SelectedSpellPosition", this.selectedSpellPosition);
             tag.put("SpellList", nbt);
         }
 
@@ -69,8 +82,8 @@ public class PlayerDataManager {
 
     public void loadFromNBT(CompoundTag tag) {
         {
-            CompoundTag nbt = tag.getCompound("SpiritualRoots");
             spiritualRoots.clear();
+            CompoundTag nbt = tag.getCompound("SpiritualRoots");
             for (ISpiritualRoot spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
                 if(nbt.getBoolean(spiritualRoot.getName() + "_root")){
                     spiritualRoots.add(spiritualRoot);
@@ -78,11 +91,20 @@ public class PlayerDataManager {
             }
         }
         {
-            CompoundTag nbt = tag.getCompound("SpellCD");
             learnSpells.clear();
+            CompoundTag nbt = tag.getCompound("LearnSpells");
             for (ISpell spell : ImmortalAPI.get().getSpells()){
                 if(nbt.contains(spell.getName())){
-                    learnSpells.put(spell, nbt.getLong(spell.getName()));
+                    learnSpells.put(spell, nbt.getInt(spell.getName()));
+                }
+            }
+        }
+        {
+            activateSpells.clear();
+            CompoundTag nbt = tag.getCompound("ActivateSpells");
+            for (ISpell spell : ImmortalAPI.get().getSpells()){
+                if(nbt.contains(spell.getName())){
+                    activateSpells.put(spell, nbt.getLong(spell.getName()));
                 }
             }
         }
@@ -93,6 +115,7 @@ public class PlayerDataManager {
                     spellList[nbt.getInt(spell.getName())] = spell;
                 }
             }
+            this.selectedSpellPosition = nbt.getInt("SelectedSpellPosition");
         }
     }
 
@@ -168,18 +191,19 @@ public class PlayerDataManager {
 
     /* Spell related methods */
 
-    public void learnSpell(ISpell spell) {
-        this.learnSpells.put(spell, getPlayer().level.getGameTime());
-        this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, getGameTime());
+    public void learnSpell(ISpell spell, int level) {
+        this.learnSpells.put(spell, Mth.clamp(level, 0, spell.getMaxLevel()));
+        this.activateSpells.put(spell, getPlayer().level.getGameTime());
+        this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
     }
 
     public void forgetSpell(ISpell spell) {
-        this.learnSpells.remove(spell);
+        this.learnSpells.put(spell, 0);
         this.sendSpellPacket(SpellPacket.SpellOptions.FORGET, spell, 0);
     }
 
     public void learnAllSpells() {
-        this.learnSpells.forEach((spell, time) -> learnSpell(spell));
+        this.learnSpells.forEach((spell, time) -> learnSpell(spell, spell.getMaxLevel()));
     }
 
     public void forgetAllSpells() {
@@ -196,20 +220,42 @@ public class PlayerDataManager {
         this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE, spell, pos);
     }
 
-    public void activateSpellAt(int pos){
-        Optional.ofNullable(this.spellList[pos]).ifPresent(spell -> this.activateSpell(spell, getGameTime() + spell.getDuration()));
+    public void activateSpellAt(){
+        Optional.ofNullable(this.spellList[this.selectedSpellPosition]).ifPresent(spell -> this.activateSpell(spell, getGameTime() + spell.getDuration()));
     }
 
     public void activateSpell(@NotNull ISpell spell, long num){
-        this.learnSpells.put(spell, num);
+        this.activateSpells.put(spell, num);
         this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, num);
     }
 
-    public boolean isSpellActivated(@NotNull ISpell spell){
-        return this.learnSpells.containsKey(spell) && this.learnSpells.get(spell) > getGameTime();
+    public void selectSpell(long num){
+        this.selectedSpellPosition = Mth.clamp((int) num, 0, Constants.SPELL_NUM_EACH_PAGE - 1);
+        this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, num);
     }
 
-    public void sendSpellPacket(SpellPacket.SpellOptions option, ISpell spell, long num) {
+    public ISpell getSpellAt(int num){
+        return this.spellList[Mth.clamp(num, 0, Constants.SPELL_NUM_EACH_PAGE - 1)];
+    }
+
+    public void nextSpell(long num){
+        this.selectedSpellPosition = (int) (this.selectedSpellPosition + num + Constants.SPELL_NUM_EACH_PAGE) % Constants.SPELL_NUM_EACH_PAGE;
+        this.sendSpellPacket(SpellPacket.SpellOptions.NEXT, null, num);
+    }
+
+    public boolean isSpellActivated(@NotNull ISpell spell){
+        return this.activateSpells.containsKey(spell) && this.activateSpells.get(spell) > getGameTime();
+    }
+
+    public boolean learnedSpell(@NotNull ISpell spell, int level){
+        return this.learnSpells.containsKey(spell) && this.learnSpells.get(spell) >= level;
+    }
+
+    public int getSelectedSpellPosition(){
+        return this.selectedSpellPosition;
+    }
+
+    public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpell spell, long num) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new SpellPacket(spell, option, num));
         }

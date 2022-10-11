@@ -56,7 +56,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
         ev.enqueueWork(() -> {
-//            PVZKeyBinds.register();
+            ImmortalKeyBinds.register();
 //            PVZWoodType.register();
             registerBlockRender();
 //            registerScreen();
