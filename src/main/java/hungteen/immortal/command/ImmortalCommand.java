@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
@@ -34,11 +35,11 @@ public class ImmortalCommand {
                 builder.then(Commands.literal("root")
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.literal("add")
-                                        .then(Commands.literal(root.getName())
+                                        .then(Commands.literal(root.getRegistryName())
                                                 .executes(command -> addSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
                                         ))
                                 .then(Commands.literal("remove")
-                                        .then(Commands.literal(root.getName())
+                                        .then(Commands.literal(root.getRegistryName())
                                                 .executes(command -> removeSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
                                         ))
                         ));
@@ -59,27 +60,47 @@ public class ImmortalCommand {
                 builder.then(Commands.literal("spell")
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.literal("learn")
-                                        .then(Commands.literal(spell.getName())
+                                        .then(Commands.literal(spell.getRegistryName())
                                                 .then(Commands.argument("level", IntegerArgumentType.integer())
                                                         .executes(command -> learnSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "level")))
                                                 )))
                                 .then(Commands.literal("forget")
-                                        .then(Commands.literal(spell.getName())
+                                        .then(Commands.literal(spell.getRegistryName())
                                                 .executes(command -> forgetSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
                                         ))
                                 .then(Commands.literal("activate")
-                                        .then(Commands.literal(spell.getName())
+                                        .then(Commands.literal(spell.getRegistryName())
                                                 .executes(command -> activateSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
                                         ))
                                 .then(Commands.literal("set")
-                                        .then(Commands.literal(spell.getName())
+                                        .then(Commands.literal(spell.getRegistryName())
                                                 .then(Commands.argument("pos", IntegerArgumentType.integer(0, 7))
                                                     .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
                                                 )))
                         ));
             });
         }
-
+        {// about spells.
+            ImmortalAPI.get().getIntegerCollection().forEach(data -> {
+                builder.then(Commands.literal("data")
+                        .then(Commands.argument("targets", EntityArgument.players())
+                                .then(Commands.literal("set")
+                                        .then(Commands.literal(data.getRegistryName())
+                                                .then(Commands.argument("value", IntegerArgumentType.integer(data.getMinData(), data.getMaxData()))
+                                                        .executes(command -> setIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
+                                                )))
+                                .then(Commands.literal("add")
+                                        .then(Commands.literal(data.getRegistryName())
+                                                .then(Commands.argument("value", IntegerArgumentType.integer())
+                                                        .executes(command -> addIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
+                                                )))
+                                .then(Commands.literal("show")
+                                        .then(Commands.literal(data.getRegistryName())
+                                                .executes(command -> showIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
+                                        ))
+                        ));
+            });
+        }
         dispatcher.register(builder);
     }
 
@@ -102,7 +123,7 @@ public class ImmortalCommand {
         for (ServerPlayer player : targets) {
             PlayerUtil.getOptManager(player).ifPresent(l -> {
                 l.addSpiritualRoot(root);
-                source.sendSuccess(new TextComponent(root.getName()), true);
+                source.sendSuccess(root.getComponent(), true);
             });
         }
         return targets.size();
@@ -112,7 +133,7 @@ public class ImmortalCommand {
         for (ServerPlayer player : targets) {
             PlayerUtil.getOptManager(player).ifPresent(l -> {
                 l.removeSpiritualRoot(root);
-                source.sendSuccess(new TextComponent(root.getName()), true);
+                source.sendSuccess(root.getComponent(), true);
             });
         }
         return targets.size();
@@ -121,7 +142,7 @@ public class ImmortalCommand {
     private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell, int level) {
         for (ServerPlayer player : targets) {
             PlayerUtil.learnSpell(player, spell, level);
-            source.sendSuccess(new TextComponent(spell.getName()), true);
+            source.sendSuccess(spell.getComponent(), true);
         }
         return targets.size();
     }
@@ -129,7 +150,7 @@ public class ImmortalCommand {
     private static int forgetSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.forgetSpell(player, spell);
-            source.sendSuccess(new TextComponent(spell.getName()), true);
+            source.sendSuccess(spell.getComponent(), true);
         }
         return targets.size();
     }
@@ -137,7 +158,7 @@ public class ImmortalCommand {
     private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.activateSpell(player, spell, player.level.getGameTime() + spell.getDuration());
-            source.sendSuccess(new TextComponent(spell.getName()), true);
+            source.sendSuccess(spell.getComponent(), true);
         }
         return targets.size();
     }
@@ -145,7 +166,31 @@ public class ImmortalCommand {
     private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell, int pos) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setSpellList(player, pos, spell);
-            source.sendSuccess(new TextComponent(spell.getName()), true);
+            source.sendSuccess(spell.getComponent(), true);
+        }
+        return targets.size();
+    }
+
+    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data, int value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.setIntegerData(player, data, value);
+            source.sendSuccess(data.getComponent(), true);
+        }
+        return targets.size();
+    }
+
+    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data, int value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.addIntegerData(player, data, value);
+            source.sendSuccess(data.getComponent(), true);
+        }
+        return targets.size();
+    }
+
+    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data) {
+        for (ServerPlayer player : targets) {
+            final int result = PlayerUtil.getIntegerData(player, data);
+            source.sendSuccess(new TextComponent(data.getComponent().getString() + " : " + result), true);
         }
         return targets.size();
     }

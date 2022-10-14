@@ -7,10 +7,7 @@ import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.command.CommandHandler;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.entity.ImmortalEntities;
-import hungteen.immortal.impl.EffectRunes;
-import hungteen.immortal.impl.GetterRunes;
-import hungteen.immortal.impl.Spells;
-import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.impl.*;
 import hungteen.immortal.item.ImmortalItems;
 import hungteen.immortal.menu.ImmortalMenus;
 import hungteen.immortal.network.NetworkHandler;
@@ -78,6 +75,7 @@ public class ImmortalMod {
         Spells.Spell.register();
         EffectRunes.EffectRune.register();
         GetterRunes.GetterRune.register();
+        PlayerDatas.PlayerData.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {

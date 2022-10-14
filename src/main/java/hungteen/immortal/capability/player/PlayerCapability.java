@@ -1,5 +1,7 @@
 package hungteen.immortal.capability.player;
 
+import hungteen.htlib.capability.HTPlayerCapability;
+import hungteen.htlib.capability.IHTPlayerCapability;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -7,19 +9,13 @@ import net.minecraft.world.entity.player.Player;
  * @author: HungTeen
  * @create: 2022-09-24 15:03
  **/
-public class PlayerCapability implements IPlayerCapability{
-
-    private PlayerDataManager playerDataManager = null;
+public class PlayerCapability extends HTPlayerCapability<PlayerDataManager> {
 
     @Override
     public void init(Player player) {
-        if(playerDataManager == null){
-            playerDataManager = new PlayerDataManager(player);
+        if(this.dataManager == null){
+            this.dataManager = new PlayerDataManager(player);
         }
     }
 
-    @Override
-    public PlayerDataManager get() {
-        return playerDataManager;
-    }
 }

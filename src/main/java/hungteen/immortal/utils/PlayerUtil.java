@@ -1,5 +1,6 @@
 package hungteen.immortal.utils;
 
+import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
@@ -160,6 +161,21 @@ public class PlayerUtil {
     public static boolean learnedSpell(Player player, ISpell spell, int level) {
         final PlayerDataManager manager = getManager(player);
         return manager != null && manager.learnedSpell(spell, level);
+    }
+
+    /* Operations about Integer Data */
+
+    public static void setIntegerData(Player player, IRangeData<Integer> rangeData, int value){
+        getOptManager(player).ifPresent(l -> l.setIntegerData(rangeData, value));
+    }
+
+    public static void addIntegerData(Player player, IRangeData<Integer> rangeData, int value){
+        getOptManager(player).ifPresent(l -> l.addIntegerData(rangeData, value));
+    }
+
+    public static int getIntegerData(Player player, IRangeData<Integer> rangeData){
+        final PlayerDataManager manager = getManager(player);
+        return manager != null ? manager.getIntegerData(rangeData) : rangeData.defaultData();
     }
 
     public static void tick(Player player){

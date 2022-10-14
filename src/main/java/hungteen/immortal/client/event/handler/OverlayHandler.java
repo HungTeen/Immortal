@@ -58,12 +58,12 @@ public class OverlayHandler {
             final boolean isSelected = i == selectPos;
             // Render the empty spell slot.
             RenderUtil.setTexture(SPELL_CIRCLE);
-            ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst(), SpellSlots.get(i).getSecond(), isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
+            ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst() + width / 2, SpellSlots.get(i).getSecond() + height / 2, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             // Render the spell texture.
             final ISpell spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null) {
                 RenderUtil.setTexture(spell.getSpellTexture());
-                ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst() + 2, SpellSlots.get(i).getSecond() + 2, 0, 0, 16, 16, 16, 16);
+                ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst() + width / 2 + 2, SpellSlots.get(i).getSecond() + height / 2 + 2, 0, 0, 16, 16, 16, 16);
             }
         }
         stack.popPose();

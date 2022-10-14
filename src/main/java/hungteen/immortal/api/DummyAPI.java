@@ -1,13 +1,14 @@
 package hungteen.immortal.api;
 
+import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.interfaces.IEffectRune;
 import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
-import org.lwjgl.system.CallbackI;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -24,7 +25,7 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<ISpiritualRoot> getSpiritualRoots() {
-        return new ArrayList<>();
+        return List.of();
     }
 
     @Override
@@ -34,7 +35,7 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<ISpell> getSpells() {
-        return new ArrayList<>();
+        return List.of();
     }
 
     @Override
@@ -44,7 +45,22 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<IEffectRune> getEffectRunes() {
-        return new ArrayList<>();
+        return List.of();
+    }
+
+    @Override
+    public void registerIntegerData(IRangeData<Integer> type) {
+
+    }
+
+    @Override
+    public Collection<IRangeData<Integer>> getIntegerCollection() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<IRangeData<Integer>> getIntegerData(String type) {
+        return Optional.empty();
     }
 
     @Override
@@ -54,6 +70,6 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public List<IGetterRune> getGetterRunes() {
-        return new ArrayList<>();
+        return List.of();
     }
 }

@@ -1,6 +1,7 @@
 package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
+import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.interfaces.IEffectRune;
 import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
@@ -8,7 +9,9 @@ import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -73,6 +76,23 @@ public class ImmortalAPI {
          * 获取效果符文类型。
          */
         List<IEffectRune> getEffectRunes();
+
+        /**
+         * 注册玩家Int数据类型。
+         */
+        void registerIntegerData(IRangeData<Integer> type);
+
+        /**
+         * 获取玩家Int数据类型。
+         * @return
+         */
+        Collection<IRangeData<Integer>> getIntegerCollection();
+
+        /**
+         * 获取玩家Int数据类型。
+         * @return
+         */
+        Optional<IRangeData<Integer>> getIntegerData(String type);
 
         /**
          * 注册取值符文类型。
