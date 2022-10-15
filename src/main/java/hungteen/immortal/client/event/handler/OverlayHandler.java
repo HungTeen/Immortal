@@ -4,12 +4,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.ClientProxy;
 import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.gui.RecipeRenderManager;
+import hungteen.htlib.util.ColorUtil;
+import hungteen.htlib.util.MathUtil;
 import hungteen.htlib.util.Pair;
+import hungteen.immortal.SpellManager;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.client.event.OverlayEvents;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -58,12 +63,31 @@ public class OverlayHandler {
             final boolean isSelected = i == selectPos;
             // Render the empty spell slot.
             RenderUtil.setTexture(SPELL_CIRCLE);
-            ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst() + width / 2, SpellSlots.get(i).getSecond() + height / 2, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
+            final int x = SpellSlots.get(i).getFirst() + width / 2;
+            final int y = SpellSlots.get(i).getSecond() + height / 2;
+            ClientProxy.MC.gui.blit(stack, x, y, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             // Render the spell texture.
             final ISpell spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null) {
                 RenderUtil.setTexture(spell.getSpellTexture());
-                ClientProxy.MC.gui.blit(stack, SpellSlots.get(i).getFirst() + width / 2 + 2, SpellSlots.get(i).getSecond() + height / 2 + 2, 0, 0, 16, 16, 16, 16);
+                ClientProxy.MC.gui.blit(stack, x + 2, y + 2, 0, 0, 16, 16, 16, 16);
+
+                // Render CD.
+                final double progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
+                if(progress > 0){
+                    RenderUtil.setTexture(SPELL_CIRCLE);
+                    RenderSystem.enableBlend();
+                    final int CDBarLen = Mth.clamp((int) (progress * SPELL_SLOT_LEN), 1, SPELL_SLOT_LEN);
+                    ClientProxy.MC.gui.blit(stack, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
+                }
+
+                if(isSelected){
+                    String text = spell.getComponent().getString() + " - " + SpellManager.getCostComponent(spell.getStartMana()).getString();
+                    if(progress > 0){
+                        text = text + " - " + SpellManager.getCDComponent((int) (spell.getDuration() * progress)).getString();
+                    }
+                    RenderUtil.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1  , ColorUtil.WHITE, 1F);
+                }
             }
         }
         stack.popPose();

@@ -10,6 +10,7 @@ import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.capability.CapabilityHandler;
 import hungteen.immortal.capability.player.PlayerCapability;
 import hungteen.immortal.capability.player.PlayerDataManager;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -18,8 +19,10 @@ import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -97,6 +100,11 @@ public class PlayerUtil {
         return null;
     }
 
+    public static <T> T getManagerResult(Player player, Function<PlayerDataManager, T> function, T defaultValue) {
+        final PlayerDataManager manager = getManager(player);
+        return manager != null ? function.apply(manager) : defaultValue;
+    }
+
     /* Operations About Spells */
 
     public static void learnSpell(Player player, ISpell spell, int level) {
@@ -115,14 +123,13 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
     }
 
-    public static void activateSpellAt(Player player){
-        getOptManager(player).ifPresent(l -> l.activateSpellAt());
-    }
-
+    /**
+     * Not only used by S -> C sync.
+     * Also use by {@link hungteen.immortal.command.ImmortalCommand} for ignore checking.
+     */
     public static void activateSpell(Player player, ISpell spell, long num){
         getOptManager(player).ifPresent(l -> {
             l.activateSpell(spell, num);
-            MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent(player, spell));
         });
     }
 
@@ -139,19 +146,25 @@ public class PlayerUtil {
     }
 
     public static int getSpellSelectedPosition(Player player) {
-        final PlayerDataManager manager = getManager(player);
-        return manager != null ? manager.getSelectedSpellPosition() : 0;
+        return getManagerResult(player, PlayerDataManager::getSelectedSpellPosition, 0);
     }
 
     @Nullable
     public static ISpell getSpellAt(Player player, int pos) {
-        final PlayerDataManager manager = getManager(player);
-        return manager != null ? manager.getSpellAt(pos) : null;
+        return getManagerResult(player, m -> m.getSpellAt(pos), null);
+    }
+
+    @Nullable
+    public static ISpell getSelectedSpell(Player player) {
+        return getManagerResult(player, PlayerDataManager::getSelectedSpell, null);
     }
 
     public static boolean isSpellActivated(Player player, ISpell spell) {
-        final PlayerDataManager manager = getManager(player);
-        return manager != null && manager.isSpellActivated(spell);
+        return getManagerResult(player, m -> m.isSpellActivated(spell), false);
+    }
+
+    public static double getSpellCDValue(Player player, ISpell spell) {
+        return getManagerResult(player, m -> m.getSpellCDValue(spell), 0D);
     }
 
     public static boolean learnedSpell(Player player, ISpell spell) {
@@ -159,8 +172,11 @@ public class PlayerUtil {
     }
 
     public static boolean learnedSpell(Player player, ISpell spell, int level) {
-        final PlayerDataManager manager = getManager(player);
-        return manager != null && manager.learnedSpell(spell, level);
+        return getManagerResult(player, m -> m.learnedSpell(spell, level), false);
+    }
+
+    public static int getSpellLearnLevel(Player player, ISpell spell) {
+        return getManagerResult(player, m -> m.getSpellLearnLevel(spell), 0);
     }
 
     /* Operations about Integer Data */
@@ -174,8 +190,7 @@ public class PlayerUtil {
     }
 
     public static int getIntegerData(Player player, IRangeData<Integer> rangeData){
-        final PlayerDataManager manager = getManager(player);
-        return manager != null ? manager.getIntegerData(rangeData) : rangeData.defaultData();
+        return getManagerResult(player, m -> m.getIntegerData(rangeData), rangeData.defaultData());
     }
 
     public static void tick(Player player){

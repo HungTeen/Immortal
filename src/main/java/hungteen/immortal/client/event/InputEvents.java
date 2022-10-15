@@ -2,16 +2,12 @@ package hungteen.immortal.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.ClientProxy;
-import hungteen.htlib.util.EntityUtil;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.ImmortalKeyBinds;
-import hungteen.immortal.client.gui.screen.SpellCircleScreen;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.network.SpellPacket;
 import hungteen.immortal.utils.Constants;
-import hungteen.immortal.utils.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +46,7 @@ public class InputEvents {
             }
 
             if(ClientDatas.ShowSpellCircle && ev.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
-                NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, 0));
+                NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE_AT, 0));
                 ClientDatas.ShowSpellCircle = false;
             }
         }

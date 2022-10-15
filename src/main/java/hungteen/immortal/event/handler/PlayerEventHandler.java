@@ -1,5 +1,6 @@
 package hungteen.immortal.event.handler;
 
+import hungteen.immortal.SpellManager;
 import hungteen.immortal.capability.player.PlayerDataManager;
 import hungteen.immortal.entity.FlyingItemEntity;
 import hungteen.immortal.entity.ImmortalEntities;
@@ -86,11 +87,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
-        /* 御物术，空手获取远处的物品实体 */
-        if(player.getMainHandItem().isEmpty() && result.getEntity() instanceof ItemEntity && PlayerUtil.isSpellActivated(player, Spells.ITEM_PICKING)){
-            player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
-            result.getEntity().discard();
-        }
+        SpellManager.checkSpellAction(player, result);
         /* 火葫芦 收 灵火 */
         if(result.getEntity() instanceof SpiritualFlame && player.getMainHandItem().getItem() instanceof FlameGourd){
             FlameGourd.rightClickFlame(player, player.getMainHandItem());
@@ -98,22 +95,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceBlock(Player player, BlockHitResult result) {
-        if(player.getMainHandItem().isEmpty() && PlayerUtil.isSpellActivated(player, Spells.ITEM_PICKING)){
-            final BlockState state = player.level.getBlockState(result.getBlockPos());
-            // ban bedrock like blocks.
-            if(state.getDestroySpeed(player.level, result.getBlockPos()) >= 0){
-                final BlockEntity blockentity = state.hasBlockEntity() ? player.level.getBlockEntity(result.getBlockPos()) : null;
-                final ItemStack stack = new ItemStack(state.getBlock().asItem());
-                if(blockentity != null){
-                    blockentity.saveToItem(stack);
-                    if (blockentity instanceof Nameable && ((Nameable) blockentity).hasCustomName()) {
-                        stack.setHoverName(((Nameable) blockentity).getCustomName());
-                    }
-                }
-                player.setItemInHand(InteractionHand.MAIN_HAND, stack);
-                player.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
-            }
-        }
+        SpellManager.checkSpellAction(player, result);
     }
 
     public static void rayTrace(Player player) {

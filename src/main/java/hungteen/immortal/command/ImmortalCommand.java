@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.interfaces.IRangeData;
+import hungteen.immortal.SpellManager;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
@@ -157,7 +158,7 @@ public class ImmortalCommand {
 
     private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpell spell) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.activateSpell(player, spell, player.level.getGameTime() + spell.getDuration());
+            PlayerUtil.activateSpell(player, spell, SpellManager.getSpellActivateTime(player, spell));
             source.sendSuccess(spell.getComponent(), true);
         }
         return targets.size();

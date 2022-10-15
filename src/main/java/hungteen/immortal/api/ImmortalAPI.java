@@ -7,6 +7,11 @@ import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
@@ -64,8 +69,14 @@ public class ImmortalAPI {
 
         /**
          * 获取法术类型。
+         * @return
          */
-        List<ISpell> getSpells();
+        Collection<ISpell> getSpells();
+
+        /**
+         * 获取法术。
+         */
+        Optional<ISpell> getSpell(String type);
 
         /**
          * 注册效果符文类型。
@@ -103,6 +114,27 @@ public class ImmortalAPI {
          * 获取取值符文类型。
          */
         List<IGetterRune> getGetterRunes();
+
+        /**
+         * 获取玩家灵气值。
+         */
+        int getSpiritualMana(Player player);
+
+        /**
+         * 设置群系的灵气值。
+         */
+        void registerBiomeSpiritualValue(ResourceKey<Biome> biomeResourceKey, int spiritualValue);
+
+        /**
+         * 设置维度的灵气倍率。
+         */
+        void registerLevelSpiritualRatio(ResourceKey<Level> levelResourceKey, float spiritualRatio);
+
+        /**
+         * 获取当前位置的灵气值。
+         */
+        int getSpiritualValue(Level level, BlockPos pos);
+
     }
 
 }

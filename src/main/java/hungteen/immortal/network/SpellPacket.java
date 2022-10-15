@@ -1,5 +1,6 @@
 package hungteen.immortal.network;
 
+import hungteen.immortal.SpellManager;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.impl.Spells;
@@ -27,7 +28,7 @@ public class SpellPacket {
      * spell only empty when option is SELECT or Next or ACTIVATE_AT.
      */
     public SpellPacket(ISpell spell, SpellOptions option, long num) {
-        this.type = spell != null ? spell.getName() : "empty";
+        this.type = spell != null ? spell.getRegistryName() : "empty";
         this.option = option;
         this.num = num;
     }
@@ -47,18 +48,19 @@ public class SpellPacket {
     public static class Handler {
         public static void onMessage(SpellPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
+                // S -> C.
                 if(ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER){
                     if (message.option == SpellOptions.SELECT || message.option == SpellOptions.NEXT) {
                         Optional.ofNullable(hungteen.htlib.util.PlayerUtil.getClientPlayer()).ifPresent(player -> {
                             switch (message.option) {
                                 case SELECT -> PlayerUtil.selectSpell(player, message.num);
                                 case NEXT -> PlayerUtil.nextSpell(player, message.num);
-                                case ACTIVATE_AT -> PlayerUtil.activateSpellAt(player);
+//                                case ACTIVATE_AT -> PlayerUtil.activateSpellAt(player);
                             }
                         });
                         return;
                     }
-                    getSpellByName(message.type).ifPresent(spell -> {
+                    ImmortalAPI.get().getSpell(message.type).ifPresent(spell -> {
                         Optional.ofNullable(hungteen.htlib.util.PlayerUtil.getClientPlayer()).ifPresent(player -> {
                             switch (message.option){
                                 case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
@@ -70,26 +72,16 @@ public class SpellPacket {
                         });
 
                     });
-                } else{
+                } else{// C -> S.
                     switch (message.option){
                         case SELECT -> PlayerUtil.selectSpell(ctx.get().getSender(), message.num);
                         case NEXT -> PlayerUtil.nextSpell(ctx.get().getSender(), message.num);
-                        case ACTIVATE_AT -> PlayerUtil.activateSpellAt(ctx.get().getSender());
+                        case ACTIVATE_AT -> SpellManager.checkActivateSpell(ctx.get().getSender());
                     }
                 }
             });
             ctx.get().setPacketHandled(true);
         }
-    }
-
-    private static Optional<ISpell> getSpellByName(String name) {
-        final List<ISpell> spells = ImmortalAPI.get().getSpells();
-        for(int i = 0; i < spells.size(); ++ i){
-            if(spells.get(i).getName().equals(name)){
-                return Optional.ofNullable(spells.get(i));
-            }
-        }
-        return Optional.empty();
     }
 
     public enum SpellOptions {

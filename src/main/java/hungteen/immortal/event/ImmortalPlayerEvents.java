@@ -1,6 +1,8 @@
 package hungteen.immortal.event;
 
 import hungteen.immortal.ImmortalMod;
+import hungteen.immortal.SpellManager;
+import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.capability.player.PlayerDataManager;
 import hungteen.immortal.event.handler.PlayerEventHandler;
 import hungteen.immortal.impl.Spells;
@@ -65,6 +67,13 @@ public class ImmortalPlayerEvents {
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent ev) {
         if(! ev.getPlayer().level.isClientSide) {
             PlayerUtil.getOptManager(ev.getPlayer()).ifPresent(PlayerDataManager::syncToClient);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent ev) {
+        if(! ev.getPlayer().level.isClientSide) {
+            SpellManager.checkSpellAction(ev.getPlayer(), ev.getSpell(), ev.getLevel());
         }
     }
 

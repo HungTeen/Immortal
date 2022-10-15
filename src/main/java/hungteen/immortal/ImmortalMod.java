@@ -11,6 +11,8 @@ import hungteen.immortal.impl.*;
 import hungteen.immortal.item.ImmortalItems;
 import hungteen.immortal.menu.ImmortalMenus;
 import hungteen.immortal.network.NetworkHandler;
+import hungteen.immortal.world.LevelManager;
+import hungteen.immortal.world.biome.BiomeManager;
 import hungteen.immortal.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -89,6 +91,8 @@ public class ImmortalMod {
 //            BiomeUtil.initBiomeSet();
 //            SpawnRegister.registerEntitySpawns();
 //            PVZDimensions.register();
+            LevelManager.registerSpiritualLevels();
+            BiomeManager.registerSpiritualBiomes();
         });
 
         NetworkHandler.init();

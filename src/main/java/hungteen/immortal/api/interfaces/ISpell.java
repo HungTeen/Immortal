@@ -27,6 +27,12 @@ public interface ISpell extends IComponentEntry {
     int getStartMana();
 
     /**
+     * 施放此法术需要消耗多少灵力，中间阶段。
+     * how many spiritual energy will cost, only consider the using stage.
+     */
+    int getContinueMana();
+
+    /**
      * 此法术的持续时间。
      * Duration of this spell.
      */

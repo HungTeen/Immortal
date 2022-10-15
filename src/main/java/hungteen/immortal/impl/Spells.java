@@ -23,7 +23,6 @@ import java.util.function.Function;
 public class Spells {
 
     private static final List<ISpell> TYPES = new ArrayList<>();
-    private static final ResourceLocation SPELLS = Util.prefix("textures/gui/overlay/spells.png");
 
     public static final ISpell RELEASING = new Spell("releasing", 1, 10, 200,
             lvl -> Realms.MEDITATION_STAGE1, List.of(), List.of()
@@ -41,7 +40,7 @@ public class Spells {
             lvl -> Realms.MEDITATION_STAGE3, List.of(SpiritualRoots.WATER), List.of()
     );
 
-    public static final ISpell ITEM_PICKING = new Spell("item_picking", 2, 10, 400,
+    public static final ISpell ITEM_PICKING = new Spell("item_picking", 1, 10, 10, 400,
             lvl -> Realms.MEDITATION_STAGE5, List.of(), List.of()
     );
 
@@ -51,11 +50,15 @@ public class Spells {
                         lvl <= 4 ? Realms.MEDITATION_STAGE8 :
                                 lvl <= 6 ? Realms.MEDITATION_STAGE10 :
                                         Realms.FOUNDATION_BEGIN;
-            }, Arrays.asList(), Arrays.asList()
+            }, List.of(), List.of()
     );
 
     public static final ISpell FLY_WITH_SWORD = new Spell("fly_with_sword", 1, 50, 3600,
-            lvl -> Realms.MEDITATION_STAGE5, Arrays.asList(), Arrays.asList()
+            lvl -> Realms.MEDITATION_STAGE5, List.of(), List.of()
+    );
+
+    public static final ISpell BLOCK_PICKING = new Spell("block_picking", 1, 10, 50, 400,
+            lvl -> Realms.MEDITATION_STAGE8, List.of(), List.of()
     );
 
     public static class Spell implements ISpell {
@@ -63,6 +66,7 @@ public class Spells {
         private final String name;
         private final int maxLevel;
         private final int startMana;
+        private final int continueMana;
         private final int duration;
         private final boolean hasTutorialBook;
         private final Function<Integer, IRealm> realmFunc;
@@ -78,13 +82,18 @@ public class Spells {
         }
 
         public Spell(String name, int maxLevel, int startMana, int duration, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
-            this(name, maxLevel, startMana, duration, true, realmFunc, requireRoots, requireSpells);
+            this(name, maxLevel, startMana, 0, duration, realmFunc, requireRoots, requireSpells);
         }
 
-        public Spell(String name, int maxLevel, int startMana, int duration, boolean hasTutorialBook, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
+        public Spell(String name, int maxLevel, int startMana, int continueMana, int duration, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
+            this(name, maxLevel, startMana, continueMana, duration, true, realmFunc, requireRoots, requireSpells);
+        }
+
+        public Spell(String name, int maxLevel, int startMana, int continueMana, int duration, boolean hasTutorialBook, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
             this.name = name;
             this.maxLevel = maxLevel;
             this.startMana = startMana;
+            this.continueMana = continueMana;
             this.duration = duration;
             this.hasTutorialBook = hasTutorialBook;
             this.realmFunc = realmFunc;
@@ -102,6 +111,11 @@ public class Spells {
         @Override
         public int getStartMana() {
             return this.startMana;
+        }
+
+        @Override
+        public int getContinueMana() {
+            return continueMana;
         }
 
         @Override
@@ -146,7 +160,7 @@ public class Spells {
 
         @Override
         public Component getComponent() {
-            return new TranslatableComponent("misc." + getModID() +".spell." + getName());
+            return new TranslatableComponent("spell." + getModID() +"." + getName());
         }
 
     }

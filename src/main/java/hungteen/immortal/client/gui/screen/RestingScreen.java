@@ -9,9 +9,6 @@ import hungteen.immortal.client.ImmortalKeyBinds;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -24,12 +21,12 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-10-09 21:34
  **/
-public class SpellCircleScreen extends HTScreen {
+public class RestingScreen extends HTScreen {
 
     private static final ResourceLocation SPELL_CIRCLE = Util.prefix("textures/gui/overlay/spell_circle.png");
     private static final List<SpellSlot> slots = new ArrayList<>();
 
-    public SpellCircleScreen(){
+    public RestingScreen(){
         this.imageHeight = 128;
         this.imageWidth = 128;
     }

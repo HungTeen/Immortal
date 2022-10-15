@@ -5,6 +5,11 @@ import hungteen.immortal.api.interfaces.IEffectRune;
 import hungteen.immortal.api.interfaces.IGetterRune;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,8 +39,13 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public List<ISpell> getSpells() {
+    public Collection<ISpell> getSpells() {
         return List.of();
+    }
+
+    @Override
+    public Optional<ISpell> getSpell(String type) {
+        return Optional.empty();
     }
 
     @Override
@@ -71,5 +81,25 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     @Override
     public List<IGetterRune> getGetterRunes() {
         return List.of();
+    }
+
+    @Override
+    public int getSpiritualMana(Player player) {
+        return 0;
+    }
+
+    @Override
+    public void registerBiomeSpiritualValue(ResourceKey<Biome> biomeResourceKey, int spiritualValue) {
+
+    }
+
+    @Override
+    public void registerLevelSpiritualRatio(ResourceKey<Level> levelResourceKey, float spiritualRatio) {
+
+    }
+
+    @Override
+    public int getSpiritualValue(Level level, BlockPos pos) {
+        return 0;
     }
 }
