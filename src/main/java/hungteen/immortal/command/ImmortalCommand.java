@@ -10,15 +10,22 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.utils.PlayerUtil;
+import hungteen.immortal.world.ImmortalTeleporters;
+import hungteen.immortal.world.dimension.ImmortalDimensions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.commands.EffectCommands;
 import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.server.commands.SetBlockCommand;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EndPortalBlock;
+import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.Collection;
 
@@ -102,7 +109,29 @@ public class ImmortalCommand {
                         ));
             });
         }
+        {
+            builder.then(Commands.literal("tp")
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.literal("spiritual_land")
+                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), ImmortalDimensions.SPIRITUAL_LAND_DIMENSION))
+                            )
+                            .then(Commands.literal("overworld")
+                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), Level.OVERWORLD))
+                            )
+                    )
+            );
+        }
         dispatcher.register(builder);
+    }
+
+    private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey){
+        for (ServerPlayer player : targets) {
+            ServerLevel serverlevel = ((ServerLevel) player.level).getServer().getLevel(resourceKey);
+            if (serverlevel != null) {
+                player.changeDimension(serverlevel, ImmortalTeleporters.INSTANCE);
+            }
+        }
+        return targets.size();
     }
 
     private static int resetSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {

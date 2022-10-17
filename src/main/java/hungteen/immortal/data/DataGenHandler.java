@@ -28,7 +28,8 @@ public class DataGenHandler {
         //for model.
         ev.getGenerator().addProvider(new BlockModelGen(ev.getGenerator(), ev.getExistingFileHelper()));
         ev.getGenerator().addProvider(new ItemModelGen(ev.getGenerator(), ev.getExistingFileHelper()));
-
+        //for dimension.
+        ev.getGenerator().addProvider(new DimensionGen(ev.getGenerator()));
     }
 
 }

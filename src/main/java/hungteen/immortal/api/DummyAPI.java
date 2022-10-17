@@ -1,19 +1,15 @@
 package hungteen.immortal.api;
 
 import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.interfaces.IEffectRune;
-import hungteen.immortal.api.interfaces.IGetterRune;
-import hungteen.immortal.api.interfaces.ISpell;
-import hungteen.immortal.api.interfaces.ISpiritualRoot;
+import hungteen.immortal.api.interfaces.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @program: Immortal
@@ -59,6 +55,21 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
+    public void registerRealm(IRealm type) {
+
+    }
+
+    @Override
+    public Collection<IRealm> getRealms() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<IRealm> getRealm(String type) {
+        return Optional.empty();
+    }
+
+    @Override
     public void registerIntegerData(IRangeData<Integer> type) {
 
     }
@@ -101,5 +112,20 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     @Override
     public int getSpiritualValue(Level level, BlockPos pos) {
         return 0;
+    }
+
+    @Override
+    public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
+
+    }
+
+    @Override
+    public Map<ISpiritualRoot, Integer> getElixirValue(Item item) {
+        return Map.of();
+    }
+
+    @Override
+    public Collection<Item> getElixirIngredients() {
+        return Collections.EMPTY_LIST;
     }
 }

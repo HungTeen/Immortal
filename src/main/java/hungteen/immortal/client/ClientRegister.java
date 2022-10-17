@@ -5,6 +5,7 @@ import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
 import hungteen.immortal.block.ImmortalBlocks;
 import hungteen.immortal.block.plants.GourdGrownBlock;
+import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.client.render.entity.FlyingItemEntityRender;
@@ -55,11 +56,13 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
+        OverlayHandler.registerOverlay();
         ev.enqueueWork(() -> {
             ImmortalKeyBinds.register();
 //            PVZWoodType.register();
             registerBlockRender();
 //            registerScreen();
+
         });
     }
 

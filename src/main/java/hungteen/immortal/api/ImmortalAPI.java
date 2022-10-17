@@ -2,20 +2,19 @@ package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
 import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.interfaces.IEffectRune;
-import hungteen.immortal.api.interfaces.IGetterRune;
-import hungteen.immortal.api.interfaces.ISpell;
-import hungteen.immortal.api.interfaces.ISpiritualRoot;
+import hungteen.immortal.api.interfaces.*;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -89,6 +88,23 @@ public class ImmortalAPI {
         List<IEffectRune> getEffectRunes();
 
         /**
+         * 注册境界类型。
+         */
+        void registerRealm(IRealm type);
+
+        /**
+         * 获取境界类型。
+         * @return
+         */
+        Collection<IRealm> getRealms();
+
+        /**
+         * 获取境界。
+         */
+        Optional<IRealm> getRealm(String type);
+
+
+        /**
          * 注册玩家Int数据类型。
          */
         void registerIntegerData(IRangeData<Integer> type);
@@ -134,6 +150,21 @@ public class ImmortalAPI {
          * 获取当前位置的灵气值。
          */
         int getSpiritualValue(Level level, BlockPos pos);
+
+        /**
+         * 设置炼丹材料的灵气值。
+         */
+        void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map);
+
+        /**
+         * 获取炼丹材料的灵气值。
+         */
+        Map<ISpiritualRoot, Integer> getElixirValue(Item item);
+
+        /**
+         * 获取所有炼丹材料。
+         */
+        Collection<Item> getElixirIngredients();
 
     }
 

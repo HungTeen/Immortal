@@ -98,6 +98,13 @@ public class PlayerEventHandler {
         SpellManager.checkSpellAction(player, result);
     }
 
+    /**
+     * Ray Trace whenever player right click (Server Side Only!).
+     * {@link ImmortalPlayerEvents#onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific)}
+     * {@link ImmortalPlayerEvents#onPlayerRightClickItem(PlayerInteractEvent.RightClickItem)}
+     * {@link ImmortalPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
+     * {@link ImmortalPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
+     */
     public static void rayTrace(Player player) {
         final HitResult hitResult = getHitResult(player);
         switch (hitResult.getType()){
@@ -111,7 +118,7 @@ public class PlayerEventHandler {
     }
 
     public static HitResult getHitResult(Player player) {
-        final double range = 20;
+        final double range = 20; //TODO 神识决定距离。
         final Vec3 startVec = player.getEyePosition(1.0F);
         final Vec3 lookVec = player.getViewVector(1.0F);
         Vec3 endVec = startVec.add(lookVec.scale(range));

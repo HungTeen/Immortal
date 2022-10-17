@@ -1,19 +1,29 @@
 package hungteen.immortal;
 
+import com.ibm.icu.util.ChineseCalendar;
+import hungteen.htlib.ClientProxy;
+import hungteen.htlib.HTLib;
 import hungteen.htlib.util.EffectUtil;
 import hungteen.htlib.util.ParticleUtil;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.interfaces.ISpell;
+import hungteen.immortal.entity.SpiritualFlame;
+import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Spells;
 import hungteen.immortal.network.SpellPacket;
 import hungteen.immortal.utils.PlayerUtil;
+import hungteen.immortal.utils.Util;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +51,7 @@ public class SpellManager {
      */
     public static void checkActivateSpell(Player player){
         final ISpell spell = PlayerUtil.getSelectedSpell(player);
-        if(! player.level.isClientSide && spell != null){
+        if(spell != null){
             final int level = PlayerUtil.getSpellLearnLevel(player, spell);
             if(PlayerUtil.isSpellActivated(player, spell)){
                 return;
@@ -49,19 +59,29 @@ public class SpellManager {
             if(! canSpellStart(player, spell)){
                 return;
             }
-            if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent(player, spell, level))){
-                PlayerUtil.activateSpell(player, spell, getSpellActivateTime(player, spell));
-                //TODO cost mana.
+            if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
+                if(! player.level.isClientSide){
+                    PlayerUtil.activateSpell(player, spell, getSpellActivateTime(player, spell));
+                }
+                costMana(player, spell.getStartMana());
+                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level));
             }
         }
     }
 
     /**
+     * {@link hungteen.immortal.event.ImmortalPlayerEvents#onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post)}
      */
     public static void checkSpellAction(Player player, ISpell spell, int level) {
         /* 水之呼吸 */
         if (spell == Spells.WATER_BREATHING) {
-            player.addEffect(EffectUtil.viewEffect(MobEffects.WATER_BREATHING, Spells.WATER_BREATHING.getDuration(), 1));
+            if (!player.level.isClientSide) {
+                player.addEffect(EffectUtil.viewEffect(MobEffects.WATER_BREATHING, Spells.WATER_BREATHING.getDuration(), 1));
+            }
+        }
+        /* 调息术 */
+        if (spell == Spells.RESTING){
+            Util.getProxy().openRestingScreen();
         }
     }
 
@@ -69,8 +89,8 @@ public class SpellManager {
      * {@link hungteen.immortal.event.handler.PlayerEventHandler#onTraceEntity(Player, EntityHitResult)}
      */
     public static void checkSpellAction(Player player, EntityHitResult result) {
-        /* 隔空取物，空手获取远处的物品 */
         if(player.getMainHandItem().isEmpty()){
+            /* 隔空取物，空手获取远处的物品 */
             if(result.getEntity() instanceof ItemEntity) {
                 checkContinueSpell(player, Spells.ITEM_PICKING, () -> {
                     player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
@@ -78,6 +98,7 @@ public class SpellManager {
                 });
             } else {
                 checkContinueSpell(player, Spells.IGNITE, () -> {
+                    ParticleUtil.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
                     result.getEntity().setSecondsOnFire(5);
                 });
             }
@@ -114,7 +135,7 @@ public class SpellManager {
             final int level = PlayerUtil.getSpellLearnLevel(player, spell);
             if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.UsingSpellEvent(player, spell, level))){
                 runnable.run();
-                //TODO Cost Mana.
+                costMana(player, spell.getContinueMana());
             }
         }
     }
@@ -123,12 +144,16 @@ public class SpellManager {
         return player.level.getGameTime() + spell.getDuration();
     }
 
-    public static boolean canSpellStart(Player player, ISpell spell){;
+    public static boolean canSpellStart(Player player, ISpell spell){
         return ImmortalAPI.get().getSpiritualMana(player) >= spell.getStartMana();
     }
 
-    public static boolean canSpellContinue(Player player, ISpell spell){;
+    public static boolean canSpellContinue(Player player, ISpell spell){
         return ImmortalAPI.get().getSpiritualMana(player) >= spell.getContinueMana();
+    }
+
+    public static void costMana(Player player, int cost){
+        PlayerUtil.addIntegerData(player, PlayerDatas.SPIRITUAL_MANA, - cost);
     }
 
     public static Component getCostComponent(int cost){

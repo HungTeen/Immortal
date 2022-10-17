@@ -14,6 +14,7 @@ import org.checkerframework.checker.units.qual.K;
 public class ImmortalKeyBinds {
 
     public static final KeyMapping SPELL_CIRCLE = new KeyMapping("key.immortal.spell_circle", InputConstants.KEY_Z, "key.categories.immortal");
+    public static final KeyMapping CULTIVATION_MENU = new KeyMapping("key.immortal.cultivation_menu", InputConstants.KEY_B, "key.categories.immortal");
 
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}

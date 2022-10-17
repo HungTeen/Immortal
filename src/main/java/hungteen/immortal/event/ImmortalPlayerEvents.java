@@ -71,10 +71,8 @@ public class ImmortalPlayerEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            SpellManager.checkSpellAction(ev.getPlayer(), ev.getSpell(), ev.getLevel());
-        }
+    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post ev) {
+        SpellManager.checkSpellAction(ev.getPlayer(), ev.getSpell(), ev.getLevel());
     }
 
     @SubscribeEvent

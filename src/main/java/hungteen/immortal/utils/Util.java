@@ -1,6 +1,7 @@
 package hungteen.immortal.utils;
 
 import com.mojang.logging.LogUtils;
+import hungteen.immortal.CommonProxy;
 import hungteen.immortal.ImmortalMod;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -40,12 +41,24 @@ public class Util {
         return new ResourceLocation(id(), name);
     }
 
+    public static CommonProxy getProxy(){
+        return ImmortalMod.PROXY;
+    }
+
+    public static void error(String message, Object... arguments){
+        LOGGER.error(message, arguments);
+    }
+
     public static void debug(String message, Object... arguments){
         LOGGER.debug(message, arguments);
     }
 
     public static void warn(String message, Object... arguments){
         LOGGER.warn(message, arguments);
+    }
+
+    public static void info(String message, Object... arguments){
+        LOGGER.info(message, arguments);
     }
 
 }

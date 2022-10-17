@@ -31,13 +31,34 @@ public class PlayerSpellEvent extends PlayerEvent {
 
     /**
      * trigger when spell is activated.
-     * Server Side Only.
      */
-    @Cancelable
-    public static final class ActivateSpellEvent extends PlayerSpellEvent {
+    public static class ActivateSpellEvent extends PlayerSpellEvent {
 
         public ActivateSpellEvent(Player player, ISpell spell, int level) {
             super(player, spell, level);
+        }
+
+        /**
+         * check can trigger or not.
+         */
+        @Cancelable
+        public static final class Pre extends ActivateSpellEvent {
+
+            public Pre(Player player, ISpell spell, int level) {
+                super(player, spell, level);
+            }
+
+        }
+
+        /**
+         * triggered already.
+         */
+        public static final class Post extends ActivateSpellEvent {
+
+            public Post(Player player, ISpell spell, int level) {
+                super(player, spell, level);
+            }
+
         }
     }
 

@@ -2,10 +2,7 @@ package hungteen.immortal.impl;
 
 import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IEffectRune;
-import hungteen.immortal.api.interfaces.IGetterRune;
-import hungteen.immortal.api.interfaces.ISpell;
-import hungteen.immortal.api.interfaces.ISpiritualRoot;
+import hungteen.immortal.api.interfaces.*;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
@@ -13,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -26,13 +24,14 @@ import java.util.*;
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     private static final List<ISpiritualRoot> SPIRITUAL_ROOTS = new ArrayList<>();
-    private static final HashMap<String, ISpell> SPELL_MAP = new HashMap<>();
+    private static final Map<String, ISpell> SPELL_MAP = new HashMap<>();
     private static final List<IEffectRune> EFFECT_RUNES = new ArrayList<>();
     private static final List<IGetterRune> GETTER_RUNES = new ArrayList<>();
-    private static final HashMap<String, IRangeData<Integer>> INTEGER_MAP = new HashMap<>();
-    private static final HashMap<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
-    private static final HashMap<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
-
+    private static final Map<String, IRangeData<Integer>> INTEGER_MAP = new HashMap<>();
+    private static final Map<String, IRealm> REALM_MAP = new HashMap<>();
+    private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
+    private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
+    private static final Map<Item, Map<ISpiritualRoot, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
 
     @Override
     public void registerSpiritualRoot(ISpiritualRoot type) {
@@ -79,6 +78,21 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     @Override
     public List<IEffectRune> getEffectRunes() {
         return Collections.unmodifiableList(EFFECT_RUNES);
+    }
+
+    @Override
+    public void registerRealm(IRealm type) {
+        REALM_MAP.put(type.getRegistryName(), type);
+    }
+
+    @Override
+    public Collection<IRealm> getRealms() {
+        return Collections.unmodifiableCollection(REALM_MAP.values());
+    }
+
+    @Override
+    public Optional<IRealm> getRealm(String type) {
+        return Optional.ofNullable(REALM_MAP.getOrDefault(type, null));
     }
 
     @Override
@@ -138,6 +152,21 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
             return Mth.floor(value * ratio);
         }
         return 0;
+    }
+
+    @Override
+    public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
+        ELIXIR_INGREDIENT_MAP.put(item, map);
+    }
+
+    @Override
+    public Map<ISpiritualRoot, Integer> getElixirValue(Item item) {
+        return ELIXIR_INGREDIENT_MAP.getOrDefault(item, Map.of());
+    }
+
+    @Override
+    public Collection<Item> getElixirIngredients() {
+        return Collections.unmodifiableCollection(ELIXIR_INGREDIENT_MAP.keySet());
     }
 
 }

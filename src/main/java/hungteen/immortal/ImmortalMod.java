@@ -13,6 +13,7 @@ import hungteen.immortal.menu.ImmortalMenus;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.world.LevelManager;
 import hungteen.immortal.world.biome.BiomeManager;
+import hungteen.immortal.world.dimension.ImmortalDimensions;
 import hungteen.immortal.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -20,8 +21,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -34,6 +38,8 @@ public class ImmortalMod {
 
     // Mod ID.
     public static final String MOD_ID = "immortal";
+    // Proxy of Server and Client.
+    public static CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public ImmortalMod() {
         //get mod event bus.
@@ -67,6 +73,7 @@ public class ImmortalMod {
         ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
+        ImmortalDimensions.register();
     }
 
     /**
@@ -78,6 +85,7 @@ public class ImmortalMod {
         EffectRunes.EffectRune.register();
         GetterRunes.GetterRune.register();
         PlayerDatas.PlayerData.register();
+        Realms.Realm.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
@@ -93,6 +101,7 @@ public class ImmortalMod {
 //            PVZDimensions.register();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
+            ElixirManager.registerElixirIngredients();
         });
 
         NetworkHandler.init();

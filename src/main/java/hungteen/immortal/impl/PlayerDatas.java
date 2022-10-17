@@ -23,6 +23,7 @@ public class PlayerDatas {
 
     public static final IRangeData<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);
     public static final IRangeData<Integer> SPIRITUAL_MANA = new PlayerData("spiritual_mana", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeData<Integer> MAX_SPIRITUAL_MANA = new PlayerData("max_spiritual_mana", 0, 0, Integer.MAX_VALUE);
     public static final IRangeData<Integer> CONSCIOUSNESS = new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE);
     public static final IRangeData<Integer> OPPORTUNITY = new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE);
     public static final IRangeData<Integer> PERSONALITY = new PlayerData("personality", 0, 0, Integer.MAX_VALUE);

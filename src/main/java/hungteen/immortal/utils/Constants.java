@@ -19,4 +19,6 @@ public class Constants {
     public static final int DEFAULT_BIOME_SPIRITUAL_VALUE = 10;
     public static final float DEFAULT_LEVEL_SPIRITUAL_RATIO = 0.25F;
 
+    public static final int SPELL_CONTINUE_CD = 10;
+
 }

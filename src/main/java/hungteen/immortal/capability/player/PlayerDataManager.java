@@ -5,11 +5,13 @@ import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.interfaces.ICultivationType;
+import hungteen.immortal.api.interfaces.IRealm;
 import hungteen.immortal.api.interfaces.ISpell;
 import hungteen.immortal.api.interfaces.ISpiritualRoot;
 import hungteen.immortal.event.handler.PlayerEventHandler;
 import hungteen.immortal.impl.CultivationTypes;
 import hungteen.immortal.impl.PlayerDatas;
+import hungteen.immortal.impl.Realms;
 import hungteen.immortal.network.IntegerDataPacket;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.network.SpellPacket;
@@ -41,6 +43,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private int selectedSpellPosition = 0;
     /* Cultivation */
     private ICultivationType cultivationType = CultivationTypes.MORTAL;
+    private IRealm realm = Realms.MORTALITY;
     private final HashMap<IRangeData<Integer>, Integer> integerMap = new HashMap<>();
 
     public PlayerDataManager(Player player){
@@ -55,8 +58,19 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void tick(){
         if(! player.level.isClientSide){
             if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
-                final int value = ImmortalAPI.get().getSpiritualValue(player.level, player.blockPosition());
-                PlayerUtil.addIntegerData(player, PlayerDatas.SPIRITUAL_MANA, value);
+                final int value = getIntegerData(PlayerDatas.SPIRITUAL_MANA);
+                // can natural increasing.
+                if(value < getFullManaValue()){
+                    final int incValue = ImmortalAPI.get().getSpiritualValue(player.level, player.blockPosition());
+                    PlayerUtil.addIntegerData(player, PlayerDatas.SPIRITUAL_MANA, incValue);
+                } else{
+                    if(value > getLimitManaValue()){
+                        // TODO 爆体而亡 ？
+                    } else {
+                        final int dif = getFullManaValue() - value;
+                        PlayerUtil.addIntegerData(player, PlayerDatas.SPIRITUAL_MANA, - Math.max(1, dif / 10));
+                    }
+                }
             }
         }
     }
@@ -101,6 +115,11 @@ public class PlayerDataManager implements IPlayerDataManager {
                 nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
             });
             tag.put("PlayerRangeData", nbt);
+        }
+        {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putString("PlayerRealm", realm.getRegistryName());
+            tag.put("Misc", nbt);
         }
         return tag;
     }
@@ -150,6 +169,12 @@ public class PlayerDataManager implements IPlayerDataManager {
                     integerMap.put(data, nbt.getInt(data.getRegistryName()));
                 }
             });
+        }
+        {
+            CompoundTag nbt = tag.getCompound("Misc");
+            if(nbt.contains("PlayerRealm")){
+                realm = ImmortalAPI.get().getRealm(nbt.getString("PlayerRealm")).orElse(Realms.MORTALITY);
+            }
         }
     }
 
@@ -315,19 +340,39 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setIntegerData(IRangeData<Integer> rangeData, int value){
-        integerMap.put(rangeData, value);
-        sendIntegerDataPacket(rangeData, value);
+        final int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        integerMap.put(rangeData, result);
+        sendIntegerDataPacket(rangeData, result);
     }
 
     public void addIntegerData(IRangeData<Integer> rangeData, int value){
-        final int result = Mth.clamp(getIntegerData(rangeData) + value, rangeData.getMinData(), rangeData.getMaxData());
-        setIntegerData(rangeData, result);
+        setIntegerData(rangeData, getIntegerData(rangeData) + value);
+    }
+
+    /**
+     * natural increasing point.
+     */
+    public int getFullManaValue(){
+        return Mth.clamp(getIntegerData(PlayerDatas.MAX_SPIRITUAL_MANA) + getRealm().getBaseSpiritualValue(), 0, getIntegerData(PlayerDatas.CULTIVATION) + 10);
+    }
+
+    /**
+     * explode if player has more mana than it.
+     */
+    public int getLimitManaValue(){
+        return getIntegerData(PlayerDatas.CULTIVATION) + 50;
     }
 
     public void sendIntegerDataPacket(IRangeData<Integer> rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
         }
+    }
+
+    /* Misc methods */
+
+    public IRealm getRealm(){
+        return realm;
     }
 
     @Override

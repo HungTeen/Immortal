@@ -8,5 +8,8 @@ package hungteen.immortal.client;
 public class ClientDatas {
 
     public static boolean ShowSpellCircle = false;
+    public static int SpiritualManaBarTick = 0; //TODO 更多显示灵力的条件。
 
+//    public static int LeftClickTick = 0;
+//    public static int RightClickTick = 0;
 }

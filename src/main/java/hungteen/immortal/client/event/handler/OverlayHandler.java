@@ -9,7 +9,9 @@ import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.MathUtil;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.SpellManager;
+import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.ISpell;
+import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.event.OverlayEvents;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
@@ -17,6 +19,9 @@ import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +42,24 @@ public class OverlayHandler {
 
     static {
         SpellSlots.clear();
-        for(int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++ i) {
+        for (int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++i) {
             final double alpha = 2 * Mth.PI / 8 * i;
-            final int x = (int) (Math.sin(alpha) * CIRCLE_RADIUS)  - SPELL_SLOT_LEN / 2 + 1;
+            final int x = (int) (Math.sin(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
             final int y = (int) (-Math.cos(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
             SpellSlots.add(Pair.of(x, y));
         }
+    }
+
+    /**
+     * {@link hungteen.immortal.client.ClientRegister#setUpClient(FMLClientSetupEvent)}
+     */
+    public static void registerOverlay() {
+        OverlayRegistry.registerOverlayTop("Spiritual Mana Bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            if (!ClientProxy.MC.options.hideGui && canRenderManaBar()) {
+                gui.setupOverlayRenderState(true, false);
+                renderSpiritualMana(poseStack, screenHeight, screenWidth);
+            }
+        });
     }
 
     /**
@@ -59,7 +76,7 @@ public class OverlayHandler {
         // Render Mid Selected White Circle.
         ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (selectPos % 4) * INNER_LEN, selectPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
         // Render Spell Slots.
-        for(int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++ i){
+        for (int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++i) {
             final boolean isSelected = i == selectPos;
             // Render the empty spell slot.
             RenderUtil.setTexture(SPELL_CIRCLE);
@@ -74,23 +91,55 @@ public class OverlayHandler {
 
                 // Render CD.
                 final double progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
-                if(progress > 0){
+                if (progress > 0) {
                     RenderUtil.setTexture(SPELL_CIRCLE);
                     RenderSystem.enableBlend();
                     final int CDBarLen = Mth.clamp((int) (progress * SPELL_SLOT_LEN), 1, SPELL_SLOT_LEN);
                     ClientProxy.MC.gui.blit(stack, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
                 }
 
-                if(isSelected){
+                if (isSelected) {
                     String text = spell.getComponent().getString() + " - " + SpellManager.getCostComponent(spell.getStartMana()).getString();
-                    if(progress > 0){
+                    if (progress > 0) {
                         text = text + " - " + SpellManager.getCDComponent((int) (spell.getDuration() * progress)).getString();
                     }
-                    RenderUtil.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1  , ColorUtil.WHITE, 1F);
+                    RenderUtil.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, ColorUtil.WHITE, 1F);
                 }
             }
         }
         stack.popPose();
+    }
+
+    public static boolean canRenderManaBar() {
+        return ClientProxy.MC.player != null && (ClientProxy.MC.player.level.getGameTime() < ClientDatas.SpiritualManaBarTick || ClientDatas.ShowSpellCircle);
+    }
+
+    protected static void renderSpiritualMana(PoseStack poseStack, int screenHeight, int screenWidth) {
+        ClientProxy.MC.getProfiler().push("spiritualManaBar");
+        RenderUtil.setTexture(SPELL_CIRCLE);
+//        final int x = screenWidth / 2 - 91;
+//        int i = ClientProxy.MC.player.getXpNeededForNextLevel();
+//        if (i > 0) {
+//            int j = 182;
+//            int k = (int)(ClientProxy.MC.player.experienceProgress * 183.0F);
+//            int l = screenHeight - 32 + 3;
+//            ClientProxy.MC.gui.blit(poseStack, x, l, 0, 64, 182, 5);
+//            if (k > 0) {
+//                ClientProxy.MC.gui.blit(poseStack, x, l, 0, 69, k, 5);
+//            }
+//        }
+
+        ClientProxy.MC.getProfiler().pop();
+        ClientProxy.MC.getProfiler().push("spiritualValue");
+        String s = ImmortalAPI.get().getSpiritualMana(ClientProxy.MC.player) + "";
+        int i1 = (screenWidth - ClientProxy.MC.font.width(s)) / 2;
+        int j1 = screenHeight - 31 - 4;
+        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 + 1), (float) j1, 0);
+        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 - 1), (float) j1, 0);
+        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 + 1), 0);
+        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 - 1), 0);
+        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) j1, 8453920);
+        ClientProxy.MC.getProfiler().pop();
     }
 
 }

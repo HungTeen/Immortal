@@ -80,15 +80,16 @@ public class FlameGourd extends ArtifactItem {
             addFlameAmount(stack, flame.getFlameLevel(), speed);
         } else{
             final int num = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) / 2 + 1;
-            final double distance = livingEntity.distanceTo(flame);
-            final int particleNum = Mth.ceil(distance);
-            for(int i = 0; i < particleNum; ++ i){
-                for(int j = 0; j < num; ++ j){
-                    final Vec3 pos = flame.getFlameCenter().add(livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(Math.max(1, distance - 2) / particleNum * (i + 1))).add(MathUtil.getRandomVec3(livingEntity.getRandom(), 0.1 * num));
-                    final Vec3 speed = livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(0.1);
-                    ParticleUtil.spawnParticles(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), pos, speed.x, speed.y, speed.z);
-                }
-            }
+            ParticleUtil.spawnLineMovingParticle(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
+//            final double distance = livingEntity.distanceTo(flame);
+//            final int particleNum = Mth.ceil(distance);
+//            for(int i = 0; i < particleNum; ++ i){
+//                for(int j = 0; j < num; ++ j){
+//                    final Vec3 pos = flame.getFlameCenter().add(livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(Math.max(1, distance - 2) / particleNum * (i + 1))).add(MathUtil.getRandomVec3(livingEntity.getRandom(), 0.1 * num));
+//                    final Vec3 speed = livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(0.1);
+//                    ParticleUtil.spawnParticles(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), pos, speed.x, speed.y, speed.z);
+//                }
+//            }
         }
     }
 
