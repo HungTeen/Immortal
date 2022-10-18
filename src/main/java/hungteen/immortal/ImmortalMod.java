@@ -13,6 +13,7 @@ import hungteen.immortal.menu.ImmortalMenus;
 import hungteen.immortal.network.NetworkHandler;
 import hungteen.immortal.world.LevelManager;
 import hungteen.immortal.world.biome.BiomeManager;
+import hungteen.immortal.world.biome.ImmortalBiomes;
 import hungteen.immortal.world.dimension.ImmortalDimensions;
 import hungteen.immortal.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
@@ -74,6 +75,7 @@ public class ImmortalMod {
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
         ImmortalDimensions.register();
+        ImmortalBiomes.register();
     }
 
     /**

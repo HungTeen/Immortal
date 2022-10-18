@@ -52,6 +52,10 @@ public abstract class CodecGen implements DataProvider {
 
     }
 
+    protected  <T> void registerCap(HashCache cache, RegistryAccess.RegistryData<T> data) {
+        register(cache, data.key(), access().ownedRegistryOrThrow(data.key()), data.codec());
+    }
+
     protected <E, T extends Registry<E>> void register(HashCache cache, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
         registry.entrySet().forEach(entry -> {
             final ResourceLocation location = entry.getKey().location();

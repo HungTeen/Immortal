@@ -20,7 +20,7 @@ public class ImmortalTeleporters {
         @Nullable
         @Override
         public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-            return new PortalInfo(Vec3.ZERO, Vec3.ZERO, 0, 0);
+            return new PortalInfo(Vec3.ZERO.add(0, 255, 0), Vec3.ZERO, 0, 0);
         }
     };
 }
