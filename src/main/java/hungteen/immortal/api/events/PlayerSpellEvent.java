@@ -1,6 +1,6 @@
 package hungteen.immortal.api.events;
 
-import hungteen.immortal.api.interfaces.ISpell;
+import hungteen.immortal.api.registry.ISpell;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;

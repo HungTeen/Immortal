@@ -1,7 +1,6 @@
 package hungteen.immortal.client.gui.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.immortal.menu.ImmortalMenus;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;

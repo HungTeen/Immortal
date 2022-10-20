@@ -2,10 +2,11 @@ package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
 import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.interfaces.*;
+import hungteen.immortal.api.registry.*;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -103,6 +104,10 @@ public class ImmortalAPI {
          */
         Optional<IRealm> getRealm(String type);
 
+        /**
+         * 获取生物的境界。
+         */
+        IRealm getEntityRealm(Entity entity);
 
         /**
          * 注册玩家Int数据类型。

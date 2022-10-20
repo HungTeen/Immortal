@@ -1,9 +1,11 @@
 package hungteen.immortal.api;
 
 import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.interfaces.*;
+import hungteen.immortal.api.registry.*;
+import hungteen.immortal.impl.Realms;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -67,6 +69,11 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     @Override
     public Optional<IRealm> getRealm(String type) {
         return Optional.empty();
+    }
+
+    @Override
+    public IRealm getEntityRealm(Entity entity) {
+        return Realms.MORTALITY;
     }
 
     @Override

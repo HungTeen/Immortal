@@ -2,9 +2,9 @@ package hungteen.immortal.data;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.data.HTBlockStateGen;
-import hungteen.immortal.block.ImmortalBlocks;
-import hungteen.immortal.block.plants.GourdGrownBlock;
-import hungteen.immortal.block.plants.GourdStemBlock;
+import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.block.plants.GourdGrownBlock;
+import hungteen.immortal.common.block.plants.GourdStemBlock;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;

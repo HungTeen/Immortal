@@ -2,13 +2,16 @@ package hungteen.immortal.impl;
 
 import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.*;
+import hungteen.immortal.api.interfaces.IHasRealm;
+import hungteen.immortal.api.registry.*;
+import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -93,6 +96,14 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     @Override
     public Optional<IRealm> getRealm(String type) {
         return Optional.ofNullable(REALM_MAP.getOrDefault(type, null));
+    }
+
+    @Override
+    public IRealm getEntityRealm(Entity entity) {
+        if(entity instanceof Player){
+            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealm, Realms.MORTALITY);
+        }
+        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : Realms.MORTALITY;
     }
 
     @Override

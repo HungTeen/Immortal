@@ -1,10 +1,9 @@
 package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
-import hungteen.immortal.data.codec.CodecGen;
 import hungteen.immortal.utils.Util;
-import hungteen.immortal.world.dimension.ImmortalDimensions;
-import hungteen.immortal.world.dimension.SpiritualLandDimension;
+import hungteen.immortal.common.world.dimension.ImmortalDimensions;
+import hungteen.immortal.common.world.dimension.SpiritualLandDimension;
 import net.minecraft.core.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;

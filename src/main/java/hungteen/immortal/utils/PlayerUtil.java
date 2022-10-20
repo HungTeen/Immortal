@@ -4,22 +4,19 @@ import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.events.PlayerSpellEvent;
-import hungteen.immortal.api.interfaces.ISpell;
-import hungteen.immortal.api.interfaces.ISpiritualRoot;
-import hungteen.immortal.capability.CapabilityHandler;
-import hungteen.immortal.capability.player.PlayerCapability;
-import hungteen.immortal.capability.player.PlayerDataManager;
-import net.minecraft.commands.CommandSourceStack;
+import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.common.capability.CapabilityHandler;
+import hungteen.immortal.common.capability.player.PlayerCapability;
+import hungteen.immortal.common.capability.player.PlayerDataManager;
+import hungteen.immortal.common.command.ImmortalCommand;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -56,7 +53,6 @@ public class PlayerUtil {
      */
     private static void randomSpawnRoots(Player player, int rootCount){
         final List<ISpiritualRoot> rootChosen = new ArrayList<>();
-        System.out.println(rootCount);
         if(rootCount == 1){
             final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots(), ISpiritualRoot::getWeight);
             rootChosen.addAll(weightList.getRandomItems(player.getRandom(), 1, true));
@@ -67,7 +63,6 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> {
             l.clearSpiritualRoot();
             rootChosen.forEach(r -> {
-                System.out.println(r.getName());
                 l.addSpiritualRoot(r);
             });
         });
@@ -125,7 +120,7 @@ public class PlayerUtil {
 
     /**
      * Not only used by S -> C sync.
-     * Also use by {@link hungteen.immortal.command.ImmortalCommand} for ignore checking.
+     * Also use by {@link ImmortalCommand} for ignore checking.
      */
     public static void activateSpell(Player player, ISpell spell, long num){
         getOptManager(player).ifPresent(l -> {

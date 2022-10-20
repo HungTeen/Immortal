@@ -1,21 +1,22 @@
 package hungteen.immortal;
 
-import hungteen.immortal.block.ImmortalBlocks;
-import hungteen.immortal.blockentity.ImmortalBlockEntities;
-import hungteen.immortal.capability.CapabilityHandler;
+import hungteen.immortal.common.ElixirManager;
+import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
+import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.client.particle.ImmortalParticles;
-import hungteen.immortal.command.CommandHandler;
+import hungteen.immortal.common.command.CommandHandler;
 import hungteen.immortal.data.DataGenHandler;
-import hungteen.immortal.entity.ImmortalEntities;
+import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.impl.*;
-import hungteen.immortal.item.ImmortalItems;
-import hungteen.immortal.menu.ImmortalMenus;
-import hungteen.immortal.network.NetworkHandler;
-import hungteen.immortal.world.LevelManager;
-import hungteen.immortal.world.biome.BiomeManager;
-import hungteen.immortal.world.biome.ImmortalBiomes;
-import hungteen.immortal.world.dimension.ImmortalDimensions;
-import hungteen.immortal.world.structure.ImmortalStructures;
+import hungteen.immortal.common.item.ImmortalItems;
+import hungteen.immortal.common.menu.ImmortalMenus;
+import hungteen.immortal.common.network.NetworkHandler;
+import hungteen.immortal.common.world.LevelManager;
+import hungteen.immortal.common.world.biome.BiomeManager;
+import hungteen.immortal.common.world.biome.ImmortalBiomes;
+import hungteen.immortal.common.world.dimension.ImmortalDimensions;
+import hungteen.immortal.common.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -24,9 +25,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -51,6 +50,7 @@ public class ImmortalMod {
         modBus.addGenericListener(Block.class, ImmortalBlocks::registerBlocks);
         modBus.addGenericListener(Item.class, ImmortalBlocks::registerBlockItems);
         modBus.addGenericListener(Item.class, ImmortalItems::registerItems);
+        modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
 
         //get forge event bus.
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;

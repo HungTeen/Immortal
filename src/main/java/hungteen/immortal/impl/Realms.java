@@ -2,14 +2,17 @@ package hungteen.immortal.impl;
 
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IRealm;
+import hungteen.immortal.api.interfaces.IHasRealm;
+import hungteen.immortal.api.registry.IRealm;
+import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -84,6 +87,9 @@ public class Realms {
 //
 //    public static final IRealm MONSTER_STAGE10 = new Realm("monster_stage10", 600, 38);
 
+    /* 亡灵 */
+    public static final IRealm UNDEAD_LEVEL1 = new Realm("undead_level1", 80, 4, 25, false);
+    public static final IRealm UNDEAD_LEVEL2 = new Realm("undead_level2", 200, 8, 50, false);
 
     public static class Realm implements IRealm {
 
@@ -102,7 +108,11 @@ public class Realms {
         }
 
         public Realm(String name, int cultivation, int realm, int spiritualValue){
-            this(name, cultivation, realm, spiritualValue, false, true);
+            this(name, cultivation, realm, spiritualValue, true);
+        }
+
+        public Realm(String name, int cultivation, int realm, int spiritualValue, boolean forHuman){
+            this(name, cultivation, realm, spiritualValue, false, forHuman);
         }
 
         public Realm(String name, int cultivation, int realm, int spiritualValue, boolean hasThreshold, boolean forHuman) {

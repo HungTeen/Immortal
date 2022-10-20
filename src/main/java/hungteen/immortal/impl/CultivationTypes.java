@@ -1,6 +1,6 @@
 package hungteen.immortal.impl;
 
-import hungteen.immortal.api.interfaces.ICultivationType;
+import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;

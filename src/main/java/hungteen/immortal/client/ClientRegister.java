@@ -1,18 +1,21 @@
 package hungteen.immortal.client;
 
-import hungteen.htlib.client.particle.HTTextureParticle;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
-import hungteen.immortal.block.ImmortalBlocks;
-import hungteen.immortal.block.plants.GourdGrownBlock;
+import hungteen.immortal.client.model.ModelLayers;
+import hungteen.immortal.client.model.entity.GrassCarpModel;
+import hungteen.immortal.client.model.entity.SpiritualZombieModel;
+import hungteen.immortal.client.render.entity.GrassCarpRender;
+import hungteen.immortal.client.render.entity.SpiritualZombieRender;
+import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.client.render.entity.FlyingItemEntityRender;
-import hungteen.immortal.entity.FlyingItemEntity;
-import hungteen.immortal.entity.ImmortalEntities;
+import hungteen.immortal.common.entity.ImmortalEntities;
+import hungteen.immortal.common.entity.undead.SpiritualZombie;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -39,12 +42,29 @@ public class ClientRegister {
         /* misc entity */
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
+
+        /* creature */
+        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
+
+        /* undead */
+        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
     }
 
+    /**
+     * {@link LayerDefinitions}
+     */
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         LayerDefinition INNER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+
+        /* creature */
+        event.registerLayerDefinition(ModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
+
+        /* zombie entity */
+        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
     }
 
     @SubscribeEvent

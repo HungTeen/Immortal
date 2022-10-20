@@ -1,13 +1,11 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
-import hungteen.immortal.item.ImmortalItems;
+import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 

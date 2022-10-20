@@ -2,16 +2,15 @@ package hungteen.immortal.impl;
 
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IRealm;
-import hungteen.immortal.api.interfaces.ISpell;
-import hungteen.immortal.api.interfaces.ISpiritualRoot;
+import hungteen.immortal.api.registry.IRealm;
+import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 

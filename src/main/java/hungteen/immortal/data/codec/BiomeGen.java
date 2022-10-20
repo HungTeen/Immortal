@@ -2,7 +2,7 @@ package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
 import hungteen.immortal.utils.Util;
-import hungteen.immortal.world.biome.ImmortalBiomes;
+import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;

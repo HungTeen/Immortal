@@ -3,8 +3,6 @@ package hungteen.immortal.impl;
 import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IEffectRune;
-import hungteen.immortal.api.interfaces.IRealm;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;

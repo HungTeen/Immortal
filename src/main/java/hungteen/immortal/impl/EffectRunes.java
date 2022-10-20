@@ -2,7 +2,7 @@ package hungteen.immortal.impl;
 
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IEffectRune;
+import hungteen.immortal.api.registry.IEffectRune;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
