@@ -2,7 +2,7 @@ package hungteen.immortal.client.render.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.immortal.client.model.entity.GrassCarpModel;
-import hungteen.immortal.common.entity.pet.GrassCarp;
+import hungteen.immortal.common.entity.creature.GrassCarp;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;

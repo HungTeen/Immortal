@@ -1,8 +1,9 @@
 package hungteen.immortal.common.entity;
 
+import hungteen.immortal.common.entity.creature.SilkWorm;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
-import hungteen.immortal.common.entity.pet.GrassCarp;
+import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.undead.SpiritualZombie;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.Entity;
@@ -28,6 +29,7 @@ public class ImmortalEntities {
 
     /* Creature */
     public static final RegistryObject<EntityType<GrassCarp>> GRASS_CARP = registerEntityType(GrassCarp::new, "grass_carp", MobCategory.WATER_CREATURE);
+    public static final RegistryObject<EntityType<SilkWorm>> SILK_WORM = registerEntityType(SilkWorm::new, "silk_worm", MobCategory.CREATURE);
 
     /* Undead */
     public static final RegistryObject<EntityType<SpiritualZombie>> SPIRITUAL_ZOMBIE = registerEntityType(SpiritualZombie::new, "spiritual_zombie", MobCategory.MONSTER);
@@ -36,6 +38,7 @@ public class ImmortalEntities {
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* creature */
         ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
+        ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());
 
         /* undead */
         ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());

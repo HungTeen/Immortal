@@ -4,8 +4,10 @@ import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.GrassCarpModel;
+import hungteen.immortal.client.model.entity.SilkWormModel;
 import hungteen.immortal.client.model.entity.SpiritualZombieModel;
 import hungteen.immortal.client.render.entity.GrassCarpRender;
+import hungteen.immortal.client.render.entity.SilkWormRender;
 import hungteen.immortal.client.render.entity.SpiritualZombieRender;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
@@ -45,6 +47,7 @@ public class ClientRegister {
 
         /* creature */
         event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
+        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
 
         /* undead */
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
@@ -60,6 +63,7 @@ public class ClientRegister {
 
         /* creature */
         event.registerLayerDefinition(ModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
 
         /* zombie entity */
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
@@ -71,7 +75,6 @@ public class ClientRegister {
     public static void registerFactories(ParticleFactoryRegisterEvent event) {
         ParticleEngine manager = Minecraft.getInstance().particleEngine;
         manager.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
-//        manager.register(PVZParticles.POTATO_EXPLOSION.get(), (sprite) -> new PotatoExplosionParticle.Provider(sprite));
     }
 
     @SubscribeEvent
@@ -82,7 +85,6 @@ public class ClientRegister {
 //            PVZWoodType.register();
             registerBlockRender();
 //            registerScreen();
-
         });
     }
 

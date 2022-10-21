@@ -1,4 +1,4 @@
-package hungteen.immortal.common.entity.pet;
+package hungteen.immortal.common.entity.creature;
 
 import hungteen.htlib.util.MathUtil;
 import hungteen.htlib.util.ParticleUtil;
@@ -29,7 +29,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

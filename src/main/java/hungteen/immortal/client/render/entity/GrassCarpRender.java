@@ -1,10 +1,9 @@
 package hungteen.immortal.client.render.entity;
 
-import hungteen.htlib.client.render.entity.HTEntityRender;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.GrassCarpModel;
 import hungteen.immortal.client.render.entity.layer.GrassCarpItemLayer;
-import hungteen.immortal.common.entity.pet.GrassCarp;
+import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

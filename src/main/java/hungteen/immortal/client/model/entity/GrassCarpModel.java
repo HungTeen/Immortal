@@ -2,7 +2,7 @@ package hungteen.immortal.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import hungteen.immortal.common.entity.pet.GrassCarp;
+import hungteen.immortal.common.entity.creature.GrassCarp;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
