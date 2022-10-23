@@ -9,6 +9,17 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
  * @create: 2022-10-20 21:58
  **/
 public class ModelLayers {
+
+    /*
+    Humans
+     */
+    public static final ModelLayerLocation CULTIVATOR = register("cultivator");
+    public static final ModelLayerLocation CULTIVATOR_INNER_ARMOR = registerInnerArmor("cultivator");
+    public static final ModelLayerLocation CULTIVATOR_OUTER_ARMOR = registerOuterArmor("cultivator");
+    public static final ModelLayerLocation CULTIVATOR_SLIM = register("cultivator_slim");
+    public static final ModelLayerLocation CULTIVATOR_SLIM_INNER_ARMOR = registerInnerArmor("cultivator_slim");
+    public static final ModelLayerLocation CULTIVATOR_SLIM_OUTER_ARMOR = registerOuterArmor("cultivator_slim");
+
     /*
     Animals.
     */

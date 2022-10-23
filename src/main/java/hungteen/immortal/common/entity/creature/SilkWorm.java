@@ -2,6 +2,8 @@ package hungteen.immortal.common.entity.creature;
 
 import hungteen.immortal.common.entity.ImmortalEntities;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -57,4 +59,11 @@ public class SilkWorm extends Animal {
     public boolean isFood(ItemStack stack) {
         return FOOD_ITEMS.test(stack);
     }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.BAT_DEATH;
+    }
+
 }

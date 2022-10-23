@@ -1,0 +1,6 @@
+{
+  "parent": "immortal:block/gourd_block",
+  "textures": {
+    "gourd": "immortal:block/orange_gourd"
+  }
+}

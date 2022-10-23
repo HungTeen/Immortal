@@ -1,5 +1,6 @@
-package hungteen.immortal;
+package hungteen.immortal.client;
 
+import hungteen.immortal.CommonProxy;
 import net.minecraft.client.Minecraft;
 
 /**

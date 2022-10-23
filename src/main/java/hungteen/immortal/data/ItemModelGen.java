@@ -4,8 +4,10 @@ import hungteen.htlib.data.HTItemModelGen;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -105,7 +107,10 @@ public class ItemModelGen extends HTItemModelGen {
             if (!i.getRegistryName().getNamespace().equals(this.modid) || addedItems.contains(i)){
                 continue;
             }
-            if (i instanceof BlockItem) {//normal block items.
+            if (i instanceof SpawnEggItem) {//for spawn eggs.
+                addedItems.add(i);
+                getBuilder(i.getRegistryName().getPath()).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+            } else if (i instanceof BlockItem) {//normal block items.
                 genBlockModel(((BlockItem) i).getBlock());
             }
         }

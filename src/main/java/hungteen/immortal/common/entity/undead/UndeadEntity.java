@@ -4,6 +4,7 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IUndead;
 import hungteen.immortal.api.registry.IRealm;
 import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.common.entity.ImmortalCreature;
 import hungteen.immortal.impl.Realms;
 import hungteen.immortal.impl.SpiritualRoots;
 import net.minecraft.nbt.CompoundTag;
@@ -26,19 +27,10 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-10-19 23:11
  **/
-public abstract class UndeadEntity extends PathfinderMob implements IUndead {
+public abstract class UndeadEntity extends ImmortalCreature implements IUndead {
 
-    private static final EntityDataAccessor<String> REALM = SynchedEntityData.defineId(UndeadEntity.class, EntityDataSerializers.STRING);
-    protected IRealm cacheRealm;
-
-    public UndeadEntity(EntityType<? extends PathfinderMob> type, Level level) {
+    public UndeadEntity(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(REALM, getDefaultRealm().getRegistryName());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -49,37 +41,6 @@ public abstract class UndeadEntity extends PathfinderMob implements IUndead {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, groupData, tag);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if(tag.contains("EntityRealm")){
-            ImmortalAPI.get().getRealm(tag.getString("EntityRealm")).ifPresentOrElse(this::setRealm, () -> this.setRealm(getDefaultRealm()));
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putString("EntityRealm", getRealm().getRegistryName());
-    }
-
-    public void setRealm(IRealm realm) {
-        entityData.set(REALM, realm.getRegistryName());
-        cacheRealm = realm;
-    }
-
-    @Override
-    public IRealm getRealm() {
-        if(cacheRealm == null) {
-            cacheRealm = ImmortalAPI.get().getRealm(entityData.get(REALM)).orElse(getDefaultRealm());
-        }
-        return cacheRealm;
-    }
-
-    protected IRealm getDefaultRealm(){
-        return Realms.UNDEAD_LEVEL1;
     }
 
     @Override

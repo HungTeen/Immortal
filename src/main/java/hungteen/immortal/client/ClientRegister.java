@@ -1,35 +1,50 @@
 package hungteen.immortal.client;
 
+import com.google.common.collect.Iterables;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.GameProfileRepository;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
 import hungteen.immortal.client.model.ModelLayers;
+import hungteen.immortal.client.model.entity.CultivatorModel;
 import hungteen.immortal.client.model.entity.GrassCarpModel;
 import hungteen.immortal.client.model.entity.SilkWormModel;
 import hungteen.immortal.client.model.entity.SpiritualZombieModel;
-import hungteen.immortal.client.render.entity.GrassCarpRender;
-import hungteen.immortal.client.render.entity.SilkWormRender;
-import hungteen.immortal.client.render.entity.SpiritualZombieRender;
+import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
-import hungteen.immortal.client.render.entity.FlyingItemEntityRender;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.entity.undead.SpiritualZombie;
+import hungteen.immortal.common.entity.human.Cultivator;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.players.GameProfileCache;
+import net.minecraft.util.StringUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -45,6 +60,8 @@ public class ClientRegister {
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 
+        /* human */
+        event.registerEntityRenderer(ImmortalEntities.CULTIVATOR.get(), CultivatorRender::new);
         /* creature */
         event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
         event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
@@ -60,6 +77,14 @@ public class ClientRegister {
     public static void registerRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         LayerDefinition INNER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+
+        /* human */
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, true));
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* creature */
         event.registerLayerDefinition(ModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
@@ -80,12 +105,18 @@ public class ClientRegister {
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
         OverlayHandler.registerOverlay();
+        ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
             ImmortalKeyBinds.register();
 //            PVZWoodType.register();
             registerBlockRender();
 //            registerScreen();
         });
+    }
+
+    @SubscribeEvent
+    public static void onTextureStitch(TextureStitchEvent ev){
+
     }
 
     public static void registerBlockRender(){

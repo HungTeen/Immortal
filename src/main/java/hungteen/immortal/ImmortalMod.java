@@ -1,6 +1,8 @@
 package hungteen.immortal;
 
+import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.common.ElixirManager;
+import hungteen.immortal.common.ai.ImmortalSchedules;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
@@ -48,6 +50,7 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, DataGenHandler::dataGen);
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addGenericListener(Block.class, ImmortalBlocks::registerBlocks);
+        modBus.addGenericListener(Item.class, ImmortalEntities::registerSpawnEggs);
         modBus.addGenericListener(Item.class, ImmortalBlocks::registerBlockItems);
         modBus.addGenericListener(Item.class, ImmortalItems::registerItems);
         modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
@@ -74,6 +77,7 @@ public class ImmortalMod {
         ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
+        ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalDimensions.register();
         ImmortalBiomes.register();
     }

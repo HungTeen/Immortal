@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
  **/
 public class SpiritualZombie extends UndeadEntity {
 
-    public SpiritualZombie(EntityType<? extends PathfinderMob> type, Level level) {
+    public SpiritualZombie(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);
     }
 
@@ -41,6 +41,7 @@ public class SpiritualZombie extends UndeadEntity {
     protected void addBehaviourGoals() {
 //        this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0D, false));
 //        this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
+        this.goalSelector.addGoal(2, new FloatGoal(this));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 //        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers(ZombifiedPiglin.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));

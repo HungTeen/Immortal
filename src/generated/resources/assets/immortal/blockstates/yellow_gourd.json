@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "immortal:block/yellow_gourd"
+    },
+    "facing=south": {
+      "model": "immortal:block/yellow_gourd",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "immortal:block/yellow_gourd",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "immortal:block/yellow_gourd",
+      "y": 90
+    }
+  }
+}
