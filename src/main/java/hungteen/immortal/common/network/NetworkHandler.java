@@ -30,6 +30,7 @@ public class NetworkHandler {
         CHANNEL.registerMessage(getId(), SpellPacket.class, SpellPacket::encode, SpellPacket::new, SpellPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), EmptyClickPacket.class, EmptyClickPacket::encode, EmptyClickPacket::new, EmptyClickPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);
+        CHANNEL.registerMessage(getId(), StringDataPacket.class, StringDataPacket::encode, StringDataPacket::new, StringDataPacket.Handler::onMessage);
     }
 
     public static <MSG> void sendToServer(MSG msg){

@@ -12,4 +12,6 @@ public class ClientDatas {
 
 //    public static int LeftClickTick = 0;
 //    public static int RightClickTick = 0;
+
+    public static int ManaWarningTick = 0;
 }

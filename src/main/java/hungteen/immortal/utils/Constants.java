@@ -21,4 +21,6 @@ public class Constants {
 
     public static final int SPELL_CONTINUE_CD = 10;
 
+    public static final int MANA_WARNING_CD = 20;
+
 }

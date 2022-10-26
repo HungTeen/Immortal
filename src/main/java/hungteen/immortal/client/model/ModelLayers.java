@@ -33,6 +33,11 @@ public class ModelLayers {
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
 
+    /*
+    Golem Entities.
+     */
+    public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
+
     private static ModelLayerLocation register(String name) {
         return createLocation(name, "main");
     }

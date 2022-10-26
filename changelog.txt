@@ -90,7 +90,7 @@
  - 40.0.12 Pass server resources to reload listener event (#8493)
  - 40.0.11 Use UTF-8 charset for Java compilation (#8486)
  - 40.0.10 Use wither as griefing entity when it indirectly hurts an entity (#8431)
- - 40.0.9  Provide access to the haveTime supplier in WorldTickEvent and ServerTickEvent (#8470)
+ - 40.0.9  Provide access to the haveTime moduleTypeSupplier in WorldTickEvent and ServerTickEvent (#8470)
  - 40.0.8  Fix durability bar not respecting an item's custom max damage (#8482)
  - 40.0.7  Add event for controlling potion indicators size (#8483)
            This event allows forcing the rendering of the potion indicators in the

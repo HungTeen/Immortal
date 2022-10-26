@@ -7,6 +7,7 @@ import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class SpiritualRoots {
         }
 
         @Override
-        public Component getComponent() {
+        public MutableComponent getComponent() {
             return new TranslatableComponent("misc." + getModID() +".root." + getName()).withStyle(color);
         }
 

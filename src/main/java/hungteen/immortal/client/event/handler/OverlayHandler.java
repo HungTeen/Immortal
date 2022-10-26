@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.ClientProxy;
 import hungteen.htlib.client.RenderUtil;
 import hungteen.htlib.util.ColorUtil;
+import hungteen.htlib.util.MathUtil;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.common.SpellManager;
-import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpell;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.event.OverlayEvents;
@@ -30,10 +30,13 @@ import java.util.List;
 public class OverlayHandler {
 
     private static final ResourceLocation SPELL_CIRCLE = Util.prefix("textures/gui/overlay/spell_circle.png");
+    private static final ResourceLocation OVERLAY = Util.prefix("textures/gui/overlay/overlay.png");
     private static final int CIRCLE_LEN = 128;
     private static final int CIRCLE_RADIUS = 48;
     private static final int INNER_LEN = 40;
     private static final int SPELL_SLOT_LEN = 20;
+    private static final int MANA_BAR_LEN = 182;
+    private static final int MANA_BAR_HEIGHT = 5;
     private static List<Pair<Integer, Integer>> SpellSlots = new ArrayList<>();
 
     static {
@@ -112,29 +115,42 @@ public class OverlayHandler {
 
     protected static void renderSpiritualMana(PoseStack poseStack, int screenHeight, int screenWidth) {
         ClientProxy.MC.getProfiler().push("spiritualManaBar");
-        RenderUtil.setTexture(SPELL_CIRCLE);
-//        final int x = screenWidth / 2 - 91;
-//        int i = ClientProxy.MC.player.getXpNeededForNextLevel();
-//        if (i > 0) {
-//            int j = 182;
-//            int k = (int)(ClientProxy.MC.player.experienceProgress * 183.0F);
-//            int l = screenHeight - 32 + 3;
-//            ClientProxy.MC.gui.blit(poseStack, x, l, 0, 64, 182, 5);
-//            if (k > 0) {
-//                ClientProxy.MC.gui.blit(poseStack, x, l, 0, 69, k, 5);
-//            }
-//        }
+        RenderUtil.setTexture(OVERLAY);
+        final int x = screenWidth / 2 - 91;
+        final int y = screenHeight - 32 + 3;
+        final int currentMana = PlayerUtil.getSpiritualMana(ClientProxy.MC.player);
+        final int maxMana = PlayerUtil.getFullSpiritualMana(ClientProxy.MC.player);
+        final int cultivation = PlayerUtil.getCultivation(ClientProxy.MC.player);
+        ClientProxy.MC.gui.blit(poseStack, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
+        if(maxMana > 0){
+            final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
+            ClientProxy.MC.gui.blit(poseStack, x + 1, y, 0, 5, backManaLen, MANA_BAR_HEIGHT);
+            if(currentMana > maxMana && cultivation > maxMana){
+                final int barLen = MathUtil.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
+                ClientProxy.MC.gui.blit(poseStack, x + 1, y + 1, 1, 16, barLen, MANA_BAR_HEIGHT - 2);
+                if(ClientDatas.ManaWarningTick == 0){
+                    ClientDatas.ManaWarningTick = Constants.MANA_WARNING_CD;
+                } else{
+                    -- ClientDatas.ManaWarningTick;
+                }
+                if(ClientDatas.ManaWarningTick > (Constants.MANA_WARNING_CD >> 1)){
+                    final int foreManaLen = MathUtil.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN);
+                    ClientProxy.MC.gui.blit(poseStack, x, y, 0, 10, foreManaLen, MANA_BAR_HEIGHT);
+                }
+            }
+        }
 
         ClientProxy.MC.getProfiler().pop();
+
         ClientProxy.MC.getProfiler().push("spiritualValue");
-        String s = ImmortalAPI.get().getSpiritualMana(ClientProxy.MC.player) + "";
-        int i1 = (screenWidth - ClientProxy.MC.font.width(s)) / 2;
-        int j1 = screenHeight - 31 - 4;
-        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 + 1), (float) j1, 0);
-        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 - 1), (float) j1, 0);
-        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 + 1), 0);
-        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 - 1), 0);
-        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) j1, 8453920);
+        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, currentMana + "", (screenWidth >> 1), y - 10, ColorUtil.DARK_GREEN, 1F);
+//        int i1 = (screenWidth - ClientProxy.MC.font.width(s)) / 2;
+//        int j1 = screenHeight - 31 - 4;
+//        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 + 1), (float) j1, 0);
+//        ClientProxy.MC.font.draw(poseStack, s, (float) (i1 - 1), (float) j1, 0);
+//        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 + 1), 0);
+//        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) (j1 - 1), 0);
+//        ClientProxy.MC.font.draw(poseStack, s, (float) i1, (float) j1, 8453920);
         ClientProxy.MC.getProfiler().pop();
     }
 

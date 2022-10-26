@@ -62,9 +62,7 @@ public class FlameGourd extends ArtifactItem {
                     if(! player.level.isClientSide){
                         player.level.explode(flame, player.getX(), player.getY(), player.getZ(), 10, true, Explosion.BlockInteraction.BREAK);
                     }
-                    if (player instanceof Player) {
-                        ((Player) player).awardStat(Stats.ITEM_BROKEN.get(stack.getItem()));
-                    }
+                    ((Player) player).awardStat(Stats.ITEM_BROKEN.get(stack.getItem()));
                     stack.shrink(1);
 //                    player.level.explode();
                 } else{

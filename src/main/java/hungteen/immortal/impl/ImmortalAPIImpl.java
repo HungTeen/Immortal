@@ -4,6 +4,7 @@ import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.*;
+import hungteen.immortal.common.RuneManager;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
@@ -28,8 +29,6 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     private static final List<ISpiritualRoot> SPIRITUAL_ROOTS = new ArrayList<>();
     private static final Map<String, ISpell> SPELL_MAP = new HashMap<>();
-    private static final List<IEffectRune> EFFECT_RUNES = new ArrayList<>();
-    private static final List<IGetterRune> GETTER_RUNES = new ArrayList<>();
     private static final Map<String, IRangeData<Integer>> INTEGER_MAP = new HashMap<>();
     private static final Map<String, IRealm> REALM_MAP = new HashMap<>();
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
@@ -67,20 +66,6 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     @Override
     public Optional<ISpell> getSpell(String type) {
         return Optional.ofNullable(SPELL_MAP.get(type));
-    }
-
-    @Override
-    public void registerEffectRune(IEffectRune type) {
-        if(! EFFECT_RUNES.contains(type)){
-            EFFECT_RUNES.add(type);
-        } else{
-            Util.warn("Effect Rune Register : Duplicate Type !");
-        }
-    }
-
-    @Override
-    public List<IEffectRune> getEffectRunes() {
-        return Collections.unmodifiableList(EFFECT_RUNES);
     }
 
     @Override
@@ -126,22 +111,8 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public void registerGetterRune(IGetterRune type) {
-        if(! GETTER_RUNES.contains(type)){
-            GETTER_RUNES.add(type);
-        } else{
-            Util.warn("Getter Rune Register : Duplicate Type !");
-        }
-    }
-
-    @Override
-    public List<IGetterRune> getGetterRunes() {
-        return Collections.unmodifiableList(GETTER_RUNES);
-    }
-
-    @Override
     public int getSpiritualMana(Player player) {
-        return PlayerUtil.getIntegerData(player, PlayerDatas.SPIRITUAL_MANA);
+        return PlayerUtil.getSpiritualMana(player);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
+import hungteen.htlib.data.HTCodecGen;
 import hungteen.immortal.utils.Util;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.common.world.dimension.SpiritualLandDimension;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
  * @author: HungTeen
  * @create: 2022-10-17 12:28
  **/
-public class DimensionGen extends CodecGen {
+public class DimensionGen extends HTCodecGen {
 
     public DimensionGen(DataGenerator generator) {
         super(generator, Util.id());

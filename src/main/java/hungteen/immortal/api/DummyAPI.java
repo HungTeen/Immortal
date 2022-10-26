@@ -47,16 +47,6 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public void registerEffectRune(IEffectRune type) {
-
-    }
-
-    @Override
-    public List<IEffectRune> getEffectRunes() {
-        return List.of();
-    }
-
-    @Override
     public void registerRealm(IRealm type) {
 
     }
@@ -92,16 +82,6 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public void registerGetterRune(IGetterRune type) {
-
-    }
-
-    @Override
-    public List<IGetterRune> getGetterRunes() {
-        return List.of();
-    }
-
-    @Override
     public int getSpiritualMana(Player player) {
         return 0;
     }
@@ -133,6 +113,6 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Collection<Item> getElixirIngredients() {
-        return Collections.EMPTY_LIST;
+        return List.of();
     }
 }

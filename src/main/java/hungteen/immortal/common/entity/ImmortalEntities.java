@@ -3,15 +3,14 @@ package hungteen.immortal.common.entity;
 import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.ImmortalMod;
-import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.common.entity.creature.SilkWorm;
+import hungteen.immortal.common.entity.golem.GolemEntity;
+import hungteen.immortal.common.entity.golem.IronGolem;
 import hungteen.immortal.common.entity.human.Cultivator;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.undead.SpiritualZombie;
-import hungteen.immortal.common.item.runes.EffectRuneItem;
-import hungteen.immortal.common.item.runes.GetterRuneItem;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.Entity;
@@ -19,11 +18,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.GenericEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -56,6 +53,8 @@ public class ImmortalEntities {
     /* Undead */
     public static final RegistryObject<EntityType<SpiritualZombie>> SPIRITUAL_ZOMBIE = registerEntityType(SpiritualZombie::new, "spiritual_zombie", MobCategory.MONSTER);
 
+    /* Golem */
+    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE);
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
@@ -66,6 +65,9 @@ public class ImmortalEntities {
 
         /* undead */
         ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
+
+        /* golem */
+        ev.put(IRON_GOLEM.get(), SpiritualZombie.createAttributes().build());
     }
 
     /**

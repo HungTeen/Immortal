@@ -1,5 +1,6 @@
 package hungteen.immortal.common.menu;
 
+import hungteen.immortal.common.entity.golem.GolemEntity;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -21,4 +22,11 @@ public class ImmortalMenus {
             return new SpiritualStoveMenu(windowId, inv);
         });
     });
+
+    public static final RegistryObject<MenuType<GolemMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
+        return IForgeMenuType.create((windowId, inv, data) -> {
+            return new GolemMenu(windowId, inv, data.readInt());
+        });
+    });
+
 }

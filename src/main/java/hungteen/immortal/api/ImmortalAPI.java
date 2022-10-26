@@ -79,16 +79,6 @@ public class ImmortalAPI {
         Optional<ISpell> getSpell(String type);
 
         /**
-         * 注册效果符文类型。
-         */
-        void registerEffectRune(IEffectRune type);
-
-        /**
-         * 获取效果符文类型。
-         */
-        List<IEffectRune> getEffectRunes();
-
-        /**
          * 注册境界类型。
          */
         void registerRealm(IRealm type);
@@ -125,16 +115,6 @@ public class ImmortalAPI {
          * @return
          */
         Optional<IRangeData<Integer>> getIntegerData(String type);
-
-        /**
-         * 注册取值符文类型。
-         */
-        void registerGetterRune(IGetterRune type);
-
-        /**
-         * 获取取值符文类型。
-         */
-        List<IGetterRune> getGetterRunes();
 
         /**
          * 获取玩家灵气值。

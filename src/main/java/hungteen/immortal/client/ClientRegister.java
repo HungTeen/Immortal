@@ -8,11 +8,9 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
+import hungteen.immortal.client.gui.screen.GolemScreen;
 import hungteen.immortal.client.model.ModelLayers;
-import hungteen.immortal.client.model.entity.CultivatorModel;
-import hungteen.immortal.client.model.entity.GrassCarpModel;
-import hungteen.immortal.client.model.entity.SilkWormModel;
-import hungteen.immortal.client.model.entity.SpiritualZombieModel;
+import hungteen.immortal.client.model.entity.*;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
@@ -21,8 +19,10 @@ import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.menu.ImmortalMenus;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -68,6 +68,9 @@ public class ClientRegister {
 
         /* undead */
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
+
+        /* golem */
+        event.registerEntityRenderer(ImmortalEntities.IRON_GOLEM.get(), IronGolemRender::new);
     }
 
     /**
@@ -94,6 +97,9 @@ public class ClientRegister {
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
+
+        /* golem */
+        event.registerLayerDefinition(ModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -108,9 +114,8 @@ public class ClientRegister {
         ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
             ImmortalKeyBinds.register();
-//            PVZWoodType.register();
             registerBlockRender();
-//            registerScreen();
+            registerScreen();
         });
     }
 
@@ -129,7 +134,7 @@ public class ClientRegister {
     }
 
     public static void registerScreen() {
-//        MenuScreens.register(PVZMenus.ESSENCE_ALTAR.get(), EssenceAltarScreen::new);
+        MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 
 }

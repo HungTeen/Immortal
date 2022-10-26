@@ -5,6 +5,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class PlayerDatas {
         }
 
         @Override
-        public Component getComponent() {
+        public MutableComponent getComponent() {
             return new TranslatableComponent("misc." + getModID() +".player_data." + getName());
         }
 

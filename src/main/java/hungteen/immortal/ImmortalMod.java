@@ -2,6 +2,7 @@ package hungteen.immortal;
 
 import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.common.ElixirManager;
+import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.ai.ImmortalSchedules;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
@@ -88,10 +89,11 @@ public class ImmortalMod {
     public static void coreRegister() {
         SpiritualRoots.SpiritualRoot.register();
         Spells.Spell.register();
-        EffectRunes.EffectRune.register();
-        GetterRunes.GetterRune.register();
         PlayerDatas.PlayerData.register();
         Realms.Realm.register();
+        MemoryRunes.MemoryRune.register();
+        SensorRunes.SensorRune.register();
+        BehaviorRunes.BehaviorRune.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
@@ -108,6 +110,7 @@ public class ImmortalMod {
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
             ElixirManager.registerElixirIngredients();
+            RealmManager.registerUpgradeList();
         });
 
         NetworkHandler.init();

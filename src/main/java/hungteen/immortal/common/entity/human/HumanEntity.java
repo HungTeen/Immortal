@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -64,9 +65,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 
     @Override
     protected Brain<HumanEntity> makeBrain(Dynamic<?> dynamic) {
-        Brain<HumanEntity> brain = this.brainProvider().makeBrain(dynamic);
-        this.registerBrainGoals(brain);
-        return brain;
+        return (Brain<HumanEntity>) AI.makeBrain(this.brainProvider().makeBrain(dynamic));
     }
 
     @Override
@@ -119,22 +118,14 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         );
     }
 
-    protected void registerBrainGoals(Brain<HumanEntity> brain) {
-        brain.setSchedule(ImmortalSchedules.DAY_WORK.get());
-        brain.addActivity(Activity.CORE, AI.getCorePackage(0.5F));
-        brain.addActivity(Activity.IDLE, AI.getIdlePackage(0.5F));
-        brain.addActivity(Activity.WORK, ImmutableList.of());
-        brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-        brain.setDefaultActivity(Activity.IDLE);
-        brain.setActiveActivityIfPossible(Activity.IDLE);
-        brain.updateActivityFromSchedule(this.level.getDayTime(), this.level.getGameTime());
-    }
-
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        this.level.getProfiler().push("villagerBrain");
+        this.level.getProfiler().push("HumanBrain");
         this.getBrain().tick((ServerLevel) this.level, this);
+        this.level.getProfiler().pop();
+        this.level.getProfiler().push("HumanActivity");
+        AI.updateActivity(this);
         this.level.getProfiler().pop();
     }
 
@@ -146,6 +137,11 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     @Override
     public Container getInventory() {
         return this.inventory;
+    }
+
+    @Override
+    public boolean shouldShowName() {
+        return super.shouldShowName();
     }
 
     @Override
@@ -209,10 +205,35 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     }
 
     private static class AI {
-        public static ImmutableList<Pair<Integer, ? extends Behavior<? super HumanEntity>>> getCorePackage(float speedModifier) {
-            return ImmutableList.of(
-                    Pair.of(0, new Swim(0.8F)),
-                    Pair.of(0, new InteractWithDoor()),
+
+        protected static Brain<?> makeBrain(Brain<HumanEntity> brain) {
+            initCoreActivity(brain, 0.5F);
+            initIdleActivity(brain, 0.5F);
+//            initFightActivity(brain);
+//            initPlayDeadActivity(brain);
+            brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
+            brain.setDefaultActivity(Activity.IDLE);
+            brain.useDefaultActivity();
+            return brain;
+        }
+
+        public static void updateActivity(HumanEntity human) {
+            Brain<HumanEntity> brain = human.getBrain();
+//            Activity activity = brain.getActiveNonCoreActivity().orElse((Activity)null);
+//            if (activity != Activity.PLAY_DEAD) {
+//                brain.setActiveActivityToFirstValid(ImmutableList.of(Activity.PLAY_DEAD, Activity.FIGHT, Activity.IDLE));
+//                if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse((Activity)null) != Activity.FIGHT) {
+//                    brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
+//                }
+//            }
+
+        }
+
+        protected static void initCoreActivity(Brain<HumanEntity> brain, float speedModifier) {
+            brain.addActivity(Activity.CORE,
+                    ImmutableList.of(
+                            Pair.of(0, new Swim(0.8F)),
+                            Pair.of(0, new InteractWithDoor()),
 //                    Pair.of(0, new LookAtTargetSink(45, 90)),
 //                    Pair.of(0, new VillagerPanicTrigger()),
 //                    Pair.of(0, new WakeUp()),
@@ -220,10 +241,10 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 //                    Pair.of(0, new SetRaidStatus()),
 //                    Pair.of(0, new ValidateNearbyPoi(p_24586_.getJobPoiType(), MemoryModuleType.JOB_SITE)),
 //                    Pair.of(0, new ValidateNearbyPoi(p_24586_.getJobPoiType(), MemoryModuleType.POTENTIAL_JOB_SITE)),
-                    Pair.of(1, new MoveToTargetSink()),
+                            Pair.of(1, new MoveToTargetSink()),
 //                    Pair.of(2, new PoiCompetitorScan(p_24586_)),
 //                    Pair.of(3, new LookAndFollowTradingPlayerSink(p_24587_)),
-                    Pair.of(5, new GoToWantedItem(speedModifier, false, 8))
+                            Pair.of(5, new GoToWantedItem(speedModifier, false, 8))
 //                    Pair.of(6, new AcquirePoi(p_24586_.getJobPoiType(), MemoryModuleType.JOB_SITE, MemoryModuleType.POTENTIAL_JOB_SITE, true, Optional.empty())),
 //                    Pair.of(7, new GoToPotentialJobSite(p_24587_)),
 //                    Pair.of(8, new YieldJobSite(p_24587_)),
@@ -231,11 +252,12 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 //                    Pair.of(10, new AcquirePoi(PoiType.MEETING, MemoryModuleType.MEETING_POINT, true, Optional.of((byte)14))),
 //                    Pair.of(10, new AssignProfessionFromJobSite()),
 //                    Pair.of(10, new ResetProfession())
+                    )
             );
         }
 
-        public static ImmutableList<Pair<Integer, ? extends Behavior<? super HumanEntity>>> getIdlePackage(float speedModifier) {
-            return ImmutableList.of(
+        public static void initIdleActivity(Brain<HumanEntity> brain, float speedModifier) {
+            brain.addActivity(Activity.IDLE, ImmutableList.of(
                     Pair.of(2, new RunOne<>(ImmutableList.of(
                                     Pair.of(InteractWith.of(EntityType.VILLAGER, 8, MemoryModuleType.INTERACTION_TARGET, speedModifier, 2), 2),
 //                                    Pair.of(new InteractWith<>(EntityType.VILLAGER, 8, AgeableMob::canBreed, AgeableMob::canBreed, MemoryModuleType.BREED_TARGET, speedModifier, 2), 1),
@@ -269,25 +291,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 //                                    )
 //                            )
 //                    ),
-                    getFullLookBehavior(),
                     Pair.of(99, new UpdateActivityFromSchedule())
-            );
-        }
-
-        private static Pair<Integer, Behavior<LivingEntity>> getFullLookBehavior() {
-            return Pair.of(5, new RunOne<>(ImmutableList.of(
-                            Pair.of(new SetEntityLookTarget(EntityType.CAT, 8.0F), 8),
-                            Pair.of(new SetEntityLookTarget(EntityType.VILLAGER, 8.0F), 2),
-                            Pair.of(new SetEntityLookTarget(EntityType.PLAYER, 8.0F), 2),
-                            Pair.of(new SetEntityLookTarget(MobCategory.CREATURE, 8.0F), 1),
-                            Pair.of(new SetEntityLookTarget(MobCategory.WATER_CREATURE, 8.0F), 1),
-                            Pair.of(new SetEntityLookTarget(MobCategory.AXOLOTLS, 8.0F), 1),
-                            Pair.of(new SetEntityLookTarget(MobCategory.UNDERGROUND_WATER_CREATURE, 8.0F), 1),
-                            Pair.of(new SetEntityLookTarget(MobCategory.WATER_AMBIENT, 8.0F), 1),
-                            Pair.of(new SetEntityLookTarget(MobCategory.MONSTER, 8.0F), 1),
-                            Pair.of(new DoNothing(30, 60), 2)
-                    ))
-            );
+            ));
         }
     }
 }

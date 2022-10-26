@@ -1,6 +1,7 @@
 package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
+import hungteen.htlib.data.HTCodecGen;
 import hungteen.immortal.utils.Util;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import net.minecraft.core.MappedRegistry;
@@ -22,7 +23,7 @@ import java.util.stream.StreamSupport;
  * @author: HungTeen
  * @create: 2022-10-18 13:26
  **/
-public class BiomeGen extends CodecGen{
+public class BiomeGen extends HTCodecGen {
 
     public BiomeGen(DataGenerator generator) {
         super(generator, Util.id());

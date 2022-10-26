@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "immortal:item/get_health_rune"
+    "layer0": "immortal:item/behavior_rune"
   }
 }

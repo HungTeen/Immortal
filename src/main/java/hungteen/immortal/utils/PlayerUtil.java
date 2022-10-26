@@ -4,21 +4,22 @@ import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.api.registry.IRealm;
 import hungteen.immortal.api.registry.ISpell;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.capability.player.PlayerCapability;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
+import hungteen.immortal.impl.PlayerDatas;
+import hungteen.immortal.impl.Realms;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,43 +31,49 @@ import java.util.stream.Collectors;
 public class PlayerUtil {
 
     /**
+     * 重置玩家的灵根。
+     */
+    public static void resetSpiritualRoots(Player player){
+        List<ISpiritualRoot> roots = getSpiritualRoots(player.getRandom());
+        getOptManager(player).ifPresent(l -> {
+            l.clearSpiritualRoot();
+            roots.forEach(r -> {
+                l.addSpiritualRoot(r);
+            });
+        });
+    }
+
+    /**
      * 玩家灵根的生成规则：
      * 1. 首先依据概率选择是几个灵根（0 - 5）。
      * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。
      * 3. 否则依据权重在普通五行灵根中选择若干个。
      */
-    public static void spawnSpiritualRoots(Player player){
+    public static List<ISpiritualRoot> getSpiritualRoots(Random random){
         final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
-        double chance = player.getRandom().nextDouble();
+        double chance = random.nextDouble();
         for(int i = 0; i < rootChances.length; ++ i){
             if(chance < rootChances[i]){
-                randomSpawnRoots(player, i);
-                return;
+                return randomSpawnRoots(random, i);
             }
             chance -= rootChances[i];
         }
-        randomSpawnRoots(player, 5);
+        return randomSpawnRoots(random, 5);
     }
 
     /**
-     * {@link #spawnSpiritualRoots(Player)}
+     * {@link #getSpiritualRoots(Random)}
      */
-    private static void randomSpawnRoots(Player player, int rootCount){
+    private static List<ISpiritualRoot> randomSpawnRoots(Random random, int rootCount){
         final List<ISpiritualRoot> rootChosen = new ArrayList<>();
         if(rootCount == 1){
             final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots(), ISpiritualRoot::getWeight);
-            rootChosen.addAll(weightList.getRandomItems(player.getRandom(), 1, true));
+            rootChosen.addAll(weightList.getRandomItems(random, 1, true));
         } else if(rootCount > 1){
             final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots().stream().filter(ISpiritualRoot::isCommonRoot).collect(Collectors.toList()), ISpiritualRoot::getWeight);
-            rootChosen.addAll(weightList.getRandomItems(player.getRandom(), rootCount, true));
+            rootChosen.addAll(weightList.getRandomItems(random, rootCount, true));
         }
-        getOptManager(player).ifPresent(l -> {
-            l.clearSpiritualRoot();
-            rootChosen.forEach(r -> {
-                l.addSpiritualRoot(r);
-            });
-        });
-
+        return rootChosen;
     }
 
     public static void showPlayerSpiritualRoots(Player player){
@@ -188,8 +195,39 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.getIntegerData(rangeData), rangeData.defaultData());
     }
 
+    public static int getSpiritualMana(Player player){
+        return getIntegerData(player, PlayerDatas.SPIRITUAL_MANA);
+    }
+
+    public static int getFullSpiritualMana(Player player){
+        return getManagerResult(player, PlayerDataManager::getFullManaValue, 0);
+    }
+
+    public static int getCultivation(Player player){
+        return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0);
+    }
+
+    /* Misc Operations */
+
+    public static IRealm getPlayerRealm(Player player){
+        return getManagerResult(player, m -> m.getRealm(), Realms.MORTALITY);
+    }
+
+    /**
+     * 直接改变境界，会降低修为，同时灵气值归零。
+     */
+    public static void setRealm(Player player, IRealm realm){
+        getOptManager(player).ifPresent(m -> {
+            m.setRealm(realm);
+            if(! player.level.isClientSide){
+                m.setIntegerData(PlayerDatas.CULTIVATION, realm.getCultivation());
+                m.setIntegerData(PlayerDatas.SPIRITUAL_MANA, 0);
+            }
+        });
+    }
+
     public static void tick(Player player){
-        getOptManager(player).ifPresent(l -> l.tick());
+        getOptManager(player).ifPresent(PlayerDataManager::tick);
     }
 
 }

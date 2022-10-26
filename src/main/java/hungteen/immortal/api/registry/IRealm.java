@@ -29,12 +29,8 @@ public interface IRealm extends IComponentEntry {
     int getBaseSpiritualValue();
 
     /**
-     * 此境界有修炼瓶颈，不可自然提升。
+     * 有突破门槛。
      */
     boolean hasThreshold();
 
-    /**
-     * 是人类的境界标准。
-     */
-    boolean forHuman();
 }

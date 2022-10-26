@@ -129,7 +129,7 @@ public class ImmortalCommand {
 
     private static int resetSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.spawnSpiritualRoots(player);
+            PlayerUtil.resetSpiritualRoots(player);
             PlayerUtil.showPlayerSpiritualRoots(player);
         }
         return targets.size();

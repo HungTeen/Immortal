@@ -3,6 +3,7 @@ package hungteen.immortal.impl;
 import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Locale;
@@ -20,7 +21,7 @@ public enum CultivationTypes implements ICultivationType {
     BLOOD;
 
     @Override
-    public Component getComponent() {
+    public MutableComponent getComponent() {
         return new TranslatableComponent("misc." + getModID() + ".cultivation_type." + getName());
     }
 
