@@ -19,4 +19,9 @@ public class ImmortalBlockEntities {
     public static final RegistryObject<BlockEntityType<SpiritualStoveBlockEntity>> SPIRITUAL_STOVE = BLOCK_ENTITY_TYPES.register("spiritual_stove", () -> {
         return BlockEntityType.Builder.of(SpiritualStoveBlockEntity::new, ImmortalBlocks.SPIRITUAL_STOVE.get()).build(null);
     });
+
+    public static final RegistryObject<BlockEntityType<ElixirFurnaceBlockEntity>> ELIXIR_FURNACE = BLOCK_ENTITY_TYPES.register("elixir_furnace", () -> {
+        return BlockEntityType.Builder.of(ElixirFurnaceBlockEntity::new, ImmortalBlocks.ELIXIR_FURNACE.get()).build(null);
+    });
+
 }

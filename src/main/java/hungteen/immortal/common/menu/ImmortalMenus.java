@@ -23,6 +23,12 @@ public class ImmortalMenus {
         });
     });
 
+    public static final RegistryObject<MenuType<ElixirFurnaceMenu>> ELIXIR_FURNACE = CONTAINER_TYPES.register("elixir_furnace", () -> {
+        return IForgeMenuType.create((windowId, inv, data) -> {
+            return new ElixirFurnaceMenu(windowId, inv);
+        });
+    });
+
     public static final RegistryObject<MenuType<GolemMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
         return IForgeMenuType.create((windowId, inv, data) -> {
             return new GolemMenu(windowId, inv, data.readInt());

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import org.lwjgl.system.CallbackI;
 
 import java.util.*;
 
@@ -27,13 +28,14 @@ import java.util.*;
  **/
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
-    private static final List<ISpiritualRoot> SPIRITUAL_ROOTS = new ArrayList<>();
     private static final Map<String, ISpell> SPELL_MAP = new HashMap<>();
     private static final Map<String, IRangeData<Integer>> INTEGER_MAP = new HashMap<>();
     private static final Map<String, IRealm> REALM_MAP = new HashMap<>();
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<Item, Map<ISpiritualRoot, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
+    private static final List<ISpiritualRoot> SPIRITUAL_ROOTS = new ArrayList<>();
+    private static final List<IElixirType> ELIXIR_TYPES = new ArrayList<>();
 
     @Override
     public void registerSpiritualRoot(ISpiritualRoot type) {
@@ -137,18 +139,32 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
+    public void registerElixirType(IElixirType type) {
+        if(ELIXIR_TYPES.contains(type)){
+            ELIXIR_TYPES.add(type);
+        } else{
+            Util.warn("Integer Data Register : Duplicate Type !");
+        }
+    }
+
+    @Override
+    public List<IElixirType> getElixirTypes() {
+        return Collections.unmodifiableList(ELIXIR_TYPES);
+    }
+
+    @Override
     public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
         ELIXIR_INGREDIENT_MAP.put(item, map);
     }
 
     @Override
-    public Map<ISpiritualRoot, Integer> getElixirValue(Item item) {
+    public Map<ISpiritualRoot, Integer> getElixirIngredient(Item item) {
         return ELIXIR_INGREDIENT_MAP.getOrDefault(item, Map.of());
     }
 
     @Override
-    public Collection<Item> getElixirIngredients() {
-        return Collections.unmodifiableCollection(ELIXIR_INGREDIENT_MAP.keySet());
+    public Set<Item> getElixirIngredients() {
+        return Collections.unmodifiableSet(ELIXIR_INGREDIENT_MAP.keySet());
     }
 
 }

@@ -1,6 +1,8 @@
 package hungteen.immortal.api.registry;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.interfaces.IComponentEntry;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
@@ -22,6 +24,16 @@ public interface ISpiritualRoot extends IComponentEntry {
      * the spawn weight of spiritual roots.
      */
     int getWeight();
+
+    /**
+     * 元素图标的位置。
+     */
+    Pair<Integer, Integer> getTexturePosition();
+
+    /**
+     * 图片的地址
+     */
+    ResourceLocation getResourceLocation();
 
 
 }

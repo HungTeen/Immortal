@@ -45,6 +45,6 @@ public abstract class UndeadEntity extends ImmortalCreature implements IUndead {
 
     @Override
     public Collection<ISpiritualRoot> getSpiritualRoots() {
-        return List.of(SpiritualRoots.DEAD);
+        return List.of(SpiritualRoots.DRUG);
     }
 }

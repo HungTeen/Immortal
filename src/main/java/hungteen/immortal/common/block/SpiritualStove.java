@@ -6,12 +6,14 @@ import hungteen.immortal.common.blockentity.SpiritualStoveBlockEntity;
 import hungteen.immortal.common.menu.SpiritualStoveMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,22 +47,10 @@ public class SpiritualStove extends HTEntityBlock implements IArtifact {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            player.openMenu(blockState.getMenuProvider(level, blockPos));
+            if(player instanceof ServerPlayer){
+                NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos));
+            }
             return InteractionResult.CONSUME;
-        }
-    }
-
-    @javax.annotation.Nullable
-    @Override
-    public MenuProvider getMenuProvider(BlockState blockState, Level level, BlockPos blockPos) {
-        final BlockEntity blockentity = level.getBlockEntity(blockPos);
-        if (blockentity instanceof Nameable) {
-            Component component = ((Nameable) blockentity).getDisplayName();
-            return new SimpleMenuProvider((id, inventory, player) -> {
-                return new SpiritualStoveMenu(id, inventory, ContainerLevelAccess.create(level, blockPos));
-            }, component);
-        } else {
-            return null;
         }
     }
 

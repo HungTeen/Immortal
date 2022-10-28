@@ -13,10 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.lang.reflect.Constructor;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -137,6 +134,16 @@ public class ImmortalAPI {
         int getSpiritualValue(Level level, BlockPos pos);
 
         /**
+         * 注册丹药类型。
+         */
+        void registerElixirType(IElixirType type);
+
+        /**
+         * 获取丹药类型。
+         */
+        List<IElixirType> getElixirTypes();
+
+        /**
          * 设置炼丹材料的灵气值。
          */
         void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map);
@@ -144,12 +151,12 @@ public class ImmortalAPI {
         /**
          * 获取炼丹材料的灵气值。
          */
-        Map<ISpiritualRoot, Integer> getElixirValue(Item item);
+        Map<ISpiritualRoot, Integer> getElixirIngredient(Item item);
 
         /**
          * 获取所有炼丹材料。
          */
-        Collection<Item> getElixirIngredients();
+        Set<Item> getElixirIngredients();
 
     }
 

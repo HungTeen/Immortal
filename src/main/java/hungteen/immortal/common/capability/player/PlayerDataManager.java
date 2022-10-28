@@ -350,6 +350,10 @@ public class PlayerDataManager implements IPlayerDataManager {
             if(getRealm() != pair.getFirst()){
                 this.setRealm(pair.getFirst());
             }
+            final int mana = getIntegerData(PlayerDatas.SPIRITUAL_MANA);
+            if(mana > getLimitManaValue()){
+                this.setIntegerData(PlayerDatas.SPIRITUAL_MANA, getLimitManaValue());
+            }
         }
         integerMap.put(rangeData, result);
         sendIntegerDataPacket(rangeData, result);

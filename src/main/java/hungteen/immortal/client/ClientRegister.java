@@ -8,7 +8,10 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
+import hungteen.immortal.client.gui.screen.ElixirFurnaceScreen;
 import hungteen.immortal.client.gui.screen.GolemScreen;
+import hungteen.immortal.client.gui.screen.SpiritualStoveScreen;
+import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
 import hungteen.immortal.client.render.entity.*;
@@ -20,9 +23,11 @@ import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.human.Cultivator;
 import hungteen.immortal.common.menu.ImmortalMenus;
+import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -33,7 +38,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -53,6 +60,18 @@ import java.util.function.Consumer;
  **/
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientRegister {
+
+    @SubscribeEvent
+    public static void setUpClient(FMLClientSetupEvent ev){
+        OverlayHandler.registerOverlay();
+        ClientHandler.registerCultivatorTypes();
+        ev.enqueueWork(() -> {
+            ImmortalKeyBinds.register();
+            registerBlockRender();
+            registerScreen();
+            MinecraftForgeClient.registerTooltipComponentFactory(ElementToolTip.class, ClientElementToolTip::new);
+        });
+    }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -109,17 +128,6 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
-    public static void setUpClient(FMLClientSetupEvent ev){
-        OverlayHandler.registerOverlay();
-        ClientHandler.registerCultivatorTypes();
-        ev.enqueueWork(() -> {
-            ImmortalKeyBinds.register();
-            registerBlockRender();
-            registerScreen();
-        });
-    }
-
-    @SubscribeEvent
     public static void onTextureStitch(TextureStitchEvent ev){
 
     }
@@ -134,6 +142,8 @@ public class ClientRegister {
     }
 
     public static void registerScreen() {
+        MenuScreens.register(ImmortalMenus.SPIRITUAL_STOVE.get(), SpiritualStoveScreen::new);
+        MenuScreens.register(ImmortalMenus.ELIXIR_FURNACE.get(), ElixirFurnaceScreen::new);
         MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 

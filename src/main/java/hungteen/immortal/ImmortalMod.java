@@ -94,6 +94,7 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
+        ElixirTypes.ElixirType.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {

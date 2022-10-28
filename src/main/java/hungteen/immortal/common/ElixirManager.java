@@ -3,14 +3,19 @@ package hungteen.immortal.common;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.api.registry.IElixirType;
+import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.common.tag.ImmortalItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -44,8 +49,22 @@ public class ElixirManager {
 
     }
 
+    public static int getElixirTypeId(@Nonnull IElixirType type){
+        return ImmortalAPI.get().getElixirTypes().indexOf(type);
+    }
+
+    public static IElixirType getElixirTypeId(int id){
+        return ImmortalAPI.get().getElixirTypes().get(id);
+    }
+
+    public static Collection<Pair<ISpiritualRoot, Integer>> getElixirIngredient(ItemStack stack){
+        return ImmortalAPI.get().getElixirIngredient(stack.getItem()).entrySet().stream().map(entry -> {
+            return Pair.of(entry.getKey(), entry.getValue());
+        }).toList();
+    }
+
     public static boolean isElixirIngredient(ItemStack itemStack) {
-        return itemStack.is(ImmortalItemTags.ELIXIR_INGREDIENTS);
+        return itemStack.is(ImmortalItemTags.ELIXIR_INGREDIENTS) || ImmortalAPI.get().getElixirIngredients().contains(itemStack.getItem());
     }
 
 }

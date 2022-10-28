@@ -1,9 +1,12 @@
 package hungteen.immortal.data.tag;
 
 import hungteen.htlib.data.tag.HTItemTagGen;
+import hungteen.immortal.common.item.ImmortalItems;
+import hungteen.immortal.common.tag.ImmortalItemTags;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +23,11 @@ public class ItemTagGen extends HTItemTagGen {
 
     @Override
     protected void addTags() {
-
+        this.tag(ImmortalItemTags.SPIRITUAL_STONES).addTags(
+                ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE,
+                ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO
+        );
+        this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
+        this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
     }
 }

@@ -33,6 +33,7 @@ public class ImmortalBlocks {
 
     /* Entity Blocks */
     public static final RegistryObject<Block> SPIRITUAL_STOVE = BLOCKS.register("spiritual_stove", () -> new SpiritualStove(0));
+    public static final RegistryObject<Block> ELIXIR_FURNACE = BLOCKS.register("elixir_furnace", () -> new ElixirFurnace());
 
     /**
      * register blocks.

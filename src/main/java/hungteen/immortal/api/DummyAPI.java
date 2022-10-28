@@ -102,17 +102,27 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
+    public void registerElixirType(IElixirType type) {
+
+    }
+
+    @Override
+    public List<IElixirType> getElixirTypes() {
+        return List.of();
+    }
+
+    @Override
     public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
 
     }
 
     @Override
-    public Map<ISpiritualRoot, Integer> getElixirValue(Item item) {
+    public Map<ISpiritualRoot, Integer> getElixirIngredient(Item item) {
         return Map.of();
     }
 
     @Override
-    public Collection<Item> getElixirIngredients() {
-        return List.of();
+    public Set<Item> getElixirIngredients() {
+        return Set.of();
     }
 }

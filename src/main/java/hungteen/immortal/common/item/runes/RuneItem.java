@@ -62,6 +62,8 @@ public class RuneItem extends Item {
         }
     }
 
+
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, level, components, tooltipFlag);
