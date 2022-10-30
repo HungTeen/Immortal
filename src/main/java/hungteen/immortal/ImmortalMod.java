@@ -9,6 +9,7 @@ import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.command.CommandHandler;
+import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.impl.*;
@@ -22,6 +23,7 @@ import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.common.world.structure.ImmortalStructures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -54,6 +56,7 @@ public class ImmortalMod {
         modBus.addGenericListener(Item.class, ImmortalEntities::registerSpawnEggs);
         modBus.addGenericListener(Item.class, ImmortalBlocks::registerBlockItems);
         modBus.addGenericListener(Item.class, ImmortalItems::registerItems);
+        modBus.addGenericListener(RecipeSerializer.class, ImmortalRecipes::registerRecipeTypes);
         modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
 
         //get forge event bus.
@@ -79,6 +82,7 @@ public class ImmortalMod {
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalStructures.STRUCTURES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
+        ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalDimensions.register();
         ImmortalBiomes.register();
     }
@@ -94,7 +98,6 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
-        ElixirTypes.ElixirType.register();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
@@ -110,7 +113,7 @@ public class ImmortalMod {
 //            PVZDimensions.register();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
-            ElixirManager.registerElixirIngredients();
+            ElixirManager.init();
             RealmManager.registerUpgradeList();
         });
 

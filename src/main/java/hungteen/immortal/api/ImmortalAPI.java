@@ -56,8 +56,14 @@ public class ImmortalAPI {
 
         /**
          * 获取灵根类型。
+         * @return
          */
         List<ISpiritualRoot> getSpiritualRoots();
+
+        /**
+         * 获取灵根。
+         */
+        Optional<ISpiritualRoot> getSpiritualRoot(String type);
 
         /**
          * 注册法术类型。
@@ -132,16 +138,6 @@ public class ImmortalAPI {
          * 获取当前位置的灵气值。
          */
         int getSpiritualValue(Level level, BlockPos pos);
-
-        /**
-         * 注册丹药类型。
-         */
-        void registerElixirType(IElixirType type);
-
-        /**
-         * 获取丹药类型。
-         */
-        List<IElixirType> getElixirTypes();
 
         /**
          * 设置炼丹材料的灵气值。

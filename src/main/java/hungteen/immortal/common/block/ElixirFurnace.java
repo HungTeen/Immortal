@@ -37,7 +37,9 @@ public class ElixirFurnace extends FallingBlock implements EntityBlock {
             return InteractionResult.SUCCESS;
         } else {
             if(player instanceof ServerPlayer){
-                NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos));
+                NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
+                    buf.writeBlockPos(blockPos);
+                });
             }
             return InteractionResult.CONSUME;
         }

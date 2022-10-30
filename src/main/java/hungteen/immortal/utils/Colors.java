@@ -12,4 +12,6 @@ public class Colors {
 
     public static final int SPIRITUAL_MANA = 3336407;
 
+    public static final int WORD = 5716524;
+
 }

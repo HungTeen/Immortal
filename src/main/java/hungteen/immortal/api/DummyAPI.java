@@ -32,6 +32,11 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
+    public Optional<ISpiritualRoot> getSpiritualRoot(String type) {
+        return Optional.empty();
+    }
+
+    @Override
     public void registerSpell(ISpell type) {
 
     }
@@ -99,16 +104,6 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     @Override
     public int getSpiritualValue(Level level, BlockPos pos) {
         return 0;
-    }
-
-    @Override
-    public void registerElixirType(IElixirType type) {
-
-    }
-
-    @Override
-    public List<IElixirType> getElixirTypes() {
-        return List.of();
     }
 
     @Override

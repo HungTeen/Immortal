@@ -39,7 +39,7 @@ public class PlayerSpellEvent extends PlayerEvent {
         }
 
         /**
-         * check can trigger or not.
+         * hasRecipe can trigger or not.
          */
         @Cancelable
         public static final class Pre extends ActivateSpellEvent {

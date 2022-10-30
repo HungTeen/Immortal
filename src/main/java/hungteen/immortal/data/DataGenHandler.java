@@ -2,6 +2,7 @@ package hungteen.immortal.data;
 
 import hungteen.immortal.data.codec.BiomeGen;
 import hungteen.immortal.data.codec.DimensionGen;
+import hungteen.immortal.data.recipe.RecipeGen;
 import hungteen.immortal.data.tag.BlockTagGen;
 import hungteen.immortal.data.tag.EntityTagGen;
 import hungteen.immortal.data.tag.ItemTagGen;
@@ -22,7 +23,7 @@ public class DataGenHandler {
         ev.getGenerator().addProvider(new EntityTagGen(ev.getGenerator(), ev.getExistingFileHelper()));
 
         /* Recipes */
-//        ev.getGenerator().addProvider(new RecipeGen(ev.getGenerator()));
+        ev.getGenerator().addProvider(new RecipeGen(ev.getGenerator()));
 
         /* Loot Tables */
 //        ev.getGenerator().addProvider(new LootTableGen(ev.getGenerator()));

@@ -1,5 +1,5 @@
 {
-  // What structures to pick to try and spawn if a spot passes the placement check.
+  // What structures to pick to try and spawn if a spot passes the placement hasRecipe.
   // If two or more structures in this list can spawn in a biome at a spot, a random one based on weight is chosen to spawn
   "structures": [
     {

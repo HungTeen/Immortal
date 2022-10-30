@@ -22,24 +22,26 @@ import java.util.List;
  **/
 public class SpiritualRoots {
 
+    public static final int TEX_WIDTH = 9;
     private static final List<ISpiritualRoot> TYPES = new ArrayList<>();
 
-    public static final ISpiritualRoot METAL = new SpiritualRoot("metal", true, ImmortalConfigs.getMetalWeight(), ChatFormatting.GOLD, Pair.of(0, 0));
-    public static final ISpiritualRoot WOOD = new SpiritualRoot("wood", true, ImmortalConfigs.getWoodWeight(), ChatFormatting.GREEN, Pair.of(10, 0));
-    public static final ISpiritualRoot WATER = new SpiritualRoot("water", true, ImmortalConfigs.getWaterWeight(), ChatFormatting.DARK_BLUE, Pair.of(20, 0));
-    public static final ISpiritualRoot FIRE = new SpiritualRoot("fire", true, ImmortalConfigs.getFireWeight(), ChatFormatting.RED, Pair.of(30, 0));
-    public static final ISpiritualRoot EARTH = new SpiritualRoot("earth", true, ImmortalConfigs.getEarthWeight(), ChatFormatting.YELLOW, Pair.of(40, 0));
 
-    public static final ISpiritualRoot WIND = new SpiritualRoot("wind", false, ImmortalConfigs.getWindWeight(), ChatFormatting.AQUA, Pair.of(0, 0));
-    public static final ISpiritualRoot ELECTRIC = new SpiritualRoot("electric", false, ImmortalConfigs.getElectricWeight(), ChatFormatting.DARK_AQUA, Pair.of(0, 0));
-    public static final ISpiritualRoot DRUG = new SpiritualRoot("drug", false, ImmortalConfigs.getDrugWeight(), ChatFormatting.DARK_GREEN, Pair.of(0, 0));
-    public static final ISpiritualRoot ICE = new SpiritualRoot("ice", false, ImmortalConfigs.getIceWeight(), ChatFormatting.BLUE, Pair.of(0, 0));
+    public static final ISpiritualRoot METAL = new SpiritualRoot("metal", true, ImmortalConfigs.getMetalWeight(), 1, ChatFormatting.GOLD, Pair.of(0, 0));
+    public static final ISpiritualRoot WOOD = new SpiritualRoot("wood", true, ImmortalConfigs.getWoodWeight(), 2, ChatFormatting.GREEN, Pair.of(10, 0));
+    public static final ISpiritualRoot WATER = new SpiritualRoot("water", true, ImmortalConfigs.getWaterWeight(), 3, ChatFormatting.DARK_BLUE, Pair.of(20, 0));
+    public static final ISpiritualRoot FIRE = new SpiritualRoot("fire", true, ImmortalConfigs.getFireWeight(), 4, ChatFormatting.RED, Pair.of(30, 0));
+    public static final ISpiritualRoot EARTH = new SpiritualRoot("earth", true, ImmortalConfigs.getEarthWeight(), 5, ChatFormatting.YELLOW, Pair.of(40, 0));
+
+    public static final ISpiritualRoot WIND = new SpiritualRoot("wind", false, ImmortalConfigs.getWindWeight(), 10, ChatFormatting.AQUA, Pair.of(50, 0));
+    public static final ISpiritualRoot ELECTRIC = new SpiritualRoot("electric", false, ImmortalConfigs.getElectricWeight(), 11, ChatFormatting.DARK_AQUA, Pair.of(60, 0));
+    public static final ISpiritualRoot DRUG = new SpiritualRoot("drug", false, ImmortalConfigs.getDrugWeight(), 12, ChatFormatting.DARK_GREEN, Pair.of(70, 0));
+    public static final ISpiritualRoot ICE = new SpiritualRoot("ice", false, ImmortalConfigs.getIceWeight(), 13, ChatFormatting.BLUE, Pair.of(80, 0));
 //    public static final ISpiritualRoot DEAD = new SpiritualRoot("dead", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_PURPLE);
 //    public static final ISpiritualRoot BLOOD = new SpiritualRoot("blood", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_RED);
 //    public static final ISpiritualRoot DARK = new SpiritualRoot("dark", false, ImmortalConfigs.getIceWeight(), ChatFormatting.BLACK);
 
 
-    public record SpiritualRoot(String name, boolean isCommonRoot, int weight, ChatFormatting color, Pair<Integer, Integer> pair) implements ISpiritualRoot {
+    public record SpiritualRoot(String name, boolean isCommonRoot, int weight, int priority, ChatFormatting color, Pair<Integer, Integer> pair) implements ISpiritualRoot {
 
         /**
          * {@link ImmortalMod#coreRegister()}
@@ -48,10 +50,11 @@ public class SpiritualRoots {
             TYPES.forEach(type -> ImmortalAPI.get().registerSpiritualRoot(type));
         }
 
-        public SpiritualRoot(String name, boolean isCommonRoot, int weight, ChatFormatting color, Pair<Integer, Integer> pair) {
+        public SpiritualRoot(String name, boolean isCommonRoot, int weight, int priority, ChatFormatting color, Pair<Integer, Integer> pair) {
             this.name = name;
             this.isCommonRoot = isCommonRoot;
             this.weight = weight;
+            this.priority = priority;
             this.color = color;
             this.pair = pair;
             TYPES.add(this);
@@ -78,13 +81,18 @@ public class SpiritualRoots {
         }
 
         @Override
+        public int getSortPriority() {
+            return this.priority;
+        }
+
+        @Override
         public Pair<Integer, Integer> getTexturePosition() {
             return pair;
         }
 
         @Override
         public ResourceLocation getResourceLocation() {
-            return Util.prefix("textures/gui/icons.png");
+            return Util.prefix("textures/gui/spiritual_roots.png");
         }
     }
 }

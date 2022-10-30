@@ -1,6 +1,10 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
+import hungteen.htlib.util.ItemUtil;
+import hungteen.immortal.api.enums.ElixirRarity;
+import hungteen.immortal.api.interfaces.IElixirItem;
+import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
@@ -99,6 +103,13 @@ public class ItemModelGen extends HTItemModelGen {
         //3 types of sun storage sapling.
 //        genSameModelsWithAdd(ItemRegister.SUN_STORAGE_SAPLING.get(), ItemRegister.SMALL_SUN_STORAGE_SAPLING.get(), ItemRegister.LARGE_SUN_STORAGE_SAPLING.get(), ItemRegister.ONCE_SUN_STORAGE_SAPLING.get());
 
+        /*
+        For Elixirs.
+         */
+        ItemUtil.getFilterItems(item -> item instanceof IElixirItem).forEach(item -> {
+            addedItems.add(item);
+            genNormal(item.getRegistryName().getPath(), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(((IElixirItem) item).getElixirRarity()));
+        });
 
         /*
         For mostly common items.

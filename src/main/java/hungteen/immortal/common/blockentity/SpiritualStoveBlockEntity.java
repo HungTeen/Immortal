@@ -58,16 +58,9 @@ public class SpiritualStoveBlockEntity extends ContainerBlockEntity implements M
         super(ImmortalBlockEntities.SPIRITUAL_STOVE.get(), blockPos, blockState);
     }
 
-    @Override
-    public NonNullList<ItemStack> getItems() {
-        return items;
+    public boolean isConsumingFlame(){
+        return true;
     }
-
-    @Override
-    public int[] getSlotsForFace(Direction direction) {
-        return SLOTS_FOR_DIRECTIONS;
-    }
-
 
     @Override
     public void load(CompoundTag tag) {
@@ -79,6 +72,16 @@ public class SpiritualStoveBlockEntity extends ContainerBlockEntity implements M
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
 
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItems() {
+        return items;
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        return SLOTS_FOR_DIRECTIONS;
     }
 
     @Nullable

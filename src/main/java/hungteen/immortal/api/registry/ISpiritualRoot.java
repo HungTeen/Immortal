@@ -35,5 +35,7 @@ public interface ISpiritualRoot extends IComponentEntry {
      */
     ResourceLocation getResourceLocation();
 
+    int getSortPriority();
+
 
 }

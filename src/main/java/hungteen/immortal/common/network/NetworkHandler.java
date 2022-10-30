@@ -1,5 +1,6 @@
 package hungteen.immortal.common.network;
 
+import hungteen.immortal.common.menu.ElixirFurnaceMenu;
 import hungteen.immortal.utils.Util;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -31,6 +32,7 @@ public class NetworkHandler {
         CHANNEL.registerMessage(getId(), EmptyClickPacket.class, EmptyClickPacket::encode, EmptyClickPacket::new, EmptyClickPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), StringDataPacket.class, StringDataPacket::encode, StringDataPacket::new, StringDataPacket.Handler::onMessage);
+
     }
 
     public static <MSG> void sendToServer(MSG msg){

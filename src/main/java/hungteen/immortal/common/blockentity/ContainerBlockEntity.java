@@ -7,6 +7,7 @@ import hungteen.immortal.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.ContainerHelper;
@@ -103,6 +104,20 @@ public abstract class ContainerBlockEntity extends HTNameableBlockEntity impleme
     @Override
     protected Component getDefaultName() {
         return TextComponent.EMPTY;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("ContainerItems", ContainerHelper.saveAllItems(new CompoundTag(), this.getItems()));
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if(tag.contains("ContainerItems")){
+            ContainerHelper.loadAllItems(tag.getCompound("ContainerItems"), this.getItems());
+        }
     }
 
 }

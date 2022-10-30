@@ -41,8 +41,8 @@ public class ImmortalVillage extends StructureFeature<JigsawConfiguration> {
      * Basically, this method is used for determining if the land is at a suitable height,
      * if certain other structures are too close or not, or some other restrictive condition.
      *
-     * For example, Pillager Outposts added a check to make sure it cannot spawn within 10 chunk of a Village.
-     * (Bedrock Edition seems to not have the same check)
+     * For example, Pillager Outposts added a hasRecipe to make sure it cannot spawn within 10 chunk of a Village.
+     * (Bedrock Edition seems to not have the same hasRecipe)
      *
      * If you are doing Nether structures, you'll probably want to spawn your structure on top of ledges.
      * Best way to do that is to use getBaseColumn to grab a column of blocks at the structure's x/z position.

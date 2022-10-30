@@ -4,11 +4,11 @@ import hungteen.htlib.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.*;
-import hungteen.immortal.common.RuneManager;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
+import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -17,9 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import org.lwjgl.system.CallbackI;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -34,21 +34,21 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<Item, Map<ISpiritualRoot, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
-    private static final List<ISpiritualRoot> SPIRITUAL_ROOTS = new ArrayList<>();
-    private static final List<IElixirType> ELIXIR_TYPES = new ArrayList<>();
+    private static final Map<String, ISpiritualRoot> SPIRITUAL_ROOT_MAP = new HashMap<>();
 
     @Override
     public void registerSpiritualRoot(ISpiritualRoot type) {
-        if(! SPIRITUAL_ROOTS.contains(type)){
-            SPIRITUAL_ROOTS.add(type);
-        } else{
-            Util.warn("Spiritual Root Register : Duplicate Type !");
-        }
+        SPIRITUAL_ROOT_MAP.put(type.getRegistryName(), type);
     }
 
     @Override
     public List<ISpiritualRoot> getSpiritualRoots() {
-        return Collections.unmodifiableList(SPIRITUAL_ROOTS);
+        return SPIRITUAL_ROOT_MAP.values().stream().sorted(Comparator.comparingInt(ISpiritualRoot::getSortPriority)).toList();
+    }
+
+    @Override
+    public Optional<ISpiritualRoot> getSpiritualRoot(String type) {
+        return Optional.ofNullable(SPIRITUAL_ROOT_MAP.getOrDefault(type, null));
     }
 
     @Override
@@ -136,20 +136,6 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
             return Mth.floor(value * ratio);
         }
         return 0;
-    }
-
-    @Override
-    public void registerElixirType(IElixirType type) {
-        if(ELIXIR_TYPES.contains(type)){
-            ELIXIR_TYPES.add(type);
-        } else{
-            Util.warn("Integer Data Register : Duplicate Type !");
-        }
-    }
-
-    @Override
-    public List<IElixirType> getElixirTypes() {
-        return Collections.unmodifiableList(ELIXIR_TYPES);
     }
 
     @Override

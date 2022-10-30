@@ -15,6 +15,7 @@ public class Util {
 
     // Directly reference a slf4j logger。
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static final ResourceLocation EMPTY = Util.prefix("empty");
 
     public static String id(){
         return ImmortalMod.MOD_ID;

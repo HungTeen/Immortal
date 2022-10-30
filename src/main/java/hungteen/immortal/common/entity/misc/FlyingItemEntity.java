@@ -68,7 +68,7 @@ public class FlyingItemEntity extends HTEntity {
 //            this.level.addParticle(this.getTrailParticle(), d2, d0 + 0.5D, d1, 0.0D, 0.0D, 0.0D);
 //        }
 
-        if (!level.isClientSide) {// check collide or passenger
+        if (!level.isClientSide) {// hasRecipe collide or passenger
             for (Entity entity : this.level.getEntities(this,
                     this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F),
                     EntitySelector.pushableBy(this))) {
