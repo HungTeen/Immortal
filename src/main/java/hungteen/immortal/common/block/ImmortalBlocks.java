@@ -7,6 +7,7 @@ import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
 import hungteen.immortal.common.item.ItemTabs;
 import hungteen.immortal.utils.Util;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -32,8 +34,8 @@ public class ImmortalBlocks {
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
 
     /* Entity Blocks */
-    public static final RegistryObject<Block> SPIRITUAL_STOVE = BLOCKS.register("spiritual_stove", () -> new SpiritualStove(0));
-    public static final RegistryObject<Block> ELIXIR_FURNACE = BLOCKS.register("elixir_furnace", () -> new ElixirFurnace());
+    public static final RegistryObject<Block> SPIRITUAL_FURNACE = BLOCKS.register("spiritual_furnace", () -> new SpiritualFurnace(1));
+    public static final RegistryObject<Block> ELIXIR_ROOM = BLOCKS.register("elixir_room", () -> new ElixirRoom(1));
 
     /**
      * register blocks.
@@ -62,12 +64,11 @@ public class ImmortalBlocks {
                 items.register(item);
             }
         }
-//        Arrays.asList(
-//                ).forEach(block -> {
-//            items.register(new BlockItem(block.get(), new Item.Properties().tab(PVZItemTabs.PVZ_BLOCK)).setRegistryName(block.get().getRegistryName()));
-//        });
-
-//        items.register(new SlotMachineItem().setRegistryName(SLOT_MACHINE.get().getRegistryName()));
+        Arrays.asList(
+                SPIRITUAL_FURNACE, ELIXIR_ROOM
+                ).forEach(block -> {
+            items.register(new BlockItem(block.get(), new Item.Properties().tab(ItemTabs.ARTIFACTS)).setRegistryName(block.get().getRegistryName()));
+        });
 
     }
 }

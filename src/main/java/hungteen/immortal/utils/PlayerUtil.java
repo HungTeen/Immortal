@@ -209,6 +209,10 @@ public class PlayerUtil {
 
     /* Misc Operations */
 
+    public static List<ISpiritualRoot> getSpiritualRoots(Player player){
+        return getManagerResult(player, PlayerDataManager::getSpiritualRoots, List.of());
+    }
+
     public static IRealm getPlayerRealm(Player player){
         return getManagerResult(player, m -> m.getRealm(), Realms.MORTALITY);
     }

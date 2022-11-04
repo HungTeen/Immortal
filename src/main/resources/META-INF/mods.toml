@@ -35,6 +35,6 @@ I am mortal, but i will be immortal !
 [[dependencies.immortal]]
 modId="htlib"
 mandatory=true
-versionRange="[0.5,)"
+versionRange="[0.6.3,)"
 ordering="NONE"
 side="BOTH"

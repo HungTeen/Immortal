@@ -3,25 +3,23 @@ package hungteen.immortal.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.client.RenderUtil;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.immortal.common.menu.SpiritualStoveMenu;
+import hungteen.htlib.util.MathUtil;
+import hungteen.immortal.common.menu.SpiritualFurnaceMenu;
 import hungteen.immortal.utils.Util;
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.FurnaceMenu;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-27 14:48
  **/
-public class SpiritualStoveScreen extends HTContainerScreen<SpiritualStoveMenu> {
+public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMenu> {
 
-    private static final ResourceLocation TEXTURE = Util.prefix("textures/gui/container/spiritual_stove.png");
+    private static final ResourceLocation TEXTURE = Util.prefix("textures/gui/container/spiritual_furnace.png");
 
-    public SpiritualStoveScreen(SpiritualStoveMenu screenContainer, Inventory inv, Component titleIn) {
+    public SpiritualFurnaceScreen(SpiritualFurnaceMenu screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.imageHeight = 198;
         this.imageWidth = 198;
@@ -30,6 +28,18 @@ public class SpiritualStoveScreen extends HTContainerScreen<SpiritualStoveMenu> 
     @Override
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         super.render(stack, mouseX, mouseY, partialTicks);
+
+        if(this.menu.getMaxValue() > 0){
+            RenderUtil.setTexture(TEXTURE);
+            final int len = MathUtil.getBarLen(this.menu.getFlameValue(), this.menu.getMaxValue(), 9);
+            this.blit(stack, this.leftPos + 95, this.topPos + 45 - len, 202, 3 - len, 8, len);
+
+            final int BurnCD = 30;
+            final int tick = this.minecraft.player.tickCount % BurnCD;
+            final int flameLen = MathUtil.getBarLen(tick, BurnCD, 16);
+            this.blit(stack, this.leftPos + 82, this.topPos + 4 - flameLen, 198, 14 - flameLen, 35, flameLen);
+        }
+
         this.renderTooltip(stack, mouseX, mouseY);
     }
 

@@ -24,6 +24,7 @@ public class ImmortalParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =  DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Util.id());
 
     public static final RegistryObject<SimpleParticleType> IMMORTAL_FLAME = PARTICLE_TYPES.register("immortal_flame", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SPIRITUAL_RELEASING = PARTICLE_TYPES.register("spiritual_releasing", () -> new SimpleParticleType(false));
 
 
 }

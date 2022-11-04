@@ -5,7 +5,9 @@ import hungteen.htlib.util.ParticleUtil;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.utils.Constants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -126,6 +128,8 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, components, tooltipFlag);
+        components.add(new TranslatableComponent("tooltip.immortal.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
+        components.add(new TranslatableComponent("tooltip.immortal.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
 
     @Override

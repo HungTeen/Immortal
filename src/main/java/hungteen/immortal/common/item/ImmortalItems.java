@@ -4,8 +4,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
-import hungteen.immortal.common.item.eixirs.AntidoteElixir;
-import hungteen.immortal.common.item.eixirs.FiveFlowersElixir;
+import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
 import net.minecraft.sounds.SoundEvents;
@@ -38,11 +37,15 @@ public class ImmortalItems {
     public static final RegistryObject<Item> BEHAVIOR_RUNE = ITEMS.register("behavior_rune", () -> new RuneItem(RuneItem.RuneTypes.BEHAVIOR));
 
     /* Elixir Tab Items */
-    public static final RegistryObject<Item> FIVE_FLOWERS_ELIXIR = ITEMS.register("five_flowers_elixir", FiveFlowersElixir::new);
+    public static final RegistryObject<Item> FIVE_FLOWERS_ELIXIR = ITEMS.register("five_flowers_elixir", CultivationElixir.FiveFlowersElixir::new);
     public static final RegistryObject<Item> ANTIDOTE_ELIXIR = ITEMS.register("antidote_elixir", AntidoteElixir::new);
+    public static final RegistryObject<Item> SPIRIT_RECOVERY_ELIXIR = ITEMS.register("spirit_recovery_elixir", SpiritualElixir.SpiritRecoveryElixir::new);
+    public static final RegistryObject<Item> ABSTINENCE_ELIXIR = ITEMS.register("abstinence_elixir", AbstinenceElixir::new);
+    public static final RegistryObject<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", CultivationElixir.GatherBreathElixir::new);
+    public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
 
     /* Artifact Tab Items */
-    public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(0));
+    public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(1));
 
     /* Misc Tab Items */
     public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {

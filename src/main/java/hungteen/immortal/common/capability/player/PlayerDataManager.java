@@ -255,6 +255,10 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spiritualRoots.size();
     }
 
+    public List<ISpiritualRoot> getSpiritualRoots() {
+        return Collections.unmodifiableList(this.spiritualRoots.stream().toList());
+    }
+
     /* Spell related methods */
 
     public void learnSpell(ISpell spell, int level) {

@@ -78,7 +78,7 @@ public class ImmortalEntities {
         Arrays.asList(
                 /* Creature */
                 Pair.of(GRASS_CARP, Pair.of(ColorUtil.GREEN, ColorUtil.DARK_GREEN)),
-                Pair.of(SILK_WORM, Pair.of(ColorUtil.WHITE, ColorUtil.BROWN)),
+                Pair.of(SILK_WORM, Pair.of(ColorUtil.WHITE, ColorUtil.EARTH_ROOT)),
 
                 /* Undead */
                 Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))

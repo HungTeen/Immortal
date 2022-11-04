@@ -5,13 +5,18 @@ import hungteen.htlib.util.ParticleUtil;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.client.particle.ImmortalParticles;
+import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Spells;
 import hungteen.immortal.common.network.SpellPacket;
+import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
+import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -27,6 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
@@ -103,8 +109,8 @@ public class SpellManager {
      * {@link PlayerEventHandler#onTraceBlock(Player, BlockHitResult)}
      */
     public static void checkSpellAction(Player player, BlockHitResult result) {
-        /* 隔空取物，空手获取远处的方块 */
         if(player.getMainHandItem().isEmpty()){
+            /* 隔空取物，空手获取远处的方块 */
             checkContinueSpell(player, Spells.BLOCK_PICKING, () -> {
                 final BlockState state = player.level.getBlockState(result.getBlockPos());
                 // ban bedrock like blocks.
@@ -120,6 +126,14 @@ public class SpellManager {
                     player.setItemInHand(InteractionHand.MAIN_HAND, stack);
                     player.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
                 }
+            });
+            /* 灵力释放 点火 */
+            checkContinueSpell(player, Spells.RELEASING, () -> {
+                final BlockEntity blockEntity = player.level.getBlockEntity(result.getBlockPos());
+                if(blockEntity instanceof SpiritualFurnaceBlockEntity){
+                    ((SpiritualFurnaceBlockEntity) blockEntity).start();
+                }
+                hungteen.immortal.utils.ParticleUtil.spawnLineSpiritualParticle(player.level, EntityUtil.getRGBForSpiritual(player), player.getEyePosition(), Vec3.atCenterOf(result.getBlockPos()), 2, 0, 0);
             });
         }
     }

@@ -16,12 +16,12 @@ public class ImmortalBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Util.id());
 
-    public static final RegistryObject<BlockEntityType<SpiritualStoveBlockEntity>> SPIRITUAL_STOVE = BLOCK_ENTITY_TYPES.register("spiritual_stove", () -> {
-        return BlockEntityType.Builder.of(SpiritualStoveBlockEntity::new, ImmortalBlocks.SPIRITUAL_STOVE.get()).build(null);
+    public static final RegistryObject<BlockEntityType<SpiritualFurnaceBlockEntity>> SPIRITUAL_FURNACE = BLOCK_ENTITY_TYPES.register("spiritual_furnace", () -> {
+        return BlockEntityType.Builder.of(SpiritualFurnaceBlockEntity::new, ImmortalBlocks.SPIRITUAL_FURNACE.get()).build(null);
     });
 
-    public static final RegistryObject<BlockEntityType<ElixirFurnaceBlockEntity>> ELIXIR_FURNACE = BLOCK_ENTITY_TYPES.register("elixir_furnace", () -> {
-        return BlockEntityType.Builder.of(ElixirFurnaceBlockEntity::new, ImmortalBlocks.ELIXIR_FURNACE.get()).build(null);
+    public static final RegistryObject<BlockEntityType<ElixirRoomBlockEntity>> ELIXIR_ROOM = BLOCK_ENTITY_TYPES.register("elixir_room", () -> {
+        return BlockEntityType.Builder.of(ElixirRoomBlockEntity::new, ImmortalBlocks.ELIXIR_ROOM.get()).build(null);
     });
 
 }

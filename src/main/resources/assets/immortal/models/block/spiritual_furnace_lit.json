@@ -1,0 +1,6 @@
+{
+	"parent": "immortal:block/spiritual_furnace_base",
+	"textures": {
+		"furnace": "immortal:block/spiritual_furnace_lit"
+	}
+}

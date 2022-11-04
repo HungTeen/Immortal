@@ -1,19 +1,14 @@
 package hungteen.immortal.client;
 
-import com.google.common.collect.Iterables;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.GameProfileRepository;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.BlockUtil;
-import hungteen.immortal.client.gui.screen.ElixirFurnaceScreen;
+import hungteen.immortal.client.gui.screen.ElixirRoomScreen;
 import hungteen.immortal.client.gui.screen.GolemScreen;
-import hungteen.immortal.client.gui.screen.SpiritualStoveScreen;
+import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
+import hungteen.immortal.client.particle.SpiritualReleasingParticle;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
@@ -21,13 +16,10 @@ import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.entity.human.Cultivator;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -35,10 +27,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.players.GameProfileCache;
-import net.minecraft.util.StringUtil;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -47,11 +35,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import javax.annotation.Nullable;
-import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -125,6 +108,7 @@ public class ClientRegister {
     public static void registerFactories(ParticleFactoryRegisterEvent event) {
         ParticleEngine manager = Minecraft.getInstance().particleEngine;
         manager.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
+        manager.register(ImmortalParticles.SPIRITUAL_RELEASING.get(), SpiritualReleasingParticle.Factory::new) ;
     }
 
     @SubscribeEvent
@@ -135,6 +119,8 @@ public class ClientRegister {
     public static void registerBlockRender(){
         ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_STEM.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_ATTACHED_STEM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.ELIXIR_ROOM.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.SPIRITUAL_FURNACE.get(), RenderType.cutout());
         BlockUtil.getFilterBlocks(b -> b instanceof GourdGrownBlock).forEach(block -> {
             ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
         });
@@ -142,8 +128,8 @@ public class ClientRegister {
     }
 
     public static void registerScreen() {
-        MenuScreens.register(ImmortalMenus.SPIRITUAL_STOVE.get(), SpiritualStoveScreen::new);
-        MenuScreens.register(ImmortalMenus.ELIXIR_FURNACE.get(), ElixirFurnaceScreen::new);
+        MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
+        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
         MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 

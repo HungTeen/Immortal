@@ -1,6 +1,5 @@
 package hungteen.immortal.common.network;
 
-import hungteen.immortal.common.menu.ElixirFurnaceMenu;
 import hungteen.immortal.utils.Util;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;

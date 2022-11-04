@@ -2,7 +2,6 @@ package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
 import hungteen.htlib.util.ItemUtil;
-import hungteen.immortal.api.enums.ElixirRarity;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.item.ImmortalItems;

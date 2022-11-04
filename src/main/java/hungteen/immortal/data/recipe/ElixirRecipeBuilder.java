@@ -45,21 +45,15 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
     private final int prepareCD;
     private final int smeltingCD;
     private final int ingredientLimit;
+    private final int requireFlameLevel;
 
-    public ElixirRecipeBuilder(ItemLike itemLike, int count, int prepareCD, int smeltingCD, int ingredientLimit) {
+    public ElixirRecipeBuilder(ItemLike itemLike, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel) {
         this.result = itemLike.asItem();
         this.count = count;
         this.prepareCD = prepareCD;
         this.smeltingCD = smeltingCD;
         this.ingredientLimit = ingredientLimit;
-    }
-
-    public static ElixirRecipeBuilder elixir(ItemLike itemLike, int prepareCD, int smeltingCD, int ingredientLimit) {
-        return new ElixirRecipeBuilder(itemLike, 1, prepareCD, smeltingCD, ingredientLimit);
-    }
-
-    public static ElixirRecipeBuilder elixir(ItemLike itemLike, int count, int prepareCD, int smeltingCD, int ingredientLimit) {
-        return new ElixirRecipeBuilder(itemLike, count, prepareCD, smeltingCD, ingredientLimit);
+        this.requireFlameLevel = requireFlameLevel;
     }
 
     public ElixirRecipeBuilder requires(TagKey<Item> tagKey) {
@@ -124,6 +118,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
                         this.prepareCD,
                         this.smeltingCD,
                         this.ingredientLimit,
+                        this.requireFlameLevel,
                         this.group == null ? "" : this.group,
                         this.ingredients,
                         this.spiritualMap,
@@ -151,14 +146,16 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
         private final int prepareCD;
         private final int smeltingCD;
         private final int ingredientLimit;
+        private final int requireFlameLevel;
 
-        public Result(ResourceLocation location, Item result, int count, int prepareCD, int smeltingCD, int ingredientLimit, String group, List<Ingredient> ingredients, Map<ISpiritualRoot, Integer> spiritualMap, Advancement.Builder builder, ResourceLocation advancement) {
+        public Result(ResourceLocation location, Item result, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, String group, List<Ingredient> ingredients, Map<ISpiritualRoot, Integer> spiritualMap, Advancement.Builder builder, ResourceLocation advancement) {
             this.id = location;
             this.result = result;
             this.count = count;
             this.prepareCD = prepareCD;
             this.smeltingCD = smeltingCD;
             this.ingredientLimit = ingredientLimit;
+            this.requireFlameLevel = requireFlameLevel;
             this.group = group;
             this.ingredients = ingredients;
             this.spiritualMap = spiritualMap;
@@ -185,6 +182,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
             jsonObject.addProperty("prepare_cd", this.prepareCD);
             jsonObject.addProperty("smelting_cd", this.smeltingCD);
             jsonObject.addProperty("ingredient_limit", this.ingredientLimit);
+            jsonObject.addProperty("require_flame_level", this.requireFlameLevel);
 
             JsonArray map = new JsonArray();
             this.spiritualMap.forEach((root, value) -> {

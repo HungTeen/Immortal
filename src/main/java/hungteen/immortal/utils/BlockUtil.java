@@ -11,11 +11,4 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  **/
 public class BlockUtil {
 
-    public static boolean stillValid(Player player, BlockEntity entity) {
-        if (player.level.getBlockEntity(entity.getBlockPos()) != entity) {
-            return false;
-        } else {
-            return player.distanceToSqr(MathUtil.toVector(entity.getBlockPos())) <= 64;
-        }
-    }
 }

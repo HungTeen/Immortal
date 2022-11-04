@@ -1,23 +1,32 @@
 package hungteen.immortal.common.blockentity;
 
+import hungteen.htlib.blockentity.ItemHandlerBlockEntity;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.api.interfaces.IArtifact;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.ElixirManager;
-import hungteen.immortal.common.menu.ElixirFurnaceMenu;
+import hungteen.immortal.common.item.eixirs.ElixirItem;
+import hungteen.immortal.common.menu.ElixirRoomMenu;
 import hungteen.immortal.common.recipe.ElixirRecipe;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
@@ -30,20 +39,26 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-10-27 14:59
  **/
-public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
+public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
 
+    public static final MutableComponent TITLE = new TranslatableComponent("gui.immortal.elixir_room.title");
     private static final int[] SLOTS_FOR_DIRECTIONS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     /* the rest are spiritual stone slots. */
-    protected final ItemStackHandler itemHandler = new ItemStackHandler(9);
+    protected final ItemStackHandler itemHandler = new ItemStackHandler(9){
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    };
     private final Map<ISpiritualRoot, Integer> recipeMap = new HashMap<>();
     private final Map<ISpiritualRoot, Integer> spiritualMap = new HashMap<>();
     protected final ContainerData accessData = new ContainerData() {
         @Override
         public int get(int id) {
             switch (id) {
-                case 0 : return ElixirFurnaceBlockEntity.this.smeltingTick;
-                case 1 : return ElixirFurnaceBlockEntity.this.explodeTick;
-                case 2 : return ElixirFurnaceBlockEntity.this.score;
+                case 0 : return ElixirRoomBlockEntity.this.smeltingTick;
+                case 1 : return ElixirRoomBlockEntity.this.explodeTick;
+                case 2 : return ElixirRoomBlockEntity.this.score;
             }
             Util.error("Unable to find suitable for Id");
             return 0;
@@ -52,9 +67,9 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         @Override
         public void set(int id, int value) {
             switch (id) {
-                case 0 -> ElixirFurnaceBlockEntity.this.smeltingTick = value;
-                case 1 -> ElixirFurnaceBlockEntity.this.explodeTick = value;
-                case 2 -> ElixirFurnaceBlockEntity.this.score = value;
+                case 0 -> ElixirRoomBlockEntity.this.smeltingTick = value;
+                case 1 -> ElixirRoomBlockEntity.this.explodeTick = value;
+                case 2 -> ElixirRoomBlockEntity.this.score = value;
             }
         }
 
@@ -68,22 +83,36 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
     private int prepareCD = 0;
     private int smeltingCD = 0;
     private int ingredientLimit = 0;
+    private int requireFlameLevel = 0;
     private int smeltingTick = 0;
     private int explodeTick = 0;
     private int score = 0;
 
-    public ElixirFurnaceBlockEntity(BlockPos blockPos, BlockState state) {
-        super(ImmortalBlockEntities.ELIXIR_FURNACE.get(), blockPos, state);
+    public ElixirRoomBlockEntity(BlockPos blockPos, BlockState state) {
+        super(ImmortalBlockEntities.ELIXIR_ROOM.get(), blockPos, state);
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState state, ElixirFurnaceBlockEntity blockEntity) {
+    public static void serverTick(Level level, BlockPos blockPos, BlockState state, ElixirRoomBlockEntity blockEntity) {
         /* 炸炉 */
         if(blockEntity.explodeTick >= ImmortalConfigs.getFurnaceExplodeCD()){
             blockEntity.explode();
         }
+        /* Prepare Ingredients or Smelting */
+        if(blockEntity.isSmeltingState()){
+            if(! blockEntity.hasRecipe()){
+                Util.error("Why there is no recipe ?");
+                blockEntity.reset();
+            }
+            if(blockEntity.canSmelt()){
+//                blockEntity.getBelowBlockEntity().ifPresent(e -> e.smelting(2));
+            } else{ // no flame when smelting.
+                ++ blockEntity.explodeTick;
+            }
+            blockEntity.setChanged(); // Save each tick.
+        }
         switch (blockEntity.getSmeltingState()) {
             case PREPARE_RECIPE -> {
-                if(blockEntity.receiveSpiritualFlame()){
+                if(blockEntity.canSmelt()){
                     /* Start Smelting */
                     if(blockEntity.hasRecipe()){
                         blockEntity.onSmeltStart();
@@ -94,24 +123,16 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
                 }
             }
             case PREPARE_INGREDIENTS -> {
-                /* Must */
-                if(blockEntity.hasRecipe()){
-                    ++ blockEntity.smeltingTick;
-                    blockEntity.updateSpirituals();
-                    if(blockEntity.smeltingTick >= blockEntity.prepareCD){
-                        blockEntity.onPrepareFinished();
-                    }
-                    blockEntity.setChanged();
+                ++ blockEntity.smeltingTick;
+                if(blockEntity.ingredientLimit <= 0 || blockEntity.smeltingTick >= blockEntity.prepareCD){
+                    blockEntity.onPrepareFinished();
                 }
+                blockEntity.updateSpirituals();
             }
             case SMELTING -> {
-                /* Must */
-                if(blockEntity.hasRecipe()){
-                    ++ blockEntity.smeltingTick;
-                    if(blockEntity.smeltingTick >= blockEntity.smeltingCD){
-                        blockEntity.onSuccessSmelt();
-                    }
-                    blockEntity.setChanged();
+                ++ blockEntity.smeltingTick;
+                if(blockEntity.smeltingTick >= blockEntity.smeltingCD){
+                    blockEntity.onSuccessSmelt();
                 }
             }
         }
@@ -119,6 +140,7 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
 
     public void onSmeltStart() {
         this.explodeTick = 0;
+        this.smeltingTick = 0;
         this.spiritualMap.clear();
         this.recipeMap.clear();
         this.getRecipeOpt().ifPresent(recipe -> {
@@ -126,6 +148,8 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
             this.smeltingCD = recipe.getSmeltingCD();
             this.recipeMap.putAll(recipe.getSpiritualMap());
             this.result = recipe.getResultItem().copy();
+            this.ingredientLimit = recipe.getIngredientLimit();
+            this.requireFlameLevel= recipe.getRequireFlameLevel();
         });
         for(int i = 0 ; i < this.itemHandler.getSlots() ; ++ i){
             this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
@@ -136,16 +160,18 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
 
     public void onPrepareFinished(){
         this.setState(SmeltingStates.SMELTING);
+        this.smeltingTick = 0;
         this.update();
     }
 
     public void updateSpirituals() {
         boolean flag = false;
         for (int i = 0; i < itemHandler.getSlots(); ++i) {
-            if (!itemHandler.getStackInSlot(i).isEmpty()) {
+            if (!itemHandler.getStackInSlot(i).isEmpty() && this.ingredientLimit > 0) {
                 ElixirManager.getElixirIngredient(itemHandler.getStackInSlot(i)).forEach(pair -> {
                     this.spiritualMap.put(pair.getFirst(), this.spiritualMap.getOrDefault(pair.getFirst(), 0) + pair.getSecond());
                 });
+                -- this.ingredientLimit;
                 itemHandler.setStackInSlot(i, ItemStack.EMPTY);
                 flag = true;
             }
@@ -191,13 +217,29 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         return level.getRecipeManager().getRecipeFor(ImmortalRecipes.ELIXIR_RECIPE_TYPE, container, level);
     }
 
+    public boolean isSmeltingState() {
+        return this.getSmeltingState() == SmeltingStates.PREPARE_INGREDIENTS || this.getSmeltingState() == SmeltingStates.SMELTING;
+    }
+
     public void explode(){
+        this.level.explode(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 10, true, Explosion.BlockInteraction.DESTROY);
+        getBelowBlockEntity().ifPresent(SpiritualFurnaceBlockEntity::stop);
         this.reset();
     }
 
     public void onSuccessSmelt(){
         ItemStack stack = this.result.copy();
+        ElixirItem.Accuracies accuracy = ElixirItem.getAccuracy(this.score);
+        if(accuracy == ElixirItem.Accuracies.TRASH){
+            //TODO 废丹
+        } else if(accuracy == ElixirItem.Accuracies.TOXIC){
+
+        } else{
+            ElixirItem.setAccuracy(stack, this.score);
+        }
+
         itemHandler.setStackInSlot(4, stack);
+        getBelowBlockEntity().ifPresent(SpiritualFurnaceBlockEntity::stop);
         this.reset();
     }
 
@@ -217,14 +259,14 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         this.setChanged();
     }
 
-    public boolean receiveSpiritualFlame(){
-        return getBelowBlockEntity().isPresent() && getBelowBlockEntity().get().isConsumingFlame();
+    public boolean canSmelt(){
+        return getBelowBlockEntity().isPresent() && getBelowBlockEntity().get().canSmelt();
     }
 
-    private Optional<SpiritualStoveBlockEntity> getBelowBlockEntity(){
+    private Optional<SpiritualFurnaceBlockEntity> getBelowBlockEntity(){
         BlockEntity blockEntity = level.getBlockEntity(getBlockPos().below());
-        if(blockEntity instanceof SpiritualStoveBlockEntity){
-            return Optional.of(((SpiritualStoveBlockEntity) blockEntity));
+        if(blockEntity instanceof SpiritualFurnaceBlockEntity){
+            return Optional.of(((SpiritualFurnaceBlockEntity) blockEntity));
         }
         return Optional.empty();
     }
@@ -261,6 +303,9 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         if(tag.contains("IngredientLimit")){
             this.ingredientLimit = tag.getInt("IngredientLimit");
         }
+        if(tag.contains("RequireFlameLevel")){
+            this.requireFlameLevel = tag.getInt("RequireFlameLevel");
+        }
         if(tag.contains("RecipeMap")){
             CompoundTag nbt = tag.getCompound("RecipeMap");
             int len = nbt.getInt("Len");
@@ -296,6 +341,7 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         tag.putInt("ExplodeTick", this.explodeTick);
         tag.putInt("ElixirScore", this.score);
         tag.putInt("IngredientLimit", this.ingredientLimit);
+        tag.putInt("RequireFlameLevel", this.requireFlameLevel);
         {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("Len", this.recipeMap.size());
@@ -347,10 +393,20 @@ public class ElixirFurnaceBlockEntity extends ItemHandlerBlockEntity implements 
         return ingredientLimit;
     }
 
+    @Override
+    protected Component getDefaultName() {
+        return TITLE;
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new ElixirFurnaceMenu(id, inventory, this.accessData, this.getBlockPos());
+        return new ElixirRoomMenu(id, inventory, this.accessData, this.getBlockPos());
+    }
+
+    @Override
+    public int getArtifactLevel() {
+        return this.getBlockState().getBlock() instanceof IArtifact ? ((IArtifact) this.getBlockState().getBlock()).getArtifactLevel() : 0;
     }
 
     public enum SmeltingStates {

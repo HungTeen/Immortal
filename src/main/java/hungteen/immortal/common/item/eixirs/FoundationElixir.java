@@ -1,7 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.immortal.api.ImmortalAPI;
-import net.minecraft.world.effect.MobEffects;
+import hungteen.immortal.impl.Realms;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -12,24 +11,21 @@ import java.util.Optional;
 /**
  * @program: Immortal
  * @author: HungTeen
- * @create: 2022-10-29 18:40
+ * @create: 2022-11-04 12:23
  **/
-public class AntidoteElixir extends ElixirItem{
+public class FoundationElixir extends ElixirItem{
 
-    public AntidoteElixir() {
-        super(Rarity.COMMON);
+    public FoundationElixir() {
+        super(Rarity.RARE);
     }
 
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
-        if(! level.isClientSide){
-            livingEntity.removeEffect(MobEffects.POISON);
-        }
+        //TODO 筑基
     }
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return immortal().apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+        return same(Realms.MEDITATION_STAGE10).apply(getRealm(livingEntity));
     }
-
 }

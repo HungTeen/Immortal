@@ -31,6 +31,13 @@ public class ItemTabs {
         }
     };
 
+    public static final CreativeModeTab ELIXIRS = new CreativeModeTab("immortal_elixirs") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack((ImmortalItems.FOUNDATION_ELIXIR.get()));
+        }
+    };
+
 //    public static final CreativeModeTab TALISMAN = new CreativeModeTab("immortal_talisman") {
 //        @Override
 //        public ItemStack makeIcon() {

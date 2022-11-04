@@ -1,34 +1,46 @@
 package hungteen.immortal.common.block;
 
-import hungteen.immortal.common.blockentity.ElixirFurnaceBlockEntity;
+import hungteen.htlib.block.entityblock.HTEntityBlock;
+import hungteen.htlib.util.PlayerUtil;
+import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
+import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
+import hungteen.immortal.utils.TipUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-27 12:41
  **/
-public class ElixirFurnace extends FallingBlock implements EntityBlock {
+public class ElixirRoom extends HTEntityBlock implements IArtifact {
 
-    public ElixirFurnace() {
+    private static final VoxelShape AABB = Block.box(0, 0, 0, 16, 9, 16);
+    private final int level;
+
+    public ElixirRoom(int level) {
         super(BlockBehaviour.Properties.copy(Blocks.ANVIL));
+        this.level = level;
     }
 
     @Override
@@ -37,9 +49,14 @@ public class ElixirFurnace extends FallingBlock implements EntityBlock {
             return InteractionResult.SUCCESS;
         } else {
             if(player instanceof ServerPlayer){
-                NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
-                    buf.writeBlockPos(blockPos);
-                });
+                if(level.getBlockEntity(blockPos.below()) instanceof SpiritualFurnaceBlockEntity){
+                    NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
+                        buf.writeBlockPos(blockPos);
+                    });
+                } else{
+                    PlayerUtil.sendTipTo(player, TipUtil.ELIXIR_ROOM_TIP.withStyle(ChatFormatting.RED));
+                    return InteractionResult.PASS;
+                }
             }
             return InteractionResult.CONSUME;
         }
@@ -48,12 +65,12 @@ public class ElixirFurnace extends FallingBlock implements EntityBlock {
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ElixirFurnaceBlockEntity(blockPos, blockState);
+        return new ElixirRoomBlockEntity(blockPos, blockState);
     }
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.INVISIBLE;
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -64,20 +81,18 @@ public class ElixirFurnace extends FallingBlock implements EntityBlock {
     }
 
     @Nullable
-    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos blockPos) {
-        BlockEntity blockentity = level.getBlockEntity(blockPos);
-        return blockentity instanceof MenuProvider ? (MenuProvider)blockentity : null;
-    }
-
-    @Nullable
-    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> entityType, BlockEntityType<E> entityType1, BlockEntityTicker<? super E> ticker) {
-        return entityType1 == entityType ? (BlockEntityTicker<A>)ticker : null;
-    }
-
-    @org.jetbrains.annotations.Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : createTickerHelper(blockEntityType, ImmortalBlockEntities.ELIXIR_FURNACE.get(), ElixirFurnaceBlockEntity::serverTick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide ? null : createTickerHelper(blockEntityType, ImmortalBlockEntities.ELIXIR_ROOM.get(), ElixirRoomBlockEntity::serverTick);
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
+        return AABB;
+    }
+
+    @Override
+    public int getArtifactLevel() {
+        return level;
+    }
 }

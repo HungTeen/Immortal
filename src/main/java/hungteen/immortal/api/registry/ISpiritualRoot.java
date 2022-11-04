@@ -26,6 +26,11 @@ public interface ISpiritualRoot extends IComponentEntry {
     int getWeight();
 
     /**
+     * 对应的灵气是什么颜色。
+     */
+    int getSpiritualColor();
+
+    /**
      * 元素图标的位置。
      */
     Pair<Integer, Integer> getTexturePosition();
@@ -35,6 +40,9 @@ public interface ISpiritualRoot extends IComponentEntry {
      */
     ResourceLocation getResourceLocation();
 
+    /**
+     * 炼丹炉中的排序。
+     */
     int getSortPriority();
 
 

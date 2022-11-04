@@ -26,6 +26,7 @@ import java.util.*;
  **/
 public class ElixirRecipe implements Recipe<SimpleContainer> {
 
+    public static final ResourceLocation UID = Util.prefix("elixir");
     private final ResourceLocation id;
     private final String group;
     private final NonNullList<Ingredient> ingredients;
@@ -33,9 +34,10 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     private final int prepareCD;
     private final int smeltingCD;
     private final int ingredientLimit;
+    private final int requireFlameLevel;
     private final Map<ISpiritualRoot, Integer> spiritualMap;
 
-    public ElixirRecipe(ResourceLocation id, String group, NonNullList<Ingredient> ingredients, ItemStack result, int prepareCD, int smeltingCD, int ingredientLimit, Map<ISpiritualRoot, Integer> map) {
+    public ElixirRecipe(ResourceLocation id, String group, NonNullList<Ingredient> ingredients, ItemStack result, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, Map<ISpiritualRoot, Integer> map) {
         this.id = id;
         this.group = group;
         this.result = result;
@@ -43,6 +45,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
         this.prepareCD = prepareCD;
         this.smeltingCD = smeltingCD;
         this.ingredientLimit = ingredientLimit;
+        this.requireFlameLevel = requireFlameLevel;
         this.spiritualMap = map;
     }
 
@@ -89,6 +92,11 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    @Override
     public String getGroup() {
         return group;
     }
@@ -103,6 +111,10 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
 
     public int getIngredientLimit() {
         return ingredientLimit;
+    }
+
+    public int getRequireFlameLevel() {
+        return requireFlameLevel;
     }
 
     public void put(ISpiritualRoot root, int value) {
@@ -131,6 +143,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
                 int prepareCD = GsonHelper.getAsInt(jsonObject, "prepare_cd", 600);
                 int smeltingCD = GsonHelper.getAsInt(jsonObject, "smelting_cd", 1200);
                 int ingredientLimit = GsonHelper.getAsInt(jsonObject, "ingredient_limit", 10);
+                int requireFlameLevel = GsonHelper.getAsInt(jsonObject, "require_flame_level");
 
                 JsonArray array = GsonHelper.getAsJsonArray(jsonObject, "spiritual_map", new JsonArray());
                 Map<ISpiritualRoot, Integer> map = new HashMap<>();
@@ -145,7 +158,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
                         }
                     }
                 }
-                return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, map);
+                return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, requireFlameLevel, map);
             }
         }
 
@@ -172,6 +185,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
             int prepareCD = byteBuf.readInt();
             int smeltingCD = byteBuf.readInt();
             int ingredientLimit = byteBuf.readInt();
+            int requireFlameLevel = byteBuf.readInt();
             Map<ISpiritualRoot, Integer> map = new HashMap<>();
             final int len = byteBuf.readInt();
             for(int j = 0; j < len; ++ j) {
@@ -181,7 +195,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
                     map.put(l, value);
                 });
             }
-            return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, map);
+            return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, requireFlameLevel, map);
         }
 
         public void toNetwork(FriendlyByteBuf byteBuf, ElixirRecipe recipe) {
@@ -196,6 +210,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
             byteBuf.writeInt(recipe.prepareCD);
             byteBuf.writeInt(recipe.smeltingCD);
             byteBuf.writeInt(recipe.ingredientLimit);
+            byteBuf.writeInt(recipe.requireFlameLevel);
 
             byteBuf.writeInt(recipe.spiritualMap.size());
             recipe.spiritualMap.forEach((root, value) -> {

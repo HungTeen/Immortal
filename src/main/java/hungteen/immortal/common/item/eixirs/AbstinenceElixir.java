@@ -1,6 +1,7 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.immortal.api.ImmortalAPI;
+import hungteen.htlib.util.EffectUtil;
+import hungteen.immortal.impl.Realms;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -12,24 +13,27 @@ import java.util.Optional;
 /**
  * @program: Immortal
  * @author: HungTeen
- * @create: 2022-10-29 18:40
+ * @create: 2022-11-04 11:12
  **/
-public class AntidoteElixir extends ElixirItem{
+public class AbstinenceElixir extends ElixirItem{
 
-    public AntidoteElixir() {
+    public AbstinenceElixir() {
         super(Rarity.COMMON);
     }
 
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
-            livingEntity.removeEffect(MobEffects.POISON);
+            int time = accuracy == Accuracies.NICE ? 36000 :
+                            accuracy == Accuracies.PERFECT ? 48000 :
+                                    accuracy == Accuracies.MASTER ? 72000 :
+                                            24000;
+            livingEntity.addEffect(EffectUtil.effect(MobEffects.SATURATION, time, 2));
         }
     }
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return immortal().apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+        return lessThan(Realms.FOUNDATION_BEGIN).apply(getRealm(livingEntity));
     }
-
 }

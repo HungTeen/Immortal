@@ -3,7 +3,7 @@ package hungteen.immortal.common.menu;
 import hungteen.htlib.menu.HTContainerMenu;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.blockentity.ElixirFurnaceBlockEntity;
+import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,25 +21,25 @@ import java.util.Map;
  * @author: HungTeen
  * @create: 2022-10-28 18:18
  **/
-public class ElixirFurnaceMenu extends HTContainerMenu {
+public class ElixirRoomMenu extends HTContainerMenu {
 
-    private final ElixirFurnaceBlockEntity blockEntity;
+    private final ElixirRoomBlockEntity blockEntity;
     private final ContainerData accessData;
     private final ContainerLevelAccess accessLevel;
     private final Player player;
 
-    public ElixirFurnaceMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
+    public ElixirRoomMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
         this(id, inventory, new SimpleContainerData(3), buffer.readBlockPos());
     }
 
-    public ElixirFurnaceMenu(int id, Inventory inventory, ContainerData accessData, BlockPos pos) {
-        super(id, ImmortalMenus.ELIXIR_FURNACE.get());
+    public ElixirRoomMenu(int id, Inventory inventory, ContainerData accessData, BlockPos pos) {
+        super(id, ImmortalMenus.ELIXIR_ROOM.get());
         this.accessData = accessData;
         this.player = inventory.player;
         this.accessLevel = ContainerLevelAccess.create(inventory.player.level, pos);
         BlockEntity blockEntity = inventory.player.level.getBlockEntity(pos);
-        if(blockEntity instanceof ElixirFurnaceBlockEntity){
-            this.blockEntity = (ElixirFurnaceBlockEntity) blockEntity;
+        if(blockEntity instanceof ElixirRoomBlockEntity){
+            this.blockEntity = (ElixirRoomBlockEntity) blockEntity;
             this.blockEntity.update();
         } else{
             throw new RuntimeException("Invalid block entity !");
@@ -57,7 +57,7 @@ public class ElixirFurnaceMenu extends HTContainerMenu {
 
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
-                        return ElixirFurnaceMenu.this.blockEntity.getSmeltingState() != ElixirFurnaceBlockEntity.SmeltingStates.SMELTING;
+                        return ElixirRoomMenu.this.blockEntity.getSmeltingState() != ElixirRoomBlockEntity.SmeltingStates.SMELTING;
                     }
                 });
             }
@@ -80,7 +80,7 @@ public class ElixirFurnaceMenu extends HTContainerMenu {
         return this.blockEntity.getSpiritualMap();
     }
 
-    public ElixirFurnaceBlockEntity.SmeltingStates getElixirStates() {
+    public ElixirRoomBlockEntity.SmeltingStates getElixirStates() {
         return this.blockEntity.getSmeltingState();
     }
 
@@ -107,7 +107,7 @@ public class ElixirFurnaceMenu extends HTContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.accessLevel, player, ImmortalBlocks.ELIXIR_FURNACE.get());
+        return stillValid(this.accessLevel, player, ImmortalBlocks.ELIXIR_ROOM.get());
     }
 
 }

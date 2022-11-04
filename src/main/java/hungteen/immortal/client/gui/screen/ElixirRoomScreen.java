@@ -6,14 +6,13 @@ import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.MathUtil;
 import hungteen.immortal.api.registry.ISpiritualRoot;
-import hungteen.immortal.common.blockentity.ElixirFurnaceBlockEntity;
-import hungteen.immortal.common.menu.ElixirFurnaceMenu;
+import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
+import hungteen.immortal.common.menu.ElixirRoomMenu;
 import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,14 +24,14 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-10-28 18:17
  **/
-public class ElixirFurnaceScreen extends HTContainerScreen<ElixirFurnaceMenu> {
+public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
 
-    private static final ResourceLocation TEXTURE = Util.prefix("textures/gui/container/elixir_furnace.png");
+    private static final ResourceLocation TEXTURE = Util.prefix("textures/gui/container/elixir_room.png");
     private static final int FLAME_ANIM_CD = 20;
     private static final int COUNT_PER_PAGE = 5;
     private int currentPos = 0;
 
-    public ElixirFurnaceScreen(ElixirFurnaceMenu screenContainer, Inventory inv, Component titleIn) {
+    public ElixirRoomScreen(ElixirRoomMenu screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.imageHeight = 230;
         this.imageWidth = 198;
@@ -43,7 +42,7 @@ public class ElixirFurnaceScreen extends HTContainerScreen<ElixirFurnaceMenu> {
         super.render(stack, mouseX, mouseY, partialTicks);
         //Render Title.
         RenderUtil.drawCenteredScaledString(stack, font, this.getTitle().getString(), this.leftPos + 100, this.topPos + 20, ColorUtil.WHITE, 0.6F);
-        if(this.menu.getElixirStates() != ElixirFurnaceBlockEntity.SmeltingStates.PREPARE_RECIPE){
+        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
             final String text = new TranslatableComponent("gui.immortal.elixir_furnace.remain_count", this.menu.getIngredientLimit()).getString();
             RenderUtil.drawCenteredScaledString(stack, font, text, this.leftPos + 162, this.topPos + 70, Colors.WORD, 0.6F);
 
@@ -52,7 +51,6 @@ public class ElixirFurnaceScreen extends HTContainerScreen<ElixirFurnaceMenu> {
                 RenderUtil.drawCenteredScaledString(stack, font, warn, this.leftPos + 160, this.topPos + 80, ColorUtil.DARK_RED, 0.8F);
             }
         }
-        System.out.println(this.menu.getResultItem());
         RenderUtil.setTexture(TEXTURE);
         //Render Result Item.
         final int resultX = this.leftPos + 142 + 11;
@@ -73,16 +71,16 @@ public class ElixirFurnaceScreen extends HTContainerScreen<ElixirFurnaceMenu> {
             this.blit(stack, this.leftPos + 142, this.topPos + 16, 200, 0, 38, 18);
         }
         // Render Flame.
-        if(this.menu.getElixirStates() == ElixirFurnaceBlockEntity.SmeltingStates.PREPARE_INGREDIENTS){
+        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.PREPARE_INGREDIENTS){
             this.renderFlame(stack, true);
         }
         // Render Flame & Close Slot.
-        if(this.menu.getElixirStates() == ElixirFurnaceBlockEntity.SmeltingStates.SMELTING){
+        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.SMELTING){
             this.renderFlame(stack, false);
             this.blit(stack, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
         }
         // Render Spiritual Map.
-        if(this.menu.getElixirStates() != ElixirFurnaceBlockEntity.SmeltingStates.PREPARE_RECIPE){
+        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
             this.renderSpiritualMap(stack);
 
             if(this.menu.getExplodeTick() > 0){

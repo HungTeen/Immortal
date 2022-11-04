@@ -2,6 +2,9 @@ package hungteen.immortal.client;
 
 import hungteen.immortal.CommonProxy;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.crafting.RecipeManager;
+
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -17,4 +20,8 @@ public class ClientProxy extends CommonProxy {
 
     }
 
+    @Override
+    public Optional<RecipeManager> getRecipeManager() {
+        return Optional.ofNullable(MC.level.getRecipeManager());
+    }
 }
