@@ -6,6 +6,7 @@ import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.utils.Constants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stats.Stats;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Explosion;
@@ -133,6 +135,17 @@ public class FlameGourd extends ArtifactItem {
     }
 
     @Override
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> itemStacks) {
+        if(this.allowdedIn(tab)){
+            ItemStack empty = new ItemStack(this);
+            itemStacks.add(empty);
+            ItemStack full = empty.copy();
+            setFlameAmount(full, MAX_FLAME_AMOUNT);
+            itemStacks.add(full);
+        }
+    }
+
+    @Override
     public int getUseDuration(ItemStack stack) {
         return 1000000;
     }
@@ -153,8 +166,7 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public int getMaxFlameLevel(){
-        return getArtifactLevel() == 0 ? 1 :
-                getArtifactLevel() <= 3 ? 3 :
+        return getArtifactLevel() <= 3 ? 3 :
                         getArtifactLevel() <= 6 ? 6 :
                                 Constants.MAX_FLAME_LEVEL;
     }

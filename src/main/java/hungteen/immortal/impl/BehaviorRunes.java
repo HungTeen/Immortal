@@ -87,8 +87,14 @@ public class BehaviorRunes {
 
         @Override
         public Map<MemoryModuleType<?>, MemoryStatus> requireMemoryStatus(Level level) {
-            return this.behaviorCache != null ? this.behaviorCache.entryCondition :
-                    (this.behaviorCache = this.getBehaviorFunction().apply(new IronGolem(ImmortalEntities.IRON_GOLEM.get(), level))).entryCondition;
+            if(level == null){
+                return Map.of();
+            } else{
+                if(this.behaviorCache == null){
+                    this.behaviorCache = this.getBehaviorFunction().apply(new IronGolem(ImmortalEntities.IRON_GOLEM.get(), level));
+                }
+                return this.behaviorCache.entryCondition;
+            }
         }
     }
 

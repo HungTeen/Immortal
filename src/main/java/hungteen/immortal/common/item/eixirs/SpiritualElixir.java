@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
+import hungteen.htlib.util.ColorUtil;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.utils.PlayerUtil;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,8 +22,8 @@ public abstract class SpiritualElixir extends ElixirItem{
 
     private final int spiritualValue;
 
-    public SpiritualElixir(int spiritualValue, Rarity rarity) {
-        super(rarity);
+    public SpiritualElixir(int spiritualValue, Rarity rarity, int color) {
+        super(rarity, color);
         this.spiritualValue = spiritualValue;
     }
 
@@ -35,16 +37,26 @@ public abstract class SpiritualElixir extends ElixirItem{
     }
 
     protected int getSpiritualValue(Accuracies accuracy){
-        return accuracy == Accuracies.NICE ? (int) (this.spiritualValue * 1.2F) :
-                        accuracy == Accuracies.PERFECT ? (int) (this.spiritualValue * 1.5F) :
-                                accuracy == Accuracies.MASTER ? (int) (this.spiritualValue * 2F) :
-                                        this.spiritualValue;
+        float multiply = 0;
+        switch (accuracy) {
+            case COMMON -> multiply = 1;
+            case NICE -> multiply = 1.25F;
+            case EXCELLENT -> multiply = 1.6F;
+            case PERFECT -> multiply = 2F;
+            case MASTER -> multiply = 2.5F;
+        }
+        return (int)(this.spiritualValue * multiply);
+    }
+
+    @Override
+    protected List<Object> getUsagesComponentArgs(Accuracies accuracy) {
+        return List.of(getSpiritualValue(accuracy));
     }
 
     public static class SpiritRecoveryElixir extends SpiritualElixir{
 
         public SpiritRecoveryElixir() {
-            super(50, Rarity.COMMON);
+            super(50, Rarity.COMMON, ColorUtil.IRIS_BLUE);
         }
 
         @Override

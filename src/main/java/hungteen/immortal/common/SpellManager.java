@@ -15,6 +15,7 @@ import hungteen.immortal.impl.Spells;
 import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
+import hungteen.immortal.utils.TipUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.core.particles.ParticleTypes;
@@ -165,14 +166,14 @@ public class SpellManager {
     }
 
     public static Component getCostComponent(int cost){
-        return new TranslatableComponent("info.immortal.spell_cost", cost);
+        return TipUtil.SPELL_COST.apply(cost);
     }
 
     /**
      * cd is tick, change it to seconds.
      */
     public static Component getCDComponent(int cd){
-        return new TranslatableComponent("info.immortal.spell_cd", Mth.ceil(cd * 1.0F / 20));
+        return TipUtil.SPELL_CD.apply(Mth.ceil(cd * 1.0F / 20));
     }
 
 }

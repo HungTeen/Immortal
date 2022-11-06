@@ -38,9 +38,10 @@ public abstract class ArtifactItem extends Item implements IArtifact {
         if(isAncientArtifact()){
             components.add(new TranslatableComponent("misc.immortal.artifact.ancient").withStyle(ChatFormatting.BLACK));
         } else{
-            components.add(new TranslatableComponent("misc.immortal.artifact.level_" + getArtifactLevel()).withStyle(
-                    getArtifactLevel() <= 3 ? ChatFormatting.GREEN :
-                            getArtifactLevel() <= 6 ? ChatFormatting.BLUE :
+            final int artifactLevel = getItemArtifactLevel(itemStack);
+            components.add(new TranslatableComponent("misc.immortal.artifact.level_" + artifactLevel).withStyle(
+                    artifactLevel <= 3 ? ChatFormatting.GREEN :
+                            artifactLevel <= 6 ? ChatFormatting.BLUE :
                                     ChatFormatting.DARK_PURPLE
             ));
         }
@@ -49,6 +50,10 @@ public abstract class ArtifactItem extends Item implements IArtifact {
     @Override
     public int getArtifactLevel() {
         return artifactLevel;
+    }
+
+    public int getItemArtifactLevel(ItemStack stack) {
+        return this.getArtifactLevel();
     }
 
     @Override

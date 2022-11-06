@@ -71,6 +71,10 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
         return this.accessData.get(0);
     }
 
+    public boolean triggered(){
+        return this.accessData.get(1) == 1;
+    }
+
     public int getMaxValue(){
         return this.accessData.get(2);
     }

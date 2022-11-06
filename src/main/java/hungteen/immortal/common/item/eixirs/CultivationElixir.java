@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
+import hungteen.htlib.util.ColorUtil;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Realms;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,8 +23,8 @@ public abstract class CultivationElixir extends ElixirItem{
 
     private final int cultivation;
 
-    public CultivationElixir(int cultivation, Rarity rarity) {
-        super(rarity);
+    public CultivationElixir(int cultivation, Rarity rarity, int color) {
+        super(rarity, color);
         this.cultivation = cultivation;
     }
 
@@ -30,15 +32,32 @@ public abstract class CultivationElixir extends ElixirItem{
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
             if(livingEntity instanceof Player){
-                PlayerUtil.addIntegerData((Player) livingEntity, PlayerDatas.CULTIVATION, this.cultivation);
+                PlayerUtil.addIntegerData((Player) livingEntity, PlayerDatas.CULTIVATION, getCultivation(accuracy));
             }
         }
+    }
+
+    public int getCultivation(Accuracies accuracy){
+        float multiply = 0;
+        switch (accuracy) {
+            case COMMON -> multiply = 1;
+            case NICE -> multiply = 1.25F;
+            case EXCELLENT -> multiply = 1.5F;
+            case PERFECT -> multiply = 1.75F;
+            case MASTER -> multiply = 2F;
+        }
+        return (int)(this.cultivation * multiply);
+    }
+
+    @Override
+    protected List<Object> getUsagesComponentArgs(Accuracies accuracy) {
+        return List.of(getCultivation(accuracy));
     }
 
     public static class FiveFlowersElixir extends CultivationElixir{
 
         public FiveFlowersElixir() {
-            super(1, Rarity.COMMON);
+            super(1, Rarity.COMMON, ColorUtil.LITTLE_YELLOW1);
         }
 
         @Override
@@ -50,7 +69,7 @@ public abstract class CultivationElixir extends ElixirItem{
     public static class GatherBreathElixir extends CultivationElixir{
 
         public GatherBreathElixir() {
-            super(4, Rarity.COMMON);
+            super(4, Rarity.COMMON, ColorUtil.YELLOW_GREEN);
         }
 
         @Override

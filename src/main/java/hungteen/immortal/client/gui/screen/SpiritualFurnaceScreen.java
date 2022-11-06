@@ -32,12 +32,16 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
         if(this.menu.getMaxValue() > 0){
             RenderUtil.setTexture(TEXTURE);
             final int len = MathUtil.getBarLen(this.menu.getFlameValue(), this.menu.getMaxValue(), 9);
-            this.blit(stack, this.leftPos + 95, this.topPos + 45 - len, 202, 3 - len, 8, len);
+            this.blit(stack, this.leftPos + 95, this.topPos + 45 + 9 - len, 202, 3 + 9 - len, 8, len);
 
+            }
+
+        if(this.menu.triggered() && this.minecraft.player != null){
+            RenderUtil.setTexture(TEXTURE);
             final int BurnCD = 30;
             final int tick = this.minecraft.player.tickCount % BurnCD;
-            final int flameLen = MathUtil.getBarLen(tick, BurnCD, 16);
-            this.blit(stack, this.leftPos + 82, this.topPos + 4 - flameLen, 198, 14 - flameLen, 35, flameLen);
+            final int len = MathUtil.getBarLen(tick, BurnCD, 16) + 1;
+            this.blit(stack, this.leftPos + 82, this.topPos + 4 + 16 - len, 198, 14 + 16 - len, 35, len);
         }
 
         this.renderTooltip(stack, mouseX, mouseY);

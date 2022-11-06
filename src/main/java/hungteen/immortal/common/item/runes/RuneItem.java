@@ -35,7 +35,7 @@ public class RuneItem extends Item {
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         super.fillItemCategory(tab, stacks);
-        if(tab == ItemTabs.RUNES) {
+        if(this.allowdedIn(tab)) {
             switch (type) {
                 case MEMORY -> {
                     RuneManager.getMemoryRunes().forEach(type -> {
@@ -61,8 +61,6 @@ public class RuneItem extends Item {
             }
         }
     }
-
-
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {

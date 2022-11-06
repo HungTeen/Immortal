@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
+import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.EffectUtil;
 import hungteen.immortal.impl.Realms;
 import net.minecraft.world.effect.MobEffects;
@@ -8,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,18 +20,30 @@ import java.util.Optional;
 public class AbstinenceElixir extends ElixirItem{
 
     public AbstinenceElixir() {
-        super(Rarity.COMMON);
+        super(Rarity.COMMON, ColorUtil.WHITE);
     }
 
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
-            int time = accuracy == Accuracies.NICE ? 36000 :
-                            accuracy == Accuracies.PERFECT ? 48000 :
-                                    accuracy == Accuracies.MASTER ? 72000 :
-                                            24000;
-            livingEntity.addEffect(EffectUtil.effect(MobEffects.SATURATION, time, 2));
+            livingEntity.addEffect(EffectUtil.effect(MobEffects.SATURATION, getDuration(accuracy), 2));
         }
+    }
+
+    public int getDuration(Accuracies accuracy){
+        switch (accuracy) {
+            case COMMON: return 24000;
+            case NICE: return 30000;
+            case EXCELLENT: return 36000;
+            case PERFECT: return 48000;
+            case MASTER: return 72000;
+            default: return 0;
+        }
+    }
+
+    @Override
+    protected List<Object> getUsagesComponentArgs(Accuracies accuracy) {
+        return List.of(getDuration(accuracy) / 20);
     }
 
     @Override

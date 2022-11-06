@@ -35,11 +35,11 @@
   "tooltip.immortal.flame_gourd.flame_level": "Flame Level: %d",
   "tooltip.immortal.flame_gourd.flame_amount": "Flame Amount: %d",
   "tooltip.immortal.elixir.accuracy": "Accuracy: %s",
-  "tooltip.immortal.five_flowers_elixir": "Increase 1 cultivation after eating",
+  "tooltip.immortal.five_flowers_elixir": "Increase %d cultivation after eating",
   "tooltip.immortal.antidote_elixir": "Remove special poison after eating",
-  "tooltip.immortal.spirit_recovery_elixir": "Recover 50 spiritual mana after eating",
-  "tooltip.immortal.abstinence_elixir": "No need to eat for a long time after eating",
-  "tooltip.immortal.gather_breath_elixir": "Increase 4 cultivation after eating",
+  "tooltip.immortal.spirit_recovery_elixir": "Recover %d spiritual mana after eating",
+  "tooltip.immortal.abstinence_elixir": "No need to eat for %d seconds after eating",
+  "tooltip.immortal.gather_breath_elixir": "Increase %d cultivation after eating",
   "tooltip.immortal.foundation_elixir": "Have chance to breakthrough to Foundation Realm after eating",
   "_comment4": "--------------------------------------------Entity-------------------------------------------",
   "_comment5": "--------------------------------------------Sound-------------------------------------------",
@@ -145,6 +145,13 @@
   "misc.immortal.artifact.level_7" : "Uncommon Spiritual Artifact",
   "misc.immortal.artifact.level_8" : "Rare Spiritual Artifact",
   "misc.immortal.artifact.level_9" : "Epic Spiritual Artifact",
-  "misc.immortal.artifact.ancient" : "Ancient Artifact"
+  "misc.immortal.artifact.ancient" : "Ancient Artifact",
 
+  "misc.immortal.accuracy.trash" : "(Trash)",
+  "misc.immortal.accuracy.toxic" : "(Toxic)",
+  "misc.immortal.accuracy.common" : "(Common)",
+  "misc.immortal.accuracy.nice" : "(Nice)",
+  "misc.immortal.accuracy.excellent" : "(Excellent)",
+  "misc.immortal.accuracy.perfect" : "(Perfect)",
+  "misc.immortal.accuracy.master" : "(Master)"
 }

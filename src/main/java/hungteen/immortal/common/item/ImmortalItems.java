@@ -4,6 +4,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
+import hungteen.immortal.common.item.artifacts.RawArtifact;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
@@ -45,6 +46,7 @@ public class ImmortalItems {
     public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
 
     /* Artifact Tab Items */
+    public static final RegistryObject<Item> RAW_ARTIFACT = ITEMS.register("raw_artifact", RawArtifact::new);
     public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(1));
 
     /* Misc Tab Items */

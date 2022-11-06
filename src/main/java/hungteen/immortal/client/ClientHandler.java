@@ -6,8 +6,11 @@ import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import hungteen.htlib.util.ItemUtil;
 import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.item.eixirs.ElixirItem;
 import net.minecraft.Util;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
@@ -24,6 +27,16 @@ import java.util.function.Consumer;
  * @create: 2022-10-23 12:35
  **/
 public class ClientHandler {
+
+    /**
+     * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
+     */
+    public static void registerItemColors(){
+        ItemColors itemColors = ClientProxy.MC.getItemColors();
+        ItemUtil.getFilterItems(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
+            itemColors.register((stack, id) -> elixirItem.getColor(id), elixirItem);
+        });
+    }
 
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}

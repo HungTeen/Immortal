@@ -8,6 +8,7 @@ import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
+import hungteen.immortal.client.model.item.ImmortalBakeModel;
 import hungteen.immortal.client.particle.SpiritualReleasingParticle;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.block.ImmortalBlocks;
@@ -16,6 +17,7 @@ import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.entity.ImmortalEntities;
+import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.Minecraft;
@@ -27,14 +29,21 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @program: Immortal
@@ -53,6 +62,7 @@ public class ClientRegister {
             registerBlockRender();
             registerScreen();
             MinecraftForgeClient.registerTooltipComponentFactory(ElementToolTip.class, ClientElementToolTip::new);
+            ClientHandler.registerItemColors();
         });
     }
 
@@ -109,6 +119,15 @@ public class ClientRegister {
         ParticleEngine manager = Minecraft.getInstance().particleEngine;
         manager.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
         manager.register(ImmortalParticles.SPIRITUAL_RELEASING.get(), SpiritualReleasingParticle.Factory::new) ;
+    }
+
+    @SubscribeEvent
+    public static void bakeModel(ModelBakeEvent ev) {
+        final ResourceLocation origin = Objects.requireNonNull(ImmortalItems.FLAME_GOURD.get().getRegistryName());
+        BakedModel model = ev.getModelManager().getModel(new ModelResourceLocation(origin, "inventory"));
+        ImmortalBakeModel newModel = new ImmortalBakeModel(model);
+        final ResourceLocation target = Objects.requireNonNull(ImmortalItems.RAW_ARTIFACT.get().getRegistryName());
+        ev.getModelRegistry().put(new ModelResourceLocation(target, "inventory"), newModel);
     }
 
     @SubscribeEvent

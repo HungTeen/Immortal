@@ -35,11 +35,11 @@
   "tooltip.immortal.flame_gourd.flame_level": "储火等级：%d",
   "tooltip.immortal.flame_gourd.flame_amount": "灵火储量：%d",
   "tooltip.immortal.elixir.accuracy": "良率：%s",
-  "tooltip.immortal.five_flowers_elixir": "服用后增加1点修为",
+  "tooltip.immortal.five_flowers_elixir": "服用后增加%d点修为",
   "tooltip.immortal.antidote_elixir": "服用后可以解世间奇毒",
-  "tooltip.immortal.spirit_recovery_elixir": "服用后恢复50点灵力",
-  "tooltip.immortal.abstinence_elixir": "服用后可以长时间不再进食",
-  "tooltip.immortal.gather_breath_elixir": "服用后增加4点修为",
+  "tooltip.immortal.spirit_recovery_elixir": "服用后恢复%d点灵力",
+  "tooltip.immortal.abstinence_elixir": "服用后可以在%d秒内无需进食",
+  "tooltip.immortal.gather_breath_elixir": "服用后增加%d点修为",
   "tooltip.immortal.foundation_elixir": "服用后有概率突破瓶颈，成功筑基",
   "_comment4": "--------------------------------------------实体-------------------------------------------",
   "_comment5": "--------------------------------------------音效-------------------------------------------",
@@ -145,5 +145,13 @@
   "misc.immortal.artifact.level_7" : "低阶灵宝",
   "misc.immortal.artifact.level_8" : "中阶灵宝",
   "misc.immortal.artifact.level_9" : "高阶灵宝",
-  "misc.immortal.artifact.ancient" : "古宝"
+  "misc.immortal.artifact.ancient" : "古宝",
+
+  "misc.immortal.accuracy.trash" : "（废丹）",
+  "misc.immortal.accuracy.toxic" : "（毒丹）",
+  "misc.immortal.accuracy.common" : "（普通）",
+  "misc.immortal.accuracy.nice" : "（良丹）",
+  "misc.immortal.accuracy.excellent" : "（精丹）",
+  "misc.immortal.accuracy.perfect" : "（地丹）",
+  "misc.immortal.accuracy.master" : "（天丹）"
 }

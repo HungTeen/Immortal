@@ -87,12 +87,14 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
     private int smeltingTick = 0;
     private int explodeTick = 0;
     private int score = 0;
+    private boolean explode = false;
 
     public ElixirRoomBlockEntity(BlockPos blockPos, BlockState state) {
         super(ImmortalBlockEntities.ELIXIR_ROOM.get(), blockPos, state);
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState state, ElixirRoomBlockEntity blockEntity) {
+        blockEntity.explode = false;
         /* 炸炉 */
         if(blockEntity.explodeTick >= ImmortalConfigs.getFurnaceExplodeCD()){
             blockEntity.explode();
@@ -106,7 +108,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
             if(blockEntity.canSmelt()){
 //                blockEntity.getBelowBlockEntity().ifPresent(e -> e.smelting(2));
             } else{ // no flame when smelting.
-                ++ blockEntity.explodeTick;
+                blockEntity.explode = true;
             }
             blockEntity.setChanged(); // Save each tick.
         }
@@ -117,7 +119,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
                     if(blockEntity.hasRecipe()){
                         blockEntity.onSmeltStart();
                     } else{
-                        ++ blockEntity.explodeTick;
+                        blockEntity.explode = true;
                         blockEntity.setChanged();
                     }
                 }
@@ -135,6 +137,11 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
                     blockEntity.onSuccessSmelt();
                 }
             }
+        }
+        if(blockEntity.explode){
+            ++ blockEntity.explodeTick;
+        } else{
+            -- blockEntity.explodeTick;
         }
     }
 
@@ -176,30 +183,38 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
                 flag = true;
             }
         }
-        this.calculateDifference();
         if(flag){
+            this.calculateDifference();
             this.update();
         }
         this.setChanged();
     }
 
+    /**
+     * 计算准确度，以及判定辅料添加有没有导致炸炉。
+     */
     public void calculateDifference(){
         Set<ISpiritualRoot> roots = new HashSet<>();
         roots.addAll(this.getRecipeMap().keySet());
         roots.addAll(this.getSpiritualMap().keySet());
         List<ISpiritualRoot> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualRoot::getSortPriority)).toList();
-        float sum = 0;
-        boolean exceeded = false;
-        for(int i = 0; i < list.size(); ++ i){
-            final int origin = this.getRecipeMap().getOrDefault(list.get(i), 0);
-            final int dif = origin - this.getSpiritualMap().getOrDefault(list.get(i), 0);
-            exceeded |= (dif < 0);
-            sum += dif * dif * 1F / origin / origin;
+        if(list.size() > 0){
+            float sum = 0;
+            for (ISpiritualRoot root : list) {
+                final int origin = this.getRecipeMap().getOrDefault(root, 0);
+                final int dif = origin - this.getSpiritualMap().getOrDefault(root, 0);
+                if (dif < 0 || origin == 0) { // 炸炉。
+                    this.explode = true;
+                    this.score = 0;
+                    return;
+                }
+                sum += dif * dif * 1F / origin / origin;
+            }
+            this.score = Math.abs((int)(100F * sum / list.size()) - 100);
+        } else{
+            this.score = 100;
         }
-        if(exceeded){
-            ++ this.explodeTick;
-        }
-        this.score = Math.abs((int)(100F * sum / list.size()) - 100);
+        ElixirItem.setAccuracy(this.result, this.score);
     }
 
     /**
@@ -230,14 +245,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
     public void onSuccessSmelt(){
         ItemStack stack = this.result.copy();
         ElixirItem.Accuracies accuracy = ElixirItem.getAccuracy(this.score);
-        if(accuracy == ElixirItem.Accuracies.TRASH){
-            //TODO 废丹
-        } else if(accuracy == ElixirItem.Accuracies.TOXIC){
-
-        } else{
-            ElixirItem.setAccuracy(stack, this.score);
-        }
-
+        ElixirItem.setAccuracy(stack, this.score);
         itemHandler.setStackInSlot(4, stack);
         getBelowBlockEntity().ifPresent(SpiritualFurnaceBlockEntity::stop);
         this.reset();
