@@ -1,7 +1,7 @@
 package hungteen.immortal.common.block;
 
 import hungteen.htlib.block.entityblock.HTEntityBlock;
-import hungteen.htlib.util.PlayerUtil;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.api.interfaces.IArtifact;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
@@ -15,8 +15,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
  **/
 public class ElixirRoom extends HTEntityBlock implements IArtifact {
 
-    private static final VoxelShape AABB = Block.box(0, 0, 0, 16, 9, 16);
+    private static final VoxelShape AABB = Block.box(1, 0, 1, 6, 16, 15);
     private final int level;
 
     public ElixirRoom(int level) {
@@ -50,11 +51,11 @@ public class ElixirRoom extends HTEntityBlock implements IArtifact {
         } else {
             if(player instanceof ServerPlayer){
                 if(level.getBlockEntity(blockPos.below()) instanceof SpiritualFurnaceBlockEntity){
-                    NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
+                    NetworkHooks.openScreen((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
                         buf.writeBlockPos(blockPos);
                     });
                 } else{
-                    PlayerUtil.sendTipTo(player, TipUtil.ELIXIR_ROOM_TIP.withStyle(ChatFormatting.RED));
+                    PlayerHelper.sendTipTo(player, TipUtil.ELIXIR_ROOM_TIP.withStyle(ChatFormatting.RED));
                     return InteractionResult.PASS;
                 }
             }

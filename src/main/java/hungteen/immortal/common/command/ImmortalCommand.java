@@ -4,17 +4,17 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpell;
 import hungteen.immortal.api.registry.ISpiritualRoot;
-import hungteen.immortal.utils.PlayerUtil;
+import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.common.world.ImmortalTeleporters;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
+import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -213,7 +213,7 @@ public class ImmortalCommand {
     private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data) {
         for (ServerPlayer player : targets) {
             final int result = PlayerUtil.getIntegerData(player, data);
-            source.sendSuccess(new TextComponent(data.getComponent().getString() + " : " + result), true);
+            source.sendSuccess(Component.literal(data.getComponent().getString() + " : " + result), true);
         }
         return targets.size();
     }

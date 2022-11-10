@@ -1,17 +1,11 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.htlib.util.ItemUtil;
-import hungteen.immortal.client.render.item.RawArtifactItemRender;
-import net.minecraft.client.ClientRecipeBook;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import hungteen.htlib.util.helper.ItemHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.IItemRenderProperties;
-
-import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -31,7 +25,7 @@ public class RawArtifact extends ArtifactItem {
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if(tab == CreativeModeTab.TAB_SEARCH){
-            ItemUtil.getFilterItems(ArtifactItem.class::isInstance).forEach(item -> {
+            ItemHelper.getFilterItems(ArtifactItem.class::isInstance).forEach(item -> {
                 ItemStack stack = new ItemStack(this);
                 setArtifactItem(stack, new ItemStack(item));
                 stacks.add(stack);

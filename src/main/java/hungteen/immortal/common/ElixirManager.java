@@ -1,13 +1,11 @@
 package hungteen.immortal.common;
 
-import hungteen.htlib.util.ItemUtil;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.api.registry.ISpiritualRoot;
-import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.common.tag.ImmortalItemTags;
+import hungteen.immortal.impl.SpiritualRoots;
 import hungteen.immortal.utils.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +13,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: Immortal
@@ -24,14 +24,10 @@ import java.util.*;
  **/
 public class ElixirManager {
 
-    private static final List<IElixirItem> ELIXIRS = new ArrayList<>();
-
     /**
      * {@link ImmortalMod#setUp(FMLCommonSetupEvent)}
      */
     public static void init(){
-        ELIXIRS.clear();
-        ELIXIRS.addAll(ItemUtil.getFilterItems(item -> item instanceof IElixirItem).stream().map(item -> (IElixirItem) item).toList());
         registerElixirIngredients();
     }
 
@@ -128,14 +124,6 @@ public class ElixirManager {
             ImmortalAPI.get().registerElixirIngredient(pair.getFirst(), pair.getSecond());
         });
 
-    }
-
-    public static int getElixirTypeId(IElixirItem item){
-        return ELIXIRS.indexOf(item);
-    }
-
-    public static IElixirItem getElixirTypeId(int id){
-        return ELIXIRS.get(id);
     }
 
     public static Collection<Pair<ISpiritualRoot, Integer>> getElixirIngredient(ItemStack stack){

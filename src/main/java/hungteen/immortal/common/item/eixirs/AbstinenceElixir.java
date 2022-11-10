@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.ColorUtil;
-import hungteen.htlib.util.EffectUtil;
+import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.EffectHelper;
 import hungteen.immortal.impl.Realms;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class AbstinenceElixir extends ElixirItem{
 
     public AbstinenceElixir() {
-        super(Rarity.COMMON, ColorUtil.WHITE);
+        super(Rarity.COMMON, ColorHelper.WHITE);
     }
 
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
-            livingEntity.addEffect(EffectUtil.effect(MobEffects.SATURATION, getDuration(accuracy), 2));
+            livingEntity.addEffect(EffectHelper.effect(MobEffects.SATURATION, getDuration(accuracy), 2));
         }
     }
 

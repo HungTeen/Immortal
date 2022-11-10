@@ -25,68 +25,68 @@ import net.minecraftforge.fml.common.Mod;
 public class ImmortalPlayerEvents {
 
     @SubscribeEvent
-    public static void tickPlayer(TickEvent.PlayerTickEvent ev) {
-        if(! ev.player.level.isClientSide){
-            PlayerUtil.tick(ev.player);
+    public static void tickPlayer(TickEvent.PlayerTickEvent event) {
+        if(! event.player.level.isClientSide){
+            PlayerUtil.tick(event.player);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent ev) {
-        if (! ev.getPlayer().level.isClientSide) {
-            PlayerEventHandler.onPlayerLogin(ev.getPlayer());
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (! event.getEntity().level.isClientSide) {
+            PlayerEventHandler.onPlayerLogin(event.getEntity());
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent ev) {
-        if (! ev.getPlayer().level.isClientSide) {
-            PlayerEventHandler.onPlayerLogout(ev.getPlayer());
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (! event.getEntity().level.isClientSide) {
+            PlayerEventHandler.onPlayerLogout(event.getEntity());
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone ev) {
-        PlayerEventHandler.clonePlayerData(ev.getOriginal(), ev.getPlayer(), ev.isWasDeath());
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        PlayerEventHandler.clonePlayerData(event.getOriginal(), event.getEntity(), event.isWasDeath());
     }
 
     @SubscribeEvent
-    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            PlayerUtil.getOptManager(ev.getPlayer()).ifPresent(PlayerDataManager::syncToClient);
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if(! event.getEntity().level.isClientSide) {
+            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            PlayerUtil.getOptManager(ev.getPlayer()).ifPresent(PlayerDataManager::syncToClient);
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if(! event.getEntity().level.isClientSide) {
+            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post ev) {
-        SpellManager.checkSpellAction(ev.getPlayer(), ev.getSpell(), ev.getLevel());
+    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post event) {
+        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getLevel());
     }
 
     @SubscribeEvent
-    public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            PlayerEventHandler.rayTrace(ev.getPlayer());
+    public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific event) {
+        if(! event.getEntity().level.isClientSide) {
+            PlayerEventHandler.rayTrace(event.getEntity());
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            PlayerEventHandler.rayTrace(ev.getPlayer());
+    public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        if(! event.getEntity().level.isClientSide) {
+            PlayerEventHandler.rayTrace(event.getEntity());
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock ev) {
-        if(! ev.getPlayer().level.isClientSide) {
-            PlayerEventHandler.rayTrace(ev.getPlayer());
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if(! event.getEntity().level.isClientSide) {
+            PlayerEventHandler.rayTrace(event.getEntity());
         }
     }
 
@@ -94,14 +94,14 @@ public class ImmortalPlayerEvents {
      * Only Client side !
      */
     @SubscribeEvent
-    public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty ev) {
+    public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
         NetworkHandler.sendToServer(new EmptyClickPacket());
     }
 
     @SubscribeEvent
-    public static void onPlayerTossItem(ItemTossEvent ev) {
-        if(! ev.getPlayer().level.isClientSide){
-            PlayerEventHandler.onTossItem(ev.getPlayer(), ev.getEntityItem());
+    public static void onPlayerTossItem(ItemTossEvent event) {
+        if(! event.getPlayer().level.isClientSide){
+            PlayerEventHandler.onTossItem(event.getPlayer(), event.getEntity());
         }
     }
 

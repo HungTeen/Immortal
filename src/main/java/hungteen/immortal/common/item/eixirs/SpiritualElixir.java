@@ -1,7 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.ColorUtil;
-import hungteen.immortal.api.ImmortalAPI;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -56,7 +55,7 @@ public abstract class SpiritualElixir extends ElixirItem{
     public static class SpiritRecoveryElixir extends SpiritualElixir{
 
         public SpiritRecoveryElixir() {
-            super(50, Rarity.COMMON, ColorUtil.IRIS_BLUE);
+            super(50, Rarity.COMMON, ColorHelper.IRIS_BLUE);
         }
 
         @Override

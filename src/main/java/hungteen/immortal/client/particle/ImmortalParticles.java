@@ -4,7 +4,7 @@ import hungteen.immortal.client.ClientRegister;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
  *
  * Step 1. make your own particle class. <br>
  * Step 2. register particle type here. <br>
- * Step 3. bind your particle factory at {@link ClientRegister#registerFactories(ParticleFactoryRegisterEvent)}
+ * Step 3. bind your particle factory at {@link ClientRegister#registerFactories(RegisterParticleProvidersEvent)}
  **/
 public class ImmortalParticles {
 

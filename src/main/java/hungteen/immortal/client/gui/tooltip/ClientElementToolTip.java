@@ -1,20 +1,16 @@
 package hungteen.immortal.client.gui.tooltip;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import hungteen.htlib.client.RenderUtil;
-import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
-import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal

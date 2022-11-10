@@ -1,12 +1,9 @@
 package hungteen.immortal.common.world.biome;
 
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.sounds.Music;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.levelgen.GenerationStep;
 
 import javax.annotation.Nullable;
 
@@ -29,17 +26,16 @@ public class SpiritualLandBiomes {
         BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         float f = 0.8F;
-        return biome(Biome.Precipitation.RAIN, Biome.BiomeCategory.PLAINS, f, 0.4F, spawnBuilder, generationBuilder, null);
+        return biome(Biome.Precipitation.RAIN, f, 0.4F, spawnBuilder, generationBuilder, null);
     }
 
-    private static Biome biome(Biome.Precipitation precipitation, Biome.BiomeCategory category, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
-        return biome(precipitation, category, temperature, downfall, 4159204, 329011, spawnBuilder, generationBuilder, music);
+    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
+        return biome(precipitation, temperature, downfall, 4159204, 329011, spawnBuilder, generationBuilder, music);
     }
 
-    private static Biome biome(Biome.Precipitation precipitation, Biome.BiomeCategory category, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
+    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
         return new Biome.BiomeBuilder()
                 .precipitation(precipitation)
-                .biomeCategory(category)
                 .temperature(temperature)
                 .downfall(downfall)
                 .specialEffects((new BiomeSpecialEffects.Builder())

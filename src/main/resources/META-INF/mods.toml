@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[43,)"
 license="GNU LESSER GENERAL PUBLIC LICENSE"
 issueTrackerURL="https://github.com/HungTeen/Immortal/issues"
 
@@ -16,25 +16,46 @@ authors="HungTeen, GrassCrap"
 description='''
 I am mortal, but i will be immortal !
 '''
+
+[modproperties.immortal]
 #configBackground="pvz:textures/block/amethyst_block.png"
 
 [[dependencies.immortal]]
     modId="forge"
     mandatory=true
-    versionRange="[40,)"
-    ordering="NONE"
-    side="BOTH"
+    versionRange="[43,)"
 
 [[dependencies.immortal]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2,1.19)"
-    ordering="NONE"
-    side="BOTH"
+    versionRange="[1.19.2,1.20)"
 
 [[dependencies.immortal]]
 modId="htlib"
 mandatory=true
-versionRange="[0.6.3,)"
-ordering="NONE"
-side="BOTH"
+versionRange="[0.7.2,)"
+
+[[dependencies.immortal]]
+modId="jei"
+mandatory=false
+versionRange="[11.4.0.285,)"
+
+[[dependencies.immortal]]
+modId="curios"
+mandatory=false
+versionRange="[1.19.2-5.1.1.0,)"
+
+[[dependencies.immortal]]
+modId="patchouli"
+mandatory=false
+versionRange="[1.19.2-77,)"
+
+[[dependencies.immortal]]
+modId="jade"
+mandatory=false
+versionRange="[8.3.2,)"
+
+[[dependencies.immortal]]
+modId="configured"
+mandatory=false
+versionRange="[2.0.1,)"

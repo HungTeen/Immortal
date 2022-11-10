@@ -1,17 +1,14 @@
 package hungteen.immortal.utils;
 
-import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.Triple;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.interfaces.IHasRoot;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -31,7 +28,7 @@ public class EntityUtil {
         int g = 0;
         int b = 0;
         for (ISpiritualRoot root : roots) {
-            Triple<Integer, Integer, Integer> triple = ColorUtil.getRGB(root.getSpiritualColor());
+            Triple<Integer, Integer, Integer> triple = ColorHelper.getRGB(root.getSpiritualColor());
             r += triple.getLeft();
             g += triple.getMid();
             b += triple.getRight();

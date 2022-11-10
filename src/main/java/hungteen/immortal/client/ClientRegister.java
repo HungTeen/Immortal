@@ -1,49 +1,32 @@
 package hungteen.immortal.client;
 
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
-import hungteen.htlib.util.BlockUtil;
+import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.immortal.client.event.OverlayEvents;
 import hungteen.immortal.client.gui.screen.ElixirRoomScreen;
 import hungteen.immortal.client.gui.screen.GolemScreen;
 import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
-import hungteen.immortal.client.model.item.ImmortalBakeModel;
-import hungteen.immortal.client.particle.SpiritualReleasingParticle;
-import hungteen.immortal.client.render.entity.*;
-import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.block.plants.GourdGrownBlock;
-import hungteen.immortal.client.event.handler.OverlayHandler;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
+import hungteen.immortal.client.particle.SpiritualReleasingParticle;
+import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.item.ImmortalItems;
+import hungteen.immortal.common.item.eixirs.ElixirItem;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @program: Immortal
@@ -55,14 +38,9 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
-        OverlayHandler.registerOverlay();
         ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
-            ImmortalKeyBinds.register();
-            registerBlockRender();
             registerScreen();
-            MinecraftForgeClient.registerTooltipComponentFactory(ElementToolTip.class, ClientElementToolTip::new);
-            ClientHandler.registerItemColors();
         });
     }
 
@@ -115,34 +93,44 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
-    public static void registerFactories(ParticleFactoryRegisterEvent event) {
-        ParticleEngine manager = Minecraft.getInstance().particleEngine;
-        manager.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
-        manager.register(ImmortalParticles.SPIRITUAL_RELEASING.get(), SpiritualReleasingParticle.Factory::new) ;
+    public static void registerFactories(RegisterParticleProvidersEvent event) {
+        event.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
+        event.register(ImmortalParticles.SPIRITUAL_RELEASING.get(), SpiritualReleasingParticle.Factory::new) ;
     }
 
     @SubscribeEvent
-    public static void bakeModel(ModelBakeEvent ev) {
-        final ResourceLocation origin = Objects.requireNonNull(ImmortalItems.FLAME_GOURD.get().getRegistryName());
-        BakedModel model = ev.getModelManager().getModel(new ModelResourceLocation(origin, "inventory"));
-        ImmortalBakeModel newModel = new ImmortalBakeModel(model);
-        final ResourceLocation target = Objects.requireNonNull(ImmortalItems.RAW_ARTIFACT.get().getRegistryName());
-        ev.getModelRegistry().put(new ModelResourceLocation(target, "inventory"), newModel);
+    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
+        OverlayEvents.registerOverlay(event);
     }
+
+    @SubscribeEvent
+    public static void registerGuiOverlays(RegisterKeyMappingsEvent event){
+        ImmortalKeyBinds.register(event);
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event){
+        ItemHelper.getFilterItems(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
+            event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
+        });
+    }
+
+    @SubscribeEvent
+    public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
+        event.register(ElementToolTip.class, ClientElementToolTip::new);
+    }
+
+//    @SubscribeEvent
+//    public static void bakeModel(Bake ev) {
+//        final ResourceLocation origin = Objects.requireNonNull(ImmortalItems.FLAME_GOURD.get().getRegistryName());
+//        BakedModel model = ev.getModelManager().getModel(new ModelResourceLocation(origin, "inventory"));
+//        ImmortalBakeModel newModel = new ImmortalBakeModel(model);
+//        final ResourceLocation target = Objects.requireNonNull(ImmortalItems.RAW_ARTIFACT.get().getRegistryName());
+//        ev.getModelRegistry().put(new ModelResourceLocation(target, "inventory"), newModel);
+//    }
 
     @SubscribeEvent
     public static void onTextureStitch(TextureStitchEvent ev){
-
-    }
-
-    public static void registerBlockRender(){
-        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_STEM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.GOURD_ATTACHED_STEM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.ELIXIR_ROOM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ImmortalBlocks.SPIRITUAL_FURNACE.get(), RenderType.cutout());
-        BlockUtil.getFilterBlocks(b -> b instanceof GourdGrownBlock).forEach(block -> {
-            ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-        });
 
     }
 

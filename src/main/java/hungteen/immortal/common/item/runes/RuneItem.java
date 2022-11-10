@@ -1,6 +1,5 @@
 package hungteen.immortal.common.item.runes;
 
-import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.common.RuneManager;
 import hungteen.immortal.common.item.ItemTabs;
 import net.minecraft.core.NonNullList;
@@ -35,7 +34,7 @@ public class RuneItem extends Item {
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         super.fillItemCategory(tab, stacks);
-        if(this.allowdedIn(tab)) {
+        if(this.allowedIn(tab)) {
             switch (type) {
                 case MEMORY -> {
                     RuneManager.getMemoryRunes().forEach(type -> {

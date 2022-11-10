@@ -4,7 +4,9 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.OptionalLong;
@@ -140,24 +142,22 @@ public class SpiritualLandDimension {
 
     // TODO 修改type。
     public static DimensionType getDimensionType() {
-        return DimensionType.create(
+        return new DimensionType(
                 OptionalLong.empty(),
                 true,
                 false,
                 false,
                 true,
                 1.0D,
-                false,
-                false,
                 true,
                 false,
-                true,
                 -64,
                 384,
                 384,
                 BlockTags.INFINIBURN_OVERWORLD,
-                DimensionType.OVERWORLD_EFFECTS,
-                0.0F
+                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
+                0.0F,
+                new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
         );
     }
 

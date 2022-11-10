@@ -2,9 +2,8 @@ package hungteen.immortal.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.checkerframework.checker.units.qual.K;
 
 /**
  * @program: Immortal
@@ -19,8 +18,8 @@ public class ImmortalKeyBinds {
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
      */
-    public static void register(){
-        ClientRegistry.registerKeyBinding(SPELL_CIRCLE);
+    public static void register(RegisterKeyMappingsEvent event){
+        event.register(SPELL_CIRCLE);
     }
 
     public static int getKeyValue(KeyMapping key){

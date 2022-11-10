@@ -1,13 +1,12 @@
 package hungteen.immortal.data;
 
-import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.data.HTBlockStateGen;
+import hungteen.htlib.util.helper.BlockHelper;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,12 +36,13 @@ public class BlockStateGen extends HTBlockStateGen {
         /*
         Crops with age property.
          */
-        Arrays.asList(
-                Pair.of(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE)
-//                Pair.of(BlockRegister.TOXIC_SHROOM.get(), ToxicShroomBlock.AGE),
-        ).forEach(pair -> {
-            cropBlockState(pair.getFirst(), pair.getSecond());
-        });
+//        Arrays.asList(
+//                Pair.of(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE)
+////                Pair.of(BlockRegister.TOXIC_SHROOM.get(), ToxicShroomBlock.AGE),
+//        ).forEach(pair -> {
+//            crop(pair.getFirst(), pair.getSecond(), cutout());
+//        });
+        crop(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
 
 //        /*
 //        RotatedPillarBlocks.
@@ -158,16 +158,16 @@ public class BlockStateGen extends HTBlockStateGen {
          */
         Arrays.asList(
                 ImmortalBlocks.GOURD_ATTACHED_STEM.get()
-        ).forEach(b -> {
-            horizontalBlock(b, models().cubeAll(name(b), blockRes(b)));
-            this.addedBlocks.add(b);
+        ).forEach(block -> {
+            horizontalBlock(block, models().cubeAll(name(block), BlockHelper.blockTexture(block)).renderType(cutout()));
+            this.addedBlocks.add(block);
         });
 
         /*
         Common Blocks.
          */
         for (Block block : ForgeRegistries.BLOCKS) {
-            if (!block.getRegistryName().getNamespace().equals(this.modId) || addedBlocks.contains(block)) {
+            if (!Util.in(key(block)) || addedBlocks.contains(block)) {
                 continue;
             }
             if (block instanceof GourdGrownBlock) {//normal block items.
@@ -178,19 +178,18 @@ public class BlockStateGen extends HTBlockStateGen {
         /*
         Last step for all normal block models.
          */
-        for (Block b : ForgeRegistries.BLOCKS) {
-            if (b.getRegistryName().getNamespace().equals(this.modId) && !addedBlocks.contains(b)) {
-                simpleBlock(b);
+        for (Block block : ForgeRegistries.BLOCKS) {
+            if (Util.in(key(block)) && !addedBlocks.contains(block)) {
+                simpleBlock(block);
             }
         }
     }
 
-    protected ResourceLocation blockRes(Block block){
-        return new ResourceLocation(block.getRegistryName().getNamespace(), "block/" + block.getRegistryName().getPath());
-    }
-
+    /**
+     * Cutout gourd blocks.
+     */
     public void gourd(Block block) {
-        horizontalBlock(block, models().singleTexture(name(block), Util.prefix("gourd_block"), "gourd", blockRes(block)));
+        horizontalBlock(block, models().singleTexture(name(block), Util.prefix("gourd_block"), "gourd", BlockHelper.blockTexture(block)).renderType(cutout()));
         this.addedBlocks.add(block);
     }
 

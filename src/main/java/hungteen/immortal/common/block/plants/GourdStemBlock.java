@@ -5,11 +5,10 @@ import hungteen.htlib.block.plants.HTStemGrownBlock;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.item.ImmortalItems;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Random;
 
 /**
  * @program: Immortal
@@ -23,7 +22,7 @@ public class GourdStemBlock extends HTStemBlock {
     }
 
     @Override
-    protected HTStemGrownBlock getResultFruit(Random random) {
+    protected HTStemGrownBlock getResultFruit(RandomSource random) {
         WeightList<HTStemGrownBlock> list = new WeightList<>();
         for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
             list.addItem(type.getGourdGrownBlock(), type.getWeight());

@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
+import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.api.registry.IRealm;
@@ -9,7 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -56,7 +56,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     }
 
     public ItemStack eatBy(Level level, LivingEntity livingEntity, ItemStack stack) {
-        level.gameEvent(livingEntity, GameEvent.EAT, livingEntity.eyeBlockPosition());
+        level.gameEvent(livingEntity, GameEvent.EAT, livingEntity.getEyePosition());
         level.playSound((Player)null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), livingEntity.getEatingSound(stack), SoundSource.NEUTRAL, 1.0F, 1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
 //        livingEntity.addEatEffect(stack, level, this);
         Optional<Boolean> canOpt = checkEating(level, livingEntity, stack);
@@ -111,16 +111,17 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         final Accuracies accuracy = getAccuracy(stack);
         if(Accuracies.hasUsage(accuracy)){
-            components.add(new TranslatableComponent("tooltip." + this.getRegistryName().getNamespace() + "." + this.getRegistryName().getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
+            final ResourceLocation location = ItemHelper.getKey(this);
+            components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
         }
-        components.add(new TranslatableComponent("tooltip.immortal.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
+        components.add(Component.translatable("tooltip.immortal.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
                 .append(Accuracies.getComponent(accuracy))
         );
     }
 
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-        if(this.allowdedIn(tab)){
+        if(this.allowedIn(tab)){
             for (Accuracies value : Accuracies.values()) {
                 if(tab == CreativeModeTab.TAB_SEARCH || value == Accuracies.COMMON || value == Accuracies.MASTER){
                     ItemStack stack = new ItemStack(this);
@@ -234,7 +235,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         private final List<ChatFormatting> formats;
 
         public static MutableComponent getComponent(Accuracies accuracy){
-            return new TranslatableComponent("misc.immortal.accuracy." + accuracy.toString().toLowerCase(Locale.ROOT)).withStyle(accuracy.getFormats());
+            return Component.translatable("misc.immortal.accuracy." + accuracy.toString().toLowerCase(Locale.ROOT)).withStyle(accuracy.getFormats());
         }
 
         public static boolean hasUsage(Accuracies accuracy){

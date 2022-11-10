@@ -4,21 +4,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.ClientProxy;
 import hungteen.htlib.client.RenderUtil;
-import hungteen.htlib.util.ColorUtil;
-import hungteen.htlib.util.MathUtil;
 import hungteen.htlib.util.Pair;
-import hungteen.immortal.common.SpellManager;
+import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpell;
 import hungteen.immortal.client.ClientDatas;
-import hungteen.immortal.client.event.OverlayEvents;
+import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,21 +48,9 @@ public class OverlayHandler {
     }
 
     /**
-     * {@link hungteen.immortal.client.ClientRegister#setUpClient(FMLClientSetupEvent)}
+     *
      */
-    public static void registerOverlay() {
-        OverlayRegistry.registerOverlayTop("Spiritual Mana Bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if (!ClientProxy.MC.options.hideGui && canRenderManaBar()) {
-                gui.setupOverlayRenderState(true, false);
-                renderSpiritualMana(poseStack, screenHeight, screenWidth);
-            }
-        });
-    }
-
-    /**
-     * {@link OverlayEvents#onPostRenderOverlay(net.minecraftforge.client.event.RenderGameOverlayEvent.Post)}
-     */
-    public static void renderSpellCircle(PoseStack stack, int width, int height) {
+    public static void renderSpellCircle(PoseStack stack, int height, int width) {
         final int leftPos = (width - CIRCLE_LEN) >> 1;
         final int topPos = (height - CIRCLE_LEN) >> 1;
         final int selectPos = PlayerUtil.getSpellSelectedPosition(ClientProxy.MC.player);
@@ -103,18 +88,14 @@ public class OverlayHandler {
                     if (progress > 0) {
                         text = text + " - " + SpellManager.getCDComponent((int) (spell.getDuration() * progress)).getString();
                     }
-                    RenderUtil.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, ColorUtil.WHITE, 1F);
+                    RenderUtil.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, ColorHelper.WHITE, 1F);
                 }
             }
         }
         stack.popPose();
     }
 
-    public static boolean canRenderManaBar() {
-        return ClientProxy.MC.player != null && (PlayerUtil.getSpiritualMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
-    }
-
-    protected static void renderSpiritualMana(PoseStack poseStack, int screenHeight, int screenWidth) {
+    public static void renderSpiritualMana(PoseStack poseStack, int screenHeight, int screenWidth) {
         ClientProxy.MC.getProfiler().push("spiritualManaBar");
         RenderUtil.setTexture(OVERLAY);
         final int x = screenWidth / 2 - 91;
@@ -124,10 +105,10 @@ public class OverlayHandler {
         final int cultivation = PlayerUtil.getCultivation(ClientProxy.MC.player);
         ClientProxy.MC.gui.blit(poseStack, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
         if(maxMana > 0){
-            final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
+            final int backManaLen = MathHelper.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
             ClientProxy.MC.gui.blit(poseStack, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
             if(currentMana > maxMana && cultivation > maxMana){
-                final int barLen = MathUtil.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
+                final int barLen = MathHelper.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
                 ClientProxy.MC.gui.blit(poseStack, x + 1, y + 1, 1, 16, barLen, MANA_BAR_HEIGHT - 2);
                 if(ClientDatas.ManaWarningTick == 0){
                     ClientDatas.ManaWarningTick = Constants.MANA_WARNING_CD;
@@ -145,12 +126,16 @@ public class OverlayHandler {
         ClientProxy.MC.getProfiler().push("spiritualValue");
         final float scale = 1;
         final String text = currentMana + " / " + maxMana;
-        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 - 1, ColorUtil.BLACK, scale);
-        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 + 1, ColorUtil.BLACK, scale);
-        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) + 1, y - 6, ColorUtil.BLACK, scale);
-        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) - 1, y - 6, ColorUtil.BLACK, scale);
+        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 - 1, ColorHelper.BLACK, scale);
+        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 + 1, ColorHelper.BLACK, scale);
+        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) + 1, y - 6, ColorHelper.BLACK, scale);
+        RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) - 1, y - 6, ColorHelper.BLACK, scale);
         RenderUtil.drawCenteredScaledString(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6, Colors.SPIRITUAL_MANA, scale);
         ClientProxy.MC.getProfiler().pop();
+    }
+
+    public static boolean canRenderManaBar() {
+        return ClientProxy.MC.player != null && (PlayerUtil.getSpiritualMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
     }
 
 }

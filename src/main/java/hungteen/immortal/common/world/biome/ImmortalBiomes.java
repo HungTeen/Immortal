@@ -23,7 +23,7 @@ public class ImmortalBiomes {
     private static final Map<ResourceKey<Biome>, Biome> BIOME_MAP = new HashMap<>();
 
     public static final ResourceKey<Biome> SPIRITUAL_PLAINS = register("spiritual_plains");
-    public static final ResourceKey<Biome> SPIRITUAL_DESERT = register("spiritual_plains");
+    public static final ResourceKey<Biome> SPIRITUAL_DESERT = register("spiritual_desert");
 
     /**
      * {@link hungteen.immortal.ImmortalMod#defferRegister(IEventBus)}

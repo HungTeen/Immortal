@@ -2,12 +2,12 @@ package hungteen.immortal.common.menu;
 
 import hungteen.htlib.menu.HTContainerMenu;
 import hungteen.immortal.common.entity.golem.GolemEntity;
-import hungteen.immortal.common.entity.human.HumanEntity;
 import hungteen.immortal.utils.EntityUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @program: Immortal
@@ -36,6 +36,11 @@ public class GolemMenu extends HTContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         golemContainer.stopOpen(player);
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int slotId) {
+        return ItemStack.EMPTY;
     }
 
     @Override

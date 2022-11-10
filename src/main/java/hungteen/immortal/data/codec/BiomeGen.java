@@ -2,14 +2,14 @@ package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
 import hungteen.htlib.data.HTCodecGen;
-import hungteen.immortal.utils.Util;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
+import hungteen.immortal.utils.Util;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -30,7 +30,7 @@ public class BiomeGen extends HTCodecGen {
     }
 
     @Override
-    public void run(HashCache cache) {
+    public void run(CachedOutput cache) {
         WritableRegistry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
 
         this.getBiomes().forEach((rl, biome) -> {
@@ -46,7 +46,6 @@ public class BiomeGen extends HTCodecGen {
 
     private Map<ResourceLocation, Biome> getBiomes() {
         return ImmortalBiomes.biomes().entrySet().stream()
-                .peek(biomeEntry -> biomeEntry.getValue().setRegistryName(biomeEntry.getKey().location()))
                 .collect(Collectors.toUnmodifiableMap(entry -> entry.getKey().location(), Map.Entry::getValue));
     }
 

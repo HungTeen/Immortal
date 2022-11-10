@@ -3,6 +3,7 @@ package hungteen.immortal.data.recipe;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.utils.Util;
@@ -11,10 +12,8 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -174,7 +173,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
             }
             jsonObject.add("ingredients", jsonarray);
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item", Registry.ITEM.getKey(this.result).toString());
+            jsonobject.addProperty("item", ItemHelper.getKey(this.result).toString());
             if (this.count > 1) {
                 jsonobject.addProperty("count", this.count);
             }

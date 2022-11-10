@@ -1,7 +1,6 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
-import hungteen.htlib.util.ItemUtil;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.item.ImmortalItems;
@@ -11,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -45,9 +45,9 @@ public class ItemModelGen extends HTItemModelGen {
          */
         Arrays.asList(
                 ImmortalItems.GOURD_SEEDS.get()
-        ).forEach(i -> {
-            genNormalModel(i);
-            this.addedItems.add(i);
+        ).forEach(item -> {
+            genNormalModel(item);
+            this.addedItems.add(item);
         });
 
 //        /*
@@ -99,39 +99,48 @@ public class ItemModelGen extends HTItemModelGen {
 //            genHeld(i.getRegistryName().getPath(), Util.prefix("item/" + i.getRegistryName().getPath()));
 //        });
 
+        /*
+        For large hand held item.
+         */
+        Arrays.asList(
+                ImmortalItems.BRONZE_SWORD.get()
+        ).forEach(item -> {
+            addedItems.add(item);
+            genLargeHeld(name(item), Util.prefix("item/" + name(item)));
+        });
+
         //3 types of sun storage sapling.
 //        genSameModelsWithAdd(ItemRegister.SUN_STORAGE_SAPLING.get(), ItemRegister.SMALL_SUN_STORAGE_SAPLING.get(), ItemRegister.LARGE_SUN_STORAGE_SAPLING.get(), ItemRegister.ONCE_SUN_STORAGE_SAPLING.get());
 
         /*
-        For Elixirs.
-         */
-        ItemUtil.getFilterItems(item -> item instanceof IElixirItem).forEach(item -> {
-            addedItems.add(item);
-            genNormal(item.getRegistryName().getPath(), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(((IElixirItem) item).getElixirRarity()));
-        });
-
-        /*
         For mostly common items.
          */
-        for (Item i : ForgeRegistries.ITEMS) {
-            if (!i.getRegistryName().getNamespace().equals(this.modid) || addedItems.contains(i)){
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (!Util.in(key(item)) || addedItems.contains(item)){
                 continue;
             }
-            if (i instanceof SpawnEggItem) {//for spawn eggs.
-                addedItems.add(i);
-                getBuilder(i.getRegistryName().getPath()).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
-            } else if (i instanceof BlockItem) {//normal block items.
-                genBlockModel(((BlockItem) i).getBlock());
+            if (item instanceof SpawnEggItem) { // for spawn eggs.
+                addedItems.add(item);
+                getBuilder(name(item)).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+            } else if(item instanceof IElixirItem){ // for elixir items.
+                addedItems.add(item);
+                genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(((IElixirItem) item).getElixirRarity()));
+            } else if (item instanceof BlockItem) { // normal block items.
+                genBlockModel(((BlockItem) item).getBlock());
             }
         }
 
         /*
         Last step for all normal item models.
          */
-        for (Item i : ForgeRegistries.ITEMS) {
-            if (i.getRegistryName().getNamespace().equals(this.modid) && !addedItems.contains(i)) {
-                genNormal(i.getRegistryName().getPath(), Util.prefix("item/" + i.getRegistryName().getPath()));
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (Util.in(key(item)) && !addedItems.contains(item)) {
+                genNormal(name(item), Util.prefix("item/" + name(item)));
             }
         }
+    }
+
+    protected ItemModelBuilder genLargeHeld(String name, ResourceLocation... layers) {
+        return this.gen(name, Util.prefixName("item/large_handheld"), layers);
     }
 }

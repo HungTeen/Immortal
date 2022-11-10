@@ -3,7 +3,7 @@ package hungteen.immortal.client.render.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.immortal.client.model.entity.GrassCarpModel;
 import hungteen.immortal.common.entity.creature.GrassCarp;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -17,8 +17,11 @@ import net.minecraft.world.item.ItemStack;
  **/
 public class GrassCarpItemLayer<T extends GrassCarp> extends RenderLayer<T, GrassCarpModel<T>> {
 
-    public GrassCarpItemLayer(RenderLayerParent<T, GrassCarpModel<T>> parent) {
+    private final ItemInHandRenderer itemInHandRenderer;
+
+    public GrassCarpItemLayer(RenderLayerParent<T, GrassCarpModel<T>> parent, ItemInHandRenderer itemInHandRenderer) {
         super(parent);
+        this.itemInHandRenderer = itemInHandRenderer;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class GrassCarpItemLayer<T extends GrassCarp> extends RenderLayer<T, Gras
         poseStack.translate(0, 0.75, 0);
 
         ItemStack itemstack = grassCarp.getMainHandItem();
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(grassCarp, itemstack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLightIn);
+        this.itemInHandRenderer.renderItem(grassCarp, itemstack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLightIn);
         poseStack.popPose();
     }
 }

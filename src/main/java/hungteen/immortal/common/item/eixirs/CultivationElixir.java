@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.ColorUtil;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Realms;
@@ -57,7 +57,7 @@ public abstract class CultivationElixir extends ElixirItem{
     public static class FiveFlowersElixir extends CultivationElixir{
 
         public FiveFlowersElixir() {
-            super(1, Rarity.COMMON, ColorUtil.LITTLE_YELLOW1);
+            super(1, Rarity.COMMON, ColorHelper.LITTLE_YELLOW1);
         }
 
         @Override
@@ -69,7 +69,7 @@ public abstract class CultivationElixir extends ElixirItem{
     public static class GatherBreathElixir extends CultivationElixir{
 
         public GatherBreathElixir() {
-            super(4, Rarity.COMMON, ColorUtil.YELLOW_GREEN);
+            super(4, Rarity.COMMON, ColorHelper.YELLOW_GREEN);
         }
 
         @Override

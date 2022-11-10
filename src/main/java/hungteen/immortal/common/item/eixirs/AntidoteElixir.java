@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.ColorUtil;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AntidoteElixir extends ElixirItem{
 
     public AntidoteElixir() {
-        super(Rarity.COMMON, ColorUtil.DARK_GREEN);
+        super(Rarity.COMMON, ColorHelper.DARK_GREEN);
     }
 
     @Override

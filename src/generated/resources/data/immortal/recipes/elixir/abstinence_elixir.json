@@ -1,0 +1,49 @@
+{
+  "type": "immortal:elixir_serializer",
+  "ingredient_limit": 12,
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    }
+  ],
+  "prepare_cd": 600,
+  "require_flame_level": 1,
+  "result": {
+    "item": "immortal:abstinence_elixir"
+  },
+  "smelting_cd": 2400,
+  "spiritual_map": [
+    {
+      "spiritual_root": "immortal:metal",
+      "spiritual_value": 5
+    },
+    {
+      "spiritual_root": "immortal:water",
+      "spiritual_value": 15
+    },
+    {
+      "spiritual_root": "immortal:earth",
+      "spiritual_value": 10
+    },
+    {
+      "spiritual_root": "immortal:wood",
+      "spiritual_value": 10
+    },
+    {
+      "spiritual_root": "immortal:fire",
+      "spiritual_value": 15
+    }
+  ]
+}

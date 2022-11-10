@@ -1,17 +1,17 @@
 package hungteen.immortal.common.recipe;
 
-import com.google.gson.*;
-import hungteen.htlib.util.Pair;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.utils.Util;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -88,7 +88,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeType<?> getType() {
-        return ImmortalRecipes.ELIXIR_RECIPE_TYPE;
+        return ImmortalRecipes.ELIXIR_RECIPE_TYPE.get();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     /**
      * Copy from {@link ShapelessRecipe.Serializer}.
      */
-    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ElixirRecipe> {
+    public static class Serializer implements RecipeSerializer<ElixirRecipe> {
 
         @Override
         public ElixirRecipe fromJson(ResourceLocation location, JsonObject jsonObject) {
@@ -165,10 +165,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
         private static NonNullList<Ingredient> itemsFromJson(JsonArray jsonArray) {
             NonNullList<Ingredient> ingredients = NonNullList.create();
             for(int i = 0; i < jsonArray.size(); ++i) {
-                Ingredient ingredient = Ingredient.fromJson(jsonArray.get(i));
-                if (net.minecraftforge.common.ForgeConfig.SERVER.skipEmptyShapelessCheck.get() || !ingredient.isEmpty()) {
-                    ingredients.add(ingredient);
-                }
+                ingredients.add(Ingredient.fromJson(jsonArray.get(i)));
             }
             return ingredients;
         }

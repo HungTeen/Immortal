@@ -4,7 +4,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
-import hungteen.immortal.common.item.artifacts.RawArtifact;
+import hungteen.immortal.common.item.artifacts.SwordItem;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
@@ -14,9 +14,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -46,8 +46,9 @@ public class ImmortalItems {
     public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
 
     /* Artifact Tab Items */
-    public static final RegistryObject<Item> RAW_ARTIFACT = ITEMS.register("raw_artifact", RawArtifact::new);
+//    public static final RegistryObject<Item> RAW_ARTIFACT = ITEMS.register("raw_artifact", RawArtifact::new);
     public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(1));
+    public static final RegistryObject<Item> BRONZE_SWORD = ITEMS.register("bronze_sword", () -> new SwordItem(1, 2, 3));
 
     /* Misc Tab Items */
     public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {
@@ -58,7 +59,7 @@ public class ImmortalItems {
      * register items.
      * {@link ImmortalMod#ImmortalMod()}
      */
-    public static void registerItems(RegistryEvent.Register<Item> ev){
+    public static void registerItems(RegisterEvent event){
     }
 
 

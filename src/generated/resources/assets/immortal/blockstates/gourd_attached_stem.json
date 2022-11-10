@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "immortal:block/gourd_attached_stem",
+      "y": 90
+    },
     "facing=north": {
       "model": "immortal:block/gourd_attached_stem"
     },
@@ -10,10 +14,6 @@
     "facing=west": {
       "model": "immortal:block/gourd_attached_stem",
       "y": 270
-    },
-    "facing=east": {
-      "model": "immortal:block/gourd_attached_stem",
-      "y": 90
     }
   }
 }

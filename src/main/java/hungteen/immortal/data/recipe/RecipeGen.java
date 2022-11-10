@@ -1,5 +1,6 @@
 package hungteen.immortal.data.recipe;
 
+import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
@@ -126,7 +127,7 @@ public class RecipeGen extends RecipeProvider {
         ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel).unlockedBy("has_elixir_furnace", has(ImmortalBlocks.ELIXIR_ROOM.get()));
         ingredients.forEach(builder::requires);
         map.forEach(builder::put);
-        builder.save(consumer, Util.prefix("elixir/" + result.asItem().getRegistryName().getPath()));
+        builder.save(consumer, Util.prefix("elixir/" + ItemHelper.getKey(result.asItem()).getPath()));
     }
 
 }

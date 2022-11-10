@@ -1,9 +1,5 @@
 package hungteen.immortal.utils;
 
-import hungteen.htlib.util.MathUtil;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
-
 /**
  * @program: Immortal
  * @author: HungTeen

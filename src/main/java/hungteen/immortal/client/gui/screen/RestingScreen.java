@@ -9,7 +9,7 @@ import hungteen.immortal.client.ImmortalKeyBinds;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -93,7 +93,7 @@ public class RestingScreen extends HTScreen {
         private boolean isSelected;
 
         public SpellSlot(int spellId, int posX, int posY) {
-            super(posX - 10, posY - 10, 20, 20, TextComponent.EMPTY);
+            super(posX - 10, posY - 10, 20, 20, Component.empty());
             this.spellId = spellId;
         }
 

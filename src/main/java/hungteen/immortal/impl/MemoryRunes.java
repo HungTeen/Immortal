@@ -1,12 +1,10 @@
 package hungteen.immortal.impl;
 
 import hungteen.immortal.common.RuneManager;
-import hungteen.immortal.common.entity.golem.GolemEntity;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
 import java.util.ArrayList;
@@ -64,7 +62,7 @@ public class MemoryRunes {
 
         @Override
         public MutableComponent getComponent() {
-            return new TranslatableComponent("rune." + getModID() + ".memory." + this.getName()).withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
+            return Component.translatable("rune." + getModID() + ".memory." + this.getName()).withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
         }
 
         @Override

@@ -5,11 +5,11 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.event.handler.OverlayHandler;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.system.CallbackI;
 
 /**
  * @program: Immortal
@@ -20,30 +20,35 @@ import org.lwjgl.system.CallbackI;
 public class OverlayEvents {
 
     @SubscribeEvent
-    public static void onPostRenderOverlay(RenderGameOverlayEvent.Post ev) {
-        if(ev.getType() == RenderGameOverlayEvent.ElementType.ALL){
-//            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && InputEvents.ShowOverlay && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
-//                /* render resources on left upper corner */
-//                if(! ClientProxy.MC.options.renderDebug){
-//                    PVZOverlayHandler.renderResources(ev.getMatrixStack(), ev.getWindow().getGuiScaledWidth(), ev.getWindow().getGuiScaledHeight());
-//                }
-//
-//            }
-            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
-                if(ClientDatas.ShowSpellCircle){
-                    OverlayHandler.renderSpellCircle(ev.getMatrixStack(), ev.getWindow().getGuiScaledWidth(), ev.getWindow().getGuiScaledHeight());
-                }
+    public static void onPostRenderOverlay(RenderGuiOverlayEvent.Pre ev) {
+        if(ev.getOverlay() == VanillaGuiOverlay.EXPERIENCE_BAR.type() || ev.getOverlay() == VanillaGuiOverlay.JUMP_BAR.type()){
+            if(OverlayHandler.canRenderManaBar()){
+                ev.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
-    public static void onPostRenderOverlay(RenderGameOverlayEvent.PreLayer ev) {
-        if(ev.getOverlay() == ForgeIngameGui.EXPERIENCE_BAR_ELEMENT || ev.getOverlay() == ForgeIngameGui.JUMP_BAR_ELEMENT){
-            if(OverlayHandler.canRenderManaBar()){
-                ev.setCanceled(true);
+    public static void onPostRenderOverlay(RenderGuiOverlayEvent.Post ev) {
+    }
+
+    /**
+     * {@link hungteen.immortal.client.ClientRegister#registerGuiOverlays(RegisterGuiOverlaysEvent)}
+     */
+    public static void registerOverlay(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("spiritual_mana_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            if (!ClientProxy.MC.options.hideGui && OverlayHandler.canRenderManaBar()) {
+                gui.setupOverlayRenderState(true, false);
+                OverlayHandler.renderSpiritualMana(poseStack, screenHeight, screenWidth);
             }
-        }
+        });
+        event.registerAboveAll("spell_circle", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
+                if(ClientDatas.ShowSpellCircle){
+                    OverlayHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
+                }
+            }
+        });
     }
 
 }

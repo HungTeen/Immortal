@@ -2,6 +2,7 @@ package hungteen.immortal.utils;
 
 import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.WeightList;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealm;
@@ -13,9 +14,9 @@ import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Realms;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
@@ -49,7 +50,7 @@ public class PlayerUtil {
      * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。
      * 3. 否则依据权重在普通五行灵根中选择若干个。
      */
-    public static List<ISpiritualRoot> getSpiritualRoots(Random random){
+    public static List<ISpiritualRoot> getSpiritualRoots(RandomSource random){
         final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
         double chance = random.nextDouble();
         for(int i = 0; i < rootChances.length; ++ i){
@@ -62,9 +63,9 @@ public class PlayerUtil {
     }
 
     /**
-     * {@link #getSpiritualRoots(Random)}
+     * {@link #getSpiritualRoots(RandomSource)}
      */
-    private static List<ISpiritualRoot> randomSpawnRoots(Random random, int rootCount){
+    private static List<ISpiritualRoot> randomSpawnRoots(RandomSource random, int rootCount){
         final List<ISpiritualRoot> rootChosen = new ArrayList<>();
         if(rootCount == 1){
             final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots(), ISpiritualRoot::getWeight);
@@ -78,14 +79,14 @@ public class PlayerUtil {
 
     public static void showPlayerSpiritualRoots(Player player){
         PlayerUtil.getOptManager(player).ifPresent(l -> {
-            final BaseComponent component = new TranslatableComponent("misc.immortal.spiritual_root");
+            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root");
             for(ISpiritualRoot spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
                 if(l.hasSpiritualRoot(spiritualRoot)){
-                    component.append(new TextComponent(","));
-                    component.append(new TranslatableComponent("misc.immortal.root." + spiritualRoot.getName()));
+                    component.append(Component.literal(","));
+                    component.append(Component.translatable("misc.immortal.root." + spiritualRoot.getName()));
                 }
             }
-            hungteen.htlib.util.PlayerUtil.sendMsgTo(player, component);
+            PlayerHelper.sendMsgTo(player, component);
         });
     }
 
@@ -95,7 +96,7 @@ public class PlayerUtil {
 
     @Nullable
     public static PlayerDataManager getManager(Player player) {
-        if(hungteen.htlib.util.PlayerUtil.isValidPlayer(player)) {
+        if(PlayerHelper.isValidPlayer(player)) {
             final Optional<PlayerCapability> optional = CapabilityHandler.getPlayerCapability(player).resolve();
             return optional.map(PlayerCapability::get).orElse(null);
         }

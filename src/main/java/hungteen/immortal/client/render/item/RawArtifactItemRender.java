@@ -37,14 +37,14 @@ public class RawArtifactItemRender extends BlockEntityWithoutLevelRenderer {
 
     @Override
     public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource source, int packedLight, int packedOverlay) {
-        if(stack.is(ImmortalItems.RAW_ARTIFACT.get())){
-            ItemStack artifact = RawArtifact.getArtifactItem(stack);
-            BakedModel bakedmodel = ClientProxy.MC.getItemRenderer().getModel(artifact, ClientProxy.MC.level, (LivingEntity)null, 0);
-            RenderType rendertype = ItemBlockRenderTypes.getRenderType(artifact, false);
-            VertexConsumer consumer = ItemRenderer.getFoilBuffer(source, rendertype, true, artifact.hasFoil());
-//            ClientProxy.MC.getItemRenderer().render(artifact, transformType, false, poseStack, source, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
-            ClientProxy.MC.getItemRenderer().renderModelLists(bakedmodel, artifact, packedLight, packedOverlay, poseStack, consumer);
-        }
+//        if(stack.is(ImmortalItems.RAW_ARTIFACT.get())){
+//            ItemStack artifact = RawArtifact.getArtifactItem(stack);
+//            BakedModel bakedmodel = ClientProxy.MC.getItemRenderer().getModel(artifact, ClientProxy.MC.level, (LivingEntity)null, 0);
+//            RenderType rendertype = ItemBlockRenderTypes.getRenderType(artifact, false);
+//            VertexConsumer consumer = ItemRenderer.getFoilBuffer(source, rendertype, true, artifact.hasFoil());
+////            ClientProxy.MC.getItemRenderer().render(artifact, transformType, false, poseStack, source, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
+//            ClientProxy.MC.getItemRenderer().renderModelLists(bakedmodel, artifact, packedLight, packedOverlay, poseStack, consumer);
+//        }
     }
 
 }

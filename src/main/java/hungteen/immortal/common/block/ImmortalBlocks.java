@@ -11,10 +11,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
@@ -41,12 +40,13 @@ public class ImmortalBlocks {
      * register blocks.
      * {@link ImmortalMod#ImmortalMod()}
      */
-    public static void registerBlocks(RegistryEvent.Register<Block> ev){
-        IForgeRegistry<Block> blocks = ev.getRegistry();
+    public static void registerBlocks(RegisterEvent event){
         for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
-            final GourdGrownBlock block = (GourdGrownBlock) new GourdGrownBlock(type).setRegistryName(Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"));
-            type.setGourdGrownBlock(block);
-            blocks.register(block);
+            event.register(ForgeRegistries.BLOCKS.getRegistryKey(), Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"), () -> {
+                final GourdGrownBlock block = new GourdGrownBlock(type);
+                type.setGourdGrownBlock(block);
+                return block;
+            });
         }
     }
 
@@ -54,21 +54,19 @@ public class ImmortalBlocks {
      * register block items.
      * {@link ImmortalMod#ImmortalMod()}
      */
-    public static void registerBlockItems(RegistryEvent.Register<Item> ev){
-        IForgeRegistry<Item> items = ev.getRegistry();
-
+    public static void registerBlockItems(RegisterEvent event){
         for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
             if(type.getGourdGrownBlock() != null){
-                Item item = new ItemNameBlockItem(type.getGourdGrownBlock(), new Item.Properties().tab(ItemTabs.MATERIALS)).setRegistryName(Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"));
-                type.setGourdItem(item);
-                items.register(item);
+                event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"), () -> {
+                    Item item = new ItemNameBlockItem(type.getGourdGrownBlock(), new Item.Properties().tab(ItemTabs.MATERIALS));
+                    type.setGourdItem(item);
+                    return item;
+                });
             }
         }
         Arrays.asList(
                 SPIRITUAL_FURNACE, ELIXIR_ROOM
-                ).forEach(block -> {
-            items.register(new BlockItem(block.get(), new Item.Properties().tab(ItemTabs.ARTIFACTS)).setRegistryName(block.get().getRegistryName()));
-        });
+        ).forEach(block -> event.register(ForgeRegistries.ITEMS.getRegistryKey(), block.getId(), () -> new BlockItem(block.get(), new Item.Properties().tab(ItemTabs.ARTIFACTS))));
 
     }
 }

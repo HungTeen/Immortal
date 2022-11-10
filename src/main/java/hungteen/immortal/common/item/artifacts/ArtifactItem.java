@@ -4,7 +4,6 @@ import hungteen.immortal.api.interfaces.IArtifact;
 import hungteen.immortal.common.item.ItemTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -36,10 +35,10 @@ public abstract class ArtifactItem extends Item implements IArtifact {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         if(isAncientArtifact()){
-            components.add(new TranslatableComponent("misc.immortal.artifact.ancient").withStyle(ChatFormatting.BLACK));
+            components.add(Component.translatable("misc.immortal.artifact.ancient").withStyle(ChatFormatting.BLACK));
         } else{
             final int artifactLevel = getItemArtifactLevel(itemStack);
-            components.add(new TranslatableComponent("misc.immortal.artifact.level_" + artifactLevel).withStyle(
+            components.add(Component.translatable("misc.immortal.artifact.level_" + artifactLevel).withStyle(
                     artifactLevel <= 3 ? ChatFormatting.GREEN :
                             artifactLevel <= 6 ? ChatFormatting.BLUE :
                                     ChatFormatting.DARK_PURPLE

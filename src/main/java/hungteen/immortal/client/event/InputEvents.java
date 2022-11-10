@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 public class InputEvents {
 
     @SubscribeEvent
-    public static void onKeyDown(InputEvent.KeyInputEvent ev) {
+    public static void onKeyDown(InputEvent.Key event) {
         if(ClientProxy.MC.isWindowActive() && ClientProxy.MC.player != null) {
             if(!ImmortalKeyBinds.isMouseInput(ImmortalKeyBinds.SPELL_CIRCLE) && ImmortalKeyBinds.SPELL_CIRCLE.consumeClick()){
                 ClientDatas.ShowSpellCircle = ! ClientDatas.ShowSpellCircle;
@@ -30,7 +30,7 @@ public class InputEvents {
             if(ClientDatas.ShowSpellCircle){
                 // hotkey to choose spell on circle.
                 for(int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++ i){
-                    if(ev.getKey() == InputConstants.KEY_0 + i + 1){
+                    if(event.getKey() == InputConstants.KEY_0 + i + 1){
                         NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT, i));
                     }
                 }
@@ -39,33 +39,27 @@ public class InputEvents {
     }
 
     @SubscribeEvent
-    public static void onMouseDown(InputEvent.MouseInputEvent ev) {
+    public static void onMouseDown(InputEvent.MouseButton.Pre event) {
         if(ClientProxy.MC.isWindowActive() && ClientProxy.MC.player != null) {
             if(ImmortalKeyBinds.isMouseInput(ImmortalKeyBinds.SPELL_CIRCLE) && ImmortalKeyBinds.SPELL_CIRCLE.consumeClick()){
                 ClientDatas.ShowSpellCircle = ! ClientDatas.ShowSpellCircle;
+                event.setCanceled(true);
             }
 
-            if(ClientDatas.ShowSpellCircle && ev.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
+            if(ClientDatas.ShowSpellCircle && event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
                 NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE_AT, 0));
                 ClientDatas.ShowSpellCircle = false;
+                event.setCanceled(true);
             }
         }
-//        if(ClientProxy.MC.isWindowActive() && ClientProxy.MC.player != null) {
-//            if(ClientProxy.MC.player.getVehicle() instanceof CobCannonEntity) {
-//                CobCannonEntity cob = (CobCannonEntity) ClientProxy.MC.player.getVehicle();
-//                if(ClientProxy.MC.player.getMainHandItem().isEmpty() && cob.getCornNum() > 0 && ClientProxy.MC.options.keyUse.consumeClick()) {
-//                    PVZPacketHandler.CHANNEL.sendToServer(new EntityInteractPacket(cob.getId(), 0, 0));
-//                }
-//            }
-//        }
     }
 
     @SubscribeEvent
-    public static void onMouseScroll(InputEvent.MouseScrollEvent ev) {
-		double delta = ev.getScrollDelta();
+    public static void onMouseScroll(InputEvent.MouseScrollingEvent event) {
+		double delta = event.getScrollDelta();
 		if(delta != 0.0 && ClientProxy.MC.player != null && ClientDatas.ShowSpellCircle) {
             NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.NEXT, delta < 0 ? 1 : -1));
-            ev.setCanceled(true);
+            event.setCanceled(true);
 		}
     }
 

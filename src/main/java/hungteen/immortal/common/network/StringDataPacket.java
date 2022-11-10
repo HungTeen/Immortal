@@ -1,6 +1,6 @@
 package hungteen.immortal.common.network;
 
-import hungteen.htlib.interfaces.IRangeData;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,7 +41,7 @@ public class StringDataPacket {
          */
         public static void onMessage(StringDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
-                Optional.ofNullable(hungteen.htlib.util.PlayerUtil.getClientPlayer()).ifPresent(player -> {
+                Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
                     final Types type = Types.values()[message.type];
                     switch (type) {
                         case REALM -> ImmortalAPI.get().getRealm(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));

@@ -1,5 +1,6 @@
 package hungteen.immortal.common.network;
 
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpell;
@@ -49,7 +50,7 @@ public class SpellPacket {
                 // S -> C.
                 if(ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER){
                     if (message.option == SpellOptions.SELECT || message.option == SpellOptions.NEXT) {
-                        Optional.ofNullable(hungteen.htlib.util.PlayerUtil.getClientPlayer()).ifPresent(player -> {
+                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
                             switch (message.option) {
                                 case SELECT -> PlayerUtil.selectSpell(player, message.num);
                                 case NEXT -> PlayerUtil.nextSpell(player, message.num);
@@ -59,7 +60,7 @@ public class SpellPacket {
                         return;
                     }
                     ImmortalAPI.get().getSpell(message.type).ifPresent(spell -> {
-                        Optional.ofNullable(hungteen.htlib.util.PlayerUtil.getClientPlayer()).ifPresent(player -> {
+                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
                             switch (message.option){
                                 case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
                                 case FORGET -> PlayerUtil.forgetSpell(player, spell);

@@ -2,11 +2,12 @@ package hungteen.immortal.data;
 
 import hungteen.immortal.data.codec.BiomeGen;
 import hungteen.immortal.data.codec.DimensionGen;
+import hungteen.immortal.data.codec.DimensionTypeGen;
 import hungteen.immortal.data.recipe.RecipeGen;
 import hungteen.immortal.data.tag.BlockTagGen;
 import hungteen.immortal.data.tag.EntityTagGen;
 import hungteen.immortal.data.tag.ItemTagGen;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 
 /**
  * @program: Immortal
@@ -15,15 +16,15 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
  **/
 public class DataGenHandler {
 
-    public static void dataGen(GatherDataEvent ev) {
+    public static void dataGen(GatherDataEvent event) {
         /* Tags */
-        final BlockTagGen generator = new BlockTagGen(ev.getGenerator(), ev.getExistingFileHelper());
-        ev.getGenerator().addProvider(generator);
-        ev.getGenerator().addProvider(new ItemTagGen(ev.getGenerator(), generator, ev.getExistingFileHelper()));
-        ev.getGenerator().addProvider(new EntityTagGen(ev.getGenerator(), ev.getExistingFileHelper()));
+        final BlockTagGen generator = new BlockTagGen(event.getGenerator(), event.getExistingFileHelper());
+        event.getGenerator().addProvider(event.includeServer(), generator);
+        event.getGenerator().addProvider(event.includeServer(), new ItemTagGen(event.getGenerator(), generator, event.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeServer(), new EntityTagGen(event.getGenerator(), event.getExistingFileHelper()));
 
         /* Recipes */
-        ev.getGenerator().addProvider(new RecipeGen(ev.getGenerator()));
+        event.getGenerator().addProvider(event.includeServer(), new RecipeGen(event.getGenerator()));
 
         /* Loot Tables */
 //        ev.getGenerator().addProvider(new LootTableGen(ev.getGenerator()));
@@ -31,15 +32,16 @@ public class DataGenHandler {
         /* Advancements */
 
         /* Block States */
-        ev.getGenerator().addProvider(new BlockStateGen(ev.getGenerator(), ev.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeClient(), new BlockStateGen(event.getGenerator(), event.getExistingFileHelper()));
 
         /* Models */
-        ev.getGenerator().addProvider(new BlockModelGen(ev.getGenerator(), ev.getExistingFileHelper()));
-        ev.getGenerator().addProvider(new ItemModelGen(ev.getGenerator(), ev.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeClient(), new BlockModelGen(event.getGenerator(), event.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeClient(), new ItemModelGen(event.getGenerator(), event.getExistingFileHelper()));
 
         /* Codecs */
-        ev.getGenerator().addProvider(new BiomeGen(ev.getGenerator()));
-        ev.getGenerator().addProvider(new DimensionGen(ev.getGenerator()));
+        event.getGenerator().addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
+        event.getGenerator().addProvider(event.includeServer(), new DimensionTypeGen(event.getGenerator()));
+        event.getGenerator().addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
     }
 
 }

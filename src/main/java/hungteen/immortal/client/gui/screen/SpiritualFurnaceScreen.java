@@ -3,7 +3,7 @@ package hungteen.immortal.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.client.RenderUtil;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.htlib.util.MathUtil;
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.common.menu.SpiritualFurnaceMenu;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
 
         if(this.menu.getMaxValue() > 0){
             RenderUtil.setTexture(TEXTURE);
-            final int len = MathUtil.getBarLen(this.menu.getFlameValue(), this.menu.getMaxValue(), 9);
+            final int len = MathHelper.getBarLen(this.menu.getFlameValue(), this.menu.getMaxValue(), 9);
             this.blit(stack, this.leftPos + 95, this.topPos + 45 + 9 - len, 202, 3 + 9 - len, 8, len);
 
             }
@@ -40,7 +40,7 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
             RenderUtil.setTexture(TEXTURE);
             final int BurnCD = 30;
             final int tick = this.minecraft.player.tickCount % BurnCD;
-            final int len = MathUtil.getBarLen(tick, BurnCD, 16) + 1;
+            final int len = MathHelper.getBarLen(tick, BurnCD, 16) + 1;
             this.blit(stack, this.leftPos + 82, this.topPos + 4 + 16 - len, 198, 14 + 16 - len, 35, len);
         }
 

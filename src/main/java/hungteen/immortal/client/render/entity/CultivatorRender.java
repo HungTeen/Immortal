@@ -31,7 +31,7 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
         super(context, new CultivatorModel<>(context.bakeLayer(ModelLayers.CULTIVATOR), false), 0.5F);
         this.defaultModel = this.model;
         this.slimModel = new CultivatorModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM), true);
-        this.addLayer(new ItemInHandLayer<>(this));
+        this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
         this.addLayer(new CultivatorArmorLayer<>(
                         this,
                         new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_INNER_ARMOR)),

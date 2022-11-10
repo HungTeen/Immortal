@@ -1,7 +1,8 @@
 package hungteen.immortal.common.entity.creature;
 
-import hungteen.htlib.util.MathUtil;
-import hungteen.htlib.util.ParticleUtil;
+import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.ParticleHelper;
+import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.utils.EntityUtil;
@@ -15,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -39,8 +39,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,7 +115,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
                             final BlockPos pos = this.blockPosition().offset(i, h, j);
                             if (checkBlock(pos)) {
                                 for (int k = -range; k < range; ++k) {
-                                    ParticleUtil.spawnParticles(this.level, ParticleTypes.COMPOSTER, MathUtil.toVector(pos.above()));
+                                    ParticleHelper.spawnParticles(this.level, ParticleTypes.COMPOSTER, MathHelper.toVec3(pos.above()));
                                 }
                             }
                         }
@@ -197,7 +199,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             this.setBald(true);
             this.growHairTick = 1200 + this.random.nextInt(600);
 
-            int count = this.isBaby() ? 1 : MathUtil.getRandomMinMax(this.random, 1, 3);
+            int count = this.isBaby() ? 1 : RandomHelper.getMinMax(this.random, 1, 3);
 
             java.util.List<ItemStack> items = new java.util.ArrayList<>();
             for (int j = 0; j < count; ++j) {
@@ -343,12 +345,17 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     private int getNextChangeTick() {
-        return MathUtil.getRandomMinMax(this.random, 100, 400);
+        return RandomHelper.getMinMax(this.random, 100, 400);
     }
 
     @Override
     public boolean canBreatheUnderwater() {
         return true;
+    }
+
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return type != ForgeMod.WATER_TYPE.get();
     }
 
     @Override
@@ -375,7 +382,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
         }
 
         public void tick() {
-            if (this.fish.isEyeInFluid(FluidTags.WATER)) {
+            if (this.fish.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
                 this.fish.setDeltaMovement(this.fish.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
             }
 
@@ -485,13 +492,13 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             return super.canContinueToUse() && !this.grassCarp.isBaby() && !this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
         }
 
-        protected boolean isValidTarget(LevelReader p_32413_, BlockPos p_32414_) {
-            BlockPos blockpos = p_32414_.above();
-            return p_32413_.isEmptyBlock(blockpos) && p_32413_.isEmptyBlock(blockpos.above()) ? p_32413_.getBlockState(p_32414_).entityCanStandOn(p_32413_, p_32414_, this.grassCarp) : false;
+        protected boolean isValidTarget(LevelReader levelReader, BlockPos blockPos) {
+            BlockPos blockpos = blockPos.above();
+            return levelReader.isEmptyBlock(blockpos) && levelReader.isEmptyBlock(blockpos.above()) && levelReader.getBlockState(blockPos).entityCanStandOn(levelReader, blockPos, this.grassCarp);
         }
 
         public void tick() {
-            if (this.grassCarp.distanceToSqr(MathUtil.toVector(this.blockPos)) <= 8) {
+            if (this.grassCarp.distanceToSqr(MathHelper.toVec3(this.blockPos)) <= 8) {
                 this.drop(this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND));
                 this.grassCarp.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
             } else {
@@ -504,7 +511,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
                 ItemEntity itementity = new ItemEntity(this.grassCarp.level, this.grassCarp.getX(), this.grassCarp.getEyeY(), this.grassCarp.getZ(), itemStack);
                 itementity.setPickUpDelay(40);
                 itementity.setThrower(this.grassCarp.getUUID());
-                final Vec3 speed = MathUtil.toVector(this.blockPos).subtract(this.grassCarp.position()).add(0, 1.2, 0).normalize();
+                final Vec3 speed = MathHelper.toVec3(this.blockPos).subtract(this.grassCarp.position()).add(0, 1.2, 0).normalize();
                 itementity.setDeltaMovement(speed.scale(0.5F));
                 this.grassCarp.level.addFreshEntity(itementity);
             }

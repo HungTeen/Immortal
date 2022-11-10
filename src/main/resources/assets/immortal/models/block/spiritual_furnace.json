@@ -1,5 +1,6 @@
 {
 	"parent": "immortal:block/spiritual_furnace_base",
+	"render_type": "cutout",
 	"textures": {
 		"furnace": "immortal:block/spiritual_furnace"
 	}

@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalMenus {
 
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, Util.id());
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Util.id());
 
     public static final RegistryObject<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {
         return IForgeMenuType.create(SpiritualFurnaceMenu::new);

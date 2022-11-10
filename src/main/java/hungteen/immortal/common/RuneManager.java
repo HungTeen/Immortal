@@ -5,14 +5,12 @@ import hungteen.immortal.common.entity.golem.GolemEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.level.Level;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 import java.util.function.Function;
@@ -79,7 +77,7 @@ public class RuneManager {
 
     public static Component getStatusText(MemoryModuleType<?> type, MemoryStatus status){
         final MutableComponent component = getMemoryRune(type).getComponent();
-        final Component statusComponent =  new TranslatableComponent("rune.immortal.status." + status.toString().toLowerCase(Locale.ROOT)).withStyle(
+        final Component statusComponent = Component.translatable("rune.immortal.status." + status.toString().toLowerCase(Locale.ROOT)).withStyle(
                 status == MemoryStatus.REGISTERED ? ChatFormatting.YELLOW :
                         status == MemoryStatus.VALUE_ABSENT ? ChatFormatting.RED :
                                 ChatFormatting.GREEN

@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalBlockEntities {
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Util.id());
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Util.id());
 
     public static final RegistryObject<BlockEntityType<SpiritualFurnaceBlockEntity>> SPIRITUAL_FURNACE = BLOCK_ENTITY_TYPES.register("spiritual_furnace", () -> {
         return BlockEntityType.Builder.of(SpiritualFurnaceBlockEntity::new, ImmortalBlocks.SPIRITUAL_FURNACE.get()).build(null);

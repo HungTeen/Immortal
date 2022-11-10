@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.ColorUtil;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.impl.Realms;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class FoundationElixir extends ElixirItem{
 
     public FoundationElixir() {
-        super(Rarity.RARE, ColorUtil.BLACK);
+        super(Rarity.RARE, ColorHelper.BLACK);
     }
 
     @Override

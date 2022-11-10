@@ -6,11 +6,8 @@ import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import hungteen.htlib.util.ItemUtil;
 import hungteen.immortal.common.entity.human.Cultivator;
-import hungteen.immortal.common.item.eixirs.ElixirItem;
 import net.minecraft.Util;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
@@ -31,23 +28,13 @@ public class ClientHandler {
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
      */
-    public static void registerItemColors(){
-        ItemColors itemColors = ClientProxy.MC.getItemColors();
-        ItemUtil.getFilterItems(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
-            itemColors.register((stack, id) -> elixirItem.getColor(id), elixirItem);
-        });
-    }
-
-    /**
-     * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
-     */
     public static void registerCultivatorTypes(){
         for (Cultivator.CultivatorTypes value : Cultivator.CultivatorTypes.values()) {
             AtomicReference<GameProfile> profile = new AtomicReference<>(new GameProfile(value.getUUID(), value.getName()));
 
             YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(ClientProxy.MC.getProxy());
             GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
-            GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(ClientProxy.MC.gameDirectory, MinecraftServer.USERID_CACHE_FILE.getName()));
+            GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(ClientProxy.MC.gameDirectory, MinecraftServer.ANONYMOUS_PLAYER_PROFILE.getName()));
             gameprofilecache.setExecutor(ClientProxy.MC);
 
             ClientHandler.updateGameProfile(gameprofilecache, ClientProxy.MC.getMinecraftSessionService(), profile.get(), value::setGameProfile);

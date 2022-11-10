@@ -1,15 +1,14 @@
 package hungteen.immortal.common.entity;
 
-import hungteen.htlib.util.ColorUtil;
 import hungteen.htlib.util.Pair;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalMod;
+import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.creature.SilkWorm;
-import hungteen.immortal.common.entity.golem.GolemEntity;
 import hungteen.immortal.common.entity.golem.IronGolem;
 import hungteen.immortal.common.entity.human.Cultivator;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
-import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.undead.SpiritualZombie;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Util;
@@ -19,10 +18,10 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
@@ -36,7 +35,7 @@ import java.util.Map;
  **/
 public class ImmortalEntities {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Util.id());
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Util.id());
     private static final Map<RegistryObject<?>, String> MAP = new HashMap<>();
 
     /* Misc */
@@ -74,30 +73,30 @@ public class ImmortalEntities {
      * register spawn eggs.
      * {@link ImmortalMod#ImmortalMod()}
      */
-    public static void registerSpawnEggs(RegistryEvent.Register<Item> ev) {
+    public static void registerSpawnEggs(RegisterEvent event) {
         Arrays.asList(
                 /* Creature */
-                Pair.of(GRASS_CARP, Pair.of(ColorUtil.GREEN, ColorUtil.DARK_GREEN)),
-                Pair.of(SILK_WORM, Pair.of(ColorUtil.WHITE, ColorUtil.EARTH_ROOT)),
+                Pair.of(GRASS_CARP, Pair.of(ColorHelper.GREEN, ColorHelper.DARK_GREEN)),
+                Pair.of(SILK_WORM, Pair.of(ColorHelper.WHITE, ColorHelper.EARTH_ROOT)),
 
                 /* Undead */
                 Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))
-        ).forEach(pp -> {
-            if(MAP.containsKey(pp.getFirst())){
-                ev.getRegistry().register(new ForgeSpawnEggItem(
-                                () -> pp.getFirst().get(),
-                                pp.getSecond().getFirst(),
-                                pp.getSecond().getSecond(),
+        ).forEach(pair -> {
+            if (MAP.containsKey(pair.getFirst())) {
+                event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(MAP.get(pair.getFirst()) + "_spawn_egg"), () ->
+                        new ForgeSpawnEggItem(
+                                () -> pair.getFirst().get(),
+                                pair.getSecond().getFirst(),
+                                pair.getSecond().getSecond(),
                                 new Item.Properties().tab(CreativeModeTab.TAB_MISC)
-                        ).setRegistryName(Util.prefix(MAP.get(pp.getFirst()) + "_spawn_egg"))
+                        )
                 );
             }
-
         });
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityType(EntityType.EntityFactory factory, String name, MobCategory classification) {
-        RegistryObject<EntityType<T>> object =  ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, classification).build(Util.prefix(name).toString()));
+        RegistryObject<EntityType<T>> object = ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, classification).build(Util.prefix(name).toString()));
         MAP.put(object, name);
         return object;
     }

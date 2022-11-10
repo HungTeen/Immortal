@@ -1,0 +1,49 @@
+{
+  "type": "immortal:elixir_serializer",
+  "ingredient_limit": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:sunflower"
+    },
+    {
+      "item": "minecraft:lilac"
+    },
+    {
+      "item": "minecraft:rose_bush"
+    },
+    {
+      "item": "minecraft:peony"
+    },
+    {
+      "item": "minecraft:spore_blossom"
+    }
+  ],
+  "prepare_cd": 600,
+  "require_flame_level": 1,
+  "result": {
+    "item": "immortal:five_flowers_elixir"
+  },
+  "smelting_cd": 1200,
+  "spiritual_map": [
+    {
+      "spiritual_root": "immortal:metal",
+      "spiritual_value": 5
+    },
+    {
+      "spiritual_root": "immortal:water",
+      "spiritual_value": 5
+    },
+    {
+      "spiritual_root": "immortal:earth",
+      "spiritual_value": 5
+    },
+    {
+      "spiritual_root": "immortal:wood",
+      "spiritual_value": 5
+    },
+    {
+      "spiritual_root": "immortal:fire",
+      "spiritual_value": 5
+    }
+  ]
+}

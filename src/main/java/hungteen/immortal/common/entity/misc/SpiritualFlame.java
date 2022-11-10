@@ -9,12 +9,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Random;
 
 /**
  * @program: Immortal
@@ -47,7 +46,7 @@ public class SpiritualFlame extends HTEntity {
     /**
      * Spawn Spiritual Flame Particles.
      */
-    public static void spawnFlames(Level world, Vec3 vec3, int level, Random rand){
+    public static void spawnFlames(Level world, Vec3 vec3, int level, RandomSource rand){
         final int lvl = (level - 1) % 3;
         final int extra = level * 5;
         final ParticleOptions options = getFlameParticleType(level);

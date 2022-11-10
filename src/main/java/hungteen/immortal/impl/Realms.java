@@ -2,15 +2,10 @@ package hungteen.immortal.impl;
 
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +137,7 @@ public class Realms {
 
         @Override
         public MutableComponent getComponent() {
-            return new TranslatableComponent("misc." + getModID() +".realm." + getName());
+            return Component.translatable("misc." + getModID() +".realm." + getName());
         }
 
         @Override

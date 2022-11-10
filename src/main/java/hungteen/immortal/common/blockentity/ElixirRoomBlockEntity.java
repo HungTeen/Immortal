@@ -15,10 +15,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -26,7 +24,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
@@ -41,7 +38,7 @@ import java.util.*;
  **/
 public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
 
-    public static final MutableComponent TITLE = new TranslatableComponent("gui.immortal.elixir_room.title");
+    public static final MutableComponent TITLE = Component.translatable("gui.immortal.elixir_room.title");
     private static final int[] SLOTS_FOR_DIRECTIONS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     /* the rest are spiritual stone slots. */
     protected final ItemStackHandler itemHandler = new ItemStackHandler(9){
@@ -229,7 +226,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
         for(int i = 0; i < this.itemHandler.getSlots(); ++ i){
             container.setItem(i, this.itemHandler.getStackInSlot(i));
         }
-        return level.getRecipeManager().getRecipeFor(ImmortalRecipes.ELIXIR_RECIPE_TYPE, container, level);
+        return level.getRecipeManager().getRecipeFor(ImmortalRecipes.ELIXIR_RECIPE_TYPE.get(), container, level);
     }
 
     public boolean isSmeltingState() {

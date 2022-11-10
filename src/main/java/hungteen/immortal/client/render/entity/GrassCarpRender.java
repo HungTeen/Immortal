@@ -17,9 +17,9 @@ public class GrassCarpRender extends ImmortalMobRender<GrassCarp> {
 
     private static final ResourceLocation RES = Util.prefix("textures/entity/creature/grass_carp.png");
 
-    public GrassCarpRender(EntityRendererProvider.Context rendererManager) {
-        super(rendererManager, new GrassCarpModel<>(rendererManager.bakeLayer(ModelLayers.GRASS_CARP)), 0);
-        this.addLayer(new GrassCarpItemLayer(this));
+    public GrassCarpRender(EntityRendererProvider.Context context) {
+        super(context, new GrassCarpModel<>(context.bakeLayer(ModelLayers.GRASS_CARP)), 0);
+        this.addLayer(new GrassCarpItemLayer(this, context.getItemInHandRenderer()));
     }
 
     @Override

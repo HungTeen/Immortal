@@ -42,6 +42,14 @@ public class Util {
         return new ResourceLocation(id(), name);
     }
 
+    public static String prefixName(String name) {
+        return prefix(name).toString();
+    }
+
+    public static boolean in(ResourceLocation resourceLocation){
+        return resourceLocation.getNamespace().equals(Util.id());
+    }
+
     public static CommonProxy getProxy(){
         return ImmortalMod.PROXY;
     }

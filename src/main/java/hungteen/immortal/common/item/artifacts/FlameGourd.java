@@ -1,14 +1,13 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.htlib.util.ColorUtil;
-import hungteen.htlib.util.ParticleUtil;
+import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.ParticleHelper;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.utils.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -82,7 +81,7 @@ public class FlameGourd extends ArtifactItem {
             addFlameAmount(stack, flame.getFlameLevel(), speed);
         } else{
             final int num = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) / 2 + 1;
-            ParticleUtil.spawnLineMovingParticle(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
+            ParticleHelper.spawnLineMovingParticle(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
 //            final double distance = livingEntity.distanceTo(flame);
 //            final int particleNum = Mth.ceil(distance);
 //            for(int i = 0; i < particleNum; ++ i){
@@ -130,13 +129,13 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, components, tooltipFlag);
-        components.add(new TranslatableComponent("tooltip.immortal.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
-        components.add(new TranslatableComponent("tooltip.immortal.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
+        components.add(Component.translatable("tooltip.immortal.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
+        components.add(Component.translatable("tooltip.immortal.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
 
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> itemStacks) {
-        if(this.allowdedIn(tab)){
+        if(this.allowedIn(tab)){
             ItemStack empty = new ItemStack(this);
             itemStacks.add(empty);
             ItemStack full = empty.copy();
@@ -162,7 +161,7 @@ public class FlameGourd extends ArtifactItem {
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return ColorUtil.RED;
+        return ColorHelper.RED;
     }
 
     public int getMaxFlameLevel(){

@@ -102,7 +102,7 @@ public class ElixirRoomMenu extends HTContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int slotId) {
-        return super.quickMoveStack(player, slotId);
+        return ItemStack.EMPTY;
     }
 
     @Override

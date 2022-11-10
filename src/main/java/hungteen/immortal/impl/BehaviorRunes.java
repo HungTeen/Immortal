@@ -9,7 +9,6 @@ import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -67,7 +66,7 @@ public class BehaviorRunes {
 
         @Override
         public MutableComponent getComponent() {
-            return new TranslatableComponent("rune." + getModID() + ".behavior." + this.getName()).withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
+            return Component.translatable("rune." + getModID() + ".behavior." + this.getName()).withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
         }
 
         @Override

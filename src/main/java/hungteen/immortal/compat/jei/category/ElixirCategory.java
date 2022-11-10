@@ -2,7 +2,6 @@ package hungteen.immortal.compat.jei.category;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.HTLib;
-import hungteen.immortal.common.block.ElixirRoom;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.recipe.ElixirRecipe;
@@ -17,13 +16,9 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,16 +79,6 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
     @Override
     public IDrawable getIcon() {
         return iconDraw;
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return ELIXIR_RECIPE_TYPE.getUid();
-    }
-
-    @Override
-    public Class<? extends ElixirRecipe> getRecipeClass() {
-        return ELIXIR_RECIPE_TYPE.getRecipeClass();
     }
 
     @Override

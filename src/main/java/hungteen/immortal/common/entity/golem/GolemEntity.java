@@ -1,21 +1,16 @@
 package hungteen.immortal.common.entity.golem;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.immortal.common.entity.ImmortalCreature;
-import hungteen.immortal.common.entity.human.HumanEntity;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.common.menu.GolemMenu;
 import hungteen.immortal.common.menu.ImmortalMenuProvider;
-import hungteen.immortal.common.network.NetworkHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,18 +18,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
-import net.minecraft.world.entity.animal.axolotl.AxolotlAi;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.monster.Shulker;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
@@ -48,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -143,7 +130,7 @@ public abstract class GolemEntity extends ImmortalCreature implements ContainerL
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if(hand == InteractionHand.MAIN_HAND && player.getItemInHand(hand).isEmpty()){
             if(player instanceof ServerPlayer){
-                NetworkHooks.openGui((ServerPlayer) player, new ImmortalMenuProvider() {
+                NetworkHooks.openScreen((ServerPlayer) player, new ImmortalMenuProvider() {
                     @Override
                     public @org.jetbrains.annotations.Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new GolemMenu(id, inventory, GolemEntity.this.getId());

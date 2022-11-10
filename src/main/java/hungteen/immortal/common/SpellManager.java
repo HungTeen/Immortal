@@ -1,26 +1,22 @@
 package hungteen.immortal.common;
 
-import hungteen.htlib.util.EffectUtil;
-import hungteen.htlib.util.ParticleUtil;
+import hungteen.htlib.util.helper.EffectHelper;
+import hungteen.htlib.util.helper.ParticleHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.registry.ISpell;
-import hungteen.immortal.client.particle.ImmortalParticles;
-import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
+import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.impl.PlayerDatas;
 import hungteen.immortal.impl.Spells;
-import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.TipUtil;
 import hungteen.immortal.utils.Util;
-import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
@@ -77,7 +73,7 @@ public class SpellManager {
         /* 水之呼吸 */
         if (spell == Spells.WATER_BREATHING) {
             if (!player.level.isClientSide) {
-                player.addEffect(EffectUtil.viewEffect(MobEffects.WATER_BREATHING, Spells.WATER_BREATHING.getDuration(), 1));
+                player.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, Spells.WATER_BREATHING.getDuration(), 1));
             }
         }
         /* 调息术 */
@@ -99,7 +95,7 @@ public class SpellManager {
                 });
             } else {
                 checkContinueSpell(player, Spells.IGNITE, () -> {
-                    ParticleUtil.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
+                    ParticleHelper.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
                     result.getEntity().setSecondsOnFire(5);
                 });
             }
