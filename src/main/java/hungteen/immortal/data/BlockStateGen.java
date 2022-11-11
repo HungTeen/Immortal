@@ -1,6 +1,7 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTBlockStateGen;
+import hungteen.htlib.util.Pair;
 import hungteen.htlib.util.helper.BlockHelper;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
@@ -44,110 +45,104 @@ public class BlockStateGen extends HTBlockStateGen {
 //        });
         crop(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
 
-//        /*
-//        RotatedPillarBlocks.
-//         */
+        /*
+        Must gen first to avoid crash.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_PLANKS.get()
+        ).forEach(block -> {
+            this.addedBlocks.add(block);
+            this.simpleBlock(block);
+        });
+
+        /*
+        RotatedPillarBlocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_LOG.get(), ImmortalBlocks.STRIPPED_MULBERRY_LOG.get()
+        ).forEach(this::log);
+
+        /*
+        Blocks with 2 textures(top & side).
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_WOOD.get(), ImmortalBlocks.STRIPPED_MULBERRY_WOOD.get()
+        ).forEach(this::wood);
+
+        /*
+        Door Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_DOOR.get()
+        ).forEach(this::door);
+
+        /*
+        Trapdoor Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_TRAPDOOR.get()
+        ).forEach(this::trapdoor);
+
+        /*
+        Fence Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_FENCE.get()
+        ).forEach(this::fence);
+
+        /*
+        Fence Gate Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_FENCE_GATE.get()
+        ).forEach(this::fenceGate);
+
+        /*
+        Sign Blocks.
+         */
+        Arrays.asList(
+                Pair.of(ImmortalBlocks.MULBERRY_SIGN.get(), ImmortalBlocks.MULBERRY_WALL_SIGN.get())
+        ).forEach(pair -> {
+            sign(pair.getFirst(), pair.getSecond());
+        });
+
+        /*
+        Stair Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_STAIRS.get()
+        ).forEach(this::stair);
+
+        /*
+        Button Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_BUTTON.get()
+        ).forEach(this::button);
+
+        /*
+        Slab Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_SLAB.get()
+        ).forEach(b -> {
+            slab(b);
+        });
+
+        /*
+        Pressure plate Blocks.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_PRESSURE_PLATE.get()
+        ).forEach(b -> {
+            pressPlate(b);
+        });
+
+        /*
+        Blocks with cross style.
+         */
 //        Arrays.asList(
-//                PVZBlocks.NUT_LOG.get(), PVZBlocks.STRIPPED_NUT_LOG.get()
-//        ).forEach(b -> {
-//            log(b);
-//        });
-//
-//        /*
-//        Blocks with 2 textures(top & side).
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_WOOD.get(), PVZBlocks.STRIPPED_NUT_WOOD.get()
-//        ).forEach(b -> {
-//            wood(b);
-//        });
-//
-//        /*
-//        Door Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_DOOR.get()
-//        ).forEach(b -> {
-//            door(b);
-//        });
-//
-//        /*
-//        Trapdoor Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_TRAPDOOR.get()
-//        ).forEach(b -> {
-//            trapdoor(b);
-//        });
-//
-//        /*
-//        Fence Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_FENCE.get()
-//        ).forEach(b -> {
-//            fence(b);
-//        });
-//
-//        /*
-//        Fence Gate Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_FENCE_GATE.get()
-//        ).forEach(b -> {
-//            fenceGate(b);
-//        });
-//
-//        /*
-//        Sign Blocks.
-//         */
-//        Arrays.asList(
-//                Pair.of(PVZBlocks.NUT_SIGN.get(), PVZBlocks.NUT_WALL_SIGN.get())
-//        ).forEach(pair -> {
-//            sign(pair.getFirst(), pair.getSecond());
-//        });
-//
-//        /*
-//        Stair Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_STAIRS.get()
-//        ).forEach(b -> {
-//            stair(b);
-//        });
-//
-//        /*
-//        Button Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_BUTTON.get()
-//        ).forEach(b -> {
-//            button(b);
-//        });
-//
-//        /*
-//        Slab Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_SLAB.get()
-//        ).forEach(b -> {
-//            slab(b);
-//        });
-//
-//        /*
-//        Pressure plate Blocks.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_PRESSURE_PLATE.get()
-//        ).forEach(b -> {
-//            pressPlate(b);
-//        });
-//
-//        /*
-//        Blocks with cross style.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_SAPLING.get()
+//                ImmortalBlocks.MULBERRY_SAPLING.get()
 //        ).forEach(b -> {
 //            cross(b);
 //            this.addedBlocks.add(b);

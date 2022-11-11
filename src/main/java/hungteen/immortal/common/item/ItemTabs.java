@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item;
 
+import hungteen.immortal.common.block.ImmortalBlocks;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +15,13 @@ public class ItemTabs {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack((ImmortalItems.GOURD_SEEDS.get()));
+        }
+    };
+
+    public static final CreativeModeTab DECORATIONS = new CreativeModeTab("immortal_decorations") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack((ImmortalBlocks.MULBERRY_LEAVES.get()));
         }
     };
 

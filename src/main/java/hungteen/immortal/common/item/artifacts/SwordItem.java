@@ -1,6 +1,5 @@
 package hungteen.immortal.common.item.artifacts;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -22,11 +21,6 @@ public class SwordItem extends MeleeAttackItem {
     @Override
     public boolean isCorrectToolForDrops(BlockState state) {
         return state.is(Blocks.COBWEB);
-    }
-
-    @Override
-    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
-        return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
     }
 
 }

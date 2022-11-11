@@ -43,7 +43,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private ISpell[] spellList = new ISpell[Constants.SPELL_NUMS];
     private int selectedSpellPosition = 0;
     /* Cultivation */
-    private ICultivationType cultivationType = CultivationTypes.SPIRITUAL;
+    private ICultivationType cultivationType = CultivationTypes.ELIXIR;
     private IRealm realm = Realms.MORTALITY;
     private final HashMap<IRangeData<Integer>, Integer> integerMap = new HashMap<>();
 

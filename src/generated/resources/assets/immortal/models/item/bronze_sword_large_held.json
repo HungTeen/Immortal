@@ -1,0 +1,6 @@
+{
+  "parent": "immortal:item/large_handheld",
+  "textures": {
+    "layer0": "immortal:item/bronze_sword_large_held"
+  }
+}

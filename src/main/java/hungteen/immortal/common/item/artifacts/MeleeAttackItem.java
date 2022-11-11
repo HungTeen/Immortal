@@ -3,6 +3,7 @@ package hungteen.immortal.common.item.artifacts;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -13,7 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @program: Immortal
@@ -44,6 +51,12 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ARTIFACT_ATTACK_SPEED_UUID, "Artifact modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
         builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(ARTIFACT_REACH_DISTANCE_UUID, "Artifact modifier", this.attackRange, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
+    }
+
+    @Override
+    public @NotNull AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player, @NotNull Entity target) {
+        final double range = Objects.requireNonNull(player.getAttribute(ForgeMod.ATTACK_RANGE.get())).getValue();
+        return target.getBoundingBox().inflate(range / 3, 0.25D, range / 3);
     }
 
     @Override
@@ -80,6 +93,11 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
 
     public int getMineBlockCost(LivingEntity livingEntity, ItemStack stack, BlockState state){
         return 2;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return this.meleeAttackType.canSweep() && toolAction == ToolActions.SWORD_SWEEP;
     }
 
     public interface IMeleeAttackType{

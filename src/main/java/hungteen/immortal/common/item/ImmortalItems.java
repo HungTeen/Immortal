@@ -1,17 +1,20 @@
 package hungteen.immortal.common.item;
 
+import hungteen.htlib.item.HTBoatItem;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.artifacts.*;
+import hungteen.immortal.common.item.artifacts.AxeItem;
+import hungteen.immortal.common.item.artifacts.HoeItem;
+import hungteen.immortal.common.item.artifacts.PickaxeItem;
+import hungteen.immortal.common.item.artifacts.ShovelItem;
+import hungteen.immortal.common.item.artifacts.SwordItem;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,6 +32,9 @@ public class ImmortalItems {
 
     /* Material Tab Items */
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(ImmortalBlocks.GOURD_STEM.get(), new Item.Properties().tab(ItemTabs.MATERIALS)));
+
+    /* Decoration Tab Items */
+    public static final RegistryObject<Item> MULBERRY_SIGN = ITEMS.register("mulberry_sign", () -> new SignItem((new Item.Properties()).stacksTo(16).tab(ItemTabs.DECORATIONS), ImmortalBlocks.MULBERRY_SIGN.get(), ImmortalBlocks.MULBERRY_WALL_SIGN.get()));
 
     /* Rune Tab Items */
     public static final RegistryObject<Item> RUNE = ITEMS.register("rune", () -> new RuneItem(RuneItem.RuneTypes.DEFAULT));
@@ -54,6 +60,11 @@ public class ImmortalItems {
     public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(1, 0, 7));
     public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(1, 0, 7));
     public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(1, 0));
+
+    /* Transport Tab Items */
+    public static final RegistryObject<Item> MULBERRY_BOAT = ITEMS.register("mulberry_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, false));
+    public static final RegistryObject<Item> MULBERRY_CHEST_BOAT = ITEMS.register("mulberry_chest_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, true));
+
 
     /* Misc Tab Items */
     public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {

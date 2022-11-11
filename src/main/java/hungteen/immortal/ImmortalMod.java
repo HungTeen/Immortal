@@ -6,6 +6,7 @@ import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.ai.ImmortalSchedules;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.block.ImmortalWoodTypes;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
@@ -106,6 +107,7 @@ public class ImmortalMod {
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
         ItemUtil.registerLargeHeldItems();
+        ImmortalWoodTypes.registerWoodTypes();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {

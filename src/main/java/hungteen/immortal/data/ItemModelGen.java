@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
+import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.item.artifacts.MeleeAttackItem;
 import hungteen.immortal.utils.ItemUtil;
@@ -54,41 +55,39 @@ public class ItemModelGen extends HTItemModelGen {
             this.addedItems.add(item);
         });
 
-//        /*
-//        Fence.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_FENCE.get(), PVZBlocks.NUT_BUTTON.get()
-//        ).forEach(block -> {
-//            genBlockModel(block, block.getRegistryName().getPath() + "_inventory");
-//        });
-//
-//        /*
-//        Trap Door.
-//         */
-//        Arrays.asList(
-//                PVZBlocks.NUT_TRAPDOOR.get()
-//        ).forEach(block -> {
-//            genBlockModel(block, block.getRegistryName().getPath() + "_bottom");
-//        });
+        /*
+        Fence.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_FENCE, ImmortalBlocks.MULBERRY_BUTTON
+        ).forEach(block -> {
+            genBlockModel(block.get(), block.getId().getPath() + "_inventory");
+        });
+
+        /*
+        Trap Door.
+         */
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_TRAPDOOR
+        ).forEach(block -> {
+            genBlockModel(block.get(), block.getId().getPath() + "_bottom");
+        });
 
         /*
         Block-items with tex in item/
          */
-//        Arrays.asList(
-//                PVZBlocks.NUT_DOOR.get().asItem(), PVZItems.NUT_SIGN.get(),
-//                PVZBlocks.LILY_PAD.get().asItem(), PVZBlocks.FLOWER_POT.get().asItem()
-//        ).forEach(i -> {
-//            genNormalModel(i);
-//            this.addedItems.add(i);
-//        });
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_DOOR.get().asItem(), ImmortalItems.MULBERRY_SIGN.get()
+        ).forEach(i -> {
+            genNormalModel(i);
+            this.addedItems.add(i);
+        });
 
         /*
         Block-items with tex in block/
          */
 //        Arrays.asList(
 //                PVZBlocks.NUT_SAPLING
-////                BlockRegister.STEEL_LADDER.get()
 //        ).forEach(i -> {
 //            genItemModelWithBlock(i.get().asItem());
 //        });

@@ -46,12 +46,12 @@ public class Realms {
     /* 筑基 */
 
     public static final IRealm FOUNDATION_BEGIN = new Realm("foundation_begin", 300, 11, 250);
-//
-//    public static final IRealm FOUNDATION_MEDIUM = new Realm("foundation_medium", 1500, 13);
-//
-//    public static final IRealm FOUNDATION_LATE = new Realm("foundation_late", 2000, 16);
-//
-//    public static final IRealm FOUNDATION_FINISH = new Realm("foundation_finish", 2500, 19);
+
+    public static final IRealm FOUNDATION_MEDIUM = new Realm("foundation_medium", 400, 13, 280);
+
+    public static final IRealm FOUNDATION_LATE = new Realm("foundation_late", 500, 16, 320);
+
+    public static final IRealm FOUNDATION_FINISH = new Realm("foundation_finish", 600, 19, 360);
 
 //    /* 结丹 */
 //    public static final IRealm VIRTUOSO_STAGE = new Realm("virtuoso_stage", 5000, 20);
@@ -63,14 +63,16 @@ public class Realms {
 //    public static final IRealm INCARNATION_STAGE = new Realm("incarnation_stage", 20000, 40);
 
     /* 妖兽 */
-//    public static final IRealm MONSTER_STAGE1 = new Realm("monster_stage1", 10, 8);
-//
-//    public static final IRealm MONSTER_STAGE2 = new Realm("monster_stage2", 30, 11);
-//
-//    public static final IRealm MONSTER_STAGE3 = new Realm("monster_stage3", 60, 15);
-//
-//    public static final IRealm MONSTER_STAGE4 = new Realm("monster_stage4", 100, 18);
-//
+    public static final IRealm MONSTER_STAGE0 = new Realm("monster_stage0", 100, 4, 50);
+
+    public static final IRealm MONSTER_STAGE1 = new Realm("monster_stage1", 200, 9, 100);
+
+    public static final IRealm MONSTER_STAGE2 = new Realm("monster_stage2", 300, 12, 200);
+
+    public static final IRealm MONSTER_STAGE3 = new Realm("monster_stage3", 450, 15, 300);
+
+    public static final IRealm MONSTER_STAGE4 = new Realm("monster_stage4", 600, 20, 400);
+
 //    public static final IRealm MONSTER_STAGE5 = new Realm("monster_stage5", 150, 21);
 //
 //    public static final IRealm MONSTER_STAGE6 = new Realm("monster_stage6", 210, 25);
