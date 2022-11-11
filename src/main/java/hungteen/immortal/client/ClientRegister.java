@@ -9,6 +9,7 @@ import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
+import hungteen.immortal.client.model.bake.ImmortalBakeModels;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.client.particle.SpiritualReleasingParticle;
@@ -120,14 +121,15 @@ public class ClientRegister {
         event.register(ElementToolTip.class, ClientElementToolTip::new);
     }
 
-//    @SubscribeEvent
-//    public static void bakeModel(Bake ev) {
-//        final ResourceLocation origin = Objects.requireNonNull(ImmortalItems.FLAME_GOURD.get().getRegistryName());
-//        BakedModel model = ev.getModelManager().getModel(new ModelResourceLocation(origin, "inventory"));
-//        ImmortalBakeModel newModel = new ImmortalBakeModel(model);
-//        final ResourceLocation target = Objects.requireNonNull(ImmortalItems.RAW_ARTIFACT.get().getRegistryName());
-//        ev.getModelRegistry().put(new ModelResourceLocation(target, "inventory"), newModel);
-//    }
+    @SubscribeEvent
+    public static void bakeModel(ModelEvent.BakingCompleted event) {
+        ImmortalBakeModels.registerBakeModels(event);
+    }
+
+    @SubscribeEvent
+    public static void bakeModel(ModelEvent.RegisterAdditional event) {
+        ImmortalBakeModels.registerBakeModels(event);
+    }
 
     @SubscribeEvent
     public static void onTextureStitch(TextureStitchEvent ev){

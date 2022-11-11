@@ -1,9 +1,13 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
+import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.item.ImmortalItems;
+import hungteen.immortal.common.item.artifacts.MeleeAttackItem;
+import hungteen.immortal.utils.ItemUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -102,11 +106,11 @@ public class ItemModelGen extends HTItemModelGen {
         /*
         For large hand held item.
          */
-        Arrays.asList(
-                ImmortalItems.BRONZE_SWORD.get()
-        ).forEach(item -> {
-            addedItems.add(item);
-            genLargeHeld(name(item), Util.prefix("item/" + name(item)));
+        ItemUtil.getLargeHeldItems().forEach(item -> {
+            final ResourceLocation location = ItemUtil.getLargeHeldLocation(item);
+            this.addedItems.add(item);
+            genNormal(name(item), ItemHelper.itemTexture(item));
+            genLargeHeld(location.getPath(), StringHelper.itemTexture(location));
         });
 
         //3 types of sun storage sapling.
@@ -125,6 +129,9 @@ public class ItemModelGen extends HTItemModelGen {
             } else if(item instanceof IElixirItem){ // for elixir items.
                 addedItems.add(item);
                 genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(((IElixirItem) item).getElixirRarity()));
+            } else if(item instanceof MeleeAttackItem){
+                addedItems.add(item);
+                genHeld(name(item), ItemHelper.itemTexture(item));
             } else if (item instanceof BlockItem) { // normal block items.
                 genBlockModel(((BlockItem) item).getBlock());
             }

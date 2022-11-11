@@ -20,6 +20,7 @@ import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.impl.*;
+import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -104,16 +105,14 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
+        ItemUtil.registerLargeHeldItems();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-//            PVZRecipeTypes.registerRecipeTypes();
 //            PVZBiomes.registerBiomes();
 //            PVZFeatures.registerFeatures();
 ////            PotionRecipeHandler.registerPotionRecipes();
-//            CommonRegister.registerCompostable();
-//            CommonRegister.registerAxeStrips();
 //            BiomeUtil.initBiomeSet();
 //            SpawnRegister.registerEntitySpawns();
 //            PVZDimensions.register();
@@ -122,7 +121,6 @@ public class ImmortalMod {
             ElixirManager.init();
             RealmManager.registerUpgradeList();
         });
-
         NetworkHandler.init();
     }
 

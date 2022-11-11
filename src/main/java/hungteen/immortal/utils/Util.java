@@ -42,6 +42,10 @@ public class Util {
         return new ResourceLocation(id(), name);
     }
 
+    public static ResourceLocation suffix(ResourceLocation location, String suffix) {
+        return new ResourceLocation(location.getNamespace(), location.getPath() + "_" + suffix);
+    }
+
     public static String prefixName(String name) {
         return prefix(name).toString();
     }

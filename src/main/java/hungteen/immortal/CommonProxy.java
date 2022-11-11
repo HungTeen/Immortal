@@ -1,7 +1,6 @@
 package hungteen.immortal;
 
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ import java.util.Optional;
 public class CommonProxy {
 
     public void openRestingScreen(){
-
     }
 
     public Optional<RecipeManager> getRecipeManager(){

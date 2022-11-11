@@ -9,14 +9,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author: HungTeen
  * @create: 2022-10-19 22:31
  **/
-public class SwordItem extends MeleeAttackItem {
+public class ShortSwordItem extends MeleeAttackItem {
 
-    public SwordItem(int artifactLevel, float attackDamage) {
+    public ShortSwordItem(int artifactLevel, float attackDamage) {
         this(artifactLevel, false, attackDamage, 0, 0);
     }
 
-    public SwordItem(int artifactLevel, boolean isAncientArtifact, float attackDamage, float attackSpeed, float attackRange) {
-        super(MeleeAttackTypes.SWORD, artifactLevel, isAncientArtifact, attackDamage, attackSpeed, attackRange);
+    public ShortSwordItem(int artifactLevel, boolean isAncientArtifact, float attackDamage, float attackSpeed, float attackRange) {
+        super(MeleeAttackTypes.SHORT_SWORD, artifactLevel, isAncientArtifact, attackDamage, attackSpeed, attackRange);
     }
 
     @Override

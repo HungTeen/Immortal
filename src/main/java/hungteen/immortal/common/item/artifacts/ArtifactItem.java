@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: Immortal
@@ -19,6 +20,9 @@ import java.util.List;
  **/
 public abstract class ArtifactItem extends Item implements IArtifact {
 
+    protected static final UUID ARTIFACT_ATTACK_DAMAGE_UUID = UUID.fromString("a0c2228c-6166-11ed-9b6a-0242ac120002");
+    protected static final UUID ARTIFACT_ATTACK_SPEED_UUID = UUID.fromString("a0c22552-6166-11ed-9b6a-0242ac120002");
+    protected static final UUID ARTIFACT_REACH_DISTANCE_UUID = UUID.fromString("a0c2296c-6166-11ed-9b6a-0242ac120002");
     private final int artifactLevel;
     private final boolean isAncientArtifact;
 
@@ -27,7 +31,7 @@ public abstract class ArtifactItem extends Item implements IArtifact {
     }
 
     public ArtifactItem(int artifactLevel, boolean isAncientArtifact) {
-        super(new Properties().tab(ItemTabs.ARTIFACTS));
+        super(new Properties().tab(ItemTabs.ARTIFACTS).stacksTo(1));
         this.artifactLevel = artifactLevel;
         this.isAncientArtifact = isAncientArtifact;
     }
@@ -39,9 +43,9 @@ public abstract class ArtifactItem extends Item implements IArtifact {
         } else{
             final int artifactLevel = getItemArtifactLevel(itemStack);
             components.add(Component.translatable("misc.immortal.artifact.level_" + artifactLevel).withStyle(
-                    artifactLevel <= 3 ? ChatFormatting.GREEN :
-                            artifactLevel <= 6 ? ChatFormatting.BLUE :
-                                    ChatFormatting.DARK_PURPLE
+                    artifactLevel <= 3 ? ChatFormatting.BLUE :
+                            artifactLevel <= 6 ? ChatFormatting.DARK_PURPLE :
+                                    ChatFormatting.GOLD
             ));
         }
     }

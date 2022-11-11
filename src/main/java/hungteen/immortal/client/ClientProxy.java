@@ -4,6 +4,7 @@ import hungteen.immortal.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.RecipeManager;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -22,6 +23,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public Optional<RecipeManager> getRecipeManager() {
-        return Optional.ofNullable(MC.level.getRecipeManager());
+        return Optional.of(Objects.requireNonNull(MC.level).getRecipeManager());
     }
 }

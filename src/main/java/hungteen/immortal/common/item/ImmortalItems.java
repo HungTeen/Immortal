@@ -3,8 +3,7 @@ package hungteen.immortal.common.item;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.item.artifacts.FlameGourd;
-import hungteen.immortal.common.item.artifacts.SwordItem;
+import hungteen.immortal.common.item.artifacts.*;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.utils.Util;
@@ -48,7 +47,13 @@ public class ImmortalItems {
     /* Artifact Tab Items */
 //    public static final RegistryObject<Item> RAW_ARTIFACT = ITEMS.register("raw_artifact", RawArtifact::new);
     public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(1));
-    public static final RegistryObject<Item> BRONZE_SWORD = ITEMS.register("bronze_sword", () -> new SwordItem(1, 2, 3));
+    public static final RegistryObject<Item> BRONZE_SWORD = ITEMS.register("bronze_sword", () -> new SwordItem(1, 0));
+    public static final RegistryObject<Item> BRONZE_SHORT_SWORD = ITEMS.register("bronze_short_sword", () -> new ShortSwordItem(1, 0));
+    public static final RegistryObject<Item> BRONZE_AXE = ITEMS.register("bronze_axe", () -> new AxeItem(1, 0, 7));
+    public static final RegistryObject<Item> BRONZE_PICKAXE = ITEMS.register("bronze_pickaxe", () -> new PickaxeItem(1, 0, 7));
+    public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(1, 0, 7));
+    public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(1, 0, 7));
+    public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(1, 0));
 
     /* Misc Tab Items */
     public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {

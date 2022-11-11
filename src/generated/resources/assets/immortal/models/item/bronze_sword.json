@@ -1,5 +1,5 @@
 {
-  "parent": "immortal:item/large_handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "immortal:item/bronze_sword"
   }
