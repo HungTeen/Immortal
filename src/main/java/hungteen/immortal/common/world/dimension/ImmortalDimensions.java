@@ -12,6 +12,7 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -25,11 +26,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class ImmortalDimensions {
 
     public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registry.DIMENSION_TYPE_REGISTRY, Util.id());
-    public static final ResourceKey<Level> SPIRITUAL_LAND_DIMENSION = ResourceKey.create(Registry.DIMENSION_REGISTRY, Util.prefix("spiritual_land"));
-
-    public static final ResourceKey<LevelStem> SPIRITUAL_LAND = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, Util.prefix("spiritual_land"));
 
     public static final RegistryObject<DimensionType> SPIRITUAL_LAND_TYPE = DIMENSION_TYPES.register("spiritual_land", SpiritualLandDimension::getDimensionType);
+    public static final ResourceKey<Level> SPIRITUAL_LAND_DIMENSION = ResourceKey.create(Registry.DIMENSION_REGISTRY, Util.prefix("spiritual_land"));
+    public static final ResourceKey<LevelStem> SPIRITUAL_LAND = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, Util.prefix("spiritual_land"));
 
     /* Preset */
 
@@ -44,7 +44,8 @@ public class ImmortalDimensions {
             }
     );
 
-    public static void register(){
+    public static void register(IEventBus event){
+        DIMENSION_TYPES.register(event);
     }
 
 }

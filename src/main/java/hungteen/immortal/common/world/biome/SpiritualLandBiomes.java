@@ -19,14 +19,50 @@ public class SpiritualLandBiomes {
     public static Biome plains() {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder();
+        globalGeneration(generationBuilder);
         BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         BiomeDefaultFeatures.addPlainGrass(generationBuilder);
         BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
         BiomeDefaultFeatures.addDefaultOres(generationBuilder);
         BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
-        float f = 0.8F;
-        return biome(Biome.Precipitation.RAIN, f, 0.4F, spawnBuilder, generationBuilder, null);
+        return biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, spawnBuilder, generationBuilder, null);
+    }
+
+    public static Biome savanna() {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder();
+        globalGeneration(generationBuilder);
+        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
+        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
+        BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
+        BiomeDefaultFeatures.addDefaultOres(generationBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);
+    }
+
+    public static Biome desert() {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder();
+        globalGeneration(generationBuilder);
+        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
+        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
+        BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
+        BiomeDefaultFeatures.addDefaultOres(generationBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);
+    }
+
+    /**
+     * Generations that every biome will have.
+     */
+    private static void globalGeneration(BiomeGenerationSettings.Builder builder) {
+        BiomeDefaultFeatures.addDefaultCarversAndLakes(builder);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
+        BiomeDefaultFeatures.addDefaultSprings(builder);
+        BiomeDefaultFeatures.addSurfaceFreezing(builder);
     }
 
     private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {

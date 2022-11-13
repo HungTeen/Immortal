@@ -2,6 +2,7 @@ package hungteen.immortal;
 
 import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.client.particle.ImmortalParticles;
+import hungteen.immortal.common.CommonRegister;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.ai.ImmortalSchedules;
@@ -15,10 +16,13 @@ import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
+import hungteen.immortal.common.world.ImmortalNoiseGenSettings;
 import hungteen.immortal.common.world.LevelManager;
 import hungteen.immortal.common.world.biome.BiomeManager;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
+import hungteen.immortal.common.world.feature.ImmortalConfiguredFeatures;
+import hungteen.immortal.common.world.feature.ImmortalPlacedFeatures;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.impl.*;
 import hungteen.immortal.utils.ItemUtil;
@@ -77,12 +81,14 @@ public class ImmortalMod {
         ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
 //        ImmortalStructures.STRUCTURES.register(modBus);
-        ImmortalDimensions.DIMENSION_TYPES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
-        ImmortalDimensions.register();
+        ImmortalConfiguredFeatures.register(modBus);
+        ImmortalPlacedFeatures.register(modBus);
         ImmortalBiomes.register();
+        ImmortalNoiseGenSettings.register(modBus);
+        ImmortalDimensions.register(modBus);
     }
 
     public static void register(RegisterEvent event) {
@@ -118,6 +124,8 @@ public class ImmortalMod {
 //            BiomeUtil.initBiomeSet();
 //            SpawnRegister.registerEntitySpawns();
 //            PVZDimensions.register();
+            CommonRegister.registerCompostable();
+            CommonRegister.registerAxeStrips();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
             ElixirManager.init();

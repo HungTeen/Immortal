@@ -86,11 +86,11 @@ public class ItemModelGen extends HTItemModelGen {
         /*
         Block-items with tex in block/
          */
-//        Arrays.asList(
-//                PVZBlocks.NUT_SAPLING
-//        ).forEach(i -> {
-//            genItemModelWithBlock(i.get().asItem());
-//        });
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_SAPLING
+        ).forEach(block -> {
+            genItemModelWithBlock(block.get().asItem());
+        });
 
         /*
         For hand held item.

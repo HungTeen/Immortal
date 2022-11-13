@@ -6,6 +6,6 @@
       "type": "minecraft:multi_noise",
       "preset": "immortal:spiritual_land"
     },
-    "settings": "minecraft:overworld"
+    "settings": "immortal:spiritual_land_settings"
   }
 }

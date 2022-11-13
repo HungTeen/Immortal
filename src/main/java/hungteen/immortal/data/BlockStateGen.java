@@ -141,12 +141,12 @@ public class BlockStateGen extends HTBlockStateGen {
         /*
         Blocks with cross style.
          */
-//        Arrays.asList(
-//                ImmortalBlocks.MULBERRY_SAPLING.get()
-//        ).forEach(b -> {
-//            cross(b);
-//            this.addedBlocks.add(b);
-//        });
+        Arrays.asList(
+                ImmortalBlocks.MULBERRY_SAPLING.get()
+        ).forEach(block -> {
+            cross(block);
+            this.addedBlocks.add(block);
+        });
 
         /**
          * Horizontal Blocks.

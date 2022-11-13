@@ -2,11 +2,13 @@ package hungteen.immortal.common.block;
 
 import hungteen.htlib.block.*;
 import hungteen.htlib.block.plants.HTAttachedStemBlock;
+import hungteen.htlib.block.plants.HTSaplingBlock;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.plants.AttachedGourdStemBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
 import hungteen.immortal.common.item.ItemTabs;
+import hungteen.immortal.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -40,7 +42,7 @@ public class ImmortalBlocks {
     public static final RegistryObject<Block> ELIXIR_ROOM = BLOCKS.register("elixir_room", () -> new ElixirRoom(1));
 
     /* Tree Suits */
-//    public static final RegistryObject<Block> MULBERRY_SAPLING = BLOCKS.register("mulberry_sapling", () -> new SaplingBlock(new NutTreeGrower()));
+    public static final RegistryObject<Block> MULBERRY_SAPLING = BLOCKS.register("mulberry_sapling", () -> new HTSaplingBlock(new MulberryTreeGrower()));
     public static final RegistryObject<Block> MULBERRY_LEAVES = BLOCKS.register("mulberry_leaves", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
     public static final RegistryObject<Block> MULBERRY_LEAVES_WITH_MULBERRIES = BLOCKS.register("mulberry_leaves_with_mulberries", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
     public static final RegistryObject<RotatedPillarBlock> MULBERRY_LOG = BLOCKS.register("mulberry_log", () -> new HTLogBlock(Block.Properties.copy(Blocks.OAK_LOG).strength(4.0F)));
@@ -88,8 +90,7 @@ public class ImmortalBlocks {
             }
         }
         Arrays.asList(
-                MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_LOG, STRIPPED_MULBERRY_LOG, MULBERRY_WOOD, STRIPPED_MULBERRY_WOOD, MULBERRY_PLANKS, MULBERRY_DOOR, MULBERRY_TRAPDOOR, MULBERRY_FENCE, MULBERRY_FENCE_GATE, MULBERRY_STAIRS, MULBERRY_BUTTON, MULBERRY_SLAB, MULBERRY_PRESSURE_PLATE//, MULBERRY_SAPLING
-
+                MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_LOG, STRIPPED_MULBERRY_LOG, MULBERRY_WOOD, STRIPPED_MULBERRY_WOOD, MULBERRY_PLANKS, MULBERRY_DOOR, MULBERRY_TRAPDOOR, MULBERRY_FENCE, MULBERRY_FENCE_GATE, MULBERRY_STAIRS, MULBERRY_BUTTON, MULBERRY_SLAB, MULBERRY_PRESSURE_PLATE, MULBERRY_SAPLING
                 ).forEach(obj -> {
                     event.register(ForgeRegistries.ITEMS.getRegistryKey(), obj.getId(), () -> new BlockItem(obj.get(), new Item.Properties().tab(ItemTabs.DECORATIONS)));
         });

@@ -2,7 +2,6 @@ package hungteen.immortal.data;
 
 import hungteen.immortal.data.codec.BiomeGen;
 import hungteen.immortal.data.codec.DimensionGen;
-import hungteen.immortal.data.codec.DimensionTypeGen;
 import hungteen.immortal.data.recipe.RecipeGen;
 import hungteen.immortal.data.tag.BlockTagGen;
 import hungteen.immortal.data.tag.EntityTagGen;
@@ -40,7 +39,6 @@ public class DataGenHandler {
 
         /* Codecs */
         event.getGenerator().addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
-        event.getGenerator().addProvider(event.includeServer(), new DimensionTypeGen(event.getGenerator()));
         event.getGenerator().addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
     }
 

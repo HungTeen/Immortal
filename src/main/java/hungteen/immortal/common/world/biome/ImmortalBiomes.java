@@ -23,6 +23,7 @@ public class ImmortalBiomes {
     private static final Map<ResourceKey<Biome>, Biome> BIOME_MAP = new HashMap<>();
 
     public static final ResourceKey<Biome> SPIRITUAL_PLAINS = register("spiritual_plains");
+    public static final ResourceKey<Biome> SPIRITUAL_SAVANNA = register("spiritual_savanna");
     public static final ResourceKey<Biome> SPIRITUAL_DESERT = register("spiritual_desert");
 
     /**
@@ -30,6 +31,8 @@ public class ImmortalBiomes {
      */
     public static void register(){
         register(SPIRITUAL_PLAINS, SpiritualLandBiomes.plains());
+        register(SPIRITUAL_SAVANNA, SpiritualLandBiomes.savanna());
+        register(SPIRITUAL_DESERT, SpiritualLandBiomes.desert());
     }
 
     public static Map<ResourceKey<Biome>, Biome> biomes(){

@@ -2,6 +2,7 @@ package hungteen.immortal.data.codec;
 
 import com.mojang.serialization.Lifecycle;
 import hungteen.htlib.data.HTCodecGen;
+import hungteen.immortal.common.world.ImmortalNoiseGenSettings;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.MappedRegistry;
@@ -10,10 +11,8 @@ import net.minecraft.core.WritableRegistry;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
@@ -31,10 +30,8 @@ public class DimensionGen extends HTCodecGen {
     @Override
     public void run(CachedOutput cache) {
         WritableRegistry<LevelStem> registry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
-        Registry<DimensionType> dimensionTypes = access().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
         Registry<Biome> biomes = access().registryOrThrow(Registry.BIOME_REGISTRY);
         Registry<StructureSet> structureSets = access().registryOrThrow(Registry.STRUCTURE_SET_REGISTRY);
-        Registry<NoiseGeneratorSettings> generatorSettings = access().registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
         Registry<NormalNoise.NoiseParameters> noiseParameters = access().registryOrThrow(Registry.NOISE_REGISTRY);
 
         registry.register(ImmortalDimensions.SPIRITUAL_LAND, new LevelStem(
@@ -43,7 +40,8 @@ public class DimensionGen extends HTCodecGen {
                         structureSets,
                         noiseParameters,
                         ImmortalDimensions.SPIRITUAL_LAND_PRESET.biomeSource(biomes, true),
-                        generatorSettings.getOrCreateHolderOrThrow(NoiseGeneratorSettings.OVERWORLD)
+                        ImmortalNoiseGenSettings.SPIRITUAL_LAND_SETTINGS.getHolder().get()
+//                        generatorSettings.getOrCreateHolderOrThrow(NoiseGeneratorSettings.OVERWORLD)
                 )
         ), Lifecycle.stable());
 

@@ -5,10 +5,14 @@ import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 
+import java.util.List;
 import java.util.OptionalLong;
 import java.util.function.Consumer;
 
@@ -16,7 +20,7 @@ import java.util.function.Consumer;
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-18 12:49
- *
+ * <p>
  * Look at {@link OverworldBiomeBuilder}
  **/
 public class SpiritualLandDimension {
@@ -53,20 +57,36 @@ public class SpiritualLandDimension {
             Climate.Parameter.span(0.45F, 0.55F),
             Climate.Parameter.span(0.55F, 1.0F)
     };
-    /* Middle Biome Table With Temperature And Humidity. */
+    /**
+     * Middle Biome Table With Temperature And Humidity.
+     */
+    private final ResourceKey<Biome>[][] DEFAULT_MIDDLE_BIOMES = new ResourceKey[][]{
+            {Biomes.SNOWY_PLAINS, Biomes.SNOWY_PLAINS, Biomes.SNOWY_PLAINS, Biomes.SNOWY_TAIGA, Biomes.TAIGA},
+            {Biomes.PLAINS, Biomes.PLAINS, Biomes.FOREST, Biomes.TAIGA, Biomes.OLD_GROWTH_SPRUCE_TAIGA},
+            {Biomes.FLOWER_FOREST, Biomes.PLAINS, Biomes.FOREST, Biomes.BIRCH_FOREST, Biomes.DARK_FOREST},
+            {Biomes.SAVANNA, Biomes.SAVANNA, Biomes.FOREST, Biomes.JUNGLE, Biomes.JUNGLE},
+            {Biomes.DESERT, Biomes.DESERT, Biomes.DESERT, Biomes.DESERT, Biomes.DESERT}
+    };
+    private final ResourceKey<Biome>[][] DEFAULT_MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
+            {Biomes.ICE_SPIKES, null, Biomes.SNOWY_TAIGA, null, null},
+            {null, null, null, null, Biomes.OLD_GROWTH_PINE_TAIGA},
+            {Biomes.SUNFLOWER_PLAINS, null, null, Biomes.OLD_GROWTH_BIRCH_FOREST, null},
+            {null, null, Biomes.PLAINS, Biomes.SPARSE_JUNGLE, Biomes.BAMBOO_JUNGLE},
+            {null, null, null, null, null}
+    };
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES = new ResourceKey[][]{
             {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
             {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
             {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS}
+            {ImmortalBiomes.SPIRITUAL_SAVANNA, ImmortalBiomes.SPIRITUAL_SAVANNA, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
+            {ImmortalBiomes.SPIRITUAL_DESERT, ImmortalBiomes.SPIRITUAL_DESERT, ImmortalBiomes.SPIRITUAL_DESERT, ImmortalBiomes.SPIRITUAL_DESERT, ImmortalBiomes.SPIRITUAL_DESERT}
     };
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS},
-            {ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS, ImmortalBiomes.SPIRITUAL_PLAINS}
+            {null, null, null, null, null},
+            {null, null, null, null, null},
+            {null, null, null, null, null},
+            {null, null, null, null, null},
+            {null, null, null, null, null}
     };
 
     protected static void addBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
@@ -98,7 +118,6 @@ public class SpiritualLandDimension {
 //        this.addHighSlice(consumer, Climate.Parameter.span(0.7666667F, 0.93333334F));
 
 
-
 //        this.addLowSlice(consumer, Climate.Parameter.span(-0.26666668F, -0.05F));
 //        this.addLowSlice(consumer, Climate.Parameter.span(0.05F, 0.26666668F));
 //
@@ -111,9 +130,9 @@ public class SpiritualLandDimension {
         /* Add Valley Rivers */
         //       addSurfaceBiome(consumer, MIDDLE_BIOMES, FULL_RANGE, Climate.Parameter.span(this.inlandContinentalness, this.farInlandContinentalness), this.erosions[6], weirdness, 0.0F, Biomes.FROZEN_RIVER);
         /* Add Middle Biomes */
-        for(int i = 0; i < TEMPERATURES.length; ++i) {
+        for (int i = 0; i < TEMPERATURES.length; ++i) {
             final Climate.Parameter temperature = TEMPERATURES[i];
-            for(int j = 0; j < HUMIDITIES.length; ++j) {
+            for (int j = 0; j < HUMIDITIES.length; ++j) {
                 final Climate.Parameter humidity = HUMIDITIES[j];
                 final ResourceKey<Biome> biomeKey = pickMiddleBiome(i, j, weirdness);
                 addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(MID_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), Climate.Parameter.span(EROSIONS[0], EROSIONS[1]), weirdness, 0.0F, biomeKey);
@@ -140,7 +159,28 @@ public class SpiritualLandDimension {
         }
     }
 
-    // TODO 修改type。
+    public static List<Climate.ParameterPoint> spawnTarget() {
+        Climate.Parameter zero = Climate.Parameter.point(0.0F);
+        return List.of(new Climate.ParameterPoint(
+                        FULL_RANGE,
+                        FULL_RANGE,
+                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
+                        FULL_RANGE,
+                        zero,
+                        Climate.Parameter.span(-1.0F, -0.16F),
+                        0L
+                ), new Climate.ParameterPoint(
+                        FULL_RANGE,
+                        FULL_RANGE,
+                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
+                        FULL_RANGE,
+                        zero,
+                        Climate.Parameter.span(0.16F, 1.0F),
+                        0L
+                )
+        );
+    }
+
     public static DimensionType getDimensionType() {
         return new DimensionType(
                 OptionalLong.empty(),
@@ -157,7 +197,7 @@ public class SpiritualLandDimension {
                 BlockTags.INFINIBURN_OVERWORLD,
                 BuiltinDimensionTypes.OVERWORLD_EFFECTS,
                 0.0F,
-                new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
+                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
         );
     }
 
