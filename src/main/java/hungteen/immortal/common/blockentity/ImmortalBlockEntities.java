@@ -17,11 +17,19 @@ public class ImmortalBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Util.id());
 
     public static final RegistryObject<BlockEntityType<SpiritualFurnaceBlockEntity>> SPIRITUAL_FURNACE = BLOCK_ENTITY_TYPES.register("spiritual_furnace", () -> {
-        return BlockEntityType.Builder.of(SpiritualFurnaceBlockEntity::new, ImmortalBlocks.SPIRITUAL_FURNACE.get()).build(null);
+        return BlockEntityType.Builder.of(SpiritualFurnaceBlockEntity::new, ImmortalBlocks.COPPER_SPIRITUAL_FURNACE.get()).build(null);
     });
 
     public static final RegistryObject<BlockEntityType<ElixirRoomBlockEntity>> ELIXIR_ROOM = BLOCK_ENTITY_TYPES.register("elixir_room", () -> {
-        return BlockEntityType.Builder.of(ElixirRoomBlockEntity::new, ImmortalBlocks.ELIXIR_ROOM.get()).build(null);
+        return BlockEntityType.Builder.of(ElixirRoomBlockEntity::new, ImmortalBlocks.COPPER_ELIXIR_ROOM.get()).build(null);
+    });
+
+    public static final RegistryObject<BlockEntityType<SpiritualRoomBlockEntity>> SPIRITUAL_ROOM = BLOCK_ENTITY_TYPES.register("spiritual_room", () -> {
+        return BlockEntityType.Builder.of(SpiritualRoomBlockEntity::new, ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()).build(null);
+    });
+
+    public static final RegistryObject<BlockEntityType<SmithingArtifactBlockEntity>> SMITHING_ARTIFACT = BLOCK_ENTITY_TYPES.register("smithing_artifact", () -> {
+        return BlockEntityType.Builder.of(SmithingArtifactBlockEntity::new, ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()).build(null);
     });
 
 }

@@ -1,5 +1,6 @@
 package hungteen.immortal.common.item.artifacts;
 
+import hungteen.immortal.api.registry.IArtifactTier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -10,12 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
  **/
 public class SwordItem extends MeleeAttackItem {
 
-    public SwordItem(int artifactLevel, float attackDamage) {
-        this(artifactLevel, false, attackDamage, 0, 0);
-    }
-
-    public SwordItem(int artifactLevel, boolean isAncientArtifact, float attackDamage, float attackSpeed, float attackRange) {
-        super(MeleeAttackTypes.SWORD, artifactLevel, isAncientArtifact, attackDamage, attackSpeed, attackRange);
+    public SwordItem(boolean isAncientArtifact, IArtifactTier tier) {
+        super(MeleeAttackTypes.SWORD, isAncientArtifact, tier);
     }
 
     @Override

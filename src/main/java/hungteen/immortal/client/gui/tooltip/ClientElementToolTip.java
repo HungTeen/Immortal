@@ -2,7 +2,7 @@ package hungteen.immortal.client.gui.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
-import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.api.registry.ISpiritualRoot;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
@@ -44,7 +44,7 @@ public class ClientElementToolTip implements ClientTooltipComponent {
         stack.pushPose();
         int width = 0;
         for (Pair<ISpiritualRoot, Integer> pair : this.elementToolTip.getIngredients()) {
-            RenderUtil.setTexture(pair.getFirst().getResourceLocation());
+            RenderHelper.setTexture(pair.getFirst().getResourceLocation());
             GuiComponent.blit(stack, posX + width + 2, posY, pair.getFirst().getTexturePosition().getFirst(), pair.getFirst().getTexturePosition().getSecond(), 10, 10, 256, 256);
             width += ElementToolTip.SINGLE_WIDTH;
         }

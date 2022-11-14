@@ -1,4 +1,4 @@
-package hungteen.immortal.common.block;
+package hungteen.immortal.common.block.artifacts;
 
 import hungteen.htlib.block.entityblock.HTEntityBlock;
 import hungteen.immortal.api.interfaces.IArtifact;

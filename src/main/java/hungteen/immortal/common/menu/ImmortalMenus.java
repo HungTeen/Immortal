@@ -24,6 +24,10 @@ public class ImmortalMenus {
         return IForgeMenuType.create(ElixirRoomMenu::new);
     });
 
+    public static final RegistryObject<MenuType<SmithingArtifactMenu>> SMITHING_ARTIFACT = CONTAINER_TYPES.register("smithing_artifact", () -> {
+        return IForgeMenuType.create(SmithingArtifactMenu::new);
+    });
+
     public static final RegistryObject<MenuType<GolemMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
         return IForgeMenuType.create((windowId, inv, data) -> {
             return new GolemMenu(windowId, inv, data.readInt());

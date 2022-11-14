@@ -52,13 +52,12 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
     protected final ContainerData accessData = new ContainerData() {
         @Override
         public int get(int id) {
-            switch (id) {
-                case 0 : return ElixirRoomBlockEntity.this.smeltingTick;
-                case 1 : return ElixirRoomBlockEntity.this.explodeTick;
-                case 2 : return ElixirRoomBlockEntity.this.score;
-            }
-            Util.error("Unable to find suitable for Id");
-            return 0;
+            return switch (id) {
+                case 0 -> ElixirRoomBlockEntity.this.smeltingTick;
+                case 1 -> ElixirRoomBlockEntity.this.explodeTick;
+                case 2 -> ElixirRoomBlockEntity.this.score;
+                default -> 0;
+            };
         }
 
         @Override
@@ -67,6 +66,9 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
                 case 0 -> ElixirRoomBlockEntity.this.smeltingTick = value;
                 case 1 -> ElixirRoomBlockEntity.this.explodeTick = value;
                 case 2 -> ElixirRoomBlockEntity.this.score = value;
+                default -> {
+                    Util.warn("Wrong id {}", id);
+                }
             }
         }
 
@@ -200,7 +202,8 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
             for (ISpiritualRoot root : list) {
                 final int origin = this.getRecipeMap().getOrDefault(root, 0);
                 final int dif = origin - this.getSpiritualMap().getOrDefault(root, 0);
-                if (dif < 0 || origin == 0) { // 炸炉。
+                if (dif < 0 || origin == 0) {
+                    // 炸炉。
                     this.explode = true;
                     this.score = 0;
                     return;

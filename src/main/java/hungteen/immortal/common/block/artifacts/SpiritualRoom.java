@@ -1,11 +1,11 @@
-package hungteen.immortal.common.block;
+package hungteen.immortal.common.block.artifacts;
 
 import hungteen.htlib.block.entityblock.HTEntityBlock;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.api.interfaces.IArtifact;
-import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
+import hungteen.immortal.common.blockentity.SpiritualRoomBlockEntity;
 import hungteen.immortal.utils.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,20 +31,21 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @program: Immortal
  * @author: HungTeen
- * @create: 2022-10-27 12:41
+ * @create: 2022-11-13 20:59
  **/
-public class ElixirRoom extends HTEntityBlock implements IArtifact {
+public class SpiritualRoom extends HTEntityBlock implements IArtifact {
 
-    private static final VoxelShape AABB = Block.box(1, 0, 1, 6, 16, 15);
+    private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 6, 15);
     private final int level;
 
-    public ElixirRoom(int level) {
+    public SpiritualRoom(int level) {
         super(BlockBehaviour.Properties.copy(Blocks.ANVIL));
         this.level = level;
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand
+    hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -66,25 +66,13 @@ public class ElixirRoom extends HTEntityBlock implements IArtifact {
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ElixirRoomBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    public boolean triggerEvent(BlockState state, Level level, BlockPos blockPos, int p_49229_, int p_49230_) {
-        super.triggerEvent(state, level, blockPos, p_49229_, p_49230_);
-        BlockEntity blockentity = level.getBlockEntity(blockPos);
-        return blockentity != null && blockentity.triggerEvent(p_49229_, p_49230_);
+        return new SpiritualRoomBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : createTickerHelper(blockEntityType, ImmortalBlockEntities.ELIXIR_ROOM.get(), ElixirRoomBlockEntity::serverTick);
+        return level.isClientSide ? null : createTickerHelper(blockEntityType, ImmortalBlockEntities.SPIRITUAL_ROOM.get(), SpiritualRoomBlockEntity::serverTick);
     }
 
     @Override

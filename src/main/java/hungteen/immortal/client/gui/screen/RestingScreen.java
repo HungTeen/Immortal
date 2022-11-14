@@ -3,7 +3,7 @@ package hungteen.immortal.client.gui.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.immortal.client.ImmortalKeyBinds;
 import hungteen.immortal.utils.Util;
@@ -24,7 +24,7 @@ import java.util.List;
 public class RestingScreen extends HTScreen {
 
     private static final ResourceLocation SPELL_CIRCLE = Util.prefix("textures/gui/overlay/spell_circle.png");
-    private static final List<SpellSlot> slots = new ArrayList<>();
+    private static final List<SpellSlot> SLOTS = new ArrayList<>();
 
     public RestingScreen(){
         this.imageHeight = 128;
@@ -37,12 +37,12 @@ public class RestingScreen extends HTScreen {
         final int ox = this.height / 2;
         final int oy = this.width / 2;
         final int r = 50;
-        this.slots.clear();
+        SLOTS.clear();
         for(int i = 0; i < 8; ++ i){
             final double alpha = 2 * Mth.PI / 8 * i;
             final int x = (int)(Math.sin(alpha) * r) + ox;
             final int y = (int)(Math.cos(alpha) * r)  + oy;
-            this.slots.add(new SpellSlot(i, y, x));
+            SLOTS.add(new SpellSlot(i, y, x));
             System.out.println(x + " " + y);
         }
     }
@@ -52,12 +52,12 @@ public class RestingScreen extends HTScreen {
         if (!this.checkToClose()) {
             poseStack.pushPose();
             RenderSystem.enableBlend();
-            RenderUtil.setTexture(SPELL_CIRCLE);
+            RenderHelper.setTexture(SPELL_CIRCLE);
             blit(poseStack, this.leftPos, this.topPos, 0, 0, 128, 128);
             super.render(poseStack, mouseX, mouseY, partialTicks);
             poseStack.popPose();
 
-            for(SpellSlot spellSlot : this.slots){
+            for(SpellSlot spellSlot : SLOTS){
                 spellSlot.render(poseStack, mouseX, mouseY, partialTicks);
             }
         }
@@ -99,7 +99,7 @@ public class RestingScreen extends HTScreen {
 
         @Override
         public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-            RenderUtil.setTexture(SPELL_CIRCLE);
+            RenderHelper.setTexture(SPELL_CIRCLE);
             blit(poseStack, x, y, this.isSelected ? 20 : 0, 128, this.height, this.width);
         }
 

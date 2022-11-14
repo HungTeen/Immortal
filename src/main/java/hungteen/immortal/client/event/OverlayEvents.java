@@ -49,6 +49,11 @@ public class OverlayEvents {
                 }
             }
         });
+        event.registerAboveAll("smithing_progress_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
+                OverlayHandler.renderSmithingBar(poseStack, screenHeight, screenWidth);
+            }
+        });
     }
 
 }

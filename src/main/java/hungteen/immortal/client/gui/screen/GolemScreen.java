@@ -1,7 +1,7 @@
 package hungteen.immortal.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.immortal.common.menu.GolemMenu;
 import hungteen.immortal.utils.Util;
@@ -26,7 +26,7 @@ public class GolemScreen extends HTContainerScreen<GolemMenu> {
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageHeight, this.imageWidth);
         super.renderBg(stack, partialTicks, mouseX, mouseY);
         this.renderTooltip(stack, mouseX, mouseY);

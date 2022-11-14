@@ -124,7 +124,7 @@ public class RecipeGen extends RecipeProvider {
     }
 
     private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int preCD, int smeltCD, int ingredientLimit, int requireFlameLevel, List<ItemLike> ingredients, Map<ISpiritualRoot, Integer> map){
-        ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel).unlockedBy("has_elixir_furnace", has(ImmortalBlocks.ELIXIR_ROOM.get()));
+        ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel).unlockedBy("has_elixir_furnace", has(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
         ingredients.forEach(builder::requires);
         map.forEach(builder::put);
         builder.save(consumer, Util.prefix("elixir/" + ItemHelper.getKey(result.asItem()).getPath()));

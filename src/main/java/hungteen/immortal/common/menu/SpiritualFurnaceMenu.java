@@ -85,7 +85,7 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.accessLevel, player, ImmortalBlocks.SPIRITUAL_FURNACE.get());
+        return stillValid(this.accessLevel, player, ImmortalBlocks.COPPER_SPIRITUAL_FURNACE.get());
     }
 
 }

@@ -12,6 +12,7 @@ import hungteen.immortal.common.item.artifacts.ShovelItem;
 import hungteen.immortal.common.item.artifacts.SwordItem;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
+import hungteen.immortal.impl.ImmortalTiers;
 import hungteen.immortal.utils.Util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
@@ -31,18 +32,22 @@ public class ImmortalItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Util.id());
 
     /* Material Tab Items */
+
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(ImmortalBlocks.GOURD_STEM.get(), new Item.Properties().tab(ItemTabs.MATERIALS)));
 
     /* Decoration Tab Items */
+
     public static final RegistryObject<Item> MULBERRY_SIGN = ITEMS.register("mulberry_sign", () -> new SignItem((new Item.Properties()).stacksTo(16).tab(ItemTabs.DECORATIONS), ImmortalBlocks.MULBERRY_SIGN.get(), ImmortalBlocks.MULBERRY_WALL_SIGN.get()));
 
     /* Rune Tab Items */
+
     public static final RegistryObject<Item> RUNE = ITEMS.register("rune", () -> new RuneItem(RuneItem.RuneTypes.DEFAULT));
     public static final RegistryObject<Item> MEMORY_RUNE = ITEMS.register("memory_rune", () -> new RuneItem(RuneItem.RuneTypes.MEMORY));
     public static final RegistryObject<Item> SENSOR_RUNE = ITEMS.register("sensor_rune", () -> new RuneItem(RuneItem.RuneTypes.SENSOR));
     public static final RegistryObject<Item> BEHAVIOR_RUNE = ITEMS.register("behavior_rune", () -> new RuneItem(RuneItem.RuneTypes.BEHAVIOR));
 
     /* Elixir Tab Items */
+
     public static final RegistryObject<Item> FIVE_FLOWERS_ELIXIR = ITEMS.register("five_flowers_elixir", CultivationElixir.FiveFlowersElixir::new);
     public static final RegistryObject<Item> ANTIDOTE_ELIXIR = ITEMS.register("antidote_elixir", AntidoteElixir::new);
     public static final RegistryObject<Item> SPIRIT_RECOVERY_ELIXIR = ITEMS.register("spirit_recovery_elixir", SpiritualElixir.SpiritRecoveryElixir::new);
@@ -51,27 +56,31 @@ public class ImmortalItems {
     public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
 
     /* Artifact Tab Items */
-//    public static final RegistryObject<Item> RAW_ARTIFACT = ITEMS.register("raw_artifact", RawArtifact::new);
+
+    public static final RegistryObject<Item> RAW_ARTIFACT_BOX = ITEMS.register("raw_artifact_box", RawArtifactBox::new);
+    public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer", () -> new HammerItem(false, ImmortalTiers.STONE));
     public static final RegistryObject<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(1));
-    public static final RegistryObject<Item> BRONZE_SWORD = ITEMS.register("bronze_sword", () -> new SwordItem(1, 0));
-    public static final RegistryObject<Item> BRONZE_SHORT_SWORD = ITEMS.register("bronze_short_sword", () -> new ShortSwordItem(1, 0));
-    public static final RegistryObject<Item> BRONZE_AXE = ITEMS.register("bronze_axe", () -> new AxeItem(1, 0, 7));
-    public static final RegistryObject<Item> BRONZE_PICKAXE = ITEMS.register("bronze_pickaxe", () -> new PickaxeItem(1, 0, 7));
-    public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(1, 0, 7));
-    public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(1, 0, 7));
-    public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(1, 0));
+    public static final RegistryObject<Item> BRONZE_SWORD = ITEMS.register("bronze_sword", () -> new SwordItem(false, ImmortalTiers.BRONZE));
+    public static final RegistryObject<Item> BRONZE_SHORT_SWORD = ITEMS.register("bronze_short_sword", () -> new ShortSwordItem(false, ImmortalTiers.BRONZE));
+    public static final RegistryObject<Item> BRONZE_AXE = ITEMS.register("bronze_axe", () -> new AxeItem(false, ImmortalTiers.BRONZE, 7));
+    public static final RegistryObject<Item> BRONZE_PICKAXE = ITEMS.register("bronze_pickaxe", () -> new PickaxeItem(false, ImmortalTiers.BRONZE, 7));
+    public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(false, ImmortalTiers.BRONZE, 7));
+    public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(false, ImmortalTiers.BRONZE, 7));
+    public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(false, ImmortalTiers.BRONZE));
 
     /* Transport Tab Items */
+
     public static final RegistryObject<Item> MULBERRY_BOAT = ITEMS.register("mulberry_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, false));
     public static final RegistryObject<Item> MULBERRY_CHEST_BOAT = ITEMS.register("mulberry_chest_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, true));
 
-
     /* Misc Tab Items */
+
     public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {
         return new MobBucketItem(() -> ImmortalEntities.GRASS_CARP.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_AXOLOTL, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
     });
 
     /* Food Tab Items */
+
     public static final RegistryObject<Item> MULBERRY = ITEMS.register("mulberry", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD)));
 
     /**
@@ -79,6 +88,7 @@ public class ImmortalItems {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void registerItems(RegisterEvent event){
+
     }
 
 

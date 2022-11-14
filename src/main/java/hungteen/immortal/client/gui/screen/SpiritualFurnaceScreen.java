@@ -1,7 +1,7 @@
 package hungteen.immortal.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.common.menu.SpiritualFurnaceMenu;
@@ -30,14 +30,14 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
         super.render(stack, mouseX, mouseY, partialTicks);
 
         if(this.menu.getMaxValue() > 0){
-            RenderUtil.setTexture(TEXTURE);
+            RenderHelper.setTexture(TEXTURE);
             final int len = MathHelper.getBarLen(this.menu.getFlameValue(), this.menu.getMaxValue(), 9);
             this.blit(stack, this.leftPos + 95, this.topPos + 45 + 9 - len, 202, 3 + 9 - len, 8, len);
 
             }
 
         if(this.menu.triggered() && this.minecraft.player != null){
-            RenderUtil.setTexture(TEXTURE);
+            RenderHelper.setTexture(TEXTURE);
             final int BurnCD = 30;
             final int tick = this.minecraft.player.tickCount % BurnCD;
             final int len = MathHelper.getBarLen(tick, BurnCD, 16) + 1;
@@ -49,7 +49,7 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.renderBg(stack, partialTicks, mouseX, mouseY);
     }

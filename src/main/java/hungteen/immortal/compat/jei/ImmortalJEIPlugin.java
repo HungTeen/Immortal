@@ -39,7 +39,7 @@ public class ImmortalJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.ELIXIR_ROOM.get()), ElixirCategory.ELIXIR_RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), ElixirCategory.ELIXIR_RECIPE_TYPE);
     }
 
     @Override

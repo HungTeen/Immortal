@@ -49,12 +49,6 @@ public class ElixirRoomMenu extends HTContainerMenu {
         for(int i = 0; i < 3; ++ i){
             for(int j = 0; j < 3; ++ j){
                 this.addSlot(new SlotItemHandler(this.blockEntity.getItemHandler(), i * 3 + j, 73 + i * 18, 53 + j * 18){
-//                    @Override
-//                    public void setChanged() {
-//                        super.setChanged();
-//                        ElixirFurnaceMenu.this.slotsChanged(this.container);
-//                    }
-
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
                         return ElixirRoomMenu.this.blockEntity.getSmeltingState() != ElixirRoomBlockEntity.SmeltingStates.SMELTING;
@@ -107,7 +101,7 @@ public class ElixirRoomMenu extends HTContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.accessLevel, player, ImmortalBlocks.ELIXIR_ROOM.get());
+        return stillValid(this.accessLevel, player, ImmortalBlocks.COPPER_ELIXIR_ROOM.get());
     }
 
 }

@@ -4,6 +4,10 @@ import hungteen.htlib.block.*;
 import hungteen.htlib.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.block.plants.HTSaplingBlock;
 import hungteen.immortal.ImmortalMod;
+import hungteen.immortal.common.block.artifacts.ElixirRoom;
+import hungteen.immortal.common.block.artifacts.SmithingArtifact;
+import hungteen.immortal.common.block.artifacts.SpiritualFurnace;
+import hungteen.immortal.common.block.artifacts.SpiritualRoom;
 import hungteen.immortal.common.block.plants.AttachedGourdStemBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
@@ -34,14 +38,19 @@ public class ImmortalBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Util.id());
 
     /* Plant Blocks */
+
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
 
     /* Entity Blocks */
-    public static final RegistryObject<Block> SPIRITUAL_FURNACE = BLOCKS.register("spiritual_furnace", () -> new SpiritualFurnace(1));
-    public static final RegistryObject<Block> ELIXIR_ROOM = BLOCKS.register("elixir_room", () -> new ElixirRoom(1));
+
+    public static final RegistryObject<Block> COPPER_SPIRITUAL_FURNACE = BLOCKS.register("copper_spiritual_furnace", () -> new SpiritualFurnace(1));
+    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoom(1));
+    public static final RegistryObject<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.register("copper_spiritual_room", () -> new SpiritualRoom(1));
+    public static final RegistryObject<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.register("copper_smithing_artifact", () -> new SmithingArtifact(1));
 
     /* Tree Suits */
+
     public static final RegistryObject<Block> MULBERRY_SAPLING = BLOCKS.register("mulberry_sapling", () -> new HTSaplingBlock(new MulberryTreeGrower()));
     public static final RegistryObject<Block> MULBERRY_LEAVES = BLOCKS.register("mulberry_leaves", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
     public static final RegistryObject<Block> MULBERRY_LEAVES_WITH_MULBERRIES = BLOCKS.register("mulberry_leaves_with_mulberries", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
@@ -95,7 +104,7 @@ public class ImmortalBlocks {
                     event.register(ForgeRegistries.ITEMS.getRegistryKey(), obj.getId(), () -> new BlockItem(obj.get(), new Item.Properties().tab(ItemTabs.DECORATIONS)));
         });
         Arrays.asList(
-                SPIRITUAL_FURNACE, ELIXIR_ROOM
+                COPPER_SPIRITUAL_FURNACE, COPPER_ELIXIR_ROOM, COPPER_SMITHING_ARTIFACT, COPPER_SPIRITUAL_ROOM
         ).forEach(block -> event.register(ForgeRegistries.ITEMS.getRegistryKey(), block.getId(), () -> new BlockItem(block.get(), new Item.Properties().tab(ItemTabs.ARTIFACTS))));
 
     }

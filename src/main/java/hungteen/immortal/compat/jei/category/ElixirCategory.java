@@ -39,7 +39,7 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
         this.slotDraw = helper.getSlotDrawable();
         this.background = helper.createBlankDrawable(120, 60);
         this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
-        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.ELIXIR_ROOM.get()));
+        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package hungteen.immortal.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderUtil;
+import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
@@ -43,17 +43,17 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         super.render(stack, mouseX, mouseY, partialTicks);
         //Render Title.
-        RenderUtil.drawCenteredScaledString(stack, font, this.getTitle().getString(), this.leftPos + 100, this.topPos + 20, ColorHelper.WHITE, 0.6F);
+        RenderHelper.drawCenteredScaledString(stack, font, this.getTitle().getString(), this.leftPos + 100, this.topPos + 20, ColorHelper.WHITE, 0.6F);
         if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
             final String text = Component.translatable("gui.immortal.elixir_furnace.remain_count", this.menu.getIngredientLimit()).getString();
-            RenderUtil.drawCenteredScaledString(stack, font, text, this.leftPos + 162, this.topPos + 70, Colors.WORD, 0.6F);
+            RenderHelper.drawCenteredScaledString(stack, font, text, this.leftPos + 162, this.topPos + 70, Colors.WORD, 0.6F);
 
             if(this.menu.getExplodeTick() > 0){
                 final String warn = Component.translatable("gui.immortal.elixir_furnace.explode").getString();
-                RenderUtil.drawCenteredScaledString(stack, font, warn, this.leftPos + 160, this.topPos + 80, ColorHelper.DARK_RED, 0.8F);
+                RenderHelper.drawCenteredScaledString(stack, font, warn, this.leftPos + 160, this.topPos + 80, ColorHelper.DARK_RED, 0.8F);
             }
         }
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         //Render Result Item.
         final int resultX = this.leftPos + 142 + 11;
         final int resultY = this.topPos + 16 + 1;
@@ -62,9 +62,9 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
             this.itemRenderer.renderAndDecorateItem(this.menu.getResultItem(), resultX, resultY);
             final String score = Component.translatable("gui.immortal.elixir_furnace.score", this.menu.getScore()).withStyle(ChatFormatting.BOLD).getString();
             final int color =  this.menu.getScore() < 33 ? ColorHelper.RED : this.menu.getScore() < ColorHelper.YELLOW ? ColorHelper.YELLOW : ColorHelper.GREEN;
-            RenderUtil.drawCenteredScaledString(stack, font, score, this.leftPos + 170, this.topPos + 40, color, 1F);
+            RenderHelper.drawCenteredScaledString(stack, font, score, this.leftPos + 170, this.topPos + 40, color, 1F);
 
-            RenderUtil.setTexture(TEXTURE);
+            RenderHelper.setTexture(TEXTURE);
             this.blit(stack, this.leftPos + 140, this.topPos + 50, 200, 155, 41, 5);
             final int len = MathHelper.getBarLen(this.menu.getScore(), 100, 39);
             this.blit(stack, this.leftPos + 141, this.topPos + 51, 201, 161, len, 3);
@@ -86,7 +86,7 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
             this.renderSpiritualMap(stack);
 
             if(this.menu.getExplodeTick() > 0){
-                RenderUtil.setTexture(TEXTURE);
+                RenderHelper.setTexture(TEXTURE);
                 this.blit(stack, this.leftPos + 140, this.topPos + 93, 200, 155, 41, 5);
                 final int len = MathHelper.getBarLen(this.menu.getExplodeTick(), 200, 39);
                 this.blit(stack, this.leftPos + 141, this.topPos + 94, 201, 161, len, 3);
@@ -108,7 +108,7 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.renderBg(stack, partialTicks, mouseX, mouseY);
     }
@@ -123,10 +123,10 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
             final int x = 15;
             final ISpiritualRoot root = list.get(i);
 
-            RenderUtil.setTexture(root.getResourceLocation());
+            RenderHelper.setTexture(root.getResourceLocation());
             this.blit(stack, this.leftPos + x + 1, this.topPos + y + 1, root.getTexturePosition().getFirst(), root.getTexturePosition().getSecond(), SpiritualRoots.TEX_WIDTH, SpiritualRoots.TEX_WIDTH);
 
-            RenderUtil.setTexture(TEXTURE);
+            RenderHelper.setTexture(TEXTURE);
             this.blit(stack, this.leftPos + x + 1, this.topPos + y + 11, 218, 166, 31, 5);
 
             final int recipeValue = this.menu.getRecipeMap().getOrDefault(root, 0);
@@ -136,12 +136,12 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
 
             final String currentText = currentValue + "";
             final int color = (currentValue <= recipeValue) ? Colors.WORD : ColorHelper.RED; //7825750;
-            RenderUtil.drawCenteredScaledString(stack, font, currentText, this.leftPos + x + 22, this.topPos + y + 5, color, 0.6F);
+            RenderHelper.drawCenteredScaledString(stack, font, currentText, this.leftPos + x + 22, this.topPos + y + 5, color, 0.6F);
         }
 
         /* Render Scroll Bar */
         stack.pushPose();
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         if (list.size() > COUNT_PER_PAGE) {
             final int len = MathHelper.getBarLen(currentPos, list.size() - COUNT_PER_PAGE, 85 - 19);
             this.blit(stack, this.leftPos + 53, this.topPos + 18 + len, 208, 184, 6, 19);
@@ -155,7 +155,7 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
         final int cd = isWhite ? FLAME_ANIM_CD * 2 : FLAME_ANIM_CD * 5;
         final int tick = this.menu.getSmeltingTick() % cd;
         final int len = MathHelper.getBarLen(tick, cd, 16) + 1;
-        RenderUtil.setTexture(TEXTURE);
+        RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos + 82, this.topPos + 108 + 16 - len, 202, (isWhite ? 61 : 81) + 16 - len, 35, len);
     }
 

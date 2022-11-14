@@ -1,0 +1,10 @@
+{
+  "parent": "immortal:block/spiritual_room_base",
+  "textures": {
+    "bottom": "immortal:block/copper_spiritual_room_bottom",
+    "insides": "immortal:block/copper_spiritual_room_insides",
+    "light": "immortal:block/copper_spiritual_room_light",
+    "sides": "immortal:block/copper_spiritual_room_sides",
+    "top": "immortal:block/copper_spiritual_room_top"
+  }
+}

@@ -37,6 +37,12 @@ public abstract class ArtifactItem extends Item implements IArtifact {
         this.isAncientArtifact = isAncientArtifact;
     }
 
+    public ArtifactItem(Properties properties, int artifactLevel, boolean isAncientArtifact) {
+        super(properties);
+        this.artifactLevel = artifactLevel;
+        this.isAncientArtifact = isAncientArtifact;
+    }
+
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         if(isAncientArtifact()){

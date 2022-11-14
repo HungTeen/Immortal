@@ -6,7 +6,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpiritualRoot;
-import hungteen.immortal.utils.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +25,6 @@ import java.util.*;
  **/
 public class ElixirRecipe implements Recipe<SimpleContainer> {
 
-    public static final ResourceLocation UID = Util.prefix("elixir");
     private final ResourceLocation id;
     private final String group;
     private final NonNullList<Ingredient> ingredients;
@@ -195,6 +193,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
             return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, requireFlameLevel, map);
         }
 
+        @Override
         public void toNetwork(FriendlyByteBuf byteBuf, ElixirRecipe recipe) {
             byteBuf.writeUtf(recipe.group);
             byteBuf.writeVarInt(recipe.ingredients.size());

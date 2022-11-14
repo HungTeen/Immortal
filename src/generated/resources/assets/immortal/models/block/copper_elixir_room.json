@@ -1,0 +1,9 @@
+{
+  "parent": "immortal:block/elixir_room_base",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "immortal:block/copper_elixir_room_bottom",
+    "sides": "immortal:block/copper_elixir_room_sides",
+    "top": "immortal:block/copper_elixir_room_top"
+  }
+}

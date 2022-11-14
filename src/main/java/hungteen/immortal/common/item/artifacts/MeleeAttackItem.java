@@ -2,6 +2,8 @@ package hungteen.immortal.common.item.artifacts;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.common.item.ItemTabs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,19 +34,22 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
     protected final Multimap<Attribute, AttributeModifier> defaultModifiers;
     protected final IMeleeAttackType meleeAttackType;
     protected final float attackDamage;
-    protected final float attackSpeed; // 攻击速度和秒是倒数关系。
+    /**
+     * 攻击速度和秒是倒数关系。
+     */
+    protected final float attackSpeed;
     protected final float attackRange;
 
-    public MeleeAttackItem(IMeleeAttackType meleeAttackType, int artifactLevel, float attackDamage, float attackSpeed, float attackRange) {
-        this(meleeAttackType, artifactLevel, false, attackDamage, attackSpeed, attackRange);
+    public MeleeAttackItem(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
+        this(meleeAttackType, false, tier);
     }
 
-    public MeleeAttackItem(IMeleeAttackType meleeAttackType, int artifactLevel, boolean isAncientArtifact, float attackDamage, float attackSpeed, float attackRange) {
-        super(artifactLevel, isAncientArtifact);
+    public MeleeAttackItem(IMeleeAttackType meleeAttackType, boolean isAncientArtifact, IArtifactTier tier) {
+        super(new Properties().tab(ItemTabs.ARTIFACTS).stacksTo(1).durability(tier.getUses()), tier.getArtifactLevel(), isAncientArtifact);
         this.meleeAttackType = meleeAttackType;
-        this.attackDamage = attackDamage + this.meleeAttackType.getBaseAttackDamage();
-        this.attackSpeed = attackSpeed + this.meleeAttackType.getBaseAttackSpeed();
-        this.attackRange = attackRange + this.meleeAttackType.getBaseAttackRange();
+        this.attackDamage = tier.getAttackDamage() + this.meleeAttackType.getBaseAttackDamage();
+        this.attackSpeed = tier.getAttackSpeed() + this.meleeAttackType.getBaseAttackSpeed();
+        this.attackRange = tier.getAttackRange() + this.meleeAttackType.getBaseAttackRange();
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ARTIFACT_ATTACK_DAMAGE_UUID, "Artifact modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -102,28 +107,55 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
 
     public interface IMeleeAttackType{
 
+        /**
+         * Basic Melee Attack Damage Getter.
+         * @return attack damage value.
+         */
         float getBaseAttackDamage();
 
+        /**
+         * Basic Melee Attack Speed Getter.
+         * @return attack speed value.
+         */
         float getBaseAttackSpeed();
 
+        /**
+         * Basic Melee Attack Range Getter.
+         * @return attack range value.
+         */
         float getBaseAttackRange();
 
+        /**
+         * Sweep action checker.
+         * @return true means can do sweep action.
+         */
         boolean canSweep();
 
     }
 
     public enum MeleeAttackTypes implements IMeleeAttackType{
-        SWORD(8F, -2.4F, 0.2F, true), // 剑 DPS : 12.8, REACH : 3.2
-        SHORT_SWORD(4F, 0F, -1.5F, false), // 短剑 DPS : 16, REACH : 1.5
-        AXE(12F, -3F, 0F, false), // 斧 DPS : 12, REACH : 3
-        PICKAXE(6F, -2.75F, 0F, false), // 镐 DPS : 7.5, REACH : 3
-        SHOVEL(5F, -2.5F, 0F, false), // 铲 DPS : 7.5, REACH : 3
-        HOE(1F, 0F, 0F, false), // 锄 DPS : 4, REACH : 3
-        STICK(2F, -0.4F, 1.5F, true), // 棍棒 DPS : 7.2, REACH : 4.5
-        HAMMER(16F, -3.5F, 0F, false), // 锤 DPS : 8, REACH : 3
-        MACHETE(8F, -2F, 0F, true), // 刀 DPS : 16, REACH : 3
-        SPEAR(9F, -2.8F, 1.5F, true), // 枪 DPS : 10.8, REACH : 4.5
-        HALBERT(10F, -3F, 1.5F, true), // 戟 DPS : 10, REACH : 4.5
+        // 剑 DPS : 12.8, REACH : 3.2
+        SWORD(8F, -2.4F, 0.2F, true),
+        // 短剑 DPS : 16, REACH : 1.5
+        SHORT_SWORD(4F, 0F, -1.5F, false),
+        // 斧 DPS : 12, REACH : 3
+        AXE(12F, -3F, 0F, false),
+        // 镐 DPS : 7.5, REACH : 3
+        PICKAXE(6F, -2.75F, 0F, false),
+        // 铲 DPS : 7.5, REACH : 3
+        SHOVEL(5F, -2.5F, 0F, false),
+        // 锄 DPS : 4, REACH : 3
+        HOE(1F, 0F, 0F, false),
+        // 棍棒 DPS : 7.2, REACH : 4.5
+        STICK(2F, -0.4F, 1.5F, true),
+        // 锤 DPS : 8, REACH : 3
+        HAMMER(16F, -3.5F, 0F, false),
+        // 刀 DPS : 16, REACH : 3
+        MACHETE(8F, -2F, 0F, true),
+        // 枪 DPS : 10.8, REACH : 4.5
+        SPEAR(9F, -2.8F, 1.5F, true),
+        // 戟 DPS : 10, REACH : 4.5
+        HALBERT(10F, -3F, 1.5F, true),
         ;
 
         private final float attackDamage;

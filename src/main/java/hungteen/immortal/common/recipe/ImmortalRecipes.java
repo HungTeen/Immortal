@@ -25,9 +25,11 @@ public class ImmortalRecipes {
     /* Recipe Serializers */
 
     public static final RegistryObject<ElixirRecipe.Serializer> ELIXIR_SERIALIZER = RECIPE_SERIALIZERS.register("elixir_serializer", ElixirRecipe.Serializer::new);
+    public static final RegistryObject<SmithingArtifactRecipe.Serializer> SMITHING_ARTIFACT_SERIALIZER = RECIPE_SERIALIZERS.register("smithing_artifact_serializer", SmithingArtifactRecipe.Serializer::new);
 
     /* Recipe Types */
 
     public static final RegistryObject<RecipeType<ElixirRecipe>> ELIXIR_RECIPE_TYPE = RECIPE_TYPES.register("elixir", () -> new RecipeType<>() {});
+    public static final RegistryObject<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT_RECIPE_TYPE = RECIPE_TYPES.register("smithing_artifact", () -> new RecipeType<>() {});
 
 }

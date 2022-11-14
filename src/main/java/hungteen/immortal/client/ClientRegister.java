@@ -5,7 +5,9 @@ import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.client.event.OverlayEvents;
 import hungteen.immortal.client.gui.screen.ElixirRoomScreen;
 import hungteen.immortal.client.gui.screen.GolemScreen;
+import hungteen.immortal.client.gui.screen.SmithingArtifactScreen;
 import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
+import hungteen.immortal.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.*;
@@ -17,6 +19,7 @@ import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.eixirs.ElixirItem;
 import hungteen.immortal.common.menu.ImmortalMenus;
+import hungteen.immortal.common.menu.tooltip.ArtifactToolTip;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
@@ -119,6 +122,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
         event.register(ElementToolTip.class, ClientElementToolTip::new);
+        event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
     }
 
     @SubscribeEvent
@@ -139,6 +143,7 @@ public class ClientRegister {
     public static void registerScreen() {
         MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
         MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
         MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 

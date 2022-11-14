@@ -1,0 +1,7 @@
+{
+  "parent": "immortal:block/spiritual_furnace_base",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "furnace": "immortal:block/copper_spiritual_furnace"
+  }
+}
