@@ -23,4 +23,6 @@ public class Constants {
 
     public static final int MANA_WARNING_CD = 20;
 
+    public static final int DISPLAY_BEST_SMITHING_POINT_CD = 20;
+
 }

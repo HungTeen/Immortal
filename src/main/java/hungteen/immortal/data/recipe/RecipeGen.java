@@ -33,6 +33,7 @@ public class RecipeGen extends RecipeProvider {
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         this.buildNormalRecipes(consumer);
         this.buildElixirRecipes(consumer);
+        this.buildSmithingRecipes(consumer);
     }
 
     /**
@@ -43,6 +44,30 @@ public class RecipeGen extends RecipeProvider {
 //                .define('A', GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())
 //                .define('B', Items.BLAZE_ROD)
 //                .save(consumer);
+    }
+
+    /**
+     * Recipes for Smithing Artifact.
+     */
+    protected void buildSmithingRecipes(Consumer<FinishedRecipe> consumer) {
+        genSmithing(consumer, ImmortalItems.BRONZE_SWORD.get(), 1, true, 100, 1F, RecipePatterns.SWORD, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
+        genSmithing(consumer, ImmortalItems.BRONZE_SHORT_SWORD.get(), 1, true, 100, 1F, RecipePatterns.SHORT_SWORD, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
+        genSmithing(consumer, ImmortalItems.BRONZE_AXE.get(), 1, true, 100, 1F, RecipePatterns.AXE, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
+        genSmithing(consumer, ImmortalItems.BRONZE_PICKAXE.get(), 1, true, 100, 1F, RecipePatterns.PICKAXE, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
+        genSmithing(consumer, ImmortalItems.BRONZE_SHOVEL.get(), 1, true, 100, 1F, RecipePatterns.SHOVEL, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
+        genSmithing(consumer, ImmortalItems.BRONZE_HOE.get(), 1, true, 100, 1F, RecipePatterns.HOE, builder -> {
+            builder.define('X', Items.STICK).define('Y', Items.COPPER_INGOT);
+        });
     }
 
     /**
@@ -123,8 +148,17 @@ public class RecipeGen extends RecipeProvider {
 //        );
     }
 
+    private void genSmithing(Consumer<FinishedRecipe> consumer, ItemLike result, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple, List<String> pattern, Consumer<SmithingRecipeBuilder> patternConsumer){
+        SmithingRecipeBuilder builder = new SmithingRecipeBuilder(result, 1, requireLevel, needRecovery, needSmithingValue, speedMultiple)
+                .unlockedBy("has_smithing_artifact", has(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()));
+        pattern.forEach(builder::pattern);
+        patternConsumer.accept(builder);
+        builder.save(consumer, Util.prefix("smithing/" + ItemHelper.getKey(result.asItem()).getPath()));
+    }
+
     private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int preCD, int smeltCD, int ingredientLimit, int requireFlameLevel, List<ItemLike> ingredients, Map<ISpiritualRoot, Integer> map){
-        ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel).unlockedBy("has_elixir_furnace", has(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
+        ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel);
+        builder.unlockedBy("has_elixir_furnace", has(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
         ingredients.forEach(builder::requires);
         map.forEach(builder::put);
         builder.save(consumer, Util.prefix("elixir/" + ItemHelper.getKey(result.asItem()).getPath()));

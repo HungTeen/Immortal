@@ -53,12 +53,12 @@ public class SmithingArtifact extends HTEntityBlock implements IArtifact {
         } else {
             if(player instanceof ServerPlayer){
                 if(player.getItemInHand(hand).canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
-                    final BlockEntity blockEntity = level.getBlockEntity(blockPos);
-                    if(blockEntity instanceof SmithingArtifactBlockEntity){
-                        player.startUsingItem(hand);
-                        ((SmithingArtifactBlockEntity) blockEntity).onSmithing();
-                    }
-                    return InteractionResult.CONSUME;
+//                    final BlockEntity blockEntity = level.getBlockEntity(blockPos);
+//                    if(blockEntity instanceof SmithingArtifactBlockEntity){
+//                        player.startUsingItem(hand);
+//                        ((SmithingArtifactBlockEntity) blockEntity).onSmithing();
+//                    }
+                    return InteractionResult.PASS;
                 } else{
                     NetworkHooks.openScreen((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
                         buf.writeBlockPos(blockPos);

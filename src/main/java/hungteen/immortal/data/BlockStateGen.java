@@ -205,7 +205,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 .texture("bottom", StringHelper.suffix(BlockHelper.blockTexture(block), "bottom"))
                 .texture("top_sides", StringHelper.suffix(BlockHelper.blockTexture(block), "top_sides"))
                 .texture("bottom_sides", StringHelper.suffix(BlockHelper.blockTexture(block), "bottom_sides"))
-                .renderType(translucent())
+                .renderType(cutout())
         );
         this.addedBlocks.add(block);
     }
@@ -217,6 +217,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 .texture("sides", StringHelper.suffix(BlockHelper.blockTexture(block), "sides"))
                 .texture("light", StringHelper.suffix(BlockHelper.blockTexture(block), "light"))
                 .texture("insides", StringHelper.suffix(BlockHelper.blockTexture(block), "insides"))
+                .renderType(translucent())
         );
         this.addedBlocks.add(block);
     }

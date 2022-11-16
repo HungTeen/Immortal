@@ -1,0 +1,25 @@
+{
+  "type": "immortal:smithing_artifact_serializer",
+  "key": {
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "need_recovery": true,
+  "pattern": [
+    "     ",
+    "YYY  ",
+    "YYX  ",
+    "  X  ",
+    "  X  "
+  ],
+  "require_level": 1,
+  "require_smithing_value": 100,
+  "result": {
+    "item": "immortal:bronze_axe"
+  },
+  "speed_multiple": 1.0
+}

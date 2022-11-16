@@ -1,5 +1,6 @@
 {
   "parent": "immortal:block/spiritual_room_base",
+  "render_type": "minecraft:translucent",
   "textures": {
     "bottom": "immortal:block/copper_spiritual_room_bottom",
     "insides": "immortal:block/copper_spiritual_room_insides",

@@ -1,6 +1,6 @@
 {
   "parent": "immortal:block/smithing_artifact_base",
-  "render_type": "minecraft:translucent",
+  "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "immortal:block/copper_smithing_artifact_bottom",
     "bottom_sides": "immortal:block/copper_smithing_artifact_bottom_sides",

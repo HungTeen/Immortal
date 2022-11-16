@@ -93,7 +93,8 @@ public class RawArtifactBox extends ArtifactItem {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return getArtifactItem(stack).isEmpty() ? 0 : getSpiritualValue(stack) * RenderHelper.ITEM_BAR_LEN / getSpiritualValueRequired(stack);
+        final int value = getSpiritualValueRequired(stack);
+        return value == 0 ? 0 : getSpiritualValue(stack) * RenderHelper.ITEM_BAR_LEN / value;
     }
 
     @Override

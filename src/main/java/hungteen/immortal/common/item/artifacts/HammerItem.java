@@ -3,15 +3,20 @@ package hungteen.immortal.common.item.artifacts;
 import hungteen.immortal.api.registry.IArtifactTier;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.item.ImmortalToolActions;
+import hungteen.immortal.utils.PlayerUtil;
+import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * @program: Immortal
@@ -20,6 +25,7 @@ import net.minecraftforge.common.ToolAction;
  **/
 public class HammerItem extends MeleeAttackItem {
 
+    public static final int SMITHING_COOL_DOWN = 60;
     private static final int LEAST_USING_TICK = 20;
     private static final String VALID_POS = "ValidPos";
     private static final String BLOCK_POS = "BlockPos";
@@ -28,57 +34,41 @@ public class HammerItem extends MeleeAttackItem {
         super(MeleeAttackTypes.HAMMER, isAncientArtifact, tier);
     }
 
+    /**
+     * {@link hungteen.immortal.common.event.ImmortalPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
+     */
+    public static void smithing(LivingEntity livingEntity, InteractionHand hand, Direction direction, BlockPos blockPos){
+        if(canPerformSmithing(livingEntity.getItemInHand(hand)) && direction == Direction.UP){
+            if(livingEntity.level.getBlockEntity(blockPos) instanceof SmithingArtifactBlockEntity){
+                if(! livingEntity.level.isClientSide){
+
+                }
+                livingEntity.swing(hand);
+                if(livingEntity instanceof Player){
+                    PlayerUtil.setCoolDown((Player) livingEntity, livingEntity.getItemInHand(hand).getItem(), SMITHING_COOL_DOWN);
+                    Util.getProxy().onSmithing(blockPos, hand == InteractionHand.MAIN_HAND);
+                }
+            }
+        }
+    }
+
+    public static boolean canPerformSmithing(ItemStack stack){
+        return stack.canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING);
+    }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        final BlockEntity blockEntity = context.getLevel().getBlockEntity(context.getClickedPos());
-        if(blockEntity instanceof SmithingArtifactBlockEntity){
-            ((SmithingArtifactBlockEntity) blockEntity).onSmithing();
-            setBlockPos(context.getItemInHand(), context.getClickedPos());
-            context.getPlayer().startUsingItem(context.getHand());
-            return InteractionResult.CONSUME;
-        }
         return InteractionResult.PASS;
     }
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        if(validUse(stack, count)){
-            setValidPos(stack, true);
-        } else{
-            setValidPos(stack, false);
-        }
+
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int count) {
-        if(validUse(stack, count)){
-            BlockPos pos = getBlockPos(stack);
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof SmithingArtifactBlockEntity){
-                ((SmithingArtifactBlockEntity) blockEntity).finishSmithing();
-            }
-            setValidPos(stack, false);
-        }
-    }
 
-    public boolean validUse(ItemStack stack, int count) {
-        return count + LEAST_USING_TICK < getUseDuration(stack);
-    }
-
-    public static void setValidPos(ItemStack stack, boolean valid){
-        stack.getOrCreateTag().putBoolean(VALID_POS, valid);
-    }
-
-    public static boolean isValidPos(ItemStack stack){
-        return stack.getOrCreateTag().getBoolean(VALID_POS);
-    }
-
-    public static void setBlockPos(ItemStack stack, BlockPos pos){
-        stack.getOrCreateTag().putLong(BLOCK_POS, pos.asLong());
-    }
-
-    public static BlockPos getBlockPos(ItemStack stack){
-        return BlockPos.of(stack.getOrCreateTag().getLong(BLOCK_POS));
     }
 
     @Override
@@ -87,8 +77,8 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack p_41452_) {
-        return UseAnim.TOOT_HORN;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.BOW;
     }
 
     @Override

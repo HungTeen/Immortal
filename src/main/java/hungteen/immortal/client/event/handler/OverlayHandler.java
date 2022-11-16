@@ -9,23 +9,26 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpell;
 import hungteen.immortal.client.ClientDatas;
+import hungteen.immortal.client.ClientHandler;
 import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.item.ImmortalToolActions;
-import hungteen.immortal.common.item.artifacts.HammerItem;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * @program: Immortal
@@ -42,6 +45,8 @@ public class OverlayHandler {
     private static final int SPELL_SLOT_LEN = 20;
     private static final int MANA_BAR_LEN = 182;
     private static final int MANA_BAR_HEIGHT = 5;
+    private static final int SMITHING_BAR_LEN = 65;
+    private static final int SMITHING_BAR_HEIGHT = 10;
     private static List<Pair<Integer, Integer>> SpellSlots = new ArrayList<>();
 
     static {
@@ -142,26 +147,50 @@ public class OverlayHandler {
     }
 
     public static void renderSmithingBar(PoseStack poseStack, int screenHeight, int screenWidth) {
-        getSmithingArtifact().ifPresent(blockEntity -> {
-
-        });
-    }
-
-    public static boolean canRenderManaBar() {
-        return ClientProxy.MC.player != null && (PlayerUtil.getSpiritualMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
-    }
-
-    public static Optional<SmithingArtifactBlockEntity> getSmithingArtifact(){
-        if(ClientProxy.MC.player != null && ClientProxy.MC.player.getUseItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
-            if(HammerItem.isValidPos(ClientProxy.MC.player.getUseItem())){
-                final BlockPos pos = HammerItem.getBlockPos(ClientProxy.MC.player.getUseItem());
-                final BlockEntity blockEntity = ClientProxy.MC.level.getBlockEntity(pos);
-                if(blockEntity instanceof SmithingArtifactBlockEntity){
-                    return Optional.of((SmithingArtifactBlockEntity) blockEntity);
+        boolean quit = true;
+        ItemStack stack = ItemStack.EMPTY;
+        if(Objects.requireNonNull(ClientProxy.MC.player).getMainHandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
+            stack = ClientProxy.MC.player.getMainHandItem();
+        } else if(Objects.requireNonNull(ClientProxy.MC.player).getOffhandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
+            stack = ClientProxy.MC.player.getOffhandItem();
+        }
+        if(!stack.isEmpty() && PlayerUtil.isInCD(ClientProxy.MC.player, stack.getItem()) && ClientProxy.MC.hitResult instanceof BlockHitResult && ((BlockHitResult) ClientProxy.MC.hitResult).getDirection() == Direction.UP){
+            final BlockPos pos = ((BlockHitResult) ClientProxy.MC.hitResult).getBlockPos();
+            final BlockEntity blockEntity = ClientProxy.MC.level.getBlockEntity(pos);
+            if(blockEntity instanceof final SmithingArtifactBlockEntity entity){
+                if(entity.canSmithing()){
+                    quit = false;
+                    if(! ClientDatas.StartSmithing){
+                        ClientHandler.startSmithing(stack, entity);
+                    }
+                    ClientProxy.MC.getProfiler().push("smithingBar");
+                    final int x = (screenWidth - SMITHING_BAR_LEN) >> 1;
+                    final int y = (screenHeight >> 1) + 10;
+                    final int len = MathHelper.getBarLen(entity.getCurrentSmithingValue(), entity.getRequireSmithingValue(), 61);
+                    final int bestPos = MathHelper.getBarLen(entity.getBestSmithingPoint(), SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
+                    final int currentPos = MathHelper.getBarLen((int)ClientDatas.SmithingProgress, SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
+                    RenderHelper.setTexture(OVERLAY);
+                    ClientProxy.MC.gui.blit(poseStack, x, y, 0, 20, SMITHING_BAR_LEN, SMITHING_BAR_HEIGHT);
+                    ClientProxy.MC.gui.blit(poseStack, x + 2, y + 1, 2, 32, len, 2);
+                    if(ClientDatas.BestPointDisplayTick <= Constants.DISPLAY_BEST_SMITHING_POINT_CD){
+                        ClientProxy.MC.gui.blit(poseStack, x + 1 + bestPos, y, 69, 20, 3, 4);
+                    }
+                    ClientProxy.MC.gui.blit(poseStack, x + 1 + currentPos, y, 66, 20, 3, 4);
+                    ClientProxy.MC.getProfiler().pop();
                 }
             }
         }
-        return Optional.empty();
+        if(quit){
+            ClientHandler.quitSmithing();
+        }
+    }
+
+    public static boolean canRenderManaBar() {
+        return canRenderOverlay() && (PlayerUtil.getSpiritualMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
+    }
+
+    public static boolean canRenderOverlay(){
+        return ClientProxy.MC.screen == null && ! ClientProxy.MC.options.hideGui && ClientProxy.MC.level != null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator();
     }
 
 }

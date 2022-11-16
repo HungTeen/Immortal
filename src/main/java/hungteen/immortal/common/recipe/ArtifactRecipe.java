@@ -43,13 +43,9 @@ public class ArtifactRecipe implements Recipe<SimpleCraftingContainer> {
 
     @Override
     public boolean matches(SimpleCraftingContainer container, Level level) {
-        for (int i = 0; i <= container.getWidth() - this.width; ++i) {
-            for (int j = 0; j <= container.getHeight() - this.height; ++j) {
-                if (this.matches(container, i, j, true)) {
-                    return true;
-                }
-
-                if (this.matches(container, i, j, false)) {
+        for (int i = 0; i <= container.getHeight() - this.height; ++i) {
+            for (int j = 0; j <= container.getWidth() - this.width; ++j) {
+                if (this.matches(container, i, j)) {
                     return true;
                 }
             }
@@ -57,21 +53,16 @@ public class ArtifactRecipe implements Recipe<SimpleCraftingContainer> {
         return false;
     }
 
-    private boolean matches(SimpleCraftingContainer container, int posX, int posY, boolean reverse) {
-        for(int i = 0; i < container.getWidth(); ++i) {
-            for(int j = 0; j < container.getHeight(); ++j) {
-                int k = i - posX;
-                int l = j - posY;
+    private boolean matches(SimpleCraftingContainer container, int posX, int posY) {
+        for(int i = 0; i < container.getHeight(); ++i) {
+            for(int j = 0; j < container.getWidth(); ++j) {
+                final int currentX = i - posX;
+                final int currentY = j - posY;
                 Ingredient ingredient = Ingredient.EMPTY;
-                if (k >= 0 && l >= 0 && k < this.width && l < this.height) {
-                    if (reverse) {
-                        ingredient = this.ingredients.get(this.width - k - 1 + l * this.height);
-                    } else {
-                        ingredient = this.ingredients.get(k + l * this.width);
-                    }
+                if(currentX >= 0 && currentX < this.height && currentY >= 0 && currentY < this.width) {
+                    ingredient = this.ingredients.get(currentY + currentX * this.width);
                 }
-
-                if (!ingredient.test(container.getItem(i + j * container.getWidth()))) {
+                if(! ingredient.test(container.getItem(j + i * container.getWidth()))){
                     return false;
                 }
             }
@@ -93,7 +84,7 @@ public class ArtifactRecipe implements Recipe<SimpleCraftingContainer> {
     public ItemStack getResultItem() {
         if(this.needRecovery){
             ItemStack stack = new ItemStack(ImmortalItems.RAW_ARTIFACT_BOX.get());
-            RawArtifactBox.getArtifactItem(this.result.copy());
+            RawArtifactBox.setArtifactItem(stack, this.result.copy());
             return stack;
         }
         return this.result.copy();
@@ -110,12 +101,12 @@ public class ArtifactRecipe implements Recipe<SimpleCraftingContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ImmortalRecipes.ELIXIR_SERIALIZER.get();
+        return ImmortalRecipes.SMITHING_ARTIFACT_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ImmortalRecipes.ELIXIR_RECIPE_TYPE.get();
+        return ImmortalRecipes.SMITHING_ARTIFACT_RECIPE_TYPE.get();
     }
 
     @Override

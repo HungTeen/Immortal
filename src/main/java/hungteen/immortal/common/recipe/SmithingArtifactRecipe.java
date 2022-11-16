@@ -20,20 +20,20 @@ import java.util.Map;
 public class SmithingArtifactRecipe extends ArtifactRecipe{
 
     private final int needSmithingValue;
-    private final float speedMultiplier;
+    private final float speedMultiple;
 
-    public SmithingArtifactRecipe(ResourceLocation id, String group, int width, int height, NonNullList<Ingredient> ingredients, ItemStack result, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiplier) {
+    public SmithingArtifactRecipe(ResourceLocation id, String group, int width, int height, NonNullList<Ingredient> ingredients, ItemStack result, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple) {
         super(id, group, width, height, ingredients, result, requireLevel, needRecovery);
         this.needSmithingValue = needSmithingValue;
-        this.speedMultiplier = speedMultiplier;
+        this.speedMultiple = speedMultiple;
     }
 
     public int getSmithingValue() {
         return needSmithingValue;
     }
 
-    public float getSpeedMultiplier() {
-        return speedMultiplier;
+    public float getSpeedMultiple() {
+        return speedMultiple;
     }
 
     /**
@@ -52,7 +52,7 @@ public class SmithingArtifactRecipe extends ArtifactRecipe{
             final ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
             final int requireLevel = GsonHelper.getAsInt(jsonObject, "require_level", 0);
             final boolean needRecovery = GsonHelper.getAsBoolean(jsonObject, "need_recovery", true);
-            final int smithingValue = GsonHelper.getAsInt(jsonObject, "smithing_value", 100);
+            final int smithingValue = GsonHelper.getAsInt(jsonObject, "require_smithing_value", 100);
             final float speedMultiple = GsonHelper.getAsFloat(jsonObject, "speed_multiple", 1F);
             return new SmithingArtifactRecipe(location, group, width, height, ingredients, result, requireLevel, needRecovery, smithingValue, speedMultiple);
         }
@@ -82,7 +82,7 @@ public class SmithingArtifactRecipe extends ArtifactRecipe{
             byteBuf.writeVarInt(recipe.requireLevel);
             byteBuf.writeBoolean(recipe.needRecovery);
             byteBuf.writeVarInt(recipe.needSmithingValue);
-            byteBuf.writeFloat(recipe.speedMultiplier);
+            byteBuf.writeFloat(recipe.speedMultiple);
 
             for(Ingredient ingredient : recipe.ingredients) {
                 ingredient.toNetwork(byteBuf);

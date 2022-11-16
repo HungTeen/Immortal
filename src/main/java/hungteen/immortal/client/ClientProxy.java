@@ -1,7 +1,10 @@
 package hungteen.immortal.client;
 
 import hungteen.immortal.CommonProxy;
+import hungteen.immortal.common.network.NetworkHandler;
+import hungteen.immortal.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Objects;
@@ -19,6 +22,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void openRestingScreen() {
 
+    }
+
+    @Override
+    public void onSmithing(BlockPos blockPos, boolean isMainHand) {
+        NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientDatas.SmithingProgress, isMainHand));
     }
 
     @Override

@@ -5,6 +5,7 @@ import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
+import hungteen.immortal.common.item.artifacts.HammerItem;
 import hungteen.immortal.common.network.EmptyClickPacket;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.utils.PlayerUtil;
@@ -88,6 +89,7 @@ public class ImmortalPlayerEvents {
         if(! event.getEntity().level.isClientSide) {
             PlayerEventHandler.rayTrace(event.getEntity());
         }
+        HammerItem.smithing(event.getEntity(), event.getHand(), event.getFace(), event.getPos());
     }
 
     /**

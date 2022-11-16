@@ -18,9 +18,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,13 @@ import java.util.stream.Collectors;
  **/
 public class PlayerUtil {
 
+    public static void setCoolDown(Player player, Item item, int coolDown){
+        player.getCooldowns().addCooldown(item, coolDown);
+    }
+
+    public static boolean isInCD(Player player, Item item){
+        return player.getCooldowns().isOnCooldown(item);
+    }
     /**
      * 重置玩家的灵根。
      */

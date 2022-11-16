@@ -2,13 +2,11 @@ package hungteen.immortal.client.event;
 
 import com.mojang.datafixers.util.Either;
 import hungteen.immortal.ImmortalMod;
-import hungteen.immortal.client.ClientDatas;
+import hungteen.immortal.client.ClientHandler;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
-import hungteen.immortal.common.tag.ImmortalItemTags;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.TickEvent;
@@ -27,6 +25,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event){
+        ClientHandler.onSmithing();
     }
 
     @SubscribeEvent

@@ -35,14 +35,21 @@ public class SmithingArtifactMenu extends HTContainerMenu {
         BlockEntity blockEntity = inventory.player.level.getBlockEntity(pos);
         if(blockEntity instanceof SmithingArtifactBlockEntity){
             this.blockEntity = (SmithingArtifactBlockEntity) blockEntity;
+            this.blockEntity.update();
         } else{
             throw new RuntimeException("Invalid block entity !");
         }
 
-        this.addInventories(51, 31, 5, 5, 0, (x, y, slotId) -> new SlotItemHandler(this.blockEntity.getItemHandler(), x, y, slotId){
+        this.addInventories(51, 31, 5, 5, 0, (x, y, slotId) -> new SlotItemHandler(this.blockEntity.getItemHandler(), x, y, slotId) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
                 return true;
+            }
+
+            @Override
+            public void setChanged() {
+                super.setChanged();
+                SmithingArtifactMenu.this.blockEntity.updateRecipes();
             }
         });
 

@@ -1,6 +1,5 @@
 package hungteen.immortal.client.event;
 
-import hungteen.htlib.ClientProxy;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.event.handler.OverlayHandler;
@@ -37,20 +36,18 @@ public class OverlayEvents {
      */
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("spiritual_mana_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if (!ClientProxy.MC.options.hideGui && OverlayHandler.canRenderManaBar()) {
+            if (OverlayHandler.canRenderManaBar()) {
                 gui.setupOverlayRenderState(true, false);
                 OverlayHandler.renderSpiritualMana(poseStack, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("spell_circle", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
-                if(ClientDatas.ShowSpellCircle){
-                    OverlayHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
-                }
+            if(OverlayHandler.canRenderOverlay() && ClientDatas.ShowSpellCircle){
+                OverlayHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("smithing_progress_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if(! ClientProxy.MC.options.hideGui && ClientProxy.MC.screen == null && ClientProxy.MC.player != null && ! ClientProxy.MC.player.isSpectator()){
+            if(OverlayHandler.canRenderOverlay()){
                 OverlayHandler.renderSmithingBar(poseStack, screenHeight, screenWidth);
             }
         });
