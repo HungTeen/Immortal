@@ -12,6 +12,8 @@ import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
 import hungteen.immortal.common.entity.ImmortalEntities;
+import hungteen.immortal.common.entity.ImmortalPoiTypes;
+import hungteen.immortal.common.entity.ImmortalProfessions;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.network.NetworkHandler;
@@ -84,6 +86,8 @@ public class ImmortalMod {
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalPoiTypes.register(modBus);
+        ImmortalProfessions.register(modBus);
         ImmortalConfiguredFeatures.register(modBus);
         ImmortalPlacedFeatures.register(modBus);
         ImmortalBiomes.register();

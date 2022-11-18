@@ -154,7 +154,7 @@ public class OverlayHandler {
         } else if(Objects.requireNonNull(ClientProxy.MC.player).getOffhandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
             stack = ClientProxy.MC.player.getOffhandItem();
         }
-        if(!stack.isEmpty() && PlayerUtil.isInCD(ClientProxy.MC.player, stack.getItem()) && ClientProxy.MC.hitResult instanceof BlockHitResult && ((BlockHitResult) ClientProxy.MC.hitResult).getDirection() == Direction.UP){
+        if(!stack.isEmpty() && ! PlayerUtil.isInCD(ClientProxy.MC.player, stack.getItem()) && ClientProxy.MC.hitResult instanceof BlockHitResult && ((BlockHitResult) ClientProxy.MC.hitResult).getDirection() == Direction.UP){
             final BlockPos pos = ((BlockHitResult) ClientProxy.MC.hitResult).getBlockPos();
             final BlockEntity blockEntity = ClientProxy.MC.level.getBlockEntity(pos);
             if(blockEntity instanceof final SmithingArtifactBlockEntity entity){

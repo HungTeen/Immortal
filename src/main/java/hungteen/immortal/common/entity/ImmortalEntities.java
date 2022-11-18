@@ -7,6 +7,7 @@ import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.creature.SilkWorm;
 import hungteen.immortal.common.entity.golem.IronGolem;
 import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.entity.human.villager.DiscipleVillager;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.entity.undead.SpiritualZombie;
@@ -39,24 +40,31 @@ public class ImmortalEntities {
     private static final Map<RegistryObject<?>, String> MAP = new HashMap<>();
 
     /* Misc */
+
     public static final RegistryObject<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC);
     public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC);
 
     /* Human */
+
+    public static final RegistryObject<EntityType<DiscipleVillager>> DISCIPLE_VILLAGER = registerEntityType(DiscipleVillager::new, "disciple_villager", MobCategory.CREATURE);
     public static final RegistryObject<EntityType<Cultivator>> CULTIVATOR = registerEntityType(Cultivator::new, "cultivator", MobCategory.CREATURE);
 
     /* Creature */
+
     public static final RegistryObject<EntityType<GrassCarp>> GRASS_CARP = registerEntityType(GrassCarp::new, "grass_carp", MobCategory.WATER_CREATURE);
     public static final RegistryObject<EntityType<SilkWorm>> SILK_WORM = registerEntityType(SilkWorm::new, "silk_worm", MobCategory.CREATURE);
 
     /* Undead */
+
     public static final RegistryObject<EntityType<SpiritualZombie>> SPIRITUAL_ZOMBIE = registerEntityType(SpiritualZombie::new, "spiritual_zombie", MobCategory.MONSTER);
 
     /* Golem */
+
     public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE);
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
+        ev.put(DISCIPLE_VILLAGER.get(), GrassCarp.createAttributes().build());
         ev.put(CULTIVATOR.get(), GrassCarp.createAttributes().build());
         /* creature */
         ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
@@ -75,6 +83,9 @@ public class ImmortalEntities {
      */
     public static void registerSpawnEggs(RegisterEvent event) {
         Arrays.asList(
+                /* Human */
+                Pair.of(DISCIPLE_VILLAGER, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+
                 /* Creature */
                 Pair.of(GRASS_CARP, Pair.of(ColorHelper.GREEN, ColorHelper.DARK_GREEN)),
                 Pair.of(SILK_WORM, Pair.of(ColorHelper.WHITE, ColorHelper.EARTH_ROOT)),

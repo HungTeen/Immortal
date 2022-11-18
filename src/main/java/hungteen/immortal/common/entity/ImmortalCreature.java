@@ -4,13 +4,11 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.interfaces.IHasRoot;
 import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.common.entity.undead.UndeadEntity;
 import hungteen.immortal.impl.Realms;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
@@ -63,6 +61,6 @@ public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot
     }
 
     protected IRealm getDefaultRealm(){
-        return Realms.UNDEAD_LEVEL1;
+        return Realms.MORTALITY;
     }
 }

@@ -9,6 +9,8 @@ import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.common.recipe.SmithingArtifactRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
@@ -31,6 +33,7 @@ import java.util.Optional;
  **/
 public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
 
+    public static final MutableComponent TITLE = Component.translatable("gui.immortal.smithing_artifact.title");
     public static final int MAX_PROGRESS_VALUE = 100;
     private static final int SIDE_LEN = 10;
     protected final ItemStackHandler itemHandler = new ItemStackHandler(25){
@@ -81,8 +84,9 @@ public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implemen
             this.itemHandler.setStackInSlot(12, this.result.copy());
             this.result = ItemStack.EMPTY;
             this.resetRecipe();
+        } else{
+            this.chooseBestPoint();
         }
-
         this.update();
     }
 
@@ -197,6 +201,11 @@ public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implemen
     @Override
     public int getArtifactLevel() {
         return this.getBlockState().getBlock() instanceof IArtifact ? ((IArtifact) this.getBlockState().getBlock()).getArtifactLevel() : 0;
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return TITLE;
     }
 
     @Nullable

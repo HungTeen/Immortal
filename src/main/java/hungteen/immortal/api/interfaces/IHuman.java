@@ -9,5 +9,5 @@ import net.minecraft.world.item.trading.Merchant;
  * @author: HungTeen
  * @create: 2022-10-21 18:33
  **/
-public interface IHuman extends InventoryCarrier, Npc, Merchant {
+public interface IHuman extends IHasRealm, InventoryCarrier, Npc, Merchant {
 }

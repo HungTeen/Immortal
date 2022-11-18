@@ -39,6 +39,9 @@ public class HammerItem extends MeleeAttackItem {
      */
     public static void smithing(LivingEntity livingEntity, InteractionHand hand, Direction direction, BlockPos blockPos){
         if(canPerformSmithing(livingEntity.getItemInHand(hand)) && direction == Direction.UP){
+            if(livingEntity instanceof Player && PlayerUtil.isInCD((Player) livingEntity, livingEntity.getItemInHand(hand).getItem())){
+                return;
+            }
             if(livingEntity.level.getBlockEntity(blockPos) instanceof SmithingArtifactBlockEntity){
                 if(! livingEntity.level.isClientSide){
 

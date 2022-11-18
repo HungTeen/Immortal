@@ -70,7 +70,7 @@ public abstract class GolemEntity extends ImmortalCreature implements ContainerL
         this.getBrain().tick((ServerLevel) this.level, this);
         this.level.getProfiler().pop();
 //        this.level.getProfiler().push("GolemActivity");
-//        HumanEntity.AI.updateActivity(this);
+//        HumanEntity.AI.updateBrain(this);
 //        this.level.getProfiler().pop();
     }
 

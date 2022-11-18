@@ -55,7 +55,9 @@ public class ClientRegister {
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 
         /* human */
+        event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
         event.registerEntityRenderer(ImmortalEntities.CULTIVATOR.get(), CultivatorRender::new);
+
         /* creature */
         event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
         event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
@@ -76,6 +78,7 @@ public class ClientRegister {
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
         /* human */
+        event.registerLayerDefinition(ModelLayers.VILLAGER, VillagerLikeModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);

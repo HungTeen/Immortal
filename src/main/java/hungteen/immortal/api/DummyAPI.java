@@ -51,6 +51,21 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
         return Optional.empty();
     }
 
+//    @Override
+//    public void registerSpellBook(ISpellBook type) {
+//
+//    }
+//
+//    @Override
+//    public Collection<ISpellBook> getSpellBooks() {
+//        return Collections.emptyList();
+//    }
+//
+//    @Override
+//    public Optional<ISpellBook> getSpellBook(String type) {
+//        return Optional.empty();
+//    }
+
     @Override
     public void registerRealm(IRealm type) {
 

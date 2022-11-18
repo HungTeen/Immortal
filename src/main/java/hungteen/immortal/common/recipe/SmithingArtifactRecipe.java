@@ -8,6 +8,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.Map;
@@ -34,6 +35,16 @@ public class SmithingArtifactRecipe extends ArtifactRecipe{
 
     public float getSpeedMultiple() {
         return speedMultiple;
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return ImmortalRecipes.SMITHING_ARTIFACT_SERIALIZER.get();
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return ImmortalRecipes.SMITHING_ARTIFACT_RECIPE_TYPE.get();
     }
 
     /**
