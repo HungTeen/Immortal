@@ -32,6 +32,13 @@ public class ItemTabs {
         }
     };
 
+    public static final CreativeModeTab SPELL_BOOKS = new CreativeModeTab("immortal_books") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack((ImmortalItems.SPELL_BOOK.get()));
+        }
+    };
+
     public static final CreativeModeTab ARTIFACTS = new CreativeModeTab("immortal_artifacts") {
         @Override
         public ItemStack makeIcon() {

@@ -11,6 +11,7 @@ import hungteen.immortal.common.block.ImmortalWoodTypes;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
+import hungteen.immortal.common.datapack.ImmortalDataPacks;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ImmortalPoiTypes;
 import hungteen.immortal.common.entity.ImmortalProfessions;
@@ -47,9 +48,8 @@ import net.minecraftforge.registries.RegisterEvent;
 @Mod(ImmortalMod.MOD_ID)
 public class ImmortalMod {
 
-    // Mod ID.
     public static final String MOD_ID = "immortal";
-    // Proxy of Server and Client.
+
     public static CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public ImmortalMod() {
@@ -65,6 +65,7 @@ public class ImmortalMod {
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
+        forgeBus.addListener(EventPriority.NORMAL, ImmortalDataPacks::addDataPack);
 
         ImmortalConfigs.init();
 

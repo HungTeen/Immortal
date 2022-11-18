@@ -20,6 +20,14 @@
   "smelting_cd": 2400,
   "spiritual_map": [
     {
+      "spiritual_root": "immortal:earth",
+      "spiritual_value": 15
+    },
+    {
+      "spiritual_root": "immortal:water",
+      "spiritual_value": 15
+    },
+    {
       "spiritual_root": "immortal:wood",
       "spiritual_value": 15
     },
@@ -28,19 +36,11 @@
       "spiritual_value": 15
     },
     {
-      "spiritual_root": "immortal:wind",
-      "spiritual_value": 15
-    },
-    {
-      "spiritual_root": "immortal:water",
-      "spiritual_value": 15
-    },
-    {
       "spiritual_root": "immortal:fire",
       "spiritual_value": 15
     },
     {
-      "spiritual_root": "immortal:earth",
+      "spiritual_root": "immortal:wind",
       "spiritual_value": 15
     }
   ]
