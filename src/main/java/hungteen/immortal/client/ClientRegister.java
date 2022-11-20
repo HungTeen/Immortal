@@ -15,6 +15,7 @@ import hungteen.immortal.client.model.bake.ImmortalBakeModels;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.client.particle.SpiritualReleasingParticle;
+import hungteen.immortal.client.render.LevelRenderStages;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.eixirs.ElixirItem;
@@ -53,6 +54,7 @@ public class ClientRegister {
         /* misc entity */
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
+        event.registerEntityRenderer(ImmortalEntities.BORDER_FORMATION.get(), BorderFormationRender::new);
 
         /* human */
         event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
@@ -126,6 +128,11 @@ public class ClientRegister {
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
         event.register(ElementToolTip.class, ClientElementToolTip::new);
         event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLevelRenderStages(RenderLevelStageEvent.RegisterStageEvent event){
+        LevelRenderStages.init(event);
     }
 
     @SubscribeEvent
