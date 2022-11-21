@@ -6,7 +6,6 @@ import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.biome.Biome;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * @program: Immortal
@@ -36,10 +34,6 @@ public class BiomeGen extends HTCodecGen {
         this.getBiomes().forEach((rl, biome) -> {
             biomeRegistry.register(ResourceKey.create(Registry.BIOME_REGISTRY, rl), biome, Lifecycle.experimental());
         });
-
-        StreamSupport.stream(RegistryAccess.knownRegistries().spliterator(), false)
-                .filter(r -> access().ownedRegistry(r.key()).isPresent() && !r.key().equals(Registry.BIOME_REGISTRY))
-                .forEach(data -> registerCap(cache, data));
 
         register(cache, Registry.BIOME_REGISTRY, biomeRegistry, Biome.DIRECT_CODEC);
     }

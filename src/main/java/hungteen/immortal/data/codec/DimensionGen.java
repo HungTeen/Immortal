@@ -41,7 +41,6 @@ public class DimensionGen extends HTCodecGen {
                         noiseParameters,
                         ImmortalDimensions.SPIRITUAL_LAND_PRESET.biomeSource(biomes, true),
                         ImmortalNoiseGenSettings.SPIRITUAL_LAND_SETTINGS.getHolder().get()
-//                        generatorSettings.getOrCreateHolderOrThrow(NoiseGeneratorSettings.OVERWORLD)
                 )
         ), Lifecycle.stable());
 

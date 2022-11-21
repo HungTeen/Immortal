@@ -26,6 +26,9 @@ import hungteen.immortal.common.world.biome.ImmortalBiomes;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.common.world.feature.ImmortalConfiguredFeatures;
 import hungteen.immortal.common.world.feature.ImmortalPlacedFeatures;
+import hungteen.immortal.common.world.structure.ImmortalProcessors;
+import hungteen.immortal.common.world.structure.ImmortalStructures;
+import hungteen.immortal.common.world.structure.ImmortalTemplatePools;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.impl.*;
 import hungteen.immortal.utils.ItemUtil;
@@ -77,21 +80,24 @@ public class ImmortalMod {
      * register forge stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
+        ImmortalBiomes.register();
+        ImmortalStructures.register();
+
         ImmortalItems.ITEMS.register(modBus);
         ImmortalBlocks.BLOCKS.register(modBus);
         ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
-//        ImmortalStructures.STRUCTURES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalProcessors.register(modBus);
+        ImmortalTemplatePools.register(modBus);
         ImmortalPoiTypes.register(modBus);
         ImmortalProfessions.register(modBus);
         ImmortalConfiguredFeatures.register(modBus);
         ImmortalPlacedFeatures.register(modBus);
-        ImmortalBiomes.register();
         ImmortalNoiseGenSettings.register(modBus);
         ImmortalDimensions.register(modBus);
     }

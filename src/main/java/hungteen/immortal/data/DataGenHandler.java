@@ -1,8 +1,6 @@
 package hungteen.immortal.data;
 
-import hungteen.immortal.data.codec.BiomeGen;
-import hungteen.immortal.data.codec.DimensionGen;
-import hungteen.immortal.data.codec.SpellBookGen;
+import hungteen.immortal.data.codec.*;
 import hungteen.immortal.data.recipe.RecipeGen;
 import hungteen.immortal.data.tag.BlockTagGen;
 import hungteen.immortal.data.tag.EntityTagGen;
@@ -39,9 +37,11 @@ public class DataGenHandler {
         event.getGenerator().addProvider(event.includeClient(), new ItemModelGen(event.getGenerator(), event.getExistingFileHelper()));
 
         /* Codecs */
+        event.getGenerator().addProvider(event.includeServer(), new RegistryGen(event.getGenerator()));
         event.getGenerator().addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
         event.getGenerator().addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
         event.getGenerator().addProvider(event.includeServer(), new SpellBookGen(event.getGenerator()));
+        event.getGenerator().addProvider(event.includeServer(), new StructureGen(event.getGenerator()));
     }
 
 }
