@@ -70,18 +70,13 @@ public class SpiritualPlainsVillage {
         return new StructureProcessorList(ImmutableList.of(
                 new RuleProcessor(
                         ImmutableList.of(
-//                                new ProcessorRule(
-//                                        new BlockMatchTest(Blocks.DIRT_PATH),
-//                                        new BlockMatchTest(Blocks.WATER),
-//                                        Blocks.OAK_PLANKS.defaultBlockState()
-//                                ),
                                 new ProcessorRule(
                                         new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.1F),
                                         AlwaysTrueTest.INSTANCE,
                                         Blocks.GRASS_BLOCK.defaultBlockState()
                                 ),
                                 new ProcessorRule(
-                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.05F),
+                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.4F),
                                         AlwaysTrueTest.INSTANCE,
                                         Blocks.MOSSY_COBBLESTONE.defaultBlockState()
                                 ),
@@ -104,12 +99,8 @@ public class SpiritualPlainsVillage {
         return new StructureTemplatePool(
                 res("town_centers"),
                 new ResourceLocation("empty"),
-                List.of(
-                        Pair.of(
-                                StructurePoolElement.single(
-                                        name("town_centers/meeting_point_01")
-                                ).apply(StructureTemplatePool.Projection.RIGID), 10
-                        )
+                pools(
+                        getPoolElements("town_centers/meeting_point", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(10))
                 )
         );
     }

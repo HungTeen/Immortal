@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 
@@ -28,7 +27,8 @@ public class LevelRenderHandler {
     public static void renderFormations(RenderLevelStageEvent event){
         final Vec3 position = event.getCamera().getPosition();
         final double len = 200;
-        ClientProxy.MC.level.getEntities(event.getCamera().getEntity(), new AABB(position.add(- len, - len, - len), position.add(len, len, len)), BorderFormation.class::isInstance).stream().map(BorderFormation.class::cast).forEach(entity -> {
+        hungteen.immortal.utils.Util.getProxy().getFormations(ClientProxy.MC.level).stream()
+                .filter(BorderFormation.class::isInstance).map(BorderFormation.class::cast).forEach(entity -> {
             renderBorderFormation(entity, event.getCamera());
         });
     }
@@ -36,11 +36,10 @@ public class LevelRenderHandler {
     private static void renderBorderFormation(BorderFormation entityIn, Camera camera) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         final double validDistance = ClientProxy.MC.options.getEffectiveRenderDistance() * 32;
-        final double len = 30;
-        final double maxX = entityIn.getX() + len;
-        final double minX = entityIn.getX() - len;
-        final double maxZ = entityIn.getZ() + len;
-        final double minZ = entityIn.getZ() - len;
+        final double maxX = entityIn.getMaxX();
+        final double minX = entityIn.getMinX();
+        final double maxZ = entityIn.getMaxZ();
+        final double minZ = entityIn.getMinZ();
         if (!(camera.getPosition().x < maxX - validDistance) || !(camera.getPosition().x > minX + validDistance) || !(camera.getPosition().z < maxZ - validDistance) || !(camera.getPosition().z > minZ + validDistance)) {
 //            double d1 = 1.0D - Mth.sqrt((float) entityIn.distanceToSqr(new Vec3(camera.getPosition().x, entityIn.getY(), camera.getPosition().z))) / validDistance;
             double d1 = 1;

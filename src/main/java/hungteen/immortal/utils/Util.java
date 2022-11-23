@@ -3,6 +3,7 @@ package hungteen.immortal.utils;
 import com.mojang.logging.LogUtils;
 import hungteen.immortal.CommonProxy;
 import hungteen.immortal.ImmortalMod;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -52,6 +53,10 @@ public class Util {
 
     public static boolean in(ResourceLocation resourceLocation){
         return resourceLocation.getNamespace().equals(Util.id());
+    }
+
+    public static String toString(ResourceKey<?> resourceKey){
+        return resourceKey.registry() + ":" + resourceKey.location();
     }
 
     public static CommonProxy getProxy(){

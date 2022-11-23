@@ -1,11 +1,16 @@
 package hungteen.immortal.client;
 
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-10 11:12
  **/
 public class ClientDatas {
+
+    public static final HashMap<String, Set<Integer>> FormationMap = new HashMap<>();
 
     public static boolean ShowSpellCircle = false;
 

@@ -14,4 +14,13 @@ public class BorderFormation extends Formation{
         super(type, world);
     }
 
+    @Override
+    public double getMinY() {
+        return this.level.getMinBuildHeight();
+    }
+
+    @Override
+    public double getMaxY() {
+        return this.level.getMaxBuildHeight();
+    }
 }

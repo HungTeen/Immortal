@@ -23,6 +23,7 @@ import hungteen.immortal.common.world.ImmortalNoiseGenSettings;
 import hungteen.immortal.common.world.LevelManager;
 import hungteen.immortal.common.world.biome.BiomeManager;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
+import hungteen.immortal.common.world.data.Formations;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.common.world.feature.ImmortalConfiguredFeatures;
 import hungteen.immortal.common.world.feature.ImmortalPlacedFeatures;
@@ -34,6 +35,7 @@ import hungteen.immortal.impl.*;
 import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -69,6 +71,7 @@ public class ImmortalMod {
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalDataPacks::addDataPack);
+        forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
         ImmortalConfigs.init();
 
@@ -129,12 +132,9 @@ public class ImmortalMod {
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-//            PVZBiomes.registerBiomes();
 //            PVZFeatures.registerFeatures();
 ////            PotionRecipeHandler.registerPotionRecipes();
-//            BiomeUtil.initBiomeSet();
 //            SpawnRegister.registerEntitySpawns();
-//            PVZDimensions.register();
             CommonRegister.registerCompostable();
             CommonRegister.registerAxeStrips();
             LevelManager.registerSpiritualLevels();
@@ -143,6 +143,12 @@ public class ImmortalMod {
             RealmManager.registerUpgradeList();
         });
         NetworkHandler.init();
+    }
+
+    public static void serverStarted(ServerStartedEvent event){
+        event.getServer().getAllLevels().forEach(level -> {
+            Formations.get(level).update();
+        });
     }
 
 }
