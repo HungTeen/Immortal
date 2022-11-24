@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
+import hungteen.immortal.common.ai.behavior.BreakBoat;
 import hungteen.immortal.common.ai.behavior.villager.Mock;
 import hungteen.immortal.common.entity.human.HumanEntity;
 import hungteen.immortal.common.entity.human.VillagerLikeEntity;
@@ -73,6 +74,7 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
      * Swim <br>
      * InteractWithDoor(PATH, DOORS_TO_CLOSE) : Open doors in path. <br>
      * LookAtTargetSink(LOOK_TARGET) : Look at the target. <br>
+     * BreakBoat(LOOK_TARGET, NEAREST_BOAT) : Break boat to avoid stuck ! <br>
      * MoveToTargetSink(CANT_REACH_WALK_TARGET_SINCE, PATH, WALK_TARGET) : Walk to target. <br>
      */
     public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getCoreBehaviors() {
@@ -80,6 +82,7 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
                 Pair.of(0, new Swim(0.8F)),
                 Pair.of(0, new InteractWithDoor()),
                 Pair.of(0, new LookAtTargetSink(45, 90)),
+                Pair.of(0, new BreakBoat()),
 //                Pair.of(0, new VillagerPanicTrigger()),
 //                Pair.of(0, new WakeUp()),
 //                Pair.of(0, new ReactToBell()),

@@ -56,6 +56,11 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
     }
 
     @Override
+    protected boolean shouldShowName(Cultivator cultivator) {
+        return super.shouldShowName(cultivator) && (cultivator.shouldShowName() || cultivator.hasCustomName() && cultivator == this.entityRenderDispatcher.crosshairPickEntity);
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(Cultivator entity) {
         Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile());
         return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? ClientProxy.MC.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN) : DefaultPlayerSkin.getDefaultSkin();

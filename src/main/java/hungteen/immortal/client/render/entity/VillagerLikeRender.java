@@ -23,6 +23,11 @@ public class VillagerLikeRender extends LivingEntityRenderer<VillagerLikeEntity,
     }
 
     @Override
+    protected boolean shouldShowName(VillagerLikeEntity villagerLike) {
+        return super.shouldShowName(villagerLike) && (villagerLike.shouldShowName() || villagerLike.hasCustomName() && villagerLike == this.entityRenderDispatcher.crosshairPickEntity);
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(VillagerLikeEntity entity) {
         return TEXTURE;
     }

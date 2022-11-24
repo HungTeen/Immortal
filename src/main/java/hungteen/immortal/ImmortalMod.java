@@ -5,7 +5,7 @@ import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.CommonRegister;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.RealmManager;
-import hungteen.immortal.common.ai.ImmortalSchedules;
+import hungteen.immortal.common.ai.*;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.ImmortalWoodTypes;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
@@ -13,8 +13,6 @@ import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
 import hungteen.immortal.common.datapack.ImmortalDataPacks;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.entity.ImmortalPoiTypes;
-import hungteen.immortal.common.entity.ImmortalProfessions;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.network.NetworkHandler;
@@ -58,29 +56,31 @@ public class ImmortalMod {
     public static CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public ImmortalMod() {
-        //get mod event bus.
+        /* Mod Bus Events */
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::setUp);
         modBus.addListener(EventPriority.NORMAL, DataGenHandler::dataGen);
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
         modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
+        defferRegister(modBus);
 
-        //get forge event bus.
+        /* Forge Bus Events */
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
+        /* Config Setup */
         ImmortalConfigs.init();
 
-        defferRegister(modBus);
+        /* Custom Registry */
         coreRegister();
     }
 
     /**
-     * register forge stuffs at {@link ImmortalMod#ImmortalMod()}.
+     * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
         ImmortalBiomes.register();
@@ -95,6 +95,9 @@ public class ImmortalMod {
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalMemories.register(modBus);
+        ImmortalSensors.register(modBus);
+        ImmortalActivities.register(modBus);
         ImmortalProcessors.register(modBus);
         ImmortalTemplatePools.register(modBus);
         ImmortalPoiTypes.register(modBus);
@@ -105,6 +108,9 @@ public class ImmortalMod {
         ImmortalDimensions.register(modBus);
     }
 
+    /**
+     * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
+     */
     public static void register(RegisterEvent event) {
         if(ForgeRegistries.ITEMS.equals(event.getForgeRegistry())){
             ImmortalEntities.registerSpawnEggs(event);

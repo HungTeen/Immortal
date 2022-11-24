@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHuman;
 import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.common.ai.ImmortalMemories;
+import hungteen.immortal.common.ai.ImmortalSensors;
 import hungteen.immortal.common.entity.ImmortalGrowableCreature;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -47,10 +49,11 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     private Player tradingPlayer;
     @javax.annotation.Nullable
     protected MerchantOffers offers;
-    private final SimpleContainer inventory = new SimpleContainer(8);
+    private final SimpleContainer inventory;
 
     public HumanEntity(EntityType<? extends HumanEntity> type, Level level) {
         super(type, level);
+        this.inventory = this.createInventory();
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
@@ -93,6 +96,10 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
      */
     public abstract void updateBrain(ServerLevel level);
 
+    protected SimpleContainer createInventory(){
+        return new SimpleContainer(8);
+    }
+
     protected ImmutableList<MemoryModuleType<?>> getMemoryModules() {
         return ImmutableList.of(
                 /* Nearest Living Entities Sensor */
@@ -114,7 +121,9 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 /* GoToWantedItem Behavior */
                 MemoryModuleType.LOOK_TARGET,
                 /* LookAnInteract Behavior */
-                MemoryModuleType.INTERACTION_TARGET
+                MemoryModuleType.INTERACTION_TARGET,
+                /* Custom */
+                ImmortalMemories.NEAREST_BOAT.get()
 //                MemoryModuleType.HEARD_BELL_TIME,
 //                MemoryModuleType.LAST_SLEPT,
 //                MemoryModuleType.GOLEM_DETECTED_RECENTLY
@@ -127,7 +136,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 SensorType.NEAREST_PLAYERS,
                 SensorType.NEAREST_ITEMS,
                 SensorType.NEAREST_BED,
-                SensorType.HURT_BY
+                SensorType.HURT_BY,
+                ImmortalSensors.NEAREST_BOAT.get()
         );
     }
 
@@ -201,8 +211,19 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return this.level.isClientSide;
     }
 
+    /**
+     * 人类全部不会自然刷新。
+     */
     @Override
     public boolean removeWhenFarAway(double distance) {
+        return false;
+    }
+
+    /**
+     * 可恶，人类又不是牲畜！
+     */
+    @Override
+    public boolean canBeLeashed(Player player) {
         return false;
     }
 
@@ -246,7 +267,6 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return this.rootsCache;
     }
 
-
     public CompoundTag getRootTag(){
         return entityData.get(ROOTS);
     }
@@ -255,83 +275,4 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         entityData.set(ROOTS, rootTag);
     }
 
-//    private static class AI {
-//
-//        protected static Brain<?> makeBrain(Brain<HumanEntity> brain) {
-//            initCoreActivity(brain, 0.5F);
-//            initIdleActivity(brain, 0.5F);
-//            initFightActivity(brain);
-//            initPlayDeadActivity(brain);
-//            brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-//            brain.setDefaultActivity(Activity.IDLE);
-//            brain.useDefaultActivity();
-//            return brain;
-//        }
-//
-//        protected static void initCoreActivity(Brain<HumanEntity> brain, float speedModifier) {
-//            brain.addActivity(Activity.CORE,
-//                    ImmutableList.of(
-//                            Pair.of(0, new Swim(0.8F)),
-//                            Pair.of(0, new InteractWithDoor()),
-////                    Pair.of(0, new LookAtTargetSink(45, 90)),
-////                    Pair.of(0, new VillagerPanicTrigger()),
-////                    Pair.of(0, new WakeUp()),
-////                    Pair.of(0, new ReactToBell()),
-////                    Pair.of(0, new SetRaidStatus()),
-////                    Pair.of(0, new ValidateNearbyPoi(p_24586_.getJobPoiType(), MemoryModuleType.JOB_SITE)),
-////                    Pair.of(0, new ValidateNearbyPoi(p_24586_.getJobPoiType(), MemoryModuleType.POTENTIAL_JOB_SITE)),
-//                            Pair.of(1, new MoveToTargetSink()),
-////                    Pair.of(2, new PoiCompetitorScan(p_24586_)),
-////                    Pair.of(3, new LookAndFollowTradingPlayerSink(p_24587_)),
-//                            Pair.of(5, new GoToWantedItem(speedModifier, false, 8))
-////                    Pair.of(6, new AcquirePoi(p_24586_.getJobPoiType(), MemoryModuleType.JOB_SITE, MemoryModuleType.POTENTIAL_JOB_SITE, true, Optional.empty())),
-////                    Pair.of(7, new GoToPotentialJobSite(p_24587_)),
-////                    Pair.of(8, new YieldJobSite(p_24587_)),
-////                    Pair.of(10, new AcquirePoi(PoiType.HOME, MemoryModuleType.HOME, false, Optional.of((byte)14))),
-////                    Pair.of(10, new AcquirePoi(PoiType.MEETING, MemoryModuleType.MEETING_POINT, true, Optional.of((byte)14))),
-////                    Pair.of(10, new AssignProfessionFromJobSite()),
-////                    Pair.of(10, new ResetProfession())
-//                    )
-//            );
-//        }
-//
-//        public static void initIdleActivity(Brain<HumanEntity> brain, float speedModifier) {
-//            brain.addActivity(Activity.IDLE, ImmutableList.of(
-//                    Pair.of(2, new RunOne<>(ImmutableList.of(
-//                                    Pair.of(InteractWith.of(EntityType.VILLAGER, 8, MemoryModuleType.INTERACTION_TARGET, speedModifier, 2), 2),
-////                                    Pair.of(new InteractWith<>(EntityType.VILLAGER, 8, AgeableMob::canBreed, AgeableMob::canBreed, MemoryModuleType.BREED_TARGET, speedModifier, 2), 1),
-//                                    Pair.of(InteractWith.of(EntityType.CAT, 8, MemoryModuleType.INTERACTION_TARGET, speedModifier, 2), 1),
-//                                    Pair.of(new VillageBoundRandomStroll(speedModifier), 1),
-//                                    Pair.of(new SetWalkTargetFromLookTarget(speedModifier, 2), 1),
-//                                    Pair.of(new JumpOnBed(speedModifier), 1),
-//                                    Pair.of(new DoNothing(30, 60), 1))
-//                            )
-//                    ),
-////                    Pair.of(3, new GiveGiftToHero(100)),
-//                    Pair.of(3, new SetLookAndInteract(EntityType.PLAYER, 4)),
-////                    Pair.of(3, new ShowTradesToPlayer(400, 1600)),
-////                    Pair.of(3, new GateBehavior<>(
-////                                    ImmutableMap.of(),
-////                                    ImmutableSet.of(MemoryModuleType.INTERACTION_TARGET),
-////                                    GateBehavior.OrderPolicy.ORDERED,
-////                                    GateBehavior.RunningPolicy.RUN_ONE,
-////                                    ImmutableList.of(
-////                                            Pair.of(new TradeWithVillager(), 1)
-////                                    )
-////                            )
-////                    ),
-////                    Pair.of(3, new GateBehavior<>(
-////                                    ImmutableMap.of(),
-////                                    ImmutableSet.of(MemoryModuleType.BREED_TARGET),
-////                                    GateBehavior.OrderPolicy.ORDERED,
-////                                    GateBehavior.RunningPolicy.RUN_ONE,
-////                                    ImmutableList.of(
-////                                            Pair.of(new VillagerMakeLove(), 1)
-////                                    )
-////                            )
-////                    ),
-//                    Pair.of(99, new UpdateActivityFromSchedule())
-//            ));
-//        }
-//    }
 }

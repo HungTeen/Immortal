@@ -1,4 +1,4 @@
-package hungteen.immortal.common.entity;
+package hungteen.immortal.common.ai;
 
 import com.google.common.collect.ImmutableSet;
 import hungteen.immortal.utils.Util;
