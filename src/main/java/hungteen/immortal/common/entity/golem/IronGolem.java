@@ -1,8 +1,7 @@
 package hungteen.immortal.common.entity.golem;
 
-import hungteen.immortal.api.registry.ISpiritualRoot;
-import hungteen.immortal.impl.SpiritualRoots;
-import net.minecraft.world.Container;
+import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.impl.SpiritualTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -20,8 +19,8 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
-    public Collection<ISpiritualRoot> getSpiritualRoots() {
-        return List.of(SpiritualRoots.METAL);
+    public Collection<ISpiritualType> getSpiritualTypes() {
+        return List.of(SpiritualTypes.METAL);
     }
 
 }

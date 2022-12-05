@@ -7,7 +7,7 @@ import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.ImmortalLivingEvents;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
-import hungteen.immortal.impl.Spells;
+import hungteen.immortal.impl.SpellTypes;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -59,7 +59,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-        if(PlayerUtil.isSpellActivated(player, Spells.FLY_WITH_SWORD)){
+        if(PlayerUtil.isSpellActivated(player, SpellTypes.FLY_WITH_SWORD)){
             FlyingItemEntity flyingItem = ImmortalEntities.FLYING_ITEM.get().create(player.level);
             flyingItem.setDeltaMovement(itemEntity.getDeltaMovement());
             flyingItem.setPos(itemEntity.position());

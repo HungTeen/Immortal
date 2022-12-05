@@ -1,6 +1,6 @@
 package hungteen.immortal.api.interfaces;
 
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 
 import java.util.Collection;
 
@@ -14,6 +14,6 @@ public interface IHasRoot {
     /**
      * 生物的灵根种类。
      */
-    Collection<ISpiritualRoot> getSpiritualRoots();
+    Collection<ISpiritualType> getSpiritualTypes();
 
 }

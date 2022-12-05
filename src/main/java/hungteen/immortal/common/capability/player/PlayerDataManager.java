@@ -1,22 +1,22 @@
 package hungteen.immortal.common.capability.player;
 
-import hungteen.htlib.interfaces.IPlayerDataManager;
-import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.Pair;
+import hungteen.htlib.util.interfaces.IPlayerDataManager;
+import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ICultivationType;
-import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.api.registry.ISpell;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
-import hungteen.immortal.common.network.StringDataPacket;
-import hungteen.immortal.impl.CultivationTypes;
-import hungteen.immortal.impl.PlayerDatas;
-import hungteen.immortal.impl.Realms;
 import hungteen.immortal.common.network.IntegerDataPacket;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
+import hungteen.immortal.common.network.StringDataPacket;
+import hungteen.immortal.impl.CultivationTypes;
+import hungteen.immortal.impl.PlayerDatas;
+import hungteen.immortal.impl.RealmTypes;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +26,10 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @program: Immortal
@@ -36,22 +39,24 @@ import java.util.*;
 public class PlayerDataManager implements IPlayerDataManager {
 
     private final Player player;
-    private final HashSet<ISpiritualRoot> spiritualRoots = new HashSet<>();
-    private final HashMap<ISpell, Integer> learnSpells = new HashMap<>();
+    private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>();
+    private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>();
     /* Store the end time of specific spells */
-    private final HashMap<ISpell, Long> activateSpells = new HashMap<>();
-    private ISpell[] spellList = new ISpell[Constants.SPELL_NUMS];
+    private final HashMap<ISpellType, Long> activateSpells = new HashMap<>();
+    private ISpellType[] spellList = new ISpellType[Constants.SPELL_NUMS];
     private int selectedSpellPosition = 0;
     /* Cultivation */
     private ICultivationType cultivationType = CultivationTypes.ELIXIR;
-    private IRealm realm = Realms.MORTALITY;
+    private IRealmType realm = RealmTypes.MORTALITY;
     private final HashMap<IRangeData<Integer>, Integer> integerMap = new HashMap<>();
 
     public PlayerDataManager(Player player){
         this.player = player;
-        ImmortalAPI.get().getIntegerCollection().forEach(data -> {
-            integerMap.put(data, data.defaultData());
-        });
+        if(ImmortalAPI.get().integerDataRegistry().isPresent()){
+            ImmortalAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
+                integerMap.put(data, data.defaultData());
+            });
+        }
         PlayerUtil.showPlayerSpiritualRoots(player);
     }
 
@@ -83,9 +88,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         CompoundTag tag = new CompoundTag();
         {
             CompoundTag nbt = new CompoundTag();
-            for (ISpiritualRoot spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
-                nbt.putBoolean(spiritualRoot.getName() + "_root", spiritualRoots.contains(spiritualRoot));
-            }
+            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    nbt.putBoolean(type.getRegistryName() + "_root", spiritualRoots.contains(type));
+                });
+            });
             tag.put("SpiritualRoots", nbt);
         }
         {
@@ -114,8 +121,10 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            ImmortalAPI.get().getIntegerCollection().forEach(data -> {
-                nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
+            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> {
+                l.getValues().forEach(data -> {
+                    nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
+                });
             });
             tag.put("PlayerRangeData", nbt);
         }
@@ -132,51 +141,56 @@ public class PlayerDataManager implements IPlayerDataManager {
         {
             spiritualRoots.clear();
             CompoundTag nbt = tag.getCompound("SpiritualRoots");
-            for (ISpiritualRoot spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
-                if(nbt.getBoolean(spiritualRoot.getRegistryName() + "_root")){
-                    spiritualRoots.add(spiritualRoot);
-                }
-            }
+            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    if(nbt.getBoolean(type.getRegistryName() + "_root")){
+                        spiritualRoots.add(type);
+                    }
+                });
+            });
         }
         {
             learnSpells.clear();
             CompoundTag nbt = tag.getCompound("LearnSpells");
-            for (ISpell spell : ImmortalAPI.get().getSpells()){
-                if(nbt.contains(spell.getRegistryName())){
-                    learnSpells.put(spell, nbt.getInt(spell.getRegistryName()));
-                }
-            }
+            ImmortalAPI.get().spellRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    learnSpells.put(type, nbt.getInt(type.getRegistryName()));
+                });
+            });
         }
         {
             activateSpells.clear();
             CompoundTag nbt = tag.getCompound("ActivateSpells");
-            for (ISpell spell : ImmortalAPI.get().getSpells()){
-                if(nbt.contains(spell.getRegistryName())){
-                    activateSpells.put(spell, nbt.getLong(spell.getRegistryName()));
-                }
-            }
+            ImmortalAPI.get().spellRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    activateSpells.put(type, nbt.getLong(type.getRegistryName()));
+                });
+            });
         }
         {
             CompoundTag nbt = tag.getCompound("SpellList");
-            for (ISpell spell : ImmortalAPI.get().getSpells()){
-                if(nbt.contains(spell.getRegistryName())){
-                    spellList[nbt.getInt(spell.getRegistryName())] = spell;
-                }
-            }
+            ImmortalAPI.get().spellRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    if(nbt.contains(type.getRegistryName())){
+                        spellList[nbt.getInt(type.getRegistryName())] = type;
+                    }
+                });
+            });
             this.selectedSpellPosition = nbt.getInt("SelectedSpellPosition");
         }
         {
+            integerMap.clear();
             CompoundTag nbt = tag.getCompound("PlayerRangeData");
-            ImmortalAPI.get().getIntegerCollection().forEach(data -> {
-                if(nbt.contains(data.getRegistryName())){
-                    integerMap.put(data, nbt.getInt(data.getRegistryName()));
-                }
+            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> {
+                l.getValues().forEach(type -> {
+                    integerMap.put(type, nbt.getInt(type.getRegistryName()));
+                });
             });
         }
         {
             CompoundTag nbt = tag.getCompound("Misc");
-            if(nbt.contains("PlayerRealm")){
-                realm = ImmortalAPI.get().getRealm(nbt.getString("PlayerRealm")).orElse(Realms.MORTALITY);
+            if(nbt.contains("PlayerRealm") && ImmortalAPI.get().realmRegistry().isPresent()){
+                realm = ImmortalAPI.get().realmRegistry().get().getValue(nbt.getString("PlayerRealm")).orElse(RealmTypes.MORTALITY);
             }
         }
     }
@@ -228,18 +242,18 @@ public class PlayerDataManager implements IPlayerDataManager {
             this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, time);
         });
         this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, this.selectedSpellPosition);
-        ImmortalAPI.get().getIntegerCollection().forEach(data -> {
-            this.sendIntegerDataPacket(data, this.getIntegerData(data));
+        this.integerMap.forEach((data, value) -> {
+            this.sendIntegerDataPacket(data, value);
         });
     }
 
     /* SpiritualRoots related methods */
 
-    public void addSpiritualRoot(ISpiritualRoot spiritualRoot) {
+    public void addSpiritualRoot(ISpiritualType spiritualRoot) {
         this.spiritualRoots.add(spiritualRoot);
     }
 
-    public void removeSpiritualRoot(ISpiritualRoot spiritualRoot) {
+    public void removeSpiritualRoot(ISpiritualType spiritualRoot) {
         this.spiritualRoots.remove(spiritualRoot);
     }
 
@@ -247,7 +261,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.spiritualRoots.clear();
     }
 
-    public boolean hasSpiritualRoot(ISpiritualRoot spiritualRoot) {
+    public boolean hasSpiritualRoot(ISpiritualType spiritualRoot) {
         return this.spiritualRoots.contains(spiritualRoot);
     }
 
@@ -255,19 +269,19 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spiritualRoots.size();
     }
 
-    public List<ISpiritualRoot> getSpiritualRoots() {
+    public List<ISpiritualType> getSpiritualRoots() {
         return Collections.unmodifiableList(this.spiritualRoots.stream().toList());
     }
 
     /* Spell related methods */
 
-    public void learnSpell(ISpell spell, int level) {
+    public void learnSpell(ISpellType spell, int level) {
         this.learnSpells.put(spell, Mth.clamp(level, 0, spell.getMaxLevel()));
         this.activateSpells.put(spell, getPlayer().level.getGameTime());
         this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
     }
 
-    public void forgetSpell(ISpell spell) {
+    public void forgetSpell(ISpellType spell) {
         this.learnSpells.put(spell, 0);
         this.sendSpellPacket(SpellPacket.SpellOptions.FORGET, spell, 0);
     }
@@ -280,17 +294,17 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.learnSpells.forEach((spell, time) -> forgetSpell(spell));
     }
 
-    public void setSpellList(int pos, ISpell spell){
+    public void setSpellList(int pos, ISpellType spell){
         this.spellList[pos] = spell;
         this.sendSpellPacket(SpellPacket.SpellOptions.SET, spell, pos);
     }
 
-    public void removeSpellList(int pos, ISpell spell){
+    public void removeSpellList(int pos, ISpellType spell){
         this.spellList[pos] = null;
         this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE, spell, pos);
     }
 
-    public void activateSpell(@NotNull ISpell spell, long num){
+    public void activateSpell(@NotNull ISpellType spell, long num){
         this.activateSpells.put(spell, num);
         this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, num);
     }
@@ -300,7 +314,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, num);
     }
 
-    public ISpell getSpellAt(int num){
+    public ISpellType getSpellAt(int num){
         return this.spellList[Mth.clamp(num, 0, Constants.SPELL_NUM_EACH_PAGE - 1)];
     }
 
@@ -309,19 +323,19 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.sendSpellPacket(SpellPacket.SpellOptions.NEXT, null, num);
     }
 
-    public boolean isSpellActivated(@NotNull ISpell spell){
+    public boolean isSpellActivated(@NotNull ISpellType spell){
         return this.activateSpells.containsKey(spell) && this.activateSpells.get(spell) > getGameTime();
     }
 
-    public double getSpellCDValue(@NotNull ISpell spell){
+    public double getSpellCDValue(@NotNull ISpellType spell){
         return isSpellActivated(spell) ? (this.activateSpells.get(spell) - getGameTime()) * 1.0 / spell.getDuration() : 0;
     }
 
-    public boolean learnedSpell(@NotNull ISpell spell, int level){
+    public boolean learnedSpell(@NotNull ISpellType spell, int level){
         return this.learnSpells.containsKey(spell) && this.learnSpells.get(spell) >= level;
     }
 
-    public int getSpellLearnLevel(@NotNull ISpell spell){
+    public int getSpellLearnLevel(@NotNull ISpellType spell){
         return this.learnSpells.getOrDefault(spell, 0);
     }
 
@@ -330,11 +344,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     @Nullable
-    public ISpell getSelectedSpell(){
+    public ISpellType getSelectedSpell(){
         return this.spellList[this.selectedSpellPosition];
     }
 
-    public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpell spell, long num) {
+    public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpellType spell, long num) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new SpellPacket(spell, option, num));
         }
@@ -349,7 +363,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void setIntegerData(IRangeData<Integer> rangeData, int value){
         int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
         if(PlayerDatas.CULTIVATION.equals(rangeData)){
-            Pair<IRealm, Integer> pair = RealmManager.updateRealm(getCultivationType(), getRealm(), value);
+            Pair<IRealmType, Integer> pair = RealmManager.updateRealm(getCultivationType(), getRealm(), value);
             result = pair.getSecond();
             if(getRealm() != pair.getFirst()){
                 this.setRealm(pair.getFirst());
@@ -389,12 +403,12 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /* Misc methods */
 
-    public void setRealm(IRealm realm) {
+    public void setRealm(IRealmType realm) {
         this.realm = realm;
         this.sendStringDataPacket(StringDataPacket.Types.REALM, realm.getRegistryName());
     }
 
-    public IRealm getRealm() {
+    public IRealmType getRealm() {
         return this.realm;
     }
 

@@ -1,6 +1,6 @@
 package hungteen.immortal.common.entity.misc;
 
-import hungteen.htlib.entity.HTEntity;
+import hungteen.htlib.common.entity.HTEntity;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.utils.Constants;
 import net.minecraft.core.particles.ParticleOptions;

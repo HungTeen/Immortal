@@ -1,9 +1,9 @@
 package hungteen.immortal.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import hungteen.htlib.ClientProxy;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.client.ClientDatas;
+import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.client.ImmortalKeyBinds;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;

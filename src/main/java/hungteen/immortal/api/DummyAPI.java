@@ -1,8 +1,12 @@
 package hungteen.immortal.api;
 
-import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.registry.*;
-import hungteen.immortal.impl.Realms;
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISectType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +15,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @program: Immortal
@@ -23,82 +29,33 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     public static final ImmortalAPI.IImmortalAPI INSTANCE = new DummyAPI();
 
     @Override
-    public void registerSpiritualRoot(ISpiritualRoot type) {
-    }
-
-    @Override
-    public List<ISpiritualRoot> getSpiritualRoots() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<ISpiritualRoot> getSpiritualRoot(String type) {
+    public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
         return Optional.empty();
     }
 
     @Override
-    public void registerSpell(ISpell type) {
-
-    }
-
-    @Override
-    public Collection<ISpell> getSpells() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<ISpell> getSpell(String type) {
-        return Optional.empty();
-    }
-
-//    @Override
-//    public void registerSpellBook(ISpellBook type) {
-//
-//    }
-//
-//    @Override
-//    public Collection<ISpellBook> getSpellBooks() {
-//        return Collections.emptyList();
-//    }
-//
-//    @Override
-//    public Optional<ISpellBook> getSpellBook(String type) {
-//        return Optional.empty();
-//    }
-
-    @Override
-    public void registerRealm(IRealm type) {
-
-    }
-
-    @Override
-    public Collection<IRealm> getRealms() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<IRealm> getRealm(String type) {
+    public Optional<IHTSimpleRegistry<ISpellType>> spellRegistry() {
         return Optional.empty();
     }
 
     @Override
-    public IRealm getEntityRealm(Entity entity) {
-        return Realms.MORTALITY;
-    }
-
-    @Override
-    public void registerIntegerData(IRangeData<Integer> type) {
-
-    }
-
-    @Override
-    public Collection<IRangeData<Integer>> getIntegerCollection() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<IRangeData<Integer>> getIntegerData(String type) {
+    public Optional<IHTSimpleRegistry<ISectType>> sectRegistry() {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<IHTSimpleRegistry<IRealmType>> realmRegistry() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry() {
+        return Optional.empty();
+    }
+
+    @Override
+    public IRealmType getEntityRealm(Entity entity) {
+        return RealmTypes.MORTALITY;
     }
 
     @Override
@@ -122,12 +79,12 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
+    public void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map) {
 
     }
 
     @Override
-    public Map<ISpiritualRoot, Integer> getElixirIngredient(Item item) {
+    public Map<ISpiritualType, Integer> getElixirIngredient(Item item) {
         return Map.of();
     }
 

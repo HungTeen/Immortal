@@ -1,6 +1,6 @@
 package hungteen.immortal.common.menu;
 
-import hungteen.htlib.menu.HTContainerMenu;
+import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.immortal.common.entity.golem.GolemEntity;
 import hungteen.immortal.utils.EntityUtil;
 import net.minecraft.world.Container;

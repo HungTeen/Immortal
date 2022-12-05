@@ -1,17 +1,15 @@
 package hungteen.immortal.api.registry;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.interfaces.IComponentEntry;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-24 16:03
- *
- * 灵根。
  **/
-public interface ISpiritualRoot extends IComponentEntry {
+public interface ISpiritualType extends ISimpleEntry {
 
     /**
      * 只有金木水火土五种灵根是普通灵根，值为false即为异灵根。

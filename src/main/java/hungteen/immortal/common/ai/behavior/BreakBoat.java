@@ -12,6 +12,8 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 
 import java.util.Optional;
 
@@ -50,6 +52,15 @@ public class BreakBoat extends Behavior<LivingEntity> {
         entity.swing(InteractionHand.MAIN_HAND);
         getEntity(entity).ifPresent(target -> {
             if(target instanceof Boat){
+                if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+                    for(int i = 0; i < 3; ++i) {
+                        target.spawnAtLocation(((Boat) target).getBoatType().getPlanks());
+                    }
+
+                    for(int j = 0; j < 2; ++j) {
+                        target.spawnAtLocation(Items.STICK);
+                    }
+                }
                 target.hurt(EntityDamageSource.mobAttack(entity), 1000F);
             }
         });

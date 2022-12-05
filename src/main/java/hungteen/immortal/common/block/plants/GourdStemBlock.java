@@ -1,7 +1,7 @@
 package hungteen.immortal.common.block.plants;
 
-import hungteen.htlib.block.plants.HTStemBlock;
-import hungteen.htlib.block.plants.HTStemGrownBlock;
+import hungteen.htlib.common.block.plants.HTStemBlock;
+import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.item.ImmortalItems;

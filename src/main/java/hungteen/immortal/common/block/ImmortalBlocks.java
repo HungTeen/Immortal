@@ -1,8 +1,8 @@
 package hungteen.immortal.common.block;
 
-import hungteen.htlib.block.*;
-import hungteen.htlib.block.plants.HTAttachedStemBlock;
-import hungteen.htlib.block.plants.HTSaplingBlock;
+import hungteen.htlib.common.block.*;
+import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
+import hungteen.htlib.common.block.plants.HTSaplingBlock;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.artifacts.ElixirRoom;
 import hungteen.immortal.common.block.artifacts.SmithingArtifact;

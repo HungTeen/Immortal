@@ -1,6 +1,6 @@
 package hungteen.immortal.common.entity.misc;
 
-import hungteen.htlib.entity.HTEntity;
+import hungteen.htlib.common.entity.HTEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

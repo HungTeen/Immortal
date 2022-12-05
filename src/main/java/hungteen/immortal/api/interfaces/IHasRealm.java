@@ -1,6 +1,6 @@
 package hungteen.immortal.api.interfaces;
 
-import hungteen.immortal.api.registry.IRealm;
+import hungteen.immortal.api.registry.IRealmType;
 
 /**
  * @program: Immortal
@@ -12,5 +12,5 @@ public interface IHasRealm {
     /**
      * 获取生物的境界。
      */
-    IRealm getRealm();
+    IRealmType getRealm();
 }

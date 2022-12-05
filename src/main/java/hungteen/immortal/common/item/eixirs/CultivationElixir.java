@@ -3,7 +3,7 @@ package hungteen.immortal.common.item.eixirs;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.impl.PlayerDatas;
-import hungteen.immortal.impl.Realms;
+import hungteen.immortal.impl.RealmTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -74,7 +74,7 @@ public abstract class CultivationElixir extends ElixirItem{
 
         @Override
         protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-            return lessThan(Realms.FOUNDATION_BEGIN).apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+            return lessThan(RealmTypes.FOUNDATION_BEGIN).apply(ImmortalAPI.get().getEntityRealm(livingEntity));
         }
     }
 

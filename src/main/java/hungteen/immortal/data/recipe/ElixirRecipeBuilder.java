@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import hungteen.htlib.util.helper.ItemHelper;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.advancements.Advancement;
@@ -37,7 +37,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
     private final Item result;
     private final int count;
     private final List<Ingredient> ingredients = Lists.newArrayList();
-    private final Map<ISpiritualRoot, Integer> spiritualMap = new HashMap<>();
+    private final Map<ISpiritualType, Integer> spiritualMap = new HashMap<>();
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
     @javax.annotation.Nullable
     private String group;
@@ -93,7 +93,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    public ElixirRecipeBuilder put(ISpiritualRoot root, int value) {
+    public ElixirRecipeBuilder put(ISpiritualType root, int value) {
         this.spiritualMap.put(root, value);
         return this;
     }
@@ -139,7 +139,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
         private final int count;
         private final String group;
         private final List<Ingredient> ingredients;
-        private final Map<ISpiritualRoot, Integer> spiritualMap;
+        private final Map<ISpiritualType, Integer> spiritualMap;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
         private final int prepareCD;
@@ -147,7 +147,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
         private final int ingredientLimit;
         private final int requireFlameLevel;
 
-        public Result(ResourceLocation location, Item result, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, String group, List<Ingredient> ingredients, Map<ISpiritualRoot, Integer> spiritualMap, Advancement.Builder builder, ResourceLocation advancement) {
+        public Result(ResourceLocation location, Item result, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, String group, List<Ingredient> ingredients, Map<ISpiritualType, Integer> spiritualMap, Advancement.Builder builder, ResourceLocation advancement) {
             this.id = location;
             this.result = result;
             this.count = count;

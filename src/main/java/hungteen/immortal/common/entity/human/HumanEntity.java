@@ -3,7 +3,7 @@ package hungteen.immortal.common.entity.human;
 import com.google.common.collect.ImmutableList;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHuman;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.ai.ImmortalMemories;
 import hungteen.immortal.common.ai.ImmortalSensors;
 import hungteen.immortal.common.entity.ImmortalGrowableCreature;
@@ -44,7 +44,7 @@ import java.util.List;
 public abstract class HumanEntity extends ImmortalGrowableCreature implements IHuman {
 
     private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
-    private List<ISpiritualRoot> rootsCache;
+    private List<ISpiritualType> rootsCache;
     @javax.annotation.Nullable
     private Player tradingPlayer;
     @javax.annotation.Nullable
@@ -244,7 +244,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         tag.put("CultivatorRoots", this.getRootTag());
     }
 
-    public void addSpiritualRoots(ISpiritualRoot spiritualRoot){
+    public void addSpiritualRoots(ISpiritualType spiritualRoot){
         final CompoundTag tag = getRootTag();
         tag.putBoolean(spiritualRoot.getRegistryName(), true);
         if(this.rootsCache == null){
@@ -255,10 +255,10 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     }
 
     @Override
-    public Collection<ISpiritualRoot> getSpiritualRoots() {
-        if(this.rootsCache == null){
+    public Collection<ISpiritualType> getSpiritualTypes() {
+        if(this.rootsCache == null && ImmortalAPI.get().spiritualRegistry().isPresent()){
             this.rootsCache = new ArrayList<>();
-            ImmortalAPI.get().getSpiritualRoots().forEach(root -> {
+            ImmortalAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
                 if(getRootTag().contains(root.getRegistryName()) && getRootTag().getBoolean(root.getRegistryName())){
                     this.rootsCache.add(root);
                 }

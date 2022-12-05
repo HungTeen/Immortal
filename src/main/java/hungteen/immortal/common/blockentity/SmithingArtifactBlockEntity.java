@@ -1,6 +1,6 @@
 package hungteen.immortal.common.blockentity;
 
-import hungteen.htlib.blockentity.ItemHandlerBlockEntity;
+import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
 import hungteen.htlib.menu.container.SimpleCraftingContainer;
 import hungteen.immortal.api.interfaces.IArtifact;
 import hungteen.immortal.common.ArtifactManager;

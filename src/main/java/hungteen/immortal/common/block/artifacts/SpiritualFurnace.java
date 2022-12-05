@@ -1,6 +1,6 @@
 package hungteen.immortal.common.block.artifacts;
 
-import hungteen.htlib.block.entityblock.HTEntityBlock;
+import hungteen.htlib.common.block.entityblock.HTEntityBlock;
 import hungteen.immortal.api.interfaces.IArtifact;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;

@@ -2,9 +2,9 @@ package hungteen.immortal.impl;
 
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.api.registry.ISpell;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,48 +19,48 @@ import java.util.function.Function;
  * @author: HungTeen
  * @create: 2022-09-29 14:26
  **/
-public class Spells {
+public class SpellTypes {
 
-    private static final List<ISpell> TYPES = new ArrayList<>();
+    private static final List<ISpellType> TYPES = new ArrayList<>();
 
-    public static final ISpell RELEASING = new Spell("releasing", 1, 10, 200,
-            lvl -> Realms.MEDITATION_STAGE1, List.of(), List.of()
+    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
+            lvl -> RealmTypes.MEDITATION_STAGE1, List.of(), List.of()
     );
 
-    public static final ISpell RESTING = new Spell("resting", 1, 0, 1200,
-            lvl -> Realms.MEDITATION_STAGE1, List.of(), List.of()
+    public static final ISpellType RESTING = new SpellType("resting", 1, 0, 1200,
+            lvl -> RealmTypes.MEDITATION_STAGE1, List.of(), List.of()
     );
 
-    public static final ISpell IGNITE = new Spell("ignite", 1, 20, 200,
-            lvl -> Realms.MEDITATION_STAGE3, List.of(), List.of()
+    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
+            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()
     );
 
-    public static final ISpell WATER_BREATHING = new Spell("water_breathing", 1, 200, 3600,
-            lvl -> Realms.MEDITATION_STAGE3, List.of(SpiritualRoots.WATER), List.of()
+    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
+            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
     );
 
-    public static final ISpell ITEM_PICKING = new Spell("item_picking", 1, 10, 10, 400,
-            lvl -> Realms.MEDITATION_STAGE5, List.of(), List.of()
+    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400,
+            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
     );
 
-    public static final ISpell ADVANCE_CONSCIOUSNESS = new Spell("advance_consciousness", 7, 50, 500,
+    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
             lvl -> {
-                return lvl <= 2 ? Realms.MEDITATION_STAGE5 :
-                        lvl <= 4 ? Realms.MEDITATION_STAGE8 :
-                                lvl <= 6 ? Realms.MEDITATION_STAGE10 :
-                                        Realms.FOUNDATION_BEGIN;
+                return lvl <= 2 ? RealmTypes.MEDITATION_STAGE5 :
+                        lvl <= 4 ? RealmTypes.MEDITATION_STAGE8 :
+                                lvl <= 6 ? RealmTypes.MEDITATION_STAGE10 :
+                                        RealmTypes.FOUNDATION_BEGIN;
             }, List.of(), List.of()
     );
 
-    public static final ISpell FLY_WITH_SWORD = new Spell("fly_with_sword", 1, 50, 3600,
-            lvl -> Realms.MEDITATION_STAGE5, List.of(), List.of()
+    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 1, 50, 3600,
+            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
     );
 
-    public static final ISpell BLOCK_PICKING = new Spell("block_picking", 1, 10, 50, 400,
-            lvl -> Realms.MEDITATION_STAGE8, List.of(), List.of()
+    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 1, 10, 50, 400,
+            lvl -> RealmTypes.MEDITATION_STAGE8, List.of(), List.of()
     );
 
-    public static class Spell implements ISpell {
+    public static class SpellType implements ISpellType {
 
         private final String name;
         private final int maxLevel;
@@ -68,27 +68,27 @@ public class Spells {
         private final int continueMana;
         private final int duration;
         private final boolean hasTutorialBook;
-        private final Function<Integer, IRealm> realmFunc;
-        private final List<ISpiritualRoot> requireRoots;
-        private final List<ISpell> requireSpells;
+        private final Function<Integer, IRealmType> realmFunc;
+        private final List<ISpiritualType> requireRoots;
+        private final List<ISpellType> requireSpells;
         private final ResourceLocation resourceLocation;
 
         /**
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register(){
-            TYPES.forEach(type -> ImmortalAPI.get().registerSpell(type));
+            ImmortalAPI.get().spellRegistry().ifPresent(l -> l.register(TYPES));
         }
 
-        public Spell(String name, int maxLevel, int startMana, int duration, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
+        public SpellType(String name, int maxLevel, int startMana, int duration, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
             this(name, maxLevel, startMana, 0, duration, realmFunc, requireRoots, requireSpells);
         }
 
-        public Spell(String name, int maxLevel, int startMana, int continueMana, int duration, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
+        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
             this(name, maxLevel, startMana, continueMana, duration, true, realmFunc, requireRoots, requireSpells);
         }
 
-        public Spell(String name, int maxLevel, int startMana, int continueMana, int duration, boolean hasTutorialBook, Function<Integer, IRealm> realmFunc, List<ISpiritualRoot> requireRoots, List<ISpell> requireSpells) {
+        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, boolean hasTutorialBook, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
             this.name = name;
             this.maxLevel = maxLevel;
             this.startMana = startMana;
@@ -123,17 +123,17 @@ public class Spells {
         }
 
         @Override
-        public IRealm requireRealm(int level) {
+        public IRealmType requireRealm(int level) {
             return this.realmFunc.apply(level);
         }
 
         @Override
-        public List<ISpiritualRoot> requireSpiritualRoots() {
+        public List<ISpiritualType> requireSpiritualRoots() {
             return requireRoots;
         }
 
         @Override
-        public List<ISpell> requirePreSpells() {
+        public List<ISpellType> requirePreSpells() {
             return requireSpells;
         }
 

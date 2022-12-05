@@ -9,12 +9,12 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
  **/
 public class LevelRenderStages {
 
-    public static RenderLevelStageEvent.Stage FORMATION;
 
     /**
      * {@link hungteen.immortal.client.ClientRegister#registerLevelRenderStages(RenderLevelStageEvent.RegisterStageEvent)}
      */
     public static void init(RenderLevelStageEvent.RegisterStageEvent event){
-//        FORMATION = event.register(Util.prefix("formation"), RenderType.translucent());
+
     }
+
 }

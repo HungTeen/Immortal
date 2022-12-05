@@ -33,7 +33,7 @@ I am mortal, but i will be immortal !
 [[dependencies.immortal]]
 modId="htlib"
 mandatory=true
-versionRange="[0.7.2,)"
+versionRange="[0.8,)"
 
 [[dependencies.immortal]]
 modId="jei"

@@ -5,7 +5,6 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.creature.SilkWorm;
-import hungteen.immortal.common.entity.formation.BorderFormation;
 import hungteen.immortal.common.entity.golem.IronGolem;
 import hungteen.immortal.common.entity.human.Cultivator;
 import hungteen.immortal.common.entity.human.villager.DiscipleVillager;
@@ -44,7 +43,6 @@ public class ImmortalEntities {
 
     public static final RegistryObject<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC);
     public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC);
-    public static final RegistryObject<EntityType<BorderFormation>> BORDER_FORMATION = registerEntityType(BorderFormation::new, "border_formation", MobCategory.MISC);
 
     /* Human */
 

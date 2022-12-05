@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -33,9 +33,9 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     private final int smeltingCD;
     private final int ingredientLimit;
     private final int requireFlameLevel;
-    private final Map<ISpiritualRoot, Integer> spiritualMap;
+    private final Map<ISpiritualType, Integer> spiritualMap;
 
-    public ElixirRecipe(ResourceLocation id, String group, NonNullList<Ingredient> ingredients, ItemStack result, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, Map<ISpiritualRoot, Integer> map) {
+    public ElixirRecipe(ResourceLocation id, String group, NonNullList<Ingredient> ingredients, ItemStack result, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, Map<ISpiritualType, Integer> map) {
         this.id = id;
         this.group = group;
         this.result = result;
@@ -115,11 +115,11 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
         return requireFlameLevel;
     }
 
-    public void put(ISpiritualRoot root, int value) {
+    public void put(ISpiritualType root, int value) {
         spiritualMap.put(root, value);
     }
 
-    public Map<ISpiritualRoot, Integer> getSpiritualMap() {
+    public Map<ISpiritualType, Integer> getSpiritualMap() {
         return Collections.unmodifiableMap(spiritualMap);
     }
 
@@ -144,10 +144,10 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
                 int requireFlameLevel = GsonHelper.getAsInt(jsonObject, "require_flame_level");
 
                 JsonArray array = GsonHelper.getAsJsonArray(jsonObject, "spiritual_map", new JsonArray());
-                Map<ISpiritualRoot, Integer> map = new HashMap<>();
+                Map<ISpiritualType, Integer> map = new HashMap<>();
                 for(int i = 0; i < array.size(); ++ i){
-                    if(array.get(i).isJsonObject()){
-                        final Optional<ISpiritualRoot> opt = ImmortalAPI.get().getSpiritualRoot(GsonHelper.getAsString(array.get(i).getAsJsonObject(), "spiritual_root"));
+                    if(array.get(i).isJsonObject() && ImmortalAPI.get().spiritualRegistry().isPresent()){
+                        final Optional<ISpiritualType> opt = ImmortalAPI.get().spiritualRegistry().get().getValue(GsonHelper.getAsString(array.get(i).getAsJsonObject(), "spiritual_root"));
                         if(opt.isPresent()){
                             final int value = GsonHelper.getAsInt(array.get(i).getAsJsonObject(), "spiritual_value");
                             map.put(opt.get(), value);
@@ -181,13 +181,13 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
             int smeltingCD = byteBuf.readInt();
             int ingredientLimit = byteBuf.readInt();
             int requireFlameLevel = byteBuf.readInt();
-            Map<ISpiritualRoot, Integer> map = new HashMap<>();
+            Map<ISpiritualType, Integer> map = new HashMap<>();
             final int len = byteBuf.readInt();
             for(int j = 0; j < len; ++ j) {
                 final String type = byteBuf.readUtf();
                 final int value = byteBuf.readInt();
-                ImmortalAPI.get().getSpiritualRoot(type).ifPresent(l -> {
-                    map.put(l, value);
+                ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+                    l.getValue(type).ifPresent(t -> map.put(t, value));
                 });
             }
             return new ElixirRecipe(location, s, ingredients, itemstack, prepareCD, smeltingCD, ingredientLimit, requireFlameLevel, map);

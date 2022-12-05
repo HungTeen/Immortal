@@ -1,11 +1,11 @@
 package hungteen.immortal.data.recipe;
 
 import hungteen.htlib.util.helper.ItemHelper;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.item.ImmortalItems;
-import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.impl.SpiritualTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -78,44 +78,44 @@ public class RecipeGen extends RecipeProvider {
                 Arrays.asList(
                         Items.SUNFLOWER, Items.LILAC, Items.ROSE_BUSH, Items.PEONY, Items.SPORE_BLOSSOM
                 ), Map.of(
-                        SpiritualRoots.METAL, 5,
-                        SpiritualRoots.WOOD, 5,
-                        SpiritualRoots.WATER, 5,
-                        SpiritualRoots.FIRE, 5,
-                        SpiritualRoots.EARTH, 5
+                        SpiritualTypes.METAL, 5,
+                        SpiritualTypes.WOOD, 5,
+                        SpiritualTypes.WATER, 5,
+                        SpiritualTypes.FIRE, 5,
+                        SpiritualTypes.EARTH, 5
                 )
         );
         genElixir(consumer, ImmortalItems.ANTIDOTE_ELIXIR.get(), 600, 1200, 10, 1,
                 Arrays.asList(
                         Items.MILK_BUCKET, Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE
                 ), Map.of(
-                        SpiritualRoots.WOOD, 5, 
-                        SpiritualRoots.WATER, 5,
-                        SpiritualRoots.FIRE, 5,
-                        SpiritualRoots.EARTH, 5,
-                        SpiritualRoots.DRUG, 10
+                        SpiritualTypes.WOOD, 5, 
+                        SpiritualTypes.WATER, 5,
+                        SpiritualTypes.FIRE, 5,
+                        SpiritualTypes.EARTH, 5,
+                        SpiritualTypes.DRUG, 10
                 )
         );
         genElixir(consumer, ImmortalItems.SPIRIT_RECOVERY_ELIXIR.get(), 600, 300, 10, 1,
                 Arrays.asList(
                         Items.BROWN_MUSHROOM, Items.RED_MUSHROOM, Items.SWEET_BERRIES, Items.BEETROOT
                 ), Map.of(
-                        SpiritualRoots.METAL, 5,
-                        SpiritualRoots.WOOD, 10,
-                        SpiritualRoots.WATER, 5,
-                        SpiritualRoots.FIRE, 5,
-                        SpiritualRoots.EARTH, 5
+                        SpiritualTypes.METAL, 5,
+                        SpiritualTypes.WOOD, 10,
+                        SpiritualTypes.WATER, 5,
+                        SpiritualTypes.FIRE, 5,
+                        SpiritualTypes.EARTH, 5
                 )
         );
         genElixir(consumer, ImmortalItems.ABSTINENCE_ELIXIR.get(), 600, 2400, 12, 1,
                 Arrays.asList(
                         Items.WHEAT, Items.EGG, Items.SUGAR, Items.MILK_BUCKET, Items.GOLDEN_APPLE
                 ), Map.of(
-                        SpiritualRoots.METAL, 5,
-                        SpiritualRoots.WOOD, 10,
-                        SpiritualRoots.WATER, 15,
-                        SpiritualRoots.FIRE, 15,
-                        SpiritualRoots.EARTH, 10
+                        SpiritualTypes.METAL, 5,
+                        SpiritualTypes.WOOD, 10,
+                        SpiritualTypes.WATER, 15,
+                        SpiritualTypes.FIRE, 15,
+                        SpiritualTypes.EARTH, 10
                 )
         );
         genElixir(consumer, ImmortalItems.GATHER_BREATH_ELIXIR.get(), 800, 2400, 15, 1,
@@ -124,12 +124,12 @@ public class RecipeGen extends RecipeProvider {
                         GourdGrownBlock.GourdTypes.ORANGE.getGourdItem(),
                         GourdGrownBlock.GourdTypes.YELLOW.getGourdItem()
                 ), Map.of(
-                        SpiritualRoots.METAL, 15,
-                        SpiritualRoots.WOOD, 15,
-                        SpiritualRoots.WATER, 15,
-                        SpiritualRoots.FIRE, 15,
-                        SpiritualRoots.EARTH, 15,
-                        SpiritualRoots.WIND, 15
+                        SpiritualTypes.METAL, 15,
+                        SpiritualTypes.WOOD, 15,
+                        SpiritualTypes.WATER, 15,
+                        SpiritualTypes.FIRE, 15,
+                        SpiritualTypes.EARTH, 15,
+                        SpiritualTypes.WIND, 15
                 )
         );
 //        genElixir(consumer, ImmortalItems.ANTIDOTE_ELIXIR.get(), 800, 2400, 15, 1,
@@ -138,12 +138,12 @@ public class RecipeGen extends RecipeProvider {
 //                        GourdGrownBlock.GourdTypes.ORANGE.getGourdItem(),
 //                        GourdGrownBlock.GourdTypes.YELLOW.getGourdItem()
 //                ), Map.of(
-//                        SpiritualRoots.METAL, 15,
-//                        SpiritualRoots.WOOD, 15,
-//                        SpiritualRoots.WATER, 15,
-//                        SpiritualRoots.FIRE, 15,
-//                        SpiritualRoots.EARTH, 15,
-//                        SpiritualRoots.WIND, 15
+//                        SpiritualTypes.METAL, 15,
+//                        SpiritualTypes.WOOD, 15,
+//                        SpiritualTypes.WATER, 15,
+//                        SpiritualTypes.FIRE, 15,
+//                        SpiritualTypes.EARTH, 15,
+//                        SpiritualTypes.WIND, 15
 //                )
 //        );
     }
@@ -156,7 +156,7 @@ public class RecipeGen extends RecipeProvider {
         builder.save(consumer, Util.prefix("smithing/" + ItemHelper.getKey(result.asItem()).getPath()));
     }
 
-    private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int preCD, int smeltCD, int ingredientLimit, int requireFlameLevel, List<ItemLike> ingredients, Map<ISpiritualRoot, Integer> map){
+    private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int preCD, int smeltCD, int ingredientLimit, int requireFlameLevel, List<ItemLike> ingredients, Map<ISpiritualType, Integer> map){
         ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel);
         builder.unlockedBy("has_elixir_furnace", has(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
         ingredients.forEach(builder::requires);

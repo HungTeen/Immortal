@@ -1,6 +1,6 @@
 package hungteen.immortal.api.registry;
 
-import hungteen.htlib.interfaces.IComponentEntry;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 
 /**
  * @program: Immortal
@@ -10,6 +10,6 @@ import hungteen.htlib.interfaces.IComponentEntry;
  * 修炼类型。
  * TODO 修为类型更新，如鬼修之类的。
  **/
-public interface ICultivationType extends IComponentEntry {
+public interface ICultivationType extends ISimpleEntry {
 
 }

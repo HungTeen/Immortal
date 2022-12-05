@@ -1,6 +1,6 @@
 package hungteen.immortal.common;
 
-import hungteen.htlib.interfaces.IComponentEntry;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.immortal.common.entity.golem.GolemEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -90,7 +90,7 @@ public class RuneManager {
      * @author: HungTeen
      * @create: 2022-10-24 10:05
      **/
-    public interface IMemoryRune extends IComponentEntry {
+    public interface IMemoryRune extends ISimpleEntry {
 
         /**
          * 获取行为类型。
@@ -106,7 +106,7 @@ public class RuneManager {
      *
      * 取值符文
      **/
-    public interface ISensorRune extends IComponentEntry {
+    public interface ISensorRune extends ISimpleEntry {
 
         /**
          * 获取感知类型。
@@ -126,7 +126,7 @@ public class RuneManager {
      *
      * 效果符文。
      **/
-    public interface IBehaviorRune extends IComponentEntry {
+    public interface IBehaviorRune extends ISimpleEntry {
 
         /**
          * 获取记忆类型构造器。

@@ -4,13 +4,13 @@ import hungteen.htlib.util.helper.EffectHelper;
 import hungteen.htlib.util.helper.ParticleHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
-import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.impl.PlayerDatas;
-import hungteen.immortal.impl.Spells;
+import hungteen.immortal.impl.SpellTypes;
 import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.TipUtil;
@@ -47,7 +47,7 @@ public class SpellManager {
      * {@link SpellPacket.Handler#onMessage(SpellPacket, Supplier)}
      */
     public static void checkActivateSpell(Player player){
-        final ISpell spell = PlayerUtil.getSelectedSpell(player);
+        final ISpellType spell = PlayerUtil.getSelectedSpell(player);
         if(spell != null){
             final int level = PlayerUtil.getSpellLearnLevel(player, spell);
             if(PlayerUtil.isSpellActivated(player, spell)){
@@ -69,15 +69,15 @@ public class SpellManager {
     /**
      * {@link ImmortalPlayerEvents#onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post)}
      */
-    public static void checkSpellAction(Player player, ISpell spell, int level) {
+    public static void checkSpellAction(Player player, ISpellType spell, int level) {
         /* 水之呼吸 */
-        if (spell == Spells.WATER_BREATHING) {
+        if (spell == SpellTypes.WATER_BREATHING) {
             if (!player.level.isClientSide) {
-                player.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, Spells.WATER_BREATHING.getDuration(), 1));
+                player.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, SpellTypes.WATER_BREATHING.getDuration(), 1));
             }
         }
         /* 调息术 */
-        if (spell == Spells.RESTING){
+        if (spell == SpellTypes.RESTING){
             Util.getProxy().openRestingScreen();
         }
     }
@@ -89,12 +89,12 @@ public class SpellManager {
         if(player.getMainHandItem().isEmpty()){
             /* 隔空取物，空手获取远处的物品 */
             if(result.getEntity() instanceof ItemEntity) {
-                checkContinueSpell(player, Spells.ITEM_PICKING, () -> {
+                checkContinueSpell(player, SpellTypes.ITEM_PICKING, () -> {
                     player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
                     result.getEntity().discard();
                 });
             } else {
-                checkContinueSpell(player, Spells.IGNITE, () -> {
+                checkContinueSpell(player, SpellTypes.IGNITE, () -> {
                     ParticleHelper.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
                     result.getEntity().setSecondsOnFire(5);
                 });
@@ -108,7 +108,7 @@ public class SpellManager {
     public static void checkSpellAction(Player player, BlockHitResult result) {
         if(player.getMainHandItem().isEmpty()){
             /* 隔空取物，空手获取远处的方块 */
-            checkContinueSpell(player, Spells.BLOCK_PICKING, () -> {
+            checkContinueSpell(player, SpellTypes.BLOCK_PICKING, () -> {
                 final BlockState state = player.level.getBlockState(result.getBlockPos());
                 // ban bedrock like blocks.
                 if(state.getDestroySpeed(player.level, result.getBlockPos()) >= 0){
@@ -125,7 +125,7 @@ public class SpellManager {
                 }
             });
             /* 灵力释放 点火 */
-            checkContinueSpell(player, Spells.RELEASING, () -> {
+            checkContinueSpell(player, SpellTypes.RELEASING, () -> {
                 final BlockEntity blockEntity = player.level.getBlockEntity(result.getBlockPos());
                 if(blockEntity instanceof SpiritualFurnaceBlockEntity){
                     ((SpiritualFurnaceBlockEntity) blockEntity).start();
@@ -135,7 +135,7 @@ public class SpellManager {
         }
     }
 
-    public static void checkContinueSpell(Player player, @Nonnull ISpell spell, Runnable runnable) {
+    public static void checkContinueSpell(Player player, @Nonnull ISpellType spell, Runnable runnable) {
         if(PlayerUtil.isSpellActivated(player, spell) && canSpellContinue(player, spell)){
             final int level = PlayerUtil.getSpellLearnLevel(player, spell);
             if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.UsingSpellEvent(player, spell, level))){
@@ -145,15 +145,15 @@ public class SpellManager {
         }
     }
 
-    public static long getSpellActivateTime(Player player, ISpell spell){
+    public static long getSpellActivateTime(Player player, ISpellType spell){
         return player.level.getGameTime() + spell.getDuration();
     }
 
-    public static boolean canSpellStart(Player player, ISpell spell){
+    public static boolean canSpellStart(Player player, ISpellType spell){
         return ImmortalAPI.get().getSpiritualMana(player) >= spell.getStartMana();
     }
 
-    public static boolean canSpellContinue(Player player, ISpell spell){
+    public static boolean canSpellContinue(Player player, ISpellType spell){
         return ImmortalAPI.get().getSpiritualMana(player) >= spell.getContinueMana();
     }
 

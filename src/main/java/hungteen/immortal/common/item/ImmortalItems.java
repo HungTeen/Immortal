@@ -1,15 +1,15 @@
 package hungteen.immortal.common.item;
 
-import hungteen.htlib.item.HTBoatItem;
+import hungteen.htlib.common.item.HTBoatItem;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.item.artifacts.*;
 import hungteen.immortal.common.item.artifacts.AxeItem;
 import hungteen.immortal.common.item.artifacts.HoeItem;
 import hungteen.immortal.common.item.artifacts.PickaxeItem;
 import hungteen.immortal.common.item.artifacts.ShovelItem;
 import hungteen.immortal.common.item.artifacts.SwordItem;
+import hungteen.immortal.common.item.artifacts.*;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.impl.ImmortalTiers;

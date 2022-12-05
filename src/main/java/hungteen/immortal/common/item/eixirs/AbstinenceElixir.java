@@ -2,7 +2,7 @@ package hungteen.immortal.common.item.eixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.EffectHelper;
-import hungteen.immortal.impl.Realms;
+import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -48,6 +48,6 @@ public class AbstinenceElixir extends ElixirItem{
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return lessThan(Realms.FOUNDATION_BEGIN).apply(getRealm(livingEntity));
+        return lessThan(RealmTypes.FOUNDATION_BEGIN).apply(getRealm(livingEntity));
     }
 }

@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.eixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.immortal.impl.Realms;
+import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -27,6 +27,6 @@ public class FoundationElixir extends ElixirItem{
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return same(Realms.MEDITATION_STAGE10).apply(getRealm(livingEntity));
+        return same(RealmTypes.MEDITATION_STAGE10).apply(getRealm(livingEntity));
     }
 }

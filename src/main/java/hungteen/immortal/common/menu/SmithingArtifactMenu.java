@@ -1,6 +1,6 @@
 package hungteen.immortal.common.menu;
 
-import hungteen.htlib.menu.HTContainerMenu;
+import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import net.minecraft.core.BlockPos;

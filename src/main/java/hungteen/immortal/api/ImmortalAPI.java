@@ -1,8 +1,12 @@
 package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
-import hungteen.htlib.interfaces.IRangeData;
-import hungteen.immortal.api.registry.*;
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISectType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -44,7 +48,7 @@ public class ImmortalAPI {
 
     /**
      * mod has two implemented API. <br>
-     * a dummy one {@link DummyAPI} and a implemented one {@link } <br>
+     * a dummy one {@link DummyAPI} and an implemented one {@link } <br>
      * all implement code are below impl package.
      */
     public interface IImmortalAPI {
@@ -52,108 +56,43 @@ public class ImmortalAPI {
         /**
          * 注册灵根类型。<br>
          * Only registered roots can participate in human's randomly choosing roots when born.
-         * @param type the spiritual root instance to be registered.
+         * @return Registry interface.
          */
-        void registerSpiritualRoot(ISpiritualRoot type);
-
-        /**
-         * 获取所有灵根类型。
-         * @return all kinds of spiritual roots registered.
-         */
-        List<ISpiritualRoot> getSpiritualRoots();
-
-        /**
-         * 根据名字获取灵根。
-         * @param type the name of spiritual root.
-         * @return spiritual type with the given name.
-         */
-        Optional<ISpiritualRoot> getSpiritualRoot(String type);
+        Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry();
 
         /**
          * 注册法术类型。 <br>
          * Only registered spells can be displayed on Spell Menu.
-         * @param type the spell type to be registered.
+         * @return Registry interface.
          */
-        void registerSpell(ISpell type);
+        Optional<IHTSimpleRegistry<ISpellType>> spellRegistry();
 
         /**
-         * 获取所有法术类型。
-         * @return all kinds of spell types registered.
+         * 注册宗门类型。 <br>
+         * @return Registry interface.
          */
-        Collection<ISpell> getSpells();
+        Optional<IHTSimpleRegistry<ISectType>> sectRegistry();
 
         /**
-         * 根据名字获取法术。
-         * @param type the name of spell.
-         * @return the spell type with the given name.
-         */
-        Optional<ISpell> getSpell(String type);
-
-//        /**
-//         * 注册功法秘籍类型。 <br>
-//         * Register book types that can be added as a book item in game.
-//         * @param type the spell book to be registered.
-//         */
-//        void registerSpellBook(ISpellBook type);
-//
-//        /**
-//         * 获取所有功法秘籍类型。
-//         * @return all kinds of spell book registered.
-//         */
-//        Collection<ISpellBook> getSpellBooks();
-//
-//        /**
-//         * 根据名字获取功法秘籍。
-//         * @param type the name of spell book.
-//         * @return the book type with the given name.
-//         */
-//        Optional<ISpellBook> getSpellBook(String type);
-
-        /**
-         * 注册境界类型。
+         * 注册境界类型。 <br>
          * Register the realm type so that it can be stored as nbt.
-         * @param type the realm type to be registered.
+         * @return Registry interface.
          */
-        void registerRealm(IRealm type);
+        Optional<IHTSimpleRegistry<IRealmType>> realmRegistry();
 
         /**
-         * 获取境界类型。
-         * @return all kinds of realm types registered.
+         * 注册玩家Int数据类型。<br>
+         * Stored in player capabilities.
+         * @return Registry interface.
          */
-        Collection<IRealm> getRealms();
-
-        /**
-         * 根据名字获取境界。
-         * @param type the name of realm type.
-         * @return the realm type with the given name.
-         */
-        Optional<IRealm> getRealm(String type);
+        Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry();
 
         /**
          * 获取生物的境界。
          * @param entity the entity that wants to know its realm type.
          * @return the realm type of the given entity.
          */
-        IRealm getEntityRealm(Entity entity);
-
-        /**
-         * 注册玩家Int数据类型。
-         * @param type register a type to store in player capability.
-         */
-        void registerIntegerData(IRangeData<Integer> type);
-
-        /**
-         * 获取玩家Int数据类型。
-         * @return all kinds of integer data registered.
-         */
-        Collection<IRangeData<Integer>> getIntegerCollection();
-
-        /**
-         * 根据名字获取玩家Int数据类型。
-         * @param type the name of integer data.
-         * @return the corresponding integer data with the given name.
-         */
-        Optional<IRangeData<Integer>> getIntegerData(String type);
+        IRealmType getEntityRealm(Entity entity);
 
         /**
          * 获取玩家灵气值。
@@ -189,14 +128,14 @@ public class ImmortalAPI {
          * @param item the item need to be registered.
          * @param map the spiritual value map of the given item.
          */
-        void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map);
+        void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map);
 
         /**
          * 获取炼丹材料的灵气值。
          * @param item to be queried.
          * @return the spiritual value map of the given item.
          */
-        Map<ISpiritualRoot, Integer> getElixirIngredient(Item item);
+        Map<ISpiritualType, Integer> getElixirIngredient(Item item);
 
         /**
          * 获取所有炼丹材料。

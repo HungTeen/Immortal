@@ -1,7 +1,7 @@
 package hungteen.immortal.common.network;
 
-import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -43,7 +43,7 @@ public class IntegerDataPacket {
         public static void onMessage(IntegerDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
                 Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
-                    ImmortalAPI.get().getIntegerData(message.type).ifPresent(data -> {
+                    ImmortalAPI.get().integerDataRegistry().flatMap(l -> l.getValue(message.type)).ifPresent(data -> {
                         PlayerUtil.setIntegerData(player, data, message.value);
                     });
                 });

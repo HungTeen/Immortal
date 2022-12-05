@@ -1,14 +1,16 @@
 package hungteen.immortal.common.menu;
 
-import hungteen.htlib.menu.HTContainerMenu;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.htlib.common.menu.HTContainerMenu;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
@@ -66,11 +68,11 @@ public class ElixirRoomMenu extends HTContainerMenu {
         return this.blockEntity.getResultItem();
     }
 
-    public Map<ISpiritualRoot, Integer> getRecipeMap() {
+    public Map<ISpiritualType, Integer> getRecipeMap() {
         return this.blockEntity.getRecipeMap();
     }
 
-    public Map<ISpiritualRoot, Integer> getSpiritualMap() {
+    public Map<ISpiritualType, Integer> getSpiritualMap() {
         return this.blockEntity.getSpiritualMap();
     }
 

@@ -1,13 +1,11 @@
 package hungteen.immortal.common.menu.tooltip;
 
 import hungteen.htlib.util.Pair;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -21,13 +19,13 @@ public class ElementToolTip implements TooltipComponent {
     public static final int SINGLE_HEIGHT = TEXT_HEIGHT + ICON_WIDTH;
     public static final int SINGLE_WIDTH = ICON_WIDTH + 4;
 
-    private final Collection<Pair<ISpiritualRoot, Integer>> ingredients;
+    private final Collection<Pair<ISpiritualType, Integer>> ingredients;
 
-    public ElementToolTip(Collection<Pair<ISpiritualRoot, Integer>> ingredients){
+    public ElementToolTip(Collection<Pair<ISpiritualType, Integer>> ingredients){
         this.ingredients = ingredients;
     }
 
-    public Collection<Pair<ISpiritualRoot, Integer>> getIngredients() {
+    public Collection<Pair<ISpiritualType, Integer>> getIngredients() {
         return Collections.unmodifiableCollection(ingredients);
     }
 

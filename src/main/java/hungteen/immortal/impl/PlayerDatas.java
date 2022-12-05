@@ -1,6 +1,6 @@
 package hungteen.immortal.impl;
 
-import hungteen.htlib.interfaces.IRangeData;
+import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.Util;
@@ -32,7 +32,7 @@ public class PlayerDatas {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register() {
-            TYPES.forEach(type -> ImmortalAPI.get().registerIntegerData(type));
+            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> l.register(TYPES));
         }
 
         public PlayerData(String name, int defaultValue, int minValue, int maxValue){
@@ -42,8 +42,6 @@ public class PlayerDatas {
             this.maxValue = maxValue;
             TYPES.add(this);
         }
-
-
         @Override
         public Integer defaultData() {
             return this.defaultValue;

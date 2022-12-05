@@ -1,10 +1,10 @@
 package hungteen.immortal.common.blockentity;
 
-import hungteen.htlib.blockentity.ItemHandlerBlockEntity;
+import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IArtifact;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.item.eixirs.ElixirItem;
 import hungteen.immortal.common.menu.ElixirRoomMenu;
@@ -13,6 +13,7 @@ import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.MenuProvider;
@@ -47,8 +48,8 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
             return 1;
         }
     };
-    private final Map<ISpiritualRoot, Integer> recipeMap = new HashMap<>();
-    private final Map<ISpiritualRoot, Integer> spiritualMap = new HashMap<>();
+    private final Map<ISpiritualType, Integer> recipeMap = new HashMap<>();
+    private final Map<ISpiritualType, Integer> spiritualMap = new HashMap<>();
     protected final ContainerData accessData = new ContainerData() {
         @Override
         public int get(int id) {
@@ -193,13 +194,13 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
      * 计算准确度，以及判定辅料添加有没有导致炸炉。
      */
     public void calculateDifference(){
-        Set<ISpiritualRoot> roots = new HashSet<>();
+        Set<ISpiritualType> roots = new HashSet<>();
         roots.addAll(this.getRecipeMap().keySet());
         roots.addAll(this.getSpiritualMap().keySet());
-        List<ISpiritualRoot> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualRoot::getSortPriority)).toList();
+        List<ISpiritualType> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualType::getSortPriority)).toList();
         if(list.size() > 0){
             float sum = 0;
-            for (ISpiritualRoot root : list) {
+            for (ISpiritualType root : list) {
                 final int origin = this.getRecipeMap().getOrDefault(root, 0);
                 final int dif = origin - this.getSpiritualMap().getOrDefault(root, 0);
                 if (dif < 0 || origin == 0) {
@@ -320,9 +321,10 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
             this.recipeMap.clear();
             for(int i = 0;i < len; ++ i){
                 final int value = nbt.getInt("Value" + i);
-                ImmortalAPI.get().getSpiritualRoot(nbt.getString("Root" + i)).ifPresent(root -> {
-                    this.recipeMap.put(root, value);
-                });
+                final int id = i;
+                ImmortalAPI.get().spiritualRegistry()
+                        .flatMap(l -> l.byNameCodec().parse(NbtOps.INSTANCE, nbt.get("Root" + id)).result())
+                        .ifPresent(type -> recipeMap.put(type, value));
             }
         }
         if(tag.contains("SpiritualMap")){
@@ -331,9 +333,10 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
             this.spiritualMap.clear();
             for(int i = 0; i < len; ++ i){
                 final int value = nbt.getInt("Value" + i);
-                ImmortalAPI.get().getSpiritualRoot(nbt.getString("Root" + i)).ifPresent(root -> {
-                    this.spiritualMap.put(root, value);
-                });
+                final int id = i;
+                ImmortalAPI.get().spiritualRegistry()
+                        .flatMap(l -> l.byNameCodec().parse(NbtOps.INSTANCE, nbt.get("Root" + id)).result())
+                        .ifPresent(type -> spiritualMap.put(type, value));
             }
         }
     }
@@ -353,7 +356,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
         {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("Len", this.recipeMap.size());
-            List<ISpiritualRoot> list = this.recipeMap.keySet().stream().toList();
+            List<ISpiritualType> list = this.recipeMap.keySet().stream().toList();
             for(int i = 0; i < list.size(); ++ i){
                 nbt.putString("Root" + i, list.get(i).getRegistryName());
                 nbt.putInt("Value" + i, this.recipeMap.get(list.get(i)));
@@ -363,7 +366,7 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
         {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("Len", this.spiritualMap.size());
-            List<ISpiritualRoot> list = this.spiritualMap.keySet().stream().toList();
+            List<ISpiritualType> list = this.spiritualMap.keySet().stream().toList();
             for(int i = 0; i < list.size(); ++ i){
                 nbt.putString("Root" + i, list.get(i).getRegistryName());
                 nbt.putInt("Value" + i, this.spiritualMap.get(list.get(i)));
@@ -376,11 +379,11 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
         return this.result;
     }
 
-    public Map<ISpiritualRoot, Integer> getRecipeMap() {
+    public Map<ISpiritualType, Integer> getRecipeMap() {
         return recipeMap;
     }
 
-    public Map<ISpiritualRoot, Integer> getSpiritualMap() {
+    public Map<ISpiritualType, Integer> getSpiritualMap() {
         return spiritualMap;
     }
 

@@ -5,10 +5,10 @@ import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.menu.ElixirRoomMenu;
-import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.impl.SpiritualTypes;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
@@ -114,17 +114,17 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
     }
 
     private void renderSpiritualMap(PoseStack stack){
-        Set<ISpiritualRoot> roots = new HashSet<>();
+        Set<ISpiritualType> roots = new HashSet<>();
         roots.addAll(this.menu.getRecipeMap().keySet());
         roots.addAll(this.menu.getSpiritualMap().keySet());
-        List<ISpiritualRoot> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualRoot::getSortPriority)).toList();
+        List<ISpiritualType> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualType::getSortPriority)).toList();
         for(int i = 0; i < Math.min(list.size(), COUNT_PER_PAGE); ++ i){
             final int y = 18 + i * 17; // width = 34, height = 17.
             final int x = 15;
-            final ISpiritualRoot root = list.get(i);
+            final ISpiritualType root = list.get(i);
 
             RenderHelper.setTexture(root.getResourceLocation());
-            this.blit(stack, this.leftPos + x + 1, this.topPos + y + 1, root.getTexturePosition().getFirst(), root.getTexturePosition().getSecond(), SpiritualRoots.TEX_WIDTH, SpiritualRoots.TEX_WIDTH);
+            this.blit(stack, this.leftPos + x + 1, this.topPos + y + 1, root.getTexturePosition().getFirst(), root.getTexturePosition().getSecond(), SpiritualTypes.TEX_WIDTH, SpiritualTypes.TEX_WIDTH);
 
             RenderHelper.setTexture(TEXTURE);
             this.blit(stack, this.leftPos + x + 1, this.topPos + y + 11, 218, 166, 31, 5);

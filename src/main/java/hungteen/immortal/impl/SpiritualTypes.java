@@ -1,11 +1,12 @@
 package hungteen.immortal.impl;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,37 +22,36 @@ import java.util.function.Supplier;
  * @author: HungTeen
  * @create: 2022-09-24 16:05
  **/
-public class SpiritualRoots {
+public class SpiritualTypes {
 
     public static final int TEX_WIDTH = 9;
-    private static final List<ISpiritualRoot> TYPES = new ArrayList<>();
+    private static final List<ISpiritualType> TYPES = new ArrayList<>();
 
+    public static final ISpiritualType METAL = new SpiritualType("metal", true, ImmortalConfigs::getMetalWeight, 1, ColorHelper.METAL_ROOT, ChatFormatting.GOLD, Pair.of(0, 0));
+    public static final ISpiritualType WOOD = new SpiritualType("wood", true, ImmortalConfigs::getWoodWeight, 2, ColorHelper.WOOD_ROOT, ChatFormatting.GREEN, Pair.of(10, 0));
+    public static final ISpiritualType WATER = new SpiritualType("water", true, ImmortalConfigs::getWaterWeight, 3, ColorHelper.WATER_ROOT, ChatFormatting.DARK_BLUE, Pair.of(20, 0));
+    public static final ISpiritualType FIRE = new SpiritualType("fire", true, ImmortalConfigs::getFireWeight, 4, ColorHelper.FIRE_ROOT, ChatFormatting.RED, Pair.of(30, 0));
+    public static final ISpiritualType EARTH = new SpiritualType("earth", true, ImmortalConfigs::getEarthWeight, 5, ColorHelper.EARTH_ROOT, ChatFormatting.YELLOW, Pair.of(40, 0));
 
-    public static final ISpiritualRoot METAL = new SpiritualRoot("metal", true, ImmortalConfigs::getMetalWeight, 1, ColorHelper.METAL_ROOT, ChatFormatting.GOLD, Pair.of(0, 0));
-    public static final ISpiritualRoot WOOD = new SpiritualRoot("wood", true, ImmortalConfigs::getWoodWeight, 2, ColorHelper.WOOD_ROOT, ChatFormatting.GREEN, Pair.of(10, 0));
-    public static final ISpiritualRoot WATER = new SpiritualRoot("water", true, ImmortalConfigs::getWaterWeight, 3, ColorHelper.WATER_ROOT, ChatFormatting.DARK_BLUE, Pair.of(20, 0));
-    public static final ISpiritualRoot FIRE = new SpiritualRoot("fire", true, ImmortalConfigs::getFireWeight, 4, ColorHelper.FIRE_ROOT, ChatFormatting.RED, Pair.of(30, 0));
-    public static final ISpiritualRoot EARTH = new SpiritualRoot("earth", true, ImmortalConfigs::getEarthWeight, 5, ColorHelper.EARTH_ROOT, ChatFormatting.YELLOW, Pair.of(40, 0));
-
-    public static final ISpiritualRoot WIND = new SpiritualRoot("wind", false, ImmortalConfigs::getWindWeight, 10, ColorHelper.WIND_ROOT, ChatFormatting.AQUA, Pair.of(50, 0));
-    public static final ISpiritualRoot ELECTRIC = new SpiritualRoot("electric", false, ImmortalConfigs::getElectricWeight, 11, ColorHelper.ELECTRIC_ROOT, ChatFormatting.DARK_AQUA, Pair.of(60, 0));
-    public static final ISpiritualRoot DRUG = new SpiritualRoot("drug", false, ImmortalConfigs::getDrugWeight, 12, ColorHelper.DRUG_ROOT, ChatFormatting.DARK_GREEN, Pair.of(70, 0));
-    public static final ISpiritualRoot ICE = new SpiritualRoot("ice", false, ImmortalConfigs::getIceWeight, 13, ColorHelper.ICE_ROOT, ChatFormatting.BLUE, Pair.of(80, 0));
+    public static final ISpiritualType WIND = new SpiritualType("wind", false, ImmortalConfigs::getWindWeight, 10, ColorHelper.WIND_ROOT, ChatFormatting.AQUA, Pair.of(50, 0));
+    public static final ISpiritualType ELECTRIC = new SpiritualType("electric", false, ImmortalConfigs::getElectricWeight, 11, ColorHelper.ELECTRIC_ROOT, ChatFormatting.DARK_AQUA, Pair.of(60, 0));
+    public static final ISpiritualType DRUG = new SpiritualType("drug", false, ImmortalConfigs::getDrugWeight, 12, ColorHelper.DRUG_ROOT, ChatFormatting.DARK_GREEN, Pair.of(70, 0));
+    public static final ISpiritualType ICE = new SpiritualType("ice", false, ImmortalConfigs::getIceWeight, 13, ColorHelper.ICE_ROOT, ChatFormatting.BLUE, Pair.of(80, 0));
 //    public static final ISpiritualRoot DEAD = new SpiritualRoot("dead", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_PURPLE);
 //    public static final ISpiritualRoot BLOOD = new SpiritualRoot("blood", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_RED);
 //    public static final ISpiritualRoot DARK = new SpiritualRoot("dark", false, ImmortalConfigs.getIceWeight(), ChatFormatting.BLACK);
 
 
-    public record SpiritualRoot(String name, boolean isCommonRoot, Supplier<Integer> weightSupplier, int priority, int spiritualColor, ChatFormatting textColor, Pair<Integer, Integer> pair) implements ISpiritualRoot {
+    public record SpiritualType(String name, boolean isCommonRoot, Supplier<Integer> weightSupplier, int priority, int spiritualColor, ChatFormatting textColor, Pair<Integer, Integer> pair) implements ISpiritualType {
 
         /**
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register(){
-            TYPES.forEach(type -> ImmortalAPI.get().registerSpiritualRoot(type));
+            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> l.register(TYPES));
         }
 
-        public SpiritualRoot(String name, boolean isCommonRoot, Supplier<Integer> weightSupplier, int priority, int spiritualColor, ChatFormatting textColor, Pair<Integer, Integer> pair) {
+        public SpiritualType(String name, boolean isCommonRoot, Supplier<Integer> weightSupplier, int priority, int spiritualColor, ChatFormatting textColor, Pair<Integer, Integer> pair) {
             this.name = name;
             this.isCommonRoot = isCommonRoot;
             this.weightSupplier = weightSupplier;

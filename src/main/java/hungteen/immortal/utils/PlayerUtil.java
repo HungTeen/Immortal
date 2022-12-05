@@ -1,21 +1,19 @@
 package hungteen.immortal.utils;
 
-import hungteen.htlib.interfaces.IRangeData;
 import hungteen.htlib.util.WeightList;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.api.registry.ISpell;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.capability.player.PlayerCapability;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
 import hungteen.immortal.impl.PlayerDatas;
-import hungteen.immortal.impl.Realms;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -45,7 +43,7 @@ public class PlayerUtil {
      * 重置玩家的灵根。
      */
     public static void resetSpiritualRoots(Player player){
-        List<ISpiritualRoot> roots = getSpiritualRoots(player.getRandom());
+        List<ISpiritualType> roots = getSpiritualRoots(player.getRandom());
         getOptManager(player).ifPresent(l -> {
             l.clearSpiritualRoot();
             roots.forEach(r -> {
@@ -60,7 +58,7 @@ public class PlayerUtil {
      * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。
      * 3. 否则依据权重在普通五行灵根中选择若干个。
      */
-    public static List<ISpiritualRoot> getSpiritualRoots(RandomSource random){
+    public static List<ISpiritualType> getSpiritualRoots(RandomSource random){
         final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
         double chance = random.nextDouble();
         for(int i = 0; i < rootChances.length; ++ i){
@@ -75,29 +73,32 @@ public class PlayerUtil {
     /**
      * {@link #getSpiritualRoots(RandomSource)}
      */
-    private static List<ISpiritualRoot> randomSpawnRoots(RandomSource random, int rootCount){
-        final List<ISpiritualRoot> rootChosen = new ArrayList<>();
-        if(rootCount == 1){
-            final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots(), ISpiritualRoot::getWeight);
-            rootChosen.addAll(weightList.getRandomItems(random, 1, true));
-        } else if(rootCount > 1){
-            final WeightList<ISpiritualRoot> weightList = new WeightList<>(ImmortalAPI.get().getSpiritualRoots().stream().filter(ISpiritualRoot::isCommonRoot).collect(Collectors.toList()), ISpiritualRoot::getWeight);
-            rootChosen.addAll(weightList.getRandomItems(random, rootCount, true));
+    private static List<ISpiritualType> randomSpawnRoots(RandomSource random, int rootCount){
+        final List<ISpiritualType> rootChosen = new ArrayList<>();
+        if(ImmortalAPI.get().spiritualRegistry().isPresent()){
+            if(rootCount == 1){
+                final WeightList<ISpiritualType> weightList = new WeightList<>(ImmortalAPI.get().spiritualRegistry().get().getValues(), ISpiritualType::getWeight);
+                rootChosen.addAll(weightList.getRandomItems(random, 1, true));
+            } else if(rootCount > 1){
+                final WeightList<ISpiritualType> weightList = new WeightList<>(ImmortalAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList()), ISpiritualType::getWeight);
+                rootChosen.addAll(weightList.getRandomItems(random, rootCount, true));
+            }
         }
+
         return rootChosen;
     }
 
     public static void showPlayerSpiritualRoots(Player player){
-        PlayerUtil.getOptManager(player).ifPresent(l -> {
-            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root");
-            for(ISpiritualRoot spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
-                if(l.hasSpiritualRoot(spiritualRoot)){
-                    component.append(Component.literal(","));
-                    component.append(Component.translatable("misc.immortal.root." + spiritualRoot.getName()));
-                }
-            }
-            PlayerHelper.sendMsgTo(player, component);
-        });
+//        PlayerUtil.getOptManager(player).ifPresent(l -> {
+//            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root");
+//            for(ISpiritualType spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
+//                if(l.hasSpiritualRoot(spiritualRoot)){
+//                    component.append(Component.literal(","));
+//                    component.append(Component.translatable("misc.immortal.root." + spiritualRoot.getName()));
+//                }
+//            }
+//            PlayerHelper.sendMsgTo(player, component);
+//        });
     }
 
     public static Optional<PlayerDataManager> getOptManager(Player player) {
@@ -120,19 +121,19 @@ public class PlayerUtil {
 
     /* Operations About Spells */
 
-    public static void learnSpell(Player player, ISpell spell, int level) {
+    public static void learnSpell(Player player, ISpellType spell, int level) {
         getOptManager(player).ifPresent(l -> l.learnSpell(spell, level));
     }
 
-    public static void forgetSpell(Player player, ISpell spell){
+    public static void forgetSpell(Player player, ISpellType spell){
         getOptManager(player).ifPresent(l -> l.forgetSpell(spell));
     }
 
-    public static void setSpellList(Player player, int pos, ISpell spell){
+    public static void setSpellList(Player player, int pos, ISpellType spell){
         getOptManager(player).ifPresent(l -> l.setSpellList(pos, spell));
     }
 
-    public static void removeSpellList(Player player, int pos, ISpell spell){
+    public static void removeSpellList(Player player, int pos, ISpellType spell){
         getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
     }
 
@@ -140,7 +141,7 @@ public class PlayerUtil {
      * Not only used by S -> C sync.
      * Also use by {@link ImmortalCommand} for ignore checking.
      */
-    public static void activateSpell(Player player, ISpell spell, long num){
+    public static void activateSpell(Player player, ISpellType spell, long num){
         getOptManager(player).ifPresent(l -> {
             l.activateSpell(spell, num);
         });
@@ -163,32 +164,32 @@ public class PlayerUtil {
     }
 
     @Nullable
-    public static ISpell getSpellAt(Player player, int pos) {
+    public static ISpellType getSpellAt(Player player, int pos) {
         return getManagerResult(player, m -> m.getSpellAt(pos), null);
     }
 
     @Nullable
-    public static ISpell getSelectedSpell(Player player) {
+    public static ISpellType getSelectedSpell(Player player) {
         return getManagerResult(player, PlayerDataManager::getSelectedSpell, null);
     }
 
-    public static boolean isSpellActivated(Player player, ISpell spell) {
+    public static boolean isSpellActivated(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.isSpellActivated(spell), false);
     }
 
-    public static double getSpellCDValue(Player player, ISpell spell) {
+    public static double getSpellCDValue(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.getSpellCDValue(spell), 0D);
     }
 
-    public static boolean learnedSpell(Player player, ISpell spell) {
+    public static boolean learnedSpell(Player player, ISpellType spell) {
         return learnedSpell(player, spell, 1);
     }
 
-    public static boolean learnedSpell(Player player, ISpell spell, int level) {
+    public static boolean learnedSpell(Player player, ISpellType spell, int level) {
         return getManagerResult(player, m -> m.learnedSpell(spell, level), false);
     }
 
-    public static int getSpellLearnLevel(Player player, ISpell spell) {
+    public static int getSpellLearnLevel(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.getSpellLearnLevel(spell), 0);
     }
 
@@ -220,18 +221,18 @@ public class PlayerUtil {
 
     /* Misc Operations */
 
-    public static List<ISpiritualRoot> getSpiritualRoots(Player player){
+    public static List<ISpiritualType> getSpiritualRoots(Player player){
         return getManagerResult(player, PlayerDataManager::getSpiritualRoots, List.of());
     }
 
-    public static IRealm getPlayerRealm(Player player){
-        return getManagerResult(player, m -> m.getRealm(), Realms.MORTALITY);
+    public static IRealmType getPlayerRealm(Player player){
+        return getManagerResult(player, m -> m.getRealm(), RealmTypes.MORTALITY);
     }
 
     /**
      * 直接改变境界，会降低修为，同时灵气值归零。
      */
-    public static void setRealm(Player player, IRealm realm){
+    public static void setRealm(Player player, IRealmType realm){
         getOptManager(player).ifPresent(m -> {
             m.setRealm(realm);
             if(! player.level.isClientSide){

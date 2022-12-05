@@ -12,6 +12,7 @@ import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
 import hungteen.immortal.common.datapack.ImmortalDataPacks;
+import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
@@ -21,7 +22,6 @@ import hungteen.immortal.common.world.ImmortalNoiseGenSettings;
 import hungteen.immortal.common.world.LevelManager;
 import hungteen.immortal.common.world.biome.BiomeManager;
 import hungteen.immortal.common.world.biome.ImmortalBiomes;
-import hungteen.immortal.common.world.data.Formations;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.common.world.feature.ImmortalConfiguredFeatures;
 import hungteen.immortal.common.world.feature.ImmortalPlacedFeatures;
@@ -30,6 +30,7 @@ import hungteen.immortal.common.world.structure.ImmortalStructures;
 import hungteen.immortal.common.world.structure.ImmortalTemplatePools;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.impl.*;
+import hungteen.immortal.impl.SpellTypes;
 import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
@@ -95,6 +96,7 @@ public class ImmortalMod {
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalDataSerializers.register(modBus);
         ImmortalMemories.register(modBus);
         ImmortalSensors.register(modBus);
         ImmortalActivities.register(modBus);
@@ -125,10 +127,10 @@ public class ImmortalMod {
      * register custom stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void coreRegister() {
-        SpiritualRoots.SpiritualRoot.register();
-        Spells.Spell.register();
+        SpiritualTypes.SpiritualType.register();
+        SpellTypes.SpellType.register();
         PlayerDatas.PlayerData.register();
-        Realms.Realm.register();
+        RealmTypes.RealmType.register();
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
@@ -152,9 +154,6 @@ public class ImmortalMod {
     }
 
     public static void serverStarted(ServerStartedEvent event){
-        event.getServer().getAllLevels().forEach(level -> {
-            Formations.get(level).update();
-        });
     }
 
 }

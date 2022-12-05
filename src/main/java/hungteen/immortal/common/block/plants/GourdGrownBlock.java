@@ -1,7 +1,7 @@
 package hungteen.immortal.common.block.plants;
 
-import hungteen.htlib.block.plants.HTAttachedStemBlock;
-import hungteen.htlib.block.plants.HTStemGrownBlock;
+import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
+import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;

@@ -1,6 +1,6 @@
 package hungteen.immortal.api.events;
 
-import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpellType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
@@ -12,16 +12,16 @@ import net.minecraftforge.eventbus.api.Cancelable;
  **/
 public class PlayerSpellEvent extends PlayerEvent {
 
-    private final ISpell spell;
+    private final ISpellType spell;
     private final int level;
 
-    public PlayerSpellEvent(Player player, ISpell spell, int level) {
+    public PlayerSpellEvent(Player player, ISpellType spell, int level) {
         super(player);
         this.spell = spell;
         this.level = level;
     }
 
-    public ISpell getSpell() {
+    public ISpellType getSpell() {
         return spell;
     }
 
@@ -34,7 +34,7 @@ public class PlayerSpellEvent extends PlayerEvent {
      */
     public static class ActivateSpellEvent extends PlayerSpellEvent {
 
-        public ActivateSpellEvent(Player player, ISpell spell, int level) {
+        public ActivateSpellEvent(Player player, ISpellType spell, int level) {
             super(player, spell, level);
         }
 
@@ -44,7 +44,7 @@ public class PlayerSpellEvent extends PlayerEvent {
         @Cancelable
         public static final class Pre extends ActivateSpellEvent {
 
-            public Pre(Player player, ISpell spell, int level) {
+            public Pre(Player player, ISpellType spell, int level) {
                 super(player, spell, level);
             }
 
@@ -55,7 +55,7 @@ public class PlayerSpellEvent extends PlayerEvent {
          */
         public static final class Post extends ActivateSpellEvent {
 
-            public Post(Player player, ISpell spell, int level) {
+            public Post(Player player, ISpellType spell, int level) {
                 super(player, spell, level);
             }
 
@@ -69,7 +69,7 @@ public class PlayerSpellEvent extends PlayerEvent {
     @Cancelable
     public static final class UsingSpellEvent extends PlayerSpellEvent {
 
-        public UsingSpellEvent(Player player, ISpell spell, int level) {
+        public UsingSpellEvent(Player player, ISpellType spell, int level) {
             super(player, spell, level);
         }
     }

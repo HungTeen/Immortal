@@ -1,6 +1,6 @@
 package hungteen.immortal.api.registry;
 
-import hungteen.htlib.interfaces.IComponentEntry;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * 法术。
  **/
-public interface ISpell extends IComponentEntry {
+public interface ISpellType extends ISimpleEntry {
 
     /**
      * 此法术有多少层。
@@ -43,19 +43,19 @@ public interface ISpell extends IComponentEntry {
      * The lowest realm required to learn this spell.
      * @return
      */
-    IRealm requireRealm(int level);
+    IRealmType requireRealm(int level);
 
     /**
      * 学习此法术需要什么灵根。
      * How many types of roots required to learn this spell.
      */
-    List<ISpiritualRoot> requireSpiritualRoots();
+    List<ISpiritualType> requireSpiritualRoots();
 
     /**
      * 学习此法术需要的前置法术。
      * The pre spells required to learn this spell.
      */
-    List<ISpell> requirePreSpells();
+    List<ISpellType> requirePreSpells();
 
     /**
      * 是否有功法秘籍的物品。

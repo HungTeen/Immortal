@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.Pair;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -28,7 +28,7 @@ public class ClientElementToolTip implements ClientTooltipComponent {
     @Override
     public void renderText(Font font, int posX, int posY, Matrix4f matrix4f, MultiBufferSource.BufferSource source) {
         int width = 0;
-        for (Pair<ISpiritualRoot, Integer> pair : this.elementToolTip.getIngredients()) {
+        for (Pair<ISpiritualType, Integer> pair : this.elementToolTip.getIngredients()) {
             final float scale = 0.5F;
             matrix4f.multiply(Matrix4f.createScaleMatrix(scale, scale, scale));
             final String text = pair.getSecond() + "";
@@ -43,7 +43,7 @@ public class ClientElementToolTip implements ClientTooltipComponent {
     public void renderImage(Font font, int posX, int posY, PoseStack stack, ItemRenderer itemRenderer, int p_194053_) {
         stack.pushPose();
         int width = 0;
-        for (Pair<ISpiritualRoot, Integer> pair : this.elementToolTip.getIngredients()) {
+        for (Pair<ISpiritualType, Integer> pair : this.elementToolTip.getIngredients()) {
             RenderHelper.setTexture(pair.getFirst().getResourceLocation());
             GuiComponent.blit(stack, posX + width + 2, posY, pair.getFirst().getTexturePosition().getFirst(), pair.getFirst().getTexturePosition().getSecond(), 10, 10, 256, 256);
             width += ElementToolTip.SINGLE_WIDTH;

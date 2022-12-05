@@ -3,9 +3,9 @@ package hungteen.immortal.common.item.eixirs;
 import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IElixirItem;
-import hungteen.immortal.api.registry.IRealm;
+import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.common.item.ItemTabs;
-import hungteen.immortal.impl.Realms;
+import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -150,7 +150,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         return UseAnim.EAT;
     }
 
-    public static IRealm getRealm(LivingEntity livingEntity){
+    public static IRealmType getRealm(LivingEntity livingEntity){
         return ImmortalAPI.get().getEntityRealm(livingEntity);
     }
 
@@ -176,11 +176,11 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         return Accuracies.MASTER;
     }
 
-    protected static Function<IRealm, Optional<Boolean>> immortal(){
-        return largeThan(Realms.MEDITATION_STAGE1);
+    protected static Function<IRealmType, Optional<Boolean>> immortal(){
+        return largeThan(RealmTypes.MEDITATION_STAGE1);
     }
 
-    protected static Function<IRealm, Optional<Boolean>> same(IRealm base){
+    protected static Function<IRealmType, Optional<Boolean>> same(IRealmType base){
         return realm -> {
             if(realm.getRealmValue() == base.getRealmValue()){
                 return Optional.of(true);
@@ -189,7 +189,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         };
     }
 
-    protected static Function<IRealm, Optional<Boolean>> lessThan(IRealm base){
+    protected static Function<IRealmType, Optional<Boolean>> lessThan(IRealmType base){
         return realm -> {
             if(realm.getRealmValue() <= base.getRealmValue()){
                 return Optional.of(true);
@@ -198,7 +198,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         };
     }
 
-    protected static Function<IRealm, Optional<Boolean>> largeThan(IRealm base){
+    protected static Function<IRealmType, Optional<Boolean>> largeThan(IRealmType base){
         return realm -> {
             if(realm.getRealmValue() >= base.getRealmValue()){
                 return Optional.of(true);

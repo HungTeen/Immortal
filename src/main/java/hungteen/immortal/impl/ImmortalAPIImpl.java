@@ -1,14 +1,19 @@
 package hungteen.immortal.impl;
 
-import hungteen.htlib.interfaces.IRangeData;
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
-import hungteen.immortal.api.registry.*;
+import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISectType;
+import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
-import it.unimi.dsi.fastutil.ints.IntComparator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -19,7 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -28,88 +32,46 @@ import java.util.stream.Collectors;
  **/
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
-    private static final Map<String, ISpell> SPELL_MAP = new HashMap<>();
-    private static final Map<String, IRangeData<Integer>> INTEGER_MAP = new HashMap<>();
-    private static final Map<String, IRealm> REALM_MAP = new HashMap<>();
+    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
+    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
+    private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
+    private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
+    private static final HTSimpleRegistry<IRangeData<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
-    private static final Map<Item, Map<ISpiritualRoot, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
-    private static final Map<String, ISpiritualRoot> SPIRITUAL_ROOT_MAP = new HashMap<>();
+    private static final Map<Item, Map<ISpiritualType, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
 
     @Override
-    public void registerSpiritualRoot(ISpiritualRoot type) {
-        SPIRITUAL_ROOT_MAP.put(type.getRegistryName(), type);
+    public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
+        return Optional.of(SPIRITUAL_TYPES);
     }
 
     @Override
-    public List<ISpiritualRoot> getSpiritualRoots() {
-        return SPIRITUAL_ROOT_MAP.values().stream().sorted(Comparator.comparingInt(ISpiritualRoot::getSortPriority)).toList();
+    public Optional<IHTSimpleRegistry<ISpellType>> spellRegistry() {
+        return Optional.of(SPELL_TYPES);
     }
 
     @Override
-    public Optional<ISpiritualRoot> getSpiritualRoot(String type) {
-        return Optional.ofNullable(SPIRITUAL_ROOT_MAP.getOrDefault(type, null));
+    public Optional<IHTSimpleRegistry<ISectType>> sectRegistry() {
+        return Optional.of(SECT_TYPES);
     }
 
     @Override
-    public void registerSpell(ISpell type) {
-        if(! SPELL_MAP.containsKey(type)){
-            SPELL_MAP.put(type.getRegistryName(), type);
-        } else{
-            Util.warn("Spell Register : Duplicate Type !");
-        }
+    public Optional<IHTSimpleRegistry<IRealmType>> realmRegistry() {
+        return Optional.of(REALM_TYPES);
     }
 
     @Override
-    public Collection<ISpell> getSpells() {
-        return Collections.unmodifiableCollection(SPELL_MAP.values());
+    public Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry() {
+        return Optional.of(INTEGER_DATA_TYPES);
     }
 
     @Override
-    public Optional<ISpell> getSpell(String type) {
-        return Optional.ofNullable(SPELL_MAP.get(type));
-    }
-
-    @Override
-    public void registerRealm(IRealm type) {
-        REALM_MAP.put(type.getRegistryName(), type);
-    }
-
-    @Override
-    public Collection<IRealm> getRealms() {
-        return Collections.unmodifiableCollection(REALM_MAP.values());
-    }
-
-    @Override
-    public Optional<IRealm> getRealm(String type) {
-        return Optional.ofNullable(REALM_MAP.getOrDefault(type, null));
-    }
-
-    @Override
-    public IRealm getEntityRealm(Entity entity) {
+    public IRealmType getEntityRealm(Entity entity) {
         if(entity instanceof Player){
-            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealm, Realms.MORTALITY);
+            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealm, RealmTypes.MORTALITY);
         }
-        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : Realms.MORTALITY;
-    }
-
-    @Override
-    public void registerIntegerData(IRangeData<Integer> type) {
-        if(! INTEGER_MAP.containsKey(type)){
-            INTEGER_MAP.put(type.getRegistryName(), type);
-        } else{
-            Util.warn("Integer Data Register : Duplicate Type !");
-        }
-    }
-
-    @Override
-    public Collection<IRangeData<Integer>> getIntegerCollection() {
-        return Collections.unmodifiableCollection(INTEGER_MAP.values());
-    }
-
-    @Override
-    public Optional<IRangeData<Integer>> getIntegerData(String type) {
-        return Optional.ofNullable(INTEGER_MAP.get(type));
+        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
     }
 
     @Override
@@ -139,12 +101,12 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public void registerElixirIngredient(Item item, Map<ISpiritualRoot, Integer> map) {
+    public void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map) {
         ELIXIR_INGREDIENT_MAP.put(item, map);
     }
 
     @Override
-    public Map<ISpiritualRoot, Integer> getElixirIngredient(Item item) {
+    public Map<ISpiritualType, Integer> getElixirIngredient(Item item) {
         return ELIXIR_INGREDIENT_MAP.getOrDefault(item, Map.of());
     }
 

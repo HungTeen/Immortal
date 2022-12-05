@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item;
 
-import hungteen.htlib.interfaces.IBoatType;
+import hungteen.htlib.util.interfaces.IBoatType;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.item.Item;

@@ -1,16 +1,10 @@
 package hungteen.immortal.common.entity.undead;
 
-import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IUndead;
-import hungteen.immortal.api.registry.IRealm;
-import hungteen.immortal.api.registry.ISpiritualRoot;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.entity.ImmortalCreature;
-import hungteen.immortal.impl.Realms;
-import hungteen.immortal.impl.SpiritualRoots;
+import hungteen.immortal.impl.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -44,7 +38,7 @@ public abstract class UndeadEntity extends ImmortalCreature implements IUndead {
     }
 
     @Override
-    public Collection<ISpiritualRoot> getSpiritualRoots() {
-        return List.of(SpiritualRoots.DRUG);
+    public Collection<ISpiritualType> getSpiritualTypes() {
+        return List.of(SpiritualTypes.DRUG);
     }
 }

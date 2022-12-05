@@ -2,14 +2,14 @@ package hungteen.immortal.client.event.handler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.ClientProxy;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.ClientHandler;
+import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.item.ImmortalToolActions;
@@ -81,7 +81,7 @@ public class OverlayHandler {
             final int y = SpellSlots.get(i).getSecond() + height / 2;
             ClientProxy.MC.gui.blit(stack, x, y, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             // Render the spell texture.
-            final ISpell spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
+            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null) {
                 RenderHelper.setTexture(spell.getSpellTexture());
                 GuiComponent.blit(stack, x + 2, y + 2, 0, 0, 16, 16, 16, 16);

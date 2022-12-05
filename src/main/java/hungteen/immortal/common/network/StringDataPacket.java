@@ -44,7 +44,11 @@ public class StringDataPacket {
                 Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
                     final Types type = Types.values()[message.type];
                     switch (type) {
-                        case REALM -> ImmortalAPI.get().getRealm(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
+                        case REALM -> {
+                            ImmortalAPI.get().realmRegistry().ifPresent(l -> {
+                                l.getValue(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
+                            });
+                        }
                     }
                 });
             });

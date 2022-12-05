@@ -3,7 +3,7 @@ package hungteen.immortal.common.network;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.common.SpellManager;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
@@ -26,7 +26,7 @@ public class SpellPacket {
     /**
      * spell only empty when option is SELECT or Next or ACTIVATE_AT.
      */
-    public SpellPacket(ISpell spell, SpellOptions option, long num) {
+    public SpellPacket(ISpellType spell, SpellOptions option, long num) {
         this.type = spell != null ? spell.getRegistryName() : "empty";
         this.option = option;
         this.num = num;
@@ -59,17 +59,18 @@ public class SpellPacket {
                         });
                         return;
                     }
-                    ImmortalAPI.get().getSpell(message.type).ifPresent(spell -> {
-                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
-                            switch (message.option){
-                                case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
-                                case FORGET -> PlayerUtil.forgetSpell(player, spell);
-                                case SET -> PlayerUtil.setSpellList(player, (int) message.num, spell);
-                                case REMOVE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
-                                case ACTIVATE -> PlayerUtil.activateSpell(player, spell, message.num);
-                            }
+                    ImmortalAPI.get().spellRegistry().ifPresent(l -> {
+                        l.getValue(message.type).ifPresent(spell -> {
+                            Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                                switch (message.option) {
+                                    case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
+                                    case FORGET -> PlayerUtil.forgetSpell(player, spell);
+                                    case SET -> PlayerUtil.setSpellList(player, (int) message.num, spell);
+                                    case REMOVE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
+                                    case ACTIVATE -> PlayerUtil.activateSpell(player, spell, message.num);
+                                }
+                            });
                         });
-
                     });
                 } else{// C -> S.
                     switch (message.option){

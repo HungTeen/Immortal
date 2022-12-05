@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item;
 
-import hungteen.immortal.api.registry.ISpell;
+import hungteen.immortal.api.registry.ISpellType;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -15,9 +15,9 @@ import net.minecraft.world.level.Level;
  **/
 public class SpellTutorialBook extends Item {
 
-    private final ISpell spell;
+    private final ISpellType spell;
 
-    public SpellTutorialBook(ISpell spell) {
+    public SpellTutorialBook(ISpellType spell) {
         super(new Properties().stacksTo(0).tab(ItemTabs.MATERIALS));
         this.spell = spell;
     }

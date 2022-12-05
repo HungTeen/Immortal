@@ -12,7 +12,7 @@ public class CommandHandler {
 
 //    public static final SuggestionProvider<CommandSourceStack> ALL_ROOTS = SuggestionProviders.register(
 //            Util.prefix("roots"), ((context, builder) -> {
-//                return SharedSuggestionProvider.suggest(ImmortalAPI.get().getSpiritualRoots().stream().map(IComponentEntry::getName).collect(Collectors.toList()), builder);
+//                return SharedSuggestionProvider.suggest(ImmortalAPI.get().getSpiritualTypes().stream().map(IComponentEntry::getName).collect(Collectors.toList()), builder);
 //            }));
 //
 //    public static final SuggestionProvider<CommandSourceStack> ALL_SPELLS = SuggestionProviders.register(

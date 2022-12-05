@@ -54,7 +54,6 @@ public class ClientRegister {
         /* misc entity */
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
-        event.registerEntityRenderer(ImmortalEntities.BORDER_FORMATION.get(), BorderFormationRender::new);
 
         /* human */
         event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);

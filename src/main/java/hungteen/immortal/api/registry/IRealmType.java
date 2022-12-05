@@ -1,8 +1,6 @@
 package hungteen.immortal.api.registry;
 
-import hungteen.htlib.interfaces.IComponentEntry;
-
-import java.util.function.Supplier;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 
 /**
  * @program: Immortal
@@ -11,7 +9,7 @@ import java.util.function.Supplier;
  *
  * 境界。
  **/
-public interface IRealm extends IComponentEntry {
+public interface IRealmType extends ISimpleEntry {
 
     /**
      * 达到此境界所需的修为。

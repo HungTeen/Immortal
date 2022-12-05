@@ -1,6 +1,6 @@
 package hungteen.immortal.common.capability.player;
 
-import hungteen.htlib.capability.HTPlayerCapability;
+import hungteen.htlib.common.capability.player.HTPlayerCapability;
 import net.minecraft.world.entity.player.Player;
 
 /**

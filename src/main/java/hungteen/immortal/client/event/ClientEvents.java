@@ -3,7 +3,6 @@ package hungteen.immortal.client.event;
 import com.mojang.datafixers.util.Either;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.client.ClientHandler;
-import hungteen.immortal.client.render.LevelRenderHandler;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.network.chat.FormattedText;
@@ -40,9 +39,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void gatherComponents(RenderLevelStageEvent event){
-        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER){
-            LevelRenderHandler.renderFormations(event);
-        }
     }
 
 }
