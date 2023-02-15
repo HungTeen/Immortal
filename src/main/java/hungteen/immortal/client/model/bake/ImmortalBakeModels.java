@@ -11,6 +11,7 @@ import net.minecraftforge.client.event.ModelEvent;
 public class ImmortalBakeModels {
 
     public static final String INVENTORY = "inventory";
+
     /**
      * {@link hungteen.immortal.client.ClientRegister#bakeModel(ModelEvent.BakingCompleted)}
      */

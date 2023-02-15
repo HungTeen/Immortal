@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai.behavior;
+package hungteen.immortal.common.entity.ai.behavior;
 
 import net.minecraft.world.entity.ai.behavior.MeleeAttack;
 

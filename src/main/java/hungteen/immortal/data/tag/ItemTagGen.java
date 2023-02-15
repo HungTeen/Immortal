@@ -1,11 +1,14 @@
 package hungteen.immortal.data.tag;
 
 import hungteen.htlib.data.tag.HTItemTagGen;
+import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.common.tag.ImmortalItemTags;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +31,6 @@ public class ItemTagGen extends HTItemTagGen {
         );
         this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
         this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
-
+        this.tag(ImmortalItemTags.MELEE_ATTACK_ITEMS).add(ItemHelper.getFilterItems(TieredItem.class::isInstance).toArray(new Item[0]));
     }
 }

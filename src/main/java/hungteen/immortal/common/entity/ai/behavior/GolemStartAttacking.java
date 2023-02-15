@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai.behavior;
+package hungteen.immortal.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.immortal.common.entity.golem.GolemEntity;

@@ -8,6 +8,7 @@ import hungteen.immortal.impl.RealmTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot, IHasRealm {
 
     private static final EntityDataAccessor<IRealmType> REALM = SynchedEntityData.defineId(ImmortalCreature.class, ImmortalDataSerializers.REALM.get());
+    private static final EntityDataAccessor<Integer> ANIMATIONS = SynchedEntityData.defineId(ImmortalCreature.class, EntityDataSerializers.INT);
 
     protected ImmortalCreature(EntityType<? extends ImmortalCreature> type, Level level) {
         super(type, level);
@@ -30,6 +32,7 @@ public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(REALM, getDefaultRealm());
+        entityData.define(ANIMATIONS, 0);
     }
 
     @Override
@@ -40,6 +43,9 @@ public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot
                 l.byNameCodec().parse(NbtOps.INSTANCE, tag.get("EntityRealm"))
                         .result().ifPresentOrElse(this::setRealm, () -> this.setRealm(this.getDefaultRealm()));
             });
+        }
+        if(tag.contains("AnimationFlags")){
+            this.setAnimations(tag.getInt("AnimationFlags"));
         }
     }
 
@@ -52,6 +58,7 @@ public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot
                         .result().ifPresent(nbt -> tag.put("EntityRealm", nbt));
             });
         }
+        tag.putInt("AnimationFlags", this.getAnimations());
     }
 
     public void setRealm(IRealmType realm) {
@@ -61,6 +68,26 @@ public abstract class ImmortalCreature extends PathfinderMob implements IHasRoot
     @Override
     public IRealmType getRealm() {
         return entityData.get(REALM);
+    }
+
+    public void setAnimation(int id, boolean flag){
+        if(flag){
+            this.setAnimations(this.getAnimations() | (1 << id));
+        } else{
+            this.setAnimations(this.getAnimations() ^ (1 << id));
+        }
+    }
+
+    public boolean hasAnimation(int id) {
+        return ((this.getAnimations() >> id) & 1) == 1;
+    }
+
+    protected void setAnimations(int animations){
+        entityData.set(ANIMATIONS, animations);
+    }
+
+    protected int getAnimations(){
+        return entityData.get(ANIMATIONS);
     }
 
     protected IRealmType getDefaultRealm(){

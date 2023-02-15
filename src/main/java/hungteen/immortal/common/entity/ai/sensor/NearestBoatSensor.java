@@ -1,7 +1,7 @@
-package hungteen.immortal.common.ai.sensor;
+package hungteen.immortal.common.entity.ai.sensor;
 
 import com.google.common.collect.ImmutableSet;
-import hungteen.immortal.common.ai.ImmortalMemories;
+import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;

@@ -1,15 +1,11 @@
 package hungteen.immortal.client.render.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.immortal.common.entity.human.Cultivator;
-import net.minecraft.client.Minecraft;
+import hungteen.immortal.common.entity.human.cultivator.Cultivator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 
 /**
  * @program: Immortal

@@ -19,6 +19,9 @@ public class ImmortalItemTags {
 
     /* immortal */
 
+    public static final TagKey<Item> MELEE_ATTACK_ITEMS = tag("melee_attack_items");
+    public static final TagKey<Item> HEAL_ITEMS = tag("melee_attack_items");
+
     private static TagKey<Item> tag(String name){
         return net.minecraft.tags.ItemTags.create(Util.prefix(name));
     }

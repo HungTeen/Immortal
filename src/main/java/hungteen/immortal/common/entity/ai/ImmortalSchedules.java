@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai;
+package hungteen.immortal.common.entity.ai;
 
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;

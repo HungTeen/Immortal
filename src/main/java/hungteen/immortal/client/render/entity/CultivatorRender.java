@@ -6,7 +6,7 @@ import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.client.model.ModelLayers;
 import hungteen.immortal.client.model.entity.CultivatorModel;
 import hungteen.immortal.client.render.entity.layer.CultivatorArmorLayer;
-import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.entity.human.cultivator.Cultivator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -62,7 +62,12 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
 
     @Override
     public ResourceLocation getTextureLocation(Cultivator entity) {
-        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile());
-        return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? ClientProxy.MC.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN) : DefaultPlayerSkin.getDefaultSkin();
+        if(entity.getCultivatorType().getSkinLocation().isPresent()){
+            return entity.getCultivatorType().getSkinLocation().get();
+        } else if(entity.getCultivatorType().getGameProfile().isPresent()){
+            Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
+            return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? ClientProxy.MC.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN) : DefaultPlayerSkin.getDefaultSkin();
+        }
+        return DefaultPlayerSkin.getDefaultSkin();
     }
 }

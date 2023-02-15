@@ -6,7 +6,8 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.entity.creature.GrassCarp;
 import hungteen.immortal.common.entity.creature.SilkWorm;
 import hungteen.immortal.common.entity.golem.IronGolem;
-import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.entity.human.HumanEntity;
+import hungteen.immortal.common.entity.human.cultivator.Cultivator;
 import hungteen.immortal.common.entity.human.villager.DiscipleVillager;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
@@ -64,8 +65,8 @@ public class ImmortalEntities {
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
-        ev.put(DISCIPLE_VILLAGER.get(), GrassCarp.createAttributes().build());
-        ev.put(CULTIVATOR.get(), GrassCarp.createAttributes().build());
+        ev.put(DISCIPLE_VILLAGER.get(), HumanEntity.createAttributes().build());
+        ev.put(CULTIVATOR.get(), HumanEntity.createAttributes().build());
         /* creature */
         ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
         ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());

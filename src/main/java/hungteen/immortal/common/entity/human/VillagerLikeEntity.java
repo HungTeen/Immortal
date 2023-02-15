@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
  **/
 public abstract class VillagerLikeEntity extends HumanEntity {
 
+    public static final int MOCK_ANIMATION_FLAG = 0;
     public AnimationState mockAnimationState = new AnimationState();
 
     public VillagerLikeEntity(EntityType<? extends HumanEntity> type, Level level) {

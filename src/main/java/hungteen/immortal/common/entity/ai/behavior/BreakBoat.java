@@ -1,11 +1,10 @@
-package hungteen.immortal.common.ai.behavior;
+package hungteen.immortal.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.immortal.common.ai.ImmortalMemories;
+import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.utils.BehaviorUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.Behavior;
@@ -53,7 +52,7 @@ public class BreakBoat extends Behavior<LivingEntity> {
         getEntity(entity).ifPresent(target -> {
             if(target instanceof Boat){
                 if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-                    for(int i = 0; i < 3; ++i) {
+                    for(int i = 0; i < 2; ++i) {
                         target.spawnAtLocation(((Boat) target).getBoatType().getPlanks());
                     }
 
@@ -61,7 +60,7 @@ public class BreakBoat extends Behavior<LivingEntity> {
                         target.spawnAtLocation(Items.STICK);
                     }
                 }
-                target.hurt(EntityDamageSource.mobAttack(entity), 1000F);
+                target.discard();
             }
         });
         entity.getBrain().setMemory(ImmortalMemories.NEAREST_BOAT.get(), Optional.empty());

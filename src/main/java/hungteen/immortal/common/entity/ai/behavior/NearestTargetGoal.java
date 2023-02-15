@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai.behavior;
+package hungteen.immortal.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.immortal.common.entity.golem.GolemEntity;
@@ -10,8 +10,6 @@ import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * @program: Immortal

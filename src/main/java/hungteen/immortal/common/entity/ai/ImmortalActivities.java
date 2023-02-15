@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai;
+package hungteen.immortal.common.entity.ai;
 
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.schedule.Activity;
@@ -17,7 +17,9 @@ public class ImmortalActivities {
     private static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, Util.id());
 
     public static final RegistryObject<Activity> MELEE_FIGHT = register("melee_fight");
+    public static final RegistryObject<Activity> KEEP_DISTANCE = register("keep_distance");
     public static final RegistryObject<Activity> RANGE_FIGHT = register("range_fight");
+    public static final RegistryObject<Activity> ESCAPE = register("escape");
 
     private static RegistryObject<Activity> register(String name){
         return ACTIVITIES.register(name, () -> new Activity(Util.prefixName(name)));

@@ -19,12 +19,15 @@ public class SectTypes {
 
     private static final List<ISectType> TYPES = new ArrayList<>();
 
+    public static final ISectType VILLAGER_KINGDOM = new SectType("villager_kingdom");
+
     public static class SectType implements ISectType {
 
         private final String name;
 
         public SectType(String name) {
             this.name = name;
+            TYPES.add(this);
         }
 
         /**

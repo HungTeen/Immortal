@@ -7,7 +7,7 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
-import hungteen.immortal.common.entity.human.Cultivator;
+import hungteen.immortal.common.entity.human.cultivator.CultivatorTypes;
 import hungteen.immortal.utils.Constants;
 import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
@@ -19,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -33,8 +34,8 @@ public class ClientHandler {
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
      */
     public static void registerCultivatorTypes(){
-        for (Cultivator.CultivatorTypes value : Cultivator.CultivatorTypes.values()) {
-            AtomicReference<GameProfile> profile = new AtomicReference<>(new GameProfile(value.getUUID(), value.getName()));
+        Arrays.stream(CultivatorTypes.values()).filter((cultivatorTypes -> cultivatorTypes.getProfileUUID().isPresent() && cultivatorTypes.getProfileName().isPresent())).forEach(value -> {
+            AtomicReference<GameProfile> profile = new AtomicReference<>(new GameProfile(value.getProfileUUID().get(), value.getProfileName().get()));
 
             YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(ClientProxy.MC.getProxy());
             GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
@@ -42,7 +43,7 @@ public class ClientHandler {
             gameprofilecache.setExecutor(ClientProxy.MC);
 
             ClientHandler.updateGameProfile(gameprofilecache, ClientProxy.MC.getMinecraftSessionService(), profile.get(), value::setGameProfile);
-        }
+        });
     }
 
     /**
@@ -53,7 +54,7 @@ public class ClientHandler {
             profileCache.getAsync(gameProfile.getName(), (gameProfile1) -> {
                 Util.backgroundExecutor().execute(() -> {
                     Util.ifElse(gameProfile1, (gameProfile2) -> {
-                        Property property = Iterables.getFirst(gameProfile2.getProperties().get("textures"), (Property)null);
+                        Property property = Iterables.getFirst(gameProfile2.getProperties().get("textures"), null);
                         if (property == null) {
                             gameProfile2 = sessionService.fillProfileProperties(gameProfile2, true);
                         }

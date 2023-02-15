@@ -1,7 +1,7 @@
 package hungteen.immortal.impl;
 
 import hungteen.immortal.common.RuneManager;
-import hungteen.immortal.common.ai.behavior.NearestTargetGoal;
+import hungteen.immortal.common.entity.ai.behavior.NearestTargetGoal;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.golem.GolemEntity;
 import hungteen.immortal.common.entity.golem.IronGolem;

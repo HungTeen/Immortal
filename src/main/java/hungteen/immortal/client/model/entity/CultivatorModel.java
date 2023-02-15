@@ -1,13 +1,10 @@
 package hungteen.immortal.client.model.entity;
 
-import hungteen.immortal.common.entity.human.Cultivator;
-import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.HumanoidModel;
+import hungteen.immortal.common.entity.human.cultivator.Cultivator;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
 
 /**
  * @program: Immortal

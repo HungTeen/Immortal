@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai.behavior.villager;
+package hungteen.immortal.common.entity.ai.behavior.villager;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.immortal.common.entity.human.VillagerLikeEntity;

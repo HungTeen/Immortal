@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
-import hungteen.immortal.common.ai.behavior.BreakBoat;
-import hungteen.immortal.common.ai.behavior.villager.Mock;
+import hungteen.immortal.common.entity.ai.ImmortalActivities;
+import hungteen.immortal.common.entity.ai.behavior.BreakBoat;
+import hungteen.immortal.common.entity.ai.behavior.villager.Mock;
 import hungteen.immortal.common.entity.human.HumanEntity;
 import hungteen.immortal.common.entity.human.VillagerLikeEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +63,8 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
 //        brain.addActivity(Activity.PRE_RAID, VillagerGoalPackages.getPreRaidPackage(villagerprofession, 0.5F));
 //        brain.addActivity(Activity.RAID, VillagerGoalPackages.getRaidPackage(villagerprofession, 0.5F));
 //        brain.addActivity(Activity.HIDE, VillagerGoalPackages.getHidePackage(villagerprofession, 0.5F));
-        brain.addActivity(Activity.FIGHT, this.getFightBehaviors(speed));
+        brain.addActivity(ImmortalActivities.MELEE_FIGHT.get(), this.getMeleeFightBehaviors(speed));
+        brain.addActivity(ImmortalActivities.RANGE_FIGHT.get(), this.getRangeFightBehaviors(speed));
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.setActiveActivityIfPossible(Activity.IDLE);
@@ -125,9 +127,18 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
     }
 
     /**
-     * The Fight Behaviors that triggered when there exist enemy. <br>
+     * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
-    public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getFightBehaviors(float speed) {
+    public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getMeleeFightBehaviors(float speed) {
+        return ImmutableList.of(
+//                Pair.of(99, new UpdateActivityFromSchedule())
+        );
+    }
+
+    /**
+     * The Melee Fight Behaviors that triggered when there exist enemy. <br>
+     */
+    public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getRangeFightBehaviors(float speed) {
         return ImmutableList.of(
 //                Pair.of(99, new UpdateActivityFromSchedule())
         );

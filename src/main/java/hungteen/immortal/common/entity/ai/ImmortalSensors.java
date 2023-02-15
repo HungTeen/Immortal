@@ -1,6 +1,6 @@
-package hungteen.immortal.common.ai;
+package hungteen.immortal.common.entity.ai;
 
-import hungteen.immortal.common.ai.sensor.NearestBoatSensor;
+import hungteen.immortal.common.entity.ai.sensor.NearestBoatSensor;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.sensing.Sensor;

@@ -20,11 +20,11 @@
   "smelting_cd": 1200,
   "spiritual_map": [
     {
-      "spiritual_root": "immortal:fire",
+      "spiritual_root": "immortal:water",
       "spiritual_value": 5
     },
     {
-      "spiritual_root": "immortal:water",
+      "spiritual_root": "immortal:earth",
       "spiritual_value": 5
     },
     {
@@ -36,7 +36,7 @@
       "spiritual_value": 10
     },
     {
-      "spiritual_root": "immortal:earth",
+      "spiritual_root": "immortal:fire",
       "spiritual_value": 5
     }
   ]

@@ -1,4 +1,4 @@
-package hungteen.immortal.common.ai;
+package hungteen.immortal.common.entity.ai;
 
 import com.mojang.serialization.Codec;
 import hungteen.immortal.utils.Util;
