@@ -20,13 +20,5 @@ public class CommonRegister {
         BlockHelper.registerCompostable(0.3F, ImmortalBlocks.MULBERRY_SAPLING.get());
         BlockHelper.registerCompostable(0.65F, ImmortalItems.MULBERRY.get());
     }
-
-    /**
-     * {@link hungteen.immortal.ImmortalMod#setUp(FMLCommonSetupEvent)}
-     */
-    public static void registerAxeStrips() {
-        BlockHelper.registerAxeStrip(ImmortalBlocks.MULBERRY_LOG.get(), ImmortalBlocks.STRIPPED_MULBERRY_LOG.get());
-        BlockHelper.registerAxeStrip(ImmortalBlocks.MULBERRY_WOOD.get(), ImmortalBlocks.STRIPPED_MULBERRY_WOOD.get());
-    }
     
 }

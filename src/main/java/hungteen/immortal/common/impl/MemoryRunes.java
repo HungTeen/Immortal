@@ -1,4 +1,4 @@
-package hungteen.immortal.impl;
+package hungteen.immortal.common.impl;
 
 import hungteen.immortal.common.RuneManager;
 import hungteen.immortal.utils.Util;

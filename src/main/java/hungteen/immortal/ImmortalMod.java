@@ -29,7 +29,7 @@ import hungteen.immortal.common.world.structure.ImmortalProcessors;
 import hungteen.immortal.common.world.structure.ImmortalStructures;
 import hungteen.immortal.common.world.structure.ImmortalTemplatePools;
 import hungteen.immortal.data.DataGenHandler;
-import hungteen.immortal.impl.*;
+import hungteen.immortal.common.impl.*;
 import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
@@ -126,6 +126,7 @@ public class ImmortalMod {
      * register custom stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void coreRegister() {
+        ImmortalWoods.register();
         SpiritualTypes.SpiritualType.register();
         SpellTypes.SpellType.register();
         PlayerDatas.PlayerData.register();
@@ -143,7 +144,6 @@ public class ImmortalMod {
 ////            PotionRecipeHandler.registerPotionRecipes();
 //            SpawnRegister.registerEntitySpawns();
             CommonRegister.registerCompostable();
-            CommonRegister.registerAxeStrips();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
             ElixirManager.init();

@@ -1,4 +1,4 @@
-package hungteen.immortal.impl;
+package hungteen.immortal.common.impl;
 
 import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.ImmortalMod;

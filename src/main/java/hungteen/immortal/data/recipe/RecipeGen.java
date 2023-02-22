@@ -5,7 +5,7 @@ import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.item.ImmortalItems;
-import hungteen.immortal.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.SpiritualTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;

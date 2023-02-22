@@ -29,7 +29,7 @@ public class ImmortalAPI {
 
     private static final Supplier<IImmortalAPI> LAZY_INSTANCE = Suppliers.memoize(() -> {
         try {
-            Class<?> classes = Class.forName("hungteen.immortal.impl.ImmortalAPIImpl");
+            Class<?> classes = Class.forName("hungteen.immortal.common.impl.ImmortalAPIImpl");
             Constructor<?> constructor = classes.getDeclaredConstructor();
             return (IImmortalAPI) constructor.newInstance();
         } catch (ReflectiveOperationException e) {

@@ -30,16 +30,16 @@
       "spiritual_value": 15
     },
     {
-      "spiritual_root": "immortal:earth",
-      "spiritual_value": 10
+      "spiritual_root": "immortal:fire",
+      "spiritual_value": 15
     },
     {
       "spiritual_root": "immortal:wood",
       "spiritual_value": 10
     },
     {
-      "spiritual_root": "immortal:fire",
-      "spiritual_value": 15
+      "spiritual_root": "immortal:earth",
+      "spiritual_value": 10
     },
     {
       "spiritual_root": "immortal:metal",

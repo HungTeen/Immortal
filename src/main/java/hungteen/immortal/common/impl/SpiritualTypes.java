@@ -1,7 +1,6 @@
-package hungteen.immortal.impl;
+package hungteen.immortal.common.impl;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.ImmortalMod;

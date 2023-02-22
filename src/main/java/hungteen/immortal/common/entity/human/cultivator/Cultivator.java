@@ -2,7 +2,7 @@ package hungteen.immortal.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
 import hungteen.immortal.common.entity.human.HumanEntity;
-import hungteen.immortal.impl.RealmTypes;
+import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;

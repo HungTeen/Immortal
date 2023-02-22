@@ -8,6 +8,7 @@ import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.artifacts.SpiritualFurnace;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
+import hungteen.immortal.common.impl.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
@@ -62,74 +63,8 @@ public class BlockStateGen extends HTBlockStateGen {
 //        });
         crop(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
 
-        /* Must gen first to avoid crash. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_PLANKS.get()
-        ).forEach(block -> {
-            this.addedBlocks.add(block);
-            this.simpleBlock(block);
-        });
-
-        /* RotatedPillarBlocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_LOG.get(), ImmortalBlocks.STRIPPED_MULBERRY_LOG.get()
-        ).forEach(this::log);
-
-        /* Blocks with 2 textures(top & side). */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_WOOD.get(), ImmortalBlocks.STRIPPED_MULBERRY_WOOD.get()
-        ).forEach(this::wood);
-
-        /* Door Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_DOOR.get()
-        ).forEach(this::door);
-
-        /* Trapdoor Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_TRAPDOOR.get()
-        ).forEach(this::trapdoor);
-
-        /* Fence Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_FENCE.get()
-        ).forEach(this::fence);
-
-        /* Fence Gate Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_FENCE_GATE.get()
-        ).forEach(this::fenceGate);
-
-        /* Sign Blocks. */
-        Arrays.asList(
-                Pair.of(ImmortalBlocks.MULBERRY_SIGN.get(), ImmortalBlocks.MULBERRY_WALL_SIGN.get())
-        ).forEach(pair -> {
-            sign(pair.getFirst(), pair.getSecond());
-        });
-
-        /* Stair Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_STAIRS.get()
-        ).forEach(this::stair);
-
-        /* Button Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_BUTTON.get()
-        ).forEach(this::button);
-
-        /* Slab Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_SLAB.get()
-        ).forEach(b -> {
-            slab(b);
-        });
-
-        /* Pressure plate Blocks. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_PRESSURE_PLATE.get()
-        ).forEach(b -> {
-            pressPlate(b);
-        });
+        /* Woods */
+        ImmortalWoods.woods().forEach(this::woodIntegration);
 
         /* Blocks with cross style. */
         Arrays.asList(

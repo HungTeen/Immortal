@@ -12,7 +12,7 @@ import hungteen.immortal.common.item.artifacts.SwordItem;
 import hungteen.immortal.common.item.artifacts.*;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
-import hungteen.immortal.impl.ImmortalTiers;
+import hungteen.immortal.common.impl.ImmortalTiers;
 import hungteen.immortal.utils.Util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
@@ -38,10 +38,6 @@ public class ImmortalItems {
     /* Material Tab Items */
 
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(ImmortalBlocks.GOURD_STEM.get(), new Item.Properties().tab(ItemTabs.MATERIALS)));
-
-    /* Decoration Tab Items */
-
-    public static final RegistryObject<Item> MULBERRY_SIGN = ITEMS.register("mulberry_sign", () -> new SignItem((new Item.Properties()).stacksTo(16).tab(ItemTabs.DECORATIONS), ImmortalBlocks.MULBERRY_SIGN.get(), ImmortalBlocks.MULBERRY_WALL_SIGN.get()));
 
     /* Rune Tab Items */
 
@@ -71,11 +67,6 @@ public class ImmortalItems {
     public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(false, ImmortalTiers.BRONZE, 7));
     public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(false, ImmortalTiers.BRONZE, 7));
     public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(false, ImmortalTiers.BRONZE));
-
-    /* Transport Tab Items */
-
-    public static final RegistryObject<Item> MULBERRY_BOAT = ITEMS.register("mulberry_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, false));
-    public static final RegistryObject<Item> MULBERRY_CHEST_BOAT = ITEMS.register("mulberry_chest_boat", () -> new HTBoatItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_TRANSPORTATION), ImmortalBoatTypes.MULBERRY, true));
 
     /* Misc Tab Items */
 

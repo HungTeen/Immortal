@@ -8,7 +8,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.menu.ElixirRoomMenu;
-import hungteen.immortal.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.SpiritualTypes;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Util;
 import net.minecraft.ChatFormatting;

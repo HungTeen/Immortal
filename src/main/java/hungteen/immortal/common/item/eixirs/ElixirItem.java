@@ -5,7 +5,7 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.common.item.ItemTabs;
-import hungteen.immortal.impl.RealmTypes;
+import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;

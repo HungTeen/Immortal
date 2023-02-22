@@ -6,7 +6,7 @@ import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISectType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.impl.RealmTypes;
+import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;

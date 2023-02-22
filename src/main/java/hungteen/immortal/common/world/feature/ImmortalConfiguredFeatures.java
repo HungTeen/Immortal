@@ -1,6 +1,8 @@
 package hungteen.immortal.common.world.feature;
 
+import hungteen.htlib.common.WoodIntegrations;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.impl.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -30,7 +32,7 @@ public class ImmortalConfiguredFeatures {
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
             new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                    BlockStateProvider.simple(ImmortalBlocks.MULBERRY_LOG.get()),
+                    BlockStateProvider.simple(ImmortalWoods.MULBERRY.getLog()),
                     new StraightTrunkPlacer(5, 6, 3),
                     new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(Blocks.AZALEA_LEAVES.defaultBlockState(), 3).add(Blocks.FLOWERING_AZALEA_LEAVES.defaultBlockState(), 1)),
                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 4),

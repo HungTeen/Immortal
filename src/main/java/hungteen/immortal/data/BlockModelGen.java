@@ -1,7 +1,9 @@
 package hungteen.immortal.data;
 
+import hungteen.htlib.common.WoodIntegrations;
 import hungteen.htlib.data.HTBlockModelGen;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.impl.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -21,18 +23,6 @@ public class BlockModelGen extends HTBlockModelGen {
 
     @Override
     protected void registerModels() {
-        /*
-        Fence Blocks.
-         */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_FENCE.get()
-        ).forEach(this::fence);
-
-        /*
-        Button Blocks.
-         */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_BUTTON.get()
-        ).forEach(this::button);
+        ImmortalWoods.woods().forEach(this::woodIntegration);
     }
 }

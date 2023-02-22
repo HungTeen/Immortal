@@ -6,6 +6,7 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.impl.ImmortalWoods;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.item.artifacts.MeleeAttackItem;
 import hungteen.immortal.utils.ItemUtil;
@@ -51,27 +52,8 @@ public class ItemModelGen extends HTItemModelGen {
             this.addedItems.add(item);
         });
 
-        /* Fence */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_FENCE, ImmortalBlocks.MULBERRY_BUTTON
-        ).forEach(block -> {
-            genBlockModel(block.get(), block.getId().getPath() + "_inventory");
-        });
-
-        /* Trap Door. */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_TRAPDOOR
-        ).forEach(block -> {
-            genBlockModel(block.get(), block.getId().getPath() + "_bottom");
-        });
-
-        /* Block-items with tex in item folder */
-        Arrays.asList(
-                ImmortalBlocks.MULBERRY_DOOR.get().asItem(), ImmortalItems.MULBERRY_SIGN.get()
-        ).forEach(i -> {
-            genNormalModel(i);
-            this.addedItems.add(i);
-        });
+        /* Woods */
+        ImmortalWoods.woods().forEach(this::woodIntegration);
 
         /* Block-items with tex in block folder */
         Arrays.asList(

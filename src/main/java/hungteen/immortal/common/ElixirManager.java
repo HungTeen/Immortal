@@ -5,7 +5,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.tag.ImmortalItemTags;
-import hungteen.immortal.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.SpiritualTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

@@ -3,7 +3,7 @@ package hungteen.immortal.common.entity.undead;
 import hungteen.immortal.api.interfaces.IUndead;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.entity.ImmortalCreature;
-import hungteen.immortal.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;

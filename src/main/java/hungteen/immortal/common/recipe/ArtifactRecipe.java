@@ -1,6 +1,6 @@
 package hungteen.immortal.common.recipe;
 
-import hungteen.htlib.menu.container.SimpleCraftingContainer;
+import hungteen.htlib.common.menu.container.SimpleCraftingContainer;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.item.artifacts.RawArtifactBox;
 import net.minecraft.core.NonNullList;

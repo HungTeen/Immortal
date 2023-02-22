@@ -7,7 +7,7 @@ import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.ImmortalLivingEvents;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
-import hungteen.immortal.impl.SpellTypes;
+import hungteen.immortal.common.impl.SpellTypes;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
