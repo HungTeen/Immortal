@@ -6,7 +6,6 @@ import hungteen.immortal.common.CommonRegister;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.block.ImmortalWoodTypes;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.command.CommandHandler;
@@ -129,13 +128,12 @@ public class ImmortalMod {
         ImmortalWoods.register();
         SpiritualTypes.SpiritualType.register();
         SpellTypes.SpellType.register();
-        PlayerDatas.PlayerData.register();
+        PlayerRangeNumbers.PlayerData.register();
         RealmTypes.RealmType.register();
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
         ItemUtil.registerLargeHeldItems();
-        ImmortalWoodTypes.registerWoodTypes();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
@@ -147,7 +145,8 @@ public class ImmortalMod {
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
             ElixirManager.init();
-            RealmManager.registerUpgradeList();
+            RealmManager.updateRealmTree();
+            CapabilityHandler.init();
         });
         NetworkHandler.init();
     }

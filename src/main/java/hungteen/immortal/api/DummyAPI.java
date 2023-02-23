@@ -1,7 +1,7 @@
 package hungteen.immortal.api;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISectType;
 import hungteen.immortal.api.registry.ISpellType;
@@ -49,7 +49,7 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry() {
+    public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
         return Optional.empty();
     }
 

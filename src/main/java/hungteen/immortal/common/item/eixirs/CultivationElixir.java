@@ -2,7 +2,7 @@ package hungteen.immortal.common.item.eixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.common.impl.PlayerDatas;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.common.impl.RealmTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ public abstract class CultivationElixir extends ElixirItem{
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
             if(livingEntity instanceof Player){
-                PlayerUtil.addIntegerData((Player) livingEntity, PlayerDatas.CULTIVATION, getCultivation(accuracy));
+                PlayerUtil.addIntegerData((Player) livingEntity, PlayerRangeNumbers.CULTIVATION, getCultivation(accuracy));
             }
         }
     }

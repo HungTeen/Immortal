@@ -1,9 +1,9 @@
 package hungteen.immortal.common.impl;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.IRealmType;
@@ -36,7 +36,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
     private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
-    private static final HTSimpleRegistry<IRangeData<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
+    private static final HTSimpleRegistry<IRangeNumber<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<Item, Map<ISpiritualType, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
@@ -62,7 +62,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     }
 
     @Override
-    public Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry() {
+    public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
         return Optional.of(INTEGER_DATA_TYPES);
     }
 

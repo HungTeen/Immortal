@@ -21,46 +21,25 @@ public class RealmTypes {
 
     public static final IRealmType MORTALITY = new RealmType("mortality", 0, 0, 0, true);
 
-    /* 炼气 */
+    public static final IRealmType SPIRITUAL_LEVEL_1 = new RealmType("spiritual_level_1", 10, 15, 10);
 
-    public static final IRealmType MEDITATION_STAGE1 = new RealmType("meditation_stage1", 10, 1, 10);
+    public static final IRealmType SPIRITUAL_LEVEL_2 = new RealmType("spiritual_level_2", 10, 30, 10);
 
-    public static final IRealmType MEDITATION_STAGE2 = new RealmType("meditation_stage2", 30, 2, 20);
+    public static final IRealmType SPIRITUAL_LEVEL_3 = new RealmType("spiritual_level_3", 10, 60, 10);
 
-    public static final IRealmType MEDITATION_STAGE3 = new RealmType("meditation_stage3", 50, 3, 30);
+    public static final IRealmType SPIRITUAL_LEVEL_4 = new RealmType("spiritual_level_4", 10, 100, 10);
 
-    public static final IRealmType MEDITATION_STAGE4 = new RealmType("meditation_stage4", 75, 4, 40);
+    public static final IRealmType SPIRITUAL_LEVEL_5 = new RealmType("spiritual_level_5", 10, 160, 10);
 
-    public static final IRealmType MEDITATION_STAGE5 = new RealmType("meditation_stage5", 100, 5, 50);
+    public static final IRealmType SPIRITUAL_LEVEL_6 = new RealmType("spiritual_level_6", 10, 200, 10);
 
-    public static final IRealmType MEDITATION_STAGE6 = new RealmType("meditation_stage6", 125, 6, 60);
+    public static final IRealmType SPIRITUAL_LEVEL_7 = new RealmType("spiritual_level_7", 10, 250, 10);
 
-    public static final IRealmType MEDITATION_STAGE7 = new RealmType("meditation_stage7", 150, 7, 75);
+    public static final IRealmType SPIRITUAL_LEVEL_8 = new RealmType("spiritual_level_8", 10, 300, 10);
 
-    public static final IRealmType MEDITATION_STAGE8 = new RealmType("meditation_stage8", 180, 8, 90);
+    public static final IRealmType SPIRITUAL_LEVEL_9 = new RealmType("spiritual_level_9", 10, 350, 10);
 
-    public static final IRealmType MEDITATION_STAGE9 = new RealmType("meditation_stage9", 210, 9, 105);
-
-    public static final IRealmType MEDITATION_STAGE10 = new RealmType("meditation_stage10", 250, 10, 125, true);
-
-    /* 筑基 */
-
-    public static final IRealmType FOUNDATION_BEGIN = new RealmType("foundation_begin", 300, 11, 250);
-
-    public static final IRealmType FOUNDATION_MEDIUM = new RealmType("foundation_medium", 400, 13, 280);
-
-    public static final IRealmType FOUNDATION_LATE = new RealmType("foundation_late", 500, 16, 320);
-
-    public static final IRealmType FOUNDATION_FINISH = new RealmType("foundation_finish", 600, 19, 360);
-
-//    /* 结丹 */
-//    public static final IRealm VIRTUOSO_STAGE = new Realm("virtuoso_stage", 5000, 20);
-//
-//    /* 元婴 */
-//    public static final IRealm IMMORTALITY_STAGE = new Realm("immortality_stage", 10000, 30);
-//
-//    /* 化神 */
-//    public static final IRealm INCARNATION_STAGE = new Realm("incarnation_stage", 20000, 40);
+    public static final IRealmType SPIRITUAL_LEVEL_10 = new RealmType("spiritual_level_10", 10, 400, 10);
 
     /* 妖兽 */
     public static final IRealmType MONSTER_STAGE0 = new RealmType("monster_stage0", 100, 4, 50);
@@ -143,7 +122,7 @@ public class RealmTypes {
         }
 
         @Override
-        public int getCultivation() {
+        public int requireCultivation() {
             return cultivation;
         }
 

@@ -1,6 +1,7 @@
 package hungteen.immortal.common.impl;
 
-import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.util.interfaces.IRangeNumber;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.Util;
@@ -15,19 +16,27 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-10-13 22:13
  **/
-public class PlayerDatas {
+public class PlayerRangeNumbers {
 
-    private static final List<IRangeData<Integer>> TYPES = new ArrayList<>();
+    private static final List<IRangeNumber<Integer>> TYPES = new ArrayList<>();
 
-    public static final IRangeData<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> SPIRITUAL_MANA = new PlayerData("spiritual_mana", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> MAX_SPIRITUAL_MANA = new PlayerData("max_spiritual_mana", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> CONSCIOUSNESS = new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> OPPORTUNITY = new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> PERSONALITY = new PlayerData("personality", 0, 0, Integer.MAX_VALUE);
-    public static final IRangeData<Integer> IS_GHOST = new PlayerData("is_ghost", 0, 0, 1);
+    /**
+     * Just like vanilla experience, 玩家的修仙经验值。
+     */
+    public static final IRangeNumber<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);
 
-    public record PlayerData(String name, int defaultValue, int minValue, int maxValue) implements IRangeData<Integer> {
+    /**
+     * Tell which stage of realm is the player currently stays, 辨别玩家当前处在什么境界。
+     */
+    public static final IRangeNumber<Integer> CULTIVATION_POS = new PlayerData("cultivation_pos", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> SPIRITUAL_MANA = new PlayerData("spiritual_mana", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> MAX_SPIRITUAL_MANA = new PlayerData("max_spiritual_mana", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> CONSCIOUSNESS = new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> OPPORTUNITY = new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> PERSONALITY = new PlayerData("personality", 0, 0, Integer.MAX_VALUE);
+    public static final IRangeNumber<Integer> IS_GHOST = new PlayerData("is_ghost", 0, 0, 1);
+
+    public record PlayerData(String name, int defaultValue, int minValue, int maxValue) implements IRangeNumber<Integer> {
         /**
          * {@link ImmortalMod#coreRegister()}
          */

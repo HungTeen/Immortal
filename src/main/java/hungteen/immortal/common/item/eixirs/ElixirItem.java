@@ -177,7 +177,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     }
 
     protected static Function<IRealmType, Optional<Boolean>> immortal(){
-        return largeThan(RealmTypes.MEDITATION_STAGE1);
+        return largeThan(RealmTypes.MEDITATION_BEGINNER);
     }
 
     protected static Function<IRealmType, Optional<Boolean>> same(IRealmType base){

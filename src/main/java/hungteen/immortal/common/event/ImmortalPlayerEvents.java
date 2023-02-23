@@ -25,13 +25,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
 public class ImmortalPlayerEvents {
 
-    @SubscribeEvent
-    public static void tickPlayer(TickEvent.PlayerTickEvent event) {
-        if(! event.player.level.isClientSide){
-            PlayerUtil.tick(event.player);
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (! event.getEntity().level.isClientSide) {
@@ -43,25 +36,6 @@ public class ImmortalPlayerEvents {
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (! event.getEntity().level.isClientSide) {
             PlayerEventHandler.onPlayerLogout(event.getEntity());
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        PlayerEventHandler.clonePlayerData(event.getOriginal(), event.getEntity(), event.isWasDeath());
-    }
-
-    @SubscribeEvent
-    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if(! event.getEntity().level.isClientSide) {
-            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if(! event.getEntity().level.isClientSide) {
-            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }
 

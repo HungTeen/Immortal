@@ -1,5 +1,6 @@
 package hungteen.immortal.common.capability;
 
+import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.capability.player.PlayerCapProvider;
 import hungteen.immortal.common.capability.player.PlayerCapability;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
  * @program: Immortal
@@ -38,7 +40,14 @@ public class CapabilityHandler {
         }
     }
 
+    /**
+     * {@link ImmortalMod#setUp(FMLCommonSetupEvent)}
+     */
+    public static void init(){
+        PlayerCapabilityManager.register(PLAYER_CAP);
+    }
+
     public static LazyOptional<PlayerCapability> getPlayerCapability(Player player){
-        return player.getCapability(PLAYER_CAP);
+        return PlayerCapabilityManager.getPlayerCapability(player, PLAYER_CAP);
     }
 }

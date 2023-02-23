@@ -24,11 +24,11 @@ public class SpellTypes {
     private static final List<ISpellType> TYPES = new ArrayList<>();
 
     public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
-            lvl -> RealmTypes.MEDITATION_STAGE1, List.of(), List.of()
+            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
     );
 
     public static final ISpellType RESTING = new SpellType("resting", 1, 0, 1200,
-            lvl -> RealmTypes.MEDITATION_STAGE1, List.of(), List.of()
+            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
     );
 
     public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,

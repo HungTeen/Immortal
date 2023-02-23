@@ -2,6 +2,7 @@ package hungteen.immortal.data.tag;
 
 import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.impl.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
@@ -24,6 +25,8 @@ public class BlockTagGen extends HTBlockTagGen {
     }
 
     private void addMCTags(){
+        /* Woods */
+        this.woodIntegration(ImmortalWoods.MULBERRY);
 
         /* sapling */
         this.tag(BlockTags.SAPLINGS).add(ImmortalBlocks.MULBERRY_SAPLING.get());

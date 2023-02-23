@@ -1,8 +1,8 @@
 package hungteen.immortal.utils;
 
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.WeightList;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealmType;
@@ -12,7 +12,7 @@ import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.capability.player.PlayerCapability;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
-import hungteen.immortal.common.impl.PlayerDatas;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -195,20 +195,20 @@ public class PlayerUtil {
 
     /* Operations about Integer Data */
 
-    public static void setIntegerData(Player player, IRangeData<Integer> rangeData, int value){
+    public static void setIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
         getOptManager(player).ifPresent(l -> l.setIntegerData(rangeData, value));
     }
 
-    public static void addIntegerData(Player player, IRangeData<Integer> rangeData, int value){
+    public static void addIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
         getOptManager(player).ifPresent(l -> l.addIntegerData(rangeData, value));
     }
 
-    public static int getIntegerData(Player player, IRangeData<Integer> rangeData){
+    public static int getIntegerData(Player player, IRangeNumber<Integer> rangeData){
         return getManagerResult(player, m -> m.getIntegerData(rangeData), rangeData.defaultData());
     }
 
     public static int getSpiritualMana(Player player){
-        return getIntegerData(player, PlayerDatas.SPIRITUAL_MANA);
+        return getIntegerData(player, PlayerRangeNumbers.SPIRITUAL_MANA);
     }
 
     public static int getFullSpiritualMana(Player player){
@@ -236,14 +236,10 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(m -> {
             m.setRealm(realm);
             if(! player.level.isClientSide){
-                m.setIntegerData(PlayerDatas.CULTIVATION, realm.getCultivation());
-                m.setIntegerData(PlayerDatas.SPIRITUAL_MANA, 0);
+                m.setIntegerData(PlayerRangeNumbers.CULTIVATION, realm.requireCultivation());
+                m.setIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, 0);
             }
         });
-    }
-
-    public static void tick(Player player){
-        getOptManager(player).ifPresent(PlayerDataManager::tick);
     }
 
 }

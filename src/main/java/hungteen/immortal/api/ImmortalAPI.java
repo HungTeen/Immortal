@@ -2,7 +2,7 @@ package hungteen.immortal.api;
 
 import com.google.common.base.Suppliers;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISectType;
 import hungteen.immortal.api.registry.ISpellType;
@@ -85,7 +85,7 @@ public class ImmortalAPI {
          * Stored in player capabilities.
          * @return Registry interface.
          */
-        Optional<IHTSimpleRegistry<IRangeData<Integer>>> integerDataRegistry();
+        Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry();
 
         /**
          * 获取生物的境界。

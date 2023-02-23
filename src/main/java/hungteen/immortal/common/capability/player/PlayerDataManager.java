@@ -1,10 +1,9 @@
 package hungteen.immortal.common.capability.player;
 
+import hungteen.htlib.api.interfaces.IPlayerDataManager;
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.Pair;
-import hungteen.htlib.util.interfaces.IPlayerDataManager;
-import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
@@ -14,12 +13,12 @@ import hungteen.immortal.common.network.IntegerDataPacket;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.common.network.StringDataPacket;
-import hungteen.immortal.common.impl.CultivationTypes;
-import hungteen.immortal.common.impl.PlayerDatas;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.common.impl.RealmTypes;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.commands.ExperienceCommand;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -46,9 +45,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     private ISpellType[] spellList = new ISpellType[Constants.SPELL_NUMS];
     private int selectedSpellPosition = 0;
     /* Cultivation */
-    private ICultivationType cultivationType = CultivationTypes.ELIXIR;
-    private IRealmType realm = RealmTypes.MORTALITY;
-    private final HashMap<IRangeData<Integer>, Integer> integerMap = new HashMap<>();
+    private IRealmType realmType = RealmTypes.MORTALITY;
+    /* Misc sync integers */
+    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>();
+    /* Caches */
+    private RealmManager.RealmNode realmNode;
 
     public PlayerDataManager(Player player){
         this.player = player;
@@ -57,29 +58,31 @@ public class PlayerDataManager implements IPlayerDataManager {
                 integerMap.put(data, data.defaultData());
             });
         }
+        //TODO 随机生成灵根
         PlayerUtil.showPlayerSpiritualRoots(player);
     }
 
     @Override
     public void tick(){
         if(! player.level.isClientSide){
-            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
-                final int value = getIntegerData(PlayerDatas.SPIRITUAL_MANA);
-                final int fullValue = getFullManaValue();
-                final int limitValue = getLimitManaValue();
-                // can natural increasing.
-                if(value < fullValue){
-                    final int incValue = Math.min(fullValue - value, ImmortalAPI.get().getSpiritualValue(player.level, player.blockPosition()));
-                    this.addIntegerData(PlayerDatas.SPIRITUAL_MANA, incValue);
-                } else if(value > fullValue){
-                    if(value > limitValue){
-                        // TODO 爆体而亡 ？
-                    } else {
-                        final int decValue = Math.min(Math.max(1, (value - fullValue) / 10), value - fullValue);
-                        this.addIntegerData(PlayerDatas.SPIRITUAL_MANA, - decValue);
-                    }
-                }
-            }
+            //TODO 灵气自然恢复
+//            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
+//                final int value = getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA);
+//                final int fullValue = getFullManaValue();
+//                final int limitValue = getLimitManaValue();
+//                // can natural increasing.
+//                if(value < fullValue){
+//                    final int incValue = Math.min(fullValue - value, ImmortalAPI.get().getSpiritualValue(player.level, player.blockPosition()));
+//                    this.addIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, incValue);
+//                } else if(value > fullValue){
+//                    if(value > limitValue){
+//                        // TODO 爆体而亡 ？
+//                    } else {
+//                        final int decValue = Math.min(Math.max(1, (value - fullValue) / 10), value - fullValue);
+//                        this.addIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, - decValue);
+//                    }
+//                }
+//            }
         }
     }
 
@@ -129,18 +132,18 @@ public class PlayerDataManager implements IPlayerDataManager {
             tag.put("PlayerRangeData", nbt);
         }
         {
-            CompoundTag nbt = new CompoundTag();
-            nbt.putString("PlayerRealm", realm.getRegistryName());
-            tag.put("Misc", nbt);
+            final CompoundTag nbt = new CompoundTag();
+            nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
+            tag.put("MiscData", nbt);
         }
         return tag;
     }
 
     @Override
     public void loadFromNBT(CompoundTag tag) {
-        {
+        if(tag.contains("SpiritualRoots")){
             spiritualRoots.clear();
-            CompoundTag nbt = tag.getCompound("SpiritualRoots");
+            final CompoundTag nbt = tag.getCompound("SpiritualRoots");
             ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if(nbt.getBoolean(type.getRegistryName() + "_root")){
@@ -149,48 +152,58 @@ public class PlayerDataManager implements IPlayerDataManager {
                 });
             });
         }
-        {
+        if(tag.contains("LearnSpells")){
             learnSpells.clear();
             CompoundTag nbt = tag.getCompound("LearnSpells");
             ImmortalAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
-                    learnSpells.put(type, nbt.getInt(type.getRegistryName()));
+                    if(nbt.contains(type.getRegistryName())){
+                        learnSpells.put(type, nbt.getInt(type.getRegistryName()));
+                    }
                 });
             });
         }
-        {
+        if(tag.contains("ActivateSpells")){
             activateSpells.clear();
             CompoundTag nbt = tag.getCompound("ActivateSpells");
             ImmortalAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
-                    activateSpells.put(type, nbt.getLong(type.getRegistryName()));
+                    if(nbt.contains(type.getRegistryName())) {
+                        activateSpells.put(type, nbt.getLong(type.getRegistryName()));
+                    }
                 });
             });
         }
-        {
+        if(tag.contains("SpellList")){
             CompoundTag nbt = tag.getCompound("SpellList");
             ImmortalAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if(nbt.contains(type.getRegistryName())){
-                        spellList[nbt.getInt(type.getRegistryName())] = type;
+                        if(nbt.contains(type.getRegistryName())) {
+                            spellList[nbt.getInt(type.getRegistryName())] = type;
+                        }
                     }
                 });
             });
-            this.selectedSpellPosition = nbt.getInt("SelectedSpellPosition");
+            if(nbt.contains("SelectedSpellPosition")){
+                this.selectedSpellPosition = nbt.getInt("SelectedSpellPosition");
+            }
         }
-        {
+        if(tag.contains("PlayerRangeData")){
             integerMap.clear();
             CompoundTag nbt = tag.getCompound("PlayerRangeData");
             ImmortalAPI.get().integerDataRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
-                    integerMap.put(type, nbt.getInt(type.getRegistryName()));
+                    if(nbt.contains(type.getRegistryName())){
+                        integerMap.put(type, nbt.getInt(type.getRegistryName()));
+                    }
                 });
             });
         }
-        {
-            CompoundTag nbt = tag.getCompound("Misc");
-            if(nbt.contains("PlayerRealm") && ImmortalAPI.get().realmRegistry().isPresent()){
-                realm = ImmortalAPI.get().realmRegistry().get().getValue(nbt.getString("PlayerRealm")).orElse(RealmTypes.MORTALITY);
+        if(tag.contains("MiscData")){
+            CompoundTag nbt = tag.getCompound("MiscData");
+            if (nbt.contains("PlayerRealmType")) {
+                ImmortalAPI.get().realmRegistry().flatMap(l -> l.getValue(nbt.getString("PlayerRealmType"))).ifPresent(r -> this.realmType = r);
             }
         }
     }
@@ -356,46 +369,84 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /* Integer related methods */
 
-    public int getIntegerData(IRangeData<Integer> rangeData){
+    public int getIntegerData(IRangeNumber<Integer> rangeData){
         return integerMap.getOrDefault(rangeData, rangeData.defaultData());
     }
 
-    public void setIntegerData(IRangeData<Integer> rangeData, int value){
-        int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
-        if(PlayerDatas.CULTIVATION.equals(rangeData)){
-            Pair<IRealmType, Integer> pair = RealmManager.updateRealm(getCultivationType(), getRealm(), value);
-            result = pair.getSecond();
-            if(getRealm() != pair.getFirst()){
-                this.setRealm(pair.getFirst());
-            }
-            final int mana = getIntegerData(PlayerDatas.SPIRITUAL_MANA);
-            if(mana > getLimitManaValue()){
-                this.setIntegerData(PlayerDatas.SPIRITUAL_MANA, getLimitManaValue());
-            }
-        }
-        integerMap.put(rangeData, result);
-        sendIntegerDataPacket(rangeData, result);
+    public void setIntegerData(IRangeNumber<Integer> rangeData, int value){
+        setIntegerData(rangeData, value, false);
     }
 
-    public void addIntegerData(IRangeData<Integer> rangeData, int value){
-        setIntegerData(rangeData, getIntegerData(rangeData) + value);
+    /**
+     * Directly set value.
+     * @param ignore 防止死循环。
+     */
+    public void setIntegerData(IRangeNumber<Integer> rangeData, int value, boolean ignore){
+        int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        if(! ignore && PlayerRangeNumbers.CULTIVATION.equals(rangeData)){
+            updateCultivation(value - getIntegerData(PlayerRangeNumbers.CULTIVATION));
+        } else {
+            integerMap.put(rangeData, result);
+            sendIntegerDataPacket(rangeData, result);
+        }
+    }
+
+    public void addIntegerData(IRangeNumber<Integer> rangeData, int value){
+        if(PlayerRangeNumbers.CULTIVATION.equals(rangeData)){
+            updateCultivation(value);
+        } else {
+            setIntegerData(rangeData, getIntegerData(rangeData) + value);
+        }
+    }
+
+    protected void updateCultivation(int value){
+        int oldValue = getIntegerData(PlayerRangeNumbers.CULTIVATION);
+        if(value < 0){
+            while(oldValue + value < 0 && getRealmNode().hasPreviousNode()){
+                value += oldValue;
+                levelDown();
+                oldValue = getRealmType().requireCultivation(); // 上一级所需的修为。
+            }
+            this.setIntegerData(PlayerRangeNumbers.CULTIVATION, oldValue + value, true);
+        } else if(value > 0){
+            RealmManager.RealmNode next = getRealmNode().next(getRealmType().getCultivationType());
+            // 1. Cultivation reach, 2. no threshold, 3. has next.
+            while(oldValue + value >= getRealmType().requireCultivation() && ! getRealmType().hasThreshold() && next != null){
+                value -= getRealmType().requireCultivation() - oldValue;
+                oldValue = 0;
+                this.setRealmType(next.getRealm());
+                getRealmNode(true);
+                next = getRealmNode().next(getRealmType().getCultivationType());
+            }
+            this.setIntegerData(PlayerRangeNumbers.CULTIVATION, oldValue + value, true);
+        }
+        if(getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA) > getLimitManaValue()){
+            this.setIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, getLimitManaValue());
+        }
+    }
+
+    protected void levelDown(){
+        if(getRealmNode().hasPreviousNode()){
+            this.setRealmType(getRealmNode().getPreviousRealm());
+            getRealmNode(true);
+        }
     }
 
     /**
      * natural increasing point.
      */
     public int getFullManaValue(){
-        return Mth.clamp(getIntegerData(PlayerDatas.MAX_SPIRITUAL_MANA) + getRealm().getBaseSpiritualValue(), 0, getIntegerData(PlayerDatas.CULTIVATION));
+        return Mth.clamp(getIntegerData(PlayerRangeNumbers.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getIntegerData(PlayerRangeNumbers.CULTIVATION));
     }
 
     /**
      * explode if player has more mana than it.
      */
     public int getLimitManaValue(){
-        return getIntegerData(PlayerDatas.CULTIVATION);
+        return getIntegerData(PlayerRangeNumbers.CULTIVATION);
     }
 
-    public void sendIntegerDataPacket(IRangeData<Integer> rangeData, int value) {
+    public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
         }
@@ -403,23 +454,31 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /* Misc methods */
 
-    public void setRealm(IRealmType realm) {
-        this.realm = realm;
-        this.sendStringDataPacket(StringDataPacket.Types.REALM, realm.getRegistryName());
+    public IRealmType getRealmType() {
+        return this.realmType;
     }
 
-    public IRealmType getRealm() {
-        return this.realm;
-    }
-
-    public ICultivationType getCultivationType() {
-        return this.cultivationType;
+    public void setRealmType(IRealmType realmType){
+        this.realmType = realmType;
+        this.getRealmNode(true); // Update realm node manually.
+        this.sendStringDataPacket(StringDataPacket.Types.REALM, realmType.getRegistryName());
     }
 
     public void sendStringDataPacket(StringDataPacket.Types type, String data) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new StringDataPacket(type, data));
         }
+    }
+
+    public RealmManager.RealmNode getRealmNode() {
+        return getRealmNode(false);
+    }
+
+    public RealmManager.RealmNode getRealmNode(boolean update) {
+        if(this.realmNode == null || update) {
+            this.realmNode = RealmManager.findRealmNode(this.realmType);
+        }
+        return this.realmNode;
     }
 
     @Override

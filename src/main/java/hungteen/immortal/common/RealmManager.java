@@ -1,5 +1,6 @@
 package hungteen.immortal.common;
 
+import hungteen.htlib.HTLib;
 import hungteen.htlib.util.Pair;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ICultivationType;
@@ -9,7 +10,9 @@ import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -20,37 +23,24 @@ import java.util.function.Consumer;
  **/
 public class RealmManager {
 
-    public static final Map<ICultivationType, List<IRealmType>> HUMAN_UPGRADE_LIST_MAP = new HashMap<>();
-    public static final Map<ICultivationType, List<IRealmType>> MONSTER_UPGRADE_LIST_MAP = new HashMap<>();
+    public static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
 
     /**
      * {@link hungteen.immortal.ImmortalMod#setUp(FMLCommonSetupEvent)}
      */
-    public static void registerUpgradeList() {
-        registerUpgradeListMap(CultivationTypes.ELIXIR, Arrays.asList(
-                RealmTypes.MEDITATION_STAGE1,
-                RealmTypes.MEDITATION_STAGE2,
-                RealmTypes.MEDITATION_STAGE3,
-                RealmTypes.MEDITATION_STAGE4,
-                RealmTypes.MEDITATION_STAGE5,
-                RealmTypes.MEDITATION_STAGE6,
-                RealmTypes.MEDITATION_STAGE7,
-                RealmTypes.MEDITATION_STAGE8,
-                RealmTypes.MEDITATION_STAGE9,
-                RealmTypes.MEDITATION_STAGE10,
-                RealmTypes.FOUNDATION_BEGIN,
-                RealmTypes.FOUNDATION_MEDIUM,
-                RealmTypes.FOUNDATION_LATE,
-                RealmTypes.FOUNDATION_FINISH
+    public static void updateRealmTree() {
+        addRealmLine(ROOT, Arrays.asList(
+                RealmTypes.SPIRITUAL_LEVEL_1,
+                RealmTypes.SPIRITUAL_LEVEL_2,
+                RealmTypes.SPIRITUAL_LEVEL_3
         ));
-        registerUpgradeListMap(CultivationTypes.MONSTER, Arrays.asList(
-                RealmTypes.MONSTER_STAGE0,
-                RealmTypes.MONSTER_STAGE1,
-                RealmTypes.MONSTER_STAGE2,
-                RealmTypes.MONSTER_STAGE3,
-                RealmTypes.MONSTER_STAGE4
-//                Realms.MONSTER_STAGE5,
-        ));
+    }
+
+    /**
+     * Find the realm node with the same realm type.
+     */
+    public static RealmNode findRealmNode(IRealmType realmType){
+        return Objects.requireNonNullElse(seekRealm(ROOT, realmType), ROOT);
     }
 
     public static void getRealm(CompoundTag tag, String name, Consumer<IRealmType> consumer){
@@ -60,34 +50,73 @@ public class RealmManager {
         }
     }
 
-    public static Pair<IRealmType, Integer> updateRealm(ICultivationType type, IRealmType realm, int value) {
-        List<IRealmType> list = getUpgradeList(type);
-        if (value > realm.getCultivation()) {// 修为值大于当前境界的最大值，即可以尝试突破。
-            for (int i = 0; i < list.size(); i++) {
-                // 有瓶颈，则卡在此境界。
-                if(list.get(i).getCultivation() >= realm.getCultivation() && value > list.get(i).getCultivation() && list.get(i).hasThreshold()) {
-                    return Pair.of(list.get(i), list.get(i).getCultivation());
-                }
-                if (value <= list.get(i).getCultivation()) {
-                    return Pair.of(list.get(i), value);
-                }
-            }
-        } else{
-            for (int i = 0; i < list.size(); i++) {
-                if (value <= list.get(i).getCultivation()) {
-                    return Pair.of(list.get(i), value);
-                }
+    /**
+     * Add a hierarchy list.
+     */
+    public static void addRealmLine(RealmNode root, List<IRealmType> realmTypes){
+        RealmNode tmp = root;
+        for(int i = 0; i < realmTypes.size(); ++ i){
+            RealmNode now = new RealmNode(realmTypes.get(i), tmp);
+            tmp.add(now);
+            tmp = now;
+        }
+    }
+
+    @Nullable
+    private static RealmNode seekRealm(RealmNode root, IRealmType type){
+        if(root == null) return null;
+        if(root.realm == type) return root;
+        for (RealmNode nextRealm : root.nextRealms) {
+            final RealmNode node = seekRealm(nextRealm, type);
+            if(node != null) return node;
+        }
+        return null;
+    }
+
+    /**
+     * A tree node.
+     */
+    public static class RealmNode {
+
+        private final IRealmType realm;
+        private RealmNode prevRealm;
+
+        private final HashSet<RealmNode> nextRealms = new HashSet<>();
+
+        private RealmNode(@NotNull IRealmType realm){
+            this(realm, null);
+        }
+
+        private RealmNode(@NotNull IRealmType realm, @Nullable RealmNode prevRealm) {
+            this.realm = realm;
+            this.prevRealm = prevRealm;
+        }
+
+        @Nullable
+        public RealmNode next(ICultivationType type){
+            return nextRealms.stream().filter(l -> l.realm.getCultivationType() == type).findAny().orElse(null);
+        }
+
+        public void add(RealmNode node){
+            if(nextRealms.stream().anyMatch(l -> l.realm == node.realm)){
+                HTLib.getLogger().warn("Duplicate realm node : " + node.realm.getRegistryName());
+            } else {
+                nextRealms.add(node);
             }
         }
-        return Pair.of(list.get(list.size() - 1), list.get(list.size() - 1).getCultivation());
-    }
 
-    public static List<IRealmType> getUpgradeList(ICultivationType type) {
-        return HUMAN_UPGRADE_LIST_MAP.getOrDefault(type, List.of());
-    }
+        public boolean hasPreviousNode(){
+            return this.prevRealm != null;
+        }
 
-    public static void registerUpgradeListMap(ICultivationType type, List<IRealmType> realmList) {
-        HUMAN_UPGRADE_LIST_MAP.put(type, realmList);
+        public IRealmType getRealm(){
+            return this.realm;
+        }
+
+        public IRealmType getPreviousRealm(){
+            return this.prevRealm.realm;
+        }
+
     }
 
 }

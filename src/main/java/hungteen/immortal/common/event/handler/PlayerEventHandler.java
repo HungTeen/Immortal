@@ -30,8 +30,6 @@ public class PlayerEventHandler {
      * {@link ImmortalPlayerEvents#onPlayerLogin(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent)}
      */
     public static void onPlayerLogin(Player player) {
-        PlayerUtil.getOptManager(player).ifPresent(PlayerDataManager::init);
-
     }
 
     /**
@@ -45,17 +43,6 @@ public class PlayerEventHandler {
      * {@link ImmortalLivingEvents#onLivingDeath(LivingDeathEvent)}
      */
     public static void handlePlayerDeath(LivingDeathEvent ev, Player player) {
-    }
-
-    /**
-     * {@link ImmortalPlayerEvents#onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone)}
-     */
-    public static void clonePlayerData(Player oldPlayer, Player newPlayer, boolean died) {
-        PlayerUtil.getOptManager(oldPlayer).ifPresent(oldOne -> {
-            PlayerUtil.getOptManager(newPlayer).ifPresent(newOne -> {
-                newOne.cloneFromExistingPlayerData(oldOne, died);
-            });
-        });
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {

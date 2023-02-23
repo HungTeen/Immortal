@@ -3,7 +3,7 @@ package hungteen.immortal.common.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import hungteen.htlib.util.interfaces.IRangeData;
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
@@ -194,7 +194,7 @@ public class ImmortalCommand {
         return targets.size();
     }
 
-    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data, int value) {
+    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
             source.sendSuccess(data.getComponent(), true);
@@ -202,7 +202,7 @@ public class ImmortalCommand {
         return targets.size();
     }
 
-    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data, int value) {
+    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
             source.sendSuccess(data.getComponent(), true);
@@ -210,7 +210,7 @@ public class ImmortalCommand {
         return targets.size();
     }
 
-    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeData data) {
+    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data) {
         for (ServerPlayer player : targets) {
             final int result = PlayerUtil.getIntegerData(player, data);
             source.sendSuccess(Component.literal(data.getComponent().getString() + " : " + result), true);

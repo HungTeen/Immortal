@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 import java.util.Locale;
 
 /**
+ * 修行的方式。
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-13 15:09
@@ -15,7 +16,7 @@ import java.util.Locale;
 public enum CultivationTypes implements ICultivationType {
 
     MORTAL,
-    ELIXIR,
+    SPIRITUAL,
     MONSTER,
     GHOST,
     BLOOD;

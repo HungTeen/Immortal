@@ -9,7 +9,7 @@ import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.common.network.SpellPacket;
-import hungteen.immortal.common.impl.PlayerDatas;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.common.impl.SpellTypes;
 import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
@@ -158,7 +158,7 @@ public class SpellManager {
     }
 
     public static void costMana(Player player, int cost){
-        PlayerUtil.addIntegerData(player, PlayerDatas.SPIRITUAL_MANA, - cost);
+        PlayerUtil.addIntegerData(player, PlayerRangeNumbers.SPIRITUAL_MANA, - cost);
     }
 
     public static Component getCostComponent(int cost){

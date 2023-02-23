@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.eixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.immortal.common.impl.PlayerDatas;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +30,7 @@ public abstract class SpiritualElixir extends ElixirItem{
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
             if(livingEntity instanceof Player){
-                PlayerUtil.addIntegerData((Player) livingEntity, PlayerDatas.SPIRITUAL_MANA, getSpiritualValue(accuracy));
+                PlayerUtil.addIntegerData((Player) livingEntity, PlayerRangeNumbers.SPIRITUAL_MANA, getSpiritualValue(accuracy));
             }
         }
     }

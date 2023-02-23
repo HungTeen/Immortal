@@ -1,7 +1,7 @@
 package hungteen.immortal.common.network;
 
+import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.interfaces.IRangeData;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,7 @@ public class IntegerDataPacket {
     private String type;
     private int value;
 
-    public IntegerDataPacket(IRangeData<Integer> data, int value) {
+    public IntegerDataPacket(IRangeNumber<Integer> data, int value) {
         this.type = data.getRegistryName();
         this.value = value;
     }
