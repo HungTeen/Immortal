@@ -48,6 +48,6 @@ public class AbstinenceElixir extends ElixirItem{
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return lessThan(RealmTypes.FOUNDATION_BEGIN).apply(getRealm(livingEntity));
+        return lessEqualThan(RealmTypes.SPIRITUAL_LEVEL_3).apply(getRealm(livingEntity));
     }
 }

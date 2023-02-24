@@ -1,6 +1,7 @@
 package hungteen.immortal.utils;
 
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.WeightList;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.ImmortalConfigs;
@@ -107,16 +108,11 @@ public class PlayerUtil {
 
     @Nullable
     public static PlayerDataManager getManager(Player player) {
-        if(PlayerHelper.isValidPlayer(player)) {
-            final Optional<PlayerCapability> optional = CapabilityHandler.getPlayerCapability(player).resolve();
-            return optional.map(PlayerCapability::get).orElse(null);
-        }
-        return null;
+        return PlayerCapabilityManager.getManager(player, CapabilityHandler.PLAYER_CAP);
     }
 
     public static <T> T getManagerResult(Player player, Function<PlayerDataManager, T> function, T defaultValue) {
-        final PlayerDataManager manager = getManager(player);
-        return manager != null ? function.apply(manager) : defaultValue;
+        return PlayerCapabilityManager.getManagerResult(player, CapabilityHandler.PLAYER_CAP, function, defaultValue);
     }
 
     /* Operations About Spells */
@@ -226,7 +222,7 @@ public class PlayerUtil {
     }
 
     public static IRealmType getPlayerRealm(Player player){
-        return getManagerResult(player, m -> m.getRealm(), RealmTypes.MORTALITY);
+        return getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
     }
 
     /**
@@ -234,7 +230,7 @@ public class PlayerUtil {
      */
     public static void setRealm(Player player, IRealmType realm){
         getOptManager(player).ifPresent(m -> {
-            m.setRealm(realm);
+            m.setRealmType(realm);
             if(! player.level.isClientSide){
                 m.setIntegerData(PlayerRangeNumbers.CULTIVATION, realm.requireCultivation());
                 m.setIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, 0);

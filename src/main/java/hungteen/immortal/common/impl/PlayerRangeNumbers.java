@@ -1,7 +1,6 @@
 package hungteen.immortal.common.impl;
 
 import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.util.interfaces.IRangeNumber;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.Util;
@@ -24,11 +23,6 @@ public class PlayerRangeNumbers {
      * Just like vanilla experience, 玩家的修仙经验值。
      */
     public static final IRangeNumber<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);
-
-    /**
-     * Tell which stage of realm is the player currently stays, 辨别玩家当前处在什么境界。
-     */
-    public static final IRangeNumber<Integer> CULTIVATION_POS = new PlayerData("cultivation_pos", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> SPIRITUAL_MANA = new PlayerData("spiritual_mana", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> MAX_SPIRITUAL_MANA = new PlayerData("max_spiritual_mana", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> CONSCIOUSNESS = new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE);

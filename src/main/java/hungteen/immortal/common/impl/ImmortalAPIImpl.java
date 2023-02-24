@@ -69,7 +69,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     @Override
     public IRealmType getEntityRealm(Entity entity) {
         if(entity instanceof Player){
-            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealm, RealmTypes.MORTALITY);
+            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
         return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
     }

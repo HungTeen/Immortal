@@ -74,7 +74,7 @@ public abstract class CultivationElixir extends ElixirItem{
 
         @Override
         protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-            return lessThan(RealmTypes.FOUNDATION_BEGIN).apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+            return lessEqualThan(RealmTypes.SPIRITUAL_LEVEL_3).apply(ImmortalAPI.get().getEntityRealm(livingEntity));
         }
     }
 

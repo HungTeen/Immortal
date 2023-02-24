@@ -27,6 +27,6 @@ public class FoundationElixir extends ElixirItem{
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return same(RealmTypes.MEDITATION_STAGE10).apply(getRealm(livingEntity));
+        return same(RealmTypes.SPIRITUAL_LEVEL_3).apply(getRealm(livingEntity));
     }
 }

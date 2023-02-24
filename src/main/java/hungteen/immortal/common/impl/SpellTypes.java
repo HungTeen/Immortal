@@ -23,42 +23,42 @@ public class SpellTypes {
 
     private static final List<ISpellType> TYPES = new ArrayList<>();
 
-    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
-            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
-    );
-
-    public static final ISpellType RESTING = new SpellType("resting", 1, 0, 1200,
-            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
-    );
-
-    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
-            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()
-    );
-
-    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
-            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
-    );
-
-    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400,
-            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
-    );
-
-    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
-            lvl -> {
-                return lvl <= 2 ? RealmTypes.MEDITATION_STAGE5 :
-                        lvl <= 4 ? RealmTypes.MEDITATION_STAGE8 :
-                                lvl <= 6 ? RealmTypes.MEDITATION_STAGE10 :
-                                        RealmTypes.FOUNDATION_BEGIN;
-            }, List.of(), List.of()
-    );
-
-    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 1, 50, 3600,
-            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
-    );
-
-    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 1, 10, 50, 400,
-            lvl -> RealmTypes.MEDITATION_STAGE8, List.of(), List.of()
-    );
+//    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
+//            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType RESTING = new SpellType("resting", 1, 0, 1200,
+//            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
+//            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
+//            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
+//    );
+//
+//    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400,
+//            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
+//            lvl -> {
+//                return lvl <= 2 ? RealmTypes.MEDITATION_STAGE5 :
+//                        lvl <= 4 ? RealmTypes.MEDITATION_STAGE8 :
+//                                lvl <= 6 ? RealmTypes.MEDITATION_STAGE10 :
+//                                        RealmTypes.FOUNDATION_BEGIN;
+//            }, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 1, 50, 3600,
+//            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
+//    );
+//
+//    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 1, 10, 50, 400,
+//            lvl -> RealmTypes.MEDITATION_STAGE8, List.of(), List.of()
+//    );
 
     public static class SpellType implements ISpellType {
 

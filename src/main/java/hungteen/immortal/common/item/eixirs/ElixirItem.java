@@ -103,7 +103,8 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     }
 
     /**
-     * Return False to explode, True to successfully eat elixir, absent to pass.
+     * 判断服用丹药的结果。
+     * @return False to explode, True to successfully eat elixir, absent to pass.
      */
     protected abstract Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack);
 
@@ -177,7 +178,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     }
 
     protected static Function<IRealmType, Optional<Boolean>> immortal(){
-        return largeThan(RealmTypes.MEDITATION_BEGINNER);
+        return largeEqualThan(RealmTypes.MORTALITY);
     }
 
     protected static Function<IRealmType, Optional<Boolean>> same(IRealmType base){
@@ -189,7 +190,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         };
     }
 
-    protected static Function<IRealmType, Optional<Boolean>> lessThan(IRealmType base){
+    protected static Function<IRealmType, Optional<Boolean>> lessEqualThan(IRealmType base){
         return realm -> {
             if(realm.getRealmValue() <= base.getRealmValue()){
                 return Optional.of(true);
@@ -198,7 +199,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         };
     }
 
-    protected static Function<IRealmType, Optional<Boolean>> largeThan(IRealmType base){
+    protected static Function<IRealmType, Optional<Boolean>> largeEqualThan(IRealmType base){
         return realm -> {
             if(realm.getRealmValue() >= base.getRealmValue()){
                 return Optional.of(true);

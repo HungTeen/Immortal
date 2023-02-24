@@ -70,16 +70,16 @@ public class SpellManager {
      * {@link ImmortalPlayerEvents#onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post)}
      */
     public static void checkSpellAction(Player player, ISpellType spell, int level) {
-        /* 水之呼吸 */
-        if (spell == SpellTypes.WATER_BREATHING) {
-            if (!player.level.isClientSide) {
-                player.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, SpellTypes.WATER_BREATHING.getDuration(), 1));
-            }
-        }
-        /* 调息术 */
-        if (spell == SpellTypes.RESTING){
-            Util.getProxy().openRestingScreen();
-        }
+//        /* 水之呼吸 */
+//        if (spell == SpellTypes.WATER_BREATHING) {
+//            if (!player.level.isClientSide) {
+//                player.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, SpellTypes.WATER_BREATHING.getDuration(), 1));
+//            }
+//        }
+//        /* 调息术 */
+//        if (spell == SpellTypes.RESTING){
+//            Util.getProxy().openRestingScreen();
+//        }
     }
 
     /**
@@ -88,17 +88,17 @@ public class SpellManager {
     public static void checkSpellAction(Player player, EntityHitResult result) {
         if(player.getMainHandItem().isEmpty()){
             /* 隔空取物，空手获取远处的物品 */
-            if(result.getEntity() instanceof ItemEntity) {
-                checkContinueSpell(player, SpellTypes.ITEM_PICKING, () -> {
-                    player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
-                    result.getEntity().discard();
-                });
-            } else {
-                checkContinueSpell(player, SpellTypes.IGNITE, () -> {
-                    ParticleHelper.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
-                    result.getEntity().setSecondsOnFire(5);
-                });
-            }
+//            if(result.getEntity() instanceof ItemEntity) {
+//                checkContinueSpell(player, SpellTypes.ITEM_PICKING, () -> {
+//                    player.setItemInHand(InteractionHand.MAIN_HAND, ((ItemEntity) result.getEntity()).getItem());
+//                    result.getEntity().discard();
+//                });
+//            } else {
+//                checkContinueSpell(player, SpellTypes.IGNITE, () -> {
+//                    ParticleHelper.spawnLineMovingParticle(player.level, ParticleTypes.FLAME, player.getEyePosition(), result.getEntity().getEyePosition(), 1, 0, 0.05);
+//                    result.getEntity().setSecondsOnFire(5);
+//                });
+//            }
         }
     }
 
@@ -108,30 +108,30 @@ public class SpellManager {
     public static void checkSpellAction(Player player, BlockHitResult result) {
         if(player.getMainHandItem().isEmpty()){
             /* 隔空取物，空手获取远处的方块 */
-            checkContinueSpell(player, SpellTypes.BLOCK_PICKING, () -> {
-                final BlockState state = player.level.getBlockState(result.getBlockPos());
-                // ban bedrock like blocks.
-                if(state.getDestroySpeed(player.level, result.getBlockPos()) >= 0){
-                    final BlockEntity blockentity = state.hasBlockEntity() ? player.level.getBlockEntity(result.getBlockPos()) : null;
-                    final ItemStack stack = new ItemStack(state.getBlock().asItem());
-                    if(blockentity != null){
-                        blockentity.saveToItem(stack);
-                        if (blockentity instanceof Nameable && ((Nameable) blockentity).hasCustomName()) {
-                            stack.setHoverName(((Nameable) blockentity).getCustomName());
-                        }
-                    }
-                    player.setItemInHand(InteractionHand.MAIN_HAND, stack);
-                    player.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
-                }
-            });
-            /* 灵力释放 点火 */
-            checkContinueSpell(player, SpellTypes.RELEASING, () -> {
-                final BlockEntity blockEntity = player.level.getBlockEntity(result.getBlockPos());
-                if(blockEntity instanceof SpiritualFurnaceBlockEntity){
-                    ((SpiritualFurnaceBlockEntity) blockEntity).start();
-                }
-                hungteen.immortal.utils.ParticleUtil.spawnLineSpiritualParticle(player.level, EntityUtil.getRGBForSpiritual(player), player.getEyePosition(), Vec3.atCenterOf(result.getBlockPos()), 2, 0, 0);
-            });
+//            checkContinueSpell(player, SpellTypes.BLOCK_PICKING, () -> {
+//                final BlockState state = player.level.getBlockState(result.getBlockPos());
+//                // ban bedrock like blocks.
+//                if(state.getDestroySpeed(player.level, result.getBlockPos()) >= 0){
+//                    final BlockEntity blockentity = state.hasBlockEntity() ? player.level.getBlockEntity(result.getBlockPos()) : null;
+//                    final ItemStack stack = new ItemStack(state.getBlock().asItem());
+//                    if(blockentity != null){
+//                        blockentity.saveToItem(stack);
+//                        if (blockentity instanceof Nameable && ((Nameable) blockentity).hasCustomName()) {
+//                            stack.setHoverName(((Nameable) blockentity).getCustomName());
+//                        }
+//                    }
+//                    player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+//                    player.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+//                }
+//            });
+//            /* 灵力释放 点火 */
+//            checkContinueSpell(player, SpellTypes.RELEASING, () -> {
+//                final BlockEntity blockEntity = player.level.getBlockEntity(result.getBlockPos());
+//                if(blockEntity instanceof SpiritualFurnaceBlockEntity){
+//                    ((SpiritualFurnaceBlockEntity) blockEntity).start();
+//                }
+//                hungteen.immortal.utils.ParticleUtil.spawnLineSpiritualParticle(player.level, EntityUtil.getRGBForSpiritual(player), player.getEyePosition(), Vec3.atCenterOf(result.getBlockPos()), 2, 0, 0);
+//            });
         }
     }
 

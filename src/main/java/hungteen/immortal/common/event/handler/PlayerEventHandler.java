@@ -46,14 +46,14 @@ public class PlayerEventHandler {
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-        if(PlayerUtil.isSpellActivated(player, SpellTypes.FLY_WITH_SWORD)){
-            FlyingItemEntity flyingItem = ImmortalEntities.FLYING_ITEM.get().create(player.level);
-            flyingItem.setDeltaMovement(itemEntity.getDeltaMovement());
-            flyingItem.setPos(itemEntity.position());
-            flyingItem.setItemStack(itemEntity.getItem());
-            itemEntity.discard();
-            player.level.addFreshEntity(flyingItem);
-        }
+//        if(PlayerUtil.isSpellActivated(player, SpellTypes.FLY_WITH_SWORD)){
+//            FlyingItemEntity flyingItem = ImmortalEntities.FLYING_ITEM.get().create(player.level);
+//            flyingItem.setDeltaMovement(itemEntity.getDeltaMovement());
+//            flyingItem.setPos(itemEntity.position());
+//            flyingItem.setItemStack(itemEntity.getItem());
+//            itemEntity.discard();
+//            player.level.addFreshEntity(flyingItem);
+//        }
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
