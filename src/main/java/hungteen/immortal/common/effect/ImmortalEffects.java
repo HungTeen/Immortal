@@ -9,6 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
+ * TODO 快速回复灵力的状态
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-20 14:39

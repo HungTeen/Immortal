@@ -33,7 +33,6 @@ import java.util.*;
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
-    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
     private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
     private static final HTSimpleRegistry<IRangeNumber<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
@@ -48,7 +47,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<ISpellType>> spellRegistry() {
-        return Optional.of(SPELL_TYPES);
+        return Optional.of(SpellTypes.spellRegistry());
     }
 
     @Override

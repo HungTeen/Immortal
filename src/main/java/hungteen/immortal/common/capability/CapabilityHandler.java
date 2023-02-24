@@ -47,7 +47,4 @@ public class CapabilityHandler {
         PlayerCapabilityManager.register(PLAYER_CAP);
     }
 
-    public static LazyOptional<PlayerCapability> getPlayerCapability(Player player){
-        return PlayerCapabilityManager.getPlayerCapability(player, PLAYER_CAP);
-    }
 }

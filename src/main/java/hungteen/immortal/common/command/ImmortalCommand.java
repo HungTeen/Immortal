@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
@@ -15,12 +16,15 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @program: Immortal
@@ -130,34 +134,30 @@ public class ImmortalCommand {
     private static int resetSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
             PlayerUtil.resetSpiritualRoots(player);
-            PlayerUtil.showPlayerSpiritualRoots(player);
+            showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
     }
 
     private static int querySpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.showPlayerSpiritualRoots(player);
+            showPlayerSpiritualRoots(source, player, false);
         }
         return targets.size();
     }
 
     private static int addSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.getOptManager(player).ifPresent(l -> {
-                l.addSpiritualRoot(root);
-                source.sendSuccess(root.getComponent(), true);
-            });
+            PlayerUtil.getOptManager(player).ifPresent(l -> l.addSpiritualRoot(root));
+            showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
     }
 
     private static int removeSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.getOptManager(player).ifPresent(l -> {
-                l.removeSpiritualRoot(root);
-                source.sendSuccess(root.getComponent(), true);
-            });
+            PlayerUtil.getOptManager(player).ifPresent(l -> l.removeSpiritualRoot(root));
+            showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
     }
@@ -216,6 +216,22 @@ public class ImmortalCommand {
             source.sendSuccess(Component.literal(data.getComponent().getString() + " : " + result), true);
         }
         return targets.size();
+    }
+
+    /**
+     * @param spread tell the target player or not.
+     */
+    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread){
+        PlayerUtil.getOptManager(player).ifPresent(l -> {
+            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root").append(" of ").append(player.getName()).append(" : ");
+            final List<ISpiritualType> list = l.getSpiritualRoots();
+            for(int i = 0; i < list.size(); ++ i){
+                if(i > 0) component.append(Component.literal(","));
+                component.append(Component.translatable("misc.immortal.root." + list.get(i).getName()));
+            }
+            if(spread) PlayerHelper.sendMsgTo(player, component);
+            source.sendSuccess(component, true);
+        });
     }
 
 }

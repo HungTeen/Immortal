@@ -6,67 +6,52 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.List;
 
 /**
+ * 法术。
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-29 12:30
- *
- * 法术。
  **/
 public interface ISpellType extends ISimpleEntry {
 
     /**
      * 此法术有多少层。
-     * How many levels does the spell have.
+     * @return How many levels does the spell have.
      */
     int getMaxLevel();
 
     /**
      * 施放此法术需要消耗多少灵力，只考虑开始阶段。
-     * how many spiritual energy will cost, only consider the start stage.
+     * @return How many spiritual mana will cost, only consider the start stage.
      */
     int getStartMana();
 
     /**
      * 施放此法术需要消耗多少灵力，中间阶段。
-     * how many spiritual energy will cost, only consider the using stage.
+     * @return How many spiritual mana will cost, only consider each using stage.
      */
     int getContinueMana();
 
     /**
      * 此法术的持续时间。
-     * Duration of this spell.
+     * @return Active duration of this spell.
      */
     int getDuration();
 
     /**
-     * 学习此法术需要的最低境界。
-     * The lowest realm required to learn this spell.
-     * @return
+     * 此法术有效的合适境界。
+     * @return The realm required for this spell.
      */
-    IRealmType requireRealm(int level);
+    boolean fitRealm(IRealmType realm, int level);
 
     /**
      * 学习此法术需要什么灵根。
-     * How many types of roots required to learn this spell.
+     * @return How many types of roots required to learn this spell.
      */
     List<ISpiritualType> requireSpiritualRoots();
 
     /**
-     * 学习此法术需要的前置法术。
-     * The pre spells required to learn this spell.
-     */
-    List<ISpellType> requirePreSpells();
-
-    /**
-     * 是否有功法秘籍的物品。
-     * Weather the specific spell has tutorial book.
-     */
-    boolean hasTutorialBook();
-
-    /**
      * 获取法术贴图位置、
-     * Get the assess method for this spell.
-     * @return
+     * @return Get the texture location for this spell.
      */
     ResourceLocation getSpellTexture();
 

@@ -1,5 +1,8 @@
 package hungteen.immortal.common.impl;
 
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealmType;
@@ -12,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -21,7 +25,12 @@ import java.util.function.Function;
  **/
 public class SpellTypes {
 
+    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final List<ISpellType> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<ISpellType> spellRegistry() {
+        return SPELL_TYPES;
+    }
 
 //    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
 //            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
@@ -123,8 +132,9 @@ public class SpellTypes {
         }
 
         @Override
-        public IRealmType requireRealm(int level) {
-            return this.realmFunc.apply(level);
+        public boolean fitRealm(IRealmType realm, int level) {
+            //TODO Fit
+            return false;
         }
 
         @Override
@@ -133,18 +143,8 @@ public class SpellTypes {
         }
 
         @Override
-        public List<ISpellType> requirePreSpells() {
-            return requireSpells;
-        }
-
-        @Override
         public ResourceLocation getSpellTexture() {
             return resourceLocation;
-        }
-
-        @Override
-        public boolean hasTutorialBook() {
-            return hasTutorialBook;
         }
 
         @Override

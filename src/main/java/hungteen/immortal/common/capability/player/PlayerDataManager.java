@@ -42,7 +42,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>();
     /* Store the end time of specific spells */
     private final HashMap<ISpellType, Long> activateSpells = new HashMap<>();
-    private ISpellType[] spellList = new ISpellType[Constants.SPELL_NUMS];
+    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_NUMS];
     private int selectedSpellPosition = 0;
     /* Cultivation */
     private IRealmType realmType = RealmTypes.MORTALITY;
@@ -58,8 +58,8 @@ public class PlayerDataManager implements IPlayerDataManager {
                 integerMap.put(data, data.defaultData());
             });
         }
-        //TODO 随机生成灵根
-        PlayerUtil.showPlayerSpiritualRoots(player);
+        // 初始化玩家的灵根
+        PlayerUtil.resetSpiritualRoots(player);
     }
 
     @Override
@@ -100,15 +100,15 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            this.learnSpells.forEach((p1, p2) -> {
-                nbt.putInt(p1.getName(), p2);
+            this.learnSpells.forEach((spell, level) -> {
+                nbt.putInt(spell.getRegistryName(), level);
             });
             tag.put("LearnSpells", nbt);
         }
         {
             CompoundTag nbt = new CompoundTag();
-            this.activateSpells.forEach((p1, p2) -> {
-                nbt.putLong(p1.getName(), p2);
+            this.activateSpells.forEach((spell, time) -> {
+                nbt.putLong(spell.getRegistryName(), time);
             });
             tag.put("ActivateSpells", nbt);
         }
@@ -217,29 +217,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     /**
-     * run when player join world.
-     * {@link PlayerEventHandler#onPlayerLogin(Player)}
-     */
-    public void init() {
-        this.syncBounds();
-        this.syncToClient();
-    }
-
-    /**
-     * avoid render out of bound.
-     * {@link #init()}
-     */
-    private void syncBounds() {
-//        {// player resources.
-//            for(Resources res : Resources.values()) {
-//                this.addResource(res, 0);
-//            }
-//        }
-    }
-
-    /**
      * sync data to client side.
-     * {@link #init()}
      */
     @Override
     public void syncToClient() {
@@ -255,9 +233,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, time);
         });
         this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, this.selectedSpellPosition);
-        this.integerMap.forEach((data, value) -> {
-            this.sendIntegerDataPacket(data, value);
-        });
+        this.integerMap.forEach(this::sendIntegerDataPacket);
     }
 
     /* SpiritualRoots related methods */
@@ -283,7 +259,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public List<ISpiritualType> getSpiritualRoots() {
-        return Collections.unmodifiableList(this.spiritualRoots.stream().toList());
+        return this.spiritualRoots.stream().toList();
     }
 
     /* Spell related methods */
@@ -433,17 +409,19 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     /**
-     * natural increasing point.
+     * 第一层法力条的极限。
+     * @return Natural increasing point.
      */
     public int getFullManaValue(){
-        return Mth.clamp(getIntegerData(PlayerRangeNumbers.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getIntegerData(PlayerRangeNumbers.CULTIVATION));
+        return Mth.clamp(getIntegerData(PlayerRangeNumbers.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getRealmType().getSpiritualValueLimit());
     }
 
     /**
-     * explode if player has more mana than it.
+     * 第二层溢出条的极限。
+     * @return Explode if player has more mana than it.
      */
     public int getLimitManaValue(){
-        return getIntegerData(PlayerRangeNumbers.CULTIVATION);
+        return getRealmType().getSpiritualValueLimit();
     }
 
     public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {

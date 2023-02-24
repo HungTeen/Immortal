@@ -40,24 +40,23 @@ public class PlayerUtil {
     public static boolean isInCD(Player player, Item item){
         return player.getCooldowns().isOnCooldown(item);
     }
+
     /**
      * 重置玩家的灵根。
+     * {@link ImmortalCommand}
      */
     public static void resetSpiritualRoots(Player player){
-        List<ISpiritualType> roots = getSpiritualRoots(player.getRandom());
         getOptManager(player).ifPresent(l -> {
             l.clearSpiritualRoot();
-            roots.forEach(r -> {
-                l.addSpiritualRoot(r);
-            });
+            getSpiritualRoots(player.getRandom()).forEach(l::addSpiritualRoot);
         });
     }
 
     /**
-     * 玩家灵根的生成规则：
-     * 1. 首先依据概率选择是几个灵根（0 - 5）。
-     * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。
-     * 3. 否则依据权重在普通五行灵根中选择若干个。
+     * 玩家灵根的生成规则： <br>
+     * 1. 首先依据概率选择是几个灵根（0 - 5）。 <br>
+     * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。 <br>
+     * 3. 否则依据权重在普通五行灵根中选择若干个。 <br>
      */
     public static List<ISpiritualType> getSpiritualRoots(RandomSource random){
         final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
@@ -87,19 +86,6 @@ public class PlayerUtil {
         }
 
         return rootChosen;
-    }
-
-    public static void showPlayerSpiritualRoots(Player player){
-//        PlayerUtil.getOptManager(player).ifPresent(l -> {
-//            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root");
-//            for(ISpiritualType spiritualRoot : ImmortalAPI.get().getSpiritualRoots()){
-//                if(l.hasSpiritualRoot(spiritualRoot)){
-//                    component.append(Component.literal(","));
-//                    component.append(Component.translatable("misc.immortal.root." + spiritualRoot.getName()));
-//                }
-//            }
-//            PlayerHelper.sendMsgTo(player, component);
-//        });
     }
 
     public static Optional<PlayerDataManager> getOptManager(Player player) {
