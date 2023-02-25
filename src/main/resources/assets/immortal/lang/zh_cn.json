@@ -50,6 +50,12 @@
   "gui.immortal.elixir_furnace.score": "准确度 : %d%%",
   "_comment7": "--------------------------------------------成就进度-------------------------------------------",
   "_comment8": "--------------------------------------------系统温馨提示-------------------------------------------",
+  "command.immortal.learn_all_spells": "已学习所有法术",
+  "command.immortal.forget_all_spells": "已遗忘所有法术",
+  "command.immortal.spiritual_root": "%s的灵根：",
+
+  "info.immortal.no_root_for_inspiration": "好像没有什么启发",
+  "info.immortal.close_to_inspiration": "好像感受到了一丝灵气，再多试试",
   "info.immortal.spell_cost": "消耗%d灵力",
   "info.immortal.spell_cd": "冷却%d秒",
   "info.immortal.elixir_room.no_furnace": "丹室下方需要放置灵火炉",

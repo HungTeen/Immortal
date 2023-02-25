@@ -32,6 +32,8 @@ public class SpellTypes {
         return SPELL_TYPES;
     }
 
+    public static final ISpellType INSPIRATION = new SpellType("inspiration", 1, 0, 0, 10, 1200, List.of());
+
 //    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
 //            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
 //    );
@@ -47,12 +49,13 @@ public class SpellTypes {
 //    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
 //            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
 //    );
-//
-//    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400,
-//            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
-//    );
-//
-//    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
+
+    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400, 600, List.of());
+    public static final ISpellType ITEM_STEALING = new SpellType("item_stealing", 1, 10, 10, 400, 1800, List.of());
+    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 2, 10, 10, 400, 600, List.of());
+    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 3, 50, 30, 200, 2400, List.of());
+
+    //    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
 //            lvl -> {
 //                return lvl <= 2 ? RealmTypes.MEDITATION_STAGE5 :
 //                        lvl <= 4 ? RealmTypes.MEDITATION_STAGE8 :
@@ -60,14 +63,10 @@ public class SpellTypes {
 //                                        RealmTypes.FOUNDATION_BEGIN;
 //            }, List.of(), List.of()
 //    );
-//
-//    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 1, 50, 3600,
-//            lvl -> RealmTypes.MEDITATION_STAGE5, List.of(), List.of()
-//    );
-//
-//    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 1, 10, 50, 400,
-//            lvl -> RealmTypes.MEDITATION_STAGE8, List.of(), List.of()
-//    );
+
+
+
+
 
     public static class SpellType implements ISpellType {
 
@@ -76,10 +75,8 @@ public class SpellTypes {
         private final int startMana;
         private final int continueMana;
         private final int duration;
-        private final boolean hasTutorialBook;
-        private final Function<Integer, IRealmType> realmFunc;
+        private final int cooldown;
         private final List<ISpiritualType> requireRoots;
-        private final List<ISpellType> requireSpells;
         private final ResourceLocation resourceLocation;
 
         /**
@@ -89,24 +86,14 @@ public class SpellTypes {
             ImmortalAPI.get().spellRegistry().ifPresent(l -> l.register(TYPES));
         }
 
-        public SpellType(String name, int maxLevel, int startMana, int duration, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
-            this(name, maxLevel, startMana, 0, duration, realmFunc, requireRoots, requireSpells);
-        }
-
-        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
-            this(name, maxLevel, startMana, continueMana, duration, true, realmFunc, requireRoots, requireSpells);
-        }
-
-        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, boolean hasTutorialBook, Function<Integer, IRealmType> realmFunc, List<ISpiritualType> requireRoots, List<ISpellType> requireSpells) {
+        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, int cooldown, List<ISpiritualType> requireRoots) {
             this.name = name;
             this.maxLevel = maxLevel;
             this.startMana = startMana;
             this.continueMana = continueMana;
             this.duration = duration;
-            this.hasTutorialBook = hasTutorialBook;
-            this.realmFunc = realmFunc;
+            this.cooldown = cooldown;
             this.requireRoots = requireRoots;
-            this.requireSpells = requireSpells;
             this.resourceLocation = Util.prefix("textures/spell/" + this.name + ".png");
             TYPES.add(this);
         }
@@ -132,9 +119,8 @@ public class SpellTypes {
         }
 
         @Override
-        public boolean fitRealm(IRealmType realm, int level) {
-            //TODO Fit
-            return false;
+        public int getCooldown() {
+            return cooldown;
         }
 
         @Override

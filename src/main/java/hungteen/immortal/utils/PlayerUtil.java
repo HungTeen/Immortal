@@ -3,14 +3,12 @@ package hungteen.immortal.utils;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.WeightList;
-import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.capability.CapabilityHandler;
-import hungteen.immortal.common.capability.player.PlayerCapability;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
 import hungteen.immortal.common.impl.PlayerRangeNumbers;
@@ -111,6 +109,14 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.forgetSpell(spell));
     }
 
+    public static void learnAllSpell(Player player, int level) {
+        getOptManager(player).ifPresent(l -> l.learnAllSpells(level));
+    }
+
+    public static void forgetAllSpell(Player player){
+        getOptManager(player).ifPresent(PlayerDataManager::forgetAllSpells);
+    }
+
     public static void setSpellList(Player player, int pos, ISpellType spell){
         getOptManager(player).ifPresent(l -> l.setSpellList(pos, spell));
     }
@@ -120,25 +126,24 @@ public class PlayerUtil {
     }
 
     /**
-     * Not only used by S -> C sync.
-     * Also use by {@link ImmortalCommand} for ignore checking.
+     * <b> Do not use this method to activate spells ! </b> <br>
+     * Not only used by S -> C sync. <br>
+     * Also use by {@link ImmortalCommand} for ignore checking & cd.
      */
     public static void activateSpell(Player player, ISpellType spell, long num){
-        getOptManager(player).ifPresent(l -> {
-            l.activateSpell(spell, num);
-        });
+        getOptManager(player).ifPresent(l -> l.activateSpell(spell, num));
+    }
+
+    public static void cooldownSpell(Player player, ISpellType spell, long num){
+        getOptManager(player).ifPresent(l -> l.cooldownSpell(spell, num));
     }
 
     public static void selectSpell(Player player, long num){
-        getOptManager(player).ifPresent(l -> {
-            l.selectSpell(num);
-        });
+        getOptManager(player).ifPresent(l -> l.selectSpell(num));
     }
 
     public static void nextSpell(Player player, long num){
-        getOptManager(player).ifPresent(l -> {
-            l.nextSpell(num);
-        });
+        getOptManager(player).ifPresent(l -> l.nextSpell(num));
     }
 
     public static int getSpellSelectedPosition(Player player) {
@@ -159,20 +164,24 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.isSpellActivated(spell), false);
     }
 
+    public static boolean isSpellOnCooldown(Player player, ISpellType spell) {
+        return getManagerResult(player, m -> m.activatedOrCooldown(spell), false);
+    }
+
     public static double getSpellCDValue(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.getSpellCDValue(spell), 0D);
     }
 
-    public static boolean learnedSpell(Player player, ISpellType spell) {
-        return learnedSpell(player, spell, 1);
+    public static boolean hasLearnedSpell(Player player, ISpellType spell) {
+        return hasLearnedSpell(player, spell, 1);
     }
 
-    public static boolean learnedSpell(Player player, ISpellType spell, int level) {
-        return getManagerResult(player, m -> m.learnedSpell(spell, level), false);
+    public static boolean hasLearnedSpell(Player player, ISpellType spell, int level) {
+        return getManagerResult(player, m -> m.hasLearnedSpell(spell, level), false);
     }
 
-    public static int getSpellLearnLevel(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.getSpellLearnLevel(spell), 0);
+    public static int getSpellLevel(Player player, ISpellType spell) {
+        return getManagerResult(player, m -> m.getSpellLevel(spell), 0);
     }
 
     /* Operations about Integer Data */

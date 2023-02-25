@@ -38,10 +38,10 @@ public interface ISpellType extends ISimpleEntry {
     int getDuration();
 
     /**
-     * 此法术有效的合适境界。
-     * @return The realm required for this spell.
+     * 此法术的冷却时间。
+     * @return each releasing cool down.
      */
-    boolean fitRealm(IRealmType realm, int level);
+    int getCooldown();
 
     /**
      * 学习此法术需要什么灵根。

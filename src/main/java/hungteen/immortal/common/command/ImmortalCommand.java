@@ -33,6 +33,10 @@ import java.util.List;
  **/
 public class ImmortalCommand {
 
+    private static final String COMMAND_SPIRITUAL_ROOT = "command.immortal.spiritual_root";
+    private static final Component COMMAND_LEARN_ALL_SPELLS = Component.translatable("command.immortal.learn_all_spells");
+    private static final Component COMMAND_FORGET_ALL_SPELLS = Component.translatable("command.immortal.forget_all_spells");
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("immortal").requires((ctx) -> ctx.hasPermission(2));
         if(ImmortalAPI.get().spiritualRegistry().isPresent()){// about spiritual roots.
@@ -84,8 +88,20 @@ public class ImmortalCommand {
                                                 )))
                         ));
             });
+            builder.then(Commands.literal("spell")
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.literal("learn")
+                                    .then(Commands.literal("all")
+                                            .then(Commands.argument("level", IntegerArgumentType.integer())
+                                                    .executes(command -> learnAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), IntegerArgumentType.getInteger(command, "level")))
+                                            )))
+                            .then(Commands.literal("forget")
+                                    .then(Commands.literal("all")
+                                            .executes(command -> forgetAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                                    ))
+                    ));
         }
-        if(ImmortalAPI.get().integerDataRegistry().isPresent()){// about spells.
+        if(ImmortalAPI.get().integerDataRegistry().isPresent()){// about other data.
             ImmortalAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
                 builder.then(Commands.literal("data")
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -131,6 +147,8 @@ public class ImmortalCommand {
         return targets.size();
     }
 
+    /* Spiritual Roots */
+
     private static int resetSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
             PlayerUtil.resetSpiritualRoots(player);
@@ -162,42 +180,85 @@ public class ImmortalCommand {
         return targets.size();
     }
 
+    /**
+     * @param spread tell the target player or not.
+     */
+    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread){
+        PlayerUtil.getOptManager(player).ifPresent(l -> {
+            final MutableComponent component = Component.translatable(COMMAND_SPIRITUAL_ROOT, player.getName().getString());
+            final List<ISpiritualType> list = l.getSpiritualRoots();
+            for(int i = 0; i < list.size(); ++ i){
+                if(i > 0) component.append(Component.literal(","));
+                component.append(list.get(i).getComponent());
+            }
+            if(spread) PlayerHelper.sendMsgTo(player, component);
+            source.sendSuccess(component, true);
+        });
+    }
+
+    /* Spells */
+
     private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell, int level) {
         for (ServerPlayer player : targets) {
             PlayerUtil.learnSpell(player, spell, level);
-            source.sendSuccess(spell.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
+        source.sendSuccess(spell.getComponent(), true);
         return targets.size();
     }
 
     private static int forgetSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.forgetSpell(player, spell);
-            source.sendSuccess(spell.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
+        source.sendSuccess(spell.getComponent(), true);
         return targets.size();
     }
 
     private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.activateSpell(player, spell, SpellManager.getSpellActivateTime(player, spell));
-            source.sendSuccess(spell.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
+        source.sendSuccess(spell.getComponent(), true);
         return targets.size();
     }
 
     private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell, int pos) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setSpellList(player, pos, spell);
-            source.sendSuccess(spell.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
+        source.sendSuccess(spell.getComponent(), true);
         return targets.size();
     }
+
+    private static int learnAllSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, int level) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.learnAllSpell(player, level);
+            PlayerHelper.sendMsgTo(player, COMMAND_LEARN_ALL_SPELLS);
+        }
+        source.sendSuccess(COMMAND_LEARN_ALL_SPELLS, true);
+        return targets.size();
+    }
+
+    private static int forgetAllSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.forgetAllSpell(player);
+            PlayerHelper.sendMsgTo(player, COMMAND_FORGET_ALL_SPELLS);
+        }
+        source.sendSuccess(COMMAND_FORGET_ALL_SPELLS, true);
+        return targets.size();
+    }
+
+    /* Integers */
 
     private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
-            source.sendSuccess(data.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, getIntegerComponent(data, value));
+            source.sendSuccess(getIntegerComponent(player, data, value), true);
         }
         return targets.size();
     }
@@ -205,33 +266,25 @@ public class ImmortalCommand {
     private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
-            source.sendSuccess(data.getComponent(), true);
+            PlayerHelper.sendMsgTo(player, getIntegerComponent(data, PlayerUtil.getIntegerData(player, data)));
+            source.sendSuccess(getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
     private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data) {
         for (ServerPlayer player : targets) {
-            final int result = PlayerUtil.getIntegerData(player, data);
-            source.sendSuccess(Component.literal(data.getComponent().getString() + " : " + result), true);
+            source.sendSuccess(getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
-    /**
-     * @param spread tell the target player or not.
-     */
-    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread){
-        PlayerUtil.getOptManager(player).ifPresent(l -> {
-            final MutableComponent component = Component.translatable("misc.immortal.spiritual_root").append(" of ").append(player.getName()).append(" : ");
-            final List<ISpiritualType> list = l.getSpiritualRoots();
-            for(int i = 0; i < list.size(); ++ i){
-                if(i > 0) component.append(Component.literal(","));
-                component.append(Component.translatable("misc.immortal.root." + list.get(i).getName()));
-            }
-            if(spread) PlayerHelper.sendMsgTo(player, component);
-            source.sendSuccess(component, true);
-        });
+    private static Component getIntegerComponent(Player player, IRangeNumber<Integer> data, int value){
+        return Component.literal(player.getName().getString() + " -> " + data.getComponent().getString() + " : " + value);
+    }
+
+    private static Component getIntegerComponent(IRangeNumber<Integer> data, int value){
+        return Component.literal(data.getComponent().getString() + " : " + value);
     }
 
 }

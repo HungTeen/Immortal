@@ -1,35 +1,23 @@
 package hungteen.immortal.common;
 
-import hungteen.htlib.util.helper.EffectHelper;
-import hungteen.htlib.util.helper.ParticleHelper;
+import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.events.PlayerSpellEvent;
 import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
+import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.SpellTypes;
 import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.common.impl.PlayerRangeNumbers;
-import hungteen.immortal.common.impl.SpellTypes;
-import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.TipUtil;
-import hungteen.immortal.utils.Util;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.Nameable;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
@@ -42,24 +30,33 @@ import java.util.function.Supplier;
  **/
 public class SpellManager {
 
+    private static final Component NO_ROOT_FOR_INSPIRATION = Component.translatable("info.immortal.no_root_for_inspiration");
+    private static final Component CLOSE_TO_INSPIRATION = Component.translatable("info.immortal.close_to_inspiration");
+
     /**
      * Only on Server Side.
      * {@link SpellPacket.Handler#onMessage(SpellPacket, Supplier)}
      */
     public static void checkActivateSpell(Player player){
-        final ISpellType spell = PlayerUtil.getSelectedSpell(player);
+        checkActivateSpell(player, PlayerUtil.getSelectedSpell(player));
+    }
+
+    /**
+     * Use this method to activate spell.
+     */
+    public static void checkActivateSpell(Player player, ISpellType spell){
         if(spell != null){
-            final int level = PlayerUtil.getSpellLearnLevel(player, spell);
-            if(PlayerUtil.isSpellActivated(player, spell)){
+            final int level = PlayerUtil.getSpellLevel(player, spell);
+            // 冷却中或还没结束
+            if(PlayerUtil.isSpellOnCooldown(player, spell)){
                 return;
             }
             if(! canSpellStart(player, spell)){
                 return;
             }
             if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
-                if(! player.level.isClientSide){
-                    PlayerUtil.activateSpell(player, spell, getSpellActivateTime(player, spell));
-                }
+                PlayerUtil.activateSpell(player, spell, getSpellActivateTime(player, spell));
+                PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
                 costMana(player, spell.getStartMana());
                 MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level));
             }
@@ -67,9 +64,24 @@ public class SpellManager {
     }
 
     /**
+     * 刚触发时的效果 <br>
      * {@link ImmortalPlayerEvents#onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post)}
      */
     public static void checkSpellAction(Player player, ISpellType spell, int level) {
+        /* 启灵 */
+        if(spell == SpellTypes.INSPIRATION){
+            int rootCount = PlayerUtil.getSpiritualRoots(player).size();
+            if(rootCount == 0){
+                PlayerHelper.sendTipTo(player, NO_ROOT_FOR_INSPIRATION);
+            } else {
+                //TODO 启灵有点粗糙
+                if(RandomHelper.chance(player.getRandom(), 0.9F / rootCount)){
+                    PlayerUtil.setRealm(player, RealmTypes.SPIRITUAL_LEVEL_1);
+                } else {
+                    PlayerHelper.sendTipTo(player, CLOSE_TO_INSPIRATION);
+                }
+            }
+        }
 //        /* 水之呼吸 */
 //        if (spell == SpellTypes.WATER_BREATHING) {
 //            if (!player.level.isClientSide) {
@@ -137,7 +149,7 @@ public class SpellManager {
 
     public static void checkContinueSpell(Player player, @Nonnull ISpellType spell, Runnable runnable) {
         if(PlayerUtil.isSpellActivated(player, spell) && canSpellContinue(player, spell)){
-            final int level = PlayerUtil.getSpellLearnLevel(player, spell);
+            final int level = PlayerUtil.getSpellLevel(player, spell);
             if(!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.UsingSpellEvent(player, spell, level))){
                 runnable.run();
                 costMana(player, spell.getContinueMana());
@@ -147,6 +159,10 @@ public class SpellManager {
 
     public static long getSpellActivateTime(Player player, ISpellType spell){
         return player.level.getGameTime() + spell.getDuration();
+    }
+
+    public static long getSpellCDTime(Player player, ISpellType spell){
+        return player.level.getGameTime() + spell.getCooldown();
     }
 
     public static boolean canSpellStart(Player player, ISpellType spell){

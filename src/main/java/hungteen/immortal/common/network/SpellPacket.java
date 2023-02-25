@@ -54,7 +54,6 @@ public class SpellPacket {
                             switch (message.option) {
                                 case SELECT -> PlayerUtil.selectSpell(player, message.num);
                                 case NEXT -> PlayerUtil.nextSpell(player, message.num);
-//                                case ACTIVATE_AT -> PlayerUtil.activateSpellAt(player);
                             }
                         });
                         return;
@@ -64,10 +63,10 @@ public class SpellPacket {
                             Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
                                 switch (message.option) {
                                     case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
-                                    case FORGET -> PlayerUtil.forgetSpell(player, spell);
                                     case SET -> PlayerUtil.setSpellList(player, (int) message.num, spell);
                                     case REMOVE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
                                     case ACTIVATE -> PlayerUtil.activateSpell(player, spell, message.num);
+                                    case COOLDOWN -> PlayerUtil.cooldownSpell(player, spell, message.num);
                                 }
                             });
                         });
@@ -86,10 +85,10 @@ public class SpellPacket {
 
     public enum SpellOptions {
         LEARN,
-        FORGET,
         SET,
         REMOVE,
         ACTIVATE,
+        COOLDOWN,
         SELECT,
         NEXT,
         ACTIVATE_AT
