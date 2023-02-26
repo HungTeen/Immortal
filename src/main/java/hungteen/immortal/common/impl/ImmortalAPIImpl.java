@@ -32,7 +32,6 @@ import java.util.*;
  **/
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
-    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
     private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
     private static final HTSimpleRegistry<IRangeNumber<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
@@ -42,7 +41,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
-        return Optional.of(SPIRITUAL_TYPES);
+        return Optional.of(SpiritualTypes.spiritualRegistry());
     }
 
     @Override
@@ -70,6 +69,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
         if(entity instanceof Player){
             PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
+        //TODO 境界
         return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
     }
 

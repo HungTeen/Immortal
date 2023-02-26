@@ -1,6 +1,9 @@
 package hungteen.immortal.common.impl;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.ImmortalMod;
@@ -24,7 +27,12 @@ import java.util.function.Supplier;
 public class SpiritualTypes {
 
     public static final int TEX_WIDTH = 9;
+    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final List<ISpiritualType> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<ISpiritualType> spiritualRegistry() {
+        return SPIRITUAL_TYPES;
+    }
 
     public static final ISpiritualType METAL = new SpiritualType("metal", true, ImmortalConfigs::getMetalWeight, 1, ColorHelper.METAL_ROOT, ChatFormatting.GOLD, Pair.of(0, 0));
     public static final ISpiritualType WOOD = new SpiritualType("wood", true, ImmortalConfigs::getWoodWeight, 2, ColorHelper.WOOD_ROOT, ChatFormatting.GREEN, Pair.of(10, 0));

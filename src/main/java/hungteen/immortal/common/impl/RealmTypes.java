@@ -20,6 +20,10 @@ public class RealmTypes {
 
     private static final List<IRealmType> TYPES = new ArrayList<>();
 
+    /**
+     * 无境界。
+     */
+    public static final IRealmType NOT_IN_REALM = new RealmType("not_in_realm", 0, 0, 0, 0, true, CultivationTypes.MORTAL);
     public static final IRealmType MORTALITY = new RealmType("mortality", 0, 0, 0, 0, true, CultivationTypes.MORTAL);
 
     public static final IRealmType SPIRITUAL_LEVEL_1 = new RealmType("spiritual_level_1", 50, 15, 10, 20, false, CultivationTypes.SPIRITUAL);
