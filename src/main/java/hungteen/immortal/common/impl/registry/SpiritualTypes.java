@@ -1,4 +1,4 @@
-package hungteen.immortal.common.impl;
+package hungteen.immortal.common.impl.registry;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
@@ -30,7 +30,7 @@ public class SpiritualTypes {
     private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
     private static final List<ISpiritualType> TYPES = new ArrayList<>();
 
-    public static IHTSimpleRegistry<ISpiritualType> spiritualRegistry() {
+    public static IHTSimpleRegistry<ISpiritualType> registry() {
         return SPIRITUAL_TYPES;
     }
 

@@ -11,6 +11,7 @@ import hungteen.immortal.common.block.artifacts.SpiritualRoom;
 import hungteen.immortal.common.block.plants.AttachedGourdStemBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.item.ItemTabs;
 import hungteen.immortal.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.immortal.utils.Util;
@@ -44,10 +45,10 @@ public class ImmortalBlocks {
 
     /* Entity Blocks */
 
-    public static final RegistryObject<Block> COPPER_SPIRITUAL_FURNACE = BLOCKS.register("copper_spiritual_furnace", () -> new SpiritualFurnace(1));
-    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoom(1));
-    public static final RegistryObject<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.register("copper_spiritual_room", () -> new SpiritualRoom(1));
-    public static final RegistryObject<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.register("copper_smithing_artifact", () -> new SmithingArtifact(1));
+    public static final RegistryObject<Block> COPPER_SPIRITUAL_FURNACE = BLOCKS.register("copper_spiritual_furnace", () -> new SpiritualFurnace(ArtifactTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoom(ArtifactTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.register("copper_spiritual_room", () -> new SpiritualRoom(ArtifactTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.register("copper_smithing_artifact", () -> new SmithingArtifact(ArtifactTypes.COMMON_ARTIFACT));
 
     /* Tree Suits */
 

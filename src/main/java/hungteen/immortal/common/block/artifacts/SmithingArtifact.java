@@ -1,7 +1,8 @@
 package hungteen.immortal.common.block.artifacts;
 
 import hungteen.htlib.common.block.entityblock.HTEntityBlock;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.item.ImmortalToolActions;
 import net.minecraft.core.BlockPos;
@@ -30,10 +31,9 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2022-11-13 19:22
  **/
-public class SmithingArtifact extends HTEntityBlock implements IArtifact {
+public class SmithingArtifact extends ArtifactEntityBlock {
 
     private static final VoxelShape AABB;
-    private final int level;
 
     static{
         VoxelShape voxelShape = Block.box(0, 6, 0, 16, 14, 16);
@@ -41,9 +41,8 @@ public class SmithingArtifact extends HTEntityBlock implements IArtifact {
         AABB = Shapes.or(voxelShape, voxelShape2);
     }
 
-    public SmithingArtifact(int level) {
-        super(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE));
-        this.level = level;
+    public SmithingArtifact(IArtifactType artifactType) {
+        super(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE), artifactType);
     }
 
     @Override
@@ -87,8 +86,4 @@ public class SmithingArtifact extends HTEntityBlock implements IArtifact {
         return AABB;
     }
 
-    @Override
-    public int getArtifactLevel() {
-        return this.level;
-    }
 }

@@ -1,11 +1,10 @@
-package hungteen.immortal.common.impl;
+package hungteen.immortal.common.impl.registry;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.utils.Util;
@@ -15,8 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * @program: Immortal
@@ -25,10 +22,10 @@ import java.util.function.Function;
  **/
 public class SpellTypes {
 
-    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
+    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spell_type"));
     private static final List<ISpellType> TYPES = new ArrayList<>();
 
-    public static IHTSimpleRegistry<ISpellType> spellRegistry() {
+    public static IHTSimpleRegistry<ISpellType> registry() {
         return SPELL_TYPES;
     }
 

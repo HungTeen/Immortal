@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.api.interfaces.IArtifactTier;
 import net.minecraft.tags.BlockTags;
 
 /**
@@ -10,8 +10,8 @@ import net.minecraft.tags.BlockTags;
  **/
 public class ShovelItem extends DiggerItem {
 
-    public ShovelItem(boolean isAncientArtifact, IArtifactTier tier, float digSpeed) {
-        super(MeleeAttackTypes.SHOVEL, isAncientArtifact, tier, digSpeed, BlockTags.MINEABLE_WITH_SHOVEL);
+    public ShovelItem(IArtifactTier tier, float digSpeed) {
+        super(MeleeAttackTypes.SHOVEL, tier, digSpeed, BlockTags.MINEABLE_WITH_SHOVEL);
     }
 
 }

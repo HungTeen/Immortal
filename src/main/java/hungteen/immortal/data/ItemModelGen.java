@@ -6,7 +6,7 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.impl.ImmortalWoods;
+import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.item.artifacts.MeleeAttackItem;
 import hungteen.immortal.utils.ItemUtil;

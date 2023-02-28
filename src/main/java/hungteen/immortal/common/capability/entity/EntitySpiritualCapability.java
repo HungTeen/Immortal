@@ -1,7 +1,7 @@
 package hungteen.immortal.common.capability.entity;
 
 import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.common.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 
@@ -37,7 +37,7 @@ public class EntitySpiritualCapability implements ISpiritualCapability {
         if(tag.contains("Elements")){
             this.elements.clear();
             final CompoundTag nbt = tag.getCompound("Elements");
-            SpiritualTypes.spiritualRegistry().getValues().forEach(type -> {
+            SpiritualTypes.registry().getValues().forEach(type -> {
                 if(nbt.contains(type.getRegistryName())){
                     this.elements.put(type, nbt.getInt(type.getRegistryName()));
                 }

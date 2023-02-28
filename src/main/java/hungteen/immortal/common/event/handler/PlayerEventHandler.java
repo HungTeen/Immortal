@@ -1,15 +1,10 @@
 package hungteen.immortal.common.event.handler;
 
 import hungteen.immortal.common.SpellManager;
-import hungteen.immortal.common.capability.player.PlayerDataManager;
-import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.ImmortalLivingEvents;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
-import hungteen.immortal.common.impl.SpellTypes;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
-import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;

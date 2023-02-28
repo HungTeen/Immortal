@@ -1,6 +1,6 @@
 package hungteen.immortal.common.impl;
 
-import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.api.interfaces.IArtifactTier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;

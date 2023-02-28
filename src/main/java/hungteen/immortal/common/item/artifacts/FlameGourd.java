@@ -2,6 +2,8 @@ package hungteen.immortal.common.item.artifacts;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.ParticleHelper;
+import hungteen.immortal.api.interfaces.IArtifactTier;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.utils.Constants;
@@ -35,12 +37,8 @@ public class FlameGourd extends ArtifactItem {
     private static final String COLLECTED_FLAME_LEVEL = "CollectedFlameLevel";
     private static final int MAX_FLAME_AMOUNT = 500;
 
-    public FlameGourd(int artifactLevel) {
-        super(artifactLevel);
-    }
-
-    public FlameGourd(int artifactLevel, boolean isAncientArtifact) {
-        super(artifactLevel, isAncientArtifact);
+    public FlameGourd(IArtifactType artifactType) {
+        super(artifactType);
     }
 
     /**
@@ -165,9 +163,11 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public int getMaxFlameLevel(){
-        return getArtifactLevel() <= 3 ? 3 :
-                        getArtifactLevel() <= 6 ? 6 :
-                                Constants.MAX_FLAME_LEVEL;
+        return 1;
+        //TODO 灵火对应收集等级
+//        return getArtifactType() <= 3 ? 3 :
+//                        getArtifactType() <= 6 ? 6 :
+//                                Constants.MAX_FLAME_LEVEL;
     }
 
 }

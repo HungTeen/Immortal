@@ -2,7 +2,9 @@ package hungteen.immortal.common.block.artifacts;
 
 import hungteen.htlib.common.block.entityblock.HTEntityBlock;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactBlock;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
@@ -33,14 +35,12 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2022-10-27 12:41
  **/
-public class ElixirRoom extends HTEntityBlock implements IArtifact {
+public class ElixirRoom extends ArtifactEntityBlock {
 
     private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 6, 15);
-    private final int level;
 
-    public ElixirRoom(int level) {
-        super(BlockBehaviour.Properties.copy(Blocks.ANVIL));
-        this.level = level;
+    public ElixirRoom(IArtifactType artifactType) {
+        super(BlockBehaviour.Properties.copy(Blocks.ANVIL), artifactType);
     }
 
     @Override
@@ -79,8 +79,5 @@ public class ElixirRoom extends HTEntityBlock implements IArtifact {
         return AABB;
     }
 
-    @Override
-    public int getArtifactLevel() {
-        return level;
-    }
+
 }

@@ -1,7 +1,8 @@
 package hungteen.immortal.common.block.artifacts;
 
 import hungteen.htlib.common.block.entityblock.HTEntityBlock;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
 import hungteen.immortal.common.blockentity.SpiritualFurnaceBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -34,18 +35,16 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2022-10-09 09:15
  **/
-public class SpiritualFurnace extends HTEntityBlock implements IArtifact {
+public class SpiritualFurnace extends ArtifactEntityBlock {
 
     private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 16, 15);
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    private final int level;
 
-    public SpiritualFurnace(int level) {
+    public SpiritualFurnace(IArtifactType artifactType) {
         super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops().lightLevel(state -> {
             return state.getValue(LIT) ? 15 : 0;
-        }));
-        this.level = level;
+        }), artifactType);
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.FALSE).setValue(FACING, Direction.NORTH));
     }
 
@@ -90,11 +89,6 @@ public class SpiritualFurnace extends HTEntityBlock implements IArtifact {
 
     public BlockState mirror(BlockState blockState, Mirror mirror) {
         return blockState.rotate(mirror.getRotation((Direction)blockState.getValue(FACING)));
-    }
-
-    @Override
-    public int getArtifactLevel() {
-        return this.level;
     }
 
     @Override

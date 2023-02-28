@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.api.interfaces.IArtifactTier;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.item.ImmortalToolActions;
 import hungteen.immortal.utils.PlayerUtil;
@@ -30,8 +30,8 @@ public class HammerItem extends MeleeAttackItem {
     private static final String VALID_POS = "ValidPos";
     private static final String BLOCK_POS = "BlockPos";
 
-    public HammerItem(boolean isAncientArtifact, IArtifactTier tier) {
-        super(MeleeAttackTypes.HAMMER, isAncientArtifact, tier);
+    public HammerItem(IArtifactTier tier) {
+        super(MeleeAttackTypes.HAMMER, tier);
     }
 
     /**

@@ -3,9 +3,12 @@ package hungteen.immortal.common.blockentity;
 import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactBlock;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.ElixirManager;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.item.eixirs.ElixirItem;
 import hungteen.immortal.common.menu.ElixirRoomMenu;
 import hungteen.immortal.common.recipe.ElixirRecipe;
@@ -37,7 +40,7 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-10-27 14:59
  **/
-public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
+public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
 
     public static final MutableComponent TITLE = Component.translatable("gui.immortal.elixir_room.title");
     private static final int[] SLOTS_FOR_DIRECTIONS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -415,9 +418,8 @@ public class ElixirRoomBlockEntity extends ItemHandlerBlockEntity implements Men
         return new ElixirRoomMenu(id, inventory, this.accessData, this.getBlockPos());
     }
 
-    @Override
-    public int getArtifactLevel() {
-        return this.getBlockState().getBlock() instanceof IArtifact ? ((IArtifact) this.getBlockState().getBlock()).getArtifactLevel() : 0;
+    public IArtifactType getArtifactType() {
+        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.EMPTY;
     }
 
     public enum SmeltingStates {

@@ -1,5 +1,6 @@
-package hungteen.immortal.api.registry;
+package hungteen.immortal.api.interfaces;
 
+import hungteen.immortal.api.registry.IArtifactType;
 import net.minecraft.world.item.Tier;
 
 /**
@@ -31,7 +32,7 @@ public interface IArtifactTier extends Tier {
      * Level of the artifact tier.
      * @return level.
      */
-    int getArtifactLevel();
+    IArtifactType getArtifactType();
 
     /**
      * Replace this method with {@link IArtifactTier#getAttackSpeed()} ()}

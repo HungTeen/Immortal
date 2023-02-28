@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.api.interfaces.IArtifactTier;
 import net.minecraft.tags.BlockTags;
 
 /**
@@ -10,8 +10,8 @@ import net.minecraft.tags.BlockTags;
  **/
 public class HoeItem extends DiggerItem {
 
-    public HoeItem(boolean isAncientArtifact, IArtifactTier tier, float digSpeed) {
-        super(MeleeAttackTypes.HOE, isAncientArtifact, tier, digSpeed, BlockTags.MINEABLE_WITH_HOE);
+    public HoeItem(IArtifactTier tier, float digSpeed) {
+        super(MeleeAttackTypes.HOE, tier, digSpeed, BlockTags.MINEABLE_WITH_HOE);
     }
 
 }

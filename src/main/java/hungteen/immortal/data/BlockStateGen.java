@@ -1,14 +1,13 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTBlockStateGen;
-import hungteen.htlib.util.Pair;
 import hungteen.htlib.util.helper.BlockHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.block.artifacts.SpiritualFurnace;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
-import hungteen.immortal.common.impl.ImmortalWoods;
+import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;

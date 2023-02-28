@@ -1,6 +1,7 @@
 package hungteen.immortal.common.item.artifacts;
 
 import hungteen.immortal.common.ArtifactManager;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 
 /**
  * @program: Immortal
@@ -9,7 +10,7 @@ import hungteen.immortal.common.ArtifactManager;
  **/
 public class SpiritualPearl extends ArtifactItem{
     public SpiritualPearl() {
-        super(ArtifactManager.COMMON_ARTIFACT);
+        super(ArtifactTypes.COMMON_ARTIFACT);
     }
 
 }

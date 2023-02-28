@@ -1,7 +1,7 @@
 package hungteen.immortal.common.entity.golem;
 
 import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.common.impl.SpiritualTypes;
+import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 

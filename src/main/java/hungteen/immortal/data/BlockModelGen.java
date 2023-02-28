@@ -1,14 +1,10 @@
 package hungteen.immortal.data;
 
-import hungteen.htlib.common.WoodIntegrations;
 import hungteen.htlib.data.HTBlockModelGen;
-import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.impl.ImmortalWoods;
+import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
-import java.util.Arrays;
 
 /**
  * @program: Immortal

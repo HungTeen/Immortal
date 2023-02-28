@@ -1,8 +1,11 @@
 package hungteen.immortal.common.blockentity;
 
 import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactBlock;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.block.artifacts.SpiritualFurnace;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
 import hungteen.immortal.common.menu.SpiritualFurnaceMenu;
 import hungteen.immortal.common.tag.ImmortalItemTags;
@@ -27,7 +30,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-10-09 09:30
  **/
-public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
+public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
 
     private static final int[] SLOTS_FOR_DIRECTIONS = new int[]{1, 2, 3};
     /* first slot is for flame gourd, the rest are spiritual stone slots. */
@@ -173,8 +176,7 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         return new SpiritualFurnaceMenu(id, inventory, this.accessData, this.getBlockPos());
     }
 
-    @Override
-    public int getArtifactLevel() {
-        return this.getBlockState().getBlock() instanceof IArtifact ? ((IArtifact) this.getBlockState().getBlock()).getArtifactLevel() : 0;
+    public IArtifactType getArtifactType() {
+        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.EMPTY;
     }
 }

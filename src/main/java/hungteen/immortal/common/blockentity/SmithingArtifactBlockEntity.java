@@ -2,8 +2,11 @@ package hungteen.immortal.common.blockentity;
 
 import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
 import hungteen.htlib.common.menu.container.SimpleCraftingContainer;
-import hungteen.immortal.api.interfaces.IArtifact;
+import hungteen.immortal.api.interfaces.IArtifactBlock;
+import hungteen.immortal.api.interfaces.IArtifactItem;
+import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.ArtifactManager;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.menu.SmithingArtifactMenu;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.common.recipe.SmithingArtifactRecipe;
@@ -31,7 +34,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-11-13 21:44
  **/
-public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implements MenuProvider, IArtifact {
+public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
 
     public static final MutableComponent TITLE = Component.translatable("gui.immortal.smithing_artifact.title");
     public static final int MAX_PROGRESS_VALUE = 100;
@@ -198,9 +201,8 @@ public class SmithingArtifactBlockEntity extends ItemHandlerBlockEntity implemen
         return itemHandler;
     }
 
-    @Override
-    public int getArtifactLevel() {
-        return this.getBlockState().getBlock() instanceof IArtifact ? ((IArtifact) this.getBlockState().getBlock()).getArtifactLevel() : 0;
+    public IArtifactType getArtifactType() {
+        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.EMPTY;
     }
 
     @Override

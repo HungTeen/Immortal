@@ -1,9 +1,13 @@
 package hungteen.immortal.common.impl;
 
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.api.registry.IRealmType;
+import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,7 +22,12 @@ import java.util.List;
  **/
 public class RealmTypes {
 
+    private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
     private static final List<IRealmType> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<IRealmType> registry() {
+        return REALM_TYPES;
+    }
 
     /**
      * 无境界。

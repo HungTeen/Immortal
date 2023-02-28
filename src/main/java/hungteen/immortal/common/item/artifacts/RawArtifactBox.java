@@ -2,6 +2,8 @@ package hungteen.immortal.common.item.artifacts;
 
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.immortal.api.registry.IArtifactType;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.menu.tooltip.ArtifactToolTip;
 import hungteen.immortal.utils.Colors;
 import net.minecraft.core.NonNullList;
@@ -30,7 +32,7 @@ public class RawArtifactBox extends ArtifactItem {
     private static final String SPIRITUAL_VALUE_REQUIRED = "SpiritualValueRequired";
 
     public RawArtifactBox() {
-        super(1);
+        super(ArtifactTypes.EMPTY);
     }
 
     @Override
@@ -82,8 +84,8 @@ public class RawArtifactBox extends ArtifactItem {
     }
 
     @Override
-    public int getItemArtifactLevel(ItemStack stack) {
-        return super.getItemArtifactLevel(stack);
+    public IArtifactType getArtifactType(ItemStack stack) {
+        return super.getArtifactType(stack);
     }
 
     @Override

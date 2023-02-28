@@ -3,10 +3,7 @@ package hungteen.immortal.api;
 import com.google.common.base.Suppliers;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.api.registry.ISectType;
-import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.api.registry.*;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -61,19 +58,6 @@ public class ImmortalAPI {
         Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry();
 
         /**
-         * 注册法术类型。 <br>
-         * Only registered spells can be displayed on Spell Menu.
-         * @return Registry interface.
-         */
-        Optional<IHTSimpleRegistry<ISpellType>> spellRegistry();
-
-        /**
-         * 注册宗门类型。 <br>
-         * @return Registry interface.
-         */
-        Optional<IHTSimpleRegistry<ISectType>> sectRegistry();
-
-        /**
          * 注册境界类型。 <br>
          * Register the realm type so that it can be stored as nbt.
          * @return Registry interface.
@@ -81,11 +65,25 @@ public class ImmortalAPI {
         Optional<IHTSimpleRegistry<IRealmType>> realmRegistry();
 
         /**
+         * 注册法术类型。 <br>
+         * Only registered spells can be displayed on Spell Menu.
+         * @return Registry interface.
+         */
+        Optional<IHTSimpleRegistry<ISpellType>> spellRegistry();
+
+
+        /**
          * 注册玩家Int数据类型。<br>
          * Stored in player capabilities.
          * @return Registry interface.
          */
         Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry();
+
+        /**
+         * 注册宗门类型。 <br>
+         * @return Registry interface.
+         */
+        Optional<IHTSimpleRegistry<ISectType>> sectRegistry();
 
         /**
          * 获取生物的境界。

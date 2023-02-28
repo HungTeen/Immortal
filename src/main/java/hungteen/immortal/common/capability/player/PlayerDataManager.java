@@ -7,7 +7,7 @@ import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.RealmManager;
-import hungteen.immortal.common.impl.SpellTypes;
+import hungteen.immortal.common.impl.registry.SpellTypes;
 import hungteen.immortal.common.network.IntegerDataPacket;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
@@ -154,7 +154,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             activateSpells.clear();
             spellCDs.clear();
             CompoundTag nbt = tag.getCompound("Spells");
-            SpellTypes.spellRegistry().getValues().forEach(type -> {
+            SpellTypes.registry().getValues().forEach(type -> {
                 if (nbt.contains("learn_" + type.getRegistryName())) {
                     learnSpells.put(type, nbt.getInt("learn_" + type.getRegistryName()));
                 }

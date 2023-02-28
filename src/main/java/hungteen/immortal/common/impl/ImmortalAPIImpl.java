@@ -11,6 +11,8 @@ import hungteen.immortal.api.registry.ISectType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
+import hungteen.immortal.common.impl.registry.SpellTypes;
+import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
@@ -33,7 +35,6 @@ import java.util.*;
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
-    private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
     private static final HTSimpleRegistry<IRangeNumber<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
@@ -41,12 +42,12 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
-        return Optional.of(SpiritualTypes.spiritualRegistry());
+        return Optional.of(SpiritualTypes.registry());
     }
 
     @Override
     public Optional<IHTSimpleRegistry<ISpellType>> spellRegistry() {
-        return Optional.of(SpellTypes.spellRegistry());
+        return Optional.of(SpellTypes.registry());
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<IRealmType>> realmRegistry() {
-        return Optional.of(REALM_TYPES);
+        return Optional.of(RealmTypes.registry());
     }
 
     @Override

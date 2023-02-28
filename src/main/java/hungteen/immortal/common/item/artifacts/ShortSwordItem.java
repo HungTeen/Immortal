@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.artifacts;
 
-import hungteen.immortal.api.registry.IArtifactTier;
+import hungteen.immortal.api.interfaces.IArtifactTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
  **/
 public class ShortSwordItem extends MeleeAttackItem {
 
-    public ShortSwordItem(boolean isAncientArtifact, IArtifactTier tier) {
-        super(MeleeAttackTypes.SHORT_SWORD, isAncientArtifact, tier);
+    public ShortSwordItem(IArtifactTier tier) {
+        super(MeleeAttackTypes.SHORT_SWORD, tier);
     }
 
     @Override
