@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class ImmortalWoods {
 
-    public static final WoodIntegrations.WoodIntegration MULBERRY = new WoodIntegrations.Builder(Util.prefix("mulberry"))
-            .updateWoodItem(WoodIntegrations.WoodSuits.WALL_SIGN, p -> new WallSignBlock(p, WoodType.ACACIA)).build();
+//    public static final WoodIntegrations.WoodIntegration MULBERRY = new WoodIntegrations.Builder(Util.prefix("mulberry"))
+//            .updateWoodItem(WoodIntegrations.WoodSuits.WALL_SIGN, p -> new WallSignBlock(p, WoodType.ACACIA)).build();
 
     /**
      * {@link ImmortalMod#coreRegister()}
@@ -29,6 +29,7 @@ public class ImmortalWoods {
     }
 
     public static List<WoodIntegrations.WoodIntegration> woods(){
-        return Arrays.asList(MULBERRY);
+        return List.of();
+//        return Arrays.asList(MULBERRY);
     }
 }

@@ -14,6 +14,7 @@ import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
+import hungteen.immortal.common.impl.registry.InventoryLootTypes;
 import hungteen.immortal.common.impl.registry.SpellTypes;
 import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.common.item.ImmortalItems;
@@ -92,11 +93,11 @@ public class ImmortalMod {
         ImmortalBlocks.BLOCKS.register(modBus);
         ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
-        ImmortalParticles.PARTICLE_TYPES.register(modBus);
         ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalParticles.register(modBus);
         ImmortalDataSerializers.register(modBus);
         ImmortalMemories.register(modBus);
         ImmortalSensors.register(modBus);
@@ -136,7 +137,8 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
-        ItemUtil.registerLargeHeldItems();
+        InventoryLootTypes.InventoryLootType.register();
+//        ItemUtil.registerLargeHeldItems();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {

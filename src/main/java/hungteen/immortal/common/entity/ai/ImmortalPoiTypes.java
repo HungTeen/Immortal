@@ -22,9 +22,9 @@ public class ImmortalPoiTypes {
 
     private static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, Util.id());
 
-    public static final RegistryObject<PoiType> ELIXIR_ROOM = POI_TYPES.register("elixir_room", () -> new PoiType(
-            getBlockStates(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), 1, 1
-    ));
+//    public static final RegistryObject<PoiType> ELIXIR_ROOM = POI_TYPES.register("elixir_room", () -> new PoiType(
+//            getBlockStates(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), 1, 1
+//    ));
 
     public static void register(IEventBus event){
         POI_TYPES.register(event);

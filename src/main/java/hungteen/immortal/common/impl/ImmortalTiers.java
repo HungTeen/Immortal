@@ -1,6 +1,8 @@
 package hungteen.immortal.common.impl;
 
 import hungteen.immortal.api.interfaces.IArtifactTier;
+import hungteen.immortal.api.registry.IArtifactType;
+import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -14,27 +16,27 @@ import java.util.function.Supplier;
  **/
 public class ImmortalTiers {
 
-    public static final IArtifactTier STONE = new ArtifactTier(-5, 0, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
-    public static final IArtifactTier BRONZE = new ArtifactTier(0F, 1, 300, () -> Ingredient.of(Items.COPPER_INGOT));
+    public static final IArtifactTier STONE = new ArtifactTier(-5, ArtifactTypes.COMMON_ARTIFACT, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
+    public static final IArtifactTier BRONZE = new ArtifactTier(0F, ArtifactTypes.COMMON_ARTIFACT, 300, () -> Ingredient.of(Items.COPPER_INGOT));
 
     public static class ArtifactTier implements IArtifactTier {
 
         private final float attackDamage;
         private final float attackSpeed;
         private final float attackRange;
-        private final int artifactLevel;
+        private final IArtifactType artifactType;
         private final int durability;
         private final Supplier<Ingredient> repairIngredient;
 
-        public ArtifactTier(float attackDamage, int artifactLevel, int durability, Supplier<Ingredient> repairIngredient) {
-            this(attackDamage, 0, 0, artifactLevel, durability, repairIngredient);
+        public ArtifactTier(float attackDamage, IArtifactType artifactType, int durability, Supplier<Ingredient> repairIngredient) {
+            this(attackDamage, 0, 0, artifactType, durability, repairIngredient);
         }
 
-        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, int artifactLevel, int durability, Supplier<Ingredient> repairIngredient) {
+        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, IArtifactType artifactType, int durability, Supplier<Ingredient> repairIngredient) {
             this.attackDamage = attackDamage;
             this.attackSpeed = attackSpeed;
             this.attackRange = attackRange;
-            this.artifactLevel = artifactLevel;
+            this.artifactType = artifactType;
             this.durability = durability;
             this.repairIngredient = repairIngredient;
         }
@@ -55,8 +57,8 @@ public class ImmortalTiers {
         }
 
         @Override
-        public int getArtifactLevel() {
-            return artifactLevel;
+        public IArtifactType getArtifactType() {
+            return artifactType;
         }
 
         @Override

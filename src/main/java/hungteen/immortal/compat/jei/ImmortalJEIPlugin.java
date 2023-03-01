@@ -43,14 +43,14 @@ public class ImmortalJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), ElixirCategory.ELIXIR_RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()), SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE);
+//        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), ElixirCategory.ELIXIR_RECIPE_TYPE);
+//        registration.addRecipeCatalyst(new ItemStack(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()), SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(ElixirRoomMenu.class, ImmortalMenus.ELIXIR_ROOM.get(), ElixirCategory.ELIXIR_RECIPE_TYPE, 0, 9, 9, 36);
-        registration.addRecipeTransferHandler(SmithingArtifactMenu.class, ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE, 0, 25, 25, 36);
+//        registration.addRecipeTransferHandler(ElixirRoomMenu.class, ImmortalMenus.ELIXIR_ROOM.get(), ElixirCategory.ELIXIR_RECIPE_TYPE, 0, 9, 9, 36);
+//        registration.addRecipeTransferHandler(SmithingArtifactMenu.class, ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE, 0, 25, 25, 36);
     }
 
     @Override

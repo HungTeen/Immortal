@@ -15,6 +15,7 @@ import java.util.Locale;
  **/
 public enum CultivationTypes implements ICultivationType {
 
+    EMPTY,
     MORTAL,
     SPIRITUAL,
     MONSTER,

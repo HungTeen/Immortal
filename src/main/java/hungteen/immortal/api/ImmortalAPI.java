@@ -80,6 +80,12 @@ public class ImmortalAPI {
         Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry();
 
         /**
+         * 注册背包Loot类型。 <br>
+         * @return Registry interface.
+         */
+        Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry();
+
+        /**
          * 注册宗门类型。 <br>
          * @return Registry interface.
          */

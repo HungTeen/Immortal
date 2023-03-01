@@ -32,14 +32,14 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
 
     private final IDrawable slotDraw;
     private final IDrawable background;
-    private final IDrawable iconDraw;
+//    private final IDrawable iconDraw;
     private final IDrawable arrowDraw;
 
     public ElixirCategory(IGuiHelper helper) {
         this.slotDraw = helper.getSlotDrawable();
         this.background = helper.createBlankDrawable(120, 60);
         this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
-        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
+//        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
     }
 
     @Override
@@ -68,7 +68,8 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
 
     @Override
     public Component getTitle() {
-        return ElixirRoomBlockEntity.TITLE;
+        return Component.empty();
+//        return ElixirRoomBlockEntity.TITLE;
     }
 
     @Override
@@ -78,7 +79,8 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
 
     @Override
     public IDrawable getIcon() {
-        return iconDraw;
+        return null;
+//        return iconDraw;
     }
 
     @Override

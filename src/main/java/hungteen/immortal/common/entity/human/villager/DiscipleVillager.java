@@ -1,5 +1,7 @@
 package hungteen.immortal.common.entity.human.villager;
 
+import hungteen.immortal.api.registry.ICultivationType;
+import hungteen.immortal.api.registry.IInventoryLootType;
 import hungteen.immortal.common.entity.human.HumanEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -26,4 +28,13 @@ public class DiscipleVillager extends SpiritualVillager {
 
     }
 
+    @Override
+    public IInventoryLootType getInventoryLootType() {
+        return null;
+    }
+
+    @Override
+    public ICultivationType getCultivationType() {
+        return null;
+    }
 }

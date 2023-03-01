@@ -20,7 +20,7 @@ public class ImmortalProfessions {
 
     private static final DeferredRegister<VillagerProfession> PROFESSION_TYPES = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Util.id());
 
-    public static final RegistryObject<VillagerProfession> ELIXIR_CRAFTER = register("elixir_crafter", ImmortalPoiTypes.ELIXIR_ROOM.getKey());
+//    public static final RegistryObject<VillagerProfession> ELIXIR_CRAFTER = register("elixir_crafter", ImmortalPoiTypes.ELIXIR_ROOM.getKey());
 
     private static RegistryObject<VillagerProfession> register(String name, ResourceKey<PoiType> poiTypeKey){
         return register(name, poiTypeKey, null);

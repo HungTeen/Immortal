@@ -42,16 +42,16 @@ public class HammerItem extends MeleeAttackItem {
             if(livingEntity instanceof Player && PlayerUtil.isInCD((Player) livingEntity, livingEntity.getItemInHand(hand).getItem())){
                 return;
             }
-            if(livingEntity.level.getBlockEntity(blockPos) instanceof SmithingArtifactBlockEntity){
-                if(! livingEntity.level.isClientSide){
-
-                }
-                livingEntity.swing(hand);
-                if(livingEntity instanceof Player){
-                    PlayerUtil.setCoolDown((Player) livingEntity, livingEntity.getItemInHand(hand).getItem(), SMITHING_COOL_DOWN);
-                    Util.getProxy().onSmithing(blockPos, hand == InteractionHand.MAIN_HAND);
-                }
-            }
+//            if(livingEntity.level.getBlockEntity(blockPos) instanceof SmithingArtifactBlockEntity){
+//                if(! livingEntity.level.isClientSide){
+//
+//                }
+//                livingEntity.swing(hand);
+//                if(livingEntity instanceof Player){
+//                    PlayerUtil.setCoolDown((Player) livingEntity, livingEntity.getItemInHand(hand).getItem(), SMITHING_COOL_DOWN);
+//                    Util.getProxy().onSmithing(blockPos, hand == InteractionHand.MAIN_HAND);
+//                }
+//            }
         }
     }
 

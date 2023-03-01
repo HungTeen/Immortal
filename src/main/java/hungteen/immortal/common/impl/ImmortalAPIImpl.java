@@ -6,11 +6,9 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
-import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.api.registry.ISectType;
-import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.api.registry.*;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
+import hungteen.immortal.common.impl.registry.InventoryLootTypes;
 import hungteen.immortal.common.impl.registry.SpellTypes;
 import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.utils.Constants;
@@ -63,6 +61,11 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
     @Override
     public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
         return Optional.of(INTEGER_DATA_TYPES);
+    }
+
+    @Override
+    public Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry() {
+        return Optional.of(InventoryLootTypes.registry());
     }
 
     @Override

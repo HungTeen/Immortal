@@ -32,14 +32,14 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
 
     private final IDrawable slotDraw;
     private final IDrawable background;
-    private final IDrawable iconDraw;
+//    private final IDrawable iconDraw;
     private final IDrawable arrowDraw;
 
     public SmithingCategory(IGuiHelper helper) {
         this.slotDraw = helper.getSlotDrawable();
         this.background = helper.createBlankDrawable(150, 100);
         this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
-        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()));
+//        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()));
     }
 
     @Override
@@ -68,7 +68,8 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
 
     @Override
     public Component getTitle() {
-        return SmithingArtifactBlockEntity.TITLE;
+        return Component.empty();
+//        return SmithingArtifactBlockEntity.TITLE;
     }
 
     @Override
@@ -78,7 +79,8 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
 
     @Override
     public IDrawable getIcon() {
-        return iconDraw;
+        return null;
+//        return iconDraw;
     }
 
     @Override

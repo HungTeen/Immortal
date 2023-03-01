@@ -26,7 +26,7 @@ public class BlockTagGen extends HTBlockTagGen {
 
     private void addMCTags(){
         /* Woods */
-        this.woodIntegration(ImmortalWoods.MULBERRY);
+//        this.woodIntegration(ImmortalWoods.MULBERRY);
 
         /* sapling */
         this.tag(BlockTags.SAPLINGS).add(ImmortalBlocks.MULBERRY_SAPLING.get());

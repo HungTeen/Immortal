@@ -2,10 +2,7 @@ package hungteen.immortal.api;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.api.registry.ISectType;
-import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.api.registry.*;
 import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -50,6 +47,11 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry() {
         return Optional.empty();
     }
 

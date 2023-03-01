@@ -81,26 +81,26 @@ public class ClientHandler {
         ClientDatas.SmithingDirection = true;
         ClientDatas.SmithingProgress = 0;
         ClientDatas.BestPointDisplayTick = 0;
-        ClientDatas.SmithingSpeedMultiple = blockEntity.getSmithingSpeedMultiple();
+//        ClientDatas.SmithingSpeedMultiple = blockEntity.getSmithingSpeedMultiple();
     }
 
     /**
      * {@link hungteen.immortal.client.event.ClientEvents#tick(TickEvent.ClientTickEvent)}
      */
     public static void onSmithing(){
-        if(ClientDatas.StartSmithing){
-            ++ ClientDatas.BestPointDisplayTick;
-            if(ClientDatas.BestPointDisplayTick >= (Constants.DISPLAY_BEST_SMITHING_POINT_CD << 1)){
-                ClientDatas.BestPointDisplayTick = 0;
-            }
-            ClientDatas.SmithingProgress += (ClientDatas.SmithingDirection ? 1 : -1 ) * ClientDatas.SmithingSpeedMultiple;
-            // change move direction.
-            if(ClientDatas.SmithingDirection && ClientDatas.SmithingProgress >= SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE){
-                ClientDatas.SmithingDirection = false;
-            } else if(! ClientDatas.SmithingDirection && ClientDatas.SmithingProgress <= 0){
-                ClientDatas.SmithingDirection = true;
-            }
-        }
+//        if(ClientDatas.StartSmithing){
+//            ++ ClientDatas.BestPointDisplayTick;
+//            if(ClientDatas.BestPointDisplayTick >= (Constants.DISPLAY_BEST_SMITHING_POINT_CD << 1)){
+//                ClientDatas.BestPointDisplayTick = 0;
+//            }
+//            ClientDatas.SmithingProgress += (ClientDatas.SmithingDirection ? 1 : -1 ) * ClientDatas.SmithingSpeedMultiple;
+//            // change move direction.
+//            if(ClientDatas.SmithingDirection && ClientDatas.SmithingProgress >= SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE){
+//                ClientDatas.SmithingDirection = false;
+//            } else if(! ClientDatas.SmithingDirection && ClientDatas.SmithingProgress <= 0){
+//                ClientDatas.SmithingDirection = true;
+//            }
+//        }
     }
 
     public static void quitSmithing(){

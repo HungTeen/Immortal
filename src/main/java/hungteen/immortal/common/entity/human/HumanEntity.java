@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableList;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHuman;
+import hungteen.immortal.api.registry.IInventoryLootType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.common.entity.ai.ImmortalSensors;
 import hungteen.immortal.common.entity.ImmortalGrowableCreature;
+import hungteen.immortal.common.impl.codec.InventoryLoots;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -45,6 +47,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ * 村民、刁民、玩家都算人类。
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-21 18:23
@@ -108,7 +111,9 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     /**
      * 填充背包。
      */
-    public abstract void fillInventory();
+    public void fillInventory(){
+        InventoryLoots.getInventoryLoot(getInventoryLootType(), this.getRandom()).ifPresent(l -> l.fill(this.getInventory(), this.getRandom()));
+    }
 
     /**
      * Refresh brain.
@@ -327,6 +332,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         this.setTradingPlayer(null);
     }
 
+    public abstract IInventoryLootType getInventoryLootType();
+
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
@@ -335,6 +342,11 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         }
         if(tag.contains("Inventory")){
             this.inventory.fromTag(tag.getList("Inventory", 10));
+        }
+        if(tag.contains("InventoryLoot")){ // allow setting loot by nbt.
+            InventoryLoots.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
+                l.fill(this.getInventory(), this.getRandom());
+            });
         }
         if (this.level instanceof ServerLevel) {
             this.refreshBrain((ServerLevel)this.level);

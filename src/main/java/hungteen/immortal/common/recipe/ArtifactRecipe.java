@@ -80,11 +80,12 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
 
     @Override
     public ItemStack getResultItem() {
-        if(this.needRecovery){
-            ItemStack stack = new ItemStack(ImmortalItems.RAW_ARTIFACT_BOX.get());
-            RawArtifactBox.setArtifactItem(stack, this.result.copy());
-            return stack;
-        }
+        //TODO 配方注释了
+//        if(this.needRecovery){
+//            ItemStack stack = new ItemStack(ImmortalItems.RAW_ARTIFACT_BOX.get());
+//            RawArtifactBox.setArtifactItem(stack, this.result.copy());
+//            return stack;
+//        }
         return this.result.copy();
     }
 

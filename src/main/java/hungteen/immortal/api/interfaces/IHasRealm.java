@@ -1,5 +1,6 @@
 package hungteen.immortal.api.interfaces;
 
+import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.api.registry.IRealmType;
 
 /**
@@ -10,7 +11,14 @@ import hungteen.immortal.api.registry.IRealmType;
 public interface IHasRealm {
 
     /**
-     * 获取生物的境界。
+     * 获取生物的境界
+     * @return Realm type of entity.
      */
     IRealmType getRealm();
+
+    /**
+     * 获取生物的修行方式
+     * @return Cultivate type of entity
+     */
+    ICultivationType getCultivationType();
 }

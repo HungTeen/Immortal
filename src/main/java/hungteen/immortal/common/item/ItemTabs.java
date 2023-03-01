@@ -42,7 +42,7 @@ public class ItemTabs {
     public static final CreativeModeTab ARTIFACTS = new CreativeModeTab("immortal_artifacts") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack((ImmortalItems.FLAME_GOURD.get()));
+            return new ItemStack((ImmortalItems.SPIRITUAL_PEARL.get()));
         }
     };
 

@@ -1,5 +1,6 @@
 package hungteen.immortal.common.entity.undead;
 
+import hungteen.immortal.api.registry.ICultivationType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -50,5 +51,8 @@ public class SpiritualZombie extends UndeadEntity {
     }
 
 
-
+    @Override
+    public ICultivationType getCultivationType() {
+        return null;
+    }
 }

@@ -42,12 +42,12 @@ public class SmithingPacket {
         public static void onMessage(SmithingPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
                 final ServerPlayer player = ctx.get().getSender();
-                if (player != null){
-                    BlockEntity blockEntity = player.level.getBlockEntity(message.pos);
-                    if(blockEntity instanceof SmithingArtifactBlockEntity){
-                        ((SmithingArtifactBlockEntity)blockEntity).finishSmithing(player, message.progress, message.isMainHand);
-                    }
-                }
+//                if (player != null){
+//                    BlockEntity blockEntity = player.level.getBlockEntity(message.pos);
+//                    if(blockEntity instanceof SmithingArtifactBlockEntity){
+//                        ((SmithingArtifactBlockEntity)blockEntity).finishSmithing(player, message.progress, message.isMainHand);
+//                    }
+//                }
             });
             ctx.get().setPacketHandled(true);
         }

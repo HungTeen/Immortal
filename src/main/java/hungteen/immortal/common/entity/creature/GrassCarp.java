@@ -160,11 +160,12 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        GrassCarp grassCarp = ImmortalEntities.GRASS_CARP.get().create(level);
-        if (grassCarp != null) {
-            grassCarp.setPersistenceRequired();
-        }
-        return grassCarp;
+//        GrassCarp grassCarp = ImmortalEntities.GRASS_CARP.get().create(level);
+//        if (grassCarp != null) {
+//            grassCarp.setPersistenceRequired();
+//        }
+//        return grassCarp;
+        return null;
     }
 
     protected boolean checkBlock(BlockPos pos) {
@@ -299,7 +300,8 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(ImmortalItems.GRASS_CARP_BUCKET.get());
+        return ItemStack.EMPTY;
+//        return new ItemStack(ImmortalItems.GRASS_CARP_BUCKET.get());
     }
 
     @Override

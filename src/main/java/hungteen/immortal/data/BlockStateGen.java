@@ -37,21 +37,21 @@ public class BlockStateGen extends HTBlockStateGen {
          */
 //        addedBlocks.addAll();
 
-        Arrays.asList(
-                ImmortalBlocks.COPPER_SPIRITUAL_FURNACE.get()
-        ).forEach(this::spiritualFurnace);
-
-        Arrays.asList(
-                ImmortalBlocks.COPPER_ELIXIR_ROOM.get()
-        ).forEach(this::elixirRoom);
-
-        Arrays.asList(
-                ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()
-        ).forEach(this::smithingArtifact);
-
-        Arrays.asList(
-                ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()
-        ).forEach(this::spiritualRoom);
+//        Arrays.asList(
+//                ImmortalBlocks.COPPER_SPIRITUAL_FURNACE.get()
+//        ).forEach(this::spiritualFurnace);
+//
+//        Arrays.asList(
+//                ImmortalBlocks.COPPER_ELIXIR_ROOM.get()
+//        ).forEach(this::elixirRoom);
+//
+//        Arrays.asList(
+//                ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()
+//        ).forEach(this::smithingArtifact);
+//
+//        Arrays.asList(
+//                ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()
+//        ).forEach(this::spiritualRoom);
 
         /* Crops with age property. */
 //        Arrays.asList(
@@ -109,17 +109,17 @@ public class BlockStateGen extends HTBlockStateGen {
     }
 
     public void spiritualFurnace(Block block) {
-        getVariantBuilder(block).forAllStates(state -> {
-            final Direction dir = state.getValue(SpiritualFurnace.FACING);
-            final boolean lit = state.getValue(SpiritualFurnace.LIT);
-            final ResourceLocation texture = BlockHelper.blockTexture(block);
-            return ConfiguredModel.builder()
-                    .modelFile(models().withExistingParent(name(block) + (lit ? "_lit" : ""), Util.prefix("block/spiritual_furnace_base"))
-                            .texture("furnace", lit ? StringHelper.suffix(texture, "lit") : texture)
-                            .renderType(cutout())
-                    )
-                    .rotationY(((int) dir.toYRot() + 180) % 360).build();
-        });
+//        getVariantBuilder(block).forAllStates(state -> {
+//            final Direction dir = state.getValue(SpiritualFurnace.FACING);
+//            final boolean lit = state.getValue(SpiritualFurnace.LIT);
+//            final ResourceLocation texture = BlockHelper.blockTexture(block);
+//            return ConfiguredModel.builder()
+//                    .modelFile(models().withExistingParent(name(block) + (lit ? "_lit" : ""), Util.prefix("block/spiritual_furnace_base"))
+//                            .texture("furnace", lit ? StringHelper.suffix(texture, "lit") : texture)
+//                            .renderType(cutout())
+//                    )
+//                    .rotationY(((int) dir.toYRot() + 180) % 360).build();
+//        });
         this.addedBlocks.add(block);
     }
 

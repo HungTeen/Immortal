@@ -27,11 +27,11 @@ public class ItemUtil {
     /**
      * {@link ImmortalMod#coreRegister()}
      */
-    public static void registerLargeHeldItems(){
-        List.of(
-                ImmortalItems.BRONZE_SWORD
-        ).forEach(ItemUtil::registerLargeHeldItem);
-    }
+//    public static void registerLargeHeldItems(){
+//        List.of(
+//                ImmortalItems.BRONZE_SWORD
+//        ).forEach(ItemUtil::registerLargeHeldItem);
+//    }
 
     /**
      * Register item so that it will change BakedModel.

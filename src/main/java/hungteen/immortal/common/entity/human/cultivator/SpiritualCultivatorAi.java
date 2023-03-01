@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.common.entity.ai.ImmortalActivities;
 import hungteen.immortal.common.entity.ai.behavior.*;
+import hungteen.immortal.utils.AIUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.schedule.Activity;
 
 import java.util.Objects;
@@ -25,9 +27,9 @@ import java.util.function.Predicate;
  * @author: HungTeen
  * @create: 2022-12-06 23:08
  **/
-public class CultivatorAi {
+public class SpiritualCultivatorAi {
 
-    protected static Brain<?> makeBrain(Brain<Cultivator> brain) {
+    protected static Brain<?> makeBrain(Brain<SpiritualCultivator> brain) {
         brain.addActivity(Activity.CORE, getCoreBehaviors(1F));
         brain.addActivity(Activity.IDLE, getIdleBehaviors(0.9F));
         brain.addActivity(ImmortalActivities.MELEE_FIGHT.get(), getMeleeFightBehaviors(1.2F));
@@ -40,16 +42,19 @@ public class CultivatorAi {
         return brain;
     }
 
-    protected static void updateActivity(Cultivator cultivator) {
-        if(cultivator.getBrain().getActiveNonCoreActivity().isPresent()){
-            if(cultivator.getBrain().getActiveNonCoreActivity().get().equals(ImmortalActivities.MELEE_FIGHT.get())){
-                if(noTarget(cultivator)){
+    /**
+     * (Fighting -> Idle): if there is no enemy.
+     */
+    protected static void updateActivity(SpiritualCultivator cultivator) {
+        cultivator.getBrain().getActiveNonCoreActivity().ifPresent(activity -> {
+            if(activity.equals(ImmortalActivities.MELEE_FIGHT.get())){
+                if(AIUtil.noTarget(cultivator)){
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
-                } else if(healthBelow(cultivator, 0.3D)){
+                } else if(AIUtil.healthBelow(cultivator, 0.3D)){
                     cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.KEEP_DISTANCE.get());
                 }
             }
-        }
+        });
         if(cultivator.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty()){
             if(cultivator.getBrain().getActiveNonCoreActivity().isPresent() && (
                     cultivator.getBrain().getActiveNonCoreActivity().get().equals(ImmortalActivities.MELEE_FIGHT.get()) ||
@@ -61,14 +66,14 @@ public class CultivatorAi {
     }
 
     /**
-     * Tht Core Behaviors that will always run. <br>
+     * The Core Behaviors that will always run. <br>
      * Swim <br>
      * InteractWithDoor(PATH, DOORS_TO_CLOSE) : Open doors in path. <br>
      * LookAtTargetSink(LOOK_TARGET) : Look at the target. <br>
      * BreakBoat(LOOK_TARGET, NEAREST_BOAT) : Break boat to avoid stuck ! <br>
      * MoveToTargetSink(CANT_REACH_WALK_TARGET_SINCE, PATH, WALK_TARGET) : Walk to target. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getCoreBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getCoreBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new Swim(0.8F)),
                 Pair.of(0, new InteractWithDoor()),
@@ -85,9 +90,9 @@ public class CultivatorAi {
      * Mock : perform mock action. <br>
      * SetLookAndInteract(LOOK_TARGET, INTERACTION_TARGET, NEAREST_VISIBLE_LIVING_ENTITIES) : Look at specific entity. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getIdleBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getIdleBehaviors(float speed) {
         return ImmutableList.of(
-                Pair.of(1, new CultivatorSwitchFighting(CultivatorAi::findNearestValidAttackTarget)),
+                Pair.of(1, new SwitchMeleeFighting(SpiritualCultivatorAi::findNearestValidAttackTarget)),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                                 Pair.of(new RandomStroll(speed), 2),
                                 Pair.of(new SetWalkTargetFromLookTarget(speed, 3), 2),
@@ -103,7 +108,7 @@ public class CultivatorAi {
     /**
      * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getMeleeFightBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getMeleeFightBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new StopAttackingIfTargetInvalid<>()),
                 Pair.of(0, new SwitchMeleeAttackItem()),
@@ -117,7 +122,7 @@ public class CultivatorAi {
     /**
      * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getRangeFightBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getRangeFightBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new StopAttackingIfTargetInvalid<>())
 //                Pair.of(99, new UpdateActivityFromSchedule())
@@ -127,7 +132,7 @@ public class CultivatorAi {
     /**
      * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getKeepDistanceBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getKeepDistanceBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new StopAttackingIfTargetInvalid<>())
 //                Pair.of(99, new UpdateActivityFromSchedule())
@@ -137,7 +142,7 @@ public class CultivatorAi {
     /**
      * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super Cultivator>>> getEscapeBehaviors(float speed) {
+    public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getEscapeBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new StopAttackingIfTargetInvalid<>())
 //                Pair.of(99, new UpdateActivityFromSchedule())
@@ -148,35 +153,6 @@ public class CultivatorAi {
         return cultivator.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).map(l -> {
             return l.findClosest(Monster.class::isInstance).orElse(null);
         });
-    }
-
-    private static boolean noTarget(Cultivator cultivator){
-        return cultivator.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty();
-    }
-
-    private static boolean healthBelow(Cultivator cultivator, double percent){
-        return cultivator.getHealth() < percent * Objects.requireNonNull(cultivator.getAttribute(Attributes.MAX_HEALTH)).getValue();
-    }
-
-    private static class CultivatorSwitchFighting extends StartFighting<Cultivator>{
-
-        public CultivatorSwitchFighting(Predicate<Cultivator> predicate, Function<Cultivator, Optional<? extends LivingEntity>> function) {
-            super(predicate, function);
-        }
-
-        public CultivatorSwitchFighting(Predicate<Cultivator> predicate, Function<Cultivator, Optional<? extends LivingEntity>> function, int time) {
-            super(predicate, function, time);
-        }
-
-        public CultivatorSwitchFighting(Function<Cultivator, Optional<? extends LivingEntity>> function) {
-            super(function);
-        }
-
-        @Override
-        public <E extends Mob> void setAttackTarget(E mob, LivingEntity target) {
-            super.setAttackTarget(mob, target);
-            mob.getBrain().setActiveActivityIfPossible(ImmortalActivities.MELEE_FIGHT.get());
-        }
     }
 
 }

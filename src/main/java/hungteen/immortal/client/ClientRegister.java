@@ -14,7 +14,7 @@ import hungteen.immortal.client.model.entity.*;
 import hungteen.immortal.client.model.bake.ImmortalBakeModels;
 import hungteen.immortal.client.particle.ImmortalFlameParticle;
 import hungteen.immortal.client.particle.ImmortalParticles;
-import hungteen.immortal.client.particle.SpiritualReleasingParticle;
+import hungteen.immortal.client.particle.SpiritualManaParticle;
 import hungteen.immortal.client.render.LevelRenderStages;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.entity.ImmortalEntities;
@@ -27,6 +27,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,22 +53,24 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* misc entity */
+        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
-        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
-
-        /* human */
-        event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
-        event.registerEntityRenderer(ImmortalEntities.CULTIVATOR.get(), CultivatorRender::new);
+//        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
+//
+//        /* human */
+//        event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
+        event.registerEntityRenderer(ImmortalEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
+        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_CULTIVATOR.get(), CultivatorRender::new);
 
         /* creature */
-        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
-        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
-
-        /* undead */
-        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
-
-        /* golem */
-        event.registerEntityRenderer(ImmortalEntities.IRON_GOLEM.get(), IronGolemRender::new);
+//        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
+//        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
+//
+//        /* undead */
+//        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
+//
+//        /* golem */
+//        event.registerEntityRenderer(ImmortalEntities.IRON_GOLEM.get(), IronGolemRender::new);
     }
 
     /**
@@ -103,7 +106,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
         event.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
-        event.register(ImmortalParticles.SPIRITUAL_RELEASING.get(), SpiritualReleasingParticle.Factory::new) ;
+        event.register(ImmortalParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new) ;
     }
 
     @SubscribeEvent
@@ -150,9 +153,9 @@ public class ClientRegister {
     }
 
     public static void registerScreen() {
-        MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
-        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
-        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
+//        MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
+//        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+//        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
         MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 

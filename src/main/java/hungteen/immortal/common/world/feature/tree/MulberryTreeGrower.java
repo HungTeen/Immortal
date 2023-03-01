@@ -16,7 +16,8 @@ public class MulberryTreeGrower extends AbstractTreeGrower {
     @Nullable
     @Override
     protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource randomSource, boolean p_222911_) {
-        return ImmortalConfiguredFeatures.MULBERRY_TREE.getHolder().get();
+        return null;
+//        return ImmortalConfiguredFeatures.MULBERRY_TREE.getHolder().get();
     }
 
 }

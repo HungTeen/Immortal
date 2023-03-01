@@ -23,11 +23,15 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * 是否碰到敌人直接逃跑
+ * 碰到敌人先远战/近战
+ * 是否喜欢留后手（藏杀手锏）
+ *
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-22 22:16
  **/
-public class Cultivator extends HumanEntity {
+public abstract class Cultivator extends HumanEntity {
 
     private static final EntityDataAccessor<Integer> CULTIVATOR_TYPE = SynchedEntityData.defineId(Cultivator.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLIM = SynchedEntityData.defineId(Cultivator.class, EntityDataSerializers.BOOLEAN);
@@ -53,49 +57,6 @@ public class Cultivator extends HumanEntity {
             this.setCustomName(this.getCultivatorType().getDisplayName());
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
-    }
-
-    @Override
-    protected SimpleContainer createInventory() {
-        return new SimpleContainer(12);
-    }
-
-    @Override
-    public void fillInventory() {
-        if(this.getRealm() == RealmTypes.MORTALITY){
-            this.fillInventoryWith(new ItemStack(Items.GOLDEN_APPLE), 1, 2);
-
-            this.fillInventoryWith(new ItemStack(Items.ENDER_PEARL), 1, 3);
-
-            this.fillInventoryWith(new ItemStack(Items.DIAMOND_SWORD), 1, 1);
-            this.fillInventoryWith(new ItemStack(Items.BOW), 1, 2);
-
-            this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-            this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-            this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-            this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
-        }
-    }
-
-    @Override
-    public void updateBrain(ServerLevel level) {
-        this.getBrain().tick(level, this);
-        CultivatorAi.updateActivity(this);
-    }
-
-    @Override
-    public Brain<Cultivator> getBrain() {
-        return (Brain<Cultivator>)super.getBrain();
-    }
-
-    @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return CultivatorAi.makeBrain(this.brainProvider().makeBrain(dynamic));
-    }
-
-    @Override
-    protected Brain.Provider<Cultivator> brainProvider() {
-        return Brain.provider(getMemoryModules(), getSensorModules());
     }
 
     @Override

@@ -147,42 +147,42 @@ public class OverlayHandler {
     }
 
     public static void renderSmithingBar(PoseStack poseStack, int screenHeight, int screenWidth) {
-        boolean quit = true;
-        ItemStack stack = ItemStack.EMPTY;
-        if(Objects.requireNonNull(ClientProxy.MC.player).getMainHandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
-            stack = ClientProxy.MC.player.getMainHandItem();
-        } else if(Objects.requireNonNull(ClientProxy.MC.player).getOffhandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
-            stack = ClientProxy.MC.player.getOffhandItem();
-        }
-        if(!stack.isEmpty() && ! PlayerUtil.isInCD(ClientProxy.MC.player, stack.getItem()) && ClientProxy.MC.hitResult instanceof BlockHitResult && ((BlockHitResult) ClientProxy.MC.hitResult).getDirection() == Direction.UP){
-            final BlockPos pos = ((BlockHitResult) ClientProxy.MC.hitResult).getBlockPos();
-            final BlockEntity blockEntity = ClientProxy.MC.level.getBlockEntity(pos);
-            if(blockEntity instanceof final SmithingArtifactBlockEntity entity){
-                if(entity.canSmithing()){
-                    quit = false;
-                    if(! ClientDatas.StartSmithing){
-                        ClientHandler.startSmithing(stack, entity);
-                    }
-                    ClientProxy.MC.getProfiler().push("smithingBar");
-                    final int x = (screenWidth - SMITHING_BAR_LEN) >> 1;
-                    final int y = (screenHeight >> 1) + 10;
-                    final int len = MathHelper.getBarLen(entity.getCurrentSmithingValue(), entity.getRequireSmithingValue(), 61);
-                    final int bestPos = MathHelper.getBarLen(entity.getBestSmithingPoint(), SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
-                    final int currentPos = MathHelper.getBarLen((int)ClientDatas.SmithingProgress, SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
-                    RenderHelper.setTexture(OVERLAY);
-                    ClientProxy.MC.gui.blit(poseStack, x, y, 0, 20, SMITHING_BAR_LEN, SMITHING_BAR_HEIGHT);
-                    ClientProxy.MC.gui.blit(poseStack, x + 2, y + 1, 2, 32, len, 2);
-                    if(ClientDatas.BestPointDisplayTick <= Constants.DISPLAY_BEST_SMITHING_POINT_CD){
-                        ClientProxy.MC.gui.blit(poseStack, x + 1 + bestPos, y, 69, 20, 3, 4);
-                    }
-                    ClientProxy.MC.gui.blit(poseStack, x + 1 + currentPos, y, 66, 20, 3, 4);
-                    ClientProxy.MC.getProfiler().pop();
-                }
-            }
-        }
-        if(quit){
-            ClientHandler.quitSmithing();
-        }
+//        boolean quit = true;
+//        ItemStack stack = ItemStack.EMPTY;
+//        if(Objects.requireNonNull(ClientProxy.MC.player).getMainHandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
+//            stack = ClientProxy.MC.player.getMainHandItem();
+//        } else if(Objects.requireNonNull(ClientProxy.MC.player).getOffhandItem().canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING)){
+//            stack = ClientProxy.MC.player.getOffhandItem();
+//        }
+//        if(!stack.isEmpty() && ! PlayerUtil.isInCD(ClientProxy.MC.player, stack.getItem()) && ClientProxy.MC.hitResult instanceof BlockHitResult && ((BlockHitResult) ClientProxy.MC.hitResult).getDirection() == Direction.UP){
+//            final BlockPos pos = ((BlockHitResult) ClientProxy.MC.hitResult).getBlockPos();
+//            final BlockEntity blockEntity = ClientProxy.MC.level.getBlockEntity(pos);
+//            if(blockEntity instanceof final SmithingArtifactBlockEntity entity){
+//                if(entity.canSmithing()){
+//                    quit = false;
+//                    if(! ClientDatas.StartSmithing){
+//                        ClientHandler.startSmithing(stack, entity);
+//                    }
+//                    ClientProxy.MC.getProfiler().push("smithingBar");
+//                    final int x = (screenWidth - SMITHING_BAR_LEN) >> 1;
+//                    final int y = (screenHeight >> 1) + 10;
+//                    final int len = MathHelper.getBarLen(entity.getCurrentSmithingValue(), entity.getRequireSmithingValue(), 61);
+//                    final int bestPos = MathHelper.getBarLen(entity.getBestSmithingPoint(), SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
+//                    final int currentPos = MathHelper.getBarLen((int)ClientDatas.SmithingProgress, SmithingArtifactBlockEntity.MAX_PROGRESS_VALUE, 61);
+//                    RenderHelper.setTexture(OVERLAY);
+//                    ClientProxy.MC.gui.blit(poseStack, x, y, 0, 20, SMITHING_BAR_LEN, SMITHING_BAR_HEIGHT);
+//                    ClientProxy.MC.gui.blit(poseStack, x + 2, y + 1, 2, 32, len, 2);
+//                    if(ClientDatas.BestPointDisplayTick <= Constants.DISPLAY_BEST_SMITHING_POINT_CD){
+//                        ClientProxy.MC.gui.blit(poseStack, x + 1 + bestPos, y, 69, 20, 3, 4);
+//                    }
+//                    ClientProxy.MC.gui.blit(poseStack, x + 1 + currentPos, y, 66, 20, 3, 4);
+//                    ClientProxy.MC.getProfiler().pop();
+//                }
+//            }
+//        }
+//        if(quit){
+//            ClientHandler.quitSmithing();
+//        }
     }
 
     public static boolean canRenderManaBar() {

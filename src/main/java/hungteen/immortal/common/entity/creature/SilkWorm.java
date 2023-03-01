@@ -52,7 +52,8 @@ public class SilkWorm extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob ageableMob) {
-        return ImmortalEntities.SILK_WORM.get().create(level);
+//        return ImmortalEntities.SILK_WORM.get().create(level);
+        return null;
     }
 
     @Override
