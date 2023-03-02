@@ -1,10 +1,11 @@
 package hungteen.immortal.utils;
 
-import hungteen.immortal.common.entity.human.cultivator.Cultivator;
+import hungteen.immortal.common.entity.human.HumanEntity;
+import hungteen.immortal.common.tag.ImmortalItemTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.monster.Monster;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -15,10 +16,14 @@ import java.util.function.Predicate;
  * @program Immortal
  * @data 2023/3/1 19:38
  */
-public class AIUtil {
+public class BrainUtil {
 
     public static boolean noTarget(LivingEntity entity){
         return entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty();
+    }
+
+    public static Optional<LivingEntity> getTarget(LivingEntity entity){
+        return entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
     }
 
     public static boolean healthBelow(LivingEntity entity, double percent){

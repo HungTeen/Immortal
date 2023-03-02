@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -25,11 +26,17 @@ public class EnderPearlReach extends Behavior<HumanEntity> {
 
     private final float chance;
     private final int duration;
+    private final Predicate<LivingEntity> predicate;
 
-    public EnderPearlReach(float chance, int duration) {
+    public EnderPearlReach(float chance, int duration){
+        this(chance, duration, l -> true);
+    }
+
+    public EnderPearlReach(float chance, int duration, Predicate<LivingEntity> predicate) {
         super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT), duration);
         this.chance = chance;
         this.duration = Math.max(20, duration);
+        this.predicate = predicate;
     }
 
     @Override
@@ -39,24 +46,24 @@ public class EnderPearlReach extends Behavior<HumanEntity> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
-        return this.getAttackTarget(entity).isPresent() && entity.distanceToSqr(this.getAttackTarget(entity).get()) >= 100 && ! entity.filterFromInventory(stack -> stack.is(Items.ENDER_PEARL)).isEmpty();
+        return this.getAttackTarget(entity).isPresent() && entity.distanceToSqr(this.getAttackTarget(entity).get()) >= 100 && ! entity.filterFromInventory(stack -> stack.is(Items.ENDER_PEARL)).isEmpty() && predicate.test(this.getAttackTarget(entity).get());
     }
 
     @Override
     protected void start(ServerLevel level, HumanEntity entity, long time) {
         if(entity.getRandom().nextFloat() < this.chance){
-            entity.switchInventory(stack -> stack.is(Items.ENDER_PEARL), InteractionHand.OFF_HAND);
+            entity.switchInventory(InteractionHand.OFF_HAND, stack -> stack.is(Items.ENDER_PEARL));
             final LivingEntity target = this.getAttackTarget(entity).get();
-            ThrownEnderpearl enderpearl = new ThrownEnderpearl(level, entity);
-            enderpearl.setItem(entity.getOffhandItem());
+            ThrownEnderpearl pearl = new ThrownEnderpearl(level, entity);
+            pearl.setItem(entity.getOffhandItem());
             final double d0 = target.getEyeY() - (double)1.1F;
             final double d1 = target.getX() - entity.getX();
-            final double d2 = d0 - enderpearl.getY();
+            final double d2 = d0 - pearl.getY();
             final double d3 = target.getZ() - entity.getZ();
             final double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double)0.2F;
-            enderpearl.shoot(d1, d2 + d4, d3, 1.2F, 6.0F);
+            pearl.shoot(d1, d2 + d4, d3, 1.2F, 6.0F);
             entity.playSound(SoundEvents.ENDER_PEARL_THROW, 0.5F, 0.4F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
-            level.addFreshEntity(enderpearl);
+            level.addFreshEntity(pearl);
             entity.getOffhandItem().shrink(1);
         }
     }
@@ -68,7 +75,7 @@ public class EnderPearlReach extends Behavior<HumanEntity> {
     @Override
     protected void stop(ServerLevel level, HumanEntity entity, long time) {
         if(entity.getOffhandItem().is(Items.ENDER_PEARL)){
-            entity.switchInventory(ItemStack::isEmpty, InteractionHand.OFF_HAND);
+            entity.switchInventory(InteractionHand.OFF_HAND, ItemStack::isEmpty);
         }
     }
 

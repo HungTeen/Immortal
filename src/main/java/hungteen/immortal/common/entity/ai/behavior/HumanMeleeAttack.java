@@ -3,11 +3,14 @@ package hungteen.immortal.common.entity.ai.behavior;
 import com.google.common.collect.ImmutableMap;
 import hungteen.immortal.common.entity.human.HumanEntity;
 import hungteen.immortal.common.tag.ImmortalItemTags;
+import hungteen.immortal.utils.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -30,19 +33,15 @@ public class HumanMeleeAttack extends Behavior<HumanEntity> {
     @Override
     protected boolean checkExtraStartConditions(ServerLevel serverLevel, HumanEntity entity) {
         final LivingEntity target = this.getAttackTarget(entity);
-        return isHoldingMeleeWeapon(entity) && BehaviorUtils.canSee(entity, target) && entity.isWithinMeleeAttackRange(target);
-    }
-
-    private static boolean isHoldingMeleeWeapon(HumanEntity entity) {
-        return entity.isHolding(stack -> stack.is(ImmortalItemTags.MELEE_ATTACK_ITEMS));
+        return BehaviorUtils.canSee(entity, target) && entity.isWithinMeleeAttackRange(target);
     }
 
     @Override
-    protected void start(ServerLevel p_23524_, HumanEntity entity, long time) {
+    protected void start(ServerLevel level, HumanEntity entity, long time) {
         LivingEntity target = this.getAttackTarget(entity);
         BehaviorUtils.lookAtEntity(entity, target);
         entity.swing(InteractionHand.MAIN_HAND);
-        entity.doHurtTarget(target);
+        entity.doHurtTarget(target); //TODO 消耗耐久
         entity.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, Mth.floor(this.cooldownModifier * entity.getAttackCoolDown()));
     }
 

@@ -5,10 +5,13 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.interfaces.IHasRoot;
 import hungteen.immortal.api.registry.ISpiritualType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -17,6 +20,14 @@ import java.util.Collection;
  **/
 public class EntityUtil {
 
+    public static boolean isMainHolding(LivingEntity entity, Predicate<ItemStack> predicate) {
+        return predicate.test(entity.getMainHandItem());
+    }
+
+    public static boolean isOffHolding(LivingEntity entity, Predicate<ItemStack> predicate) {
+        return predicate.test(entity.getOffhandItem());
+    }
+
     public static Triple<Float, Float, Float> getRGBForSpiritual(Entity entity){
         Collection<ISpiritualType> roots = new ArrayList<>();
         if(entity instanceof Player){
@@ -24,6 +35,10 @@ public class EntityUtil {
         } else if(entity instanceof IHasRoot){
             roots = ((IHasRoot) entity).getSpiritualTypes();
         }
+        return getRGBForSpiritual(roots);
+    }
+
+    public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<ISpiritualType> roots){
         int r = 0;
         int g = 0;
         int b = 0;

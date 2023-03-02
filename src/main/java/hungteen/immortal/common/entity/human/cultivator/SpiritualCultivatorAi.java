@@ -5,22 +5,16 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.common.entity.ai.ImmortalActivities;
 import hungteen.immortal.common.entity.ai.behavior.*;
-import hungteen.immortal.utils.AIUtil;
+import hungteen.immortal.utils.BrainUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.schedule.Activity;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -48,9 +42,9 @@ public class SpiritualCultivatorAi {
     protected static void updateActivity(SpiritualCultivator cultivator) {
         cultivator.getBrain().getActiveNonCoreActivity().ifPresent(activity -> {
             if(activity.equals(ImmortalActivities.MELEE_FIGHT.get())){
-                if(AIUtil.noTarget(cultivator)){
+                if(BrainUtil.noTarget(cultivator)){
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
-                } else if(AIUtil.healthBelow(cultivator, 0.3D)){
+                } else if(BrainUtil.healthBelow(cultivator, 0.3D)){
                     cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.KEEP_DISTANCE.get());
                 }
             }
@@ -92,7 +86,7 @@ public class SpiritualCultivatorAi {
      */
     public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getIdleBehaviors(float speed) {
         return ImmutableList.of(
-                Pair.of(1, new SwitchMeleeFighting(SpiritualCultivatorAi::findNearestValidAttackTarget)),
+                Pair.of(1, new StartFighting<>(SpiritualCultivatorAi::findNearestValidAttackTarget)),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                                 Pair.of(new RandomStroll(speed), 2),
                                 Pair.of(new SetWalkTargetFromLookTarget(speed, 3), 2),
@@ -111,7 +105,7 @@ public class SpiritualCultivatorAi {
     public static ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualCultivator>>> getMeleeFightBehaviors(float speed) {
         return ImmutableList.of(
                 Pair.of(0, new StopAttackingIfTargetInvalid<>()),
-                Pair.of(0, new SwitchMeleeAttackItem()),
+                Pair.of(0, new SwitchMeleeAttackItem(0.05F)),
                 Pair.of(4, new EnderPearlReach(0.2F, 100)),
                 Pair.of(5, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(speed)),
                 Pair.of(10, new HumanMeleeAttack(40))

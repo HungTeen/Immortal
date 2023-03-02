@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -31,6 +32,9 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
@@ -129,6 +133,15 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
      */
     public abstract void updateBrain(ServerLevel level);
 
+    public boolean hasItemStack(Predicate<ItemStack> predicate){
+        for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
+            if(predicate.test(this.getInventory().getItem(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<ItemStack> filterFromInventory(Predicate<ItemStack> predicate){
         List<ItemStack> list = new ArrayList<>();
         for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
@@ -139,14 +152,50 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return list;
     }
 
-    public void switchInventory(Predicate<ItemStack> predicate, InteractionHand hand){
+    /**
+     * Switch one predicate item from inventory to equipment slot.
+     */
+    public boolean switchInventory(EquipmentSlot equipmentSlot, Predicate<ItemStack> predicate){
         for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
             if(predicate.test(this.getInventory().getItem(i))){
-                ItemStack heldItem = this.getItemInHand(hand).copy();
-                this.setItemInHand(hand, this.getInventory().getItem(i).copy());
-                this.getInventory().setItem(i, heldItem);
+                ItemStack stack = this.getItemBySlot(equipmentSlot).copy();
+                this.setItemSlot(equipmentSlot, this.getInventory().getItem(i).copy());
+                this.getInventory().setItem(i, stack);
+                return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Switch one predicate item from inventory to hand.
+     */
+    public boolean switchInventory(InteractionHand hand, Predicate<ItemStack> predicate){
+        return switchInventory(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, predicate);
+    }
+
+    @Override
+    public void performRangedAttack(LivingEntity target, float strength) {
+        final ItemStack projectile = this.getProjectile(this.getMainHandItem());
+        if(this.getMainHandItem().getItem() instanceof BowItem){
+            AbstractArrow abstractarrow = this.getArrow(projectile, strength);
+            abstractarrow = ((BowItem) this.getMainHandItem().getItem()).customArrow(abstractarrow);
+            double d0 = target.getX() - this.getX();
+            double d1 = target.getY(0.3333333333333333D) - abstractarrow.getY();
+            double d2 = target.getZ() - this.getZ();
+            double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+            abstractarrow.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
+            this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            this.level.addFreshEntity(abstractarrow);
+        }
+    }
+
+    @Override
+    public ItemStack eat(Level level, ItemStack itemStack) {
+        if(itemStack.isEdible()){
+            this.heal(1F);
+        }
+        return super.eat(level, itemStack);
     }
 
     @Override
@@ -158,6 +207,10 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     public double getAttackCoolDown(){
         final double speed = this.getAttributeValue(Attributes.ATTACK_SPEED);
         return speed == 0 ? 1000 : 1 / speed;
+    }
+
+    protected AbstractArrow getArrow(ItemStack stack, float strength) {
+        return ProjectileUtil.getMobArrow(this, stack, strength);
     }
 
     protected SimpleContainer createInventory(){
@@ -186,7 +239,12 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 MemoryModuleType.INTERACTION_TARGET,
                 /* Fight */
                 MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN,
+                /* Interact With */
+                MemoryModuleType.INTERACTION_TARGET,
+                MemoryModuleType.ANGRY_AT,
                 /* Custom */
+                ImmortalMemories.UNABLE_MELEE_ATTACK.get(),
+                ImmortalMemories.UNABLE_RANGE_ATTACK.get(),
                 ImmortalMemories.NEAREST_BOAT.get()
         );
     }
@@ -297,6 +355,11 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 this.getInventory().addItem(stack);
             }
         }
+    }
+
+    @Override
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
     }
 
     /**

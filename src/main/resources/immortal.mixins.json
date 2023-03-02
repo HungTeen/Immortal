@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "immortal.refmap.json",
   "mixins": [
+    "MixinFoodData"
   ],
   "client": [
   ],

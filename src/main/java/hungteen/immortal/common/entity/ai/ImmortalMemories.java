@@ -21,6 +21,8 @@ public class ImmortalMemories {
     private static final DeferredRegister<MemoryModuleType<?>> MEMORIES = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, Util.id());
 
     public static final RegistryObject<MemoryModuleType<Entity>> NEAREST_BOAT = register("nearest_boat");
+    public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_MELEE_ATTACK = register("unable_melee_attack");
+    public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_RANGE_ATTACK = register("unable_range_attack");
 
     private static <U> RegistryObject<MemoryModuleType<U>> register(String name){
         return MEMORIES.register(name, () -> new MemoryModuleType<>(Optional.empty()));

@@ -20,6 +20,7 @@ public class ImmortalActivities {
     public static final RegistryObject<Activity> KEEP_DISTANCE = register("keep_distance");
     public static final RegistryObject<Activity> RANGE_FIGHT = register("range_fight");
     public static final RegistryObject<Activity> ESCAPE = register("escape");
+    public static final RegistryObject<Activity> TRADE = register("trade");
 
     private static RegistryObject<Activity> register(String name){
         return ACTIVITIES.register(name, () -> new Activity(Util.prefixName(name)));
