@@ -11,6 +11,7 @@ import hungteen.immortal.common.entity.human.cultivator.EmptyCultivator;
 import hungteen.immortal.common.entity.human.cultivator.SpiritualCultivator;
 import hungteen.immortal.common.entity.human.villager.DiscipleVillager;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
+import hungteen.immortal.common.entity.misc.SeatEntity;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.entity.misc.SpiritualPearl;
 import hungteen.immortal.common.entity.undead.SpiritualZombie;
@@ -46,6 +47,7 @@ public class ImmortalEntities {
 
     public static final RegistryObject<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC);
     public static final RegistryObject<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC);
+    public static final RegistryObject<EntityType<SeatEntity>> SEAT = registerEntityType(SeatEntity::new, "seat", MobCategory.MISC);
 //    public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC);
 
     /* Human */

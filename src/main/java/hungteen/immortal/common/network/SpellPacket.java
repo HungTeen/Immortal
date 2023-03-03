@@ -49,12 +49,9 @@ public class SpellPacket {
             ctx.get().enqueueWork(()->{
                 // S -> C.
                 if(ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER){
-                    if (message.option == SpellOptions.SELECT || message.option == SpellOptions.NEXT) {
+                    if (message.option == SpellOptions.SELECT) {
                         Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
-                            switch (message.option) {
-                                case SELECT -> PlayerUtil.selectSpell(player, message.num);
-                                case NEXT -> PlayerUtil.nextSpell(player, message.num);
-                            }
+                            PlayerUtil.selectSpell(player, message.num);
                         });
                         return;
                     }
@@ -74,7 +71,6 @@ public class SpellPacket {
                 } else{// C -> S.
                     switch (message.option){
                         case SELECT -> PlayerUtil.selectSpell(ctx.get().getSender(), message.num);
-                        case NEXT -> PlayerUtil.nextSpell(ctx.get().getSender(), message.num);
                         case ACTIVATE_AT -> SpellManager.checkActivateSpell(ctx.get().getSender());
                     }
                 }
@@ -90,7 +86,6 @@ public class SpellPacket {
         ACTIVATE,
         COOLDOWN,
         SELECT,
-        NEXT,
         ACTIVATE_AT
     }
 

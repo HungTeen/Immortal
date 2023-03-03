@@ -2,6 +2,7 @@ package hungteen.immortal.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import java.util.List;
  * @create: 2022-09-29 12:30
  **/
 public interface ISpellType extends ISimpleEntry {
+
+    void start(LivingEntity owner, int level);
 
     /**
      * 此法术有多少层。

@@ -55,6 +55,7 @@ public class ClientRegister {
         /* misc entity */
         event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
+        event.registerEntityRenderer(ImmortalEntities.SEAT.get(), EmptyEffectRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 //
 //        /* human */

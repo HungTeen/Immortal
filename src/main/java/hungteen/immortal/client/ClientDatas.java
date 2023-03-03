@@ -12,7 +12,15 @@ public class ClientDatas {
 
     public static final HashMap<String, Set<Integer>> FormationMap = new HashMap<>();
 
+    /**
+     * 是否展示了法术轮盘
+     */
     public static boolean ShowSpellCircle = false;
+
+    /**
+     * 保存上一次法术轮盘选择的位置
+     */
+    public static int lastSelectedPosition = 0;
 
     public static boolean StartSmithing = false;
     public static float SmithingProgress = 0;

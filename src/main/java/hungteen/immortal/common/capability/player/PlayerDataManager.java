@@ -302,11 +302,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spellList[Mth.clamp(num, 0, Constants.SPELL_NUM_EACH_PAGE - 1)];
     }
 
-    public void nextSpell(long num) {
-        this.selectedSpellPosition = (int) (this.selectedSpellPosition + num + Constants.SPELL_NUM_EACH_PAGE) % Constants.SPELL_NUM_EACH_PAGE;
-        this.sendSpellPacket(SpellPacket.SpellOptions.NEXT, null, num);
-    }
-
     public boolean isSpellActivated(@NotNull ISpellType spell) {
         return this.activateSpells.containsKey(spell) && this.activateSpells.get(spell) > getGameTime();
     }

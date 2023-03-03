@@ -142,10 +142,6 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.selectSpell(num));
     }
 
-    public static void nextSpell(Player player, long num){
-        getOptManager(player).ifPresent(l -> l.nextSpell(num));
-    }
-
     public static int getSpellSelectedPosition(Player player) {
         return getManagerResult(player, PlayerDataManager::getSelectedSpellPosition, 0);
     }
