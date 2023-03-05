@@ -8,27 +8,18 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.client.ClientDatas;
-import hungteen.immortal.client.ClientHandler;
 import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.common.SpellManager;
-import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
-import hungteen.immortal.common.item.ImmortalToolActions;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @program: Immortal
@@ -66,12 +57,23 @@ public class OverlayHandler {
         final int leftPos = (width - CIRCLE_LEN) >> 1;
         final int topPos = (height - CIRCLE_LEN) >> 1;
         final int selectPos = PlayerUtil.getSpellSelectedPosition(ClientProxy.MC.player);
+        final int currentPos = ClientDatas.lastSelectedPosition;
         stack.pushPose();
         RenderSystem.enableBlend();
         RenderHelper.setTexture(SPELL_CIRCLE);
         ClientProxy.MC.gui.blit(stack, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);
         // Render Mid Selected White Circle.
-        ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (selectPos % 4) * INNER_LEN, selectPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
+        if(currentPos != -1){
+            stack.pushPose();
+            RenderSystem.setShaderColor(0.0F, 1.0F, 0.0F, 0.5F);
+            ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (currentPos % 4) * INNER_LEN, currentPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
+            stack.popPose();
+            RenderHelper.setTexture(SPELL_CIRCLE);
+        }
+        // If two position duplicates, then not render another.
+        if(selectPos != currentPos){
+            ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (selectPos % 4) * INNER_LEN, selectPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
+        }
         // Render Spell Slots.
         for (int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++i) {
             final boolean isSelected = i == selectPos;

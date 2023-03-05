@@ -29,6 +29,7 @@ public class PlayerRangeNumbers {
     public static final IRangeNumber<Integer> OPPORTUNITY = new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> PERSONALITY = new PlayerData("personality", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> IS_GHOST = new PlayerData("is_ghost", 0, 0, 1);
+    public static final IRangeNumber<Integer> DEFAULT_SPELL_CIRCLE = new PlayerData("default_spell_circle", 1, 0, 1);
 
     public record PlayerData(String name, int defaultValue, int minValue, int maxValue) implements IRangeNumber<Integer> {
         /**

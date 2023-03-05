@@ -29,4 +29,8 @@ public class ImmortalKeyBinds {
     public static boolean isMouseInput(KeyMapping key) {
         return key.getKey().getType() == InputConstants.Type.MOUSE;
     }
+
+    public static boolean displayingSpellCircle(){
+        return ImmortalKeyBinds.SPELL_CIRCLE.isDown();
+    }
 }

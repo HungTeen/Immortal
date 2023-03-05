@@ -27,6 +27,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event){
         ClientHandler.onSmithing();
+        ClientHandler.tickSpellCircle();
     }
 
     @SubscribeEvent

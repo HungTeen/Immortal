@@ -160,14 +160,17 @@ public class ImmortalConfigs {
     public static class Client {
 
         public Client(ForgeConfigSpec.Builder builder) {
+                defaultSpellCircle = builder
+                        .translation("config.immortal.default_spell_circle")
+                        .comment("Use the default setting to control spell circle.")
+                        .define("DefaultSpellCircle", true);
         }
 
-        public OverlaySettings OverlaySettings = new OverlaySettings();
-
-        public static class OverlaySettings {
-        }
+        public ForgeConfigSpec.BooleanValue defaultSpellCircle;
 
     }
+
+    /* Common */
 
     public static double getNoRootChance() {
         return COMMON_CONFIG.RuleSettings.noRootChance.get();
@@ -227,6 +230,12 @@ public class ImmortalConfigs {
 
     public static int getFurnaceExplodeCD() {
         return COMMON_CONFIG.BlockSettings.furnaceExplodeCD.get();
+    }
+
+    /* Client */
+
+    public static boolean defaultSpellCircle() {
+        return CLIENT_CONFIG.defaultSpellCircle.get();
     }
 
 }
