@@ -8,7 +8,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.common.SpellManager;
+import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.common.world.ImmortalTeleporters;
 import hungteen.immortal.common.world.dimension.ImmortalDimensions;
 import hungteen.immortal.utils.PlayerUtil;
@@ -218,7 +218,7 @@ public class ImmortalCommand {
 
     private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.activateSpell(player, spell, SpellManager.getSpellActivateTime(player, spell));
+            SpellManager.checkActivateSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
         source.sendSuccess(spell.getComponent(), true);

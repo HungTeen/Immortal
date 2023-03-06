@@ -8,24 +8,16 @@ import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.api.registry.IInventoryLootType;
-import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
-import hungteen.immortal.common.impl.registry.SpellTypes;
-import net.minecraft.client.sounds.Weighted;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * @author PangTeen

@@ -9,7 +9,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.client.ClientDatas;
 import hungteen.immortal.client.ClientProxy;
-import hungteen.immortal.common.SpellManager;
+import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.utils.Colors;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
@@ -42,7 +42,7 @@ public class OverlayHandler {
 
     static {
         SpellSlots.clear();
-        for (int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++i) {
+        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final double alpha = 2 * Mth.PI / 8 * i;
             final int x = (int) (Math.sin(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
             final int y = (int) (-Math.cos(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
@@ -56,26 +56,17 @@ public class OverlayHandler {
     public static void renderSpellCircle(PoseStack stack, int height, int width) {
         final int leftPos = (width - CIRCLE_LEN) >> 1;
         final int topPos = (height - CIRCLE_LEN) >> 1;
-        final int selectPos = PlayerUtil.getSpellSelectedPosition(ClientProxy.MC.player);
-        final int currentPos = ClientDatas.lastSelectedPosition;
+        final int selectPos = ClientDatas.lastSelectedPosition;
         stack.pushPose();
         RenderSystem.enableBlend();
         RenderHelper.setTexture(SPELL_CIRCLE);
         ClientProxy.MC.gui.blit(stack, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);
         // Render Mid Selected White Circle.
-        if(currentPos != -1){
-            stack.pushPose();
-            RenderSystem.setShaderColor(0.0F, 1.0F, 0.0F, 0.5F);
-            ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (currentPos % 4) * INNER_LEN, currentPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
-            stack.popPose();
-            RenderHelper.setTexture(SPELL_CIRCLE);
-        }
-        // If two position duplicates, then not render another.
-        if(selectPos != currentPos){
+        if(selectPos != -1){
             ClientProxy.MC.gui.blit(stack, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (selectPos % 4) * INNER_LEN, selectPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
         }
         // Render Spell Slots.
-        for (int i = 0; i < Constants.SPELL_NUM_EACH_PAGE; ++i) {
+        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final boolean isSelected = i == selectPos;
             // Render the empty spell slot.
             RenderHelper.setTexture(SPELL_CIRCLE);
@@ -98,9 +89,9 @@ public class OverlayHandler {
                 }
 
                 if (isSelected) {
-                    String text = spell.getComponent().getString() + " - " + SpellManager.getCostComponent(spell.getStartMana()).getString();
+                    String text = spell.getComponent().getString() + " - " + SpellManager.getCostComponent(spell.getConsumeMana()).getString();
                     if (progress > 0) {
-                        text = text + " - " + SpellManager.getCDComponent((int) (spell.getDuration() * progress)).getString();
+                        text = text + " - " + SpellManager.getCDComponent((int) (spell.getCooldown() * progress)).getString();
                     }
                     RenderHelper.drawCenteredScaledString(stack, ClientProxy.MC.font, text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, ColorHelper.WHITE, 1F);
                 }

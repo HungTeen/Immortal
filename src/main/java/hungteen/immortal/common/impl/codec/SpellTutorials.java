@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.common.impl.registry.SpellTypes;
+import hungteen.immortal.common.spell.SpellTypes;
 
 import java.util.List;
 

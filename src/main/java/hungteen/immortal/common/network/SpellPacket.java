@@ -1,9 +1,11 @@
 package hungteen.immortal.common.network;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.immortal.common.SpellManager;
-import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.ImmortalConfigs;
+import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.api.registry.ISpellType;
+import hungteen.immortal.common.impl.PlayerRangeNumbers;
+import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
@@ -24,7 +26,7 @@ public class SpellPacket {
     private final long num;
 
     /**
-     * spell only empty when option is SELECT or Next or ACTIVATE_AT.
+     * spell only empty when option is CLEAR_SET.
      */
     public SpellPacket(ISpellType spell, SpellOptions option, long num) {
         this.type = spell != null ? spell.getRegistryName() : "empty";
@@ -46,32 +48,30 @@ public class SpellPacket {
 
     public static class Handler {
         public static void onMessage(SpellPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
+            ctx.get().enqueueWork(() -> {
                 // S -> C.
-                if(ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER){
-                    if (message.option == SpellOptions.SELECT) {
-                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
-                            PlayerUtil.selectSpell(player, message.num);
-                        });
+                if (ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER) {
+                    // No spell operation must run first !
+                    if (message.option == SpellOptions.CLEAR_SET) {
+                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(PlayerUtil::clearSpellSet);
                         return;
                     }
-                    ImmortalAPI.get().spellRegistry().ifPresent(l -> {
-                        l.getValue(message.type).ifPresent(spell -> {
-                            Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
-                                switch (message.option) {
-                                    case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
-                                    case SET -> PlayerUtil.setSpellList(player, (int) message.num, spell);
-                                    case REMOVE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
-                                    case ACTIVATE -> PlayerUtil.activateSpell(player, spell, message.num);
-                                    case COOLDOWN -> PlayerUtil.cooldownSpell(player, spell, message.num);
-                                }
-                            });
+                    SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
+                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                            switch (message.option) {
+                                case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
+                                case SET_POS_ON_CIRCLE -> PlayerUtil.setSpellList(player, (int) message.num, spell);
+                                case REMOVE_POS_ON_CIRCLE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
+                                case COOL_DOWN -> PlayerUtil.cooldownSpell(player, spell, message.num);
+                                case ADD_SET -> PlayerUtil.addSpellSet(player, spell);
+                                case REMOVE_SET -> PlayerUtil.removeSpellSet(player, spell);
+                            }
                         });
                     });
-                } else{// C -> S.
-                    switch (message.option){
-                        case SELECT -> PlayerUtil.selectSpell(ctx.get().getSender(), message.num);
-                        case ACTIVATE_AT -> SpellManager.checkActivateSpell(ctx.get().getSender());
+                } else {// C -> S.
+                    switch (message.option) {
+                        case ACTIVATE -> SpellManager.checkActivateSpell(ctx.get().getSender(), (int) message.num);
+                        case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE, ImmortalConfigs.defaultSpellCircle() ? 1 : 2);
                     }
                 }
             });
@@ -80,13 +80,51 @@ public class SpellPacket {
     }
 
     public enum SpellOptions {
+
+        /**
+         * 学习法术，设置学习等级，若为0则没学。
+         */
         LEARN,
-        SET,
-        REMOVE,
+
+        /**
+         * 发法术设置在轮盘上。
+         */
+        SET_POS_ON_CIRCLE,
+
+        /**
+         * 将法术移除出轮盘。
+         */
+        REMOVE_POS_ON_CIRCLE,
+
+        /**
+         * 法术的CD时间。
+         */
+        COOL_DOWN,
+
+        /**
+         * 客户端按键触发后， 发送给服务端。
+         */
         ACTIVATE,
-        COOLDOWN,
-        SELECT,
-        ACTIVATE_AT
+
+        /**
+         * 添加到常驻法术。
+         */
+        ADD_SET,
+
+        /**
+         * 从常驻法术移除。
+         */
+        REMOVE_SET,
+
+        /**
+         * 清空常驻法术。
+         */
+        CLEAR_SET,
+
+        /**
+         * 更新法术操作方式在客户端的配置文件。
+         */
+        SYNC_CIRCLE_OP
     }
 
 }

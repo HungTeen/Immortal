@@ -26,7 +26,7 @@ public class MixinMouseHandler {
             cancellable = true
     )
     private void onTurnPlayer(CallbackInfo result, double d0, double d1, double d4, double d5, double d6, double d2, double d3) {
-        if(ClientDatas.ShowSpellCircle){
+        if(ClientHandler.useDefaultCircle() && ClientDatas.ShowSpellCircle){
             ClientHandler.chooseByVector(d2, d3);
             result.cancel();
         }

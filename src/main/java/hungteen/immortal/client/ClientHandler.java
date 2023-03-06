@@ -7,11 +7,13 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.common.blockentity.SmithingArtifactBlockEntity;
 import hungteen.immortal.common.entity.human.cultivator.CultivatorTypes;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
 import hungteen.immortal.utils.Constants;
+import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.GameProfileCache;
@@ -112,22 +114,23 @@ public class ClientHandler {
      */
     public static void tickSpellCircle(){
         // update change.
-        if(ClientDatas.ShowSpellCircle ^ ImmortalKeyBinds.displayingSpellCircle()){
-            // Close spell circle.
-            if(ClientDatas.ShowSpellCircle){
-                if(ClientDatas.lastSelectedPosition != -1){
-                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT, ClientDatas.lastSelectedPosition));
+        if(useDefaultCircle()){
+            if(ClientDatas.ShowSpellCircle ^ ImmortalKeyBinds.displayingSpellCircle()){
+                // Close spell circle and activate spell.
+                if(ClientDatas.ShowSpellCircle){
+                    SpellManager.activateAt(ClientDatas.lastSelectedPosition);
                 }
+                switchSpellCircle();
             }
-            switchSpellCircle();
         }
     }
 
     /**
+     * 模拟一个鼠标的偏移，在内圆到外圆之间才能有效选择法术。 <br>
      * {@link hungteen.immortal.mixin.MixinMouseHandler}
      */
     public static void chooseByVector(double x, double y){
-        final double scale = 0.65D;
+        final double scale = 0.65D; // 灵敏度。
         ClientDatas.SpellMousePositionX += x * scale;
         ClientDatas.SpellMousePositionY -= y * scale;
         if(ClientDatas.SpellMousePositionX != 0 && ClientDatas.SpellMousePositionY != 0) {
@@ -139,7 +142,7 @@ public class ClientHandler {
                 ClientDatas.SpellMousePositionY = maxRadius * Math.sin(delta);
             }
             if (radius > 200) {
-                ClientDatas.lastSelectedPosition = Mth.clamp((int) ((-delta * 4 / Math.PI + 2 + Constants.SPELL_NUM_EACH_PAGE) % Constants.SPELL_NUM_EACH_PAGE), 0, Constants.SPELL_NUM_EACH_PAGE - 1);
+                ClientDatas.lastSelectedPosition = Mth.clamp((int) ((-delta * 4 / Math.PI + 2 + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE), 0, Constants.SPELL_CIRCLE_SIZE - 1);
             } else { // not effected.
                 ClientDatas.lastSelectedPosition = -1;
             }
@@ -154,12 +157,27 @@ public class ClientHandler {
         ClientDatas.SmithingSpeedMultiple = 1F;
     }
 
-    private static void switchSpellCircle(){
+    /**
+     * 默认的轮盘操作： <br>
+     * 根据鼠标偏移决定触发的法术，松开法术按钮即触发。 <br>
+     * 滚轮式轮盘操作：<br>
+     * 打开轮盘，滚轮选择，右击触发并关闭轮盘。 <br>
+     */
+    public static boolean useDefaultCircle(){
+        return PlayerUtil.useDefaultCircle(ClientProxy.MC.player);
+    }
+
+    public static void switchSpellCircle(){
         ClientDatas.ShowSpellCircle = ! ClientDatas.ShowSpellCircle;
-        if(ClientDatas.ShowSpellCircle && PlayerHelper.getClientPlayer() != null){
+        // Open the spell circle.
+        if(ClientDatas.ShowSpellCircle){
+            // check whether there need sync config file or not.
+            if(PlayerUtil.requireSyncCircle(PlayerHelper.getClientPlayer())){
+                NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, ClientDatas.lastSelectedPosition));
+            }
             ClientDatas.SpellMousePositionX = 0;
             ClientDatas.SpellMousePositionY = 0;
-            ClientDatas.lastSelectedPosition = -1;
+            ClientDatas.lastSelectedPosition = useDefaultCircle() ? -1 : 0;
         }
     }
 }

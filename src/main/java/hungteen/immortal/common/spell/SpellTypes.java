@@ -1,4 +1,4 @@
-package hungteen.immortal.common.impl.registry;
+package hungteen.immortal.common.spell;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
@@ -7,6 +7,7 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.common.spell.spells.*;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,28 +30,20 @@ public class SpellTypes {
         return SPELL_TYPES;
     }
 
-    public static final ISpellType INSPIRATION = new SpellType("inspiration", 1, 0, 0, 10, 1200, List.of());
+    public static final ISpellType INSPIRATION = new InspireSpell(properties().maxLevel(1).mana(0).cd(2000));
+    public static final ISpellType RESTING = new RestSpell(properties().maxLevel(1).mana(0).cd(600));
+    public static final ISpellType ITEM_PICKING = new PickUpItemSpell(properties().maxLevel(2).mana(5).cd(200));
+    public static final ISpellType ITEM_STEALING = new StealItemSpell(properties().maxLevel(1).mana(50).cd(1800));
+    public static final ISpellType BLOCK_PICKING = new StealItemSpell(properties().maxLevel(2).mana(10).cd(400));
+    public static final ISpellType FLY_WITH_ITEM = new FlyWithItemSpell(properties().maxLevel(3).mana(20).cd(200));
 
-//    public static final ISpellType RELEASING = new SpellType("releasing", 1, 10, 200,
-//            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
-//    );
-//
-//    public static final ISpellType RESTING = new SpellType("resting", 1, 0, 1200,
-//            lvl -> RealmTypes.MEDITATION_BEGINNER, List.of(), List.of()
-//    );
-//
-//    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
+    //    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
 //            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()
 //    );
 //
 //    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
 //            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
 //    );
-
-    public static final ISpellType ITEM_PICKING = new SpellType("item_picking", 1, 10, 10, 400, 600, List.of());
-    public static final ISpellType ITEM_STEALING = new SpellType("item_stealing", 1, 10, 10, 400, 1800, List.of());
-    public static final ISpellType BLOCK_PICKING = new SpellType("block_picking", 2, 10, 10, 400, 600, List.of());
-    public static final ISpellType FLY_WITH_SWORD = new SpellType("fly_with_sword", 3, 50, 30, 200, 2400, List.of());
 
     //    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
 //            lvl -> {
@@ -61,17 +54,11 @@ public class SpellTypes {
 //            }, List.of(), List.of()
 //    );
 
-
-
-
-
-    public static class SpellType implements ISpellType {
+    public static abstract class SpellType implements ISpellType {
 
         private final String name;
         private final int maxLevel;
-        private final int startMana;
-        private final int continueMana;
-        private final int duration;
+        private final int consumeMana;
         private final int cooldown;
         private final List<ISpiritualType> requireRoots;
         private final ResourceLocation resourceLocation;
@@ -83,12 +70,14 @@ public class SpellTypes {
             ImmortalAPI.get().spellRegistry().ifPresent(l -> l.register(TYPES));
         }
 
-        public SpellType(String name, int maxLevel, int startMana, int continueMana, int duration, int cooldown, List<ISpiritualType> requireRoots) {
+        public SpellType(String name, SpellProperties properties) {
+           this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.requireRoots);
+        }
+
+        public SpellType(String name, int maxLevel, int consumeMana, int cooldown, List<ISpiritualType> requireRoots) {
             this.name = name;
             this.maxLevel = maxLevel;
-            this.startMana = startMana;
-            this.continueMana = continueMana;
-            this.duration = duration;
+            this.consumeMana = consumeMana;
             this.cooldown = cooldown;
             this.requireRoots = requireRoots;
             this.resourceLocation = Util.prefix("textures/spell/" + this.name + ".png");
@@ -101,18 +90,8 @@ public class SpellTypes {
         }
 
         @Override
-        public int getStartMana() {
-            return this.startMana;
-        }
-
-        @Override
-        public int getContinueMana() {
-            return continueMana;
-        }
-
-        @Override
-        public int getDuration() {
-            return duration;
+        public int getConsumeMana() {
+            return this.consumeMana;
         }
 
         @Override
@@ -143,6 +122,39 @@ public class SpellTypes {
         @Override
         public MutableComponent getComponent() {
             return Component.translatable("spell." + getModID() +"." + getName());
+        }
+
+    }
+
+    public static SpellProperties properties(){
+        return new SpellProperties();
+    }
+
+    public static class SpellProperties {
+
+        private int maxLevel = 1;
+        private int consumeMana = 0;
+        private int cooldown = 0;
+        private final List<ISpiritualType> requireRoots = new ArrayList<>();
+
+        public SpellProperties maxLevel(int maxLevel){
+            this.maxLevel = maxLevel;
+            return this;
+        }
+
+        public SpellProperties mana(int mana){
+            this.consumeMana = mana;
+            return this;
+        }
+
+        public SpellProperties cd(int cd){
+            this.cooldown = cd;
+            return this;
+        }
+
+        public SpellProperties root(ISpiritualType root){
+            this.requireRoots.add(root);
+            return this;
         }
 
     }

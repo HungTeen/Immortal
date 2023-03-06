@@ -1,15 +1,10 @@
 package hungteen.immortal.common.event;
 
 import hungteen.immortal.ImmortalMod;
-import hungteen.immortal.common.SpellManager;
-import hungteen.immortal.api.events.PlayerSpellEvent;
-import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.common.item.artifacts.HammerItem;
 import hungteen.immortal.common.network.EmptyClickPacket;
 import hungteen.immortal.common.network.NetworkHandler;
-import hungteen.immortal.utils.PlayerUtil;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -39,10 +34,10 @@ public class ImmortalPlayerEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post event) {
-        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getLevel());
-    }
+//    @SubscribeEvent
+//    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post event) {
+//        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getLevel());
+//    }
 
     @SubscribeEvent
     public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific event) {

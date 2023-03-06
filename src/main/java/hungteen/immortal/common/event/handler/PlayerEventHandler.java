@@ -1,10 +1,13 @@
 package hungteen.immortal.common.event.handler;
 
-import hungteen.immortal.common.SpellManager;
+import hungteen.immortal.api.EntityBlockResult;
+import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.ImmortalLivingEvents;
 import hungteen.immortal.common.event.ImmortalPlayerEvents;
 import hungteen.immortal.common.item.artifacts.FlameGourd;
+import hungteen.immortal.common.spell.SpellTypes;
+import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -41,14 +44,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-//        if(PlayerUtil.isSpellActivated(player, SpellTypes.FLY_WITH_SWORD)){
-//            FlyingItemEntity flyingItem = ImmortalEntities.FLYING_ITEM.get().create(player.level);
-//            flyingItem.setDeltaMovement(itemEntity.getDeltaMovement());
-//            flyingItem.setPos(itemEntity.position());
-//            flyingItem.setItemStack(itemEntity.getItem());
-//            itemEntity.discard();
-//            player.level.addFreshEntity(flyingItem);
-//        }
+        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level, itemEntity));
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
@@ -71,7 +67,7 @@ public class PlayerEventHandler {
      * {@link ImmortalPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
      */
     public static void rayTrace(Player player) {
-        final HitResult hitResult = getHitResult(player);
+        final HitResult hitResult = PlayerUtil.getHitResult(player);
         switch (hitResult.getType()){
             case BLOCK -> {
                 onTraceBlock(player, (BlockHitResult) hitResult);
@@ -80,22 +76,6 @@ public class PlayerEventHandler {
                 onTraceEntity(player, (EntityHitResult) hitResult);
             }
         }
-    }
-
-    public static HitResult getHitResult(Player player) {
-        final double range = 20; //TODO 神识决定距离。
-        final Vec3 startVec = player.getEyePosition(1.0F);
-        final Vec3 lookVec = player.getViewVector(1.0F);
-        Vec3 endVec = startVec.add(lookVec.scale(range));
-        BlockHitResult blockHitResult = player.level.clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
-        if(blockHitResult.getType() != HitResult.Type.MISS){
-            endVec = blockHitResult.getLocation();
-        }
-        final AABB aabb = player.getBoundingBox().inflate(range);
-        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(player.level, player, startVec, endVec, aabb, (entity) -> {
-            return !entity.isSpectator();
-        });
-        return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
 }

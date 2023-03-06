@@ -13,9 +13,16 @@ import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
 import hungteen.immortal.common.impl.PlayerRangeNumbers;
 import hungteen.immortal.common.impl.RealmTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -35,8 +42,38 @@ public class PlayerUtil {
         player.getCooldowns().addCooldown(item, coolDown);
     }
 
+    public static boolean addItem(Player player, ItemStack stack){
+        if (player.addItem(stack)) {
+            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            return true;
+        } else {
+            ItemEntity itementity = player.drop(stack, false);
+            if (itementity != null) {
+                itementity.setNoPickUpDelay();
+                itementity.setOwner(player.getUUID());
+            }
+            return false;
+        }
+    }
+
     public static boolean isInCD(Player player, Item item){
         return player.getCooldowns().isOnCooldown(item);
+    }
+
+    public static HitResult getHitResult(Player player) {
+        final double range = 20; //TODO 神识决定距离。
+        final Vec3 startVec = player.getEyePosition(1.0F);
+        final Vec3 lookVec = player.getViewVector(1.0F);
+        Vec3 endVec = startVec.add(lookVec.scale(range));
+        BlockHitResult blockHitResult = player.level.clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        if(blockHitResult.getType() != HitResult.Type.MISS){
+            endVec = blockHitResult.getLocation();
+        }
+        final AABB aabb = player.getBoundingBox().inflate(range);
+        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(player.level, player, startVec, endVec, aabb, (entity) -> {
+            return !entity.isSpectator();
+        });
+        return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
     /**
@@ -125,25 +162,20 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
     }
 
-    /**
-     * <b> Do not use this method to activate spells ! </b> <br>
-     * Not only used by S -> C sync. <br>
-     * Also use by {@link ImmortalCommand} for ignore checking & cd.
-     */
-    public static void activateSpell(Player player, ISpellType spell, long num){
-        getOptManager(player).ifPresent(l -> l.activateSpell(spell, num));
+    public static void addSpellSet(Player player, ISpellType spell){
+        getOptManager(player).ifPresent(l -> l.addSpellSet(spell));
+    }
+
+    public static void removeSpellSet(Player player, ISpellType spell){
+        getOptManager(player).ifPresent(l -> l.removeSpellSet(spell));
+    }
+
+    public static void clearSpellSet(Player player){
+        getOptManager(player).ifPresent(PlayerDataManager::clearSpellSet);
     }
 
     public static void cooldownSpell(Player player, ISpellType spell, long num){
         getOptManager(player).ifPresent(l -> l.cooldownSpell(spell, num));
-    }
-
-    public static void selectSpell(Player player, long num){
-        getOptManager(player).ifPresent(l -> l.selectSpell(num));
-    }
-
-    public static int getSpellSelectedPosition(Player player) {
-        return getManagerResult(player, PlayerDataManager::getSelectedSpellPosition, 0);
     }
 
     @Nullable
@@ -151,21 +183,12 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.getSpellAt(pos), null);
     }
 
-    @Nullable
-    public static ISpellType getSelectedSpell(Player player) {
-        return getManagerResult(player, PlayerDataManager::getSelectedSpell, null);
-    }
-
-    public static boolean isSpellActivated(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.isSpellActivated(spell), false);
-    }
-
     public static boolean isSpellOnCooldown(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.activatedOrCooldown(spell), false);
+        return getManagerResult(player, m -> m.isSpellOnCoolDown(spell), false);
     }
 
     public static double getSpellCDValue(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.getSpellCDValue(spell), 0D);
+        return getManagerResult(player, m -> m.getSpellCoolDown(spell), 0D);
     }
 
     public static boolean hasLearnedSpell(Player player, ISpellType spell) {
@@ -178,6 +201,14 @@ public class PlayerUtil {
 
     public static int getSpellLevel(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.getSpellLevel(spell), 0);
+    }
+
+    public static boolean hasPassiveSpell(Player player, ISpellType spell, int level) {
+        return getManagerResult(player, m -> m.hasPassiveSpell(spell, level), false);
+    }
+
+    public static boolean hasPassiveSpell(Player player, ISpellType spell) {
+        return getManagerResult(player, m -> m.hasPassiveSpell(spell), false);
     }
 
     /* Operations about Integer Data */
@@ -204,6 +235,14 @@ public class PlayerUtil {
 
     public static int getCultivation(Player player){
         return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0);
+    }
+
+    public static boolean requireSyncCircle(Player player){
+        return getManagerResult(player, PlayerDataManager::requireSyncCircle, false);
+    }
+
+    public static boolean useDefaultCircle(Player player){
+        return getManagerResult(player, PlayerDataManager::useDefaultCircle, true);
     }
 
     /* Misc Operations */

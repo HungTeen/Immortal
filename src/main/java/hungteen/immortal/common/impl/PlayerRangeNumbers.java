@@ -3,6 +3,7 @@ package hungteen.immortal.common.impl;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
+import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,17 +20,19 @@ public class PlayerRangeNumbers {
 
     private static final List<IRangeNumber<Integer>> TYPES = new ArrayList<>();
 
-    /**
-     * Just like vanilla experience, 玩家的修仙经验值。
-     */
+    /* Just like vanilla experience, 玩家的修仙经验值 */
     public static final IRangeNumber<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> SPIRITUAL_MANA = new PlayerData("spiritual_mana", 0, 0, Integer.MAX_VALUE);
+    /* additional mana limit, 额外的附加灵气值 */
     public static final IRangeNumber<Integer> MAX_SPIRITUAL_MANA = new PlayerData("max_spiritual_mana", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> CONSCIOUSNESS = new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> OPPORTUNITY = new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> PERSONALITY = new PlayerData("personality", 0, 0, Integer.MAX_VALUE);
     public static final IRangeNumber<Integer> IS_GHOST = new PlayerData("is_ghost", 0, 0, 1);
-    public static final IRangeNumber<Integer> DEFAULT_SPELL_CIRCLE = new PlayerData("default_spell_circle", 1, 0, 1);
+    /* 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮 */
+    public static final IRangeNumber<Integer> DEFAULT_SPELL_CIRCLE = new PlayerData("default_spell_circle", 0, 0, 2);
+    /* 可用的常驻法术槽位 */
+    public static final IRangeNumber<Integer> PASSIVE_SPELL_COUNT_LIMIT = new PlayerData("passive_spell_count_limit", 3, 0, Constants.SPELL_CIRCLE_SIZE);
 
     public record PlayerData(String name, int defaultValue, int minValue, int maxValue) implements IRangeNumber<Integer> {
         /**

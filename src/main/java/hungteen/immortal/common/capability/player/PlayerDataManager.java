@@ -7,7 +7,7 @@ import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.RealmManager;
-import hungteen.immortal.common.impl.registry.SpellTypes;
+import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.common.network.IntegerDataPacket;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
@@ -37,15 +37,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final Player player;
     private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>();
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>();
-    /* Store the end time of specific spells */
-    private final HashMap<ISpellType, Long> activateSpells = new HashMap<>();
-    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>();
-    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_NUMS];
-    private int selectedSpellPosition = 0;
-    /* Cultivation */
+    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // store the end time of specific spells.
+    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // active spells.
+    private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive spells.
     private IRealmType realmType = RealmTypes.MORTALITY;
-    /* Misc sync integers */
-    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>();
+    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
     /* Caches */
     private RealmManager.RealmNode realmNode;
 
@@ -101,9 +97,6 @@ public class PlayerDataManager implements IPlayerDataManager {
             this.learnSpells.forEach((spell, level) -> {
                 nbt.putInt("learn_" + spell.getRegistryName(), level);
             });
-            this.activateSpells.forEach((spell, time) -> {
-                nbt.putLong("activate_" + spell.getRegistryName(), time);
-            });
             this.spellCDs.forEach((spell, time) -> {
                 nbt.putLong("cooldown_" + spell.getRegistryName(), time);
             });
@@ -111,12 +104,14 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            for (int i = 0; i < Constants.SPELL_NUMS; i++) {
+            for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
                 if (spellList[i] != null) {
-                    nbt.putInt(spellList[i].getRegistryName(), i);
+                    nbt.putInt("active_" + spellList[i].getRegistryName(), i);
                 }
             }
-            nbt.putInt("SelectedSpellPosition", this.selectedSpellPosition);
+            this.spellSet.forEach(spell -> {
+                nbt.putBoolean("passive_" + spell.getRegistryName(), true);
+            });
             tag.put("SpellList", nbt);
         }
         {
@@ -151,15 +146,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("Spells")) {
             learnSpells.clear();
-            activateSpells.clear();
             spellCDs.clear();
             CompoundTag nbt = tag.getCompound("Spells");
             SpellTypes.registry().getValues().forEach(type -> {
                 if (nbt.contains("learn_" + type.getRegistryName())) {
                     learnSpells.put(type, nbt.getInt("learn_" + type.getRegistryName()));
-                }
-                if (nbt.contains("activate_" + type.getRegistryName())) {
-                    activateSpells.put(type, nbt.getLong("activate_" + type.getRegistryName()));
                 }
                 if (nbt.contains("cooldown_" + type.getRegistryName())) {
                     spellCDs.put(type, nbt.getLong("cooldown_" + type.getRegistryName()));
@@ -170,16 +161,14 @@ public class PlayerDataManager implements IPlayerDataManager {
             CompoundTag nbt = tag.getCompound("SpellList");
             ImmortalAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
-                    if (nbt.contains(type.getRegistryName())) {
-                        if (nbt.contains(type.getRegistryName())) {
-                            spellList[nbt.getInt(type.getRegistryName())] = type;
-                        }
+                    if (nbt.contains("active_" + type.getRegistryName())) {
+                        spellList[nbt.getInt(type.getRegistryName())] = type;
+                    }
+                    if (nbt.contains("passive_" + type.getRegistryName())) {
+                        spellSet.add(type);
                     }
                 });
             });
-            if (nbt.contains("SelectedSpellPosition")) {
-                this.selectedSpellPosition = nbt.getInt("SelectedSpellPosition");
-            }
         }
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
@@ -216,15 +205,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.learnSpells.forEach((spell, level) -> {
             this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
         });
-        for (int i = 0; i < Constants.SPELL_NUMS; i++) {
+        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
             if (this.spellList[i] != null) {
-                this.sendSpellPacket(SpellPacket.SpellOptions.SET, this.spellList[i], i);
+                this.sendSpellPacket(SpellPacket.SpellOptions.SET_POS_ON_CIRCLE, this.spellList[i], i);
             }
         }
-        this.activateSpells.forEach((spell, time) -> {
-            this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, time);
-        });
-        this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, this.selectedSpellPosition);
         this.integerMap.forEach(this::sendIntegerDataPacket);
     }
 
@@ -275,52 +260,61 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void setSpellList(int pos, ISpellType spell) {
         this.spellList[pos] = spell;
-        this.sendSpellPacket(SpellPacket.SpellOptions.SET, spell, pos);
+        this.sendSpellPacket(SpellPacket.SpellOptions.SET_POS_ON_CIRCLE, spell, pos);
     }
 
     public void removeSpellList(int pos, ISpellType spell) {
         this.spellList[pos] = null;
-        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE, spell, pos);
+        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_POS_ON_CIRCLE, spell, pos);
     }
 
-    public void activateSpell(@NotNull ISpellType spell, long num) {
-        this.activateSpells.put(spell, num);
-        this.sendSpellPacket(SpellPacket.SpellOptions.ACTIVATE, spell, num);
+    /**
+     * Check whether the spell set out of bound of limit.
+     */
+    private void checkSpellSet(){
+        if(this.spellSet.size() > getSpellSetLimit()){
+            List<ISpellType> list = this.spellSet.stream().limit(getSpellSetLimit()).toList();
+            this.clearSpellSet();
+            list.forEach(this::addSpellSet);
+        }
+    }
+
+    public void addSpellSet(ISpellType spell){
+        if(! this.isClientSide()) checkSpellSet();
+        if(! this.spellSet.contains(spell) && this.spellSet.size() < getSpellSetLimit()){
+            this.spellSet.add(spell);
+            this.sendSpellPacket(SpellPacket.SpellOptions.ADD_SET, spell, 0);
+        }
+    }
+
+    public void removeSpellSet(ISpellType spell){
+        if(! this.isClientSide()) checkSpellSet();
+        if(this.spellSet.contains(spell)){
+            this.spellSet.remove(spell);
+            this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SET, spell, 0);
+        }
+    }
+
+    public void clearSpellSet(){
+        this.spellSet.clear();
+        this.sendSpellPacket(SpellPacket.SpellOptions.CLEAR_SET, null, 0);
     }
 
     public void cooldownSpell(@NotNull ISpellType spell, long num) {
         this.spellCDs.put(spell, num);
-        this.sendSpellPacket(SpellPacket.SpellOptions.COOLDOWN, spell, num);
-    }
-
-    public void selectSpell(long num) {
-        this.selectedSpellPosition = Mth.clamp((int) num, 0, Constants.SPELL_NUM_EACH_PAGE - 1);
-        this.sendSpellPacket(SpellPacket.SpellOptions.SELECT, null, num);
+        this.sendSpellPacket(SpellPacket.SpellOptions.COOL_DOWN, spell, num);
     }
 
     public ISpellType getSpellAt(int num) {
-        return this.spellList[Mth.clamp(num, 0, Constants.SPELL_NUM_EACH_PAGE - 1)];
-    }
-
-    public boolean isSpellActivated(@NotNull ISpellType spell) {
-        return this.activateSpells.containsKey(spell) && this.activateSpells.get(spell) > getGameTime();
+        return this.spellList[Mth.clamp(num, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
     }
 
     public boolean isSpellOnCoolDown(@NotNull ISpellType spell) {
         return this.spellCDs.containsKey(spell) && this.spellCDs.get(spell) > getGameTime();
     }
 
-    /**
-     * 法术触发时哪怕没有冷却，也会有冷却。
-     * @return cool down is the minimum value of spell duration and cool down.
-     */
-    public boolean activatedOrCooldown(@NotNull ISpellType spell) {
-        return this.isSpellActivated(spell) || this.isSpellOnCoolDown(spell);
-    }
-
-    public double getSpellCDValue(@NotNull ISpellType spell) {
-        return isSpellOnCoolDown(spell) ? (this.spellCDs.get(spell) - getGameTime()) * 1.0 / spell.getCooldown()
-                : isSpellActivated(spell) ? (this.activateSpells.get(spell) - getGameTime()) * 1.0 / spell.getDuration() : 0;
+    public double getSpellCoolDown(@NotNull ISpellType spell) {
+        return isSpellOnCoolDown(spell) ? (this.spellCDs.get(spell) - getGameTime()) * 1.0 / spell.getCooldown() : 0;
     }
 
     public boolean hasLearnedSpell(@NotNull ISpellType spell, int level) {
@@ -331,13 +325,12 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.learnSpells.getOrDefault(spell, 0);
     }
 
-    public int getSelectedSpellPosition() {
-        return this.selectedSpellPosition;
+    public boolean hasPassiveSpell(@NotNull ISpellType spell, int level) {
+        return this.hasLearnedSpell(spell, level) && this.hasPassiveSpell(spell);
     }
 
-    @Nullable
-    public ISpellType getSelectedSpell() {
-        return this.spellList[this.selectedSpellPosition];
+    public boolean hasPassiveSpell(@NotNull ISpellType spell) {
+        return this.spellSet.contains(spell);
     }
 
     public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpellType spell, long num) {
@@ -358,7 +351,6 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /**
      * Directly set value.
-     *
      * @param ignore 防止死循环。
      */
     public void setIntegerData(IRangeNumber<Integer> rangeData, int value, boolean ignore) {
@@ -414,7 +406,6 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /**
      * 第一层法力条的极限。
-     *
      * @return Natural increasing point.
      */
     public int getFullManaValue() {
@@ -423,11 +414,25 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /**
      * 第二层溢出条的极限。
-     *
      * @return Explode if player has more mana than it.
      */
     public int getLimitManaValue() {
         return getRealmType().getSpiritualValueLimit();
+    }
+
+    public int getSpellSetLimit(){
+        return getIntegerData(PlayerRangeNumbers.PASSIVE_SPELL_COUNT_LIMIT);
+    }
+
+    /**
+     * 待客户端配置文件更新该值。
+     */
+    public boolean requireSyncCircle(){
+        return getIntegerData(PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE) == 0;
+    }
+
+    public boolean useDefaultCircle(){
+        return getIntegerData(PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE) == 1;
     }
 
     public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {
@@ -468,6 +473,10 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public Player getPlayer() {
         return this.player;
+    }
+
+    public boolean isClientSide(){
+        return getPlayer().level.isClientSide();
     }
 
     public long getGameTime() {

@@ -1,7 +1,9 @@
 package hungteen.immortal.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.immortal.api.EntityBlockResult;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
@@ -13,7 +15,14 @@ import java.util.List;
  **/
 public interface ISpellType extends ISimpleEntry {
 
-//    void start(LivingEntity owner, int level);
+    /**
+     * 法术被触发。
+     * @param owner who activated this spell.
+     * @param result target.
+     * @param level spell level.
+     * @return activate successfully.
+     */
+    boolean onActivate(LivingEntity owner, EntityBlockResult result, int level);
 
     /**
      * 此法术有多少层。
@@ -22,28 +31,22 @@ public interface ISpellType extends ISimpleEntry {
     int getMaxLevel();
 
     /**
-     * 施放此法术需要消耗多少灵力，只考虑开始阶段。
+     * 施放此法术需要消耗多少灵力。
      * @return How many spiritual mana will cost, only consider the start stage.
      */
-    int getStartMana();
-
-    /**
-     * 施放此法术需要消耗多少灵力，中间阶段。
-     * @return How many spiritual mana will cost, only consider each using stage.
-     */
-    int getContinueMana();
-
-    /**
-     * 此法术的持续时间。
-     * @return Active duration of this spell.
-     */
-    int getDuration();
+    int getConsumeMana();
 
     /**
      * 此法术的冷却时间。
-     * @return each releasing cool down.
+     * @return Each releasing cool down.
      */
     int getCooldown();
+
+    /**
+     * 是否是被动法术，即放置在常驻法术轮盘上的法术。
+     * @return Whether it is a spell that triggers passively.
+     */
+    boolean isPassiveSpell();
 
     /**
      * 学习此法术需要什么灵根。

@@ -9,7 +9,7 @@ import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.*;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
-import hungteen.immortal.common.impl.registry.SpellTypes;
+import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;

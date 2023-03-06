@@ -55,22 +55,17 @@ public class PlayerSpellEvent extends PlayerEvent {
          */
         public static final class Post extends ActivateSpellEvent {
 
-            public Post(Player player, ISpellType spell, int level) {
+            private final boolean result;
+
+            public Post(Player player, ISpellType spell, int level, boolean result) {
                 super(player, spell, level);
+                this.result = result;
             }
 
-        }
-    }
+            public boolean isSuccessful(){
+                return result;
+            }
 
-    /**
-     * using spell after activated.
-     * Server Side Only.
-     */
-    @Cancelable
-    public static final class UsingSpellEvent extends PlayerSpellEvent {
-
-        public UsingSpellEvent(Player player, ISpellType spell, int level) {
-            super(player, spell, level);
         }
     }
 
