@@ -19,6 +19,11 @@
   "_comment_18": "Rune",
   "_comment_100": "Misc",
   "_comment1": "--------------------------------------------Item-------------------------------------------",
+  "item.immortal.continuous_mountain.desc": "Continuous Mountain",
+  "item.immortal.flowing_cloud.desc": "Flowing Cloud",
+  "item.immortal.folded_thunder.desc": "Folded Thunder",
+  "item.immortal.rhombus.desc": "Rhombus",
+
   "item.immortal.rune": "Rune",
   "item.immortal.memory_rune": "Memory Rune",
   "item.immortal.sensor_rune": "Sensor Rune",

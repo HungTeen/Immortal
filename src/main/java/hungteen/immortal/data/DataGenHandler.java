@@ -2,6 +2,7 @@ package hungteen.immortal.data;
 
 import hungteen.immortal.data.codec.*;
 import hungteen.immortal.data.recipe.RecipeGen;
+import hungteen.immortal.data.tag.BannerPatternTagGen;
 import hungteen.immortal.data.tag.BlockTagGen;
 import hungteen.immortal.data.tag.EntityTagGen;
 import hungteen.immortal.data.tag.ItemTagGen;
@@ -20,6 +21,7 @@ public class DataGenHandler {
         event.getGenerator().addProvider(event.includeServer(), generator);
         event.getGenerator().addProvider(event.includeServer(), new ItemTagGen(event.getGenerator(), generator, event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new EntityTagGen(event.getGenerator(), event.getExistingFileHelper()));
+        event.getGenerator().addProvider(event.includeServer(), new BannerPatternTagGen(event.getGenerator(), event.getExistingFileHelper()));
 
         /* Recipes */
         event.getGenerator().addProvider(event.includeServer(), new RecipeGen(event.getGenerator()));
@@ -38,10 +40,10 @@ public class DataGenHandler {
 
         /* Codecs */
         event.getGenerator().addProvider(event.includeServer(), new RegistryGen(event.getGenerator()));
-        event.getGenerator().addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
-        event.getGenerator().addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
-        event.getGenerator().addProvider(event.includeServer(), new SpellBookGen(event.getGenerator()));
-        event.getGenerator().addProvider(event.includeServer(), new StructureGen(event.getGenerator()));
+//        event.getGenerator().addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
+//        event.getGenerator().addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
+//        event.getGenerator().addProvider(event.includeServer(), new SpellBookGen(event.getGenerator()));
+//        event.getGenerator().addProvider(event.includeServer(), new StructureGen(event.getGenerator()));
     }
 
 }

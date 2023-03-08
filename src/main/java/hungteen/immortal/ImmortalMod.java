@@ -15,6 +15,7 @@ import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
+import hungteen.immortal.common.misc.ImmortalBannerPatterns;
 import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.common.item.ImmortalItems;
@@ -96,6 +97,7 @@ public class ImmortalMod {
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalBannerPatterns.register(modBus);
         ImmortalParticles.register(modBus);
         ImmortalDataSerializers.register(modBus);
         ImmortalMemories.register(modBus);

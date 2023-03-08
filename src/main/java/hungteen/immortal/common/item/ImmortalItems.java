@@ -14,6 +14,8 @@ import hungteen.immortal.common.item.artifacts.*;
 import hungteen.immortal.common.item.eixirs.*;
 import hungteen.immortal.common.item.runes.RuneItem;
 import hungteen.immortal.common.impl.ImmortalTiers;
+import hungteen.immortal.common.misc.ImmortalBannerPatterns;
+import hungteen.immortal.common.tag.ImmortalBannerPatternTags;
 import hungteen.immortal.utils.Util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
@@ -75,6 +77,11 @@ public class ImmortalItems {
 //    public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {
 //        return new MobBucketItem(() -> ImmortalEntities.GRASS_CARP.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_AXOLOTL, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
 //    });
+    public static final RegistryObject<Item> CONTINUOUS_MOUNTAIN_PATTERN = ITEMS.register("continuous_mountain_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.CONTINUOUS_MOUNTAIN, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FLOWING_CLOUD_PATTERN = ITEMS.register("flowing_cloud_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FLOWING_CLOUD, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> FOLDED_THUNDER_PATTERN = ITEMS.register("folded_thunder_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FOLDED_THUNDER, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> RHOMBUS_PATTERN = ITEMS.register("rhombus_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.RHOMBUS, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+
 
     /* Food Tab Items */
 

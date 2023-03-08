@@ -19,6 +19,11 @@
   "_comment_18": "符文",
   "_comment_100": "杂项",
   "_comment1": "--------------------------------------------物品-------------------------------------------",
+  "item.immortal.continuous_mountain.desc": "连山",
+  "item.immortal.flowing_cloud.desc": "流云",
+  "item.immortal.folded_thunder.desc": "卷雷",
+  "item.immortal.rhombus.desc": "菱方",
+
   "item.immortal.rune": "符文",
   "item.immortal.memory_rune": "记忆符文",
   "item.immortal.sensor_rune": "感知符文",
