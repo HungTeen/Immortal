@@ -1,6 +1,6 @@
 package hungteen.immortal.common.item.eixirs;
 
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.api.registry.IRealmType;
@@ -112,7 +112,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         final Accuracies accuracy = getAccuracy(stack);
         if(Accuracies.hasUsage(accuracy)){
-            final ResourceLocation location = ItemHelper.getKey(this);
+            final ResourceLocation location = ItemHelper.get().getKey(this);
             components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
         }
         components.add(Component.translatable("tooltip.immortal.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())

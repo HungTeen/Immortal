@@ -3,7 +3,7 @@ package hungteen.immortal.data.recipe;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.recipe.ImmortalRecipes;
 import hungteen.immortal.utils.Util;
@@ -173,7 +173,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
             }
             jsonObject.add("ingredients", jsonarray);
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item", ItemHelper.getKey(this.result).toString());
+            jsonobject.addProperty("item", ItemHelper.get().getKey(this.result).toString());
             if (this.count > 1) {
                 jsonobject.addProperty("count", this.count);
             }

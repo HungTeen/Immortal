@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.artifacts;
 
 import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.menu.tooltip.ArtifactToolTip;
@@ -38,7 +38,7 @@ public class RawArtifactBox extends ArtifactItem {
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if(tab == CreativeModeTab.TAB_SEARCH){
-            ItemHelper.getFilterItems(ArtifactItem.class::isInstance).forEach(item -> {
+            ItemHelper.get().getFilterEntries(ArtifactItem.class::isInstance).forEach(item -> {
                 ItemStack stack = new ItemStack(this);
                 setArtifactItem(stack, new ItemStack(item));
                 stacks.add(stack);

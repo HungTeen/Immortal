@@ -1,10 +1,8 @@
 package hungteen.immortal.common.entity.creature;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.ParticleHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.utils.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

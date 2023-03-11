@@ -33,19 +33,19 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
     private final IDrawable slotDraw;
     private final IDrawable background;
 //    private final IDrawable iconDraw;
-    private final IDrawable arrowDraw;
+//    private final IDrawable arrowDraw;
 
     public ElixirCategory(IGuiHelper helper) {
         this.slotDraw = helper.getSlotDrawable();
         this.background = helper.createBlankDrawable(120, 60);
-        this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
+//        this.arrowDraw = helper.drawableBuilder(RenderHelper.WIDGETS, 44, 64, 22, 15).build();
 //        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
     }
 
     @Override
     public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         stack.pushPose();
-        this.arrowDraw.draw(stack, 50, 23);
+//        this.arrowDraw.draw(stack, 50, 23);
         stack.popPose();
     }
 

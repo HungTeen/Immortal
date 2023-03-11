@@ -1,6 +1,7 @@
 package hungteen.immortal.data.tag;
 
-import hungteen.htlib.data.tag.HTEntityTagGen;
+import hungteen.htlib.data.tag.HTTagsProvider;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.tag.ImmortalEntityTags;
 import hungteen.immortal.utils.Util;
@@ -17,10 +18,10 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2022-10-07 12:13
  **/
-public class EntityTagGen extends HTEntityTagGen {
+public class EntityTagGen extends HTTagsProvider<EntityType<?>> {
 
     public EntityTagGen(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, Util.id(), existingFileHelper);
+        super(generator, EntityHelper.get(), Util.id(), existingFileHelper);
     }
 
     @Override

@@ -2,9 +2,7 @@ package hungteen.immortal.common.entity.misc;
 
 import com.google.common.collect.ImmutableList;
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.htlib.util.helper.BlockHelper;
-import hungteen.htlib.util.helper.EntityHelper;
-import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
@@ -17,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 抽象坐具

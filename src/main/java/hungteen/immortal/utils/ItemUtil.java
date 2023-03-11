@@ -1,9 +1,7 @@
 package hungteen.immortal.utils;
 
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.ImmortalMod;
-import hungteen.immortal.common.entity.human.HumanEntity;
-import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.tag.ImmortalItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -11,7 +9,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.ThrowablePotionItem;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class ItemUtil {
     }
 
     public static ResourceLocation getLargeHeldLocation(Item item){
-        return Util.suffix(ItemHelper.getKey(item), SUFFIX);
+        return Util.suffix(ItemHelper.get().getKey(item), SUFFIX);
     }
 
     /**

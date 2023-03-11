@@ -1,7 +1,7 @@
 package hungteen.immortal.utils;
 
 import hungteen.htlib.util.Triple;
-import hungteen.htlib.util.helper.ParticleHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import net.minecraft.util.Mth;

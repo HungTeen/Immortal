@@ -23,7 +23,7 @@ I am mortal, but i will be immortal !
 [[dependencies.immortal]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[43.2.0,)"
 
 [[dependencies.immortal]]
     modId="minecraft"
@@ -33,7 +33,7 @@ I am mortal, but i will be immortal !
 [[dependencies.immortal]]
 modId="htlib"
 mandatory=true
-versionRange="[0.8,)"
+versionRange="[0.9.0,)"
 
 [[dependencies.immortal]]
 modId="jei"

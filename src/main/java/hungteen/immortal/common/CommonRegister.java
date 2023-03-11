@@ -1,6 +1,6 @@
 package hungteen.immortal.common;
 
-import hungteen.htlib.util.helper.BlockHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.item.ImmortalItems;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

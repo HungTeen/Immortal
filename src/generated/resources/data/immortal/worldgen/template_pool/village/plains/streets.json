@@ -4,7 +4,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/straight_01",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 4
@@ -13,7 +82,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/straight_02",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 4
@@ -22,7 +160,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/straight_03",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 7
@@ -31,7 +238,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/straight_04",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 7
@@ -40,7 +316,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/crossroad_01",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -49,7 +394,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/crossroad_02",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 1
@@ -58,7 +472,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/crossroad_03",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -67,7 +550,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/crossroad_04",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -76,7 +628,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/crossroad_05",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -85,7 +706,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/corner_01",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -94,7 +784,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/corner_02",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2
@@ -103,7 +862,76 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "immortal:village/plains/streets/corner_03",
-        "processors": "immortal:spiritual_plains_street",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.1
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:grass_block",
+                    "Properties": {
+                      "snowy": "false"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:cobblestone",
+                    "predicate_type": "minecraft:random_block_match",
+                    "probability": 0.4
+                  },
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:mossy_cobblestone"
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:grass_block",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                },
+                {
+                  "input_predicate": {
+                    "block": "minecraft:dirt",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "location_predicate": {
+                    "block": "minecraft:water",
+                    "predicate_type": "minecraft:block_match"
+                  },
+                  "output_state": {
+                    "Name": "minecraft:water",
+                    "Properties": {
+                      "level": "0"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         "projection": "terrain_matching"
       },
       "weight": 2

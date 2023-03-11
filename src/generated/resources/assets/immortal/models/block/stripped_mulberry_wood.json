@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "render_type": "minecraft:solid",
-  "textures": {
-    "end": "immortal:block/stripped_mulberry_log",
-    "side": "immortal:block/stripped_mulberry_log"
-  }
-}

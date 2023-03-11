@@ -1,13 +1,10 @@
 package hungteen.immortal.common.item.artifacts;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.ParticleHelper;
-import hungteen.immortal.api.interfaces.IArtifactTier;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.immortal.api.registry.IArtifactType;
 import hungteen.immortal.common.entity.misc.SpiritualFlame;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
-import hungteen.immortal.common.spell.SpellManager;
-import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;

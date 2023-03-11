@@ -1,7 +1,7 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTItemModelGen;
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.common.ElixirManager;
@@ -68,6 +68,14 @@ public class ItemModelGen extends HTItemModelGen {
             this.addedItems.add(item);
             genNormal(name(item), ItemHelper.itemTexture(item));
             genLargeHeld(location.getPath(), StringHelper.itemTexture(location));
+        });
+
+        /* Banner patterns */
+        Arrays.asList(
+                ImmortalItems.CONTINUOUS_MOUNTAIN_PATTERN, ImmortalItems.FLOWING_CLOUD_PATTERN, ImmortalItems.FOLDED_THUNDER_PATTERN, ImmortalItems.RHOMBUS_PATTERN
+        ).forEach(item -> {
+            this.addedItems.add(item.get());
+            this.genNormal(item.getId().getPath(), Util.mcPrefix("item/flower_banner_pattern"));
         });
 
         /* For mostly common items. */

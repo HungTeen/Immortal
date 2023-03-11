@@ -1,11 +1,10 @@
 package hungteen.immortal.common.spell.spells;
 
-import hungteen.htlib.util.helper.EntityHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.immortal.api.EntityBlockResult;
 import hungteen.immortal.common.entity.misc.SeatEntity;
 import hungteen.immortal.common.spell.SpellTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.HitResult;
 
 /**
  * @author PangTeen

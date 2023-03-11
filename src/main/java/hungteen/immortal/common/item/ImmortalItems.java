@@ -1,6 +1,7 @@
 package hungteen.immortal.common.item;
 
 import hungteen.htlib.common.item.HTBoatItem;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.entity.ImmortalEntities;
@@ -17,9 +18,11 @@ import hungteen.immortal.common.impl.ImmortalTiers;
 import hungteen.immortal.common.misc.ImmortalBannerPatterns;
 import hungteen.immortal.common.tag.ImmortalBannerPatternTags;
 import hungteen.immortal.utils.Util;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -32,7 +35,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Util.id());
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Util.id());
 
     /* Spell Books */
 
@@ -77,6 +80,7 @@ public class ImmortalItems {
 //    public static final RegistryObject<Item> GRASS_CARP_BUCKET = ITEMS.register("grass_carp_bucket", () -> {
 //        return new MobBucketItem(() -> ImmortalEntities.GRASS_CARP.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_AXOLOTL, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
 //    });
+
     public static final RegistryObject<Item> CONTINUOUS_MOUNTAIN_PATTERN = ITEMS.register("continuous_mountain_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.CONTINUOUS_MOUNTAIN, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> FLOWING_CLOUD_PATTERN = ITEMS.register("flowing_cloud_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FLOWING_CLOUD, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> FOLDED_THUNDER_PATTERN = ITEMS.register("folded_thunder_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FOLDED_THUNDER, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
@@ -87,14 +91,19 @@ public class ImmortalItems {
 
     public static final RegistryObject<Item> MULBERRY = ITEMS.register("mulberry", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD)));
 
+
     /**
-     * register items.
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void registerItems(RegisterEvent event){
-
     }
 
+    /**
+     * {@link ImmortalMod#ImmortalMod()}
+     */
+    public static void register(IEventBus event){
+        ITEMS.register(event);
+    }
 
 //    /**
 //     * register spawn eggs

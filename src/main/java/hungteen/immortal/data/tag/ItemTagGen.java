@@ -1,15 +1,12 @@
 package hungteen.immortal.data.tag;
 
+import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.htlib.data.tag.HTItemTagGen;
-import hungteen.htlib.util.helper.ItemHelper;
 import hungteen.immortal.common.tag.ImmortalItemTags;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.TridentItem;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  **/
 public class ItemTagGen extends HTItemTagGen {
 
-    public ItemTagGen(DataGenerator generator, BlockTagsProvider blockTagsProvider, @Nullable ExistingFileHelper existingFileHelper) {
+    public ItemTagGen(DataGenerator generator, HTBlockTagGen blockTagsProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(generator, blockTagsProvider, Util.id(), existingFileHelper);
     }
 

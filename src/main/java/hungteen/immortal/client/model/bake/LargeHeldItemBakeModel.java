@@ -1,7 +1,7 @@
 package hungteen.immortal.client.model.bake;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -46,7 +46,7 @@ public class LargeHeldItemBakeModel implements BakedModel {
     }
 
     public static ResourceLocation getModelLocation(Item item){
-        return new ModelResourceLocation(ItemHelper.getKey(item), ImmortalBakeModels.INVENTORY);
+        return new ModelResourceLocation(ItemHelper.get().getKey(item), ImmortalBakeModels.INVENTORY);
     }
 
     public static ResourceLocation getHeldModelLocation(Item item){

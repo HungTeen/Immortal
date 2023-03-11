@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.eixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.EffectHelper;
+import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.immortal.common.impl.RealmTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;

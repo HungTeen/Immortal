@@ -1,6 +1,0 @@
-{
-  "render_type": "minecraft:solid",
-  "textures": {
-    "particle": "immortal:block/mulberry_planks"
-  }
-}

@@ -1,21 +1,9 @@
 package hungteen.immortal.data.recipe;
 
-import hungteen.htlib.util.helper.ItemHelper;
-import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.common.block.ImmortalBlocks;
-import hungteen.immortal.common.block.plants.GourdGrownBlock;
-import hungteen.immortal.common.item.ImmortalItems;
-import hungteen.immortal.common.impl.registry.SpiritualTypes;
-import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**

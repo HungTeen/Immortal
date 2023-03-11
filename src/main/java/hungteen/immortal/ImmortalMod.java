@@ -35,6 +35,7 @@ import hungteen.immortal.common.world.structure.ImmortalTemplatePools;
 import hungteen.immortal.data.DataGenHandler;
 import hungteen.immortal.common.impl.*;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -70,7 +71,8 @@ public class ImmortalMod {
 
         /* Forge Bus Events */
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-        forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachCapabilities);
+        forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
+        forgeBus.addGenericListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
@@ -89,7 +91,7 @@ public class ImmortalMod {
         ImmortalBiomes.register();
         ImmortalStructures.register();
 
-        ImmortalItems.ITEMS.register(modBus);
+        ImmortalItems.register(modBus);
         ImmortalBlocks.BLOCKS.register(modBus);
         ImmortalEntities.ENTITY_TYPES.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);

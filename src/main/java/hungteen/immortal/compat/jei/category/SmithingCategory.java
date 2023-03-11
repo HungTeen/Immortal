@@ -33,19 +33,19 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
     private final IDrawable slotDraw;
     private final IDrawable background;
 //    private final IDrawable iconDraw;
-    private final IDrawable arrowDraw;
+//    private final IDrawable arrowDraw;
 
     public SmithingCategory(IGuiHelper helper) {
         this.slotDraw = helper.getSlotDrawable();
         this.background = helper.createBlankDrawable(150, 100);
-        this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
+//        this.arrowDraw = helper.drawableBuilder(HTLib.WIDGETS, 44, 64, 22, 15).build();
 //        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()));
     }
 
     @Override
     public void draw(SmithingArtifactRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         stack.pushPose();
-        this.arrowDraw.draw(stack, 50, 23);
+//        this.arrowDraw.draw(stack, 50, 23);
         stack.popPose();
     }
 

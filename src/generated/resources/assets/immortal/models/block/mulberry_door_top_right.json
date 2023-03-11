@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right",
-  "render_type": "minecraft:solid",
-  "textures": {
-    "bottom": "immortal:block/mulberry_door_bottom",
-    "top": "immortal:block/mulberry_door_top"
-  }
-}

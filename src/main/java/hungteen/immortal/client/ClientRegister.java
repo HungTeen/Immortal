@@ -1,12 +1,9 @@
 package hungteen.immortal.client;
 
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
-import hungteen.htlib.util.helper.ItemHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.client.event.OverlayEvents;
-import hungteen.immortal.client.gui.screen.ElixirRoomScreen;
 import hungteen.immortal.client.gui.screen.GolemScreen;
-import hungteen.immortal.client.gui.screen.SmithingArtifactScreen;
-import hungteen.immortal.client.gui.screen.SpiritualFurnaceScreen;
 import hungteen.immortal.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.immortal.client.gui.tooltip.ClientElementToolTip;
 import hungteen.immortal.client.model.ModelLayers;
@@ -122,7 +119,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
-        ItemHelper.getFilterItems(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
+        ItemHelper.get().getFilterEntries(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
     }
