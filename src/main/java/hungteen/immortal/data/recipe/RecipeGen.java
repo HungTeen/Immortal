@@ -1,8 +1,17 @@
 package hungteen.immortal.data.recipe;
 
+import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.immortal.utils.BlockUtil;
+import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Consumer;
 
@@ -28,6 +37,16 @@ public class RecipeGen extends RecipeProvider {
      * Recipes for Crafting Table.
      */
     protected void buildNormalRecipes(Consumer<FinishedRecipe> consumer) {
+        for (DyeColor color : DyeColor.values()) {
+            ItemHelper.get().get(BlockUtil.getWoolCushionLocation(color)).ifPresent(cushion -> {
+                ItemHelper.get().get(Util.mcPrefix(color.getName() + "_wool")).ifPresent(wool -> {
+                    woolCushion(consumer, cushion, wool);
+                });
+                ItemHelper.get().get(Util.mcPrefix(color.getName() + "_dye")).ifPresent(dye -> {
+                    woolCushionFromDye(consumer, cushion, dye);
+                });
+            });
+        }
 //        ShapedRecipeBuilder.shaped(ImmortalItems.FLAME_GOURD.get(), 1)
 //                .define('A', GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())
 //                .define('B', Items.BLAZE_ROD)
@@ -151,5 +170,22 @@ public class RecipeGen extends RecipeProvider {
 //        map.forEach(builder::put);
 //        builder.save(consumer, Util.prefix("elixir/" + ItemHelper.getKey(result.asItem()).getPath()));
 //    }
+
+    protected static void woolCushion(Consumer<FinishedRecipe> consumer, ItemLike cushion, ItemLike wool) {
+        ShapedRecipeBuilder.shaped(cushion).define('#', wool).define('X', ItemTags.PLANKS).pattern("##").pattern("XX").group("wool_cushion").unlockedBy(getHasName(wool), has(wool)).save(consumer);
+    }
+
+    protected static void woolCushionFromDye(Consumer<FinishedRecipe> consumer, ItemLike cushion, ItemLike dye) {
+        ItemHelper.get().get(BlockUtil.getWoolCushionLocation(DyeColor.WHITE)).ifPresent(whiteCushion -> {
+            if (cushion != whiteCushion) {
+                ShapelessRecipeBuilder.shapeless(cushion).requires(Items.WHITE_BED).requires(dye).group("dyed_wool_cushion").unlockedBy("has_white_cushion", has(whiteCushion)).save(consumer, conversionName(cushion, whiteCushion));
+
+            }
+        });
+    }
+
+    protected static String conversionName(ItemLike old, ItemLike item) {
+        return Util.prefixName(getItemName(old) + "_from_" + getItemName(item));
+    }
 
 }

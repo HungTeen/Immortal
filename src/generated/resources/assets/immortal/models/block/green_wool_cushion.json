@@ -1,0 +1,7 @@
+{
+  "parent": "immortal:block/wool_cushion",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "color": "minecraft:entity/bed/green"
+  }
+}

@@ -1,27 +1,25 @@
 package hungteen.immortal.common.block;
 
-import hungteen.htlib.common.block.*;
+import hungteen.htlib.common.block.HTLeavesBlock;
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTSaplingBlock;
+import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.ImmortalMod;
-import hungteen.immortal.common.block.artifacts.ElixirRoom;
-import hungteen.immortal.common.block.artifacts.SmithingArtifact;
-import hungteen.immortal.common.block.artifacts.SpiritualFurnace;
-import hungteen.immortal.common.block.artifacts.SpiritualRoom;
 import hungteen.immortal.common.block.plants.AttachedGourdStemBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
-import hungteen.immortal.common.impl.registry.ArtifactTypes;
 import hungteen.immortal.common.item.ItemTabs;
 import hungteen.immortal.common.world.feature.tree.MulberryTreeGrower;
+import hungteen.immortal.utils.BlockUtil;
 import hungteen.immortal.utils.Util;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BannerPatterns;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -62,12 +60,17 @@ public class ImmortalBlocks {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void registerBlocks(RegisterEvent event){
+        // 注册各种葫芦方块。
         for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
             event.register(ForgeRegistries.BLOCKS.getRegistryKey(), Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"), () -> {
                 final GourdGrownBlock block = new GourdGrownBlock(type);
                 type.setGourdGrownBlock(block);
                 return block;
             });
+        }
+        // 注册各种颜色的羊毛坐垫。
+        for (DyeColor color : DyeColor.values()) {
+            BlockHelper.get().register(event, BlockUtil.getWoolCushionLocation(color), () -> new WoolCushionBlock(color));
         }
     }
 
@@ -76,6 +79,7 @@ public class ImmortalBlocks {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void registerBlockItems(RegisterEvent event){
+        // Register all gourd blocks.
         for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
             if(type.getGourdGrownBlock() != null){
                 event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"), () -> {
@@ -84,6 +88,13 @@ public class ImmortalBlocks {
                     return item;
                 });
             }
+        }
+        // Register wool cushion of all colors.
+        for (DyeColor color : DyeColor.values()) {
+            final ResourceLocation id = BlockUtil.getWoolCushionLocation(color);
+            BlockHelper.get().get(id).ifPresent(block -> {
+                ItemHelper.get().register(event, id, () -> new BlockItem(block, new Item.Properties().tab(ItemTabs.DECORATIONS)));
+            });
         }
         Arrays.asList(
                 MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_SAPLING

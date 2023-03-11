@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wool_cushion",
+  "key": {
+    "#": {
+      "item": "minecraft:pink_wool"
+    },
+    "X": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "##",
+    "XX"
+  ],
+  "result": {
+    "item": "immortal:pink_wool_cushion"
+  }
+}

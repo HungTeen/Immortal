@@ -1,6 +1,6 @@
 package hungteen.immortal.data;
 
-import hungteen.immortal.data.codec.*;
+import hungteen.immortal.data.codec.RegistryGen;
 import hungteen.immortal.data.recipe.RecipeGen;
 import hungteen.immortal.data.tag.BannerPatternTagGen;
 import hungteen.immortal.data.tag.BlockTagGen;

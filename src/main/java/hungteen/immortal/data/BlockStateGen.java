@@ -1,15 +1,18 @@
 package hungteen.immortal.data;
 
 import hungteen.htlib.data.HTBlockStateGen;
-import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.common.block.WoolCushionBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
+import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -76,6 +79,20 @@ public class BlockStateGen extends HTBlockStateGen {
             horizontalBlock(block, models().cubeAll(name(block), BlockHelper.blockTexture(block)).renderType(cutout()));
             this.addedBlocks.add(block);
         });
+
+        BlockHelper.get().getFilterEntries(WoolCushionBlock.class::isInstance).stream()
+                .map(WoolCushionBlock.class::cast).forEach(block -> {
+                    getVariantBuilder(block).forAllStates(state -> {
+                        final Direction dir = state.getValue(WoolCushionBlock.FACING);
+                        return ConfiguredModel.builder()
+                                .modelFile(models().withExistingParent(name(block), Util.prefix("block/wool_cushion"))
+                                        .texture("color", Util.mcPrefix("entity/bed/" + block.getDyeColor().getName()))
+                                        .renderType(cutout())
+                                )
+                                .rotationY(((int) dir.toYRot() + 180) % 360).build();
+                    });
+                    this.addedBlocks.add(block);
+                });
 
         /* Common Blocks. */
         for (Block block : ForgeRegistries.BLOCKS) {

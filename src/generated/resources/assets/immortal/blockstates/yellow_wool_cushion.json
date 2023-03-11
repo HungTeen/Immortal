@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "immortal:block/yellow_wool_cushion",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "immortal:block/yellow_wool_cushion"
+    },
+    "facing=south": {
+      "model": "immortal:block/yellow_wool_cushion",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "immortal:block/yellow_wool_cushion",
+      "y": 270
+    }
+  }
+}
