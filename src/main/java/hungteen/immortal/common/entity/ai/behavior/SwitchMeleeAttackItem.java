@@ -1,21 +1,14 @@
 package hungteen.immortal.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.common.entity.human.HumanEntity;
-import hungteen.immortal.common.tag.ImmortalItemTags;
 import hungteen.immortal.utils.EntityUtil;
 import hungteen.immortal.utils.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.behavior.Behavior;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -41,7 +34,7 @@ public class SwitchMeleeAttackItem extends Behavior<HumanEntity> {
      */
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
-        return EntityUtil.isMainHolding(entity, ItemStack::isEmpty) || EntityUtil.isMainHolding(entity, ItemUtil::isMeleeWeapon);
+        return true;
     }
 
     @Override

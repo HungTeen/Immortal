@@ -13,6 +13,7 @@ import hungteen.immortal.common.datapack.ImmortalDataPacks;
 import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
+import hungteen.immortal.common.impl.codec.InventoryLoots;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
 import hungteen.immortal.common.misc.ImmortalBannerPatterns;
@@ -140,6 +141,7 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
+        InventoryLoots.register();
         InventoryLootTypes.InventoryLootType.register();
 //        ItemUtil.registerLargeHeldItems();
     }

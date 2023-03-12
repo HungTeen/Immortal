@@ -9,8 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.monster.Drowned;
-import net.minecraft.world.item.ItemStack;
 
 /**
  * @program: Immortal
@@ -36,7 +34,7 @@ public class SwitchRangeAttackItem extends Behavior<HumanEntity> {
      */
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
-        return EntityUtil.isMainHolding(entity, ItemStack::isEmpty) || EntityUtil.isMainHolding(entity, ItemUtil::isRangeWeapon);
+        return true;
     }
 
     @Override

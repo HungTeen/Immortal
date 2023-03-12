@@ -5,17 +5,22 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTCodecRegistry;
+import hungteen.htlib.common.registry.HTRegistryHolder;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.WeightList;
 import hungteen.immortal.api.registry.IInventoryLootType;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
+import hungteen.immortal.utils.Util;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +36,270 @@ public class InventoryLoots {
      */
     private static final HTCodecRegistry<InventoryLoot> LOOTS = HTRegistryManager.create(InventoryLoot.class, "inventory_loots", () -> InventoryLoot.CODEC);
 
+    public static HTRegistryHolder<InventoryLoot> RICH_VANILLA = LOOTS.innerRegister(
+            Util.prefix("rich_vanilla"),
+            new InventoryLoot(
+                    InventoryLootTypes.VANILLA,
+                    100,
+                    Arrays.asList(
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.PUMPKIN_PIE),
+                                    UniformInt.of(16, 32),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.GOLDEN_APPLE),
+                                    UniformInt.of(2, 5),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ARROW),
+                                    UniformInt.of(32, 64),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ENDER_PEARL),
+                                    UniformInt.of(2, 5),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.SHIELD),
+                                    ConstantInt.of(1),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.BOW),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(8, 15)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 15)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.NETHERITE_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.NETHERITE_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(3, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.NETHERITE_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(3, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(8, 12)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.IRON_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(10, 15)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(8, 12)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.IRON_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(10, 15)
+                            ))
+                    )
+            )
+    );
+
+    public static HTRegistryHolder<InventoryLoot> NORMAL_VANILLA = LOOTS.innerRegister(
+            Util.prefix("normal_vanilla"),
+            new InventoryLoot(
+                    InventoryLootTypes.VANILLA,
+                    300,
+                    Arrays.asList(
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.BREAD),
+                                    UniformInt.of(24, 48),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.GOLDEN_APPLE),
+                                    UniformInt.of(1, 3),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ARROW),
+                                    UniformInt.of(24, 48),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ENDER_PEARL),
+                                    UniformInt.of(1, 2),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.SHIELD),
+                                    ConstantInt.of(1),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.BOW),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(4, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(2, 5)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(2, 5)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(2, 5)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.GOLDEN_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(10, 15)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(5, 10)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.DIAMOND_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(2, 5)
+                            ))
+                    )
+            )
+    );
+
+    public static HTRegistryHolder<InventoryLoot> POOR_VANILLA = LOOTS.innerRegister(
+            Util.prefix("poor_vanilla"),
+            new InventoryLoot(
+                    InventoryLootTypes.VANILLA,
+                    200,
+                    Arrays.asList(
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.BREAD),
+                                    UniformInt.of(5, 15),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ROTTEN_FLESH),
+                                    UniformInt.of(32, 64),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.GOLDEN_APPLE),
+                                    UniformInt.of(0, 1),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ARROW),
+                                    UniformInt.of(16, 32),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.ENDER_PEARL),
+                                    UniformInt.of(0, 1),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.SHIELD),
+                                    ConstantInt.of(1),
+                                    ConstantInt.of(0)
+                            )),
+                            singleLoot(new ItemEntry(
+                                    new ItemStack(Items.BOW),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 4)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 5)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.STONE_SWORD),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 4)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.CHAINMAIL_CHESTPLATE),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 5)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.CHAINMAIL_LEGGINGS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 8)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.CHAINMAIL_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 8)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.GOLDEN_HELMET),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 10)
+                            )),
+                            pairLoot(new ItemEntry(
+                                    new ItemStack(Items.IRON_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 4)
+                            ), new ItemEntry(
+                                    new ItemStack(Items.CHAINMAIL_BOOTS),
+                                    ConstantInt.of(1),
+                                    UniformInt.of(0, 8)
+                            ))
+                    )
+            )
+    );
+
+    public static void register(){
+
+    }
+
     public static IHTCodecRegistry<InventoryLoot> registry(){
         return LOOTS;
     }
@@ -41,6 +310,14 @@ public class InventoryLoots {
 
     public static List<InventoryLoot> getInventoryLoots(IInventoryLootType type){
         return LOOTS.getValues().stream().filter(l -> l.type() == type).toList();
+    }
+
+    public static LootEntry singleLoot(ItemEntry entry){
+        return new LootEntry(List.of(Pair.of(entry, 1)));
+    }
+
+    public static LootEntry pairLoot(ItemEntry entry, ItemEntry entry2){
+        return new LootEntry(List.of(Pair.of(entry, 10), Pair.of(entry2, 10)));
     }
 
     public record InventoryLoot(IInventoryLootType type, int weight, List<LootEntry> loots) {

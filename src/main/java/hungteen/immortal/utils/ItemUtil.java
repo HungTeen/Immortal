@@ -6,9 +6,7 @@ import hungteen.immortal.common.tag.ImmortalItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
@@ -26,6 +24,18 @@ public class ItemUtil {
 
     public static boolean isFood(ItemStack stack) {
         return stack.isEdible();
+    }
+
+    public static boolean isArmor(ItemStack stack) {
+        return stack.getItem() instanceof ArmorItem;
+    }
+
+    public static boolean isArmor(ItemStack stack, EquipmentSlot slot) {
+        return isArmor(stack) && ((ArmorItem) stack.getItem()).getSlot() == slot;
+    }
+
+    public static boolean isShield(ItemStack stack) {
+        return stack.getItem() instanceof ShieldItem;
     }
 
     public static boolean isMeleeWeapon(ItemStack stack) {

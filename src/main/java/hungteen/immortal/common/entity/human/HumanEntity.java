@@ -34,8 +34,11 @@ import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
@@ -98,6 +101,12 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         this.level.getProfiler().push("HumanBrain");
         this.updateBrain((ServerLevel) this.level);
         this.level.getProfiler().pop();
+    }
+
+    @Override
+    public void aiStep() {
+        this.updateSwingTime();
+        super.aiStep();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -184,16 +193,33 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
             double d1 = target.getY(0.3333333333333333D) - abstractarrow.getY();
             double d2 = target.getZ() - this.getZ();
             double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-            abstractarrow.shoot(d0, d1 + d3 * (double)0.2F, d2, 1.6F, (float)(14 - this.level.getDifficulty().getId() * 4));
+            abstractarrow.shoot(d0, d1 + d3 * (double)0.2F, d2, 2F, 2F);
             this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            if(this.getRandom().nextFloat() < 0.4F) {
+                abstractarrow.setCritArrow(true);
+            }
             this.level.addFreshEntity(abstractarrow);
+        }
+    }
+
+    @Override
+    public ItemStack getProjectile(ItemStack stack) {
+        if (stack.getItem() instanceof ProjectileWeaponItem) {
+            Predicate<ItemStack> predicate = ((ProjectileWeaponItem)stack.getItem()).getSupportedHeldProjectiles();
+            ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
+            return net.minecraftforge.common.ForgeHooks.getProjectile(this, stack, itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack);
+        } else {
+            return net.minecraftforge.common.ForgeHooks.getProjectile(this, stack, ItemStack.EMPTY);
         }
     }
 
     @Override
     public ItemStack eat(Level level, ItemStack itemStack) {
         if(itemStack.isEdible()){
-            this.heal(1F);
+            FoodProperties foodProperties = itemStack.getFoodProperties(this);
+            if(foodProperties != null){
+                this.heal(foodProperties.getNutrition() * 0.5F);
+            }
         }
         return super.eat(level, itemStack);
     }
@@ -204,9 +230,22 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return Math.max(reach * reach + livingEntity.getBbWidth(), super.getMeleeAttackRangeSqr(livingEntity));
     }
 
+    /**
+     * 不设置的话，会卡在一个地方不能前进。
+     */
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity entity) {
+        return this.distanceToSqr(entity) <= this.getMeleeAttackRangeSqr(entity);
+    }
+
     public double getAttackCoolDown(){
         final double speed = this.getAttributeValue(Attributes.ATTACK_SPEED);
         return speed == 0 ? 1000 : 1 / speed;
+    }
+
+    @Override
+    public boolean canFireProjectileWeapon(ProjectileWeaponItem item) {
+        return true;
     }
 
     protected AbstractArrow getArrow(ItemStack stack, float strength) {
@@ -245,7 +284,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 /* Custom */
                 ImmortalMemories.UNABLE_MELEE_ATTACK.get(),
                 ImmortalMemories.UNABLE_RANGE_ATTACK.get(),
-                ImmortalMemories.NEAREST_BOAT.get()
+                ImmortalMemories.NEAREST_BOAT.get(),
+                ImmortalMemories.NEAREST_PROJECTILE.get()
         );
     }
 
@@ -256,7 +296,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 SensorType.NEAREST_ITEMS,
                 SensorType.NEAREST_BED,
                 SensorType.HURT_BY,
-                ImmortalSensors.NEAREST_BOAT.get()
+                ImmortalSensors.NEAREST_BOAT.get(),
+                ImmortalSensors.HAS_PROJECTILE_NEARBY.get()
         );
     }
 

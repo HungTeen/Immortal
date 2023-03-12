@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,6 +24,7 @@ public class ImmortalMemories {
     public static final RegistryObject<MemoryModuleType<Entity>> NEAREST_BOAT = register("nearest_boat");
     public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_MELEE_ATTACK = register("unable_melee_attack");
     public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_RANGE_ATTACK = register("unable_range_attack");
+    public static final RegistryObject<MemoryModuleType<Projectile>> NEAREST_PROJECTILE = register("nearest_projectile");
 
     private static <U> RegistryObject<MemoryModuleType<U>> register(String name){
         return MEMORIES.register(name, () -> new MemoryModuleType<>(Optional.empty()));
