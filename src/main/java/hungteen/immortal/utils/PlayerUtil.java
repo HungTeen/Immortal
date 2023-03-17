@@ -2,7 +2,7 @@ package hungteen.immortal.utils;
 
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
-import hungteen.htlib.util.WeightList;
+import hungteen.htlib.util.WeightedList;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealmType;
@@ -11,8 +11,8 @@ import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.capability.CapabilityHandler;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.command.ImmortalCommand;
-import hungteen.immortal.common.impl.PlayerRangeNumbers;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.PlayerRangeNumbers;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -112,14 +112,11 @@ public class PlayerUtil {
         final List<ISpiritualType> rootChosen = new ArrayList<>();
         if(ImmortalAPI.get().spiritualRegistry().isPresent()){
             if(rootCount == 1){
-                final WeightList<ISpiritualType> weightList = new WeightList<>(ImmortalAPI.get().spiritualRegistry().get().getValues(), ISpiritualType::getWeight);
-                rootChosen.addAll(weightList.getRandomItems(random, 1, true));
+                rootChosen.addAll(WeightedList.create(ImmortalAPI.get().spiritualRegistry().get().getValues()).getRandomItems(random, 1, true));
             } else if(rootCount > 1){
-                final WeightList<ISpiritualType> weightList = new WeightList<>(ImmortalAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList()), ISpiritualType::getWeight);
-                rootChosen.addAll(weightList.getRandomItems(random, rootCount, true));
+                rootChosen.addAll(WeightedList.create(ImmortalAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList())).getRandomItems(random, 1, true));
             }
         }
-
         return rootChosen;
     }
 

@@ -1,9 +1,9 @@
-package hungteen.immortal.common.item.eixirs;
+package hungteen.immortal.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
-import hungteen.immortal.common.impl.PlayerRangeNumbers;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.PlayerRangeNumbers;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

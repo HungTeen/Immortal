@@ -4,7 +4,7 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.interfaces.IHasRoot;
 import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;

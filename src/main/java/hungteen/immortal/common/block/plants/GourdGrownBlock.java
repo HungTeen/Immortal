@@ -4,6 +4,8 @@ import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.random.Weight;
+import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -45,7 +47,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         return AABB;
     }
 
-    public enum GourdTypes {
+    public enum GourdTypes implements WeightedEntry {
         RED(10),
         ORANGE(5),
         YELLOW(10),
@@ -70,8 +72,8 @@ public class GourdGrownBlock extends HTStemGrownBlock {
             this.gourdItem = gourdItem;
         }
 
-        public int getWeight() {
-            return weight;
+        public Weight getWeight() {
+            return Weight.of(weight);
         }
 
         public GourdGrownBlock getGourdGrownBlock() {

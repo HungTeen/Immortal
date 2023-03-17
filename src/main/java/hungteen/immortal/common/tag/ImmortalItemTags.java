@@ -12,7 +12,6 @@ import net.minecraft.world.item.Item;
 public class ImmortalItemTags {
 
     /* forge */
-    public static final TagKey<Item> ELIXIR_INGREDIENTS = forgeTag("elixir_ingredients");
     public static final TagKey<Item> SPIRITUAL_STONES = forgeTag("spiritual_stones");
     public static final TagKey<Item> SPIRITUAL_STONES_LEVEL_ONE = forgeTag("spiritual_stone/level_one_stones");
     public static final TagKey<Item> SPIRITUAL_STONES_LEVEL_TWO = forgeTag("spiritual_stone/level_two_stones");
@@ -24,7 +23,6 @@ public class ImmortalItemTags {
      */
     public static final TagKey<Item> MELEE_ATTACK_ITEMS = tag("melee_attack_items");
     public static final TagKey<Item> RANGE_ATTACK_ITEMS = tag("range_attack_items");
-    public static final TagKey<Item> HEAL_EAT_ITEMS = tag("heal_eat_items");
 
     private static TagKey<Item> tag(String name){
         return net.minecraft.tags.ItemTags.create(Util.prefix(name));

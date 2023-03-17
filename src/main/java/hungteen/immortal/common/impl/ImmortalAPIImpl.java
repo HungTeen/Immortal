@@ -9,6 +9,8 @@ import hungteen.immortal.api.interfaces.IHasRealm;
 import hungteen.immortal.api.registry.*;
 import hungteen.immortal.common.capability.player.PlayerDataManager;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
+import hungteen.immortal.common.impl.registry.PlayerRangeNumbers;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.utils.Constants;
@@ -19,7 +21,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -33,10 +34,8 @@ import java.util.*;
 public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
-    private static final HTSimpleRegistry<IRangeNumber<Integer>> INTEGER_DATA_TYPES = HTRegistryManager.create(Util.prefix("integer_data"));
     private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
     private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
-    private static final Map<Item, Map<ISpiritualType, Integer>> ELIXIR_INGREDIENT_MAP = new HashMap<>();
 
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
@@ -60,7 +59,7 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
-        return Optional.of(INTEGER_DATA_TYPES);
+        return Optional.of(PlayerRangeNumbers.registry());
     }
 
     @Override
@@ -101,21 +100,6 @@ public class ImmortalAPIImpl implements ImmortalAPI.IImmortalAPI {
             return Mth.floor(value * ratio);
         }
         return 0;
-    }
-
-    @Override
-    public void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map) {
-        ELIXIR_INGREDIENT_MAP.put(item, map);
-    }
-
-    @Override
-    public Map<ISpiritualType, Integer> getElixirIngredient(Item item) {
-        return ELIXIR_INGREDIENT_MAP.getOrDefault(item, Map.of());
-    }
-
-    @Override
-    public Set<Item> getElixirIngredients() {
-        return Collections.unmodifiableSet(ELIXIR_INGREDIENT_MAP.keySet());
     }
 
 }

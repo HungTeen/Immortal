@@ -1,6 +1,5 @@
 package hungteen.immortal.common.entity;
 
-import hungteen.htlib.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.entity.creature.GrassCarp;

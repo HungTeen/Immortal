@@ -22,6 +22,7 @@ public class SpellTutorials {
      */
     private static final HTCodecRegistry<SpellTutorial> TUTORIALS = HTRegistryManager.create(SpellTutorial.class, "spell_tutorials", () -> SpellTutorial.CODEC);
 
+
     public record SpellTutorial(int treasureWeight, int tradeWeight, List<TutorialEntry> spells) {
         public static final Codec<SpellTutorial> CODEC = RecordCodecBuilder.<SpellTutorial>mapCodec(instance -> instance.group(
                 Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("treasure_weight", 0).forGetter(SpellTutorial::treasureWeight),

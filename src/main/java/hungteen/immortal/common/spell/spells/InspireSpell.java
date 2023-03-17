@@ -3,13 +3,12 @@ package hungteen.immortal.common.spell.spells;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.immortal.api.EntityBlockResult;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.HitResult;
 
 /**
  * @author PangTeen

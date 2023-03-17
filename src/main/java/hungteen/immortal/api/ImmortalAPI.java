@@ -127,26 +127,6 @@ public class ImmortalAPI {
          */
         int getSpiritualValue(Level level, BlockPos pos);
 
-        /**
-         * 设置炼丹材料的灵气值。
-         * @param item the item need to be registered.
-         * @param map the spiritual value map of the given item.
-         */
-        void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map);
-
-        /**
-         * 获取炼丹材料的灵气值。
-         * @param item to be queried.
-         * @return the spiritual value map of the given item.
-         */
-        Map<ISpiritualType, Integer> getElixirIngredient(Item item);
-
-        /**
-         * 获取所有炼丹材料。
-         * @return all kinds of item that have a specific spiritual value map.
-         */
-        Set<Item> getElixirIngredients();
-
     }
 
 }

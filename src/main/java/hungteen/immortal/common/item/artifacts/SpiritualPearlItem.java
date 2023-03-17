@@ -1,19 +1,13 @@
 package hungteen.immortal.common.item.artifacts;
 
 import hungteen.immortal.common.entity.misc.SpiritualPearl;
-import hungteen.immortal.common.impl.registry.ArtifactTypes;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import hungteen.immortal.common.impl.ArtifactTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.EyeOfEnder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;

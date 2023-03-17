@@ -32,10 +32,10 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event){
-        if(ElixirManager.isElixirIngredient(event.getItemStack())){
-            List<Either<FormattedText, TooltipComponent>> components = event.getTooltipElements();
-            components.add(components.size(), Either.right(new ElementToolTip(ElixirManager.getElixirIngredient(event.getItemStack()))));
-        }
+//        if(ElixirManager.isElixirIngredient(event.getItemStack())){
+//            List<Either<FormattedText, TooltipComponent>> components = event.getTooltipElements();
+//            components.add(components.size(), Either.right(new ElementToolTip(ElixirManager.getElixirIngredient(event.getItemStack()))));
+//        }
     }
 
     @SubscribeEvent

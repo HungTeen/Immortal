@@ -1,11 +1,11 @@
-package hungteen.immortal.common.item.eixirs;
+package hungteen.immortal.common.item.elixirs;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IElixirItem;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.common.item.ItemTabs;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;

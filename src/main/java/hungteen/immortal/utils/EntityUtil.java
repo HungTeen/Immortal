@@ -1,6 +1,5 @@
 package hungteen.immortal.utils;
 
-import hungteen.htlib.util.Triple;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.interfaces.IHasRoot;
 import hungteen.immortal.api.registry.ISpiritualType;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,10 +79,9 @@ public class EntityUtil {
         int g = 0;
         int b = 0;
         for (ISpiritualType root : roots) {
-            Triple<Integer, Integer, Integer> triple = ColorHelper.getRGB(root.getSpiritualColor());
-            r += triple.getLeft();
-            g += triple.getMid();
-            b += triple.getRight();
+            r += ColorHelper.getRedFromRGB(root.getSpiritualColor());
+            g += ColorHelper.getGreenFromRGB(root.getSpiritualColor());
+            b += ColorHelper.getBlueFromRGB(root.getSpiritualColor());
         }
         final float multiply = 1F / 255 / roots.size();
         return Triple.of(r / multiply, g / multiply, b / multiply);

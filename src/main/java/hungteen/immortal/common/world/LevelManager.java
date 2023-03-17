@@ -1,6 +1,6 @@
 package hungteen.immortal.common.world;
 
-import hungteen.htlib.util.Pair;
+import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import net.minecraft.world.level.Level;

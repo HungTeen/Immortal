@@ -15,7 +15,7 @@ import hungteen.immortal.client.particle.SpiritualManaParticle;
 import hungteen.immortal.client.render.LevelRenderStages;
 import hungteen.immortal.client.render.entity.*;
 import hungteen.immortal.common.entity.ImmortalEntities;
-import hungteen.immortal.common.item.eixirs.ElixirItem;
+import hungteen.immortal.common.item.elixirs.ElixirItem;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.menu.tooltip.ArtifactToolTip;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;

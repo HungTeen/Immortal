@@ -1,15 +1,5 @@
 package hungteen.immortal.common.blockentity;
 
-import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
-import hungteen.immortal.api.interfaces.IArtifactBlock;
-import hungteen.immortal.api.interfaces.IArtifactItem;
-import hungteen.immortal.api.registry.IArtifactType;
-import hungteen.immortal.common.impl.registry.ArtifactTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
-
 /**
  * @program: Immortal
  * @author: HungTeen

@@ -7,7 +7,7 @@ import hungteen.immortal.api.registry.ISpellType;
 import hungteen.immortal.common.event.handler.PlayerEventHandler;
 import hungteen.immortal.common.network.NetworkHandler;
 import hungteen.immortal.common.network.SpellPacket;
-import hungteen.immortal.common.impl.PlayerRangeNumbers;
+import hungteen.immortal.common.impl.registry.PlayerRangeNumbers;
 import hungteen.immortal.utils.Constants;
 import hungteen.immortal.utils.PlayerUtil;
 import hungteen.immortal.utils.TipUtil;

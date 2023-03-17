@@ -1,12 +1,10 @@
 package hungteen.immortal.common;
 
 import hungteen.htlib.HTLib;
-import hungteen.htlib.util.Pair;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.common.impl.CultivationTypes;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

@@ -1,6 +1,9 @@
-package hungteen.immortal.common.impl;
+package hungteen.immortal.common.impl.registry;
 
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.utils.Constants;
@@ -18,7 +21,12 @@ import java.util.List;
  **/
 public class PlayerRangeNumbers {
 
+    private static final HTSimpleRegistry<IRangeNumber<Integer>> PLAYER_RANGE_NUMBERS = HTRegistryManager.create(Util.prefix("player_range_numbers"));
     private static final List<IRangeNumber<Integer>> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
+        return PLAYER_RANGE_NUMBERS;
+    }
 
     /* Just like vanilla experience, 玩家的修仙经验值 */
     public static final IRangeNumber<Integer> CULTIVATION = new PlayerData("cultivation", 0, 0, Integer.MAX_VALUE);

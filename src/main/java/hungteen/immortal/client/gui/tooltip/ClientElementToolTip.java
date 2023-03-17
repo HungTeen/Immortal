@@ -1,9 +1,9 @@
 package hungteen.immortal.client.gui.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
 import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.util.Pair;
 import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.gui.Font;

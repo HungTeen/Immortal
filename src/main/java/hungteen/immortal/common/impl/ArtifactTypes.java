@@ -1,4 +1,4 @@
-package hungteen.immortal.common.impl.registry;
+package hungteen.immortal.common.impl;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;

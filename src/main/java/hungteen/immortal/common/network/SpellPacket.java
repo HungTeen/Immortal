@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.immortal.ImmortalConfigs;
 import hungteen.immortal.common.spell.SpellManager;
 import hungteen.immortal.api.registry.ISpellType;
-import hungteen.immortal.common.impl.PlayerRangeNumbers;
+import hungteen.immortal.common.impl.registry.PlayerRangeNumbers;
 import hungteen.immortal.common.spell.SpellTypes;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;

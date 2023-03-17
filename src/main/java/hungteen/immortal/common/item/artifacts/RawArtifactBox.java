@@ -3,7 +3,7 @@ package hungteen.immortal.common.item.artifacts;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.immortal.api.registry.IArtifactType;
-import hungteen.immortal.common.impl.registry.ArtifactTypes;
+import hungteen.immortal.common.impl.ArtifactTypes;
 import hungteen.immortal.common.menu.tooltip.ArtifactToolTip;
 import hungteen.immortal.utils.Colors;
 import net.minecraft.core.NonNullList;

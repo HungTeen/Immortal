@@ -1,4 +1,4 @@
-package hungteen.immortal.common.impl;
+package hungteen.immortal.common.impl.registry;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
@@ -8,6 +8,7 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.ICultivationType;
 import hungteen.immortal.api.registry.IRealmType;
 import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.common.impl.CultivationTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

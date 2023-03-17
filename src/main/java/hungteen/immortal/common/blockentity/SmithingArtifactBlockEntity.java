@@ -1,34 +1,5 @@
 package hungteen.immortal.common.blockentity;
 
-import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
-import hungteen.htlib.common.menu.container.SimpleCraftingContainer;
-import hungteen.immortal.api.interfaces.IArtifactBlock;
-import hungteen.immortal.api.interfaces.IArtifactItem;
-import hungteen.immortal.api.registry.IArtifactType;
-import hungteen.immortal.common.ArtifactManager;
-import hungteen.immortal.common.impl.registry.ArtifactTypes;
-import hungteen.immortal.common.menu.SmithingArtifactMenu;
-import hungteen.immortal.common.recipe.ImmortalRecipes;
-import hungteen.immortal.common.recipe.SmithingArtifactRecipe;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-import java.util.Optional;
-
 /**
  * @program: Immortal
  * @author: HungTeen

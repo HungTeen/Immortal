@@ -3,18 +3,15 @@ package hungteen.immortal.api;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.immortal.api.registry.*;
-import hungteen.immortal.common.impl.RealmTypes;
+import hungteen.immortal.common.impl.registry.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @program: Immortal
@@ -80,18 +77,4 @@ public class DummyAPI implements ImmortalAPI.IImmortalAPI {
         return 0;
     }
 
-    @Override
-    public void registerElixirIngredient(Item item, Map<ISpiritualType, Integer> map) {
-
-    }
-
-    @Override
-    public Map<ISpiritualType, Integer> getElixirIngredient(Item item) {
-        return Map.of();
-    }
-
-    @Override
-    public Set<Item> getElixirIngredients() {
-        return Set.of();
-    }
 }

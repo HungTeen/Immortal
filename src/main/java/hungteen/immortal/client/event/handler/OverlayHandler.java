@@ -2,8 +2,8 @@ package hungteen.immortal.client.event.handler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.immortal.api.registry.ISpellType;

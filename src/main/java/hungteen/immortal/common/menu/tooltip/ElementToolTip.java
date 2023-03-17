@@ -1,6 +1,6 @@
 package hungteen.immortal.common.menu.tooltip;
 
-import hungteen.htlib.util.Pair;
+import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.api.registry.ISpiritualType;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 

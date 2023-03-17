@@ -9,7 +9,8 @@ import hungteen.immortal.api.registry.ISpiritualType;
 import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.common.entity.ai.ImmortalSensors;
 import hungteen.immortal.common.entity.ImmortalGrowableCreature;
-import hungteen.immortal.common.impl.codec.InventoryLoots;
+import hungteen.immortal.common.impl.codec.HumanSettings;
+import hungteen.immortal.utils.BehaviorUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,6 +21,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -34,11 +36,9 @@ import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
@@ -125,7 +125,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
      * 填充背包。
      */
     public void fillInventory(){
-        InventoryLoots.getInventoryLoot(getInventoryLootType(), this.getRandom()).ifPresent(l -> l.fill(this.getInventory(), this.getRandom()));
+        HumanSettings.getInventoryLoot(getInventoryLootType(), this.getRandom()).ifPresent(l -> l.fill(this.getInventory(), this.getRandom()));
     }
 
     /**
@@ -322,11 +322,29 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     }
 
     @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if(! this.spawnEggMatch(itemstack) && this.canTradeWith(player)) {
+//            if (hand == InteractionHand.MAIN_HAND) {
+//                player.awardStat(Stats.TALKED_TO_VILLAGER);
+//            }
+            if (!this.level.isClientSide) {
+                this.setTradingPlayer(player);
+//                this.openTradingScreen(player, this.getDisplayName(), 1);
+            }
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    public boolean canTradeWith(Player player){
+        return this.isAlive() && !this.isTrading() && !this.isBaby() && BehaviorUtil.isIdle(this);
+    }
+
     public void setTradingPlayer(@javax.annotation.Nullable Player player) {
         this.tradingPlayer = player;
     }
 
-    @Override
     @Nullable
     public Player getTradingPlayer() {
         return this.tradingPlayer;
@@ -336,49 +354,41 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return this.tradingPlayer != null;
     }
 
-    @Override
     public MerchantOffers getOffers() {
         return null;
     }
 
-    @Override
     public void overrideOffers(MerchantOffers p_45306_) {
 
     }
 
-    @Override
     public void notifyTrade(MerchantOffer p_45305_) {
 
     }
 
-    @Override
     public void notifyTradeUpdated(ItemStack p_45308_) {
 
     }
 
-    @Override
-    public int getVillagerXp() {
-        return 0;
-    }
-
-    @Override
-    public void overrideXp(int p_45309_) {
-
-    }
-
-    @Override
-    public boolean showProgressBar() {
-        return false;
-    }
-
-    @Override
     public SoundEvent getNotifyTradeSound() {
         return null;
     }
 
+    @org.jetbrains.annotations.Nullable
     @Override
-    public boolean isClientSide() {
-        return this.level.isClientSide;
+    public Entity changeDimension(ServerLevel serverLevel, ITeleporter teleporter) {
+        this.stopTrading();
+        return super.changeDimension(serverLevel, teleporter);
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        this.stopTrading();
+    }
+
+    protected void stopTrading() {
+        this.setTradingPlayer(null);
     }
 
     public void fillInventoryWith(ItemStack stack, int minCount, int maxCount){
@@ -419,23 +429,6 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return false;
     }
 
-    @org.jetbrains.annotations.Nullable
-    @Override
-    public Entity changeDimension(ServerLevel serverLevel, ITeleporter teleporter) {
-        this.stopTrading();
-        return super.changeDimension(serverLevel, teleporter);
-    }
-
-    @Override
-    public void die(DamageSource damageSource) {
-        super.die(damageSource);
-        this.stopTrading();
-    }
-
-    protected void stopTrading() {
-        this.setTradingPlayer(null);
-    }
-
     public abstract IInventoryLootType getInventoryLootType();
 
     @Override
@@ -448,7 +441,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
             this.inventory.fromTag(tag.getList("Inventory", 10));
         }
         if(tag.contains("InventoryLoot")){ // allow setting loot by nbt.
-            InventoryLoots.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
+            HumanSettings.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
                 l.fill(this.getInventory(), this.getRandom());
             });
         }

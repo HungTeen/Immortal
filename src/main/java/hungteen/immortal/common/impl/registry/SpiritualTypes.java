@@ -14,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +86,8 @@ public class SpiritualTypes {
         }
 
         @Override
-        public int getWeight() {
-            return this.weightSupplier.get();
+        public Weight getWeight() {
+            return Weight.of(this.weightSupplier.get());
         }
 
         @Override

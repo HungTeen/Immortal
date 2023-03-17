@@ -13,12 +13,10 @@ import hungteen.immortal.common.datapack.ImmortalDataPacks;
 import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
-import hungteen.immortal.common.impl.codec.InventoryLoots;
-import hungteen.immortal.common.impl.registry.ImmortalWoods;
-import hungteen.immortal.common.impl.registry.InventoryLootTypes;
+import hungteen.immortal.common.impl.codec.HumanSettings;
+import hungteen.immortal.common.impl.registry.*;
 import hungteen.immortal.common.misc.ImmortalBannerPatterns;
 import hungteen.immortal.common.spell.SpellTypes;
-import hungteen.immortal.common.impl.registry.SpiritualTypes;
 import hungteen.immortal.common.item.ImmortalItems;
 import hungteen.immortal.common.menu.ImmortalMenus;
 import hungteen.immortal.common.network.NetworkHandler;
@@ -134,6 +132,9 @@ public class ImmortalMod {
      */
     public static void coreRegister() {
         ImmortalWoods.register();
+
+        HumanSettings.register();
+
         SpiritualTypes.SpiritualType.register();
         SpellTypes.SpellType.register();
         PlayerRangeNumbers.PlayerData.register();
@@ -141,7 +142,7 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
-        InventoryLoots.register();
+        TradeTypes.TradeType.register();
         InventoryLootTypes.InventoryLootType.register();
 //        ItemUtil.registerLargeHeldItems();
     }
@@ -154,7 +155,6 @@ public class ImmortalMod {
             CommonRegister.registerCompostable();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();
-            ElixirManager.init();
             RealmManager.updateRealmTree();
             CapabilityHandler.init();
         });

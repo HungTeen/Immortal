@@ -7,11 +7,16 @@ import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryHolder;
 import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.util.WeightList;
+import hungteen.htlib.util.SimpleWeightedList;
+import hungteen.htlib.util.WeightedList;
 import hungteen.immortal.api.registry.IInventoryLootType;
+import hungteen.immortal.api.registry.ITradeType;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
+import hungteen.immortal.common.impl.registry.TradeTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.Weight;
+import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -29,16 +34,16 @@ import java.util.Optional;
  * @program Immortal
  * @data 2023/2/24 15:09
  */
-public class InventoryLoots {
+public class HumanSettings {
 
     /**
      * 不是全局数据包！
      */
-    private static final HTCodecRegistry<InventoryLoot> LOOTS = HTRegistryManager.create(InventoryLoot.class, "inventory_loots", () -> InventoryLoot.CODEC);
+    private static final HTCodecRegistry<HumanSetting> LOOTS = HTRegistryManager.create(HumanSetting.class, "human_settings", () -> HumanSetting.CODEC);
 
-    public static HTRegistryHolder<InventoryLoot> RICH_VANILLA = LOOTS.innerRegister(
+    public static HTRegistryHolder<HumanSetting> RICH_VANILLA = LOOTS.innerRegister(
             Util.prefix("rich_vanilla"),
-            new InventoryLoot(
+            new HumanSetting(
                     InventoryLootTypes.VANILLA,
                     100,
                     Arrays.asList(
@@ -121,9 +126,9 @@ public class InventoryLoots {
             )
     );
 
-    public static HTRegistryHolder<InventoryLoot> NORMAL_VANILLA = LOOTS.innerRegister(
+    public static HTRegistryHolder<HumanSetting> NORMAL_VANILLA = LOOTS.innerRegister(
             Util.prefix("normal_vanilla"),
-            new InventoryLoot(
+            new HumanSetting(
                     InventoryLootTypes.VANILLA,
                     300,
                     Arrays.asList(
@@ -206,9 +211,9 @@ public class InventoryLoots {
             )
     );
 
-    public static HTRegistryHolder<InventoryLoot> POOR_VANILLA = LOOTS.innerRegister(
+    public static HTRegistryHolder<HumanSetting> POOR_VANILLA = LOOTS.innerRegister(
             Util.prefix("poor_vanilla"),
-            new InventoryLoot(
+            new HumanSetting(
                     InventoryLootTypes.VANILLA,
                     200,
                     Arrays.asList(
@@ -297,55 +302,55 @@ public class InventoryLoots {
     );
 
     public static void register(){
-
     }
 
-    public static IHTCodecRegistry<InventoryLoot> registry(){
+    public static IHTCodecRegistry<HumanSetting> registry(){
         return LOOTS;
     }
 
-    public static Optional<InventoryLoot> getInventoryLoot(IInventoryLootType type, RandomSource random){
-        return new WeightList<>(LOOTS.getValues().stream().filter(l -> l.type() == type).toList(), InventoryLoot::weight).getRandomItem(random);
+    public static Optional<HumanSetting> getInventoryLoot(IInventoryLootType type, RandomSource random){
+        return WeightedList.create(LOOTS.getValues().stream().filter(l -> l.type() == type).toList()).getRandomItem(random);
     }
 
-    public static List<InventoryLoot> getInventoryLoots(IInventoryLootType type){
+    public static List<HumanSetting> getInventoryLoots(IInventoryLootType type){
         return LOOTS.getValues().stream().filter(l -> l.type() == type).toList();
     }
 
-    public static LootEntry singleLoot(ItemEntry entry){
-        return new LootEntry(List.of(Pair.of(entry, 1)));
+    public static LootSetting singleLoot(ItemEntry entry){
+        return new LootSetting(SimpleWeightedList.single(entry));
     }
 
-    public static LootEntry pairLoot(ItemEntry entry, ItemEntry entry2){
-        return new LootEntry(List.of(Pair.of(entry, 10), Pair.of(entry2, 10)));
+    public static LootSetting pairLoot(ItemEntry entry1, ItemEntry entry2){
+        return new LootSetting(SimpleWeightedList.pair(entry1, entry2));
     }
 
-    public record InventoryLoot(IInventoryLootType type, int weight, List<LootEntry> loots) {
-        public static final Codec<InventoryLoot> CODEC = RecordCodecBuilder.<InventoryLoot>mapCodec(instance -> instance.group(
-                InventoryLootTypes.registry().byNameCodec().fieldOf("loot_type").forGetter(InventoryLoot::type),
-                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 0).forGetter(InventoryLoot::weight),
-                LootEntry.CODEC.listOf().fieldOf("loots").forGetter(InventoryLoot::loots)
-        ).apply(instance, InventoryLoot::new)).codec();
+    public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting> lootSettings) implements WeightedEntry {
+        public static final Codec<HumanSetting> CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(
+                InventoryLootTypes.registry().byNameCodec().fieldOf("loot_type").forGetter(HumanSetting::type),
+                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 0).forGetter(HumanSetting::weight),
+                LootSetting.CODEC.listOf().fieldOf("loots").forGetter(HumanSetting::lootSettings)
+        ).apply(instance, HumanSetting::new)).codec();
+
+        @Override
+        public Weight getWeight() {
+            return Weight.of(weight());
+        }
 
         public void fill(Container container, RandomSource random){
-            final int len = Math.min(container.getContainerSize(), loots().size());
+            final int len = Math.min(container.getContainerSize(), lootSettings().size());
             for(int i = 0; i < len; ++ i){
-                container.setItem(i, loots().get(i).getItem(random));
+                container.setItem(i, lootSettings().get(i).getItem(random));
             }
         }
     }
 
-    public record LootEntry(List<Pair<ItemEntry, Integer>> items) {
-        public static final Codec<LootEntry> CODEC = RecordCodecBuilder.<LootEntry>mapCodec(instance -> instance.group(
-                Codec.mapPair(
-                        ItemEntry.CODEC.fieldOf("item_entry"),
-                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("weight")
-                ).codec().listOf().optionalFieldOf("items", List.of()).forGetter(LootEntry::items)
-        ).apply(instance, LootEntry::new)).codec();
+    public record LootSetting(SimpleWeightedList<ItemEntry> items) {
+        public static final Codec<LootSetting> CODEC = RecordCodecBuilder.<LootSetting>mapCodec(instance -> instance.group(
+                SimpleWeightedList.wrappedCodec(ItemEntry.CODEC).fieldOf("items").forGetter(LootSetting::items)
+        ).apply(instance, LootSetting::new)).codec();
 
         public Optional<ItemEntry> getEntry(RandomSource random){
-            WeightList<ItemEntry> list = new WeightList(items.stream().map(Pair::getFirst).toList(), items.stream().map(Pair::getSecond).toList());
-            return list.getRandomItem(random);
+            return items.getItem(random);
         }
 
         public ItemStack getItem(RandomSource random){
@@ -369,6 +374,24 @@ public class InventoryLoots {
             }
             return stack;
         }
+
+    }
+
+    public record TradeSetting(IntProvider tradeCount, List<Pair<TradeEntry, Integer>> trades) {
+//        public static final Codec<LootSetting> CODEC = RecordCodecBuilder.<LootSetting>mapCodec(instance -> instance.group(
+//                Codec.mapPair(
+//                        ItemEntry.CODEC.fieldOf("item_entry"),
+//                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("weight")
+//                ).codec().listOf().optionalFieldOf("items", java.util.List.of()).forGetter(LootSetting::items)
+//        ).apply(instance, LootSetting::new)).codec();
+
+
+    }
+
+    public record TradeEntry(ITradeType tradeType) {
+        public static final Codec<TradeEntry> CODEC = RecordCodecBuilder.<TradeEntry>mapCodec(instance -> instance.group(
+                TradeTypes.registry().byNameCodec().fieldOf("type").forGetter(TradeEntry::tradeType)
+        ).apply(instance, TradeEntry::new)).codec();
 
     }
 

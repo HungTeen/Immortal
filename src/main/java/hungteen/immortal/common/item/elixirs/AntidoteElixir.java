@@ -1,4 +1,4 @@
-package hungteen.immortal.common.item.eixirs;
+package hungteen.immortal.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.immortal.api.ImmortalAPI;
