@@ -14,6 +14,7 @@ import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
 import hungteen.immortal.common.impl.codec.HumanSettings;
+import hungteen.immortal.common.impl.codec.trades.TradeComponents;
 import hungteen.immortal.common.impl.registry.*;
 import hungteen.immortal.common.misc.ImmortalBannerPatterns;
 import hungteen.immortal.common.spell.SpellTypes;
@@ -91,13 +92,13 @@ public class ImmortalMod {
         ImmortalStructures.register();
 
         ImmortalItems.register(modBus);
-        ImmortalBlocks.BLOCKS.register(modBus);
-        ImmortalEntities.ENTITY_TYPES.register(modBus);
+        ImmortalBlocks.register(modBus);
+        ImmortalEntities.register(modBus);
         ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
-        ImmortalMenus.CONTAINER_TYPES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
         ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
         ImmortalRecipes.RECIPE_TYPES.register(modBus);
+        ImmortalMenus.register(modBus);
         ImmortalBannerPatterns.register(modBus);
         ImmortalParticles.register(modBus);
         ImmortalDataSerializers.register(modBus);
@@ -142,7 +143,6 @@ public class ImmortalMod {
         MemoryRunes.MemoryRune.register();
         SensorRunes.SensorRune.register();
         BehaviorRunes.BehaviorRune.register();
-        TradeTypes.TradeType.register();
         InventoryLootTypes.InventoryLootType.register();
 //        ItemUtil.registerLargeHeldItems();
     }
@@ -152,6 +152,7 @@ public class ImmortalMod {
 //            PVZFeatures.registerFeatures();
 ////            PotionRecipeHandler.registerPotionRecipes();
 //            SpawnRegister.registerEntitySpawns();
+            TradeComponents.registerStuffs();
             CommonRegister.registerCompostable();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();

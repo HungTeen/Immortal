@@ -6,13 +6,17 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHuman;
 import hungteen.immortal.api.registry.IInventoryLootType;
 import hungteen.immortal.api.registry.ISpiritualType;
+import hungteen.immortal.api.registry.ITradeComponent;
+import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.common.entity.ai.ImmortalSensors;
 import hungteen.immortal.common.entity.ImmortalGrowableCreature;
 import hungteen.immortal.common.impl.codec.HumanSettings;
+import hungteen.immortal.common.impl.codec.trades.TradeComponents;
 import hungteen.immortal.utils.BehaviorUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -36,7 +40,6 @@ import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -62,11 +65,10 @@ import java.util.function.Predicate;
 public abstract class HumanEntity extends ImmortalGrowableCreature implements IHuman {
 
     private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<List<ITradeComponent>> TRADES = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.TRADES.get());
     private List<ISpiritualType> rootsCache;
     @javax.annotation.Nullable
     private Player tradingPlayer;
-    @javax.annotation.Nullable
-    protected MerchantOffers offers;
     private final SimpleContainer inventory;
 
     public HumanEntity(EntityType<? extends HumanEntity> type, Level level) {
@@ -83,6 +85,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(ROOTS, new CompoundTag());
+        entityData.define(TRADES, List.of());
     }
 
     @org.jetbrains.annotations.Nullable
@@ -90,7 +93,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable SpawnGroupData groupData, @org.jetbrains.annotations.Nullable CompoundTag compoundTag) {
         if(!accessor.isClientSide()){
             PlayerUtil.getSpiritualRoots(accessor.getRandom()).forEach(this::addSpiritualRoots);
-            this.fillInventory();
+            this.updateHumanSetting();
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
     }
@@ -124,8 +127,11 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     /**
      * 填充背包。
      */
-    public void fillInventory(){
-        HumanSettings.getInventoryLoot(getInventoryLootType(), this.getRandom()).ifPresent(l -> l.fill(this.getInventory(), this.getRandom()));
+    public void updateHumanSetting(){
+        HumanSettings.getHumanSetting(getInventoryLootType(), this.getRandom()).ifPresent(l -> {
+            l.fillInventory(this.getInventory(), this.getRandom());
+            l.fillTrade(this, this.getRandom());
+        });
     }
 
     /**
@@ -354,24 +360,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         return this.tradingPlayer != null;
     }
 
-    public MerchantOffers getOffers() {
-        return null;
-    }
-
-    public void overrideOffers(MerchantOffers p_45306_) {
-
-    }
-
-    public void notifyTrade(MerchantOffer p_45305_) {
-
-    }
-
-    public void notifyTradeUpdated(ItemStack p_45308_) {
-
-    }
-
-    public SoundEvent getNotifyTradeSound() {
-        return null;
+    protected void stopTrading() {
+        this.setTradingPlayer(null);
     }
 
     @org.jetbrains.annotations.Nullable
@@ -386,11 +376,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         super.die(damageSource);
         this.stopTrading();
     }
-
-    protected void stopTrading() {
-        this.setTradingPlayer(null);
-    }
-
+    
     public void fillInventoryWith(ItemStack stack, int minCount, int maxCount){
         fillInventoryWith(stack, 1F, minCount, maxCount);
     }
@@ -442,8 +428,12 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         }
         if(tag.contains("InventoryLoot")){ // allow setting loot by nbt.
             HumanSettings.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
-                l.fill(this.getInventory(), this.getRandom());
+                l.fillInventory(this.getInventory(), this.getRandom());
             });
+        }
+        if(tag.contains("Trades")){
+            TradeComponents.getCodec().listOf().parse(NbtOps.INSTANCE, tag.get("Trades"))
+                    .result().ifPresent(this::setTrades);
         }
         if (this.level instanceof ServerLevel) {
             this.refreshBrain((ServerLevel)this.level);
@@ -455,6 +445,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         super.addAdditionalSaveData(tag);
         tag.put("CultivatorRoots", this.getRootTag());
         tag.put("Inventory", this.inventory.createTag());
+        TradeComponents.getCodec().listOf().encodeStart(NbtOps.INSTANCE, this.getTrades())
+                .result().ifPresent(l -> tag.put("Trades", l));
     }
 
     public void addSpiritualRoots(ISpiritualType spiritualRoot){
@@ -486,6 +478,14 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 
     public void setRootTag(CompoundTag rootTag) {
         entityData.set(ROOTS, rootTag);
+    }
+
+    public List<ITradeComponent> getTrades(){
+        return entityData.get(TRADES);
+    }
+
+    public void setTrades(List<ITradeComponent> trades) {
+        entityData.set(TRADES, trades);
     }
 
 }

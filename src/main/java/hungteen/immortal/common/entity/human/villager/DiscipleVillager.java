@@ -20,15 +20,6 @@ public class DiscipleVillager extends SpiritualVillager {
     }
 
     @Override
-    public void fillInventory() {
-        this.fillInventoryWith(new ItemStack(Items.BREAD), 1F, 3, 5);
-        this.fillInventoryWith(new ItemStack(Items.GOLDEN_APPLE), 1F, 1, 2);
-
-        this.fillInventoryWith(new ItemStack(Items.ENDER_PEARL), 0.8F, 1, 3);
-
-    }
-
-    @Override
     public IInventoryLootType getInventoryLootType() {
         return null;
     }

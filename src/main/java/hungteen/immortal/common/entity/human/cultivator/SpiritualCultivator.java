@@ -33,23 +33,6 @@ public class SpiritualCultivator extends Cultivator {
     }
 
     @Override
-    public void fillInventory() {
-        if(this.getRealm() == RealmTypes.MORTALITY){
-            this.fillInventoryWith(new ItemStack(Items.GOLDEN_APPLE), 1, 2);
-
-            this.fillInventoryWith(new ItemStack(Items.ENDER_PEARL), 1, 3);
-
-            this.fillInventoryWith(new ItemStack(Items.DIAMOND_SWORD), 1, 1);
-            this.fillInventoryWith(new ItemStack(Items.BOW), 1, 2);
-
-            this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-            this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-            this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-            this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
-        }
-    }
-
-    @Override
     public void updateBrain(ServerLevel level) {
         this.getBrain().tick(level, this);
         SpiritualCultivatorAi.updateActivity(this);

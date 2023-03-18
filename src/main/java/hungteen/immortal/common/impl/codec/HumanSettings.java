@@ -1,6 +1,5 @@
 package hungteen.immortal.common.impl.codec;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.api.interfaces.IHTCodecRegistry;
@@ -10,9 +9,10 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
 import hungteen.immortal.api.registry.IInventoryLootType;
-import hungteen.immortal.api.registry.ITradeType;
+import hungteen.immortal.api.registry.ITradeComponent;
+import hungteen.immortal.common.entity.human.HumanEntity;
+import hungteen.immortal.common.impl.codec.trades.TradeComponents;
 import hungteen.immortal.common.impl.registry.InventoryLootTypes;
-import hungteen.immortal.common.impl.registry.TradeTypes;
 import hungteen.immortal.utils.Util;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weight;
@@ -122,7 +122,8 @@ public class HumanSettings {
                                     ConstantInt.of(1),
                                     UniformInt.of(10, 15)
                             ))
-                    )
+                    ),
+                    Optional.empty()
             )
     );
 
@@ -207,7 +208,8 @@ public class HumanSettings {
                                     ConstantInt.of(1),
                                     UniformInt.of(2, 5)
                             ))
-                    )
+                    ),
+                    Optional.empty()
             )
     );
 
@@ -297,7 +299,8 @@ public class HumanSettings {
                                     ConstantInt.of(1),
                                     UniformInt.of(0, 8)
                             ))
-                    )
+                    ),
+                    Optional.empty()
             )
     );
 
@@ -308,7 +311,7 @@ public class HumanSettings {
         return LOOTS;
     }
 
-    public static Optional<HumanSetting> getInventoryLoot(IInventoryLootType type, RandomSource random){
+    public static Optional<HumanSetting> getHumanSetting(IInventoryLootType type, RandomSource random){
         return WeightedList.create(LOOTS.getValues().stream().filter(l -> l.type() == type).toList()).getRandomItem(random);
     }
 
@@ -324,11 +327,12 @@ public class HumanSettings {
         return new LootSetting(SimpleWeightedList.pair(entry1, entry2));
     }
 
-    public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting> lootSettings) implements WeightedEntry {
+    public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting> lootSettings, Optional<TradeSetting> tradeSetting) implements WeightedEntry {
         public static final Codec<HumanSetting> CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(
-                InventoryLootTypes.registry().byNameCodec().fieldOf("loot_type").forGetter(HumanSetting::type),
+                InventoryLootTypes.registry().byNameCodec().fieldOf("type").forGetter(HumanSetting::type),
                 Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 0).forGetter(HumanSetting::weight),
-                LootSetting.CODEC.listOf().fieldOf("loots").forGetter(HumanSetting::lootSettings)
+                LootSetting.CODEC.listOf().fieldOf("loot_settings").forGetter(HumanSetting::lootSettings),
+                Codec.optionalField("trade_setting", TradeSetting.CODEC).forGetter(HumanSetting::tradeSetting)
         ).apply(instance, HumanSetting::new)).codec();
 
         @Override
@@ -336,11 +340,17 @@ public class HumanSettings {
             return Weight.of(weight());
         }
 
-        public void fill(Container container, RandomSource random){
+        public void fillInventory(Container container, RandomSource random){
             final int len = Math.min(container.getContainerSize(), lootSettings().size());
             for(int i = 0; i < len; ++ i){
                 container.setItem(i, lootSettings().get(i).getItem(random));
             }
+        }
+
+        public void fillTrade(HumanEntity entity, RandomSource random){
+            tradeSetting().ifPresent(setting -> {
+                entity.setTrades(setting.getTrades(random));
+            });
         }
     }
 
@@ -377,21 +387,17 @@ public class HumanSettings {
 
     }
 
-    public record TradeSetting(IntProvider tradeCount, List<Pair<TradeEntry, Integer>> trades) {
-//        public static final Codec<LootSetting> CODEC = RecordCodecBuilder.<LootSetting>mapCodec(instance -> instance.group(
-//                Codec.mapPair(
-//                        ItemEntry.CODEC.fieldOf("item_entry"),
-//                        Codec.intRange(0, Integer.MAX_VALUE).fieldOf("weight")
-//                ).codec().listOf().optionalFieldOf("items", java.util.List.of()).forGetter(LootSetting::items)
-//        ).apply(instance, LootSetting::new)).codec();
+    public record TradeSetting(IntProvider tradeCount, boolean different, SimpleWeightedList<ITradeComponent> trades) {
 
+        public static final Codec<TradeSetting> CODEC = RecordCodecBuilder.<TradeSetting>mapCodec(instance -> instance.group(
+                IntProvider.POSITIVE_CODEC.optionalFieldOf("trade_count", ConstantInt.of(1)).forGetter(TradeSetting::tradeCount),
+                Codec.BOOL.optionalFieldOf("different", true).forGetter(TradeSetting::different),
+                SimpleWeightedList.wrappedCodec(TradeComponents.getCodec()).fieldOf("trades").forGetter(TradeSetting::trades)
+        ).apply(instance, TradeSetting::new)).codec();
 
-    }
-
-    public record TradeEntry(ITradeType tradeType) {
-        public static final Codec<TradeEntry> CODEC = RecordCodecBuilder.<TradeEntry>mapCodec(instance -> instance.group(
-                TradeTypes.registry().byNameCodec().fieldOf("type").forGetter(TradeEntry::tradeType)
-        ).apply(instance, TradeEntry::new)).codec();
+        public List<ITradeComponent> getTrades(RandomSource rand) {
+            return trades.getItems(rand, tradeCount.sample(rand), different);
+        }
 
     }
 

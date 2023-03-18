@@ -23,6 +23,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -39,7 +40,7 @@ import java.util.Map;
  **/
 public class ImmortalEntities {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Util.id());
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Util.id());
     private static final Map<RegistryObject<?>, String> MAP = new HashMap<>();
 
     /* Misc */
@@ -117,6 +118,13 @@ public class ImmortalEntities {
         RegistryObject<EntityType<T>> object = ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, classification).build(Util.prefix(name).toString()));
         MAP.put(object, name);
         return object;
+    }
+
+    /**
+     * {@link ImmortalMod#defferRegister(IEventBus)}
+     */
+    public static void register(IEventBus event){
+        ENTITY_TYPES.register(event);
     }
 
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -35,7 +36,7 @@ import java.util.Locale;
  **/
 public class ImmortalBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Util.id());
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Util.id());
 
     /* Plant Blocks */
 
@@ -105,5 +106,12 @@ public class ImmortalBlocks {
 //                COPPER_SPIRITUAL_FURNACE, COPPER_ELIXIR_ROOM, COPPER_SMITHING_ARTIFACT, COPPER_SPIRITUAL_ROOM
 //        ).forEach(block -> event.register(ForgeRegistries.ITEMS.getRegistryKey(), block.getId(), () -> new BlockItem(block.get(), new Item.Properties().tab(ItemTabs.ARTIFACTS))));
 
+    }
+
+    /**
+     * {@link ImmortalMod#defferRegister(IEventBus)}
+     */
+    public static void register(IEventBus event){
+        BLOCKS.register(event);
     }
 }

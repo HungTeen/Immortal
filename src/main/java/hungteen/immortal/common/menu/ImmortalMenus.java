@@ -3,6 +3,7 @@ package hungteen.immortal.common.menu;
 import hungteen.immortal.utils.Util;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -14,7 +15,11 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalMenus {
 
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Util.id());
+    private static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Util.id());
+
+    public static final RegistryObject<MenuType<CultivatorTradeMenu>> CULTIVATOR_TRADE = CONTAINER_TYPES.register("cultivator_trade", () -> {
+        return IForgeMenuType.create(CultivatorTradeMenu::new);
+    });
 
 //    public static final RegistryObject<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {
 //        return IForgeMenuType.create(SpiritualFurnaceMenu::new);
@@ -33,5 +38,9 @@ public class ImmortalMenus {
             return new GolemMenu(windowId, inv, data.readInt());
         });
     });
+
+    public static void register(IEventBus event){
+        CONTAINER_TYPES.register(event);
+    }
 
 }

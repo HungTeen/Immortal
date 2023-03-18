@@ -10,8 +10,6 @@ import java.util.Set;
  **/
 public class ClientDatas {
 
-    public static final HashMap<String, Set<Integer>> FormationMap = new HashMap<>();
-
     /* 轮盘相关 */
 
     public static boolean ShowSpellCircle = false; // 缓存上一次是否显示，用来记录当前是否变化。

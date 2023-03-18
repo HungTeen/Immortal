@@ -31,11 +31,6 @@ public class EmptyCultivator extends Cultivator {
     }
 
     @Override
-    public void fillInventory() {
-        super.fillInventory();
-    }
-
-    @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean flag = super.hurt(source, amount);
         if (this.level.isClientSide) {
