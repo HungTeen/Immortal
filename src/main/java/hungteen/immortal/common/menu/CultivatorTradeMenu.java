@@ -1,19 +1,15 @@
 package hungteen.immortal.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
-import hungteen.immortal.api.registry.ITradeComponent;
 import hungteen.immortal.common.entity.human.HumanEntity;
-import hungteen.immortal.common.menu.container.TradeContainer;
+import hungteen.immortal.common.impl.codec.HumanSettings;
+import hungteen.immortal.common.menu.container.CommonTradeContainer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffers;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -26,7 +22,7 @@ public class CultivatorTradeMenu extends HTContainerMenu {
 
     private final Player player;
     private final HumanEntity trader;
-    private final TradeContainer tradeContainer;
+    private final CommonTradeContainer tradeContainer;
 
     public CultivatorTradeMenu(int id, Inventory playerInv, FriendlyByteBuf extraData){
         this(id, playerInv, extraData.readInt());
@@ -38,11 +34,12 @@ public class CultivatorTradeMenu extends HTContainerMenu {
         if(this.player.level.getEntity(entityId) instanceof HumanEntity humanEntity){
             this.trader = humanEntity;
         } else throw new RuntimeException("No trader found !");
-        this.tradeContainer = new TradeContainer(this.trader, 4, 4);
+        this.tradeContainer = new CommonTradeContainer(this, this.trader, 4, 4);
     }
 
     public void tryMoveItems(int pos) {
         if (pos >= 0 && pos < this.getTrades().size()) {
+            // 清空钱的槽
             for(int i = 0; i < this.tradeContainer.getContainerSize(); ++ i){
                 if(this.tradeContainer.isCostSlot(i) && ! this.tradeContainer.getItem(i).isEmpty()){
                     ItemStack itemstack = this.tradeContainer.getItem(i);
@@ -53,8 +50,9 @@ public class CultivatorTradeMenu extends HTContainerMenu {
                 }
             }
 
+            // 自动填补钱的槽位
             if (this.tradeContainer.isCostSlotEmpty()) {
-                List<ItemStack> stacks = this.getTrades().get(pos).getCosts();
+                List<ItemStack> stacks = this.getTrades().get(pos).costItems();
                 for(int i = 0; i < stacks.size(); ++ i){
                     this.moveFromInventoryToPaymentSlot(0, stacks.get(i));
                 }
@@ -114,8 +112,12 @@ public class CultivatorTradeMenu extends HTContainerMenu {
         }
     }
 
-    public List<ITradeComponent> getTrades() {
-        return this.trader.getTrades().stream().filter(trade -> trade.isValid(this.tradeContainer)).toList();
+    public List<HumanSettings.CommonTradeEntry> getTrades() {
+        return this.trader.getCommonTradeEntries().stream().filter(this::isEntryValid).toList();
+    }
+
+    private boolean isEntryValid(HumanSettings.CommonTradeEntry entry) {
+        return entry.costItems().size() <= this.tradeContainer.getCostSize() && entry.resultItems().size() <= this.tradeContainer.getResultSize();
     }
 
     @Override

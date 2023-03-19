@@ -1,15 +1,13 @@
 package hungteen.immortal.common.menu.container;
 
-import hungteen.immortal.api.registry.ITradeComponent;
 import hungteen.immortal.common.entity.human.HumanEntity;
+import hungteen.immortal.common.impl.codec.HumanSettings;
 import hungteen.immortal.common.menu.CultivatorTradeMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.List;
  * @program Immortal
  * @data 2023/3/18 15:35
  */
-public class TradeContainer implements Container {
+public class CommonTradeContainer implements Container {
 
     private final CultivatorTradeMenu menu;
     private final HumanEntity trader;
@@ -27,10 +25,10 @@ public class TradeContainer implements Container {
     private final int costSize;
     private final int resultSize;
     @Nullable
-    private ITradeComponent activeOffer;
+    private HumanSettings.CommonTradeEntry activeOffer;
     private int selectionHint;
 
-    public TradeContainer(CultivatorTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
+    public CommonTradeContainer(CultivatorTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
         this.menu = menu;
         this.trader = trader;
         this.costSize = costSize;
@@ -113,14 +111,13 @@ public class TradeContainer implements Container {
         if (this.isCostSlotEmpty()) {
             this.clearResultSlots();
         } else {
-            List<ITradeComponent> trades = this.menu.getTrades();
+            List<HumanSettings.CommonTradeEntry> trades = this.menu.getTrades();
             if (! trades.isEmpty()) {
-                ITradeComponent merchantoffer = match(trades, this.getCosts(), this.selectionHint);
+                HumanSettings.CommonTradeEntry merchantoffer = match(trades, this.getCosts(), this.selectionHint);
 
                 if (merchantoffer != null) {
                     this.activeOffer = merchantoffer;
-                    this.activeOffer.deal(this.trader, this.trader.getTradingPlayer());
-//                    this.setItem(2, merchantoffer.assemble());
+                    this.fillResultSlots(this.activeOffer);
                 } else {
                     this.clearResultSlots();
                 }
@@ -130,11 +127,11 @@ public class TradeContainer implements Container {
     }
 
     @Nullable
-    public static ITradeComponent match(List<ITradeComponent> trades, List<ItemStack> items, int pos){
+    public static HumanSettings.CommonTradeEntry match(List<HumanSettings.CommonTradeEntry> trades, List<ItemStack> items, int pos){
         if (pos >= 0 && pos < trades.size() && trades.get(pos).match(items)) {
             return trades.get(pos);
         }
-        for (ITradeComponent trade : trades) {
+        for (HumanSettings.CommonTradeEntry trade : trades) {
             if (trade.match(items)) {
                 return trade;
             }
@@ -156,6 +153,12 @@ public class TradeContainer implements Container {
     public void clearResultSlots(){
         for(int i = this.costSize; i < this.getContainerSize(); ++ i){
             this.setItem(i, ItemStack.EMPTY);
+        }
+    }
+
+    public void fillResultSlots(HumanSettings.CommonTradeEntry result){
+        for(int i = 0; i < Math.min(this.getResultSize(), result.resultItems().size()); ++ i){
+            this.setItem(i + this.getCostSize(), result.resultItems().get(i).copy());
         }
     }
 

@@ -2,8 +2,7 @@ package hungteen.immortal.common.entity;
 
 import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.registry.IRealmType;
-import hungteen.immortal.api.registry.ITradeComponent;
-import hungteen.immortal.common.impl.codec.trades.TradeComponents;
+import hungteen.immortal.common.impl.codec.HumanSettings;
 import hungteen.immortal.utils.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -53,24 +52,46 @@ public class ImmortalDataSerializers {
 
     });
 
-    public static final RegistryObject<EntityDataSerializer<List<ITradeComponent>>> TRADES = DATA_SERIALIZERS.register("trades", () -> new EntityDataSerializer.ForValueType<>() {
+    public static final RegistryObject<EntityDataSerializer<HumanSettings.HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new EntityDataSerializer.ForValueType<>() {
         @Override
-        public void write(FriendlyByteBuf byteBuf, List<ITradeComponent> trades) {
+        public void write(FriendlyByteBuf byteBuf, HumanSettings.HumanSetting humanSetting) {
             CompoundTag tag = new CompoundTag();
-            TradeComponents.getCodec().listOf().encodeStart(NbtOps.INSTANCE, trades)
-                    .result().ifPresent(l -> tag.put("Trades", l));
+            HumanSettings.HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, humanSetting)
+                    .result().ifPresent(l -> tag.put("HumanSetting", l));
             byteBuf.writeNbt(tag);
         }
 
         @Override
-        public List<ITradeComponent> read(FriendlyByteBuf byteBuf) {
+        public HumanSettings.HumanSetting read(FriendlyByteBuf byteBuf) {
             CompoundTag tag = byteBuf.readNbt();
-            AtomicReference<List<ITradeComponent>> trades = new AtomicReference<>();
-            if(Objects.requireNonNull(tag).contains("Trades")){
-                TradeComponents.getCodec().listOf().parse(NbtOps.INSTANCE, tag.get("Trades"))
-                        .result().ifPresent(trades::set);
+            AtomicReference<HumanSettings.HumanSetting> humanSetting = new AtomicReference<>();
+            if(Objects.requireNonNull(tag).contains("HumanSetting")){
+                HumanSettings.HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
+                        .result().ifPresent(humanSetting::set);
             }
-            return trades.get();
+            return humanSetting.get();
+        }
+
+    });
+
+    public static final RegistryObject<EntityDataSerializer<List<HumanSettings.CommonTradeEntry>>> COMMON_TRADE_ENTRIES = DATA_SERIALIZERS.register("common_trade_entries", () -> new EntityDataSerializer.ForValueType<>() {
+        @Override
+        public void write(FriendlyByteBuf byteBuf, List<HumanSettings.CommonTradeEntry> entries) {
+            CompoundTag tag = new CompoundTag();
+            HumanSettings.CommonTradeEntry.CODEC.listOf().encodeStart(NbtOps.INSTANCE, entries)
+                    .result().ifPresent(l -> tag.put("CommonTradeEntries", l));
+            byteBuf.writeNbt(tag);
+        }
+
+        @Override
+        public List<HumanSettings.CommonTradeEntry> read(FriendlyByteBuf byteBuf) {
+            CompoundTag tag = byteBuf.readNbt();
+            AtomicReference<List<HumanSettings.CommonTradeEntry>> entries = new AtomicReference<>(List.of());
+            if(Objects.requireNonNull(tag).contains("CommonTradeEntries")){
+                HumanSettings.CommonTradeEntry.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("CommonTradeEntries"))
+                        .result().ifPresent(entries::set);
+            }
+            return entries.get();
         }
 
     });

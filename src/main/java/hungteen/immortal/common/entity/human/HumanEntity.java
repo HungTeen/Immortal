@@ -6,13 +6,11 @@ import hungteen.immortal.api.ImmortalAPI;
 import hungteen.immortal.api.interfaces.IHuman;
 import hungteen.immortal.api.registry.IInventoryLootType;
 import hungteen.immortal.api.registry.ISpiritualType;
-import hungteen.immortal.api.registry.ITradeComponent;
 import hungteen.immortal.common.entity.ImmortalDataSerializers;
+import hungteen.immortal.common.entity.ImmortalGrowableCreature;
 import hungteen.immortal.common.entity.ai.ImmortalMemories;
 import hungteen.immortal.common.entity.ai.ImmortalSensors;
-import hungteen.immortal.common.entity.ImmortalGrowableCreature;
 import hungteen.immortal.common.impl.codec.HumanSettings;
-import hungteen.immortal.common.impl.codec.trades.TradeComponents;
 import hungteen.immortal.utils.BehaviorUtil;
 import hungteen.immortal.utils.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +19,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -41,9 +38,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -65,7 +63,8 @@ import java.util.function.Predicate;
 public abstract class HumanEntity extends ImmortalGrowableCreature implements IHuman {
 
     private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
-    private static final EntityDataAccessor<List<ITradeComponent>> TRADES = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.TRADES.get());
+    private static final EntityDataAccessor<HumanSettings.HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.HUMAN_SETTING.get());
+    private static final EntityDataAccessor<List<HumanSettings.CommonTradeEntry>> TRADE_ENTRIES = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.COMMON_TRADE_ENTRIES.get());
     private List<ISpiritualType> rootsCache;
     @javax.annotation.Nullable
     private Player tradingPlayer;
@@ -85,7 +84,8 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(ROOTS, new CompoundTag());
-        entityData.define(TRADES, List.of());
+        entityData.define(HUMAN_SETTING, HumanSettings.DEFAULT.getValue());
+        entityData.define(TRADE_ENTRIES, List.of());
     }
 
     @org.jetbrains.annotations.Nullable
@@ -129,6 +129,7 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
      */
     public void updateHumanSetting(){
         HumanSettings.getHumanSetting(getInventoryLootType(), this.getRandom()).ifPresent(l -> {
+            this.setHumanSetting(l);
             l.fillInventory(this.getInventory(), this.getRandom());
             l.fillTrade(this, this.getRandom());
         });
@@ -431,9 +432,13 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
                 l.fillInventory(this.getInventory(), this.getRandom());
             });
         }
-        if(tag.contains("Trades")){
-            TradeComponents.getCodec().listOf().parse(NbtOps.INSTANCE, tag.get("Trades"))
-                    .result().ifPresent(this::setTrades);
+        if(tag.contains("HumanSetting")){
+            HumanSettings.HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
+                    .result().ifPresent(this::setHumanSetting);
+        }
+        if(tag.contains("CommonTradeEntries")){
+            HumanSettings.CommonTradeEntry.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("CommonTradeEntries"))
+                    .result().ifPresent(this::setCommonTradeEntries);
         }
         if (this.level instanceof ServerLevel) {
             this.refreshBrain((ServerLevel)this.level);
@@ -445,8 +450,10 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         super.addAdditionalSaveData(tag);
         tag.put("CultivatorRoots", this.getRootTag());
         tag.put("Inventory", this.inventory.createTag());
-        TradeComponents.getCodec().listOf().encodeStart(NbtOps.INSTANCE, this.getTrades())
-                .result().ifPresent(l -> tag.put("Trades", l));
+        HumanSettings.HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, this.getHumanSetting())
+                .result().ifPresent(l -> tag.put("HumanSetting", l));
+        HumanSettings.CommonTradeEntry.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.getCommonTradeEntries())
+                .result().ifPresent(l -> tag.put("CommonTradeEntries", l));
     }
 
     public void addSpiritualRoots(ISpiritualType spiritualRoot){
@@ -480,12 +487,20 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
         entityData.set(ROOTS, rootTag);
     }
 
-    public List<ITradeComponent> getTrades(){
-        return entityData.get(TRADES);
+    public HumanSettings.HumanSetting getHumanSetting(){
+        return entityData.get(HUMAN_SETTING);
     }
 
-    public void setTrades(List<ITradeComponent> trades) {
-        entityData.set(TRADES, trades);
+    public void setHumanSetting(HumanSettings.HumanSetting humanSetting) {
+        entityData.set(HUMAN_SETTING, humanSetting);
+    }
+
+    public List<HumanSettings.CommonTradeEntry> getCommonTradeEntries(){
+        return entityData.get(TRADE_ENTRIES);
+    }
+
+    public void setCommonTradeEntries(List<HumanSettings.CommonTradeEntry> entries) {
+        entityData.set(TRADE_ENTRIES, entries);
     }
 
 }

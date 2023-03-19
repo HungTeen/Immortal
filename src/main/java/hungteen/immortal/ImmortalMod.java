@@ -3,7 +3,6 @@ package hungteen.immortal;
 import hungteen.immortal.client.ClientProxy;
 import hungteen.immortal.client.particle.ImmortalParticles;
 import hungteen.immortal.common.CommonRegister;
-import hungteen.immortal.common.ElixirManager;
 import hungteen.immortal.common.RealmManager;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.blockentity.ImmortalBlockEntities;
@@ -14,7 +13,7 @@ import hungteen.immortal.common.entity.ImmortalDataSerializers;
 import hungteen.immortal.common.entity.ImmortalEntities;
 import hungteen.immortal.common.entity.ai.*;
 import hungteen.immortal.common.impl.codec.HumanSettings;
-import hungteen.immortal.common.impl.codec.trades.TradeComponents;
+import hungteen.immortal.common.impl.registry.TradeTypes;
 import hungteen.immortal.common.impl.registry.*;
 import hungteen.immortal.common.misc.ImmortalBannerPatterns;
 import hungteen.immortal.common.spell.SpellTypes;
@@ -136,6 +135,7 @@ public class ImmortalMod {
 
         HumanSettings.register();
 
+        TradeTypes.TradeType.register();
         SpiritualTypes.SpiritualType.register();
         SpellTypes.SpellType.register();
         PlayerRangeNumbers.PlayerData.register();
@@ -152,7 +152,6 @@ public class ImmortalMod {
 //            PVZFeatures.registerFeatures();
 ////            PotionRecipeHandler.registerPotionRecipes();
 //            SpawnRegister.registerEntitySpawns();
-            TradeComponents.registerStuffs();
             CommonRegister.registerCompostable();
             LevelManager.registerSpiritualLevels();
             BiomeManager.registerSpiritualBiomes();

@@ -4,20 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.immortal.api.registry.ITradeComponent;
+import hungteen.immortal.common.impl.codec.HumanSettings;
 import hungteen.immortal.common.menu.CultivatorTradeMenu;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.MerchantScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSelectTradePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -69,14 +64,14 @@ public class CultivatorTradeScreen extends HTContainerScreen<CultivatorTradeMenu
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        List<ITradeComponent> trades = this.menu.getTrades();
+        List<HumanSettings.CommonTradeEntry> trades = this.menu.getTrades();
         if(! trades.isEmpty()){
             int k = this.topPos + 16 + 1;
             int l = this.leftPos + 5 + 5;
             RenderHelper.setTexture(TEXTURE);
             this.renderScroller(stack, trades.size());
             int i1 = 0;
-            for (ITradeComponent trade : trades) {
+            for (HumanSettings.CommonTradeEntry trade : trades) {
                 if (this.canScroll(trades.size()) && (i1 < this.scrollOff || i1 >= MAX_BUTTON_COUNT + this.scrollOff)) {
                     ++i1;
                 } else {
