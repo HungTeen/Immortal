@@ -14,9 +14,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
  **/
 public class ImmortalStructures {
 
+    /* Structure Set */
     public static final ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = registerStructureSet("spiritual_plains_village");
+    public static final ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = registerStructureSet("overworld_trading_market");
 
+    /* Structure */
     public static final ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = registerStructure("village/spiritual_plains");
+    public static final ResourceKey<Structure> OVERWORLD_TRADING_MARKET = registerStructure("trading_market/overworld");
 
     /**
      * {@link hungteen.immortal.ImmortalMod#defferRegister(IEventBus)}

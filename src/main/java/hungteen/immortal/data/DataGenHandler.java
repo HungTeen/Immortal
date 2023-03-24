@@ -2,10 +2,7 @@ package hungteen.immortal.data;
 
 import hungteen.immortal.data.codec.RegistryGen;
 import hungteen.immortal.data.recipe.RecipeGen;
-import hungteen.immortal.data.tag.BannerPatternTagGen;
-import hungteen.immortal.data.tag.BlockTagGen;
-import hungteen.immortal.data.tag.EntityTagGen;
-import hungteen.immortal.data.tag.ItemTagGen;
+import hungteen.immortal.data.tag.*;
 import net.minecraftforge.data.event.GatherDataEvent;
 
 /**
@@ -22,7 +19,7 @@ public class DataGenHandler {
         event.getGenerator().addProvider(event.includeServer(), new ItemTagGen(event.getGenerator(), generator, event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new EntityTagGen(event.getGenerator(), event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new BannerPatternTagGen(event.getGenerator(), event.getExistingFileHelper()));
-
+        event.getGenerator().addProvider(event.includeServer(), new BiomeTagGen(event.getGenerator(), event.getExistingFileHelper()));
         /* Recipes */
         event.getGenerator().addProvider(event.includeServer(), new RecipeGen(event.getGenerator()));
 
