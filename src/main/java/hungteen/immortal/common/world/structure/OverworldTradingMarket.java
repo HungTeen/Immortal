@@ -1,17 +1,26 @@
 package hungteen.immortal.common.world.structure;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+import hungteen.immortal.common.tag.ImmortalBiomeTags;
 import net.minecraft.core.Registry;
-import net.minecraft.tags.BiomeTags;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 import java.util.Map;
@@ -25,6 +34,31 @@ import java.util.function.Function;
  **/
 public class OverworldTradingMarket {
 
+    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
+        return (biomeRegistry) -> new JigsawStructure(
+                new Structure.StructureSettings(
+                        biomeRegistry.getOrCreateTag(ImmortalBiomeTags.HAS_OVERWORLD_TRADING_MARKET),
+                        Map.of(
+                                MobCategory.CREATURE, new StructureSpawnOverride(
+                                        StructureSpawnOverride.BoundingBoxType.STRUCTURE,
+                                        WeightedRandomList.create(
+                                                new MobSpawnSettings.SpawnerData(EntityType.VILLAGER, 1, 1, 1)
+                                        )
+                                )
+                        ),
+                        GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
+                        TerrainAdjustment.BEARD_BOX
+                ),
+                ImmortalTemplatePools.OVERWORLD_TRADING_MARKET_START.getHolder().get(),
+                Optional.empty(),
+                6,
+                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
+                true,
+                Optional.empty(),
+                80
+        );
+    }
+
     public static Function<Registry<Structure>, StructureSet> getStructureSet() {
         return (structureRegistry) -> new StructureSet(
                 structureRegistry.getOrCreateHolderOrThrow(ImmortalStructures.OVERWORLD_TRADING_MARKET),
@@ -37,39 +71,21 @@ public class OverworldTradingMarket {
         );
     }
 
-    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
-//        new JigsawStructure(structure(
-//                BiomeTags.HAS_PILLAGER_OUTPOST,
-//                Map.of(
-//                        MobCategory.MONSTER, new StructureSpawnOverride(
-//                                StructureSpawnOverride.BoundingBoxType.STRUCTURE,
-//                                WeightedRandomList.create(
-//                                        new MobSpawnSettings.SpawnerData(EntityType.PILLAGER, 1, 1, 1))
-//                        )
-//                ),
-//                GenerationStep.Decoration.SURFACE_STRUCTURES,
-//                TerrainAdjustment.BEARD_THIN
-//        ),
-//                PillagerOutpostPools.START,
-//                7,
-//                ConstantHeight.of(VerticalAnchor.absolute(0)),
-//                true,
-//                Heightmap.Types.WORLD_SURFACE_WG)
-//    )
-        return (biomeRegistry) -> new JigsawStructure(
-                new Structure.StructureSettings(
-                        biomeRegistry.getOrCreateTag(BiomeTags.HAS_VILLAGE_PLAINS),
-                        Map.of(),
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
+    public static StructureTemplatePool getStartPool() {
+        return new StructureTemplatePool(
+                new ResourceLocation("pillager_outpost/base_plates"),
+                new ResourceLocation("empty"),
+                ImmutableList.of(Pair.of(
+                        StructurePoolElement.legacy("pillager_outpost/base_plate"), 1)
                 ),
-                ImmortalTemplatePools.PLAINS_VILLAGE_START_POOL.getHolder().get(),
-                Optional.empty(),
-                6,
-                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
-                true,
-                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                80
+                StructureTemplatePool.Projection.RIGID
         );
+//        return new StructureTemplatePool(
+//                res("town_centers"),
+//                new ResourceLocation("empty"),
+//                pools(
+//                        getPoolElements("town_centers/meeting_point", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(10))
+//                )
+//        );
     }
 }

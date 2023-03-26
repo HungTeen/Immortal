@@ -1,11 +1,14 @@
 package hungteen.immortal.data.codec;
 
-import hungteen.htlib.data.HTCodecGen;
-import hungteen.immortal.utils.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.StreamSupport;
 
 /**
@@ -13,10 +16,12 @@ import java.util.stream.StreamSupport;
  * @author: HungTeen
  * @create: 2022-11-20 15:16
  **/
-public class RegistryGen extends HTCodecGen {
+public class RegistryGen extends DatapackBuiltinEntriesProvider {
 
-    public RegistryGen(DataGenerator generator) {
-        super(generator, Util.id());
+    public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder();
+
+    private RegistryGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+        super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));
     }
 
     @Override

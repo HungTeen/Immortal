@@ -3,7 +3,6 @@ package hungteen.immortal.data.codec;
 import com.mojang.serialization.Lifecycle;
 import hungteen.htlib.data.HTCodecGen;
 import hungteen.immortal.common.world.structure.ImmortalStructures;
-import hungteen.immortal.common.world.structure.SpiritualPlainsVillage;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
@@ -32,11 +31,19 @@ public class StructureGen extends HTCodecGen {
         Registry<Biome> biomes = access().registryOrThrow(Registry.BIOME_REGISTRY);
         Registry<Structure> structures = access().registryOrThrow(Registry.STRUCTURE_REGISTRY);
 
-        Structure structure = SpiritualPlainsVillage.getStructure().apply(biomes);
-        structureRegistry.register(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE, structure, Lifecycle.experimental());
+        ImmortalStructures.getStructures(biomes).forEach(pair -> {
+            structureRegistry.register(pair.getFirst(), pair.getSecond(), Lifecycle.experimental());
+        });
 
-        StructureSet structureSet = SpiritualPlainsVillage.getStructureSet().apply(structures);
-        structureSetRegistry.register(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE_SET, structureSet, Lifecycle.experimental());
+        ImmortalStructures.getStructureSets(structureRegistry).forEach(pair -> {
+            structureSetRegistry.register(pair.getFirst(), pair.getSecond(), Lifecycle.experimental());
+        });
+
+//        Structure structure = SpiritualPlainsVillage.getStructure().apply(biomes);
+//        structureRegistry.register(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE, structure, Lifecycle.experimental());
+//
+//        StructureSet structureSet = SpiritualPlainsVillage.getStructureSet().apply(structureRegistry);
+//        structureSetRegistry.register(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE_SET, structureSet, Lifecycle.experimental());
 
         register(cache, Registry.STRUCTURE_REGISTRY, structureRegistry, Structure.DIRECT_CODEC);
         register(cache, Registry.STRUCTURE_SET_REGISTRY, structureSetRegistry, StructureSet.DIRECT_CODEC);

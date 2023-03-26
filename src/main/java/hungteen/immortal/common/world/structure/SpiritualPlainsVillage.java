@@ -6,7 +6,6 @@ import hungteen.immortal.utils.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.ProcessorLists;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
@@ -36,6 +35,24 @@ import java.util.stream.Collectors;
  **/
 public class SpiritualPlainsVillage {
 
+    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
+        return (biomeRegistry) -> new JigsawStructure(
+                new Structure.StructureSettings(
+                        biomeRegistry.getOrCreateTag(BiomeTags.HAS_VILLAGE_PLAINS),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.BEARD_THIN
+                ),
+                ImmortalTemplatePools.PLAINS_VILLAGE_START.getHolder().get(),
+                Optional.empty(),
+                6,
+                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
+                true,
+                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                80
+        );
+    }
+
     public static Function<Registry<Structure>, StructureSet> getStructureSet() {
         return (structureRegistry) -> new StructureSet(
                 structureRegistry.getOrCreateHolderOrThrow(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE),
@@ -45,24 +62,6 @@ public class SpiritualPlainsVillage {
                         RandomSpreadType.LINEAR,
                         1080133475
                 )
-        );
-    }
-
-    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
-        return (biomeRegistry) -> new JigsawStructure(
-                new Structure.StructureSettings(
-                        biomeRegistry.getOrCreateTag(BiomeTags.HAS_VILLAGE_PLAINS),
-                        Map.of(),
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
-                ),
-                ImmortalTemplatePools.PLAINS_VILLAGE_START_POOL.getHolder().get(),
-                Optional.empty(),
-                6,
-                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
-                true,
-                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                80
         );
     }
 
@@ -133,12 +132,12 @@ public class SpiritualPlainsVillage {
                 res("decor"),
                 new ResourceLocation("empty"),
                 List.of(
-                        Pair.of(
-                                StructurePoolElement.feature(VegetationPlacements.FLOWER_DEFAULT).apply(StructureTemplatePool.Projection.RIGID), 2
-                        ),
-                        Pair.of(
-                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 2
-                        )
+//                        Pair.of(
+//                                StructurePoolElement.feature(VegetationPlacements.FLOWER_DEFAULT).apply(StructureTemplatePool.Projection.RIGID), 2
+//                        ),
+//                        Pair.of(
+//                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 2
+//                        )
                 )
         );
     }

@@ -20,6 +20,7 @@ public class DataGenHandler {
         event.getGenerator().addProvider(event.includeServer(), new EntityTagGen(event.getGenerator(), event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new BannerPatternTagGen(event.getGenerator(), event.getExistingFileHelper()));
         event.getGenerator().addProvider(event.includeServer(), new BiomeTagGen(event.getGenerator(), event.getExistingFileHelper()));
+
         /* Recipes */
         event.getGenerator().addProvider(event.includeServer(), new RecipeGen(event.getGenerator()));
 
