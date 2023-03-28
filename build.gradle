@@ -47,7 +47,7 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             mods {
-                immortal {
+                imm {
                     source sourceSets.main
                 }
             }
@@ -65,7 +65,7 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             mods {
-                immortal {
+                imm {
                     source sourceSets.main
                 }
             }
@@ -80,7 +80,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', '${mod_id}'
 
             mods {
-                immortal {
+                imm {
                     source sourceSets.main
                 }
             }
@@ -96,13 +96,13 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
-            args '--mod', 'immortal', '--all',
+            args '--mod', 'imm', '--all',
                     '--output', file('src/generated/resources/'),
                     '--existing', file('src/main/resources/'),
                     '--existing', file('src/generated/resources/')
 
             mods {
-                immortal {
+                imm {
                     source sourceSets.main
                 }
             }
@@ -176,7 +176,7 @@ mixin {
 task apiJar(type: Jar) {
     classifier = 'api'
 
-    include 'hungteen/immortal/api/**'
+    include 'hungteen/imm/api/**'
 
     // Sources included because of MinecraftForge/ForgeGradle#369
     from sourceSets.main.allSource

@@ -1,12 +1,12 @@
 modLoader="javafml"
 loaderVersion="[43,)"
 license="GNU LESSER GENERAL PUBLIC LICENSE"
-issueTrackerURL="https://github.com/HungTeen/Immortal/issues"
+issueTrackerURL="https://github.com/HungTeen/imm/issues"
 
 [[mods]]
-modId="immortal"
+modId="imm"
 version="${file.jarVersion}"
-displayName="Immortal"
+displayName="imm"
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://space.bilibili.com/362855464"
@@ -17,45 +17,45 @@ description='''
 I am mortal, but i will be immortal !
 '''
 
-[modproperties.immortal]
+[modproperties.imm]
 #configBackground="pvz:textures/block/amethyst_block.png"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
     modId="forge"
     mandatory=true
     versionRange="[43.2.0,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.19.2,1.20)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="htlib"
 mandatory=true
 versionRange="[0.9.0,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="jei"
 mandatory=false
 versionRange="[11.4.0.285,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="curios"
 mandatory=false
 versionRange="[1.19.2-5.1.1.0,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="patchouli"
 mandatory=false
 versionRange="[1.19.2-77,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="jade"
 mandatory=false
 versionRange="[8.3.2,)"
 
-[[dependencies.immortal]]
+[[dependencies.imm]]
 modId="configured"
 mandatory=false
 versionRange="[2.0.1,)"

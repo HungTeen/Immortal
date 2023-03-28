@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "hungteen.immortal.mixin",
+  "package": "hungteen.imm.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "immortal.refmap.json",
+  "refmap": "imm.refmap.json",
   "mixins": [
     "MixinFoodData"
   ],
