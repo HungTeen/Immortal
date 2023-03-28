@@ -3,9 +3,12 @@ package hungteen.immortal.common.block.plants;
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.immortal.common.block.ImmortalBlocks;
+import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.Locale;
 
 /**
  * @program: Immortal
@@ -47,6 +52,10 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         return AABB;
     }
 
+    public static ResourceLocation getGourdLocation(GourdTypes type){
+        return Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd");
+    }
+
     public enum GourdTypes implements WeightedEntry {
         RED(10),
         ORANGE(5),
@@ -57,7 +66,6 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         PURPLE(3);
 
         private GourdGrownBlock gourdGrownBlock;
-        private Item gourdItem;
         private final int weight;
 
         private GourdTypes(int weight) {
@@ -68,20 +76,12 @@ public class GourdGrownBlock extends HTStemGrownBlock {
             this.gourdGrownBlock = gourdGrownBlock;
         }
 
-        public void setGourdItem(Item gourdItem) {
-            this.gourdItem = gourdItem;
-        }
-
         public Weight getWeight() {
             return Weight.of(weight);
         }
 
         public GourdGrownBlock getGourdGrownBlock() {
             return gourdGrownBlock;
-        }
-
-        public Item getGourdItem() {
-            return gourdItem;
         }
 
     }

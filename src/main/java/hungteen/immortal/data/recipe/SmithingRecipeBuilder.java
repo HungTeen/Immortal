@@ -103,20 +103,20 @@ public class SmithingRecipeBuilder implements RecipeBuilder {
     public void save(Consumer<FinishedRecipe> p_126141_, ResourceLocation consumer) {
         this.ensureValid(consumer);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(consumer)).rewards(AdvancementRewards.Builder.recipe(consumer)).requirements(RequirementsStrategy.OR);
-        p_126141_.accept(new SmithingRecipeBuilder.SmithingResult(
-                consumer,
-                this.result,
-                this.count,
-                this.requireLevel,
-                this.needRecovery,
-                this.needSmithingValue,
-                this.speedMultiple,
-                this.group == null ? "" : this.group,
-                this.rows,
-                this.key,
-                this.advancement,
-                new ResourceLocation(consumer.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + consumer.getPath()))
-        );
+//        p_126141_.accept(new SmithingRecipeBuilder.SmithingResult(
+//                consumer,
+//                this.result,
+//                this.count,
+//                this.requireLevel,
+//                this.needRecovery,
+//                this.needSmithingValue,
+//                this.speedMultiple,
+//                this.group == null ? "" : this.group,
+//                this.rows,
+//                this.key,
+//                this.advancement,
+//                new ResourceLocation(consumer.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + consumer.getPath()))
+//        );
     }
 
     private void ensureValid(ResourceLocation location) {
@@ -147,34 +147,34 @@ public class SmithingRecipeBuilder implements RecipeBuilder {
         }
     }
 
-    public static class SmithingResult extends ShapedRecipeBuilder.Result {
-
-        protected final int requireLevel;
-        protected final boolean needRecovery;
-        private final int needSmithingValue;
-        private final float speedMultiple;
-
-        public SmithingResult(ResourceLocation location, Item result, int count, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple, String group, List<String> pattern, Map<Character, Ingredient> keys, Advancement.Builder builder, ResourceLocation advancement) {
-            super(location, result, count, group, pattern, keys, builder, advancement);
-            this.requireLevel = requireLevel;
-            this.needRecovery = needRecovery;
-            this.needSmithingValue = needSmithingValue;
-            this.speedMultiple = speedMultiple;
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject jsonObject) {
-            super.serializeRecipeData(jsonObject);
-            jsonObject.addProperty("require_level", this.requireLevel);
-            jsonObject.addProperty("need_recovery", this.needRecovery);
-            jsonObject.addProperty("require_smithing_value", this.needSmithingValue);
-            jsonObject.addProperty("speed_multiple", this.speedMultiple);
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return ImmortalRecipes.SMITHING_ARTIFACT_SERIALIZER.get();
-        }
-
-    }
+//    public static class SmithingResult extends ShapedRecipeBuilder.Result {
+//
+//        protected final int requireLevel;
+//        protected final boolean needRecovery;
+//        private final int needSmithingValue;
+//        private final float speedMultiple;
+//
+//        public SmithingResult(ResourceLocation location, Item result, int count, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple, String group, List<String> pattern, Map<Character, Ingredient> keys, Advancement.Builder builder, ResourceLocation advancement) {
+//            super(location, result, count, group, pattern, keys, builder, advancement);
+//            this.requireLevel = requireLevel;
+//            this.needRecovery = needRecovery;
+//            this.needSmithingValue = needSmithingValue;
+//            this.speedMultiple = speedMultiple;
+//        }
+//
+//        @Override
+//        public void serializeRecipeData(JsonObject jsonObject) {
+//            super.serializeRecipeData(jsonObject);
+//            jsonObject.addProperty("require_level", this.requireLevel);
+//            jsonObject.addProperty("need_recovery", this.needRecovery);
+//            jsonObject.addProperty("require_smithing_value", this.needSmithingValue);
+//            jsonObject.addProperty("speed_multiple", this.speedMultiple);
+//        }
+//
+//        @Override
+//        public RecipeSerializer<?> getType() {
+//            return ImmortalRecipes.SMITHING_ARTIFACT_SERIALIZER.get();
+//        }
+//
+//    }
 }

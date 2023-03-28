@@ -3,7 +3,7 @@ package hungteen.immortal.common.item.artifacts;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import hungteen.immortal.api.interfaces.IArtifactTier;
-import hungteen.immortal.common.item.ItemTabs;
+import hungteen.immortal.common.item.ImmortalItemTabs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -41,7 +41,7 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
     protected final float attackRange;
 
     public MeleeAttackItem(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
-        super(new Properties().tab(ItemTabs.ARTIFACTS).stacksTo(1).durability(tier.getUses()), tier.getArtifactType());
+        super(new Properties().stacksTo(1).durability(tier.getUses()), tier.getArtifactType());
         this.meleeAttackType = meleeAttackType;
         this.attackDamage = tier.getAttackDamage() + this.meleeAttackType.getBaseAttackDamage();
         this.attackSpeed = tier.getAttackSpeed() + this.meleeAttackType.getBaseAttackSpeed();

@@ -12,7 +12,9 @@ import hungteen.immortal.common.item.artifacts.MeleeAttackItem;
 import hungteen.immortal.utils.ItemUtil;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -29,8 +31,8 @@ import java.util.Arrays;
  **/
 public class ItemModelGen extends HTItemModelGen {
 
-    public ItemModelGen(DataGenerator generator, ExistingFileHelper helper) {
-        super(generator, Util.id(), helper);
+    public ItemModelGen(PackOutput output, ExistingFileHelper helper) {
+        super(output, Util.id(), helper);
     }
 
     @Override

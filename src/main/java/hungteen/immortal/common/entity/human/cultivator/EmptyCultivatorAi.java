@@ -35,7 +35,7 @@ public class EmptyCultivatorAi {
         initIdleBehaviors(brain, 0.85F);
         initMeleeFightBehaviors(brain, 1.1F);
         initRangeFightBehaviors(brain, 1.05F);
-        brain.addActivityWithConditions(ImmortalActivities.ESCAPE.get(), getEscapeBehaviors(1.2F), Set.of(Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)));
+        initEscapeBehaviors(brain, 1.2F);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.setActiveActivityIfPossible(Activity.IDLE);
@@ -98,8 +98,8 @@ public class EmptyCultivatorAi {
                 new Swim(0.8F),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),
-                new InteractWithDoor(),
-                new GoToWantedItem<>(speed, false, 4)
+                InteractWithDoor.create(),
+                GoToWantedItem.create(speed, false, 4)
 //                new StopHoldingItemIfNoLongerAdmiring<>(),
 //                new StartAdmiringItemIfSeen<>(120)
                 //new StartCelebratingIfTargetDead(300, PiglinAi::wantsToDance),
@@ -118,17 +118,17 @@ public class EmptyCultivatorAi {
                 new EatFood(),
                 //四处逛逛
                 new RunOne<>(ImmutableList.of(
-                        Pair.of(new RandomStroll(speed), 1),
-                        Pair.of(new SetWalkTargetFromLookTarget(speed, 3), 1),
+                        Pair.of(RandomStroll.stroll(speed), 1),
+                        Pair.of(SetWalkTargetFromLookTarget.create(speed, 3), 1),
                         Pair.of(InteractWith.of(EntityType.CAT, 8, MemoryModuleType.INTERACTION_TARGET, speed, 3), 1),
                         Pair.of(InteractWith.of(EntityType.WOLF, 8, MemoryModuleType.INTERACTION_TARGET, speed, 2), 1),
                         Pair.of(new DoNothing(30, 60), 1)
                 )),
                 //瞅你咋地
                 new RunOne<>(ImmutableList.of(
-                        Pair.of(new SetEntityLookTarget(EntityType.PLAYER, 12.0F), 1),
-                        Pair.of(new SetEntityLookTarget(ImmortalEntityTags.HUMAN_BEINGS, 8.0F), 1),
-                        Pair.of(new SetEntityLookTarget(8.0F), 1),
+                        Pair.of(SetEntityLookTarget.create(EntityType.PLAYER, 12.0F), 1),
+                        Pair.of(SetEntityLookTarget.create(type -> type.getType().is(ImmortalEntityTags.HUMAN_BEINGS), 8.0F), 1),
+                        Pair.of(SetEntityLookTarget.create(8.0F), 1),
                         Pair.of(new DoNothing(30, 60), 1)
                 )),
                 new UseShield(20, 30)
@@ -140,12 +140,12 @@ public class EmptyCultivatorAi {
      */
     public static void initMeleeFightBehaviors(Brain<EmptyCultivator> brain, float speed) {
         brain.addActivityWithConditions(ImmortalActivities.MELEE_FIGHT.get(), ImmutableList.of(
-                Pair.of(0, new StopAttackingIfTargetInvalid<>()),
+                Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, new SwitchMeleeAttackItem(0.05F)),
                 Pair.of(1, new WearArmor()),
 //                Pair.of(1, new MeleeKeepDistance(speed)),
                 // 攻击范围内清除路径，范围外则搜索路径
-                Pair.of(2, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(speed)),
+                Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 // 对皮脆的敌人，直接冲过去近战
                 Pair.of(2, new EnderPearlReach(0.2F, 100, EmptyCultivatorAi::lowLevelLiving)),
                 Pair.of(3, new HumanMeleeAttack(40)),
@@ -158,12 +158,12 @@ public class EmptyCultivatorAi {
      */
     public static void initRangeFightBehaviors(Brain<EmptyCultivator> brain, float speed) {
         brain.addActivityWithConditions(ImmortalActivities.RANGE_FIGHT.get(), ImmutableList.of(
-                Pair.of(0, new StopAttackingIfTargetInvalid<>()),
+                Pair.of(0, StopAttackingIfTargetInvalid.create()),
 //                Pair.of(1, new BackUpIfTooClose<>(64, speed)),
                 Pair.of(1, new SwitchRangeAttackItem(0.08F)),
                 Pair.of(1, new WearArmor()),
                 // 攻击范围内清除路径，范围外则搜索路径
-                Pair.of(2, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(speed)),
+                Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 // 用远程攻击
                 Pair.of(3, new MobRangeAttack<>(5, 10, 20F)),
                 Pair.of(4, new UseShield(20, 30))
@@ -176,15 +176,15 @@ public class EmptyCultivatorAi {
     /**
      * The Escape Behaviors that triggered when there exist enemy. <br>
      */
-    public static ImmutableList<Pair<Integer, ? extends Behavior<? super EmptyCultivator>>> getEscapeBehaviors(float speed) {
-        return ImmutableList.of(
-                Pair.of(0, new StopAttackingIfTargetInvalid<>()),
+    public static void initEscapeBehaviors(Brain<EmptyCultivator> brain, float speed) {
+        brain.addActivityWithConditions(ImmortalActivities.ESCAPE.get(), ImmutableList.of(
+                Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, speed, 12, true)),
                 Pair.of(1, new WearArmor()),
                 Pair.of(2, new EatFood()),
                 Pair.of(3, new UseShield(20, 30)),
                 Pair.of(4, new HumanMeleeAttack(35))
-        );
+        ), Set.of(Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)));
     }
 
     protected static void wasHurtBy(EmptyCultivator cultivator, LivingEntity livingEntity) {

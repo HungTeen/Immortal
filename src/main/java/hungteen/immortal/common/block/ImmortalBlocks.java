@@ -9,15 +9,12 @@ import hungteen.immortal.ImmortalMod;
 import hungteen.immortal.common.block.plants.AttachedGourdStemBlock;
 import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import hungteen.immortal.common.block.plants.GourdStemBlock;
-import hungteen.immortal.common.item.ItemTabs;
 import hungteen.immortal.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.immortal.utils.BlockUtil;
 import hungteen.immortal.utils.Util;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,7 +68,7 @@ public class ImmortalBlocks {
         }
         // 注册各种颜色的羊毛坐垫。
         for (DyeColor color : DyeColor.values()) {
-            BlockHelper.get().register(event, BlockUtil.getWoolCushionLocation(color), () -> new WoolCushionBlock(color));
+            BlockHelper.get().register(event, WoolCushionBlock.getWoolCushionLocation(color), () -> new WoolCushionBlock(color));
         }
     }
 
@@ -81,26 +78,17 @@ public class ImmortalBlocks {
      */
     public static void registerBlockItems(RegisterEvent event){
         // Register all gourd blocks.
-        for(GourdGrownBlock.GourdTypes type : GourdGrownBlock.GourdTypes.values()){
-            if(type.getGourdGrownBlock() != null){
-                event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(type.toString().toLowerCase(Locale.ROOT) + "_gourd"), () -> {
-                    Item item = new ItemNameBlockItem(type.getGourdGrownBlock(), new Item.Properties().tab(ItemTabs.MATERIALS));
-                    type.setGourdItem(item);
-                    return item;
-                });
-            }
-        }
+        BlockUtil.getGourds().forEach(pair -> {
+            ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
+        });
         // Register wool cushion of all colors.
-        for (DyeColor color : DyeColor.values()) {
-            final ResourceLocation id = BlockUtil.getWoolCushionLocation(color);
-            BlockHelper.get().get(id).ifPresent(block -> {
-                ItemHelper.get().register(event, id, () -> new BlockItem(block, new Item.Properties().tab(ItemTabs.DECORATIONS)));
-            });
-        }
+        BlockUtil.getWoolCushions().forEach(pair -> {
+            ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
+        });
         Arrays.asList(
                 MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_SAPLING
-                ).forEach(obj -> {
-                    event.register(ForgeRegistries.ITEMS.getRegistryKey(), obj.getId(), () -> new BlockItem(obj.get(), new Item.Properties().tab(ItemTabs.DECORATIONS)));
+        ).forEach(obj -> {
+            ItemHelper.get().register(event, obj.getId(), () -> new BlockItem(obj.get(), new Item.Properties()));
         });
 //        Arrays.asList(
 //                COPPER_SPIRITUAL_FURNACE, COPPER_ELIXIR_ROOM, COPPER_SMITHING_ARTIFACT, COPPER_SPIRITUAL_ROOM

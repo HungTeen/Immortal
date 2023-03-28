@@ -82,7 +82,7 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
     public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getCoreBehaviors() {
         return ImmutableList.of(
                 Pair.of(0, new Swim(0.8F)),
-                Pair.of(0, new InteractWithDoor()),
+//                Pair.of(0, new InteractWithDoor()),
                 Pair.of(0, new LookAtTargetSink(45, 90)),
                 Pair.of(0, new BreakBoat()),
 //                Pair.of(0, new VillagerPanicTrigger()),
@@ -102,18 +102,18 @@ public abstract class SpiritualVillager extends VillagerLikeEntity {
      */
     public ImmutableList<Pair<Integer, ? extends Behavior<? super SpiritualVillager>>> getIdleBehaviors(float speed) {
         return ImmutableList.of(
-                Pair.of(2, new RunOne<>(ImmutableList.of(
+//                Pair.of(2, new RunOne<>(ImmutableList.of(
 //                        Pair.of(InteractWith.of(EntityType.VILLAGER, 8, MemoryModuleType.INTERACTION_TARGET, p_24600_, 2), 2),
 //                        Pair.of(new InteractWith<>(EntityType.VILLAGER, 8, AgeableMob::canBreed, AgeableMob::canBreed, MemoryModuleType.BREED_TARGET, p_24600_, 2), 1),
 //                        Pair.of(InteractWith.of(EntityType.CAT, 8, MemoryModuleType.INTERACTION_TARGET, p_24600_, 2), 1),
 //                        Pair.of(new VillageBoundRandomStroll(speed), 1),
-                        Pair.of(new SetWalkTargetFromLookTarget(speed, 2), 1)
+//                        Pair.of(new SetWalkTargetFromLookTarget(speed, 2), 1)
 //                        Pair.of(new JumpOnBed(p_24600_), 1),
 //                        Pair.of(new DoNothing(30, 60), 1)
-                ))),
+//                ))),
 //                Pair.of(3, new GiveGiftToHero(100)),
-                Pair.of(3, new Mock()),
-                Pair.of(3, new SetLookAndInteract(EntityType.PLAYER, 4))
+                Pair.of(3, new Mock())
+//                Pair.of(3, new SetLookAndInteract(EntityType.PLAYER, 4))
 //                Pair.of(3, new ShowTradesToPlayer(400, 1600)),
 //                Pair.of(3, new GateBehavior<>(
 //                        ImmutableMap.of(),

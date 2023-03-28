@@ -2,11 +2,15 @@ package hungteen.immortal.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.HTLib;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
+import hungteen.htlib.client.gui.widget.HTButton;
 import hungteen.immortal.common.impl.codec.HumanSettings;
 import hungteen.immortal.common.menu.CultivatorTradeMenu;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSelectTradePacket;
@@ -141,11 +145,11 @@ public class CultivatorTradeScreen extends HTContainerScreen<CultivatorTradeMenu
     }
 
     @OnlyIn(Dist.CLIENT)
-    private class TradeOfferButton extends Button {
+    private class TradeOfferButton extends HTButton {
         final int index;
 
-        public TradeOfferButton(int p_99205_, int p_99206_, int p_99207_, Button.OnPress p_99208_) {
-            super(p_99205_, p_99206_, 89, 20, CommonComponents.EMPTY, p_99208_);
+        public TradeOfferButton(int p_99205_, int p_99206_, int p_99207_, HTButton.OnPress onPress) {
+            super(RenderHelper.WIDGETS, p_99205_, p_99206_, 89, 20, onPress);
             this.index = p_99207_;
             this.visible = false;
         }
@@ -169,6 +173,21 @@ public class CultivatorTradeScreen extends HTContainerScreen<CultivatorTradeMenu
 //                    CultivatorTradeScreen.this.renderTooltip(stack, itemstack1, p_99212_, p_99213_);
 //                }
 //            }
+
+        }
+
+        @Override
+        protected Pair<Integer, Integer> getButtonUV() {
+            return Pair.of(0, 0);
+        }
+
+        @Override
+        protected Pair<Integer, Integer> getButtonUVOffset() {
+            return Pair.of(0, 0);
+        }
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput output) {
 
         }
     }

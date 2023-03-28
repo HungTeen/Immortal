@@ -9,8 +9,5 @@ import net.minecraft.world.entity.ai.behavior.MeleeAttack;
  **/
 public class GolemMeleeAttack extends MeleeAttack {
 
-    public GolemMeleeAttack(int p_23512_) {
-        super(p_23512_);
-    }
 
 }

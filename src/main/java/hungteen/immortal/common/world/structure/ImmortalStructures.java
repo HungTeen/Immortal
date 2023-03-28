@@ -3,6 +3,7 @@ package hungteen.immortal.common.world.structure;
 import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -25,26 +26,26 @@ public class ImmortalStructures {
     private static final Map<ResourceKey<Structure>, Function<Registry<Biome>, ? extends Structure>> STRUCTURE_MAP = new HashMap<>();
     private static final Map<ResourceKey<StructureSet>, Function<Registry<Structure>, StructureSet>> STRUCTURE_SET_MAP = new HashMap<>();
 
-    /* Structure */
-    public static final ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = registerStructure("spiritual_plains_village");
-    public static final ResourceKey<Structure> OVERWORLD_TRADING_MARKET = registerStructure("overworld_trading_market");
-
-    /* Structure Set */
-    public static final ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = registerStructureSet("spiritual_plains_villages");
-    public static final ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = registerStructureSet("overworld_trading_markets");
-
+//    /* Structure */
+//    public static final ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = registerStructure("spiritual_plains_village");
+//    public static final ResourceKey<Structure> OVERWORLD_TRADING_MARKET = registerStructure("overworld_trading_market");
+//
+//    /* Structure Set */
+//    public static final ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = registerStructureSet("spiritual_plains_villages");
+//    public static final ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = registerStructureSet("overworld_trading_markets");
+//
     /**
      * {@link hungteen.immortal.ImmortalMod#defferRegister(IEventBus)}
      */
     public static void register(){
-        register(
-                OVERWORLD_TRADING_MARKET, OverworldTradingMarket.getStructure(),
-                OVERWORLD_TRADING_MARKET_SET, OverworldTradingMarket.getStructureSet()
-        );
-        register(
-                SPIRITUAL_PLAINS_VILLAGE, SpiritualPlainsVillage.getStructure(),
-                SPIRITUAL_PLAINS_VILLAGE_SET, SpiritualPlainsVillage.getStructureSet()
-        );
+//        register(
+//                OVERWORLD_TRADING_MARKET, OverworldTradingMarket.getStructure(),
+//                OVERWORLD_TRADING_MARKET_SET, OverworldTradingMarket.getStructureSet()
+//        );
+//        register(
+//                SPIRITUAL_PLAINS_VILLAGE, SpiritualPlainsVillage.getStructure(),
+//                SPIRITUAL_PLAINS_VILLAGE_SET, SpiritualPlainsVillage.getStructureSet()
+//        );
     }
 
     private static void register(ResourceKey<Structure> key1, Function<Registry<Biome>, ? extends Structure> value1, ResourceKey<StructureSet> key2, Function<Registry<Structure>, StructureSet> value2){
@@ -61,10 +62,10 @@ public class ImmortalStructures {
     }
 
     private static ResourceKey<Structure> registerStructure(String name) {
-        return ResourceKey.create(Registry.STRUCTURE_REGISTRY, Util.prefix(name));
+        return ResourceKey.create(Registries.STRUCTURE, Util.prefix(name));
     }
 
     private static ResourceKey<StructureSet> registerStructureSet(String name) {
-        return ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, Util.prefix(name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, Util.prefix(name));
     }
 }

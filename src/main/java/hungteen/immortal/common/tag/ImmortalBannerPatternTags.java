@@ -1,5 +1,6 @@
 package hungteen.immortal.common.tag;
 
+import hungteen.htlib.util.helper.registry.BannerPatternHelper;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,6 @@ public class ImmortalBannerPatternTags {
     }
     
     private static TagKey<BannerPattern> create(ResourceLocation location) {
-        return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, location);
+        return BannerPatternHelper.get().tag(location);
     }
 }

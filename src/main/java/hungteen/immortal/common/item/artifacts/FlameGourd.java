@@ -59,9 +59,9 @@ public class FlameGourd extends ArtifactItem {
                 // 等级不匹配 爆炸。
                 if(flame.getFlameLevel() > flameGourd.getMaxFlameLevel()){
                     // TODO 更专业的爆炸
-                    if(! player.level.isClientSide){
-                        player.level.explode(flame, player.getX(), player.getY(), player.getZ(), 10, true, Explosion.BlockInteraction.BREAK);
-                    }
+//                    if(! player.level.isClientSide){
+//                        player.level.explode(flame, player.getX(), player.getY(), player.getZ(), 10, true, Explosion.BlockInteraction.DESTROY);
+//                    }
                     ((Player) player).awardStat(Stats.ITEM_BROKEN.get(stack.getItem()));
                     stack.shrink(1);
 //                    player.level.explode();
@@ -130,16 +130,16 @@ public class FlameGourd extends ArtifactItem {
         components.add(Component.translatable("tooltip.immortal.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> itemStacks) {
-        if(this.allowedIn(tab)){
-            ItemStack empty = new ItemStack(this);
-            itemStacks.add(empty);
-            ItemStack full = empty.copy();
-            setFlameAmount(full, MAX_FLAME_AMOUNT);
-            itemStacks.add(full);
-        }
-    }
+//    @Override
+//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> itemStacks) {
+//        if(this.allowedIn(tab)){
+//            ItemStack empty = new ItemStack(this);
+//            itemStacks.add(empty);
+//            ItemStack full = empty.copy();
+//            setFlameAmount(full, MAX_FLAME_AMOUNT);
+//            itemStacks.add(full);
+//        }
+//    }
 
     @Override
     public int getUseDuration(ItemStack stack) {

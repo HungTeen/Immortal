@@ -35,16 +35,16 @@ public class RawArtifactBox extends ArtifactItem {
         super(ArtifactTypes.EMPTY);
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-        if(tab == CreativeModeTab.TAB_SEARCH){
-            ItemHelper.get().getFilterEntries(ArtifactItem.class::isInstance).forEach(item -> {
-                ItemStack stack = new ItemStack(this);
-                setArtifactItem(stack, new ItemStack(item));
-                stacks.add(stack);
-            });
-        }
-    }
+//    @Override
+//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
+//        if(tab == CreativeModeTab.TAB_SEARCH){
+//            ItemHelper.get().getFilterEntries(ArtifactItem.class::isInstance).forEach(item -> {
+//                ItemStack stack = new ItemStack(this);
+//                setArtifactItem(stack, new ItemStack(item));
+//                stacks.add(stack);
+//            });
+//        }
+//    }
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {

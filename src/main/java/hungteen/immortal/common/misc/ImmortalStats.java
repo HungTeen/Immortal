@@ -2,6 +2,8 @@ package hungteen.immortal.common.misc;
 
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.StatType;
@@ -9,6 +11,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -18,8 +21,8 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class ImmortalStats {
 
-    private static DeferredRegister<ResourceLocation> CUSTOM_STATS = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY, Util.id());
-    private static DeferredRegister<StatType<?>> STAT_TYPES = DeferredRegister.create(Registry.STAT_TYPE_REGISTRY, Util.id());
+    private static DeferredRegister<ResourceLocation> CUSTOM_STATS = DeferredRegister.create(Registries.CUSTOM_STAT, Util.id());
+    private static DeferredRegister<StatType<?>> STAT_TYPES = DeferredRegister.create(ForgeRegistries.STAT_TYPES, Util.id());
 
 //    public static final RegistryObject<ResourceLocation> CONTINUOUS_MOUNTAIN = CUSTOM_STATS.register("continuous_mountain", () -> new BannerPattern("continuous_mountain"));
 

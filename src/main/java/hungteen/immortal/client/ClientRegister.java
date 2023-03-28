@@ -120,7 +120,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
-        ItemHelper.get().getFilterEntries(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
+        ItemHelper.get().filterEntries(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
     }

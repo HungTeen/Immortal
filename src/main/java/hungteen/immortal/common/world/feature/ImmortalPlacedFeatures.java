@@ -3,6 +3,7 @@ package hungteen.immortal.common.world.feature;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,7 @@ import java.util.List;
  **/
 public class ImmortalPlacedFeatures {
 
-    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Util.id());
+    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, Util.id());
 
 //    public static final RegistryObject<PlacedFeature> MULBERRY_TREE = PLACED_FEATURES.register("mulberry_tree", () ->
 //            new PlacedFeature(ImmortalConfiguredFeatures.MULBERRY_TREE.getHolder().get(),

@@ -18,7 +18,7 @@ public class SpellTutorialBook extends Item {
     private final ISpellType spell;
 
     public SpellTutorialBook(ISpellType spell) {
-        super(new Properties().stacksTo(0).tab(ItemTabs.MATERIALS));
+        super(new Properties().stacksTo(1));
         this.spell = spell;
     }
 

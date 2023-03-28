@@ -1,7 +1,7 @@
 package hungteen.immortal.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import hungteen.immortal.common.entity.misc.FlyingItemEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -40,8 +40,8 @@ public class FlyingItemEntityRender extends EntityRenderer<FlyingItemEntity> {
         matrixStackIn.scale(sz, sz, sz);
         matrixStackIn.translate(0, isBlock ? 0.5 : 0.1, 0);
         final float direction = entityIn.getControllingPassenger() == null ? 0 : entityIn.getControllingPassenger().getYRot();
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - direction + (isBlock ? 0 : 45)));
-        matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(isBlock ? 0 : 90));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - direction + (isBlock ? 0 : 45)));
+        matrixStackIn.mulPose(Axis.XN.rotationDegrees(isBlock ? 0 : 90));
 
         matrixStackIn.pushPose();
         this.itemRenderer.render(stack, ItemTransforms.TransformType.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, bakedmodel);

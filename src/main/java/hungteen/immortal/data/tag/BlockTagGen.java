@@ -4,10 +4,14 @@ import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @program: Immortal
@@ -15,12 +19,13 @@ import org.jetbrains.annotations.Nullable;
  * @create: 2022-10-07 12:12
  **/
 public class BlockTagGen extends HTBlockTagGen {
-    public BlockTagGen(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, Util.id(), existingFileHelper);
+
+    public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, provider, Util.id(), existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         this.addMCTags();
     }
 

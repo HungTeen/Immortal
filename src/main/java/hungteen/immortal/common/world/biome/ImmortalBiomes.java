@@ -1,5 +1,6 @@
 package hungteen.immortal.common.world.biome;
 
+import hungteen.htlib.util.helper.registry.BiomeHelper;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.biome.Biomes;
@@ -30,9 +31,9 @@ public class ImmortalBiomes {
      * {@link hungteen.immortal.ImmortalMod#defferRegister(IEventBus)}
      */
     public static void register(){
-        register(SPIRITUAL_PLAINS, SpiritualLandBiomes.plains());
-        register(SPIRITUAL_SAVANNA, SpiritualLandBiomes.savanna());
-        register(SPIRITUAL_DESERT, SpiritualLandBiomes.desert());
+//        register(SPIRITUAL_PLAINS, SpiritualLandBiomes.plains());
+//        register(SPIRITUAL_SAVANNA, SpiritualLandBiomes.savanna());
+//        register(SPIRITUAL_DESERT, SpiritualLandBiomes.desert());
     }
 
     public static Map<ResourceKey<Biome>, Biome> biomes(){
@@ -44,7 +45,7 @@ public class ImmortalBiomes {
     }
 
     private static ResourceKey<Biome> register(String name){
-        return ResourceKey.create(Registry.BIOME_REGISTRY, Util.prefix(name));
+        return BiomeHelper.get().createKey(Util.prefix(name));
 
     }
 }

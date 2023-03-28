@@ -29,7 +29,7 @@ public class ImmortalItems {
 
     /* Material Tab Items */
 
-    public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(ImmortalBlocks.GOURD_STEM.get(), new Item.Properties().tab(ItemTabs.MATERIALS)));
+    public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(ImmortalBlocks.GOURD_STEM.get(), new Item.Properties()));
 
     /* Rune Tab Items */
 
@@ -67,15 +67,15 @@ public class ImmortalItems {
 //        return new MobBucketItem(() -> ImmortalEntities.GRASS_CARP.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_AXOLOTL, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
 //    });
 
-    public static final RegistryObject<Item> CONTINUOUS_MOUNTAIN_PATTERN = ITEMS.register("continuous_mountain_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.CONTINUOUS_MOUNTAIN, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FLOWING_CLOUD_PATTERN = ITEMS.register("flowing_cloud_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FLOWING_CLOUD, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> FOLDED_THUNDER_PATTERN = ITEMS.register("folded_thunder_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FOLDED_THUNDER, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> RHOMBUS_PATTERN = ITEMS.register("rhombus_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.RHOMBUS, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> CONTINUOUS_MOUNTAIN_PATTERN = ITEMS.register("continuous_mountain_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.CONTINUOUS_MOUNTAIN, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FLOWING_CLOUD_PATTERN = ITEMS.register("flowing_cloud_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FLOWING_CLOUD, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FOLDED_THUNDER_PATTERN = ITEMS.register("folded_thunder_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.FOLDED_THUNDER, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> RHOMBUS_PATTERN = ITEMS.register("rhombus_pattern", () -> new BannerPatternItem(ImmortalBannerPatternTags.RHOMBUS, new Item.Properties().stacksTo(1)));
 
 
     /* Food Tab Items */
 
-    public static final RegistryObject<Item> MULBERRY = ITEMS.register("mulberry", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD)));
+    public static final RegistryObject<Item> MULBERRY = ITEMS.register("mulberry", () -> new Item(new Item.Properties()));
 
 
     /**

@@ -24,7 +24,7 @@ public class SpellBookItem extends Item {
     public static final String SPELL_BOOK = "spell_book";
 
     public SpellBookItem() {
-        super(new Properties().tab(ItemTabs.SPELL_BOOKS).stacksTo(1));
+        super(new Properties().stacksTo(1));
     }
 
     @Override
@@ -34,16 +34,16 @@ public class SpellBookItem extends Item {
         });
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab creativeModeTab, NonNullList<ItemStack> itemStacks) {
-        if(this.allowedIn(creativeModeTab)){
-            SpellBookManager.getBooks().forEach(res -> {
-                ItemStack stack = new ItemStack(this);
-                setSpellBook(stack, res);
-                itemStacks.add(stack);
-            });
-        }
-    }
+//    @Override
+//    public void fillItemCategory(CreativeModeTab creativeModeTab, NonNullList<ItemStack> itemStacks) {
+//        if(this.allowedIn(creativeModeTab)){
+//            SpellBookManager.getBooks().forEach(res -> {
+//                ItemStack stack = new ItemStack(this);
+//                setSpellBook(stack, res);
+//                itemStacks.add(stack);
+//            });
+//        }
+//    }
 
     public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {
         stack.getOrCreateTag().putString(SPELL_BOOK, spellBook.toString());

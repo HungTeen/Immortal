@@ -5,6 +5,7 @@ import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.htlib.util.WeightedList;
 import hungteen.immortal.common.block.ImmortalBlocks;
 import hungteen.immortal.common.item.ImmortalItems;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;

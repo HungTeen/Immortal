@@ -3,6 +3,7 @@ package hungteen.immortal.common.world.feature;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +27,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalConfiguredFeatures {
 
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Util.id());
+    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Util.id());
 
 //    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
 //            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(

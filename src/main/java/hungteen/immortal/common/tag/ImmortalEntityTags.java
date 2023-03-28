@@ -1,5 +1,6 @@
 package hungteen.immortal.common.tag;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +37,7 @@ public class ImmortalEntityTags {
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation location) {
-        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, location);
+        return EntityHelper.get().tag(location);
     }
 
 }

@@ -66,6 +66,7 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
         modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
+        modBus.addListener(EventPriority.NORMAL, CommonRegister::fillCreativeTabs);
         defferRegister(modBus);
 
         /* Forge Bus Events */

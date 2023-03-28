@@ -28,25 +28,25 @@ public class BehaviorRunes {
 
     private static final List<RuneManager.IBehaviorRune> TYPES = new ArrayList<>();
 
-    public static final RuneManager.IBehaviorRune MELEE_ATTACK = new BehaviorRune("melee_attack",
-            (golem) -> new MeleeAttack(30)
-    );
-
-    public static final RuneManager.IBehaviorRune FIND_TARGET = new BehaviorRune("find_target",
-            (golem) -> new NearestTargetGoal()
-    );
-
-    public static final RuneManager.IBehaviorRune MOVE_TO_TARGET = new BehaviorRune("move_to_target",
-            (golem) -> new MoveToTargetSink()
-    );
-
-    public static final RuneManager.IBehaviorRune STOP_ATTACK_IF_TARGET_INVALID = new BehaviorRune("stop_attacking_if_target_invalid",
-            (golem) -> new StopAttackingIfTargetInvalid<>()
-    );
-
-    public static final RuneManager.IBehaviorRune SET_WALK_TARGET_FROM_ATTACK_TARGET = new BehaviorRune("set_walk_target_from_attack_target",
-            (golem) -> new SetWalkTargetFromAttackTargetIfTargetOutOfReach((livingEntity -> 0.5F))
-    );
+//    public static final RuneManager.IBehaviorRune MELEE_ATTACK = new BehaviorRune("melee_attack",
+//            (golem) -> new MeleeAttack(30)
+//    );
+//
+//    public static final RuneManager.IBehaviorRune FIND_TARGET = new BehaviorRune("find_target",
+//            (golem) -> new NearestTargetGoal()
+//    );
+//
+//    public static final RuneManager.IBehaviorRune MOVE_TO_TARGET = new BehaviorRune("move_to_target",
+//            (golem) -> new MoveToTargetSink()
+//    );
+//
+//    public static final RuneManager.IBehaviorRune STOP_ATTACK_IF_TARGET_INVALID = new BehaviorRune("stop_attacking_if_target_invalid",
+//            (golem) -> new StopAttackingIfTargetInvalid<>()
+//    );
+//
+//    public static final RuneManager.IBehaviorRune SET_WALK_TARGET_FROM_ATTACK_TARGET = new BehaviorRune("set_walk_target_from_attack_target",
+//            (golem) -> new SetWalkTargetFromAttackTargetIfTargetOutOfReach((livingEntity -> 0.5F))
+//    );
 
     public static class BehaviorRune implements RuneManager.IBehaviorRune {
 

@@ -35,112 +35,112 @@ import java.util.stream.Collectors;
  **/
 public class SpiritualPlainsVillage {
 
-    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
-        return (biomeRegistry) -> new JigsawStructure(
-                new Structure.StructureSettings(
-                        biomeRegistry.getOrCreateTag(BiomeTags.HAS_VILLAGE_PLAINS),
-                        Map.of(),
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
-                ),
-                ImmortalTemplatePools.PLAINS_VILLAGE_START.getHolder().get(),
-                Optional.empty(),
-                6,
-                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
-                true,
-                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                80
-        );
-    }
-
-    public static Function<Registry<Structure>, StructureSet> getStructureSet() {
-        return (structureRegistry) -> new StructureSet(
-                structureRegistry.getOrCreateHolderOrThrow(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE),
-                new RandomSpreadStructurePlacement(
-                        20,
-                        8,
-                        RandomSpreadType.LINEAR,
-                        1080133475
-                )
-        );
-    }
-
-    public static StructureProcessorList getStreetProcessor(){
-        return new StructureProcessorList(ImmutableList.of(
-                new RuleProcessor(
-                        ImmutableList.of(
-                                new ProcessorRule(
-                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.1F),
-                                        AlwaysTrueTest.INSTANCE,
-                                        Blocks.GRASS_BLOCK.defaultBlockState()
-                                ),
-                                new ProcessorRule(
-                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.4F),
-                                        AlwaysTrueTest.INSTANCE,
-                                        Blocks.MOSSY_COBBLESTONE.defaultBlockState()
-                                ),
-                                new ProcessorRule(
-                                        new BlockMatchTest(Blocks.GRASS_BLOCK),
-                                        new BlockMatchTest(Blocks.WATER),
-                                        Blocks.WATER.defaultBlockState()
-                                ),
-                                new ProcessorRule(
-                                        new BlockMatchTest(Blocks.DIRT),
-                                        new BlockMatchTest(Blocks.WATER),
-                                        Blocks.WATER.defaultBlockState()
-                                )
-                        )
-                )
-        ));
-    }
-
-    public static StructureTemplatePool getStartPool() {
-        return new StructureTemplatePool(
-                res("town_centers"),
-                new ResourceLocation("empty"),
-                pools(
-                        getPoolElements("town_centers/meeting_point", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(10))
-                )
-        );
-    }
-
-    public static StructureTemplatePool getStreetPool() {
-        return new StructureTemplatePool(
-                res("streets"),
-                new ResourceLocation("minecraft:village/plains/terminators"),
-                pools(
-                        getPoolElements("streets/straight", ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, List.of(4, 4, 7, 7)),
-                        getPoolElements("streets/crossroad", ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, List.of(2, 1, 2, 2, 2)),
-                        getPoolElements("streets/corner", 3, ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, 2)
-                )
-        );
-    }
-
-    public static StructureTemplatePool getHousePool() {
-        return new StructureTemplatePool(
-                res("houses"),
-                new ResourceLocation("empty"),
-                pools(
-                        getPoolElements("houses/decor", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(5, 6, 7, 7, 7, 4, 4, 6)),
-                        getPoolElements("houses/house", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(12, 12, 10, 10, 10))
-                )
-        );
-    }
-
-    public static StructureTemplatePool getDecorPool() {
-        return new StructureTemplatePool(
-                res("decor"),
-                new ResourceLocation("empty"),
-                List.of(
-//                        Pair.of(
-//                                StructurePoolElement.feature(VegetationPlacements.FLOWER_DEFAULT).apply(StructureTemplatePool.Projection.RIGID), 2
-//                        ),
-//                        Pair.of(
-//                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 2
+//    public static Function<Registry<Biome>, JigsawStructure> getStructure() {
+//        return (biomeRegistry) -> new JigsawStructure(
+//                new Structure.StructureSettings(
+//                        biomeRegistry.getOrCreateTag(BiomeTags.HAS_VILLAGE_PLAINS),
+//                        Map.of(),
+//                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+//                        TerrainAdjustment.BEARD_THIN
+//                ),
+//                ImmortalTemplatePools.PLAINS_VILLAGE_START.getHolder().get(),
+//                Optional.empty(),
+//                6,
+//                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
+//                true,
+//                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+//                80
+//        );
+//    }
+//
+//    public static Function<Registry<Structure>, StructureSet> getStructureSet() {
+//        return (structureRegistry) -> new StructureSet(
+//                structureRegistry.getHolderOrThrow(ImmortalStructures.SPIRITUAL_PLAINS_VILLAGE),
+//                new RandomSpreadStructurePlacement(
+//                        20,
+//                        8,
+//                        RandomSpreadType.LINEAR,
+//                        1080133475
+//                )
+//        );
+//    }
+//
+//    public static StructureProcessorList getStreetProcessor(){
+//        return new StructureProcessorList(ImmutableList.of(
+//                new RuleProcessor(
+//                        ImmutableList.of(
+//                                new ProcessorRule(
+//                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.1F),
+//                                        AlwaysTrueTest.INSTANCE,
+//                                        Blocks.GRASS_BLOCK.defaultBlockState()
+//                                ),
+//                                new ProcessorRule(
+//                                        new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.4F),
+//                                        AlwaysTrueTest.INSTANCE,
+//                                        Blocks.MOSSY_COBBLESTONE.defaultBlockState()
+//                                ),
+//                                new ProcessorRule(
+//                                        new BlockMatchTest(Blocks.GRASS_BLOCK),
+//                                        new BlockMatchTest(Blocks.WATER),
+//                                        Blocks.WATER.defaultBlockState()
+//                                ),
+//                                new ProcessorRule(
+//                                        new BlockMatchTest(Blocks.DIRT),
+//                                        new BlockMatchTest(Blocks.WATER),
+//                                        Blocks.WATER.defaultBlockState()
+//                                )
 //                        )
-                )
-        );
-    }
+//                )
+//        ));
+//    }
+
+//    public static StructureTemplatePool getStartPool() {
+//        return new StructureTemplatePool(
+//                res("town_centers"),
+//                new ResourceLocation("empty"),
+//                pools(
+//                        getPoolElements("town_centers/meeting_point", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(10))
+//                )
+//        );
+//    }
+//
+//    public static StructureTemplatePool getStreetPool() {
+//        return new StructureTemplatePool(
+//                res("streets"),
+//                new ResourceLocation("minecraft:village/plains/terminators"),
+//                pools(
+//                        getPoolElements("streets/straight", ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, List.of(4, 4, 7, 7)),
+//                        getPoolElements("streets/crossroad", ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, List.of(2, 1, 2, 2, 2)),
+//                        getPoolElements("streets/corner", 3, ImmortalProcessors.SPIRITUAL_PLAINS_STREETS.getHolder().get(), StructureTemplatePool.Projection.TERRAIN_MATCHING, 2)
+//                )
+//        );
+//    }
+//
+//    public static StructureTemplatePool getHousePool() {
+//        return new StructureTemplatePool(
+//                res("houses"),
+//                new ResourceLocation("empty"),
+//                pools(
+//                        getPoolElements("houses/decor", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(5, 6, 7, 7, 7, 4, 4, 6)),
+//                        getPoolElements("houses/house", ProcessorLists.EMPTY, StructureTemplatePool.Projection.RIGID, List.of(12, 12, 10, 10, 10))
+//                )
+//        );
+//    }
+//
+//    public static StructureTemplatePool getDecorPool() {
+//        return new StructureTemplatePool(
+//                res("decor"),
+//                new ResourceLocation("empty"),
+//                List.of(
+////                        Pair.of(
+////                                StructurePoolElement.feature(VegetationPlacements.FLOWER_DEFAULT).apply(StructureTemplatePool.Projection.RIGID), 2
+////                        ),
+////                        Pair.of(
+////                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 2
+////                        )
+//                )
+//        );
+//    }
 
     private static List<Pair<StructurePoolElement, Integer>> pools(List<Pair<StructurePoolElement, Integer>>... pools) {
         return Arrays.stream(pools).flatMap(List::stream).collect(Collectors.toList());

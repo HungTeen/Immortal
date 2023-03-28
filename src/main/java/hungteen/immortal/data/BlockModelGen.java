@@ -4,6 +4,7 @@ import hungteen.htlib.data.HTBlockModelGen;
 import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 /**
@@ -13,8 +14,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  **/
 public class BlockModelGen extends HTBlockModelGen {
 
-    public BlockModelGen(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Util.id(), existingFileHelper);
+    public BlockModelGen(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, Util.id(), existingFileHelper);
     }
 
     @Override

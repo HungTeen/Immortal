@@ -1,7 +1,9 @@
 package hungteen.immortal.common.block;
 
+import hungteen.immortal.utils.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,6 +25,10 @@ public class WoolCushionBlock extends CushionBlock{
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape AABB = Block.box(0, 0, 0, 16, 7, 16);
     private final DyeColor dyeColor;
+
+    public static ResourceLocation getWoolCushionLocation(DyeColor color){
+        return Util.prefix(color.getName() + "_wool_cushion");
+    }
 
     public WoolCushionBlock(DyeColor dyeColor) {
         super(BlockBehaviour.Properties.copy(Blocks.BLACK_BED).color(dyeColor.getMaterialColor()));

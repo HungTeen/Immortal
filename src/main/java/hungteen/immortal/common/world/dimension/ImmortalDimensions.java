@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -25,11 +27,11 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class ImmortalDimensions {
 
-    public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registry.DIMENSION_TYPE_REGISTRY, Util.id());
+    public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registries.DIMENSION_TYPE, Util.id());
 
     public static final RegistryObject<DimensionType> SPIRITUAL_LAND_TYPE = DIMENSION_TYPES.register("spiritual_land", SpiritualLandDimension::getDimensionType);
-    public static final ResourceKey<Level> SPIRITUAL_LAND_DIMENSION = ResourceKey.create(Registry.DIMENSION_REGISTRY, Util.prefix("spiritual_land"));
-    public static final ResourceKey<LevelStem> SPIRITUAL_LAND = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, Util.prefix("spiritual_land"));
+    public static final ResourceKey<Level> SPIRITUAL_LAND_DIMENSION = ResourceKey.create(Registries.DIMENSION, Util.prefix("spiritual_land"));
+    public static final ResourceKey<LevelStem> SPIRITUAL_LAND = ResourceKey.create(Registries.LEVEL_STEM, Util.prefix("spiritual_land"));
 
     /* Preset */
 
@@ -38,7 +40,7 @@ public class ImmortalDimensions {
             (biomes) -> {
                 ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> builder = ImmutableList.builder();
                 SpiritualLandDimension.addBiomes((resourceKeyPair) -> {
-                    builder.add(resourceKeyPair.mapSecond(biomes::getOrCreateHolderOrThrow));
+                    builder.add(resourceKeyPair.mapSecond(biomes::getOrThrow));
                 });
                 return new Climate.ParameterList<>(builder.build());
             }

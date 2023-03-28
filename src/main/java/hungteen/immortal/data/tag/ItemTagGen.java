@@ -4,11 +4,13 @@ import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.htlib.data.tag.HTItemTagGen;
 import hungteen.immortal.common.tag.ImmortalItemTags;
 import hungteen.immortal.utils.Util;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @program: Immortal
@@ -17,12 +19,12 @@ import org.jetbrains.annotations.Nullable;
  **/
 public class ItemTagGen extends HTItemTagGen {
 
-    public ItemTagGen(DataGenerator generator, HTBlockTagGen blockTagsProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, blockTagsProvider, Util.id(), existingFileHelper);
+    public ItemTagGen(PackOutput output, HTBlockTagGen generator, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, generator, provider, Util.id(), existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         this.tag(ImmortalItemTags.SPIRITUAL_STONES).addTags(
                 ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE,
                 ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO
@@ -32,4 +34,5 @@ public class ItemTagGen extends HTItemTagGen {
 
         this.tag(ImmortalItemTags.MELEE_ATTACK_ITEMS).add(Items.STICK);
     }
+
 }

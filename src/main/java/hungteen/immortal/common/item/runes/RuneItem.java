@@ -1,7 +1,7 @@
 package hungteen.immortal.common.item.runes;
 
 import hungteen.immortal.common.RuneManager;
-import hungteen.immortal.common.item.ItemTabs;
+import hungteen.immortal.common.item.ImmortalItemTabs;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,39 +27,39 @@ public class RuneItem extends Item {
     private final RuneTypes type;
 
     public RuneItem(RuneTypes type) {
-        super(new Properties().tab(ItemTabs.RUNES));
+        super(new Properties());
         this.type = type;
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-        super.fillItemCategory(tab, stacks);
-        if(this.allowedIn(tab)) {
-            switch (type) {
-                case MEMORY -> {
-                    RuneManager.getMemoryRunes().forEach(type -> {
-                        ItemStack stack = new ItemStack(this);
-                        setMemoryType(stack, type);
-                        stacks.add(stack);
-                    });
-                }
-                case SENSOR -> {
-                    RuneManager.getSensorRunes().forEach(type -> {
-                        ItemStack stack = new ItemStack(this);
-                        setSensorType(stack, type);
-                        stacks.add(stack);
-                    });
-                }
-                case BEHAVIOR -> {
-                    RuneManager.getBehaviorRunes().forEach(type -> {
-                        ItemStack stack = new ItemStack(this);
-                        setBehaviorType(stack, type);
-                        stacks.add(stack);
-                    });
-                }
-            }
-        }
-    }
+//    @Override
+//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
+//        super.fillItemCategory(tab, stacks);
+//        if(this.allowedIn(tab)) {
+//            switch (type) {
+//                case MEMORY -> {
+//                    RuneManager.getMemoryRunes().forEach(type -> {
+//                        ItemStack stack = new ItemStack(this);
+//                        setMemoryType(stack, type);
+//                        stacks.add(stack);
+//                    });
+//                }
+//                case SENSOR -> {
+//                    RuneManager.getSensorRunes().forEach(type -> {
+//                        ItemStack stack = new ItemStack(this);
+//                        setSensorType(stack, type);
+//                        stacks.add(stack);
+//                    });
+//                }
+//                case BEHAVIOR -> {
+//                    RuneManager.getBehaviorRunes().forEach(type -> {
+//                        ItemStack stack = new ItemStack(this);
+//                        setBehaviorType(stack, type);
+//                        stacks.add(stack);
+//                    });
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {

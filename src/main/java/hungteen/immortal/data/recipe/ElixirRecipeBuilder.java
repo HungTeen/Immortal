@@ -106,25 +106,25 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
     @Override
     public void save(Consumer<FinishedRecipe> consumer, ResourceLocation location) {
         this.ensureValid(location);
-        this.advancement.parent(Util.mcPrefix("recipes/root"))
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
-                .rewards(AdvancementRewards.Builder.recipe(location))
-                .requirements(RequirementsStrategy.OR);
-        consumer.accept(new Result(
-                        location,
-                        this.result,
-                        this.count,
-                        this.prepareCD,
-                        this.smeltingCD,
-                        this.ingredientLimit,
-                        this.requireFlameLevel,
-                        this.group == null ? "" : this.group,
-                        this.ingredients,
-                        this.spiritualMap,
-                        this.advancement,
-                        new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + location.getPath())
-                )
-        );
+//        this.advancement.parent(Util.mcPrefix("recipes/root"))
+//                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
+//                .rewards(AdvancementRewards.Builder.recipe(location))
+//                .requirements(RequirementsStrategy.OR);
+//        consumer.accept(new Result(
+//                        location,
+//                        this.result,
+//                        this.count,
+//                        this.prepareCD,
+//                        this.smeltingCD,
+//                        this.ingredientLimit,
+//                        this.requireFlameLevel,
+//                        this.group == null ? "" : this.group,
+//                        this.ingredients,
+//                        this.spiritualMap,
+//                        this.advancement,
+//                        new ResourceLocation(location.getNamespace(), "recipes/" + this.result.get().getRecipeFolderName() + "/" + location.getPath())
+//                )
+//        );
     }
 
     private void ensureValid(ResourceLocation location) {

@@ -1,9 +1,18 @@
 package hungteen.immortal.utils;
 
+import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.immortal.common.block.WoolCushionBlock;
+import hungteen.immortal.common.block.plants.GourdGrownBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -16,7 +25,19 @@ public class BlockUtil {
         return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
     }
 
-    public static ResourceLocation getWoolCushionLocation(DyeColor color){
-        return Util.prefix(color.getName() + "_wool_cushion");
+    public static List<Pair<ResourceLocation, Block>> getWoolCushions(){
+        return Arrays.stream(DyeColor.values()).map(WoolCushionBlock::getWoolCushionLocation)
+                .map(res -> Pair.of(res, BlockHelper.get().get(res)))
+                .filter(pair -> pair.getSecond().isPresent())
+                .map(pair -> pair.mapSecond(Optional::get))
+                .toList();
+    }
+
+    public static List<Pair<ResourceLocation, Block>> getGourds(){
+        return Arrays.stream(GourdGrownBlock.GourdTypes.values()).map(GourdGrownBlock::getGourdLocation)
+                .map(res -> Pair.of(res, BlockHelper.get().get(res)))
+                .filter(pair -> pair.getSecond().isPresent())
+                .map(pair -> pair.mapSecond(Optional::get))
+                .toList();
     }
 }

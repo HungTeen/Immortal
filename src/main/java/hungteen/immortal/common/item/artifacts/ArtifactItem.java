@@ -2,7 +2,7 @@ package hungteen.immortal.common.item.artifacts;
 
 import hungteen.immortal.api.interfaces.IArtifactItem;
 import hungteen.immortal.api.registry.IArtifactType;
-import hungteen.immortal.common.item.ItemTabs;
+import hungteen.immortal.common.item.ImmortalItemTabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +27,7 @@ public abstract class ArtifactItem extends Item implements IArtifactItem {
     private final IArtifactType artifactType;
 
     public ArtifactItem(IArtifactType artifactType) {
-        this(new Properties().tab(ItemTabs.ARTIFACTS).stacksTo(1), artifactType);
+        this(new Properties().stacksTo(1), artifactType);
     }
 
     public ArtifactItem(Properties properties, IArtifactType artifactType) {

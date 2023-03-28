@@ -51,9 +51,10 @@ public class BreakBoat extends Behavior<LivingEntity> {
         entity.swing(InteractionHand.MAIN_HAND);
         getEntity(entity).ifPresent(target -> {
             if(target instanceof Boat){
+                //TODO 支持HTBoat
                 if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                     for(int i = 0; i < 2; ++i) {
-                        target.spawnAtLocation(((Boat) target).getBoatType().getPlanks());
+                        target.spawnAtLocation(((Boat) target).getVariant().getPlanks());
                     }
 
                     for(int j = 0; j < 2; ++j) {

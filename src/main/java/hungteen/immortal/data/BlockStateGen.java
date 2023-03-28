@@ -11,6 +11,7 @@ import hungteen.immortal.common.impl.registry.ImmortalWoods;
 import hungteen.immortal.utils.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -25,8 +26,8 @@ import java.util.Arrays;
  **/
 public class BlockStateGen extends HTBlockStateGen {
 
-    public BlockStateGen(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, Util.id(), exFileHelper);
+    public BlockStateGen(PackOutput output, ExistingFileHelper exFileHelper) {
+        super(output, Util.id(), exFileHelper);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class BlockStateGen extends HTBlockStateGen {
             this.addedBlocks.add(block);
         });
 
-        BlockHelper.get().getFilterEntries(WoolCushionBlock.class::isInstance).stream()
+        BlockHelper.get().filterValues(WoolCushionBlock.class::isInstance).stream()
                 .map(WoolCushionBlock.class::cast).forEach(block -> {
                     getVariantBuilder(block).forAllStates(state -> {
                         final Direction dir = state.getValue(WoolCushionBlock.FACING);
