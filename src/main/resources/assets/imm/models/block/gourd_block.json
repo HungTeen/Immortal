@@ -3,7 +3,7 @@
 	"render_type": "cutout",
 	"textures": {
 		"0": "#gourd",
-		"1": "immortal:block/stem",
+		"1": "imm:block/stem",
 		"particle": "#gourd"
 	},
 	"elements": [

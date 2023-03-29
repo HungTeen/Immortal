@@ -43,6 +43,7 @@ public class DataGenHandler {
         generators.addProvider(event.includeClient(), new BlockStateGen(output, fileHelper));
 
         /* Models */
+        generators.addProvider(event.includeClient(), new AtlasGen(output, fileHelper));
         generators.addProvider(event.includeClient(), new BlockModelGen(output, fileHelper));
         generators.addProvider(event.includeClient(), new ItemModelGen(output, fileHelper));
 

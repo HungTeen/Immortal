@@ -2,9 +2,12 @@ package hungteen.imm.common.item;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.CreativeModeTabEvent;
 
@@ -70,6 +73,40 @@ public class IMMCreativeTabs {
                     });
                 })
         );
+    }
+
+    public static void fillCreativeTabs(CreativeModeTabEvent.BuildContents event) {
+        if(event.getTab() == CreativeModeTabs.BUILDING_BLOCKS){
+
+        } else if(event.getTab() == CreativeModeTabs.COLORED_BLOCKS){
+
+        } else if(event.getTab() == CreativeModeTabs.NATURAL_BLOCKS){
+            BlockUtil.getGourds().forEach(pair -> {
+                event.accept(new ItemStack(pair.getSecond()));
+            });
+            Arrays.asList(
+                    IMMBlocks.MULBERRY_LEAVES, IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES, IMMBlocks.MULBERRY_SAPLING
+            ).forEach(obj -> {
+                event.accept(obj.get());
+            });
+        } else if(event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS){
+            BlockUtil.getWoolCushions().forEach(pair -> {
+                event.accept(new ItemStack(pair.getSecond()));
+            });
+        } else if(event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS){
+            Arrays.asList(
+                    IMMItems.MULBERRY
+            ).forEach(obj -> {
+                event.accept(obj.get());
+            });
+        } else if(event.getTab() == CreativeModeTabs.INGREDIENTS){
+            Arrays.asList(
+                    IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN,
+                    IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
+            ).forEach(obj -> {
+                event.accept(obj.get());
+            });
+        }
     }
 
 

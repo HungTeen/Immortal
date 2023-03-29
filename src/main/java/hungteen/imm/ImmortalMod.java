@@ -17,6 +17,7 @@ import hungteen.imm.common.impl.MemoryRunes;
 import hungteen.imm.common.impl.SensorRunes;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.registry.*;
+import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.misc.IMMBannerPatterns;
@@ -60,7 +61,8 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
-        modBus.addListener(EventPriority.NORMAL, CommonRegister::fillCreativeTabs);
+        modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::fillCreativeTabs);
+        modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::register);
         defferRegister(modBus);
 
         /* Forge Bus Events */
