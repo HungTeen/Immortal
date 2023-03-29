@@ -3,7 +3,7 @@ package hungteen.imm.client.gui.tooltip;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

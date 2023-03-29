@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity.ai;
 
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

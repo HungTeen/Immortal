@@ -4,12 +4,11 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.CultivationTypes;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -89,7 +88,7 @@ public class RealmTypes {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register() {
-            ImmortalAPI.get().realmRegistry().ifPresent(l -> l.register(TYPES));
+            IMMAPI.get().realmRegistry().ifPresent(l -> l.register(TYPES));
         }
 
         public RealmType(String name, int requireCultivation, int realmValue, int spiritualValue, int spiritualLimit, boolean hasThreshold, ICultivationType cultivationType) {

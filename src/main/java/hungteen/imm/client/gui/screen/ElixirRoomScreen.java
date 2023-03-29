@@ -1,26 +1,5 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.MathHelper;
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
-import hungteen.imm.common.menu.ElixirRoomMenu;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
-import hungteen.imm.utils.Colors;
-import hungteen.imm.utils.Util;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /**
  * @program: Immortal
  * @author: HungTeen

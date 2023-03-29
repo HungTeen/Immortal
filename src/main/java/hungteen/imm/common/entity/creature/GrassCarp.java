@@ -3,7 +3,7 @@ package hungteen.imm.common.entity.creature;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.utils.EntityUtil;
+import hungteen.imm.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpiritualType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
@@ -81,12 +81,12 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ImmortalRecipes.ELIXIR_SERIALIZER.get();
+        return IMMRecipes.ELIXIR_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ImmortalRecipes.ELIXIR_RECIPE_TYPE.get();
+        return IMMRecipes.ELIXIR_RECIPE_TYPE.get();
     }
 
     @Override
@@ -146,8 +146,8 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
                 JsonArray array = GsonHelper.getAsJsonArray(jsonObject, "spiritual_map", new JsonArray());
                 Map<ISpiritualType, Integer> map = new HashMap<>();
                 for(int i = 0; i < array.size(); ++ i){
-                    if(array.get(i).isJsonObject() && ImmortalAPI.get().spiritualRegistry().isPresent()){
-                        final Optional<ISpiritualType> opt = ImmortalAPI.get().spiritualRegistry().get().getValue(GsonHelper.getAsString(array.get(i).getAsJsonObject(), "spiritual_root"));
+                    if(array.get(i).isJsonObject() && IMMAPI.get().spiritualRegistry().isPresent()){
+                        final Optional<ISpiritualType> opt = IMMAPI.get().spiritualRegistry().get().getValue(GsonHelper.getAsString(array.get(i).getAsJsonObject(), "spiritual_root"));
                         if(opt.isPresent()){
                             final int value = GsonHelper.getAsInt(array.get(i).getAsJsonObject(), "spiritual_value");
                             map.put(opt.get(), value);
@@ -186,7 +186,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
             for(int j = 0; j < len; ++ j) {
                 final String type = byteBuf.readUtf();
                 final int value = byteBuf.readInt();
-                ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+                IMMAPI.get().spiritualRegistry().ifPresent(l -> {
                     l.getValue(type).ifPresent(t -> map.put(t, value));
                 });
             }

@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai;
 
 import com.mojang.serialization.Codec;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.projectile.Projectile;

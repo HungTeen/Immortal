@@ -2,17 +2,17 @@ package hungteen.imm.common.entity.human;
 
 import com.google.common.collect.ImmutableList;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.entity.ImmortalDataSerializers;
-import hungteen.imm.common.entity.ImmortalGrowableCreature;
+import hungteen.imm.common.entity.IMMDataSerializers;
+import hungteen.imm.common.entity.IMMGrowableCreature;
 import hungteen.imm.common.entity.ai.ImmortalMemories;
 import hungteen.imm.common.entity.ai.ImmortalSensors;
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.utils.BehaviorUtil;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.BehaviorUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -60,11 +60,11 @@ import java.util.function.Predicate;
  * @author: HungTeen
  * @create: 2022-10-21 18:23
  **/
-public abstract class HumanEntity extends ImmortalGrowableCreature implements IHuman {
+public abstract class HumanEntity extends IMMGrowableCreature implements IHuman {
 
     private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
-    private static final EntityDataAccessor<HumanSettings.HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.HUMAN_SETTING.get());
-    private static final EntityDataAccessor<List<HumanSettings.CommonTradeEntry>> TRADE_ENTRIES = SynchedEntityData.defineId(HumanEntity.class, ImmortalDataSerializers.COMMON_TRADE_ENTRIES.get());
+    private static final EntityDataAccessor<HumanSettings.HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
+    private static final EntityDataAccessor<List<HumanSettings.CommonTradeEntry>> TRADE_ENTRIES = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.COMMON_TRADE_ENTRIES.get());
     private List<ISpiritualType> rootsCache;
     @javax.annotation.Nullable
     private Player tradingPlayer;
@@ -468,9 +468,9 @@ public abstract class HumanEntity extends ImmortalGrowableCreature implements IH
 
     @Override
     public Collection<ISpiritualType> getSpiritualTypes() {
-        if(this.rootsCache == null && ImmortalAPI.get().spiritualRegistry().isPresent()){
+        if(this.rootsCache == null && IMMAPI.get().spiritualRegistry().isPresent()){
             this.rootsCache = new ArrayList<>();
-            ImmortalAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
+            IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
                 if(getRootTag().contains(root.getRegistryName()) && getRootTag().getBoolean(root.getRegistryName())){
                     this.rootsCache.add(root);
                 }

@@ -1,11 +1,9 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTBlockTagGen;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.impl.registry.ImmortalWoods;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -34,11 +32,11 @@ public class BlockTagGen extends HTBlockTagGen {
 //        this.woodIntegration(ImmortalWoods.MULBERRY);
 
         /* sapling */
-        this.tag(BlockTags.SAPLINGS).add(ImmortalBlocks.MULBERRY_SAPLING.get());
+        this.tag(BlockTags.SAPLINGS).add(IMMBlocks.MULBERRY_SAPLING.get());
 
 
         /* leaves */
-        this.tag(BlockTags.LEAVES).add(ImmortalBlocks.MULBERRY_LEAVES.get(), ImmortalBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get());
+        this.tag(BlockTags.LEAVES).add(IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get());
 
         /* crops */
 //        this.tag(BlockTags.CROPS).add(PVZBlocks.PEA.get(), PVZBlocks.CABBAGE.get(), PVZBlocks.CORN.get());

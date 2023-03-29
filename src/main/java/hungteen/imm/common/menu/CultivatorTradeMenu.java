@@ -29,7 +29,7 @@ public class CultivatorTradeMenu extends HTContainerMenu {
     }
 
     public CultivatorTradeMenu(int id, Inventory playerInv, int entityId) {
-        super(id, ImmortalMenus.CULTIVATOR_TRADE.get());
+        super(id, IMMMenus.CULTIVATOR_TRADE.get());
         this.player = playerInv.player;
         if(this.player.level.getEntity(entityId) instanceof HumanEntity humanEntity){
             this.trader = humanEntity;

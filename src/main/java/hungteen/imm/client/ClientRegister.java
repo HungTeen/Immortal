@@ -15,9 +15,9 @@ import hungteen.imm.client.particle.ImmortalParticles;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.*;
-import hungteen.imm.common.entity.ImmortalEntities;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.elixirs.ElixirItem;
-import hungteen.imm.common.menu.ImmortalMenus;
+import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -51,15 +51,15 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* misc entity */
-        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ImmortalEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
-        event.registerEntityRenderer(ImmortalEntities.SEAT.get(), EmptyEffectRender::new);
+        event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
+        event.registerEntityRenderer(IMMEntities.SEAT.get(), EmptyEffectRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 //
 //        /* human */
 //        event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
-        event.registerEntityRenderer(ImmortalEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
-        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_CULTIVATOR.get(), CultivatorRender::new);
+        event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
+        event.registerEntityRenderer(IMMEntities.SPIRITUAL_CULTIVATOR.get(), CultivatorRender::new);
 
         /* creature */
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
@@ -152,11 +152,11 @@ public class ClientRegister {
     }
 
     public static void registerScreen() {
-        MenuScreens.register(ImmortalMenus.CULTIVATOR_TRADE.get(), CultivatorTradeScreen::new);
+        MenuScreens.register(IMMMenus.CULTIVATOR_TRADE.get(), CultivatorTradeScreen::new);
 //        MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
 //        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
 //        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
-        MenuScreens.register(ImmortalMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
+        MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
     }
 
 }

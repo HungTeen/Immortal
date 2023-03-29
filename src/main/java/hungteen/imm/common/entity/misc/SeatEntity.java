@@ -3,8 +3,8 @@ package hungteen.imm.common.entity.misc;
 import com.google.common.collect.ImmutableList;
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.entity.ImmortalEntities;
-import hungteen.imm.utils.BlockUtil;
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.util.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +33,7 @@ public class SeatEntity extends HTEntity {
     }
 
     public SeatEntity(Level world, BlockPos seatPos, double yOffset, float yRot) {
-        super(ImmortalEntities.SEAT.get(), world);
+        super(IMMEntities.SEAT.get(), world);
         this.setPos(new Vec3(seatPos.getX() + 0.5F, seatPos.getY() + yOffset, seatPos.getZ() + 0.5F));
         this.setYRot(yRot);
     }

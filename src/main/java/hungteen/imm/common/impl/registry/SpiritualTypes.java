@@ -7,9 +7,9 @@ import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.ImmortalConfigs;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -56,7 +56,7 @@ public class SpiritualTypes {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register(){
-            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> l.register(TYPES));
+            IMMAPI.get().spiritualRegistry().ifPresent(l -> l.register(TYPES));
         }
 
         public SpiritualType(String name, boolean isCommonRoot, Supplier<Integer> weightSupplier, int priority, int spiritualColor, ChatFormatting textColor, Pair<Integer, Integer> pair) {

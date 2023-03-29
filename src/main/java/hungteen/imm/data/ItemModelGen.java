@@ -5,16 +5,14 @@ import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.interfaces.IElixirItem;
 import hungteen.imm.common.ElixirManager;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.impl.registry.ImmortalWoods;
-import hungteen.imm.common.item.ImmortalItems;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.impl.registry.IMMWoods;
+import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
-import hungteen.imm.utils.ItemUtil;
-import hungteen.imm.utils.Util;
-import net.minecraft.data.DataGenerator;
+import hungteen.imm.util.ItemUtil;
+import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -48,18 +46,18 @@ public class ItemModelGen extends HTItemModelGen {
 
         /* Single add block items so that except adding by method below. */
         Arrays.asList(
-                ImmortalItems.GOURD_SEEDS.get()
+                IMMItems.GOURD_SEEDS.get()
         ).forEach(item -> {
             genNormalModel(item);
             this.addedItems.add(item);
         });
 
         /* Woods */
-        ImmortalWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodIntegration);
 
         /* Block-items with tex in block folder */
         Arrays.asList(
-                ImmortalBlocks.MULBERRY_SAPLING
+                IMMBlocks.MULBERRY_SAPLING
         ).forEach(block -> {
             genItemModelWithBlock(block.get().asItem());
         });
@@ -74,7 +72,7 @@ public class ItemModelGen extends HTItemModelGen {
 
         /* Banner patterns */
         Arrays.asList(
-                ImmortalItems.CONTINUOUS_MOUNTAIN_PATTERN, ImmortalItems.FLOWING_CLOUD_PATTERN, ImmortalItems.FOLDED_THUNDER_PATTERN, ImmortalItems.RHOMBUS_PATTERN
+                IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN, IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
         ).forEach(item -> {
             this.addedItems.add(item.get());
             this.genNormal(item.getId().getPath(), Util.mcPrefix("item/flower_banner_pattern"));

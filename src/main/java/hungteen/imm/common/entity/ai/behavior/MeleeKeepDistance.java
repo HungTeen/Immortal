@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.utils.BehaviorUtil;
+import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

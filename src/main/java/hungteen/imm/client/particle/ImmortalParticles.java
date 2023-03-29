@@ -1,7 +1,7 @@
 package hungteen.imm.client.particle;
 
 import hungteen.imm.client.ClientRegister;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;

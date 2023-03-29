@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai;
 
 import com.google.common.collect.ImmutableSet;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;

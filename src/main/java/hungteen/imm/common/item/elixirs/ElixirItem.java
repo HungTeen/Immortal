@@ -1,13 +1,11 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IElixirItem;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.item.ImmortalItemTabs;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -152,7 +150,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     }
 
     public static IRealmType getRealm(LivingEntity livingEntity){
-        return ImmortalAPI.get().getEntityRealm(livingEntity);
+        return IMMAPI.get().getEntityRealm(livingEntity);
     }
 
     public static void setAccuracy(ItemStack stack, int accuracy){

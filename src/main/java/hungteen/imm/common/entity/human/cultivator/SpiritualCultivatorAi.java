@@ -1,20 +1,9 @@
 package hungteen.imm.common.entity.human.cultivator;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.entity.ai.ImmortalActivities;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
-import hungteen.imm.common.entity.ai.behavior.*;
-import hungteen.imm.utils.BrainUtil;
-import hungteen.imm.utils.ItemUtil;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.schedule.Activity;
 
 import java.util.Optional;
 

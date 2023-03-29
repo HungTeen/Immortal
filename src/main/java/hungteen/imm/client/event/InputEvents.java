@@ -7,7 +7,7 @@ import hungteen.imm.client.ClientHandler;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ImmortalKeyBinds;
 import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.utils.Constants;
+import hungteen.imm.util.Constants;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;

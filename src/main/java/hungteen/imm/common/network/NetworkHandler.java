@@ -1,6 +1,6 @@
 package hungteen.imm.common.network;
 
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;

@@ -1,16 +1,13 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
-import hungteen.imm.utils.Colors;
-import net.minecraft.core.NonNullList;
+import hungteen.imm.util.Colors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;

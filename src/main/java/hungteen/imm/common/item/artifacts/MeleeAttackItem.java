@@ -3,7 +3,6 @@ package hungteen.imm.common.item.artifacts;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import hungteen.imm.api.interfaces.IArtifactTier;
-import hungteen.imm.common.item.ImmortalItemTabs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

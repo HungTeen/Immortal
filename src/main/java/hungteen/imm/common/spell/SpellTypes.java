@@ -4,11 +4,11 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.spell.spells.*;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +67,7 @@ public class SpellTypes {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register(){
-            ImmortalAPI.get().spellRegistry().ifPresent(l -> l.register(TYPES));
+            IMMAPI.get().spellRegistry().ifPresent(l -> l.register(TYPES));
         }
 
         public SpellType(String name, SpellProperties properties) {

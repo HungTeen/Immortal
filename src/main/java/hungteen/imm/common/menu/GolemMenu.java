@@ -2,7 +2,7 @@ package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.entity.golem.GolemEntity;
-import hungteen.imm.utils.EntityUtil;
+import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +20,7 @@ public class GolemMenu extends HTContainerMenu {
     private final GolemEntity golem;
 
     public GolemMenu(int id, Inventory inventory, int golemId) {
-        super(id, ImmortalMenus.GOLEM_INVENTORY.get());
+        super(id, IMMMenus.GOLEM_INVENTORY.get());
         final Entity entity=  inventory.player.level.getEntity(golemId);
         assert entity instanceof GolemEntity;
         this.golem = (GolemEntity) entity;

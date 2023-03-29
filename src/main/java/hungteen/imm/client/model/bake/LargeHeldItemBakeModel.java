@@ -2,7 +2,7 @@ package hungteen.imm.client.model.bake;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.utils.ItemUtil;
+import hungteen.imm.util.ItemUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;

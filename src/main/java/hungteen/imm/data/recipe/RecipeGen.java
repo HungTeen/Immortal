@@ -2,9 +2,7 @@ package hungteen.imm.data.recipe;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.block.WoolCushionBlock;
-import hungteen.imm.utils.BlockUtil;
-import hungteen.imm.utils.Util;
-import net.minecraft.data.DataGenerator;
+import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;

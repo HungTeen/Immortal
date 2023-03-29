@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

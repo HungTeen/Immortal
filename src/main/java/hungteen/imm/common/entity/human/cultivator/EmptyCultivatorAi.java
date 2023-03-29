@@ -6,9 +6,9 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.entity.ai.ImmortalActivities;
 import hungteen.imm.common.entity.ai.ImmortalMemories;
 import hungteen.imm.common.entity.ai.behavior.*;
-import hungteen.imm.common.tag.ImmortalEntityTags;
-import hungteen.imm.utils.BrainUtil;
-import hungteen.imm.utils.ItemUtil;
+import hungteen.imm.common.tag.IMMEntityTags;
+import hungteen.imm.util.BrainUtil;
+import hungteen.imm.util.ItemUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -127,7 +127,7 @@ public class EmptyCultivatorAi {
                 //瞅你咋地
                 new RunOne<>(ImmutableList.of(
                         Pair.of(SetEntityLookTarget.create(EntityType.PLAYER, 12.0F), 1),
-                        Pair.of(SetEntityLookTarget.create(type -> type.getType().is(ImmortalEntityTags.HUMAN_BEINGS), 8.0F), 1),
+                        Pair.of(SetEntityLookTarget.create(type -> type.getType().is(IMMEntityTags.HUMAN_BEINGS), 8.0F), 1),
                         Pair.of(SetEntityLookTarget.create(8.0F), 1),
                         Pair.of(new DoNothing(30, 60), 1)
                 )),

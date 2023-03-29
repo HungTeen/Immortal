@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.imm.client.particle.ImmortalParticles;
-import hungteen.imm.utils.Constants;
+import hungteen.imm.util.Constants;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.ai;
 
 import hungteen.imm.common.entity.ai.sensor.NearestBoatSensor;
 import hungteen.imm.common.entity.ai.sensor.NearestProjectileSensor;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;

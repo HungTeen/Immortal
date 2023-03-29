@@ -2,7 +2,7 @@ package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

@@ -1,12 +1,10 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTTagsProvider;
-import hungteen.htlib.util.helper.registry.BannerPatternHelper;
 import hungteen.htlib.util.helper.registry.BiomeHelper;
-import hungteen.imm.common.tag.ImmortalBiomeTags;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.tag.IMMBiomeTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -28,7 +26,7 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(ImmortalBiomeTags.HAS_OVERWORLD_TRADING_MARKET)
+        this.tag(IMMBiomeTags.HAS_OVERWORLD_TRADING_MARKET)
                 .add(Biomes.DRIPSTONE_CAVES, Biomes.LUSH_CAVES);
     }
 

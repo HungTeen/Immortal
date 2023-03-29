@@ -2,7 +2,6 @@ package hungteen.imm.common.item.artifacts;
 
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.api.registry.IArtifactType;
-import hungteen.imm.common.item.ImmortalItemTabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

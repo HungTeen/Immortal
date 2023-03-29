@@ -1,6 +1,6 @@
 package hungteen.imm.client.model.bake;
 
-import hungteen.imm.utils.ItemUtil;
+import hungteen.imm.util.ItemUtil;
 import net.minecraftforge.client.event.ModelEvent;
 
 /**

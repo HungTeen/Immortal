@@ -1,18 +1,11 @@
 package hungteen.imm.common.impl;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.imm.api.ImmortalAPI;
 import hungteen.imm.api.registry.IArtifactType;
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**

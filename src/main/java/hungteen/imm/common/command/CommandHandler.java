@@ -24,7 +24,7 @@ public class CommandHandler {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void init(RegisterCommandsEvent event) {
-        ImmortalCommand.register(event.getDispatcher());
+        IMMCommand.register(event.getDispatcher());
     }
 
 }

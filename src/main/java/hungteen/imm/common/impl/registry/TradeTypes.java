@@ -6,7 +6,7 @@ import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.registry.ITradeType;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;

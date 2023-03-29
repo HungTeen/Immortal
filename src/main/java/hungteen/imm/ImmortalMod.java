@@ -4,35 +4,29 @@ import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.particle.ImmortalParticles;
 import hungteen.imm.common.CommonRegister;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.blockentity.ImmortalBlockEntities;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.command.CommandHandler;
-import hungteen.imm.common.datapack.ImmortalDataPacks;
-import hungteen.imm.common.entity.ImmortalDataSerializers;
-import hungteen.imm.common.entity.ImmortalEntities;
+import hungteen.imm.common.datapack.IMMDataPacks;
+import hungteen.imm.common.entity.IMMDataSerializers;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
+import hungteen.imm.common.impl.BehaviorRunes;
+import hungteen.imm.common.impl.MemoryRunes;
+import hungteen.imm.common.impl.SensorRunes;
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.impl.registry.TradeTypes;
 import hungteen.imm.common.impl.registry.*;
-import hungteen.imm.common.misc.ImmortalBannerPatterns;
-import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.item.ImmortalItems;
-import hungteen.imm.common.menu.ImmortalMenus;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.menu.IMMMenus;
+import hungteen.imm.common.misc.IMMBannerPatterns;
 import hungteen.imm.common.network.NetworkHandler;
-import hungteen.imm.common.recipe.ImmortalRecipes;
-import hungteen.imm.common.world.ImmortalNoiseGenSettings;
+import hungteen.imm.common.recipe.IMMRecipes;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
-import hungteen.imm.common.world.biome.BiomeManager;
-import hungteen.imm.common.world.biome.ImmortalBiomes;
-import hungteen.imm.common.world.dimension.ImmortalDimensions;
-import hungteen.imm.common.world.feature.ImmortalConfiguredFeatures;
-import hungteen.imm.common.world.feature.ImmortalPlacedFeatures;
-import hungteen.imm.common.world.structure.ImmortalProcessors;
-import hungteen.imm.common.world.structure.IMMStructures;
-import hungteen.imm.common.world.structure.ImmortalTemplatePools;
+import hungteen.imm.common.world.levelgen.biome.BiomeManager;
+import hungteen.imm.common.world.levelgen.feature.ImmortalConfiguredFeatures;
 import hungteen.imm.data.DataGenHandler;
-import hungteen.imm.common.impl.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
@@ -65,7 +59,7 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, DataGenHandler::dataGen);
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
-        modBus.addListener(EventPriority.NORMAL, ImmortalEntities::addEntityAttributes);
+        modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
         modBus.addListener(EventPriority.NORMAL, CommonRegister::fillCreativeTabs);
         defferRegister(modBus);
 
@@ -74,7 +68,7 @@ public class ImmortalMod {
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
         forgeBus.addGenericListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
-        forgeBus.addListener(EventPriority.NORMAL, ImmortalDataPacks::addDataPack);
+        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
         /* Config Setup */
@@ -88,31 +82,23 @@ public class ImmortalMod {
      * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
-        ImmortalBiomes.register();
-        IMMStructures.register();
-
-        ImmortalItems.register(modBus);
-        ImmortalBlocks.register(modBus);
-        ImmortalEntities.register(modBus);
-        ImmortalBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
+        IMMItems.register(modBus);
+        IMMBlocks.register(modBus);
+        IMMEntities.register(modBus);
+        IMMBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         ImmortalSchedules.SCHEDULES.register(modBus);
-        ImmortalRecipes.RECIPE_SERIALIZERS.register(modBus);
-        ImmortalRecipes.RECIPE_TYPES.register(modBus);
-        ImmortalMenus.register(modBus);
-        ImmortalBannerPatterns.register(modBus);
+        IMMRecipes.RECIPE_SERIALIZERS.register(modBus);
+        IMMRecipes.RECIPE_TYPES.register(modBus);
+        IMMMenus.register(modBus);
+        IMMBannerPatterns.register(modBus);
         ImmortalParticles.register(modBus);
-        ImmortalDataSerializers.register(modBus);
+        IMMDataSerializers.register(modBus);
         ImmortalMemories.register(modBus);
         ImmortalSensors.register(modBus);
         ImmortalActivities.register(modBus);
-        ImmortalProcessors.register(modBus);
-        ImmortalTemplatePools.register(modBus);
         ImmortalPoiTypes.register(modBus);
         ImmortalProfessions.register(modBus);
         ImmortalConfiguredFeatures.register(modBus);
-        ImmortalPlacedFeatures.register(modBus);
-        ImmortalNoiseGenSettings.register(modBus);
-        ImmortalDimensions.register(modBus);
     }
 
     /**
@@ -120,11 +106,11 @@ public class ImmortalMod {
      */
     public static void register(RegisterEvent event) {
         if(ForgeRegistries.ITEMS.equals(event.getForgeRegistry())){
-            ImmortalEntities.registerSpawnEggs(event);
-            ImmortalBlocks.registerBlockItems(event);
-            ImmortalItems.registerItems(event);
+            IMMEntities.registerSpawnEggs(event);
+            IMMBlocks.registerBlockItems(event);
+            IMMItems.registerItems(event);
         } else if(ForgeRegistries.BLOCKS.equals(event.getForgeRegistry())){
-            ImmortalBlocks.registerBlocks(event);
+            IMMBlocks.registerBlocks(event);
         }
     }
 
@@ -132,7 +118,7 @@ public class ImmortalMod {
      * register custom stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void coreRegister() {
-        ImmortalWoods.register();
+        IMMWoods.register();
 
         HumanSettings.register();
 

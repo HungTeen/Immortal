@@ -6,7 +6,7 @@ import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;

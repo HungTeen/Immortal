@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;

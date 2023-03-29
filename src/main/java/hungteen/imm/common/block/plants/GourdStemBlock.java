@@ -3,9 +3,8 @@ package hungteen.imm.common.block.plants;
 import hungteen.htlib.common.block.plants.HTStemBlock;
 import hungteen.htlib.common.block.plants.HTStemGrownBlock;
 import hungteen.htlib.util.WeightedList;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.item.ImmortalItems;
-import net.minecraft.core.registries.Registries;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.item.IMMItems;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class GourdStemBlock extends HTStemBlock {
 
     public GourdStemBlock() {
-        super(() -> ImmortalItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.MELON_STEM));
+        super(() -> IMMItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.MELON_STEM));
     }
 
     @Override
@@ -28,6 +27,6 @@ public class GourdStemBlock extends HTStemBlock {
     }
 
     public static BlockState getFinalAge(){
-        return ImmortalBlocks.GOURD_STEM.get().defaultBlockState().setValue(AGE, MAX_AGE);
+        return IMMBlocks.GOURD_STEM.get().defaultBlockState().setValue(AGE, MAX_AGE);
     }
 }

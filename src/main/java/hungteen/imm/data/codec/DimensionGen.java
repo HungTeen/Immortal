@@ -1,21 +1,5 @@
 package hungteen.imm.data.codec;
 
-import com.mojang.serialization.Lifecycle;
-import hungteen.htlib.data.HTCodecGen;
-import hungteen.imm.common.world.ImmortalNoiseGenSettings;
-import hungteen.imm.common.world.dimension.ImmortalDimensions;
-import hungteen.imm.utils.Util;
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
-
 /**
  * @program: Immortal
  * @author: HungTeen

@@ -1,7 +1,7 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ public class AntidoteElixir extends ElixirItem{
 
     @Override
     protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-        return immortal().apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+        return immortal().apply(IMMAPI.get().getEntityRealm(livingEntity));
     }
 
 }

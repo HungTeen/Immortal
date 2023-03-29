@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.imm.common.entity.ImmortalEntities;
-import hungteen.imm.common.item.ImmortalItems;
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.item.IMMItems;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.EyeOfEnder;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,7 +35,7 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
     }
 
     public SpiritualPearl(Level world, double x, double y, double z) {
-        super(ImmortalEntities.SPIRITUAL_PEARL.get(), world);
+        super(IMMEntities.SPIRITUAL_PEARL.get(), world);
         this.setPos(x, y, z);
     }
 
@@ -100,7 +99,7 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
     }
 
     public void setItem(ItemStack stack) {
-        if (!stack.is(ImmortalItems.SPIRITUAL_PEARL.get()) || stack.hasTag()) {
+        if (!stack.is(IMMItems.SPIRITUAL_PEARL.get()) || stack.hasTag()) {
             this.getEntityData().set(DATA_ITEM_STACK, Util.make(stack.copy(), (itemStack) -> {
                 itemStack.setCount(1);
             }));
@@ -114,7 +113,7 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
 
     public ItemStack getItem() {
         ItemStack itemstack = this.getItemRaw();
-        return itemstack.isEmpty() ? new ItemStack(ImmortalItems.SPIRITUAL_PEARL.get()) : itemstack;
+        return itemstack.isEmpty() ? new ItemStack(IMMItems.SPIRITUAL_PEARL.get()) : itemstack;
     }
 
 }

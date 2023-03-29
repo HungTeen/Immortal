@@ -8,7 +8,7 @@ import hungteen.imm.common.capability.entity.EntityCapProvider;
 import hungteen.imm.common.capability.entity.EntitySpiritualCapability;
 import hungteen.imm.common.capability.player.PlayerCapProvider;
 import hungteen.imm.common.capability.player.PlayerCapability;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;

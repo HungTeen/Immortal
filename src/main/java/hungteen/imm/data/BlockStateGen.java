@@ -3,14 +3,13 @@ package hungteen.imm.data;
 import hungteen.htlib.data.HTBlockStateGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.BlockHelper;
-import hungteen.imm.common.block.ImmortalBlocks;
+import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.block.plants.GourdStemBlock;
-import hungteen.imm.common.impl.registry.ImmortalWoods;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.impl.registry.IMMWoods;
+import hungteen.imm.util.Util;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -60,14 +59,14 @@ public class BlockStateGen extends HTBlockStateGen {
 //        ).forEach(pair -> {
 //            crop(pair.getFirst(), pair.getSecond(), cutout());
 //        });
-        crop(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
+        crop(IMMBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
 
         /* Woods */
-        ImmortalWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodIntegration);
 
         /* Blocks with cross style. */
         Arrays.asList(
-                ImmortalBlocks.MULBERRY_SAPLING.get()
+                IMMBlocks.MULBERRY_SAPLING.get()
         ).forEach(block -> {
             cross(block);
             this.addedBlocks.add(block);
@@ -75,7 +74,7 @@ public class BlockStateGen extends HTBlockStateGen {
 
         /* Horizontal Blocks. */
         Arrays.asList(
-                ImmortalBlocks.GOURD_ATTACHED_STEM.get()
+                IMMBlocks.GOURD_ATTACHED_STEM.get()
         ).forEach(block -> {
             horizontalBlock(block, models().cubeAll(name(block), BlockHelper.blockTexture(block)).renderType(cutout()));
             this.addedBlocks.add(block);

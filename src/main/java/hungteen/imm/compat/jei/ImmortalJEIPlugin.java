@@ -1,13 +1,9 @@
 package hungteen.imm.compat.jei;
 
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.menu.ElixirRoomMenu;
-import hungteen.imm.common.menu.ImmortalMenus;
-import hungteen.imm.common.menu.SmithingArtifactMenu;
-import hungteen.imm.common.recipe.ImmortalRecipes;
+import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.compat.jei.category.ElixirCategory;
 import hungteen.imm.compat.jei.category.SmithingCategory;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -15,7 +11,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 /**
  * @program: Immortal
@@ -30,8 +25,8 @@ public class ImmortalJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         Util.getProxy().getRecipeManager().ifPresent(manager -> {
-            registration.addRecipes(ElixirCategory.ELIXIR_RECIPE_TYPE, manager.getAllRecipesFor(ImmortalRecipes.ELIXIR_RECIPE_TYPE.get()));
-            registration.addRecipes(SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE, manager.getAllRecipesFor(ImmortalRecipes.SMITHING_ARTIFACT_RECIPE_TYPE.get()));
+            registration.addRecipes(ElixirCategory.ELIXIR_RECIPE_TYPE, manager.getAllRecipesFor(IMMRecipes.ELIXIR_RECIPE_TYPE.get()));
+            registration.addRecipes(SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE, manager.getAllRecipesFor(IMMRecipes.SMITHING_ARTIFACT_RECIPE_TYPE.get()));
         });
     }
 

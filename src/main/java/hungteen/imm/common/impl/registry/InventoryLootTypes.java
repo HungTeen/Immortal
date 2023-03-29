@@ -4,9 +4,9 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IInventoryLootType;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class InventoryLootTypes {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register(){
-            ImmortalAPI.get().inventoryLootRegistry().ifPresent(l -> l.register(LIST));
+            IMMAPI.get().inventoryLootRegistry().ifPresent(l -> l.register(LIST));
         }
 
         public InventoryLootType(String name) {

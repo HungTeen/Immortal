@@ -1,7 +1,7 @@
 package hungteen.imm.common;
 
 import hungteen.htlib.HTLib;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.impl.registry.RealmTypes;
@@ -43,7 +43,7 @@ public class RealmManager {
 
     public static void getRealm(CompoundTag tag, String name, Consumer<IRealmType> consumer){
         if(tag.contains(name)){
-            ImmortalAPI.get().realmRegistry().flatMap(l -> l.byNameCodec().parse(NbtOps.INSTANCE, tag.get(name))
+            IMMAPI.get().realmRegistry().flatMap(l -> l.byNameCodec().parse(NbtOps.INSTANCE, tag.get(name))
                     .result()).ifPresent(consumer);
         }
     }

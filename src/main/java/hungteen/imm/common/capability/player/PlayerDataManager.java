@@ -2,7 +2,7 @@ package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
@@ -14,8 +14,8 @@ import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.network.StringDataPacket;
 import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.utils.Constants;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.Constants;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -47,8 +47,8 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public PlayerDataManager(Player player) {
         this.player = player;
-        if (ImmortalAPI.get().integerDataRegistry().isPresent()) {
-            ImmortalAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
+        if (IMMAPI.get().integerDataRegistry().isPresent()) {
+            IMMAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
                 integerMap.put(data, data.defaultData());
             });
         }
@@ -85,7 +85,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         CompoundTag tag = new CompoundTag();
         {
             CompoundTag nbt = new CompoundTag();
-            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+            IMMAPI.get().spiritualRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     nbt.putBoolean(type.getRegistryName() + "_root", spiritualRoots.contains(type));
                 });
@@ -116,7 +116,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> {
+            IMMAPI.get().integerDataRegistry().ifPresent(l -> {
                 l.getValues().forEach(data -> {
                     nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
                 });
@@ -136,7 +136,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         if (tag.contains("SpiritualRoots")) {
             spiritualRoots.clear();
             final CompoundTag nbt = tag.getCompound("SpiritualRoots");
-            ImmortalAPI.get().spiritualRegistry().ifPresent(l -> {
+            IMMAPI.get().spiritualRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if (nbt.getBoolean(type.getRegistryName() + "_root")) {
                         spiritualRoots.add(type);
@@ -159,7 +159,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("SpellList")) {
             CompoundTag nbt = tag.getCompound("SpellList");
-            ImmortalAPI.get().spellRegistry().ifPresent(l -> {
+            IMMAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if (nbt.contains("active_" + type.getRegistryName())) {
                         spellList[nbt.getInt(type.getRegistryName())] = type;
@@ -173,7 +173,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
             CompoundTag nbt = tag.getCompound("PlayerRangeData");
-            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> {
+            IMMAPI.get().integerDataRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if (nbt.contains(type.getRegistryName())) {
                         integerMap.put(type, nbt.getInt(type.getRegistryName()));
@@ -184,7 +184,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
             if (nbt.contains("PlayerRealmType")) {
-                ImmortalAPI.get().realmRegistry().flatMap(l -> l.getValue(nbt.getString("PlayerRealmType"))).ifPresent(r -> this.realmType = r);
+                IMMAPI.get().realmRegistry().flatMap(l -> l.getValue(nbt.getString("PlayerRealmType"))).ifPresent(r -> this.realmType = r);
             }
         }
     }

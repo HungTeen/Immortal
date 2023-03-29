@@ -5,9 +5,9 @@ import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.ImmortalAPI;
-import hungteen.imm.utils.Constants;
-import hungteen.imm.utils.Util;
+import hungteen.imm.api.IMMAPI;
+import hungteen.imm.util.Constants;
+import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -47,7 +47,7 @@ public class PlayerRangeNumbers {
          * {@link ImmortalMod#coreRegister()}
          */
         public static void register() {
-            ImmortalAPI.get().integerDataRegistry().ifPresent(l -> l.register(TYPES));
+            IMMAPI.get().integerDataRegistry().ifPresent(l -> l.register(TYPES));
         }
 
         public PlayerData(String name, int defaultValue, int minValue, int maxValue){

@@ -1,10 +1,10 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -62,7 +62,7 @@ public abstract class CultivationElixir extends ElixirItem{
 
         @Override
         protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-            return immortal().apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+            return immortal().apply(IMMAPI.get().getEntityRealm(livingEntity));
         }
     }
 
@@ -74,7 +74,7 @@ public abstract class CultivationElixir extends ElixirItem{
 
         @Override
         protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-            return lessEqualThan(RealmTypes.SPIRITUAL_LEVEL_3).apply(ImmortalAPI.get().getEntityRealm(livingEntity));
+            return lessEqualThan(RealmTypes.SPIRITUAL_LEVEL_3).apply(IMMAPI.get().getEntityRealm(livingEntity));
         }
     }
 

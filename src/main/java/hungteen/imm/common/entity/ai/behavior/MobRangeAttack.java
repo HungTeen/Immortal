@@ -1,9 +1,9 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.utils.BehaviorUtil;
-import hungteen.imm.utils.EntityUtil;
-import hungteen.imm.utils.ItemUtil;
+import hungteen.imm.util.BehaviorUtil;
+import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

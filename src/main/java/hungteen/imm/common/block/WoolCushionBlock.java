@@ -1,6 +1,6 @@
 package hungteen.imm.common.block;
 
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;

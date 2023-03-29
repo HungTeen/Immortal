@@ -46,12 +46,10 @@ public class DataGenHandler {
         generators.addProvider(event.includeClient(), new BlockModelGen(output, fileHelper));
         generators.addProvider(event.includeClient(), new ItemModelGen(output, fileHelper));
 
+        /* Datapack */
+        generators.addProvider(event.includeServer(), new DatapackEntriesGen(output, provider));
+
         /* Codecs */
-//        generators.addProvider(event.includeServer(), new RegistryGen(event.getGenerator()));
-//        generators.addProvider(event.includeServer(), new BiomeGen(event.getGenerator()));
-//        generators.addProvider(event.includeServer(), new DimensionGen(event.getGenerator()));
-//        generators.addProvider(event.includeServer(), new SpellBookGen(event.getGenerator()));
-//        generators.addProvider(event.includeServer(), new StructureGen(event.getGenerator()));
     }
 
 }

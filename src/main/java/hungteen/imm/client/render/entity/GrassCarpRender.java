@@ -4,7 +4,7 @@ import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.entity.GrassCarpModel;
 import hungteen.imm.client.render.entity.layer.GrassCarpItemLayer;
 import hungteen.imm.common.entity.creature.GrassCarp;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

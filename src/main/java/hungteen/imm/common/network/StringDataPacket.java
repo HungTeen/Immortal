@@ -1,8 +1,8 @@
 package hungteen.imm.common.network;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.ImmortalAPI;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.api.IMMAPI;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -45,7 +45,7 @@ public class StringDataPacket {
                     final Types type = Types.values()[message.type];
                     switch (type) {
                         case REALM -> {
-                            ImmortalAPI.get().realmRegistry().ifPresent(l -> {
+                            IMMAPI.get().realmRegistry().ifPresent(l -> {
                                 l.getValue(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
                             });
                         }

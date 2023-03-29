@@ -1,17 +1,12 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTHolderTagsProvider;
-import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.registry.BannerPatternHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.misc.ImmortalBannerPatterns;
-import hungteen.imm.common.tag.ImmortalBannerPatternTags;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.misc.IMMBannerPatterns;
+import hungteen.imm.common.tag.IMMBannerPatternTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.BannerPatternTagsProvider;
-import net.minecraft.tags.BannerPatternTags;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -31,10 +26,10 @@ public class BannerPatternTagGen extends HTHolderTagsProvider<BannerPattern> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(ImmortalBannerPatternTags.CONTINUOUS_MOUNTAIN).add(ImmortalBannerPatterns.CONTINUOUS_MOUNTAIN.get());
-        this.tag(ImmortalBannerPatternTags.FLOWING_CLOUD).add(ImmortalBannerPatterns.FLOWING_CLOUD.get());
-        this.tag(ImmortalBannerPatternTags.FOLDED_THUNDER).add(ImmortalBannerPatterns.FOLDED_THUNDER.get());
-        this.tag(ImmortalBannerPatternTags.RHOMBUS).add(ImmortalBannerPatterns.RHOMBUS.get());
+        this.tag(IMMBannerPatternTags.CONTINUOUS_MOUNTAIN).add(IMMBannerPatterns.CONTINUOUS_MOUNTAIN.get());
+        this.tag(IMMBannerPatternTags.FLOWING_CLOUD).add(IMMBannerPatterns.FLOWING_CLOUD.get());
+        this.tag(IMMBannerPatternTags.FOLDED_THUNDER).add(IMMBannerPatterns.FOLDED_THUNDER.get());
+        this.tag(IMMBannerPatternTags.RHOMBUS).add(IMMBannerPatterns.RHOMBUS.get());
     }
 
 }

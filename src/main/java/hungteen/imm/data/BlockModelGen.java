@@ -1,9 +1,8 @@
 package hungteen.imm.data;
 
 import hungteen.htlib.data.HTBlockModelGen;
-import hungteen.imm.common.impl.registry.ImmortalWoods;
-import hungteen.imm.utils.Util;
-import net.minecraft.data.DataGenerator;
+import hungteen.imm.common.impl.registry.IMMWoods;
+import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -20,6 +19,6 @@ public class BlockModelGen extends HTBlockModelGen {
 
     @Override
     protected void registerModels() {
-        ImmortalWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodIntegration);
     }
 }

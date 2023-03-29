@@ -1,11 +1,8 @@
 package hungteen.imm.common.impl;
 
 import hungteen.imm.common.RuneManager;
-import hungteen.imm.common.entity.ai.behavior.NearestTargetGoal;
-import hungteen.imm.common.entity.ImmortalEntities;
 import hungteen.imm.common.entity.golem.GolemEntity;
-import hungteen.imm.common.entity.golem.IronGolem;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

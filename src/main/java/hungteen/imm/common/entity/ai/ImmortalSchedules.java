@@ -1,7 +1,6 @@
 package hungteen.imm.common.entity.ai;
 
-import hungteen.imm.utils.Util;
-import net.minecraft.core.Registry;
+import hungteen.imm.util.Util;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;

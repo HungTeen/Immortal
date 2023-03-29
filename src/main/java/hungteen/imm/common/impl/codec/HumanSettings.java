@@ -11,7 +11,7 @@ import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weight;

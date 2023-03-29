@@ -1,9 +1,7 @@
 package hungteen.imm.common;
 
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 
 /**

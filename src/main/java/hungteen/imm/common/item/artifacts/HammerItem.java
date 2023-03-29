@@ -1,10 +1,9 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.imm.api.interfaces.IArtifactTier;
-import hungteen.imm.common.blockentity.SmithingArtifactBlockEntity;
-import hungteen.imm.common.item.ImmortalToolActions;
-import hungteen.imm.utils.PlayerUtil;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.event.IMMPlayerEvents;
+import hungteen.imm.common.item.IMMToolActions;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +34,7 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     /**
-     * {@link hungteen.imm.common.event.ImmortalPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
+     * {@link IMMPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
      */
     public static void smithing(LivingEntity livingEntity, InteractionHand hand, Direction direction, BlockPos blockPos){
         if(canPerformSmithing(livingEntity.getItemInHand(hand)) && direction == Direction.UP){
@@ -56,7 +55,7 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     public static boolean canPerformSmithing(ItemStack stack){
-        return stack.canPerformAction(ImmortalToolActions.ARTIFACT_SMITHING);
+        return stack.canPerformAction(IMMToolActions.ARTIFACT_SMITHING);
     }
 
     @Override
@@ -86,6 +85,6 @@ public class HammerItem extends MeleeAttackItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return super.canPerformAction(stack, toolAction) || ImmortalToolActions.DEFAULT_HAMMER_ACTIONS.contains(toolAction);
+        return super.canPerformAction(stack, toolAction) || IMMToolActions.DEFAULT_HAMMER_ACTIONS.contains(toolAction);
     }
 }

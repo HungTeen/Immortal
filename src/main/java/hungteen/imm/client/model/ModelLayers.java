@@ -1,6 +1,6 @@
 package hungteen.imm.client.model;
 
-import hungteen.imm.utils.Util;
+import hungteen.imm.util.Util;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
 /**

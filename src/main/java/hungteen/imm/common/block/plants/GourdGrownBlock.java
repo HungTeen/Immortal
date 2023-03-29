@@ -2,14 +2,12 @@ package hungteen.imm.common.block.plants;
 
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTStemGrownBlock;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,7 +42,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
 
     @Override
     public HTAttachedStemBlock getAttachedStem() {
-        return ImmortalBlocks.GOURD_ATTACHED_STEM.get();
+        return IMMBlocks.GOURD_ATTACHED_STEM.get();
     }
 
     @Override

@@ -3,15 +3,13 @@ package hungteen.imm.common.event.handler;
 import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
-import hungteen.imm.common.event.ImmortalLivingEvents;
-import hungteen.imm.common.event.ImmortalPlayerEvents;
+import hungteen.imm.common.event.IMMLivingEvents;
+import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.utils.PlayerUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -25,20 +23,20 @@ public class PlayerEventHandler {
 
     /**
      * send packet from server to client to sync player's data.
-     * {@link ImmortalPlayerEvents#onPlayerLogin(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent)}
+     * {@link IMMPlayerEvents#onPlayerLogin(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent)}
      */
     public static void onPlayerLogin(Player player) {
     }
 
     /**
      * save card cd.
-     * {@link ImmortalPlayerEvents#onPlayerLogout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent)}
+     * {@link IMMPlayerEvents#onPlayerLogout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent)}
      */
     public static void onPlayerLogout(Player player) {
     }
 
     /**
-     * {@link ImmortalLivingEvents#onLivingDeath(LivingDeathEvent)}
+     * {@link IMMLivingEvents#onLivingDeath(LivingDeathEvent)}
      */
     public static void handlePlayerDeath(LivingDeathEvent ev, Player player) {
     }
@@ -61,10 +59,10 @@ public class PlayerEventHandler {
 
     /**
      * Ray Trace whenever player right click (Server Side Only!).
-     * {@link ImmortalPlayerEvents#onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific)}
-     * {@link ImmortalPlayerEvents#onPlayerRightClickItem(PlayerInteractEvent.RightClickItem)}
-     * {@link ImmortalPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
-     * {@link ImmortalPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
+     * {@link IMMPlayerEvents#onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific)}
+     * {@link IMMPlayerEvents#onPlayerRightClickItem(PlayerInteractEvent.RightClickItem)}
+     * {@link IMMPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
+     * {@link IMMPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
      */
     public static void rayTrace(Player player) {
         final HitResult hitResult = PlayerUtil.getHitResult(player);

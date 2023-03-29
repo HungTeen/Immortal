@@ -2,8 +2,8 @@ package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.htlib.data.tag.HTItemTagGen;
-import hungteen.imm.common.tag.ImmortalItemTags;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.tag.IMMItemTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
@@ -25,14 +25,14 @@ public class ItemTagGen extends HTItemTagGen {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(ImmortalItemTags.SPIRITUAL_STONES).addTags(
-                ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE,
-                ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO
+        this.tag(IMMItemTags.SPIRITUAL_STONES).addTags(
+                IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE,
+                IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO
         );
-        this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
-        this.tag(ImmortalItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
+        this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
+        this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
 
-        this.tag(ImmortalItemTags.MELEE_ATTACK_ITEMS).add(Items.STICK);
+        this.tag(IMMItemTags.MELEE_ATTACK_ITEMS).add(Items.STICK);
     }
 
 }

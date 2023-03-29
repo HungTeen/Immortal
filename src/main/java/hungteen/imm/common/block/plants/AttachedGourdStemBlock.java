@@ -1,7 +1,7 @@
 package hungteen.imm.common.block.plants;
 
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
-import hungteen.imm.common.item.ImmortalItems;
+import hungteen.imm.common.item.IMMItems;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class AttachedGourdStemBlock extends HTAttachedStemBlock {
 
     public AttachedGourdStemBlock() {
-        super(() -> ImmortalItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.ATTACHED_MELON_STEM));
+        super(() -> IMMItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.ATTACHED_MELON_STEM));
     }
 
     @Override

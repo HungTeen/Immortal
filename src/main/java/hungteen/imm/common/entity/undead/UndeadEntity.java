@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.undead;
 
 import hungteen.imm.api.interfaces.IUndead;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.entity.ImmortalCreature;
+import hungteen.imm.common.entity.IMMCreature;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-10-19 23:11
  **/
-public abstract class UndeadEntity extends ImmortalCreature implements IUndead {
+public abstract class UndeadEntity extends IMMCreature implements IUndead {
 
     public UndeadEntity(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);

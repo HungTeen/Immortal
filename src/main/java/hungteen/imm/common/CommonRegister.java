@@ -1,10 +1,9 @@
 package hungteen.imm.common;
 
 import hungteen.htlib.util.helper.registry.BlockHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.common.block.ImmortalBlocks;
-import hungteen.imm.common.item.ImmortalItems;
-import hungteen.imm.utils.BlockUtil;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.util.BlockUtil;
 import net.minecraft.world.item.*;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -30,20 +29,20 @@ public class CommonRegister {
                 event.accept(new ItemStack(pair.getSecond()));
             });
             Arrays.asList(
-                    ImmortalBlocks.MULBERRY_LEAVES, ImmortalBlocks.MULBERRY_LEAVES_WITH_MULBERRIES, ImmortalBlocks.MULBERRY_SAPLING
+                    IMMBlocks.MULBERRY_LEAVES, IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES, IMMBlocks.MULBERRY_SAPLING
             ).forEach(obj -> {
                 event.accept(obj.get());
             });
         } else if(event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS){
             Arrays.asList(
-                    ImmortalItems.MULBERRY
+                    IMMItems.MULBERRY
             ).forEach(obj -> {
                 event.accept(obj.get());
             });
         } else if(event.getTab() == CreativeModeTabs.INGREDIENTS){
             Arrays.asList(
-                    ImmortalItems.CONTINUOUS_MOUNTAIN_PATTERN, ImmortalItems.FLOWING_CLOUD_PATTERN,
-                    ImmortalItems.FOLDED_THUNDER_PATTERN, ImmortalItems.RHOMBUS_PATTERN
+                    IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN,
+                    IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
             ).forEach(obj -> {
                 event.accept(obj.get());
             });
@@ -54,9 +53,9 @@ public class CommonRegister {
      * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
      */
     public static void registerCompostable() {
-        BlockHelper.registerCompostable(0.3F, ImmortalBlocks.MULBERRY_LEAVES.get());
-        BlockHelper.registerCompostable(0.3F, ImmortalBlocks.MULBERRY_SAPLING.get());
-        BlockHelper.registerCompostable(0.65F, ImmortalItems.MULBERRY.get());
+        BlockHelper.registerCompostable(0.3F, IMMBlocks.MULBERRY_LEAVES.get());
+        BlockHelper.registerCompostable(0.3F, IMMBlocks.MULBERRY_SAPLING.get());
+        BlockHelper.registerCompostable(0.65F, IMMItems.MULBERRY.get());
     }
     
 }

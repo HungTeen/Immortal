@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell;
 
-import hungteen.imm.api.ImmortalAPI;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.api.registry.ISpellType;
@@ -8,9 +8,9 @@ import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
-import hungteen.imm.utils.Constants;
-import hungteen.imm.utils.PlayerUtil;
-import hungteen.imm.utils.TipUtil;
+import hungteen.imm.util.Constants;
+import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -129,7 +129,7 @@ public class SpellManager {
     }
 
     public static boolean canSpellStart(Player player, ISpellType spell){
-        return ImmortalAPI.get().getSpiritualMana(player) >= spell.getConsumeMana();
+        return IMMAPI.get().getSpiritualMana(player) >= spell.getConsumeMana();
     }
 
     public static void costMana(Player player, int cost){

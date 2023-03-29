@@ -18,9 +18,9 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-09-24 22:26
  **/
-public class DummyAPI implements ImmortalAPI.IImmortalAPI {
+public class DummyAPI implements IMMAPI.IImmortalAPI {
 
-    public static final ImmortalAPI.IImmortalAPI INSTANCE = new DummyAPI();
+    public static final IMMAPI.IImmortalAPI INSTANCE = new DummyAPI();
 
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {

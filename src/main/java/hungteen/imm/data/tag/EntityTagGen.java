@@ -1,18 +1,13 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTHolderTagsProvider;
-import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.entity.ImmortalEntities;
-import hungteen.imm.common.tag.ImmortalEntityTags;
-import hungteen.imm.utils.Util;
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.tag.IMMEntityTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.raid.Raid;
-import net.minecraft.world.entity.raid.Raider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,11 +26,11 @@ public class EntityTagGen extends HTHolderTagsProvider<EntityType<?>> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(ImmortalEntityTags.VILLAGERS).add(EntityType.VILLAGER, EntityType.WANDERING_TRADER);
-        this.tag(ImmortalEntityTags.PILLAGERS).add(EntityType.PILLAGER, EntityType.WITCH, EntityType.ILLUSIONER, EntityType.VINDICATOR, EntityType.EVOKER);
-        this.tag(ImmortalEntityTags.CULTIVATORS).add(EntityType.PLAYER, ImmortalEntities.EMPTY_CULTIVATOR.get(), ImmortalEntities.SPIRITUAL_CULTIVATOR.get());
+        this.tag(IMMEntityTags.VILLAGERS).add(EntityType.VILLAGER, EntityType.WANDERING_TRADER);
+        this.tag(IMMEntityTags.PILLAGERS).add(EntityType.PILLAGER, EntityType.WITCH, EntityType.ILLUSIONER, EntityType.VINDICATOR, EntityType.EVOKER);
+        this.tag(IMMEntityTags.CULTIVATORS).add(EntityType.PLAYER, IMMEntities.EMPTY_CULTIVATOR.get(), IMMEntities.SPIRITUAL_CULTIVATOR.get());
 
-        this.tag(ImmortalEntityTags.HUMAN_BEINGS).addTags(ImmortalEntityTags.CULTIVATORS, ImmortalEntityTags.VILLAGERS, ImmortalEntityTags.PILLAGERS);
+        this.tag(IMMEntityTags.HUMAN_BEINGS).addTags(IMMEntityTags.CULTIVATORS, IMMEntityTags.VILLAGERS, IMMEntityTags.PILLAGERS);
 
     }
 

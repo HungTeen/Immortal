@@ -1,10 +1,7 @@
 package hungteen.imm.common.item.runes;
 
 import hungteen.imm.common.RuneManager;
-import hungteen.imm.common.item.ImmortalItemTabs;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;

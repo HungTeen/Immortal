@@ -1,15 +1,5 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.htlib.util.helper.MathHelper;
-import hungteen.imm.common.menu.SpiritualFurnaceMenu;
-import hungteen.imm.utils.Util;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-
 /**
  * @program: Immortal
  * @author: HungTeen
