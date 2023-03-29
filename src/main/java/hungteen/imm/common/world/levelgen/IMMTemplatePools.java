@@ -1,5 +1,6 @@
 package hungteen.imm.common.world.levelgen;
 
+import hungteen.imm.common.world.levelgen.structure.OverworldTradingMarket;
 import hungteen.imm.common.world.levelgen.structure.SpiritualPlainsVillage;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
@@ -22,6 +23,7 @@ public class IMMTemplatePools {
     public static final ResourceKey<StructureTemplatePool> OVERWORLD_TRADING_MARKET_START = create("trading_market/overworld/center");
 
     public static void register(BootstapContext<StructureTemplatePool> context){
+        OverworldTradingMarket.initPools(context);
         SpiritualPlainsVillage.initPools(context);
     }
 

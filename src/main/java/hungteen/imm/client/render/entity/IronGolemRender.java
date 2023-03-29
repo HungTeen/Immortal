@@ -3,9 +3,7 @@ package hungteen.imm.client.render.entity;
 import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.entity.IronGolemModel;
 import hungteen.imm.common.entity.golem.IronGolem;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.IronGolemRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -13,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author: HungTeen
  * @create: 2022-10-24 12:44
  **/
-public class IronGolemRender extends ImmortalMobRender<IronGolem> {
+public class IronGolemRender extends IMMMobRender<IronGolem> {
 
     private static final ResourceLocation GOLEM_LOCATION = new ResourceLocation("textures/entity/iron_golem/iron_golem.png");
 

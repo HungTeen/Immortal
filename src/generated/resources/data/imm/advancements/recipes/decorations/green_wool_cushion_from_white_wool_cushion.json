@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "imm:green_wool_cushion_from_white_wool_cushion"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_cushion": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "imm:white_wool_cushion"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_cushion",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "imm:green_wool_cushion_from_white_wool_cushion"
+    ]
+  }
+}

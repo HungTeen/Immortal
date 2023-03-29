@@ -1,7 +1,0 @@
-{
-  "parent": "immortal:block/gourd_block",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "gourd": "immortal:block/green_gourd"
-  }
-}

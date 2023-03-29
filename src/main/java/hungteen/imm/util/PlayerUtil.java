@@ -3,7 +3,7 @@ package hungteen.imm.util;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.WeightedList;
-import hungteen.imm.ImmortalConfigs;
+import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
@@ -94,7 +94,7 @@ public class PlayerUtil {
      * 3. 否则依据权重在普通五行灵根中选择若干个。 <br>
      */
     public static List<ISpiritualType> getSpiritualRoots(RandomSource random){
-        final double[] rootChances = {ImmortalConfigs.getNoRootChance(), ImmortalConfigs.getOneRootChance(), ImmortalConfigs.getTwoRootChance(), ImmortalConfigs.getThreeRootChance(), ImmortalConfigs.getFourRootChance()};
+        final double[] rootChances = {IMMConfigs.getNoRootChance(), IMMConfigs.getOneRootChance(), IMMConfigs.getTwoRootChance(), IMMConfigs.getThreeRootChance(), IMMConfigs.getFourRootChance()};
         double chance = random.nextDouble();
         for(int i = 0; i < rootChances.length; ++ i){
             if(chance < rootChances[i]){

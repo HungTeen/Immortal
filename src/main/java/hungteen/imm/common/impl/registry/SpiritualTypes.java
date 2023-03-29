@@ -5,7 +5,7 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.ImmortalConfigs;
+import hungteen.imm.IMMConfigs;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpiritualType;
@@ -35,16 +35,16 @@ public class SpiritualTypes {
         return SPIRITUAL_TYPES;
     }
 
-    public static final ISpiritualType METAL = new SpiritualType("metal", true, ImmortalConfigs::getMetalWeight, 1, ColorHelper.METAL_ROOT, ChatFormatting.GOLD, Pair.of(0, 0));
-    public static final ISpiritualType WOOD = new SpiritualType("wood", true, ImmortalConfigs::getWoodWeight, 2, ColorHelper.WOOD_ROOT, ChatFormatting.GREEN, Pair.of(10, 0));
-    public static final ISpiritualType WATER = new SpiritualType("water", true, ImmortalConfigs::getWaterWeight, 3, ColorHelper.WATER_ROOT, ChatFormatting.DARK_BLUE, Pair.of(20, 0));
-    public static final ISpiritualType FIRE = new SpiritualType("fire", true, ImmortalConfigs::getFireWeight, 4, ColorHelper.FIRE_ROOT, ChatFormatting.RED, Pair.of(30, 0));
-    public static final ISpiritualType EARTH = new SpiritualType("earth", true, ImmortalConfigs::getEarthWeight, 5, ColorHelper.EARTH_ROOT, ChatFormatting.YELLOW, Pair.of(40, 0));
+    public static final ISpiritualType METAL = new SpiritualType("metal", true, IMMConfigs::getMetalWeight, 1, ColorHelper.METAL_ROOT, ChatFormatting.GOLD, Pair.of(0, 0));
+    public static final ISpiritualType WOOD = new SpiritualType("wood", true, IMMConfigs::getWoodWeight, 2, ColorHelper.WOOD_ROOT, ChatFormatting.GREEN, Pair.of(10, 0));
+    public static final ISpiritualType WATER = new SpiritualType("water", true, IMMConfigs::getWaterWeight, 3, ColorHelper.WATER_ROOT, ChatFormatting.DARK_BLUE, Pair.of(20, 0));
+    public static final ISpiritualType FIRE = new SpiritualType("fire", true, IMMConfigs::getFireWeight, 4, ColorHelper.FIRE_ROOT, ChatFormatting.RED, Pair.of(30, 0));
+    public static final ISpiritualType EARTH = new SpiritualType("earth", true, IMMConfigs::getEarthWeight, 5, ColorHelper.EARTH_ROOT, ChatFormatting.YELLOW, Pair.of(40, 0));
 
-    public static final ISpiritualType WIND = new SpiritualType("wind", false, ImmortalConfigs::getWindWeight, 10, ColorHelper.WIND_ROOT, ChatFormatting.AQUA, Pair.of(50, 0));
-    public static final ISpiritualType ELECTRIC = new SpiritualType("electric", false, ImmortalConfigs::getElectricWeight, 11, ColorHelper.ELECTRIC_ROOT, ChatFormatting.DARK_AQUA, Pair.of(60, 0));
-    public static final ISpiritualType DRUG = new SpiritualType("drug", false, ImmortalConfigs::getDrugWeight, 12, ColorHelper.DRUG_ROOT, ChatFormatting.DARK_GREEN, Pair.of(70, 0));
-    public static final ISpiritualType ICE = new SpiritualType("ice", false, ImmortalConfigs::getIceWeight, 13, ColorHelper.ICE_ROOT, ChatFormatting.BLUE, Pair.of(80, 0));
+    public static final ISpiritualType WIND = new SpiritualType("wind", false, IMMConfigs::getWindWeight, 10, ColorHelper.WIND_ROOT, ChatFormatting.AQUA, Pair.of(50, 0));
+    public static final ISpiritualType ELECTRIC = new SpiritualType("electric", false, IMMConfigs::getElectricWeight, 11, ColorHelper.ELECTRIC_ROOT, ChatFormatting.DARK_AQUA, Pair.of(60, 0));
+    public static final ISpiritualType DRUG = new SpiritualType("drug", false, IMMConfigs::getDrugWeight, 12, ColorHelper.DRUG_ROOT, ChatFormatting.DARK_GREEN, Pair.of(70, 0));
+    public static final ISpiritualType ICE = new SpiritualType("ice", false, IMMConfigs::getIceWeight, 13, ColorHelper.ICE_ROOT, ChatFormatting.BLUE, Pair.of(80, 0));
 //    public static final ISpiritualRoot DEAD = new SpiritualRoot("dead", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_PURPLE);
 //    public static final ISpiritualRoot BLOOD = new SpiritualRoot("blood", false, ImmortalConfigs.getIceWeight(), ChatFormatting.DARK_RED);
 //    public static final ISpiritualRoot DARK = new SpiritualRoot("dark", false, ImmortalConfigs.getIceWeight(), ChatFormatting.BLACK);

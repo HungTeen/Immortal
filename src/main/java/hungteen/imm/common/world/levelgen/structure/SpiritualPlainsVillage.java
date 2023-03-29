@@ -1,7 +1,6 @@
 package hungteen.imm.common.world.levelgen.structure;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.world.levelgen.IMMStructures;
 import hungteen.imm.common.world.levelgen.IMMTemplatePools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
@@ -11,19 +10,14 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -34,21 +28,21 @@ import java.util.stream.Collectors;
 public class SpiritualPlainsVillage {
 
     public static void initStructures(BootstapContext<Structure> context) {
-        context.register(IMMStructures.SPIRITUAL_PLAINS_VILLAGE, new JigsawStructure(
-                new Structure.StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS),
-                        Map.of(),
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
-                ),
-                context.lookup(Registries.TEMPLATE_POOL).getOrThrow(IMMTemplatePools.PLAINS_VILLAGE_START),
-                Optional.empty(),
-                6,
-                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
-                true,
-                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                80
-        ));
+//        context.register(IMMStructures.SPIRITUAL_PLAINS_VILLAGE, new JigsawStructure(
+//                new Structure.StructureSettings(
+//                        context.lookup(Registries.BIOME).getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS),
+//                        Map.of(),
+//                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+//                        TerrainAdjustment.BEARD_THIN
+//                ),
+//                context.lookup(Registries.TEMPLATE_POOL).getOrThrow(IMMTemplatePools.PLAINS_VILLAGE_START),
+//                Optional.empty(),
+//                6,
+//                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
+//                true,
+//                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+//                80
+//        ));
     }
 //
 //    public static Function<Registry<Structure>, StructureSet> getStructureSet() {

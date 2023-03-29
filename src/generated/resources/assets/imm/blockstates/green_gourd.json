@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "imm:block/green_gourd",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "imm:block/green_gourd"
+    },
+    "facing=south": {
+      "model": "imm:block/green_gourd",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "imm:block/green_gourd",
+      "y": 270
+    }
+  }
+}

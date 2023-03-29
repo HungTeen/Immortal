@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author: HungTeen
  * @create: 2022-10-21 10:55
  **/
-public class SilkWormRender extends ImmortalMobRender<SilkWorm> {
+public class SilkWormRender extends IMMMobRender<SilkWorm> {
 
     private static final ResourceLocation TEXTURE = Util.prefix("textures/entity/creature/silk_worm.png");
 

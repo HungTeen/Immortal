@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.imm.client.particle.ImmortalParticles;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.util.Constants;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -74,7 +74,7 @@ public class SpiritualFlame extends HTEntity {
     public static ParticleOptions getFlameParticleType(int level) {
         return level <= 3 ? ParticleTypes.FLAME :
                 level <= 6 ? ParticleTypes.SOUL_FIRE_FLAME :
-                        ImmortalParticles.IMMORTAL_FLAME.get();
+                        IMMParticles.IMMORTAL_FLAME.get();
     }
 
     public Vec3 getFlameCenter(){

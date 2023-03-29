@@ -1,0 +1,7 @@
+{
+  "parent": "imm:block/gourd_block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "gourd": "imm:block/purple_gourd"
+  }
+}

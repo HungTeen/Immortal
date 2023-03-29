@@ -10,8 +10,8 @@ import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.entity.*;
 import hungteen.imm.client.model.bake.ImmortalBakeModels;
-import hungteen.imm.client.particle.ImmortalFlameParticle;
-import hungteen.imm.client.particle.ImmortalParticles;
+import hungteen.imm.client.particle.IMMFlameParticle;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.*;
@@ -104,8 +104,8 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
-        event.register(ImmortalParticles.IMMORTAL_FLAME.get(), ImmortalFlameParticle.Factory::new) ;
-        event.register(ImmortalParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new) ;
+        event.register(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new) ;
+        event.register(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new) ;
     }
 
     @SubscribeEvent
@@ -120,7 +120,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
-        ItemHelper.get().filterEntries(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
+        ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
     }

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author: HungTeen
  * @create: 2022-10-20 21:52
  **/
-public class GrassCarpRender extends ImmortalMobRender<GrassCarp> {
+public class GrassCarpRender extends IMMMobRender<GrassCarp> {
 
     private static final ResourceLocation RES = Util.prefix("textures/entity/creature/grass_carp.png");
 

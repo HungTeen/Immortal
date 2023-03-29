@@ -1,7 +1,7 @@
 package hungteen.imm;
 
 import hungteen.imm.client.ClientProxy;
-import hungteen.imm.client.particle.ImmortalParticles;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.CommonRegister;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.IMMBlocks;
@@ -72,7 +72,7 @@ public class ImmortalMod {
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
         /* Config Setup */
-        ImmortalConfigs.init();
+        IMMConfigs.init();
 
         /* Custom Registry */
         coreRegister();
@@ -91,7 +91,7 @@ public class ImmortalMod {
         IMMRecipes.RECIPE_TYPES.register(modBus);
         IMMMenus.register(modBus);
         IMMBannerPatterns.register(modBus);
-        ImmortalParticles.register(modBus);
+        IMMParticles.register(modBus);
         IMMDataSerializers.register(modBus);
         ImmortalMemories.register(modBus);
         ImmortalSensors.register(modBus);
