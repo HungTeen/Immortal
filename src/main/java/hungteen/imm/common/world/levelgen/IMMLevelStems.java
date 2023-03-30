@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.levelgen;
 
+import hungteen.htlib.util.helper.registry.LevelHelper;
 import hungteen.imm.util.Util;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -29,14 +29,16 @@ public class IMMLevelStems {
 //    );
 
     public static void register(BootstapContext<LevelStem> context){
+
+
     }
 
     private static ResourceKey<Level> createLevel(String name) {
-        return ResourceKey.create(Registries.DIMENSION, Util.prefix(name));
+        return LevelHelper.get().createKey(Util.prefix(name));
     }
 
     private static ResourceKey<LevelStem> createStem(String name) {
-        return ResourceKey.create(Registries.LEVEL_STEM, Util.prefix(name));
+        return LevelHelper.stem().createKey(Util.prefix(name));
     }
 
 }

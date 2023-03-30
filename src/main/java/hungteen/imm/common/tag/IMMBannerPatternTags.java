@@ -1,6 +1,6 @@
 package hungteen.imm.common.tag;
 
-import hungteen.htlib.util.helper.registry.BannerPatternHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -23,6 +23,6 @@ public class IMMBannerPatternTags {
     }
     
     private static TagKey<BannerPattern> create(ResourceLocation location) {
-        return BannerPatternHelper.get().tag(location);
+        return BlockHelper.banner().tag(location);
     }
 }

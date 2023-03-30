@@ -2,6 +2,12 @@ package hungteen.imm.common.world.levelgen.dimension;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
+import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
+import hungteen.imm.common.world.levelgen.IMMSurfaceRules;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -9,21 +15,24 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseRouterData;
+import net.minecraft.world.level.levelgen.NoiseSettings;
 
 import java.util.List;
 import java.util.OptionalLong;
 import java.util.function.Consumer;
 
 /**
+ * Look at {@link OverworldBiomeBuilder}
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-18 12:49
- * <p>
- * Look at {@link OverworldBiomeBuilder}
  **/
-public class SpiritualLandDimension {
+public class EastWorldDimension {
 
     private static final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
     private static final Climate.Parameter MUSHROOM_FIELDS_CONTINENTALNESS = Climate.Parameter.span(-1.2F, -1.05F);
@@ -181,8 +190,8 @@ public class SpiritualLandDimension {
         );
     }
 
-    public static DimensionType getDimensionType() {
-        return new DimensionType(
+    public static void initDimensionType(BootstapContext<DimensionType> context) {
+        context.register(IMMDimensionTypes.EAST_WORLD, new DimensionType(
                 OptionalLong.empty(),
                 true,
                 false,
@@ -198,7 +207,27 @@ public class SpiritualLandDimension {
                 BuiltinDimensionTypes.OVERWORLD_EFFECTS,
                 0.0F,
                 new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
-        );
+        ));
+    }
+
+    public static void initNoiseSettings(BootstapContext<NoiseGeneratorSettings> context) {
+        context.register(IMMNoiseSettings.EAST_WORLD, new NoiseGeneratorSettings(
+                NoiseSettings.create(-64, 384, 1, 2),
+                Blocks.STONE.defaultBlockState(),
+                Blocks.WATER.defaultBlockState(),
+                NoiseRouterData.overworld(
+                        context.lookup(Registries.DENSITY_FUNCTION),
+                        context.lookup(Registries.NOISE),
+                        false,
+                        false),
+                IMMSurfaceRules.overworldLike(false, true),
+                spawnTarget(),
+                63,
+                false,
+                true,
+                true,
+                false
+        ));
     }
 
 }

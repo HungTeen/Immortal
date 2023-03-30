@@ -1,7 +1,7 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTHolderTagsProvider;
-import hungteen.htlib.util.helper.registry.BannerPatternHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.misc.IMMBannerPatterns;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 public class BannerPatternTagGen extends HTHolderTagsProvider<BannerPattern> {
 
     public BannerPatternTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, provider, BannerPatternHelper.get(), Util.id(), existingFileHelper);
+        super(output, provider, BlockHelper.banner(), Util.id(), existingFileHelper);
     }
 
     @Override

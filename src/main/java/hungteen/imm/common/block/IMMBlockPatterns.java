@@ -1,5 +1,6 @@
 package hungteen.imm.common.block;
 
+import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -17,11 +18,28 @@ import java.util.function.Predicate;
 public class IMMBlockPatterns {
     public static final Predicate<BlockState> PUMPKINS_PREDICATE = (state) -> state != null && (state.is(Blocks.CARVED_PUMPKIN) || state.is(Blocks.JACK_O_LANTERN));
     private static BlockPattern CreeperPattern;
+    private static BlockPattern TeleportPattern;
 
     public static BlockPattern getCreeperPattern(){
         if(CreeperPattern == null){
-            CreeperPattern = BlockPatternBuilder.start().aisle("^", "#", "#").where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE)).where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.TNT))).build();
+            CreeperPattern = BlockPatternBuilder.start()
+                    .aisle("^", "#", "#")
+                    .where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE))
+                    .where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.TNT)))
+                    .build();
         }
         return CreeperPattern;
+    }
+
+    public static BlockPattern getTeleportPattern(){
+        if(TeleportPattern == null){
+            TeleportPattern = BlockPatternBuilder.start()
+                    .aisle("  ^  ", "     ", "^   ^", "     ", "  ^  ")
+                    .aisle("#####", "#####", "#####", "#####", "#####")
+                    .where('^', BlockInWorld.hasState(TeleportAnchorBlock.ANCHOR_PREDICATE))
+                    .where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.REINFORCED_DEEPSLATE)))
+                    .build();
+        }
+        return TeleportPattern;
     }
 }

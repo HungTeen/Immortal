@@ -6,7 +6,10 @@ import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 
@@ -20,6 +23,10 @@ import java.util.Optional;
  * @create: 2022-10-27 14:35
  **/
 public class BlockUtil {
+
+    public static void playSound(Level level, BlockPos pos, SoundEvent soundEvent){
+        level.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, soundEvent, SoundSource.BLOCKS, 1.0F, 1.0F);
+    }
 
     public static AABB getBlockAABB(BlockPos pos){
         return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);

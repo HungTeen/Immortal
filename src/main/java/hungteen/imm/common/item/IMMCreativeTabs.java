@@ -93,6 +93,7 @@ public class IMMCreativeTabs {
             BlockUtil.getWoolCushions().forEach(pair -> {
                 event.accept(new ItemStack(pair.getSecond()));
             });
+            event.accept(new ItemStack(IMMBlocks.TELEPORT_ANCHOR.get()));
         } else if(event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS){
             Arrays.asList(
                     IMMItems.MULBERRY

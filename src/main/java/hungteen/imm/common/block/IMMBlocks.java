@@ -6,6 +6,7 @@ import hungteen.htlib.common.block.plants.HTSaplingBlock;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.AttachedGourdStemBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.block.plants.GourdStemBlock;
@@ -39,6 +40,10 @@ public class IMMBlocks {
 
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
+
+    /* Special Blocks */
+
+    public static final RegistryObject<Block> TELEPORT_ANCHOR = BLOCKS.register("teleport_anchor", TeleportAnchorBlock::new);
 
     /* Entity Blocks */
 
@@ -86,6 +91,7 @@ public class IMMBlocks {
             ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
         });
         Arrays.asList(
+                TELEPORT_ANCHOR,
                 MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_SAPLING
         ).forEach(obj -> {
             ItemHelper.get().register(event, obj.getId(), () -> new BlockItem(obj.get(), new Item.Properties()));

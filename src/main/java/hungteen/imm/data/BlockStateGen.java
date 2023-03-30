@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.block.plants.GourdStemBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -51,6 +53,19 @@ public class BlockStateGen extends HTBlockStateGen {
 //        Arrays.asList(
 //                ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()
 //        ).forEach(this::spiritualRoom);
+
+        this.gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> {
+            getVariantBuilder(block).forAllStates(state -> {
+                final int charge = state.getValue(TeleportAnchorBlock.CHARGE);
+                return ConfiguredModel.builder()
+                        .modelFile(models().cubeBottomTop(name(block) + "_" + charge,
+                                        StringHelper.suffix(BlockHelper.blockTexture(block), "side" + charge),
+                                        StringHelper.suffix(BlockHelper.blockTexture(block), "bottom"),
+                                        StringHelper.suffix(BlockHelper.blockTexture(block), "top")
+                                ).renderType(solid())
+                        ).build();
+            });
+        });
 
         /* Crops with age property. */
 //        Arrays.asList(
@@ -166,6 +181,11 @@ public class BlockStateGen extends HTBlockStateGen {
                 .texture("insides", StringHelper.suffix(BlockHelper.blockTexture(block), "insides"))
                 .renderType(translucent())
         );
+        this.addedBlocks.add(block);
+    }
+
+    private void gen(Block block, Consumer<Block> consumer) {
+        consumer.accept(block);
         this.addedBlocks.add(block);
     }
 

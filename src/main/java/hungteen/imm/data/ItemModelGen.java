@@ -16,11 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -61,6 +63,8 @@ public class ItemModelGen extends HTItemModelGen {
         ).forEach(block -> {
             genItemModelWithBlock(block.get().asItem());
         });
+
+        gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> genBlockModel(block, name(block) + "_0"));
 
         /* For large hand held item. */
         ItemUtil.getLargeHeldItems().forEach(item -> {
@@ -112,5 +116,15 @@ public class ItemModelGen extends HTItemModelGen {
 
     protected ItemModelBuilder genLargeHeld(String name, ResourceLocation... layers) {
         return this.gen(name, Util.prefixName("item/large_handheld"), layers);
+    }
+
+    protected void gen(Block block, Consumer<Block> consumer){
+        consumer.accept(block);
+        this.addedItems.add(block.asItem());
+    }
+
+    protected void gen(Item item, Consumer<Item> consumer){
+        consumer.accept(item);
+        this.addedItems.add(item);
     }
 }
