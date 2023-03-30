@@ -138,7 +138,6 @@ public class ImmortalMod {
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-//            PVZFeatures.registerFeatures();
 ////            PotionRecipeHandler.registerPotionRecipes();
 //            SpawnRegister.registerEntitySpawns();
             CommonRegister.registerCompostable();

@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity.human.cultivator;
 
+import hungteen.htlib.util.WeightedList;
 import hungteen.imm.common.entity.human.HumanEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,7 +36,7 @@ public abstract class Cultivator extends HumanEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(CULTIVATOR_TYPE, CultivatorTypes.COMMON.ordinal());
+        entityData.define(CULTIVATOR_TYPE, CultivatorTypes.STEVE.ordinal());
         entityData.define(SLIM, false);
     }
 
@@ -43,17 +44,27 @@ public abstract class Cultivator extends HumanEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
         if(!accessor.isClientSide()){
-            final int type = accessor.getRandom().nextInt(CultivatorTypes.values().length);
-            this.setCultivatorType(CultivatorTypes.values()[type]);
+            // 随机选择散修类型。
+            WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
             this.setSlim(accessor.getRandom().nextInt(2) == 0);
             this.setCustomName(this.getCultivatorType().getDisplayName());
+            if(! getCultivatorType().isCommon()){
+                this.modifyAttributes(getCultivatorType());
+            }
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
     }
 
+    /**
+     * 对于特殊的散修类型，可以修改一些数值。
+     */
+    public void modifyAttributes(CultivatorTypes type){
+
+    }
+
     @Override
     public Component getName() {
-        return this.getCultivatorType() == CultivatorTypes.COMMON ? super.getName() : this.getCultivatorType().getDisplayName();
+        return this.getCultivatorType().getDisplayName();
     }
 
     @Override
