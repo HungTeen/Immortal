@@ -20,4 +20,8 @@ public class TipUtil {
         return Component.translatable("info." + Util.id() + "." + name, objects);
     }
 
+    public static MutableComponent command(String name, Object... objects){
+        return Component.translatable("command." + Util.id() + "." + name, objects);
+    }
+
 }

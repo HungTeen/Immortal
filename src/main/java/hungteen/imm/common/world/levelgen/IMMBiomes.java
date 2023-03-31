@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.levelgen;
 
 import hungteen.htlib.util.helper.registry.BiomeHelper;
+import hungteen.imm.common.world.levelgen.biome.EastWorldBiomes;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.biome.Biomes;
@@ -16,17 +17,15 @@ import net.minecraft.world.level.biome.Biome;
  **/
 public class IMMBiomes {
 
-    public static final ResourceKey<Biome> SPIRITUAL_PLAINS = register("spiritual_plains");
-    public static final ResourceKey<Biome> SPIRITUAL_SAVANNA = register("spiritual_savanna");
-    public static final ResourceKey<Biome> SPIRITUAL_DESERT = register("spiritual_desert");
+    public static final ResourceKey<Biome> SPIRITUAL_PLAINS = create("spiritual_plains");
+    public static final ResourceKey<Biome> SPIRITUAL_SAVANNA = create("spiritual_savanna");
+    public static final ResourceKey<Biome> SPIRITUAL_DESERT = create("spiritual_desert");
 
     public static void register(BootstapContext<Biome> context){
-//        register(SPIRITUAL_PLAINS, SpiritualLandBiomes.plains());
-//        register(SPIRITUAL_SAVANNA, SpiritualLandBiomes.savanna());
-//        register(SPIRITUAL_DESERT, SpiritualLandBiomes.desert());
+        EastWorldBiomes.initBiomes(context);
     }
 
-    private static ResourceKey<Biome> register(String name){
+    private static ResourceKey<Biome> create(String name){
         return BiomeHelper.get().createKey(Util.prefix(name));
     }
 

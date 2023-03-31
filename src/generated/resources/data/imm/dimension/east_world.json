@@ -1,0 +1,11 @@
+{
+  "type": "imm:east_world",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "preset": "imm:east_world"
+    },
+    "settings": "imm:east_world"
+  }
+}

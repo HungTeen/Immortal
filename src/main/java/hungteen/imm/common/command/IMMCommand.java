@@ -10,8 +10,9 @@ import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.world.IMMTeleporters;
-import hungteen.imm.common.world.levelgen.IMMLevelStems;
+import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -33,13 +34,12 @@ import java.util.List;
  **/
 public class IMMCommand {
 
-    private static final String COMMAND_SPIRITUAL_ROOT = "command.immortal.spiritual_root";
-    private static final Component COMMAND_LEARN_ALL_SPELLS = Component.translatable("command.immortal.learn_all_spells");
-    private static final Component COMMAND_FORGET_ALL_SPELLS = Component.translatable("command.immortal.forget_all_spells");
+    private static final Component COMMAND_LEARN_ALL_SPELLS = TipUtil.command("learn_all_spells");
+    private static final Component COMMAND_FORGET_ALL_SPELLS = TipUtil.command("forget_all_spells");
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("immortal").requires((ctx) -> ctx.hasPermission(2));
-        if(IMMAPI.get().spiritualRegistry().isPresent()){// about spiritual roots.
+        LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("imm").requires((ctx) -> ctx.hasPermission(2));
+        if (IMMAPI.get().spiritualRegistry().isPresent()) {// about spiritual roots.
             IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
                 builder.then(Commands.literal("root")
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -64,7 +64,7 @@ public class IMMCommand {
                             )
                     ));
         }
-        if(IMMAPI.get().spellRegistry().isPresent()){// about spells.
+        if (IMMAPI.get().spellRegistry().isPresent()) {// about spells.
             IMMAPI.get().spellRegistry().get().getValues().forEach(spell -> {
                 builder.then(Commands.literal("spell")
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -84,7 +84,7 @@ public class IMMCommand {
                                 .then(Commands.literal("set")
                                         .then(Commands.literal(spell.getRegistryName())
                                                 .then(Commands.argument("pos", IntegerArgumentType.integer(0, 7))
-                                                    .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
+                                                        .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
                                                 )))
                         ));
             });
@@ -101,7 +101,7 @@ public class IMMCommand {
                                     ))
                     ));
         }
-        if(IMMAPI.get().integerDataRegistry().isPresent()){// about other data.
+        if (IMMAPI.get().integerDataRegistry().isPresent()) {// about other data.
             IMMAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
                 builder.then(Commands.literal("data")
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -125,8 +125,8 @@ public class IMMCommand {
         {
             builder.then(Commands.literal("tp")
                     .then(Commands.argument("targets", EntityArgument.players())
-                            .then(Commands.literal("spiritual_land")
-                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), IMMLevelStems.SPIRITUAL_LAND_DIMENSION))
+                            .then(Commands.literal("east_world")
+                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), IMMLevels.EAST_WORLD))
                             )
                             .then(Commands.literal("overworld")
                                     .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), Level.OVERWORLD))
@@ -137,7 +137,7 @@ public class IMMCommand {
         dispatcher.register(builder);
     }
 
-    private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey){
+    private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey) {
         for (ServerPlayer player : targets) {
             ServerLevel serverlevel = ((ServerLevel) player.level).getServer().getLevel(resourceKey);
             if (serverlevel != null) {
@@ -183,15 +183,15 @@ public class IMMCommand {
     /**
      * @param spread tell the target player or not.
      */
-    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread){
+    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread) {
         PlayerUtil.getOptManager(player).ifPresent(l -> {
-            final MutableComponent component = Component.translatable(COMMAND_SPIRITUAL_ROOT, player.getName().getString());
+            final MutableComponent component = TipUtil.command("spiritual_root", player.getName().getString());
             final List<ISpiritualType> list = l.getSpiritualRoots();
-            for(int i = 0; i < list.size(); ++ i){
-                if(i > 0) component.append(Component.literal(","));
+            for (int i = 0; i < list.size(); ++i) {
+                if (i > 0) component.append(Component.literal(","));
                 component.append(list.get(i).getComponent());
             }
-            if(spread) PlayerHelper.sendMsgTo(player, component);
+            if (spread) PlayerHelper.sendMsgTo(player, component);
             source.sendSuccess(component, true);
         });
     }
@@ -279,11 +279,11 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static Component getIntegerComponent(Player player, IRangeNumber<Integer> data, int value){
+    private static Component getIntegerComponent(Player player, IRangeNumber<Integer> data, int value) {
         return Component.literal(player.getName().getString() + " -> " + data.getComponent().getString() + " : " + value);
     }
 
-    private static Component getIntegerComponent(IRangeNumber<Integer> data, int value){
+    private static Component getIntegerComponent(IRangeNumber<Integer> data, int value) {
         return Component.literal(data.getComponent().getString() + " : " + value);
     }
 

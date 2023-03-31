@@ -25,6 +25,7 @@ import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
+import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.levelgen.biome.BiomeManager;
 import hungteen.imm.common.world.levelgen.feature.ImmortalConfiguredFeatures;
 import hungteen.imm.data.DataGenHandler;
@@ -138,6 +139,7 @@ public class ImmortalMod {
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            IMMLevels.register();
 ////            PotionRecipeHandler.registerPotionRecipes();
 //            SpawnRegister.registerEntitySpawns();
             CommonRegister.registerCompostable();

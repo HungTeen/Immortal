@@ -1,11 +1,7 @@
 package hungteen.imm.common.world.levelgen.dimension;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.world.levelgen.IMMBiomes;
-import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
-import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
-import hungteen.imm.common.world.levelgen.IMMSurfaceRules;
-import net.minecraft.core.registries.BuiltInRegistries;
+import hungteen.imm.common.world.levelgen.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +14,8 @@ import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.NoiseSettings;
@@ -98,7 +96,7 @@ public class EastWorldDimension {
             {null, null, null, null, null}
     };
 
-    protected static void addBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
+    public static void addBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
         addOffCoastBiomes(consumer);
         addInlandBiomes(consumer);
         addUndergroundBiomes(consumer);
@@ -168,28 +166,6 @@ public class EastWorldDimension {
         }
     }
 
-    public static List<Climate.ParameterPoint> spawnTarget() {
-        Climate.Parameter zero = Climate.Parameter.point(0.0F);
-        return List.of(new Climate.ParameterPoint(
-                        FULL_RANGE,
-                        FULL_RANGE,
-                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
-                        FULL_RANGE,
-                        zero,
-                        Climate.Parameter.span(-1.0F, -0.16F),
-                        0L
-                ), new Climate.ParameterPoint(
-                        FULL_RANGE,
-                        FULL_RANGE,
-                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
-                        FULL_RANGE,
-                        zero,
-                        Climate.Parameter.span(0.16F, 1.0F),
-                        0L
-                )
-        );
-    }
-
     public static void initDimensionType(BootstapContext<DimensionType> context) {
         context.register(IMMDimensionTypes.EAST_WORLD, new DimensionType(
                 OptionalLong.empty(),
@@ -228,6 +204,38 @@ public class EastWorldDimension {
                 true,
                 false
         ));
+    }
+
+    public static void initLevelStem(BootstapContext<LevelStem> context){
+        context.register(IMMLevelStems.EAST_WORLD, new LevelStem(
+                context.lookup(Registries.DIMENSION_TYPE).getOrThrow(IMMDimensionTypes.EAST_WORLD),
+                new NoiseBasedChunkGenerator(
+                        IMMLevels.EAST_WORLD_PRESET.biomeSource(context.lookup(Registries.BIOME)),
+                        context.lookup(Registries.NOISE_SETTINGS).getOrThrow(IMMNoiseSettings.EAST_WORLD)
+                )
+        ));
+    }
+
+    private static List<Climate.ParameterPoint> spawnTarget() {
+        Climate.Parameter zero = Climate.Parameter.point(0.0F);
+        return List.of(new Climate.ParameterPoint(
+                        FULL_RANGE,
+                        FULL_RANGE,
+                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
+                        FULL_RANGE,
+                        zero,
+                        Climate.Parameter.span(-1.0F, -0.16F),
+                        0L
+                ), new Climate.ParameterPoint(
+                        FULL_RANGE,
+                        FULL_RANGE,
+                        Climate.Parameter.span(INLAND_CONTINENTALNESS, FULL_RANGE),
+                        FULL_RANGE,
+                        zero,
+                        Climate.Parameter.span(0.16F, 1.0F),
+                        0L
+                )
+        );
     }
 
 }
