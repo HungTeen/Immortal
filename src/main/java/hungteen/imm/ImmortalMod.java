@@ -12,9 +12,9 @@ import hungteen.imm.common.datapack.IMMDataPacks;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
-import hungteen.imm.common.impl.BehaviorRunes;
-import hungteen.imm.common.impl.MemoryRunes;
-import hungteen.imm.common.impl.SensorRunes;
+import hungteen.imm.common.rune.BehaviorRunes;
+import hungteen.imm.common.rune.MemoryRunes;
+import hungteen.imm.common.rune.SensorRunes;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
@@ -89,18 +89,18 @@ public class ImmortalMod {
         IMMBlocks.register(modBus);
         IMMEntities.register(modBus);
         IMMBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
-        ImmortalSchedules.SCHEDULES.register(modBus);
+        IMMSchedules.SCHEDULES.register(modBus);
         IMMRecipes.RECIPE_SERIALIZERS.register(modBus);
         IMMRecipes.RECIPE_TYPES.register(modBus);
         IMMMenus.register(modBus);
         IMMBannerPatterns.register(modBus);
         IMMParticles.register(modBus);
         IMMDataSerializers.register(modBus);
-        ImmortalMemories.register(modBus);
-        ImmortalSensors.register(modBus);
-        ImmortalActivities.register(modBus);
-        ImmortalPoiTypes.register(modBus);
-        ImmortalProfessions.register(modBus);
+        IMMMemories.register(modBus);
+        IMMSensors.register(modBus);
+        IMMActivities.register(modBus);
+        IMMPoiTypes.register(modBus);
+        IMMProfessions.register(modBus);
         ImmortalConfiguredFeatures.register(modBus);
     }
 

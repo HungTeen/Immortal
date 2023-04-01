@@ -1,12 +1,11 @@
-package hungteen.imm.common.impl;
+package hungteen.imm.common.rune;
 
-import hungteen.imm.common.RuneManager;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.Level;

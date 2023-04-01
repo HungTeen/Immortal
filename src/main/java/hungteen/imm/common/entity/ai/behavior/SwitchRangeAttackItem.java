@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ItemUtil;
@@ -20,7 +20,7 @@ public class SwitchRangeAttackItem extends Behavior<HumanEntity> {
     private final float refreshChance;
 
     public SwitchRangeAttackItem(float refreshChance) {
-        super(ImmutableMap.of(ImmortalMemories.UNABLE_RANGE_ATTACK.get(), MemoryStatus.VALUE_ABSENT), 20, 40);
+        super(ImmutableMap.of(IMMMemories.UNABLE_RANGE_ATTACK.get(), MemoryStatus.VALUE_ABSENT), 20, 40);
         this.refreshChance = refreshChance;
     }
 
@@ -44,7 +44,7 @@ public class SwitchRangeAttackItem extends Behavior<HumanEntity> {
         }
         // No range weapon in inventory at all.
         if(! EntityUtil.isMainHolding(entity, ItemUtil::isRangeWeapon)){
-            entity.getBrain().setMemory(ImmortalMemories.UNABLE_RANGE_ATTACK.get(), true);
+            entity.getBrain().setMemory(IMMMemories.UNABLE_RANGE_ATTACK.get(), true);
         }
     }
 

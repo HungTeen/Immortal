@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ItemUtil;
@@ -20,7 +20,7 @@ public class SwitchMeleeAttackItem extends Behavior<HumanEntity> {
     private final float refreshChance;
 
     public SwitchMeleeAttackItem(float refreshChance) {
-        super(ImmutableMap.of(ImmortalMemories.UNABLE_MELEE_ATTACK.get(), MemoryStatus.VALUE_ABSENT), 20, 40);
+        super(ImmutableMap.of(IMMMemories.UNABLE_MELEE_ATTACK.get(), MemoryStatus.VALUE_ABSENT), 20, 40);
         this.refreshChance = refreshChance;
     }
 
@@ -44,7 +44,7 @@ public class SwitchMeleeAttackItem extends Behavior<HumanEntity> {
         }
         // No melee weapon in inventory at all.
         if(! EntityUtil.isMainHolding(entity, ItemUtil::isMeleeWeapon)){
-            entity.getBrain().setMemory(ImmortalMemories.UNABLE_MELEE_ATTACK.get(), true);
+            entity.getBrain().setMemory(IMMMemories.UNABLE_MELEE_ATTACK.get(), true);
         }
     }
 

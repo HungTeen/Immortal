@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class BreakBoat extends Behavior<LivingEntity> {
 
     public BreakBoat() {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, ImmortalMemories.NEAREST_BOAT.get(), MemoryStatus.VALUE_PRESENT), 10);
+        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, IMMMemories.NEAREST_BOAT.get(), MemoryStatus.VALUE_PRESENT), 10);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class BreakBoat extends Behavior<LivingEntity> {
                 target.discard();
             }
         });
-        entity.getBrain().setMemory(ImmortalMemories.NEAREST_BOAT.get(), Optional.empty());
+        entity.getBrain().setMemory(IMMMemories.NEAREST_BOAT.get(), Optional.empty());
     }
 
     private Optional<Entity> getEntity(LivingEntity entity){
-        return entity.getBrain().getMemory(ImmortalMemories.NEAREST_BOAT.get());
+        return entity.getBrain().getMemory(IMMMemories.NEAREST_BOAT.get());
     }
 
 }

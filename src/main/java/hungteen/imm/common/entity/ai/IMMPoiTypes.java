@@ -16,7 +16,7 @@ import java.util.Set;
  * @author: HungTeen
  * @create: 2022-11-17 10:54
  **/
-public class ImmortalPoiTypes {
+public class IMMPoiTypes {
 
     private static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, Util.id());
 

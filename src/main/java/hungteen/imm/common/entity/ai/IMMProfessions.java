@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author: HungTeen
  * @create: 2022-11-17 11:00
  **/
-public class ImmortalProfessions {
+public class IMMProfessions {
 
     private static final DeferredRegister<VillagerProfession> PROFESSION_TYPES = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Util.id());
 

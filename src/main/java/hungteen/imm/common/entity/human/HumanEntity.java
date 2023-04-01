@@ -8,8 +8,8 @@ import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMGrowableCreature;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
-import hungteen.imm.common.entity.ai.ImmortalSensors;
+import hungteen.imm.common.entity.ai.IMMMemories;
+import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -289,10 +289,10 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 MemoryModuleType.INTERACTION_TARGET,
                 MemoryModuleType.ANGRY_AT,
                 /* Custom */
-                ImmortalMemories.UNABLE_MELEE_ATTACK.get(),
-                ImmortalMemories.UNABLE_RANGE_ATTACK.get(),
-                ImmortalMemories.NEAREST_BOAT.get(),
-                ImmortalMemories.NEAREST_PROJECTILE.get()
+                IMMMemories.UNABLE_MELEE_ATTACK.get(),
+                IMMMemories.UNABLE_RANGE_ATTACK.get(),
+                IMMMemories.NEAREST_BOAT.get(),
+                IMMMemories.NEAREST_PROJECTILE.get()
         );
     }
 
@@ -303,8 +303,8 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 SensorType.NEAREST_ITEMS,
                 SensorType.NEAREST_BED,
                 SensorType.HURT_BY,
-                ImmortalSensors.NEAREST_BOAT.get(),
-                ImmortalSensors.HAS_PROJECTILE_NEARBY.get()
+                IMMSensors.NEAREST_BOAT.get(),
+                IMMSensors.HAS_PROJECTILE_NEARBY.get()
         );
     }
 

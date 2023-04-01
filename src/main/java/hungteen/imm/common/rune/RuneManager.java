@@ -1,4 +1,4 @@
-package hungteen.imm.common;
+package hungteen.imm.common.rune;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.golem.GolemEntity;

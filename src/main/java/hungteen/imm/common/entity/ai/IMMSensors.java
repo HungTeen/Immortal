@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  * @author: HungTeen
  * @create: 2022-11-24 22:10
  **/
-public class ImmortalSensors {
+public class IMMSensors {
 
     private static final DeferredRegister<SensorType<?>> SENSORS = DeferredRegister.create(ForgeRegistries.SENSOR_TYPES, Util.id());
 

@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author: HungTeen
  * @create: 2022-10-22 19:48
  **/
-public class ImmortalSchedules {
+public class IMMSchedules {
 
     public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, Util.id());
 

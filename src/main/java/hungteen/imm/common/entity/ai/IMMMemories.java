@@ -17,7 +17,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-11-24 21:59
  **/
-public class ImmortalMemories {
+public class IMMMemories {
 
     private static final DeferredRegister<MemoryModuleType<?>> MEMORIES = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, Util.id());
 

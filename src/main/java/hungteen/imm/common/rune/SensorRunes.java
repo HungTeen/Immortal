@@ -1,6 +1,5 @@
-package hungteen.imm.common.impl;
+package hungteen.imm.common.rune;
 
-import hungteen.imm.common.RuneManager;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;

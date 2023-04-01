@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.EntityUtil;
@@ -30,7 +30,7 @@ public class UseShield extends Behavior<HumanEntity> {
                 MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED,
                 MemoryModuleType.ATTACK_TARGET, MemoryStatus.REGISTERED,
                 MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_PRESENT,
-                ImmortalMemories.NEAREST_PROJECTILE.get(), MemoryStatus.REGISTERED
+                IMMMemories.NEAREST_PROJECTILE.get(), MemoryStatus.REGISTERED
         ), minInterval, maxInterval);
     }
 
@@ -65,7 +65,7 @@ public class UseShield extends Behavior<HumanEntity> {
     }
 
     private Optional<Projectile> getProjectile(HumanEntity entity){
-        return entity.getBrain().getMemory(ImmortalMemories.NEAREST_PROJECTILE.get());
+        return entity.getBrain().getMemory(IMMMemories.NEAREST_PROJECTILE.get());
     }
 
     private Optional<Entity> getLookTarget(HumanEntity entity) {

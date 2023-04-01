@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.ai.sensor;
 
 import com.google.common.collect.ImmutableSet;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -33,7 +33,7 @@ public class NearestProjectileSensor<T extends Mob> extends Sensor<T> {
                 owner, aabb, Projectile.class, target -> isProjectile(target) && owner.getSensing().hasLineOfSight(target)
         );
         list.sort(Comparator.comparingDouble(owner::distanceToSqr));
-        owner.getBrain().setMemory(ImmortalMemories.NEAREST_PROJECTILE.get(), list.isEmpty() ? null : list.get(0));
+        owner.getBrain().setMemory(IMMMemories.NEAREST_PROJECTILE.get(), list.isEmpty() ? null : list.get(0));
     }
 
     public static boolean isProjectile(Entity target) {
@@ -42,6 +42,6 @@ public class NearestProjectileSensor<T extends Mob> extends Sensor<T> {
 
     @Override
     public Set<MemoryModuleType<?>> requires() {
-        return ImmutableSet.of(ImmortalMemories.NEAREST_PROJECTILE.get());
+        return ImmutableSet.of(IMMMemories.NEAREST_PROJECTILE.get());
     }
 }

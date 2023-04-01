@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.sensor;
 
 import com.google.common.collect.ImmutableSet;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -41,7 +41,7 @@ public class NearestBoatSensor<T extends Mob> extends Sensor<T> {
             boat = list.isEmpty() ? null : list.get(0);
         }
         Brain<?> brain = owner.getBrain();
-        brain.setMemory(ImmortalMemories.NEAREST_BOAT.get(), boat);
+        brain.setMemory(IMMMemories.NEAREST_BOAT.get(), boat);
     }
 
     public static boolean isBoat(Entity target) {
@@ -51,6 +51,6 @@ public class NearestBoatSensor<T extends Mob> extends Sensor<T> {
 
     @Override
     public Set<MemoryModuleType<?>> requires() {
-        return ImmutableSet.of(ImmortalMemories.NEAREST_BOAT.get());
+        return ImmutableSet.of(IMMMemories.NEAREST_BOAT.get());
     }
 }

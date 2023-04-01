@@ -3,8 +3,8 @@ package hungteen.imm.common.entity.human.cultivator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.entity.ai.ImmortalActivities;
-import hungteen.imm.common.entity.ai.ImmortalMemories;
+import hungteen.imm.common.entity.ai.IMMActivities;
+import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.behavior.*;
 import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.util.BrainUtil;
@@ -52,39 +52,39 @@ public class EmptyCultivatorAi {
     protected static void updateActivity(EmptyCultivator cultivator) {
         cultivator.getBrain().getActiveNonCoreActivity().ifPresent(activity -> {
             Optional<LivingEntity> opt = BrainUtil.getTarget(cultivator);
-            if (activity.equals(ImmortalActivities.MELEE_FIGHT.get())) {
+            if (activity.equals(IMMActivities.MELEE_FIGHT.get())) {
                 if (opt.isEmpty()) {
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
-                } else if (BrainUtil.healthBelow(cultivator, 0.3D) || cultivator.getBrain().hasMemoryValue(ImmortalMemories.UNABLE_MELEE_ATTACK.get())) {
-                    cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.ESCAPE.get());
+                } else if (BrainUtil.healthBelow(cultivator, 0.3D) || cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_MELEE_ATTACK.get())) {
+                    cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.ESCAPE.get());
                 } else if(cultivator.distanceToSqr(opt.get()) > 300 && cultivator.getRandom().nextFloat() < 0.05F){
-                    cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.RANGE_FIGHT.get());
+                    cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.RANGE_FIGHT.get());
                 }
-            } else if (activity.equals(ImmortalActivities.RANGE_FIGHT.get())) {
+            } else if (activity.equals(IMMActivities.RANGE_FIGHT.get())) {
                 if (opt.isEmpty()) {
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
                 } else if (BrainUtil.healthBelow(cultivator, 0.25D)) {
-                    cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.ESCAPE.get());
-                } else if ((cultivator.distanceToSqr(opt.get()) < 10 && cultivator.getRandom().nextFloat() < 0.05F) || cultivator.getBrain().hasMemoryValue(ImmortalMemories.UNABLE_RANGE_ATTACK.get())) {
-                    cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.MELEE_FIGHT.get());
+                    cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.ESCAPE.get());
+                } else if ((cultivator.distanceToSqr(opt.get()) < 10 && cultivator.getRandom().nextFloat() < 0.05F) || cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_RANGE_ATTACK.get())) {
+                    cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.MELEE_FIGHT.get());
                 }
-            } else if (activity.equals(ImmortalActivities.ESCAPE.get())) {
+            } else if (activity.equals(IMMActivities.ESCAPE.get())) {
                 if (opt.isEmpty()) {
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
                 } else if(cultivator.distanceToSqr(opt.get()) > 300 && ! BrainUtil.healthBelow(cultivator, 0.5)){
-                    cultivator.getBrain().setActiveActivityIfPossible(ImmortalActivities.RANGE_FIGHT.get());
+                    cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.RANGE_FIGHT.get());
                 }
             } else {
                 // 找到目标就切换为攻击状态
                 if (opt.isPresent()) {
-                    cultivator.getBrain().setActiveActivityIfPossible(cultivator.getRandom().nextFloat() < 0.4F ? ImmortalActivities.MELEE_FIGHT.get() : ImmortalActivities.RANGE_FIGHT.get());
+                    cultivator.getBrain().setActiveActivityIfPossible(cultivator.getRandom().nextFloat() < 0.4F ? IMMActivities.MELEE_FIGHT.get() : IMMActivities.RANGE_FIGHT.get());
                 }
             }
         });
         // Refresh inventory check.
         if(cultivator.tickCount % 40 == 5){
-            if(cultivator.getBrain().hasMemoryValue(ImmortalMemories.UNABLE_MELEE_ATTACK.get()) && cultivator.hasItemStack(ItemUtil::isMeleeWeapon)){
-                cultivator.getBrain().eraseMemory(ImmortalMemories.UNABLE_MELEE_ATTACK.get());
+            if(cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_MELEE_ATTACK.get()) && cultivator.hasItemStack(ItemUtil::isMeleeWeapon)){
+                cultivator.getBrain().eraseMemory(IMMMemories.UNABLE_MELEE_ATTACK.get());
             }
         }
     }
@@ -139,7 +139,7 @@ public class EmptyCultivatorAi {
      * The Melee Fight Behaviors that triggered when there exist enemy. <br>
      */
     public static void initMeleeFightBehaviors(Brain<EmptyCultivator> brain, float speed) {
-        brain.addActivityWithConditions(ImmortalActivities.MELEE_FIGHT.get(), ImmutableList.of(
+        brain.addActivityWithConditions(IMMActivities.MELEE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, new SwitchMeleeAttackItem(0.05F)),
                 Pair.of(1, new WearArmor()),
@@ -157,7 +157,7 @@ public class EmptyCultivatorAi {
      * The Range Fight Behaviors that triggered when there exist enemy. <br>
      */
     public static void initRangeFightBehaviors(Brain<EmptyCultivator> brain, float speed) {
-        brain.addActivityWithConditions(ImmortalActivities.RANGE_FIGHT.get(), ImmutableList.of(
+        brain.addActivityWithConditions(IMMActivities.RANGE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
 //                Pair.of(1, new BackUpIfTooClose<>(64, speed)),
                 Pair.of(1, new SwitchRangeAttackItem(0.08F)),
@@ -169,7 +169,7 @@ public class EmptyCultivatorAi {
                 Pair.of(4, new UseShield(20, 30))
         ), Set.of(
                 Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT),
-                Pair.of(ImmortalMemories.UNABLE_RANGE_ATTACK.get(), MemoryStatus.VALUE_ABSENT)
+                Pair.of(IMMMemories.UNABLE_RANGE_ATTACK.get(), MemoryStatus.VALUE_ABSENT)
         ));
     }
 
@@ -177,7 +177,7 @@ public class EmptyCultivatorAi {
      * The Escape Behaviors that triggered when there exist enemy. <br>
      */
     public static void initEscapeBehaviors(Brain<EmptyCultivator> brain, float speed) {
-        brain.addActivityWithConditions(ImmortalActivities.ESCAPE.get(), ImmutableList.of(
+        brain.addActivityWithConditions(IMMActivities.ESCAPE.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, speed, 12, true)),
                 Pair.of(1, new WearArmor()),

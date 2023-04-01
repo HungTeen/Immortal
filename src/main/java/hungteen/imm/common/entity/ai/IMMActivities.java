@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author: HungTeen
  * @create: 2022-11-23 22:59
  **/
-public class ImmortalActivities {
+public class IMMActivities {
 
     private static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, Util.id());
 
