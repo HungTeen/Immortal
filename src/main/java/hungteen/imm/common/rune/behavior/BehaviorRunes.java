@@ -1,9 +1,12 @@
-package hungteen.imm.common.rune;
+package hungteen.imm.common.rune.behavior;
 
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -22,7 +25,12 @@ import java.util.function.Function;
  **/
 public class BehaviorRunes {
 
-    private static final List<RuneManager.IBehaviorRune> TYPES = new ArrayList<>();
+    private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.create(Util.prefix("behavior_runes"));
+    private static final List<IBehaviorRune> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<IBehaviorRune> registry(){
+        return BEHAVIOR_RUNES;
+    }
 
 //    public static final RuneManager.IBehaviorRune MELEE_ATTACK = new BehaviorRune("melee_attack",
 //            (golem) -> new MeleeAttack(30)
@@ -44,14 +52,17 @@ public class BehaviorRunes {
 //            (golem) -> new SetWalkTargetFromAttackTargetIfTargetOutOfReach((livingEntity -> 0.5F))
 //    );
 
-    public static class BehaviorRune implements RuneManager.IBehaviorRune {
+    public static class BehaviorRune implements IBehaviorRune {
 
         private final String name;
         private final Function<GolemEntity, Behavior<? super GolemEntity>> behaviorFunction;
         private Behavior<? super GolemEntity> behaviorCache;
 
+        /**
+         * {@link ImmortalMod#coreRegister()}
+         */
         public static void register(){
-            TYPES.forEach(RuneManager::registerBehaviorRune);
+            registry().register(TYPES);
         }
 
         public BehaviorRune(String name, Function<GolemEntity, Behavior<? super GolemEntity>> behaviorFunction){
@@ -62,7 +73,7 @@ public class BehaviorRunes {
 
         @Override
         public MutableComponent getComponent() {
-            return Component.translatable("rune." + getModID() + ".behavior." + this.getName()).withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
+            return IBehaviorRune.super.getComponent().withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
         }
 
         @Override
@@ -91,6 +102,11 @@ public class BehaviorRunes {
 //                }
 //                return this.behaviorCache.entryCondition;
 //            }
+        }
+
+        @Override
+        public List<Class<?>> getPredicateClasses() {
+            return List.of();
         }
     }
 

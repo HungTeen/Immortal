@@ -3,6 +3,7 @@ package hungteen.imm.common.menu;
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.EntityUtil;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,6 +19,10 @@ public class GolemMenu extends HTContainerMenu {
 
     private final Container golemContainer;
     private final GolemEntity golem;
+
+    public GolemMenu(int id, Inventory inventory, FriendlyByteBuf buf) {
+        this(id, inventory, buf.readInt());
+    }
 
     public GolemMenu(int id, Inventory inventory, int golemId) {
         super(id, IMMMenus.GOLEM_INVENTORY.get());

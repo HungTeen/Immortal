@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.common.entity.IMMCreature;
-import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.menu.GolemMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -149,27 +148,27 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         this.memoryModules.clear();
         this.sensorModules.clear();
         this.behaviorModules.clear();
-        for(int i = 0; i < container.getContainerSize(); ++ i){
-            final ItemStack stack = container.getItem(i);
-            switch (RuneItem.getRuneTypes(stack)){
-                case MEMORY -> {
-                    RuneItem.getMemoryType(stack).ifPresent(memoryRune -> {
-                        this.memoryModules.add(memoryRune.getMemoryType().get());
-                    });
-                }
-                case SENSOR -> {
-                    RuneItem.getSensorType(stack).ifPresent(sensorRune -> {
-                        this.sensorModules.add(sensorRune.getSensorType().get());
-                    });
-                }
-                case BEHAVIOR -> {
-                    final int priority = i;
-                    RuneItem.getBehaviorType(stack).ifPresent(behaviorRune -> {
-                        this.behaviorModules.add(Pair.of(priority, behaviorRune.getBehaviorFunction().apply(this)));
-                    });
-                }
-            }
-        }
+//        for(int i = 0; i < container.getContainerSize(); ++ i){
+//            final ItemStack stack = container.getItem(i);
+//            switch (RuneItem.getRuneTypes(stack)){
+//                case MEMORY -> {
+//                    RuneItem.getMemoryType(stack).ifPresent(memoryRune -> {
+//                        this.memoryModules.add(memoryRune.getMemoryType().get());
+//                    });
+//                }
+//                case SENSOR -> {
+//                    RuneItem.getSensorType(stack).ifPresent(sensorRune -> {
+//                        this.sensorModules.add(sensorRune.getSensorType().get());
+//                    });
+//                }
+//                case BEHAVIOR -> {
+//                    final int priority = i;
+//                    RuneItem.getBehaviorType(stack).ifPresent(behaviorRune -> {
+//                        this.behaviorModules.add(Pair.of(priority, behaviorRune.getBehaviorFunction().apply(this)));
+//                    });
+//                }
+//            }
+//        }
         this.refreshBrain();
     }
 
@@ -205,7 +204,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
             for(int i = 0; i < listtag.size(); ++i) {
                 CompoundTag compoundtag = listtag.getCompound(i);
                 int j = compoundtag.getByte("Slot") & 255;
-                if (j >= 0 && j < this.inventory.getContainerSize()) {
+                if (j < this.inventory.getContainerSize()) {
                     this.inventory.setItem(j, ItemStack.of(compoundtag));
                 }
             }

@@ -1,0 +1,60 @@
+package hungteen.imm.common.rune.memory;
+
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.rune.memory.IMemoryRune;
+import hungteen.imm.util.Util;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+/**
+ * @program: Immortal
+ * @author: HungTeen
+ * @create: 2023-04-02 20:38
+ **/
+public class MemoryRunes {
+
+    private static final HTSimpleRegistry<IMemoryRune> MEMORY_RUNES = HTRegistryManager.create(Util.prefix("memory_runes"));
+
+    private static final List<IMemoryRune> TYPES = new ArrayList<>();
+
+    public static IHTSimpleRegistry<IMemoryRune> registry() {
+        return MEMORY_RUNES;
+    }
+
+    public record MemoryRune(String name, Supplier<MemoryModuleType<?>> supplier) implements IMemoryRune {
+
+        /**
+         * {@link ImmortalMod#coreRegister()}
+         */
+        public static void register(){
+           registry().register(TYPES);
+        }
+
+        public MemoryRune(String name, Supplier<MemoryModuleType<?>> supplier){
+            this.name = name;
+            this.supplier = supplier;
+            TYPES.add(this);
+        }
+
+        @Override
+        public Supplier<MemoryModuleType<?>> getMemoryModule() {
+            return supplier();
+        }
+
+        @Override
+        public String getName() {
+            return name();
+        }
+
+        @Override
+        public String getModID() {
+            return Util.id();
+        }
+    }
+}

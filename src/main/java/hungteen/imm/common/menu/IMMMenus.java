@@ -34,11 +34,12 @@ public class IMMMenus {
 //    });
 
     public static final RegistryObject<MenuType<GolemMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
-        return IForgeMenuType.create((windowId, inv, data) -> {
-            return new GolemMenu(windowId, inv, data.readInt());
-        });
+        return IForgeMenuType.create(GolemMenu::new);
     });
 
+    /**
+     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
+     */
     public static void register(IEventBus event){
         CONTAINER_TYPES.register(event);
     }
