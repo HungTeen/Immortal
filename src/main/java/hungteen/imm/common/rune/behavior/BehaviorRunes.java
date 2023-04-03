@@ -1,5 +1,6 @@
 package hungteen.imm.common.rune.behavior;
 
+import com.mojang.serialization.Codec;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
@@ -105,7 +106,7 @@ public class BehaviorRunes {
         }
 
         @Override
-        public List<Class<?>> getPredicateClasses() {
+        public List<Codec<?>> getPredicateCodecs() {
             return List.of();
         }
     }

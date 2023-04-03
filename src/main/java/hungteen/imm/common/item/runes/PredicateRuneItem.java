@@ -12,6 +12,7 @@ import java.util.function.Predicate;
  * @create: 2023-04-02 22:25
  **/
 public class PredicateRuneItem<T> extends Item {
+
     public PredicateRuneItem(Properties properties) {
         super(properties);
     }

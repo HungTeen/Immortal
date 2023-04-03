@@ -1,10 +1,8 @@
-package hungteen.imm.common.entity.ai.behavior;
+package hungteen.imm.common.entity.ai.behavior.golem;
 
-import com.google.common.collect.ImmutableMap;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;

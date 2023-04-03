@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
+import hungteen.imm.common.entity.ai.behavior.golem.GolemStartAttacking;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
