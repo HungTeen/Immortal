@@ -1,13 +1,21 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.item.artifacts.*;
+import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;
+import hungteen.imm.common.item.runes.BehaviorRuneItem;
+import hungteen.imm.common.item.runes.MemoryRuneItem;
 import hungteen.imm.common.item.runes.RuneItem;
+import hungteen.imm.common.item.runes.info.ItemFilterRune;
+import hungteen.imm.common.rune.behavior.BehaviorRunes;
+import hungteen.imm.common.rune.memory.MemoryRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BannerPatternItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,10 +41,8 @@ public class IMMItems {
 
     /* Rune Tab Items */
 
-    public static final RegistryObject<Item> RUNE = ITEMS.register("rune", () -> new RuneItem(RuneItem.RuneTypes.DEFAULT));
-    public static final RegistryObject<Item> MEMORY_RUNE = ITEMS.register("memory_rune", () -> new RuneItem(RuneItem.RuneTypes.MEMORY));
-    public static final RegistryObject<Item> SENSOR_RUNE = ITEMS.register("sensor_rune", () -> new RuneItem(RuneItem.RuneTypes.SENSOR));
-    public static final RegistryObject<Item> BEHAVIOR_RUNE = ITEMS.register("behavior_rune", () -> new RuneItem(RuneItem.RuneTypes.BEHAVIOR));
+    public static final RegistryObject<Item> RUNE = ITEMS.register("rune", RuneItem::new);
+    public static final RegistryObject<Item> ITEM_FILTER_RUNE = ITEMS.register("item_filter_rune", ItemFilterRune::new);
 
     /* Elixir Tab Items */
 
@@ -79,9 +85,15 @@ public class IMMItems {
 
 
     /**
-     * {@link ImmortalMod#ImmortalMod()}
+     * {@link ImmortalMod#register(RegisterEvent)}
      */
     public static void registerItems(RegisterEvent event){
+        MemoryRunes.registry().getValues().forEach(rune -> {
+            ItemHelper.get().register(event, rune.getLocation(), () -> new MemoryRuneItem(rune));
+        });
+        BehaviorRunes.registry().getValues().forEach(rune -> {
+            ItemHelper.get().register(event, rune.getLocation(), () -> new BehaviorRuneItem(rune));
+        });
     }
 
     /**

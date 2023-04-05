@@ -67,9 +67,9 @@ public class ClientRegister {
 //
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
-//
-//        /* golem */
-//        event.registerEntityRenderer(ImmortalEntities.IRON_GOLEM.get(), IronGolemRender::new);
+
+        /* golem */
+        event.registerEntityRenderer(IMMEntities.IRON_GOLEM.get(), IronGolemRender::new);
     }
 
     /**

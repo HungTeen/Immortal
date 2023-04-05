@@ -1,10 +1,12 @@
 package hungteen.imm.common.rune.behavior;
 
-import com.mojang.serialization.Codec;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.entity.ai.behavior.golem.GolemFindLookTarget;
+import hungteen.imm.common.entity.ai.behavior.golem.GolemFindNearestLivings;
+import hungteen.imm.common.entity.ai.behavior.golem.GolemLookAtTarget;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
@@ -12,12 +14,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @program: Immortal
@@ -27,11 +27,18 @@ import java.util.function.Function;
 public class BehaviorRunes {
 
     private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.create(Util.prefix("behavior_runes"));
-    private static final List<IBehaviorRune> TYPES = new ArrayList<>();
 
-    public static IHTSimpleRegistry<IBehaviorRune> registry(){
-        return BEHAVIOR_RUNES;
-    }
+    public static final IBehaviorRune FIND_NEAREST_LIVINGS = register(
+            new BehaviorRune("find_nearest_livings", GolemFindNearestLivings::new, List.of())
+    );
+
+    public static final IBehaviorRune FIND_LOOK_TARGET = register(
+            new BehaviorRune("find_look_target", GolemFindLookTarget::new, List.of())
+    );
+
+    public static final IBehaviorRune LOOK_AT_TARGET = register(
+            new BehaviorRune("look_at_target", GolemLookAtTarget::new, List.of())
+    );
 
 //    public static final RuneManager.IBehaviorRune MELEE_ATTACK = new BehaviorRune("melee_attack",
 //            (golem) -> new MeleeAttack(30)
@@ -53,23 +60,32 @@ public class BehaviorRunes {
 //            (golem) -> new SetWalkTargetFromAttackTargetIfTargetOutOfReach((livingEntity -> 0.5F))
 //    );
 
+    public static IHTSimpleRegistry<IBehaviorRune> registry(){
+        return BEHAVIOR_RUNES;
+    }
+
+    /**
+     * {@link ImmortalMod#coreRegister()}
+     */
+    public static void register(){
+
+    }
+
+    public static IBehaviorRune register(IBehaviorRune rune){
+        return BEHAVIOR_RUNES.register(rune);
+    }
+
     public static class BehaviorRune implements IBehaviorRune {
 
         private final String name;
-        private final Function<GolemEntity, Behavior<? super GolemEntity>> behaviorFunction;
+        private final IBehaviorFactory behaviorFunction;
+        private final List<Class<?>> predicateClasses;
         private Behavior<? super GolemEntity> behaviorCache;
 
-        /**
-         * {@link ImmortalMod#coreRegister()}
-         */
-        public static void register(){
-            registry().register(TYPES);
-        }
-
-        public BehaviorRune(String name, Function<GolemEntity, Behavior<? super GolemEntity>> behaviorFunction){
+        public BehaviorRune(String name, IBehaviorFactory behaviorFunction, List<Class<?>> predicateClasses){
             this.name = name;
             this.behaviorFunction = behaviorFunction;
-            TYPES.add(this);
+            this.predicateClasses = predicateClasses;
         }
 
         @Override
@@ -88,26 +104,21 @@ public class BehaviorRunes {
         }
 
         @Override
-        public Function<GolemEntity, Behavior<? super GolemEntity>> getBehaviorFunction() {
+        public IBehaviorFactory getBehaviorFactory() {
             return this.behaviorFunction;
         }
 
         @Override
-        public Map<MemoryModuleType<?>, MemoryStatus> requireMemoryStatus(Level level) {
-            return Map.of();
-//            if(level == null){
-//                return Map.of();
-//            } else{
-//                if(this.behaviorCache == null){
-//                    this.behaviorCache = this.getBehaviorFunction().apply(new IronGolem(ImmortalEntities.IRON_GOLEM.get(), level));
-//                }
-//                return this.behaviorCache.entryCondition;
-//            }
+        public Map<MemoryModuleType<?>, MemoryStatus> requireMemoryStatus() {
+            if(this.behaviorCache == null){
+                this.behaviorCache = this.getBehaviorFactory().create(ItemStack.EMPTY);
+            }
+            return this.behaviorCache.entryCondition;
         }
 
         @Override
-        public List<Codec<?>> getPredicateCodecs() {
-            return List.of();
+        public List<Class<?>> getPredicateClasses() {
+            return this.predicateClasses;
         }
     }
 

@@ -1,12 +1,14 @@
 package hungteen.imm.common.entity;
 
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.entity.golem.IronGolem;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.cultivator.EmptyCultivator;
 import hungteen.imm.common.entity.human.cultivator.SpiritualCultivator;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.entity.misc.SeatEntity;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
+import hungteen.imm.common.entity.undead.SpiritualZombie;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -55,7 +57,7 @@ public class IMMEntities {
 
     /* Golem */
 
-//    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE);
+    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE);
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
@@ -69,8 +71,8 @@ public class IMMEntities {
 //        /* undead */
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
 //
-//        /* golem */
-//        ev.put(IRON_GOLEM.get(), SpiritualZombie.createAttributes().build());
+        /* golem */
+        ev.put(IRON_GOLEM.get(), SpiritualZombie.createAttributes().build());
     }
 
     /**

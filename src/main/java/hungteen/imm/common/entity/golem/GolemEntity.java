@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.common.entity.IMMCreature;
+import hungteen.imm.common.item.runes.BehaviorRuneItem;
+import hungteen.imm.common.item.runes.MemoryRuneItem;
 import hungteen.imm.common.menu.GolemMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -47,8 +49,8 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     protected SimpleContainer inventory;
     protected final Collection<MemoryModuleType<?>> memoryModules = new ArrayList<>();
-    protected final Collection<SensorType<? extends Sensor<? super GolemEntity>>> sensorModules = new ArrayList<>();
-    protected final Collection<Pair<Integer, Behavior<? super GolemEntity>>> behaviorModules = new ArrayList<>();
+    protected final Collection<SensorType<? extends Sensor<GolemEntity>>> sensorModules = new ArrayList<>();
+    protected final Collection<Pair<Integer, BehaviorControl<GolemEntity>>> behaviorModules = new ArrayList<>();
 
     public GolemEntity(EntityType<? extends GolemEntity> type, Level level) {
         super(type, level);
@@ -148,27 +150,14 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         this.memoryModules.clear();
         this.sensorModules.clear();
         this.behaviorModules.clear();
-//        for(int i = 0; i < container.getContainerSize(); ++ i){
-//            final ItemStack stack = container.getItem(i);
-//            switch (RuneItem.getRuneTypes(stack)){
-//                case MEMORY -> {
-//                    RuneItem.getMemoryType(stack).ifPresent(memoryRune -> {
-//                        this.memoryModules.add(memoryRune.getMemoryType().get());
-//                    });
-//                }
-//                case SENSOR -> {
-//                    RuneItem.getSensorType(stack).ifPresent(sensorRune -> {
-//                        this.sensorModules.add(sensorRune.getSensorType().get());
-//                    });
-//                }
-//                case BEHAVIOR -> {
-//                    final int priority = i;
-//                    RuneItem.getBehaviorType(stack).ifPresent(behaviorRune -> {
-//                        this.behaviorModules.add(Pair.of(priority, behaviorRune.getBehaviorFunction().apply(this)));
-//                    });
-//                }
-//            }
-//        }
+        for(int i = 0; i < container.getContainerSize(); ++ i){
+            final ItemStack stack = container.getItem(i);
+            if(stack.getItem() instanceof BehaviorRuneItem behaviorRuneItem){
+                this.behaviorModules.add(Pair.of(i, behaviorRuneItem.getBehaviorRune().getBehaviorFactory().create(stack)));
+            } else if(stack.getItem() instanceof MemoryRuneItem memoryRuneItem){
+                this.memoryModules.add(memoryRuneItem.getMemoryRune().getMemoryModule().get());
+            }
+        }
         this.refreshBrain();
     }
 

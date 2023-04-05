@@ -4,7 +4,6 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.common.rune.memory.IMemoryRune;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
@@ -22,6 +21,11 @@ public class MemoryRunes {
     private static final HTSimpleRegistry<IMemoryRune> MEMORY_RUNES = HTRegistryManager.create(Util.prefix("memory_runes"));
 
     private static final List<IMemoryRune> TYPES = new ArrayList<>();
+
+    public static final IMemoryRune NEAREST_LIVINGS = new MemoryRune("nearest_livings", () -> MemoryModuleType.NEAREST_LIVING_ENTITIES);
+    public static final IMemoryRune NEAREST_VISIBLE_LIVINGS = new MemoryRune("nearest_visible_livings", () -> MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
+
+    public static final IMemoryRune LOOK_TARGET = new MemoryRune("look_target", () -> MemoryModuleType.LOOK_TARGET);
 
     public static IHTSimpleRegistry<IMemoryRune> registry() {
         return MEMORY_RUNES;

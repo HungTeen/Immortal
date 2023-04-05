@@ -3,6 +3,7 @@ package hungteen.imm.common.item;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
@@ -68,7 +69,7 @@ public class IMMCreativeTabs {
                 .title(Component.translatable("itemGroup.immortal.runes"))
                 .icon(() -> new ItemStack((IMMItems.RUNE.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
-                    ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
+                    ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
                         output.accept(new ItemStack(item));
                     });
                 })

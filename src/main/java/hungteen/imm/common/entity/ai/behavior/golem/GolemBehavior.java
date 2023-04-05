@@ -2,16 +2,17 @@ package hungteen.imm.common.entity.ai.behavior.golem;
 
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
+import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.behavior.IBehaviorRune;
-import net.minecraft.nbt.CompoundTag;
+import hungteen.imm.common.rune.filter.IFilterRune;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -20,29 +21,25 @@ import java.util.Map;
  **/
 public class GolemBehavior extends Behavior<GolemEntity> {
 
-    private final Map<Integer, Object> runeMap = new HashMap<>();
+    private final Map<Integer, IFilterRune> filterMap;
+    private final IBehaviorRune behaviorRune;
 
-    public GolemBehavior(CompoundTag nbt, Map<MemoryModuleType<?>, MemoryStatus> statusMap, int minDuration, int maxDuration) {
+    public GolemBehavior(ItemStack stack, Map<MemoryModuleType<?>, MemoryStatus> statusMap, int minDuration, int maxDuration) {
         super(statusMap, minDuration, maxDuration);
-        final ItemStack stack = ItemStack.of(nbt);
         if(stack.getItem() instanceof BehaviorRuneItem item){
-            final List<ItemStack> stacks = item.getRuneItems(stack);
-            final IBehaviorRune rune = item.getBehaviorRune();
-            for(int i = 0; i < stacks.size(); i++) {
-                final int id = i;
-                rune.parse(i, stacks.get(i).serializeNBT()).ifPresent(l -> {
-                    runeMap.put(id, l);
-                });
-            }
+            this.filterMap = item.getFilterMap(stack);
+            this.behaviorRune = item.getBehaviorRune();
+        } else {
+            // Go here to access to the field of {memory status map}.
+            this.filterMap = new HashMap<>();
+            this.behaviorRune = BehaviorRunes.LOOK_AT_TARGET;
         }
     }
 
-    protected <T> T get(int id, Class<T> clazz, T defaultValue) {
-        if(runeMap.containsKey(id)){
-            final Object obj = runeMap.get(id);
-            if(clazz.isInstance(obj)){
-                return clazz.cast(obj);
-            }
+    public <T> Predicate<T> get(int id, Predicate<T> defaultValue) {
+        if(filterMap.containsKey(id)){
+            final IFilterRune filterRune = filterMap.get(id);
+            return filterRune.getPredicate(this.behaviorRune.getPredicateClasses().get(id), defaultValue);
         }
         return defaultValue;
     }
