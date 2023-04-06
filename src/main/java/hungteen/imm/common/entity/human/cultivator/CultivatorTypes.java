@@ -1,6 +1,8 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.authlib.GameProfile;
+import hungteen.htlib.util.helper.StringHelper;
+import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
@@ -16,15 +18,24 @@ import java.util.UUID;
  **/
 public enum CultivatorTypes implements WeightedEntry {
 
-    STEVE(Component.literal("Steve"), "textures/entity/player/slim/steve.png", 1000, true),
-    ALEX(Component.literal("Alex"), "textures/entity/player/slim/alex.png", 1000, true),
-    ARI(Component.literal("Ari"), "textures/entity/player/slim/ari.png", 600, true),
-    EFE(Component.literal("Efe"), "textures/entity/player/slim/efe.png", 600, true),
-    KAI(Component.literal("Kai"), "textures/entity/player/slim/kai.png", 600, true),
-    MAKENA(Component.literal("Makena"), "textures/entity/player/slim/makena.png", 600, true),
-    NOOR(Component.literal("Noor"), "textures/entity/player/slim/noor.png", 600, true),
-    SUNNY(Component.literal("Sunny"), "textures/entity/player/slim/sunny.png", 600, true),
-    ZURI(Component.literal("Zuri"), "textures/entity/player/slim/zuri.png", 600, true),
+    SLIM_STEVE(Component.literal("Steve"), "player/slim/steve", true, 1000, true),
+    WIDE_STEVE(Component.literal("Steve"), "player/wide/steve", false, 1000, true),
+    SLIM_ALEX(Component.literal("Alex"), "player/slim/alex", true, 1000, true),
+    WIDE_ALEX(Component.literal("Alex"), "player/wide/alex", false, 1000, true),
+    SLIM_ARI(Component.literal("Ari"), "player/slim/ari", true, 600, true),
+    WIDE_ARI(Component.literal("Ari"), "player/wide/ari", false, 600, true),
+    SLIM_EFE(Component.literal("Efe"), "player/slim/efe", true, 600, true),
+    WIDE_EFE(Component.literal("Efe"), "player/wide/efe", false, 600, true),
+    SLIM_KAI(Component.literal("Kai"), "player/slim/kai", true, 600, true),
+    WIDE_KAI(Component.literal("Kai"), "player/wide/kai", false, 600, true),
+    SLIM_MAKENA(Component.literal("Makena"), "player/slim/makena", true, 600, true),
+    WIDE_MAKENA(Component.literal("Makena"), "player/wide/makena", false, 600, true),
+    SLIM_NOOR(Component.literal("Noor"), "player/slim/noor", true, 600, true),
+    WIDE_NOOR(Component.literal("Noor"), "player/wide/noor", false, 600, true),
+    SLIM_SUNNY(Component.literal("Sunny"), "player/slim/sunny", true, 600, true),
+    WIDE_SUNNY(Component.literal("Sunny"), "player/wide/sunny", false, 600, true),
+    SLIM_ZURI(Component.literal("Zuri"), "player/slim/zuri", true, 600, true),
+    WIDE_ZURI(Component.literal("Zuri"), "player/wide/zuri", false, 600, true),
     HUNG_TEEN("_PangTeen_", "6b78b0dc-ed31-4da6-86fb-8d36092b1023", 10),
     NEW_COMETS("_NewComets_", "f8010ab1-f2ce-45d9-ab78-72b513dc5d52", 100),
     GRASS_CARP("GrassCarp", "9017a74b-ccf4-4896-a3c4-f5ab241ecda1", 25),
@@ -32,10 +43,11 @@ public enum CultivatorTypes implements WeightedEntry {
     ;
 
     private final Component displayName;
-    private ResourceLocation skinLocation;
     private String profileName;
     private UUID profileUUID;
     private GameProfile gameProfile;
+    private ResourceLocation skinLocation;
+    private boolean isSlim;
     private final boolean common;
     private final int weight;
 
@@ -44,33 +56,35 @@ public enum CultivatorTypes implements WeightedEntry {
      * @param displayName 玩家头上显示。
      * @param skinLocation 本地贴图。
      */
-    CultivatorTypes(Component displayName, String skinLocation, int weight, boolean common) {
-        this(displayName, null, null, new ResourceLocation(skinLocation), weight, common);
+    CultivatorTypes(Component displayName, String skinLocation, boolean isSlim, int weight, boolean common) {
+        this(displayName, null, null, StringHelper.entityTexture(Util.mc(), skinLocation), isSlim, weight, common);
     }
 
+    /**
+     * 在线类型。
+     * @param displayName 玩家头上显示。
+     * @param uuid 玩家UUID。
+     */
     CultivatorTypes(String displayName, String uuid, int weight) {
         this(Component.literal(displayName), displayName, uuid, weight);
     }
 
     CultivatorTypes(Component displayName, String profileName, String uuid, int weight) {
-        this(displayName, profileName, UUID.fromString(uuid), null, weight, false);
+        this(displayName, profileName, UUID.fromString(uuid), null, true, weight, false);
     }
 
-    CultivatorTypes(Component displayName, String profileName, UUID profileUUID, ResourceLocation skinLocation, int weight, boolean common) {
+    CultivatorTypes(Component displayName, String profileName, UUID profileUUID, ResourceLocation skinLocation, boolean isSlim, int weight, boolean common) {
         this.displayName = displayName;
         this.profileName = profileName;
         this.profileUUID = profileUUID;
         this.skinLocation = skinLocation;
+        this.isSlim = isSlim;
         this.weight = weight;
         this.common = common;
     }
 
     public Component getDisplayName() {
         return displayName;
-    }
-
-    public Optional<ResourceLocation> getSkinLocation(){
-        return Optional.ofNullable(this.skinLocation);
     }
 
     /**
@@ -83,6 +97,22 @@ public enum CultivatorTypes implements WeightedEntry {
 
     public Optional<String> getProfileName() {
         return Optional.ofNullable(profileName);
+    }
+
+    public Optional<ResourceLocation> getSkinLocation(){
+        return Optional.ofNullable(this.skinLocation);
+    }
+
+    public void setSkinLocation(ResourceLocation skinLocation) {
+        this.skinLocation = skinLocation;
+    }
+
+    public boolean isSlim() {
+        return isSlim;
+    }
+
+    public void setSlim(boolean slim) {
+        isSlim = slim;
     }
 
     /**

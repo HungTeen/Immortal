@@ -1,5 +1,6 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
@@ -13,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.CreativeModeTabEvent;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -28,8 +31,7 @@ public class IMMCreativeTabs {
     public static CreativeModeTab RUNES;
 
     public static void register(CreativeModeTabEvent.Register event){
-        MATERIALS = event.registerCreativeModeTab(Util.prefix("materials"), builder -> builder
-                .title(Component.translatable("itemGroup.immortal.materials"))
+        MATERIALS = register(event, "materials", List.of(CreativeModeTabs.SPAWN_EGGS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
                     output.acceptAll(Arrays.asList(
@@ -38,25 +40,22 @@ public class IMMCreativeTabs {
                 })
         );
 
-        ELIXIRS = event.registerCreativeModeTab(Util.prefix("elixirs"), builder -> builder
-                .title(Component.translatable("itemGroup.immortal.elixirs"))
-                .icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
-                .displayItems((featureFlagSet, output, hasPermission) -> {
-                })
-        );
+//        ELIXIRS = register(event, "elixirs", List.of(MATERIALS), List.of(), builder -> builder
+//                .icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
+//                .displayItems((featureFlagSet, output, hasPermission) -> {
+//                })
+//        );
+//
+//        SPELL_BOOKS = register(event, "books", List.of(ELIXIRS), List.of(), builder -> builder
+//                .icon(() -> new ItemStack((IMMItems.SPELL_BOOK.get())))
+//                .displayItems((featureFlagSet, output, hasPermission) -> {
+////                    ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
+////                        output.accept(new ItemStack(item));
+////                    });
+//                })
+//        );
 
-        SPELL_BOOKS = event.registerCreativeModeTab(Util.prefix("books"), builder -> builder
-                .title(Component.translatable("itemGroup.immortal.books"))
-                .icon(() -> new ItemStack((IMMItems.SPELL_BOOK.get())))
-                .displayItems((featureFlagSet, output, hasPermission) -> {
-                    ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
-                        output.accept(new ItemStack(item));
-                    });
-                })
-        );
-
-        ARTIFACTS = event.registerCreativeModeTab(Util.prefix("artifacts"), builder -> builder
-                .title(Component.translatable("itemGroup.immortal.artifacts"))
+        ARTIFACTS = register(event, "artifacts", List.of(MATERIALS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
                     ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
@@ -65,8 +64,7 @@ public class IMMCreativeTabs {
                 })
         );
 
-        RUNES = event.registerCreativeModeTab(Util.prefix("runes"), builder -> builder
-                .title(Component.translatable("itemGroup.immortal.runes"))
+        RUNES = register(event, "runes", List.of(ARTIFACTS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.RUNE.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
                     ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
@@ -109,6 +107,13 @@ public class IMMCreativeTabs {
                 event.accept(obj.get());
             });
         }
+    }
+
+    private static CreativeModeTab register(CreativeModeTabEvent.Register event, String name, List<Object> after, List<Object> before, Consumer<CreativeModeTab.Builder> consumer){
+        return event.registerCreativeModeTab(Util.prefix(name), before, after, builder -> {
+            builder.title(Component.translatable(StringHelper.langKey("itemGroup", Util.id(), name)));
+            consumer.accept(builder);
+        });
     }
 
 

@@ -65,9 +65,22 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
         if(entity.getCultivatorType().getSkinLocation().isPresent()){
             return entity.getCultivatorType().getSkinLocation().get();
         } else if(entity.getCultivatorType().getGameProfile().isPresent()){
-            Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
-            return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? ClientProxy.MC.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN) : DefaultPlayerSkin.getDefaultSkin();
+            if(entity.getCultivatorType().getSkinLocation().isPresent()){
+                return entity.getCultivatorType().getSkinLocation().get();
+            } else {
+                final Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
+                if(map.containsKey(MinecraftProfileTexture.Type.SKIN)){
+                    final MinecraftProfileTexture texture = map.get(MinecraftProfileTexture.Type.SKIN);
+                    final ResourceLocation skinLocation = ClientProxy.MC.getSkinManager().registerTexture(texture, MinecraftProfileTexture.Type.SKIN);
+                    String modelValue = texture.getMetadata("model");
+                    if(modelValue != null){
+                        entity.getCultivatorType().setSlim(modelValue.equals("slim"));
+                    }
+                    return skinLocation;
+                }
+            }
         }
         return DefaultPlayerSkin.getDefaultSkin();
     }
+
 }

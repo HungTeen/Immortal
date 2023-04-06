@@ -9,8 +9,8 @@ import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.MemoryRuneItem;
 import hungteen.imm.common.menu.GolemMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
+import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,8 +22,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
@@ -33,10 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -47,10 +43,11 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public static final String GOLEM_ID = "GolemId";
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    protected SimpleContainer inventory;
     protected final Collection<MemoryModuleType<?>> memoryModules = new ArrayList<>();
-    protected final Collection<SensorType<? extends Sensor<GolemEntity>>> sensorModules = new ArrayList<>();
     protected final Collection<Pair<Integer, BehaviorControl<GolemEntity>>> behaviorModules = new ArrayList<>();
+    protected SimpleContainer runeInventory;
+    protected SimpleContainer itemInventory;
+    private Player interactPlayer;
 
     public GolemEntity(EntityType<? extends GolemEntity> type, Level level) {
         super(type, level);
@@ -70,9 +67,6 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         this.level.getProfiler().push("GolemBrain");
         this.getBrain().tick((ServerLevel) this.level, this);
         this.level.getProfiler().pop();
-//        this.level.getProfiler().push("GolemActivity");
-//        HumanEntity.AI.updateBrain(this);
-//        this.level.getProfiler().pop();
     }
 
     public void refreshBrain(){
@@ -88,7 +82,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     @Override
     protected Brain.Provider<GolemEntity> brainProvider() {
-        return this.memoryModules == null ? Brain.provider(ImmutableList.of(), ImmutableList.of()) : Brain.provider(this.memoryModules, this.sensorModules);
+        return Brain.provider(this.getMemoryModules(), List.of());
     }
 
     @Override
@@ -103,28 +97,37 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         brain.useDefaultActivity();
     }
 
-    protected int getInventorySize() {
-        return 27;
-    }
-
     protected void createInventory() {
-        SimpleContainer simplecontainer = this.inventory;
-        this.inventory = new SimpleContainer(this.getInventorySize());
-        if (simplecontainer != null) {
-            simplecontainer.removeListener(this);
-            int i = Math.min(simplecontainer.getContainerSize(), this.inventory.getContainerSize());
-
-            for(int j = 0; j < i; ++j) {
-                ItemStack itemstack = simplecontainer.getItem(j);
-                if (!itemstack.isEmpty()) {
-                    this.inventory.setItem(j, itemstack.copy());
+        {
+            final SimpleContainer container = this.runeInventory;
+            this.runeInventory = new SimpleContainer(this.getRuneInventorySize());
+            if (container != null) {
+                container.removeListener(this);
+                final int len = Math.min(container.getContainerSize(), this.runeInventory.getContainerSize());
+                for(int j = 0; j < len; ++ j) {
+                    ItemStack itemstack = container.getItem(j);
+                    if (!itemstack.isEmpty()) {
+                        this.runeInventory.setItem(j, itemstack.copy());
+                    }
                 }
             }
+            this.runeInventory.addListener(this);
         }
-
-        this.inventory.addListener(this);
-//        this.updateContainerEquipment();
-//        this.itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this.inventory));
+        {
+            final SimpleContainer container = this.itemInventory;
+            this.itemInventory = new SimpleContainer(this.getItemInventorySize());
+            if (container != null) {
+                container.removeListener(this);
+                final int len = Math.min(container.getContainerSize(), this.itemInventory.getContainerSize());
+                for(int j = 0; j < len; ++ j) {
+                    ItemStack itemstack = container.getItem(j);
+                    if (!itemstack.isEmpty()) {
+                        this.itemInventory.setItem(j, itemstack.copy());
+                    }
+                }
+            }
+            this.itemInventory.addListener(this);
+        }
     }
 
     @Override
@@ -148,7 +151,6 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     @Override
     public void containerChanged(Container container) {
         this.memoryModules.clear();
-        this.sensorModules.clear();
         this.behaviorModules.clear();
         for(int i = 0; i < container.getContainerSize(); ++ i){
             final ItemStack stack = container.getItem(i);
@@ -161,24 +163,42 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         this.refreshBrain();
     }
 
+    protected Collection<MemoryModuleType<?>> getMemoryModules(){
+        List<MemoryModuleType<?>> memoryModules = new ArrayList<>(Arrays.asList(
+                MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+                MemoryModuleType.ATTACK_COOLING_DOWN
+        ));
+        if(this.memoryModules != null){
+            memoryModules.addAll(this.memoryModules);
+        }
+        return memoryModules.stream().distinct().collect(Collectors.toList());
+    }
+
+    public abstract int getMemorySize();
+
+    public abstract int getBehaviorSize();
+
+    public abstract int getAbilitySize();
+
+    public int getRuneInventorySize(){
+        return this.getMemorySize() + this.getBehaviorSize() + this.getAbilitySize();
+    }
+
+    public int getItemInventorySize() {
+        return 27;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (this.getOwnerUUID().isPresent()) {
             tag.putUUID("GolemOwner", this.getOwnerUUID().get());
         }
-        if (this.inventory != null) {
-            ListTag listtag = new ListTag();
-            for(int i = 0; i < this.inventory.getContainerSize(); ++i) {
-                ItemStack itemstack = this.inventory.getItem(i);
-                if (!itemstack.isEmpty()) {
-                    CompoundTag compoundtag = new CompoundTag();
-                    compoundtag.putByte("Slot", (byte)i);
-                    itemstack.save(compoundtag);
-                    listtag.add(compoundtag);
-                }
-            }
-            tag.put("GolemInventory", listtag);
+        if (this.runeInventory != null) {
+            tag.put("GolemRuneInventory", this.runeInventory.createTag());
+        }
+        if(this.itemInventory != null) {
+            tag.put("GolemItemInventory", this.itemInventory.createTag());
         }
     }
 
@@ -188,20 +208,20 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         if(tag.contains("GolemOwner")){
             this.setOwnerUUID(tag.getUUID("GolemOwner"));
         }
-        if(tag.contains("GolemInventory")){
-            ListTag listtag = tag.getList("GolemInventory", 10);
-            for(int i = 0; i < listtag.size(); ++i) {
-                CompoundTag compoundtag = listtag.getCompound(i);
-                int j = compoundtag.getByte("Slot") & 255;
-                if (j < this.inventory.getContainerSize()) {
-                    this.inventory.setItem(j, ItemStack.of(compoundtag));
-                }
-            }
+        if(tag.contains("GolemRuneInventory")){
+            this.runeInventory.fromTag(NBTUtil.list(tag, "Inventory"));
+        }
+        if(tag.contains("GolemItemInventory")){
+            this.itemInventory.fromTag(NBTUtil.list(tag, "GolemItemInventory"));
         }
     }
 
-    public Container getGolemInventory(){
-        return this.inventory;
+    public Container getRuneInventory(){
+        return this.runeInventory;
+    }
+
+    public Container getItemInventory() {
+        return itemInventory;
     }
 
     public Optional<UUID> getOwnerUUID() {

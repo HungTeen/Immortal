@@ -5,6 +5,7 @@ import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.behavior.IBehaviorRune;
 import hungteen.imm.common.rune.filter.IFilterRune;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -34,6 +35,11 @@ public class GolemBehavior extends Behavior<GolemEntity> {
             this.filterMap = new HashMap<>();
             this.behaviorRune = BehaviorRunes.LOOK_AT_TARGET;
         }
+    }
+
+    @Override
+    protected boolean checkExtraStartConditions(ServerLevel level, GolemEntity golem) {
+        return super.checkExtraStartConditions(level, golem);
     }
 
     public <T> Predicate<T> get(int id, Predicate<T> defaultValue) {

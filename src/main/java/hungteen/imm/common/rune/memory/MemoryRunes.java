@@ -26,6 +26,7 @@ public class MemoryRunes {
     public static final IMemoryRune NEAREST_VISIBLE_LIVINGS = new MemoryRune("nearest_visible_livings", () -> MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
 
     public static final IMemoryRune LOOK_TARGET = new MemoryRune("look_target", () -> MemoryModuleType.LOOK_TARGET);
+    public static final IMemoryRune ATTACK_TARGET = new MemoryRune("attack_target", () -> MemoryModuleType.ATTACK_TARGET);
 
     public static IHTSimpleRegistry<IMemoryRune> registry() {
         return MEMORY_RUNES;

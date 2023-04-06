@@ -4,9 +4,7 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.common.entity.ai.behavior.golem.GolemFindLookTarget;
-import hungteen.imm.common.entity.ai.behavior.golem.GolemFindNearestLivings;
-import hungteen.imm.common.entity.ai.behavior.golem.GolemLookAtTarget;
+import hungteen.imm.common.entity.ai.behavior.golem.*;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
@@ -40,14 +38,14 @@ public class BehaviorRunes {
             new BehaviorRune("look_at_target", GolemLookAtTarget::new, List.of())
     );
 
-//    public static final RuneManager.IBehaviorRune MELEE_ATTACK = new BehaviorRune("melee_attack",
-//            (golem) -> new MeleeAttack(30)
-//    );
-//
-//    public static final RuneManager.IBehaviorRune FIND_TARGET = new BehaviorRune("find_target",
-//            (golem) -> new NearestTargetGoal()
-//    );
-//
+    public static final IBehaviorRune FIND_ATTACK_TARGET = register(
+            new BehaviorRune("find_attack_target", GolemFindAttackTarget::new, List.of())
+    );
+
+    public static final IBehaviorRune MELEE_ATTACK = register(
+            new BehaviorRune("melee_attack", GolemMeleeAttack::new, List.of())
+    );
+
 //    public static final RuneManager.IBehaviorRune MOVE_TO_TARGET = new BehaviorRune("move_to_target",
 //            (golem) -> new MoveToTargetSink()
 //    );

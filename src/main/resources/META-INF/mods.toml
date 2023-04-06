@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/HungTeen/imm/issues"
 [[mods]]
 modId="imm"
 version="${file.jarVersion}"
-displayName="imm"
+displayName="Immortal"
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://space.bilibili.com/362855464"

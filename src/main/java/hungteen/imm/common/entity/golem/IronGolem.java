@@ -21,6 +21,21 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
+    public int getMemorySize() {
+        return 9;
+    }
+
+    @Override
+    public int getBehaviorSize() {
+        return 5;
+    }
+
+    @Override
+    public int getAbilitySize() {
+        return 1;
+    }
+
+    @Override
     public Collection<ISpiritualType> getSpiritualTypes() {
         return List.of(SpiritualTypes.METAL);
     }

@@ -1,5 +1,6 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.IMMBlocks;
@@ -89,10 +90,10 @@ public class IMMItems {
      */
     public static void registerItems(RegisterEvent event){
         MemoryRunes.registry().getValues().forEach(rune -> {
-            ItemHelper.get().register(event, rune.getLocation(), () -> new MemoryRuneItem(rune));
+            ItemHelper.get().register(event, StringHelper.suffix(rune.getLocation(), "rune"), () -> new MemoryRuneItem(rune));
         });
         BehaviorRunes.registry().getValues().forEach(rune -> {
-            ItemHelper.get().register(event, rune.getLocation(), () -> new BehaviorRuneItem(rune));
+            ItemHelper.get().register(event, StringHelper.suffix(rune.getLocation(), "rune"), () -> new BehaviorRuneItem(rune));
         });
     }
 

@@ -17,7 +17,8 @@ import net.minecraft.world.item.ItemStack;
  **/
 public class GolemMenu extends HTContainerMenu {
 
-    private final Container golemContainer;
+    private final Container runeContainer;
+    private final Container itemContainer;
     private final GolemEntity golem;
 
     public GolemMenu(int id, Inventory inventory, FriendlyByteBuf buf) {
@@ -29,10 +30,11 @@ public class GolemMenu extends HTContainerMenu {
         final Entity entity=  inventory.player.level.getEntity(golemId);
         assert entity instanceof GolemEntity;
         this.golem = (GolemEntity) entity;
-        this.golemContainer = this.golem.getGolemInventory();
-        this.golemContainer.startOpen(inventory.player);
+        this.runeContainer = this.golem.getRuneInventory();
+        this.itemContainer = this.golem.getItemInventory();
+        this.runeContainer.startOpen(inventory.player);
 
-        this.addInventories(this.golemContainer, 8, 18, 3, 9, 0);
+        this.addInventories(this.runeContainer, 8, 18, 3, 9, 0);
 
         this.addInventoryAndHotBar(inventory, 8, 84);
     }
@@ -40,7 +42,7 @@ public class GolemMenu extends HTContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        golemContainer.stopOpen(player);
+        runeContainer.stopOpen(player);
     }
 
     @Override

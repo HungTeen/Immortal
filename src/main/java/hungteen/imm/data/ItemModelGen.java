@@ -1,14 +1,17 @@
 package hungteen.imm.data;
 
 import hungteen.htlib.data.HTItemModelGen;
-import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IElixirItem;
 import hungteen.imm.common.ElixirManager;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
+import hungteen.imm.common.item.runes.BehaviorRuneItem;
+import hungteen.imm.common.item.runes.MemoryRuneItem;
+import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
@@ -80,6 +83,20 @@ public class ItemModelGen extends HTItemModelGen {
         ).forEach(item -> {
             this.addedItems.add(item.get());
             this.genNormal(item.getId().getPath(), Util.mcPrefix("item/flower_banner_pattern"));
+        });
+
+        /* Runes */
+        ItemHelper.get().filterEntries(MemoryRuneItem.class::isInstance).forEach(entry -> {
+            this.addedItems.add(entry.getValue());
+            this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("memory_rune")));
+        });
+        ItemHelper.get().filterEntries(BehaviorRuneItem.class::isInstance).forEach(entry -> {
+            this.addedItems.add(entry.getValue());
+            this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("behavior_rune")));
+        });
+        ItemHelper.get().filterEntries(FilterRuneItem.class::isInstance).forEach(entry -> {
+            this.addedItems.add(entry.getValue());
+            this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("filter_rune")));
         });
 
         /* For mostly common items. */

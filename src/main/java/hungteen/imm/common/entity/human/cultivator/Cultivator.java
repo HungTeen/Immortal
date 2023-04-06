@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class Cultivator extends HumanEntity {
 
     private static final EntityDataAccessor<Integer> CULTIVATOR_TYPE = SynchedEntityData.defineId(Cultivator.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SLIM = SynchedEntityData.defineId(Cultivator.class, EntityDataSerializers.BOOLEAN);
 
     public Cultivator(EntityType<? extends HumanEntity> type, Level level) {
         super(type, level);
@@ -36,8 +35,7 @@ public abstract class Cultivator extends HumanEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(CULTIVATOR_TYPE, CultivatorTypes.STEVE.ordinal());
-        entityData.define(SLIM, false);
+        entityData.define(CULTIVATOR_TYPE, CultivatorTypes.SLIM_STEVE.ordinal());
     }
 
     @Nullable
@@ -46,7 +44,6 @@ public abstract class Cultivator extends HumanEntity {
         if(!accessor.isClientSide()){
             // 随机选择散修类型。
             WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
-            this.setSlim(accessor.getRandom().nextInt(2) == 0);
             this.setCustomName(this.getCultivatorType().getDisplayName());
             if(! getCultivatorType().isCommon()){
                 this.modifyAttributes(getCultivatorType());
@@ -73,9 +70,6 @@ public abstract class Cultivator extends HumanEntity {
         if(tag.contains("CultivatorType")){
             this.setCultivatorType(CultivatorTypes.values()[tag.getInt("CultivatorType")]);
         }
-        if(tag.contains("CultivatorSlim")){
-            this.setSlim(tag.getBoolean("CultivatorSlim"));
-        }
         if(tag.contains("CultivatorRoots")){
             setRootTag(tag.getCompound("CultivatorRoots"));
         }
@@ -85,7 +79,6 @@ public abstract class Cultivator extends HumanEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("CultivatorType", this.getCultivatorType().ordinal());
-        tag.putBoolean("CultivatorSlim", this.isSlim());
         tag.put("CultivatorRoots", this.getRootTag());
     }
 
@@ -97,12 +90,8 @@ public abstract class Cultivator extends HumanEntity {
         return CultivatorTypes.values()[entityData.get(CULTIVATOR_TYPE)];
     }
 
-    public void setSlim(boolean slim) {
-        entityData.set(SLIM, slim);
-    }
-
     public boolean isSlim() {
-        return entityData.get(SLIM);
+        return this.getCultivatorType().isSlim();
     }
 
 }
