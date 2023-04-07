@@ -6,8 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.common.entity.IMMCreature;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.MemoryRuneItem;
-import hungteen.imm.common.menu.GolemMenu;
+import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +31,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -43,7 +41,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public static final String GOLEM_ID = "GolemId";
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    protected final Collection<MemoryModuleType<?>> memoryModules = new ArrayList<>();
+    protected final Collection<MemoryModuleType<?>> memoryModules = new HashSet<>();
     protected final Collection<Pair<Integer, BehaviorControl<GolemEntity>>> behaviorModules = new ArrayList<>();
     protected SimpleContainer runeInventory;
     protected SimpleContainer itemInventory;
@@ -82,7 +80,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     @Override
     protected Brain.Provider<GolemEntity> brainProvider() {
-        return Brain.provider(this.getMemoryModules(), List.of());
+        return Brain.provider(this.memoryModules == null ? List.of() : this.memoryModules, List.of());
     }
 
     @Override
@@ -137,7 +135,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
                 NetworkHooks.openScreen((ServerPlayer) player, new ImmortalMenuProvider() {
                     @Override
                     public @org.jetbrains.annotations.Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                        return new GolemMenu(id, inventory, GolemEntity.this.getId());
+                        return new GolemInventoryMenu(id, inventory, GolemEntity.this.getId());
                     }
                 }, (data) -> {
                     data.writeInt(GolemEntity.this.getId());
@@ -156,36 +154,22 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
             final ItemStack stack = container.getItem(i);
             if(stack.getItem() instanceof BehaviorRuneItem behaviorRuneItem){
                 this.behaviorModules.add(Pair.of(i, behaviorRuneItem.getBehaviorRune().getBehaviorFactory().create(stack)));
-            } else if(stack.getItem() instanceof MemoryRuneItem memoryRuneItem){
-                this.memoryModules.add(memoryRuneItem.getMemoryRune().getMemoryModule().get());
+                behaviorRuneItem.getBehaviorRune().requireMemoryStatus().forEach((memory, status) -> {
+                    this.memoryModules.add(memory);
+                });
             }
         }
         this.refreshBrain();
     }
 
-    protected Collection<MemoryModuleType<?>> getMemoryModules(){
-        List<MemoryModuleType<?>> memoryModules = new ArrayList<>(Arrays.asList(
-                MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-                MemoryModuleType.ATTACK_COOLING_DOWN
-        ));
-        if(this.memoryModules != null){
-            memoryModules.addAll(this.memoryModules);
-        }
-        return memoryModules.stream().distinct().collect(Collectors.toList());
-    }
-
-    public abstract int getMemorySize();
-
-    public abstract int getBehaviorSize();
-
-    public abstract int getAbilitySize();
-
-    public int getRuneInventorySize(){
-        return this.getMemorySize() + this.getBehaviorSize() + this.getAbilitySize();
-    }
+    public abstract int getRuneInventorySize();
 
     public int getItemInventorySize() {
-        return 27;
+        return 0;
+    }
+
+    public Player getInteractPlayer() {
+        return this.interactPlayer;
     }
 
     @Override

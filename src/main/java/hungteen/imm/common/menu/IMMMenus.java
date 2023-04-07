@@ -33,8 +33,8 @@ public class IMMMenus {
 //        return IForgeMenuType.create(SmithingArtifactMenu::new);
 //    });
 
-    public static final RegistryObject<MenuType<GolemMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
-        return IForgeMenuType.create(GolemMenu::new);
+    public static final RegistryObject<MenuType<GolemInventoryMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
+        return IForgeMenuType.create(GolemInventoryMenu::new);
     });
 
     /**

@@ -4,7 +4,7 @@ import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.event.OverlayEvents;
 import hungteen.imm.client.gui.screen.CultivatorTradeScreen;
-import hungteen.imm.client.gui.screen.GolemScreen;
+import hungteen.imm.client.gui.screen.GolemInventoryScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
@@ -156,7 +156,7 @@ public class ClientRegister {
 //        MenuScreens.register(ImmortalMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
 //        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
 //        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
-        MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemScreen::new);
+        MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
     }
 
 }
