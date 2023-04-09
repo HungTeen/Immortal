@@ -55,20 +55,14 @@ public class IronGolemModel<T extends IronGolem> extends HierarchicalModel<T> {
     }
 
     public void prepareMobModel(T p_102957_, float p_102958_, float p_102959_, float p_102960_) {
-//        int i = p_102957_.getAttackAnimationTick();
-//        if (i > 0) {
-//            this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - p_102960_, 10.0F);
-//            this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - p_102960_, 10.0F);
-//        } else {
-//            int j = p_102957_.getOfferFlowerTick();
-//            if (j > 0) {
-//                this.rightArm.xRot = -0.8F + 0.025F * Mth.triangleWave((float) j, 70.0F);
-//                this.leftArm.xRot = 0.0F;
-//            } else {
-//                this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(p_102958_, 13.0F)) * p_102959_;
-//                this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(p_102958_, 13.0F)) * p_102959_;
-//            }
-//        }
+        int i = p_102957_.getAttackAnimationTick();
+        if (i > 0) {
+            this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - p_102960_, 10.0F);
+            this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - p_102960_, 10.0F);
+        } else {
+            this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(p_102958_, 13.0F)) * p_102959_;
+            this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(p_102958_, 13.0F)) * p_102959_;
+        }
 
     }
 

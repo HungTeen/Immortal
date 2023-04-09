@@ -37,7 +37,7 @@ public class GolemInventoryMenu extends HTContainerMenu {
         this.runeContainer.startOpen(inventory.player);
 
         this.runeRows = (this.runeContainer.getContainerSize() + 8) / 9;
-        this.addInventories(15, TOP_HEIGHT + 1, this.runeRows, 9, 0, (i, x, y) -> {
+        this.addInventories(15, TOP_HEIGHT, this.runeRows, 9, 0, (i, x, y) -> {
             return new Slot(this.runeContainer, i, x, y){
                 @Override
                 public boolean isActive() {
@@ -46,19 +46,40 @@ public class GolemInventoryMenu extends HTContainerMenu {
                 }
             };
         });
-
-        this.addInventoryAndHotBar(inventory, 8, 84);
+        final int height = TOP_HEIGHT + 18 * this.runeRows + 12;
+        this.addPlayerInventory(inventory, 15, height);
+        this.addPlayerHotBar(inventory, 15, height + 57);
     }
 
     @Override
     public void removed(Player player) {
         super.removed(player);
+        this.golem.stopInteracting();
         runeContainer.stopOpen(player);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(Player player, int id) {
+        ItemStack result = ItemStack.EMPTY;
+        final Slot slot = this.slots.get(id);
+        if (slot.hasItem()) {
+            ItemStack slotItem = slot.getItem();
+            result = slotItem.copy();
+            if (id < this.runeRows * 9) {
+                if (!this.moveItemStackTo(slotItem, this.runeRows * 9, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(slotItem, 0, this.runeRows * 9, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (slotItem.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+        }
+        return result;
     }
 
     public int getRuneRows() {

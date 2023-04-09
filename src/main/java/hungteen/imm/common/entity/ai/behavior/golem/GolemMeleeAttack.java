@@ -41,4 +41,5 @@ public class GolemMeleeAttack extends GolemOneShotBehavior {
         golemEntity.doHurtTarget(target);
         golemEntity.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, 20);
     }
+
 }

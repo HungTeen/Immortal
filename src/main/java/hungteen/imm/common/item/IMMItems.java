@@ -7,11 +7,9 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.MemoryRuneItem;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.item.runes.info.ItemFilterRune;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
-import hungteen.imm.common.rune.memory.MemoryRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
 import net.minecraft.world.item.BannerPatternItem;
@@ -89,9 +87,6 @@ public class IMMItems {
      * {@link ImmortalMod#register(RegisterEvent)}
      */
     public static void registerItems(RegisterEvent event){
-        MemoryRunes.registry().getValues().forEach(rune -> {
-            ItemHelper.get().register(event, StringHelper.suffix(rune.getLocation(), "rune"), () -> new MemoryRuneItem(rune));
-        });
         BehaviorRunes.registry().getValues().forEach(rune -> {
             ItemHelper.get().register(event, StringHelper.suffix(rune.getLocation(), "rune"), () -> new BehaviorRuneItem(rune));
         });

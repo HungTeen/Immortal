@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.common.entity.IMMCreature;
+import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
@@ -17,6 +18,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -43,7 +47,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     protected final Collection<MemoryModuleType<?>> memoryModules = new HashSet<>();
     protected final Collection<Pair<Integer, BehaviorControl<GolemEntity>>> behaviorModules = new ArrayList<>();
-    protected SimpleContainer runeInventory;
+    protected GolemRuneContainer runeInventory;
     protected SimpleContainer itemInventory;
     private Player interactPlayer;
 
@@ -98,7 +102,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     protected void createInventory() {
         {
             final SimpleContainer container = this.runeInventory;
-            this.runeInventory = new SimpleContainer(this.getRuneInventorySize());
+            this.runeInventory = new GolemRuneContainer(this, this.getRuneInventorySize());
             if (container != null) {
                 container.removeListener(this);
                 final int len = Math.min(container.getContainerSize(), this.runeInventory.getContainerSize());
@@ -130,11 +134,12 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if(hand == InteractionHand.MAIN_HAND && player.getItemInHand(hand).isEmpty()){
+        if(hand == InteractionHand.MAIN_HAND && canInteractWith(player)){
             if(player instanceof ServerPlayer){
+                this.setInteractPlayer(player);
                 NetworkHooks.openScreen((ServerPlayer) player, new ImmortalMenuProvider() {
                     @Override
-                    public @org.jetbrains.annotations.Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+                    public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new GolemInventoryMenu(id, inventory, GolemEntity.this.getId());
                     }
                 }, (data) -> {
@@ -146,20 +151,56 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         return super.mobInteract(player, hand);
     }
 
+    protected boolean canInteractWith(Player player){
+        return this.interactPlayer == null;
+    }
+
+    public void stopInteracting(){
+        this.setInteractPlayer(null);
+    }
+
     @Override
     public void containerChanged(Container container) {
+
+    }
+
+    public void updateRuneInventory(){
         this.memoryModules.clear();
         this.behaviorModules.clear();
-        for(int i = 0; i < container.getContainerSize(); ++ i){
-            final ItemStack stack = container.getItem(i);
+        for(int i = 0; i < this.runeInventory.getContainerSize(); ++ i){
+            final ItemStack stack = runeInventory.getItem(i);
             if(stack.getItem() instanceof BehaviorRuneItem behaviorRuneItem){
-                this.behaviorModules.add(Pair.of(i, behaviorRuneItem.getBehaviorRune().getBehaviorFactory().create(stack)));
-                behaviorRuneItem.getBehaviorRune().requireMemoryStatus().forEach((memory, status) -> {
+                GolemBehavior behavior = behaviorRuneItem.getBehaviorRune().getBehaviorFactory().create(stack);
+                this.behaviorModules.add(Pair.of(i, behavior));
+                behavior.entryCondition.forEach((memory, status) -> {
                     this.memoryModules.add(memory);
                 });
             }
         }
         this.refreshBrain();
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Entity changeDimension(ServerLevel level, ITeleporter teleporter) {
+        this.stopInteracting();
+        return super.changeDimension(level, teleporter);
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        this.stopInteracting();
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return this.getOwnerUUID().isEmpty();
+    }
+
+    @Override
+    public boolean canBeLeashed(Player player) {
+        return this.getOwnerUUID().isPresent() && this.getOwnerUUID().get().equals(player.getUUID());
     }
 
     public abstract int getRuneInventorySize();
@@ -170,6 +211,10 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public Player getInteractPlayer() {
         return this.interactPlayer;
+    }
+
+    public void setInteractPlayer(Player interactPlayer) {
+        this.interactPlayer = interactPlayer;
     }
 
     @Override
@@ -193,7 +238,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
             this.setOwnerUUID(tag.getUUID("GolemOwner"));
         }
         if(tag.contains("GolemRuneInventory")){
-            this.runeInventory.fromTag(NBTUtil.list(tag, "Inventory"));
+            this.runeInventory.fromTag(NBTUtil.list(tag, "GolemRuneInventory"));
         }
         if(tag.contains("GolemItemInventory")){
             this.itemInventory.fromTag(NBTUtil.list(tag, "GolemItemInventory"));
@@ -214,6 +259,28 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public void setOwnerUUID(@Nullable UUID uuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(uuid));
+    }
+
+    public static class GolemRuneContainer extends SimpleContainer {
+
+        private final GolemEntity golem;
+
+        public GolemRuneContainer(GolemEntity golem, int size) {
+            super(size);
+            this.golem = golem;
+        }
+
+        @Override
+        public void startOpen(Player player) {
+            super.startOpen(player);
+            this.golem.updateRuneInventory();
+        }
+
+        @Override
+        public void stopOpen(Player player) {
+            super.stopOpen(player);
+            this.golem.updateRuneInventory();
+        }
     }
 
 }

@@ -22,7 +22,6 @@ import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
-import hungteen.imm.common.rune.memory.MemoryRunes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
 import hungteen.imm.common.world.levelgen.IMMLevels;
@@ -130,7 +129,6 @@ public class ImmortalMod {
         SpellTypes.SpellType.register();
         PlayerRangeNumbers.PlayerData.register();
         RealmTypes.RealmType.register();
-        MemoryRunes.MemoryRune.register();
         BehaviorRunes.register();
         FilterRuneTypes.register();
         InventoryLootTypes.InventoryLootType.register();

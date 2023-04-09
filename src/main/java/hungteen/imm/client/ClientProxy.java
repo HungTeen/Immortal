@@ -4,6 +4,7 @@ import hungteen.imm.CommonProxy;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.RecipeManager;
 
@@ -32,5 +33,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Optional<RecipeManager> getRecipeManager() {
         return Optional.of(Objects.requireNonNull(MC.level).getRecipeManager());
+    }
+
+    @Override
+    public boolean isShiftKeyDown(){
+        return Screen.hasShiftDown();
     }
 }

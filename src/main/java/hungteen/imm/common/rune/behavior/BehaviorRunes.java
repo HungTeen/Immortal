@@ -1,21 +1,19 @@
 package hungteen.imm.common.rune.behavior;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.ai.behavior.golem.*;
-import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.Util;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -27,49 +25,126 @@ public class BehaviorRunes {
     private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.create(Util.prefix("behavior_runes"));
 
     public static final IBehaviorRune FIND_NEAREST_LIVINGS = register(
-            new BehaviorRune("find_nearest_livings", GolemFindNearestLivings::new, List.of())
+            new BehaviorRune("find_nearest_livings",
+                    GolemFindNearestLivings::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.NEAREST_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT)
+                    )
+            )
     );
 
     public static final IBehaviorRune FIND_LOOK_TARGET = register(
-            new BehaviorRune("find_look_target", GolemFindLookTarget::new, List.of())
+            new BehaviorRune("find_look_target",
+                    GolemFindLookTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
+                    )
+            )
     );
 
     public static final IBehaviorRune LOOK_AT_TARGET = register(
-            new BehaviorRune("look_at_target", GolemLookAtTarget::new, List.of())
+            new BehaviorRune("look_at_target",
+                    GolemLookAtTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
+                    )
+            )
     );
 
     public static final IBehaviorRune FIND_ATTACK_TARGET = register(
-            new BehaviorRune("find_attack_target", GolemFindAttackTarget::new, List.of())
+            new BehaviorRune("find_attack_target",
+                    GolemFindAttackTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
+                    )
+            )
     );
 
     public static final IBehaviorRune MELEE_ATTACK = register(
-            new BehaviorRune("melee_attack", GolemMeleeAttack::new, List.of())
+            new BehaviorRune("melee_attack",
+                    GolemMeleeAttack::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
+                    )
+            )
     );
 
-//    public static final RuneManager.IBehaviorRune MOVE_TO_TARGET = new BehaviorRune("move_to_target",
-//            (golem) -> new MoveToTargetSink()
-//    );
-//
-//    public static final RuneManager.IBehaviorRune STOP_ATTACK_IF_TARGET_INVALID = new BehaviorRune("stop_attacking_if_target_invalid",
-//            (golem) -> new StopAttackingIfTargetInvalid<>()
-//    );
-//
-//    public static final RuneManager.IBehaviorRune SET_WALK_TARGET_FROM_ATTACK_TARGET = new BehaviorRune("set_walk_target_from_attack_target",
-//            (golem) -> new SetWalkTargetFromAttackTargetIfTargetOutOfReach((livingEntity -> 0.5F))
-//    );
+    public static final IBehaviorRune SET_WALK_FROM_LOOK_TARGET = register(
+            new BehaviorRune("set_walk_from_look_target",
+                    GolemWalkToLookTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.WALK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT)
+                    )
+            )
+    );
 
-    public static IHTSimpleRegistry<IBehaviorRune> registry(){
+    public static final IBehaviorRune RANDOM_STROLL = register(
+            new BehaviorRune("random_stroll",
+                    GolemRandomStroll::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.WALK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT)
+                    )
+            )
+    );
+
+    public static final IBehaviorRune MOVE_TO_TARGET = register(
+            new BehaviorRune("move_to_target",
+                    GolemMoveToTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.PATH, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT, MemoryStatus.VALUE_ABSENT),
+                            MemoryModuleType.WALK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT, MemoryStatus.VALUE_ABSENT)
+                    )
+            )
+    );
+
+    public static final IBehaviorRune STOP_ATTACK_IF_TARGET_INVALID = register(
+            new BehaviorRune("stop_attack_if_target_invalid",
+                    GolemStopAttackingIfTargetInvalid::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT, MemoryStatus.VALUE_ABSENT)
+                    )
+            )
+    );
+
+    public static final IBehaviorRune SET_WALK_FROM_ATTACK_TARGET = register(
+            new BehaviorRune("set_walk_from_attack_target",
+                    GolemSetWalkToAttackTarget::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.WALK_TARGET, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT, MemoryStatus.VALUE_ABSENT),
+                            MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT, MemoryStatus.VALUE_ABSENT),
+                            MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.REGISTERED)
+                    )
+            )
+    );
+
+    public static IHTSimpleRegistry<IBehaviorRune> registry() {
         return BEHAVIOR_RUNES;
     }
 
     /**
      * {@link ImmortalMod#coreRegister()}
      */
-    public static void register(){
+    public static void register() {
 
     }
 
-    public static IBehaviorRune register(IBehaviorRune rune){
+    public static IBehaviorRune register(IBehaviorRune rune) {
         return BEHAVIOR_RUNES.register(rune);
     }
 
@@ -78,17 +153,13 @@ public class BehaviorRunes {
         private final String name;
         private final IBehaviorFactory behaviorFunction;
         private final List<Class<?>> predicateClasses;
-        private Behavior<? super GolemEntity> behaviorCache;
+        private final Supplier<Map<MemoryModuleType<?>, List<MemoryStatus>>> statusMapSupplier;
 
-        public BehaviorRune(String name, IBehaviorFactory behaviorFunction, List<Class<?>> predicateClasses){
+        public BehaviorRune(String name, IBehaviorFactory behaviorFunction, List<Class<?>> predicateClasses, Supplier<Map<MemoryModuleType<?>, List<MemoryStatus>>> statusMapSupplier) {
             this.name = name;
             this.behaviorFunction = behaviorFunction;
             this.predicateClasses = predicateClasses;
-        }
-
-        @Override
-        public MutableComponent getComponent() {
-            return IBehaviorRune.super.getComponent().withStyle(ChatFormatting.BLUE).withStyle(ChatFormatting.BOLD);
+            this.statusMapSupplier = statusMapSupplier;
         }
 
         @Override
@@ -107,11 +178,8 @@ public class BehaviorRunes {
         }
 
         @Override
-        public Map<MemoryModuleType<?>, MemoryStatus> requireMemoryStatus() {
-            if(this.behaviorCache == null){
-                this.behaviorCache = this.getBehaviorFactory().create(ItemStack.EMPTY);
-            }
-            return this.behaviorCache.entryCondition;
+        public Map<MemoryModuleType<?>, List<MemoryStatus>> requireMemoryStatus() {
+            return this.statusMapSupplier.get();
         }
 
         @Override

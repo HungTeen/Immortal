@@ -10,7 +10,6 @@ import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.MemoryRuneItem;
 import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
@@ -86,10 +85,6 @@ public class ItemModelGen extends HTItemModelGen {
         });
 
         /* Runes */
-        ItemHelper.get().filterEntries(MemoryRuneItem.class::isInstance).forEach(entry -> {
-            this.addedItems.add(entry.getValue());
-            this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("memory_rune")));
-        });
         ItemHelper.get().filterEntries(BehaviorRuneItem.class::isInstance).forEach(entry -> {
             this.addedItems.add(entry.getValue());
             this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("behavior_rune")));

@@ -1,6 +1,16 @@
 package hungteen.imm.common.item.runes;
 
+import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.util.TipUtil;
+import hungteen.imm.util.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * @program: Immortal
@@ -13,55 +23,29 @@ public class RuneItem extends Item {
         super(new Properties());
     }
 
-//    @Override
-//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-//        super.fillItemCategory(tab, stacks);
-//        if(this.allowedIn(tab)) {
-//            switch (type) {
-//                case MEMORY -> {
-//                    RuneManager.getMemoryRunes().forEach(type -> {
-//                        ItemStack stack = new ItemStack(this);
-//                        setMemoryType(stack, type);
-//                        stacks.add(stack);
-//                    });
-//                }
-//                case SENSOR -> {
-//                    RuneManager.getSensorRunes().forEach(type -> {
-//                        ItemStack stack = new ItemStack(this);
-//                        setSensorType(stack, type);
-//                        stacks.add(stack);
-//                    });
-//                }
-//                case BEHAVIOR -> {
-//                    RuneManager.getBehaviorRunes().forEach(type -> {
-//                        ItemStack stack = new ItemStack(this);
-//                        setBehaviorType(stack, type);
-//                        stacks.add(stack);
-//                    });
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
-//        super.appendHoverText(stack, level, components, tooltipFlag);
-//        switch (getRuneTypes(stack)) {
-//            case MEMORY -> {
-//                getMemoryType(stack).ifPresent(type -> components.add(type.getComponent()));
-//            }
-//            case SENSOR -> {
-//                getSensorType(stack).ifPresent(type -> components.add(type.getComponent()));
-//            }
-//            case BEHAVIOR -> {
-//                getBehaviorType(stack).ifPresent(type -> {
-//                    components.add(type.getComponent());
-//                    type.requireMemoryStatus(level).forEach((memory, status) -> {
-//                        components.add(RuneManager.getStatusText(memory, status));
-//                    });
-//                });
-//            }
-//        }
-//    }
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        super.appendHoverText(stack, level, components, flag);
+        if(PlayerHelper.getClientPlayer() != null){
+            this.addDisplayComponents(stack, components);
+            if(this.hasHideInfo(stack)){
+                if(Util.getProxy().isShiftKeyDown()){
+                    this.addHideComponents(stack, components);
+                } else {
+                    components.add(TipUtil.SHIFT_TO_SEE_DETAILS);
+                }
+            }
+        }
+    }
+
+    protected void addDisplayComponents(ItemStack stack, List<Component> components) {
+    }
+
+    protected void addHideComponents(ItemStack stack, List<Component> components) {
+    }
+
+    protected boolean hasHideInfo(ItemStack stack){
+        return false;
+    }
 
 }

@@ -1,14 +1,23 @@
 package hungteen.imm.common.item.runes;
 
 import hungteen.htlib.util.helper.CodecHelper;
+import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.BrainHelper;
 import hungteen.imm.common.rune.behavior.IBehaviorRune;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.rune.filter.IFilterRune;
+import hungteen.imm.util.TipUtil;
+import hungteen.imm.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: Immortal
@@ -59,6 +68,64 @@ public class BehaviorRuneItem extends RuneItem {
 
     public boolean hasFilter(ItemStack stack, int id){
         return getFilterMap(stack).containsKey(id);
+    }
+
+    @Override
+    public String getDescriptionId() {
+        return StringHelper.langKey("item", Util.id(), "behavior_rune");
+    }
+
+    @Override
+    protected void addDisplayComponents(ItemStack stack, List<Component> components) {
+        components.add(getBehaviorRune().getComponent());
+    }
+
+    @Override
+    protected void addHideComponents(ItemStack stack, List<Component> components) {
+        List<Component> memoryComponents = getMemoryComponents();
+        if(! memoryComponents.isEmpty()){
+            components.add(TipUtil.rune("require_memories"));
+            components.addAll(memoryComponents);
+        }
+    }
+
+    @Override
+    protected boolean hasHideInfo(ItemStack stack) {
+        return true;
+    }
+
+    public List<Component> getMemoryComponents(){
+        List<Component> components = new ArrayList<>();
+        getBehaviorRune().requireMemoryStatus().forEach((memory, statusList) -> {
+            components.add(getStatusText(memory, statusList));
+        });
+        return components;
+    }
+
+    public Component getStatusText(MemoryModuleType<?> type, List<MemoryStatus> status){
+            final MutableComponent component = getMemoryComponent(type);
+            if(! status.isEmpty()){
+                component.append(" : ");
+                component.append(getStatusComponent(status.get(0)));
+                for(int i = 1; i < status.size(); i++){
+                    component.append(" -> ");
+                    component.append(getStatusComponent(status.get(i)));
+                }
+            }
+            return component;
+    }
+
+    public MutableComponent getStatusComponent(MemoryStatus status) {
+        return TipUtil.rune("status." + status.toString().toLowerCase(Locale.ROOT)).withStyle(
+                status == MemoryStatus.REGISTERED ? ChatFormatting.YELLOW :
+                status == MemoryStatus.VALUE_ABSENT ? ChatFormatting.RED :
+                        ChatFormatting.GREEN
+        );
+    }
+
+    public MutableComponent getMemoryComponent(MemoryModuleType<?> type) {
+        final ResourceLocation location = BrainHelper.memory().getKey(type);
+        return Component.translatable("rune." + location.getNamespace() + ".memory." + location.getPath()).withStyle(ChatFormatting.DARK_PURPLE);
     }
 
     private static String getFilterLabel(int id){

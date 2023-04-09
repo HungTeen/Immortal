@@ -22,4 +22,8 @@ public class CommonProxy {
     public Optional<RecipeManager> getRecipeManager(){
         return Optional.empty();
     }
+
+    public boolean isShiftKeyDown(){
+        return false;
+    }
 }

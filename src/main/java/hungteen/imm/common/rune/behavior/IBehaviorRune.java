@@ -2,6 +2,7 @@ package hungteen.imm.common.rune.behavior;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -24,9 +25,9 @@ public interface IBehaviorRune extends ISimpleEntry {
     IBehaviorFactory getBehaviorFactory();
 
     /**
-     * 执行此行为所需要的记忆状态。
+     * 执行此行为的记忆状态变化。
      */
-    Map<MemoryModuleType<?>, MemoryStatus> requireMemoryStatus();
+    Map<MemoryModuleType<?>, List<MemoryStatus>> requireMemoryStatus();
 
     /**
      * 判断当前槽位所匹配的符文是否合适。
@@ -34,24 +35,12 @@ public interface IBehaviorRune extends ISimpleEntry {
      */
     List<Class<?>> getPredicateClasses();
 
-//    default boolean match(int id, CompoundTag tag) {
-//        return parse(id, tag).isPresent();
-//    }
-
-//    default Optional<?> parse(int id, CompoundTag tag) {
-//        if (id >= 0 && id < maxSlot()) {
-//            return getPredicateCodecs().get(id).parse(NbtOps.INSTANCE, tag)
-//                    .result();
-//        }
-//        return Optional.empty();
-//    }
-
     default int maxSlot() {
         return getPredicateClasses().size();
     }
 
     default MutableComponent getComponent() {
-        return Component.translatable("rune." + getModID() + ".behavior." + this.getName());
+        return Component.translatable("rune." + getModID() + ".behavior." + this.getName()).withStyle(ChatFormatting.GOLD);
     }
 
     @FunctionalInterface

@@ -32,16 +32,21 @@ public class GolemInventoryScreen extends HTContainerScreen<GolemInventoryMenu> 
     }
 
     @Override
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+        super.render(stack, mouseX, mouseY, partialTicks);
+        this.renderTooltip(stack, mouseX, mouseY);
+    }
+
+    @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
         //Dynamically render background.
         RenderHelper.setTexture(TEXTURE);
-        this.blit(stack, this.leftPos, this.topPos, 0, 0, TOP_HEIGHT, this.imageWidth);
+        this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, TOP_HEIGHT);
         for(int i = 0; i < this.rows; ++ i){
-            this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * i, 0, 131, SLOT_HEIGHT, this.imageWidth);
+            this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * i, 0, 131, this.imageWidth, SLOT_HEIGHT);
         }
-        this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * this.rows, 0, 119, BOTTOM_HEIGHT, this.imageWidth);
+        this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * this.rows, 0, 119, this.imageWidth, BOTTOM_HEIGHT);
         super.renderBg(stack, partialTicks, mouseX, mouseY);
-        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     private int getTotalHeight(){
