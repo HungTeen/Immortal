@@ -23,7 +23,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
 group = "hungteen.${mod_id}"
-archivesBaseName = "${mod_name}}-${mc_version}"
+archivesBaseName = "${mod_name}-${mc_version}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 

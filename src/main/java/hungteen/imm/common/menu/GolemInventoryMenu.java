@@ -2,6 +2,7 @@ package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.entity.golem.GolemEntity;
+import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
@@ -39,6 +40,12 @@ public class GolemInventoryMenu extends HTContainerMenu {
         this.runeRows = (this.runeContainer.getContainerSize() + 8) / 9;
         this.addInventories(15, TOP_HEIGHT, this.runeRows, 9, 0, (i, x, y) -> {
             return new Slot(this.runeContainer, i, x, y){
+
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return stack.getItem() instanceof BehaviorRuneItem;
+                }
+
                 @Override
                 public boolean isActive() {
                     //多余的槽位无效。

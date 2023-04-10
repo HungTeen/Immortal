@@ -37,6 +37,10 @@ public class IMMMenus {
         return IForgeMenuType.create(GolemInventoryMenu::new);
     });
 
+    public static final RegistryObject<MenuType<RuneCraftingMenu>> RUNE_CRAFT = CONTAINER_TYPES.register("rune_craft", () -> {
+        return IForgeMenuType.create((id, inventory, data) -> new RuneCraftingMenu(id, inventory));
+    });
+
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
      */

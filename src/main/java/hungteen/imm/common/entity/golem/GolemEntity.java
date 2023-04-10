@@ -271,6 +271,11 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         }
 
         @Override
+        public int getMaxStackSize() {
+            return 1;
+        }
+
+        @Override
         public void startOpen(Player player) {
             super.startOpen(player);
             this.golem.updateRuneInventory();
