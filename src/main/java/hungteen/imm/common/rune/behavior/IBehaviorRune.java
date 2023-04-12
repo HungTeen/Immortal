@@ -2,6 +2,7 @@ package hungteen.imm.common.rune.behavior;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
+import hungteen.imm.common.rune.ICraftableRune;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author: HungTeen
  * @create: 2023-04-02 21:07
  **/
-public interface IBehaviorRune extends ISimpleEntry {
+public interface IBehaviorRune extends ISimpleEntry, ICraftableRune {
 
     /**
      * 获取记忆类型构造器。

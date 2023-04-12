@@ -1,7 +1,10 @@
 package hungteen.imm.util;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.item.runes.RuneItem;
+import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -48,6 +51,12 @@ public class ItemUtil {
 
     public static ResourceLocation getLargeHeldLocation(Item item){
         return Util.suffix(ItemHelper.get().getKey(item), SUFFIX);
+    }
+
+    public static List<Pair<ICraftableRune, ItemStack>> getCraftableRunes(){
+        return ItemHelper.get().filterValues(RuneItem.class::isInstance)
+                .stream().map(RuneItem.class::cast)
+                .map(item -> Pair.of(item.getRune(), new ItemStack(item))).toList();
     }
 
     /**

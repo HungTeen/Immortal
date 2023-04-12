@@ -81,12 +81,12 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return IMMRecipes.ELIXIR_SERIALIZER.get();
+        return IMMRecipeSerializers.ELIXIR.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return IMMRecipes.ELIXIR_RECIPE_TYPE.get();
+        return IMMRecipes.ELIXIR.get();
     }
 
     @Override

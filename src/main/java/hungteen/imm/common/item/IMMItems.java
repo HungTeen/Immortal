@@ -7,7 +7,6 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.item.runes.info.ItemFilterRune;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
@@ -40,7 +39,7 @@ public class IMMItems {
 
     /* Rune Tab Items */
 
-    public static final RegistryObject<Item> RUNE = ITEMS.register("rune", RuneItem::new);
+    public static final RegistryObject<Item> RUNE = ITEMS.register("rune", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> ITEM_FILTER_RUNE = ITEMS.register("item_filter_rune", ItemFilterRune::new);
 
     /* Elixir Tab Items */

@@ -170,7 +170,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         for(int i = 0; i < this.runeInventory.getContainerSize(); ++ i){
             final ItemStack stack = runeInventory.getItem(i);
             if(stack.getItem() instanceof BehaviorRuneItem behaviorRuneItem){
-                GolemBehavior behavior = behaviorRuneItem.getBehaviorRune().getBehaviorFactory().create(stack);
+                GolemBehavior behavior = behaviorRuneItem.getRune().getBehaviorFactory().create(stack);
                 this.behaviorModules.add(Pair.of(i, behavior));
                 behavior.entryCondition.forEach((memory, status) -> {
                     this.memoryModules.add(memory);

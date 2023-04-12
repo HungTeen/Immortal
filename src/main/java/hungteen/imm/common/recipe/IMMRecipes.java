@@ -1,9 +1,10 @@
 package hungteen.imm.common.recipe;
 
 import hungteen.imm.util.Util;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,17 +20,25 @@ public class IMMRecipes {
         ShapedRecipe.setCraftingSize(7, 7);
     }
 
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Util.id());
-    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Util.id());
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Util.id());
 
-    /* Recipe Serializers */
+    public static final RegistryObject<RecipeType<ElixirRecipe>> ELIXIR = register("elixir");
+    public static final RegistryObject<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT = register("smithing_artifact");
 
-    public static final RegistryObject<ElixirRecipe.Serializer> ELIXIR_SERIALIZER = RECIPE_SERIALIZERS.register("elixir_serializer", ElixirRecipe.Serializer::new);
-    public static final RegistryObject<SmithingArtifactRecipe.Serializer> SMITHING_ARTIFACT_SERIALIZER = RECIPE_SERIALIZERS.register("smithing_artifact_serializer", SmithingArtifactRecipe.Serializer::new);
+    /**
+     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
+     */
+    public static void register(IEventBus event){
+        RECIPE_TYPES.register(event);
+    }
 
-    /* Recipe Types */
-
-    public static final RegistryObject<RecipeType<ElixirRecipe>> ELIXIR_RECIPE_TYPE = RECIPE_TYPES.register("elixir", () -> new RecipeType<>() {});
-    public static final RegistryObject<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT_RECIPE_TYPE = RECIPE_TYPES.register("smithing_artifact", () -> new RecipeType<>() {});
+    private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> register(String name){
+        return RECIPE_TYPES.register(name, () -> new RecipeType<>() {
+            @Override
+            public String toString() {
+                return Util.prefixName(name);
+            }
+        });
+    }
 
 }

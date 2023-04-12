@@ -1,6 +1,7 @@
 package hungteen.imm.common.item.runes;
 
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-10-06 18:27
  **/
-public class RuneItem extends Item {
+public abstract class RuneItem extends Item {
 
     public RuneItem() {
         super(new Properties());
@@ -37,6 +38,8 @@ public class RuneItem extends Item {
             }
         }
     }
+
+    public abstract ICraftableRune getRune();
 
     protected void addDisplayComponents(ItemStack stack, List<Component> components) {
     }

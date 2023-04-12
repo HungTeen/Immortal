@@ -1,20 +1,26 @@
 package hungteen.imm.common.menu;
 
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.util.ItemUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -30,7 +36,7 @@ public class RuneCraftingMenu extends HTContainerMenu {
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     public final Container inputContainer;
     public final ResultContainer resultContainer;
-    private List<StonecutterRecipe> recipes = Lists.newArrayList();
+    private List<Pair<ICraftableRune, ItemStack>> recipes = Lists.newArrayList();
     private List<ItemStack> lastInputItems = Lists.newArrayList();
     private Runnable clientSlotUpdateListener = () -> {
     };
@@ -52,7 +58,14 @@ public class RuneCraftingMenu extends HTContainerMenu {
             }
         };
         this.resultContainer = new ResultContainer();
-        this.addInventories(this.inputContainer, 21, 59, INPUT_SLOT_NUM, 1, 0);
+        this.addInventories(21, 59, INPUT_SLOT_NUM, 1, 0, (slot, x, y) -> {
+            return new Slot(this.inputContainer, slot, x, y){
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return this.getContainerSlot() == 0 ? stack.is(Items.AMETHYST_SHARD) : stack.is(Items.REDSTONE);
+                }
+            };
+        });
         this.addSlot(new Slot(this.resultContainer, 2, 154, 68){
 
             @Override
@@ -98,7 +111,10 @@ public class RuneCraftingMenu extends HTContainerMenu {
         this.selectedRecipeIndex.set(-1);
         this.resultContainer.setItem(0, ItemStack.EMPTY);
 //        if (!p_40305_.isEmpty()) {
-            this.recipes = this.level.getRecipeManager().getRecipesFor(RecipeType.STONECUTTING, container, this.level);
+            this.recipes = ItemUtil.getCraftableRunes().stream().filter(pair -> {
+                return this.inputContainer.getItem(0).getCount() > pair.getFirst().requireAmethyst()
+                        && this.inputContainer.getItem(1).getCount() > pair.getFirst().requireRedStone();
+            }).collect(Collectors.toList());
 //        }
     }
 
@@ -185,10 +201,9 @@ public class RuneCraftingMenu extends HTContainerMenu {
 
     protected void setupResultSlot() {
         if (!this.recipes.isEmpty() && this.isValidSlotIndex(this.selectedRecipeIndex.get())) {
-            StonecutterRecipe stonecutterrecipe = this.recipes.get(this.selectedRecipeIndex.get());
-            ItemStack itemstack = stonecutterrecipe.assemble(this.inputContainer);
+            final Pair<ICraftableRune, ItemStack> recipe = this.recipes.get(this.selectedRecipeIndex.get());
+            final ItemStack itemstack = recipe.getSecond().copy();
             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
-                this.resultContainer.setRecipeUsed(stonecutterrecipe);
                 this.resultContainer.setItem(0, itemstack);
             } else {
                 this.resultContainer.setItem(0, ItemStack.EMPTY);
@@ -204,7 +219,7 @@ public class RuneCraftingMenu extends HTContainerMenu {
         return !this.recipes.isEmpty();
     }
 
-    public List<StonecutterRecipe> getRecipes() {
+    public List<Pair<ICraftableRune, ItemStack>> getRecipes() {
         return this.recipes;
     }
 

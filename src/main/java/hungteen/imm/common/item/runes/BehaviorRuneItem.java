@@ -35,7 +35,7 @@ public class BehaviorRuneItem extends RuneItem {
     }
 
     public void setFilter(ItemStack stack, int id, IFilterRune filterRune){
-        if(id >= 0 && id < getBehaviorRune().maxSlot()){
+        if(id >= 0 && id < getRune().maxSlot()){
             CodecHelper.encodeNbt(FilterRuneTypes.getCodec(), filterRune)
                     .result().ifPresent(tag -> {
                         CompoundTag nbt = new CompoundTag();
@@ -77,7 +77,7 @@ public class BehaviorRuneItem extends RuneItem {
 
     @Override
     protected void addDisplayComponents(ItemStack stack, List<Component> components) {
-        components.add(getBehaviorRune().getComponent());
+        components.add(getRune().getComponent());
     }
 
     @Override
@@ -96,7 +96,7 @@ public class BehaviorRuneItem extends RuneItem {
 
     public List<Component> getMemoryComponents(){
         List<Component> components = new ArrayList<>();
-        getBehaviorRune().requireMemoryStatus().forEach((memory, statusList) -> {
+        getRune().requireMemoryStatus().forEach((memory, statusList) -> {
             components.add(getStatusText(memory, statusList));
         });
         return components;
@@ -132,7 +132,8 @@ public class BehaviorRuneItem extends RuneItem {
         return FILTER_ITEM + "_" + id;
     }
 
-    public IBehaviorRune getBehaviorRune() {
+    @Override
+    public IBehaviorRune getRune() {
         return behaviorRune;
     }
 }

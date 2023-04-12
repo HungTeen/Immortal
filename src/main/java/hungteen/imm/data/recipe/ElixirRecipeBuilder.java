@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.recipe.IMMRecipes;
+import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -191,7 +191,7 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getType() {
-            return IMMRecipes.ELIXIR_SERIALIZER.get();
+            return IMMRecipeSerializers.ELIXIR.get();
         }
 
         @Override

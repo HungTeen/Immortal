@@ -19,6 +19,7 @@ import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.misc.IMMBannerPatterns;
 import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
@@ -89,8 +90,8 @@ public class ImmortalMod {
         IMMEntities.register(modBus);
         IMMBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         IMMSchedules.SCHEDULES.register(modBus);
-        IMMRecipes.RECIPE_SERIALIZERS.register(modBus);
-        IMMRecipes.RECIPE_TYPES.register(modBus);
+        IMMRecipes.register(modBus);
+        IMMRecipeSerializers.register(modBus);
         IMMMenus.register(modBus);
         IMMBannerPatterns.register(modBus);
         IMMParticles.register(modBus);

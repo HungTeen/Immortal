@@ -39,12 +39,12 @@ public class SmithingArtifactRecipe extends ArtifactRecipe{
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return IMMRecipes.SMITHING_ARTIFACT_SERIALIZER.get();
+        return IMMRecipeSerializers.SMITHING_ARTIFACT.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return IMMRecipes.SMITHING_ARTIFACT_RECIPE_TYPE.get();
+        return IMMRecipes.SMITHING_ARTIFACT.get();
     }
 
     /**

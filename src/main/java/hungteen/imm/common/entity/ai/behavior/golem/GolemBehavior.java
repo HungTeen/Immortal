@@ -29,7 +29,7 @@ public class GolemBehavior extends Behavior<GolemEntity> {
         super(statusMap, minDuration, maxDuration);
         if(stack.getItem() instanceof BehaviorRuneItem item){
             this.filterMap = item.getFilterMap(stack);
-            this.behaviorRune = item.getBehaviorRune();
+            this.behaviorRune = item.getRune();
         } else {
             // Go here to access to the field of {memory status map}.
             this.filterMap = new HashMap<>();

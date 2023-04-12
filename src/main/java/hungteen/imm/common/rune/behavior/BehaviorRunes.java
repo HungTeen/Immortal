@@ -163,6 +163,16 @@ public class BehaviorRunes {
         }
 
         @Override
+        public int requireAmethyst() {
+            return 2;
+        }
+
+        @Override
+        public int requireRedStone() {
+            return 4;
+        }
+
+        @Override
         public String getName() {
             return this.name;
         }

@@ -1,10 +1,12 @@
 package hungteen.imm.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.menu.RuneCraftingMenu;
+import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -13,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -43,9 +45,9 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
         this.imageHeight = 214;
     }
 
-    private void slotChanged(){
+    private void slotChanged() {
         this.displayRecipes = this.menu.hasRecipes();
-        if(! this.displayRecipes){
+        if (!this.displayRecipes) {
             this.scrollPercent = 0F;
             this.startIndex = 0;
         }
@@ -63,21 +65,21 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
         RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
-        final List<StonecutterRecipe> list = this.menu.getRecipes();
-        for(int i = 0; i < SIZE; ++ i){
+        final List<Pair<ICraftableRune, ItemStack>> list = this.menu.getRecipes();
+        for (int i = 0; i < SIZE; ++i) {
             final int id = this.startIndex + i;
-            final int x = this.leftPos + CORNER_OFFSET_X + i % COLS * 18;
-            final int y = this.topPos + CORNER_OFFSET_Y + i / COLS * 18;
-            int startX = 0;
-            if(i == this.menu.getSelectedRecipeIndex()){
-                startX += 32;
-            }
+            if (id < list.size()) {
+                final int x = this.leftPos + CORNER_OFFSET_X + i % COLS * 18;
+                final int y = this.topPos + CORNER_OFFSET_Y + i / COLS * 18;
+                int startX = 0;
+                if (i == this.menu.getSelectedRecipeIndex()) {
+                    startX += 32;
+                }
 
-            RenderHelper.setTexture(TEXTURE);
-            this.blit(stack, x, y, startX, 240, 16, 16);
+                RenderHelper.setTexture(TEXTURE);
+                this.blit(stack, x, y, startX, 240, 16, 16);
 
-            if(id < list.size()){
-                this.minecraft.getItemRenderer().renderAndDecorateItem(list.get(i).getResultItem(), x, y);
+                this.minecraft.getItemRenderer().renderAndDecorateItem(list.get(i).getSecond(), x, y);
             }
         }
     }
@@ -86,11 +88,11 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
     public boolean mouseClicked(double mouseX, double mouseY, int p_99320_) {
         this.scrolling = false;
         if (this.displayRecipes) {
-            for(int i = 0; i < SIZE; ++ i){
+            for (int i = 0; i < SIZE; ++i) {
                 final int id = this.startIndex + i;
                 final double dx = mouseX - (this.leftPos + CORNER_OFFSET_X + i % COLS * 18);
                 final double dy = mouseY - (this.topPos + CORNER_OFFSET_Y + i / COLS * 18);
-                if(dx >= 0 && dx < 16 && dy >= 0 && dy < 16 && this.menu.clickMenuButton(this.minecraft.player, id)) {
+                if (dx >= 0 && dx < 16 && dy >= 0 && dy < 16 && this.menu.clickMenuButton(this.minecraft.player, id)) {
                     Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                     this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, id);
                     return true;
@@ -125,7 +127,7 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
             final int rows = this.getHiddenRows();
             final double f = delta / rows;
             this.scrollPercent = Mth.clamp(this.scrollPercent - f, 0.0F, 1.0F);
-            this.startIndex = Math.round((float)(this.scrollPercent * rows)) * COLS;
+            this.startIndex = Math.round((float) (this.scrollPercent * rows)) * COLS;
         }
 
         return true;
@@ -138,6 +140,5 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
     protected int getHiddenRows() {
         return (this.menu.getNumRecipes() + COLS - 1) / COLS - ROWS;
     }
-
 
 }
