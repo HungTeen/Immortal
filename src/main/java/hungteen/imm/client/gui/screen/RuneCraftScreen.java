@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import hungteen.imm.common.rune.ICraftableRune;
@@ -73,13 +74,34 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
                 final int y = this.topPos + CORNER_OFFSET_Y + i / COLS * 18;
                 int startX = 0;
                 if (i == this.menu.getSelectedRecipeIndex()) {
+                    startX += 16;
+                } else if(MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)){
                     startX += 32;
                 }
 
                 RenderHelper.setTexture(TEXTURE);
                 this.blit(stack, x, y, startX, 240, 16, 16);
 
-                this.minecraft.getItemRenderer().renderAndDecorateItem(list.get(i).getSecond(), x, y);
+                this.minecraft.getItemRenderer().renderAndDecorateItem(list.get(id).getSecond(), x, y);
+            }
+        }
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
+        super.renderTooltip(stack, mouseX, mouseY);
+        if (this.displayRecipes) {
+            final List<Pair<ICraftableRune, ItemStack>> list = this.menu.getRecipes();
+
+            for (int i = 0; i < SIZE; ++i) {
+                final int id = this.startIndex + i;
+                if (id < list.size()) {
+                    final int x = this.leftPos + CORNER_OFFSET_X + i % COLS * 18;
+                    final int y = this.topPos + CORNER_OFFSET_Y + i / COLS * 18;
+                    if(MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)){
+                        this.renderTooltip(stack, list.get(id).getSecond(), mouseX, mouseY);
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package hungteen.imm.common.block.artifacts;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +35,9 @@ public class RuneWorkBench extends Block {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            player.openMenu(state.getMenuProvider(level, pos));
+            if(player instanceof ServerPlayer){
+                NetworkHooks.openScreen((ServerPlayer) player, state.getMenuProvider(level, pos) );
+            }
             return InteractionResult.CONSUME;
         }
     }

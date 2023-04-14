@@ -5,7 +5,9 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +33,6 @@ import java.util.stream.Collectors;
 public class RuneCraftingMenu extends HTContainerMenu {
 
     public static final int INPUT_SLOT_NUM = 2;
-    public static final int OUTPUT_SLOT_NUM = 1;
     private final ContainerLevelAccess access;
     private final Level level;
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
@@ -38,8 +40,10 @@ public class RuneCraftingMenu extends HTContainerMenu {
     public final ResultContainer resultContainer;
     private List<Pair<ICraftableRune, ItemStack>> recipes = Lists.newArrayList();
     private List<ItemStack> lastInputItems = Lists.newArrayList();
+    private ICraftableRune lastInputRune;
     private Runnable clientSlotUpdateListener = () -> {
     };
+    private long lastSoundTime;
 
     public RuneCraftingMenu(int id, Inventory inventory) {
         this(id, inventory, ContainerLevelAccess.NULL);
@@ -75,21 +79,7 @@ public class RuneCraftingMenu extends HTContainerMenu {
 
             @Override
             public void onTake(Player player, ItemStack stack) {
-//                stack.onCraftedBy(player.level, player, stack.getCount());
-//                StonecutterMenu.this.resultContainer.awardUsedRecipes(player);
-//                ItemStack itemstack = StonecutterMenu.this.inputSlot.remove(1);
-//                if (!itemstack.isEmpty()) {
-//                    StonecutterMenu.this.setupResultSlot();
-//                }
-//
-//                p_40299_.execute((p_40364_, p_40365_) -> {
-//                    long l = p_40364_.getGameTime();
-//                    if (StonecutterMenu.this.lastSoundTime != l) {
-//                        p_40364_.playSound((Player)null, p_40365_, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0F, 1.0F);
-//                        StonecutterMenu.this.lastSoundTime = l;
-//                    }
-//
-//                });
+                RuneCraftingMenu.this.craftItem(player, stack);
                 super.onTake(player, stack);
             }
         });
@@ -99,8 +89,29 @@ public class RuneCraftingMenu extends HTContainerMenu {
         this.addDataSlot(this.selectedRecipeIndex);
     }
 
+    public void craftItem(Player player, ItemStack stack){
+        if(this.lastInputRune != null){
+            stack.onCraftedBy(player.level, player, stack.getCount());
+            this.resultContainer.awardUsedRecipes(player);
+            this.inputContainer.removeItem(0, this.lastInputRune.requireAmethyst());
+            this.inputContainer.removeItem(1, this.lastInputRune.requireRedStone());
+            if(this.canCraft(this.lastInputRune)){
+                this.setupResultSlot();
+            }
+
+            this.access.execute((level, pos) -> {
+                long time = level.getGameTime();
+                if(this.lastSoundTime != time){
+                    BlockUtil.playSound(level, pos, SoundEvents.UI_STONECUTTER_TAKE_RESULT);
+                    this.lastSoundTime = time;
+                }
+            });
+        }
+    }
+
     @Override
     public void slotsChanged(Container container) {
+        super.slotsChanged(container);
         if(inputSlotChanged()){
             this.updateRecipes(container);
         }
@@ -108,13 +119,10 @@ public class RuneCraftingMenu extends HTContainerMenu {
 
     protected void updateRecipes(Container container){
         this.recipes.clear();
-        this.selectedRecipeIndex.set(-1);
+        this.setSelectedRecipeIndex(-1);
         this.resultContainer.setItem(0, ItemStack.EMPTY);
 //        if (!p_40305_.isEmpty()) {
-            this.recipes = ItemUtil.getCraftableRunes().stream().filter(pair -> {
-                return this.inputContainer.getItem(0).getCount() > pair.getFirst().requireAmethyst()
-                        && this.inputContainer.getItem(1).getCount() > pair.getFirst().requireRedStone();
-            }).collect(Collectors.toList());
+            this.recipes = ItemUtil.getCraftableRunes().stream().filter(pair -> canCraft(pair.getFirst())).collect(Collectors.toList());
 //        }
     }
 
@@ -133,10 +141,16 @@ public class RuneCraftingMenu extends HTContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        this.resultContainer.removeItemNoUpdate(1);
-        this.access.execute((p_40313_, p_40314_) -> {
+        this.resultContainer.removeItemNoUpdate(0);
+        this.access.execute((level, pos) -> {
             this.clearContainer(player, this.inputContainer);
         });
+    }
+
+    @Override
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+//        return super.canTakeItemForPickAll(stack, slot);
+        return slot.container != this.resultContainer && super.canTakeItemForPickAll(stack, slot);
     }
 
     @Override
@@ -152,21 +166,20 @@ public class RuneCraftingMenu extends HTContainerMenu {
                 if (!this.moveItemStackTo(itemstack1, 3, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-
                 slot.onQuickCraft(itemstack1, result);
             } else if (slotId < 2) {
                 if (!this.moveItemStackTo(itemstack1, 3, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (slotId < 3 + 27) {
-                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, 0, 2, false)) {
                     return ItemStack.EMPTY;
                 }
                 if (!this.moveItemStackTo(itemstack1, 3 + 27, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, 0, 2, false)) {
                     return ItemStack.EMPTY;
                 }
                 if(!this.moveItemStackTo(itemstack1, 3, 3 + 27, false)) {
@@ -192,16 +205,16 @@ public class RuneCraftingMenu extends HTContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        if (this.isValidSlotIndex(id)) {
-            this.selectedRecipeIndex.set(id);
+        if (this.isValidButtonIndex(id)) {
+            this.setSelectedRecipeIndex(id);
             this.setupResultSlot();
         }
         return true;
     }
 
     protected void setupResultSlot() {
-        if (!this.recipes.isEmpty() && this.isValidSlotIndex(this.selectedRecipeIndex.get())) {
-            final Pair<ICraftableRune, ItemStack> recipe = this.recipes.get(this.selectedRecipeIndex.get());
+        if (!this.recipes.isEmpty() && this.isValidButtonIndex(this.getSelectedRecipeIndex())) {
+            final Pair<ICraftableRune, ItemStack> recipe = this.recipes.get(this.getSelectedRecipeIndex());
             final ItemStack itemstack = recipe.getSecond().copy();
             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
                 this.resultContainer.setItem(0, itemstack);
@@ -219,6 +232,11 @@ public class RuneCraftingMenu extends HTContainerMenu {
         return !this.recipes.isEmpty();
     }
 
+    public boolean canCraft(@Nullable ICraftableRune rune){
+        return rune != null && this.inputContainer.getItem(0).getCount() >= rune.requireAmethyst()
+                && this.inputContainer.getItem(1).getCount() >= rune.requireRedStone();
+    }
+
     public List<Pair<ICraftableRune, ItemStack>> getRecipes() {
         return this.recipes;
     }
@@ -231,12 +249,20 @@ public class RuneCraftingMenu extends HTContainerMenu {
         return selectedRecipeIndex.get();
     }
 
+    public void setSelectedRecipeIndex(int index) {
+        this.selectedRecipeIndex.set(index);
+        if (isValidButtonIndex(index)) {
+            this.lastInputRune = this.recipes.get(index).getFirst();
+        } else {
+            this.lastInputRune = null;
+        }
+    }
+
     public void setClientSlotUpdateListener(Runnable clientSlotUpdateListener) {
         this.clientSlotUpdateListener = clientSlotUpdateListener;
     }
 
-    @Override
-    public boolean isValidSlotIndex(int pos) {
+    public boolean isValidButtonIndex(int pos) {
         return pos >= 0 && pos < this.recipes.size();
     }
 
