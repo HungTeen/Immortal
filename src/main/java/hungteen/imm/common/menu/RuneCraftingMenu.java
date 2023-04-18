@@ -2,9 +2,8 @@ package hungteen.imm.common.menu;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.common.menu.HTContainerMenu;
-import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +18,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,11 +28,9 @@ import java.util.stream.Collectors;
  * @author: HungTeen
  * @create: 2023-04-09 22:59
  **/
-public class RuneCraftingMenu extends HTContainerMenu {
+public class RuneCraftingMenu extends RuneBaseMenu {
 
     public static final int INPUT_SLOT_NUM = 2;
-    private final ContainerLevelAccess access;
-    private final Level level;
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     public final Container inputContainer;
     public final ResultContainer resultContainer;
@@ -50,10 +46,8 @@ public class RuneCraftingMenu extends HTContainerMenu {
     }
 
     public RuneCraftingMenu(int id, Inventory inventory, ContainerLevelAccess access) {
-        super(id, IMMMenus.RUNE_CRAFT.get());
-        this.access = access;
-        this.level = inventory.player.level;
-        this.inputContainer = new SimpleContainer(2){
+        super(id, IMMMenus.RUNE_CRAFT.get(), inventory, access);
+        this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM){
             @Override
             public void setChanged() {
                 super.setChanged();
@@ -149,7 +143,6 @@ public class RuneCraftingMenu extends HTContainerMenu {
 
     @Override
     public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
-//        return super.canTakeItemForPickAll(stack, slot);
         return slot.container != this.resultContainer && super.canTakeItemForPickAll(stack, slot);
     }
 
@@ -209,7 +202,7 @@ public class RuneCraftingMenu extends HTContainerMenu {
             this.setSelectedRecipeIndex(id);
             this.setupResultSlot();
         }
-        return true;
+        return super.clickMenuButton(player, id);
     }
 
     protected void setupResultSlot() {
@@ -267,7 +260,8 @@ public class RuneCraftingMenu extends HTContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return stillValid(this.access, player, IMMBlocks.RUNE_WORK_BENCH.get());
+    public RuneCategories getRuneCategory() {
+        return RuneCategories.CRAFT;
     }
+
 }

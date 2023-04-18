@@ -16,11 +16,11 @@ import java.util.function.Predicate;
  * @author: HungTeen
  * @create: 2023-04-04 23:01
  **/
-public abstract class BaseGateRune implements IFilterRune {
+public abstract class BaseFilterRune implements IFilterRune {
 
     private final Info info;
 
-    public BaseGateRune(Info info) {
+    public BaseFilterRune(Info info) {
         this.info = info;
     }
 
@@ -37,9 +37,12 @@ public abstract class BaseGateRune implements IFilterRune {
 
     public abstract <T> boolean check(T target, T current);
 
+    /**
+     * 得到唯一的指定值
+     */
     public Optional<?> parse(){
-        if(info.item() instanceof FilterRuneItem<?> infoRuneItem){
-            return infoRuneItem.getCodec().parse(NbtOps.INSTANCE, info.tag())
+        if(getInfo().item() instanceof FilterRuneItem<?> infoRuneItem){
+            return infoRuneItem.getCodec().parse(NbtOps.INSTANCE, getInfo().tag())
                     .result();
         }
         return Optional.empty();

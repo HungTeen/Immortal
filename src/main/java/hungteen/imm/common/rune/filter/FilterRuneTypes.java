@@ -16,7 +16,9 @@ public class FilterRuneTypes {
 
     private static final HTSimpleRegistry<IFilterRuneType<?>> FILTER_RUNE_TYPES = HTRegistryManager.create(Util.prefix("filter_rune_types"));
 
-    public static final IFilterRuneType<EqualGateRune> EQUAL = register(new DefaultRuneType<>("equal", EqualGateRune.CODEC));
+    public static final IFilterRuneType<EqualGateRune> EQUAL = register(new DefaultRuneType<>("equal", false, EqualGateRune.CODEC));
+    public static final IFilterRuneType<AndGateRune> AND = register(new DefaultRuneType<>("and", true, AndGateRune.CODEC));
+    public static final IFilterRuneType<OrGateRune> OR = register(new DefaultRuneType<>("or", true, OrGateRune.CODEC));
 
     /**
      * {@link ImmortalMod#coreRegister()}
@@ -36,7 +38,7 @@ public class FilterRuneTypes {
         return FILTER_RUNE_TYPES.byNameCodec().dispatch(IFilterRune::getType, IFilterRuneType::codec);
     }
 
-    private record DefaultRuneType<P extends IFilterRune>(String name, Codec<P> codec) implements IFilterRuneType<P> {
+    private record DefaultRuneType<P extends IFilterRune>(String name, boolean isGateRune, Codec<P> codec) implements IFilterRuneType<P> {
 
         @Override
         public String getName() {

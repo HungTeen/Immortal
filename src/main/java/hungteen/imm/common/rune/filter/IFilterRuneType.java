@@ -10,6 +10,8 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
  **/
 public interface IFilterRuneType<P extends IFilterRune> extends ISimpleEntry {
 
+    boolean isGateRune();
+
     Codec<P> codec();
 
 

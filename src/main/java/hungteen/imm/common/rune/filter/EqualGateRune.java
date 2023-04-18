@@ -10,10 +10,10 @@ import net.minecraft.world.item.Item;
  * @author: HungTeen
  * @create: 2023-04-04 22:51
  **/
-public class EqualGateRune extends BaseGateRune {
+public class EqualGateRune extends BaseFilterRune {
 
     public static final Codec<EqualGateRune> CODEC = RecordCodecBuilder.<EqualGateRune>mapCodec(instance -> instance.group(
-            BaseGateRune.Info.CODEC.fieldOf("info").forGetter(EqualGateRune::getInfo)
+            BaseFilterRune.Info.CODEC.fieldOf("info").forGetter(EqualGateRune::getInfo)
     ).apply(instance, EqualGateRune::new)).codec();
 
     public EqualGateRune(Item item, CompoundTag tag) {

@@ -3,7 +3,6 @@ package hungteen.imm.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.RenderHelper;
-import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.menu.RuneCraftingMenu;
@@ -25,7 +24,7 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2023-04-10 21:45
  **/
-public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
+public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
 
     private static final ResourceLocation TEXTURE = StringHelper.containerTexture(Util.id(), "rune_craft_table");
     private static final int ROWS = 5;
@@ -42,8 +41,6 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
     public RuneCraftScreen(RuneCraftingMenu screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         screenContainer.setClientSlotUpdateListener(this::slotChanged);
-        this.imageWidth = 189;
-        this.imageHeight = 214;
     }
 
     private void slotChanged() {
@@ -55,14 +52,8 @@ public class RuneCraftScreen extends HTContainerScreen<RuneCraftingMenu> {
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(stack, mouseX, mouseY);
-    }
-
-    @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderBackground(stack);
+        super.renderBg(stack, partialTicks, mouseX, mouseY);
         RenderHelper.setTexture(TEXTURE);
         this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
