@@ -6,9 +6,12 @@ import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.filter.EqualGateRune;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.rune.filter.IFilterRune;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,6 +24,19 @@ public abstract class FilterRuneItem<T> extends RuneItem {
     private static final String FILTER = "Filter";
 
     public abstract Codec<T> getCodec();
+
+    @Override
+    protected void addDisplayComponents(ItemStack stack, List<Component> components) {
+        components.add(TipUtil.tooltip(this));
+    }
+
+    @Override
+    protected void addHideComponents(ItemStack stack, List<Component> components) {
+        getGateRune(stack).ifPresentOrElse(
+                rune -> components.add(rune.getFilterText()),
+                () -> components.add(TipUtil.rune("no_filter_target"))
+        );
+    }
 
     public void setGateRune(ItemStack stack, IFilterRune gateRune){
         CodecHelper.encodeNbt(FilterRuneTypes.getCodec(), gateRune)

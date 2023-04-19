@@ -201,6 +201,7 @@ public class RuneCraftingMenu extends RuneBaseMenu {
         if (this.isValidButtonIndex(id)) {
             this.setSelectedRecipeIndex(id);
             this.setupResultSlot();
+            return true;
         }
         return super.clickMenuButton(player, id);
     }

@@ -75,6 +75,9 @@
   "gui.imm.rune_tab_title.gate": "门",
   "gui.imm.rune_title.bind": "行为合成台",
   "gui.imm.rune_tab_title.bind": "行为",
+  "gui.imm.rune_conflict": "放入的符文类型必须相同",
+  "gui.imm.need_more_rune": "放入的符文太多，只需要一个",
+  "gui.imm.need_less_rune": "放入的符文太少，需要至少两个",
   "gui.imm.elixir_room.title": "炼丹",
   "gui.imm.elixir_furnace.remain_count": "剩余可加辅药 : %d个",
   "gui.imm.elixir_furnace.explode": "炼丹炉即将爆炸 !",
@@ -87,7 +90,6 @@
 
   "info.imm.no_root_for_inspiration": "好像没有什么启发",
   "info.imm.close_to_inspiration": "好像感受到了一丝灵气，再多试试",
-  "info.imm.shift_to_see_details": "-- 按Shift查看详情 --",
   "info.imm.spell_cost": "消耗%d灵力",
   "info.imm.spell_cd": "冷却%d秒",
   "info.imm.elixir_room.no_furnace": "丹室下方需要放置灵火炉",
@@ -119,6 +121,12 @@
   "rune.imm.status.registered": "*",
   "rune.imm.status.value_absent": "缺失",
   "rune.imm.status.value_present": "存在",
+  "rune.imm.shift_to_see_details": "-- 按Shift查看详情 --",
+  "rune.imm.no_filter_target": "没有指定目标",
+
+  "rune.imm.filter.and": "与门",
+  "rune.imm.filter.or": "或门",
+  "rune.imm.filter.not": "非门",
 
   "rune.minecraft.memory.mobs": "附近生物",
   "rune.minecraft.memory.visible_mobs": "附近可见生物",

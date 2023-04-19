@@ -25,8 +25,8 @@ import java.util.List;
 public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T> {
 
     private static final ResourceLocation WIDGETS = StringHelper.guiTexture(Util.id(), "widgets");
-    private static final int TAB_HEIGHT = 18;
-    private static final int TAB_WIDTH = 38;
+    private static final int TAB_HEIGHT = 30;
+    private static final int TAB_WIDTH = 52;
 
     public RuneBaseScreen(T screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
@@ -46,7 +46,7 @@ public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T>
         RenderHelper.setTexture(WIDGETS);
         final List<RuneCategories> list = this.menu.getRuneCategories();
         for(int i = 0; i < list.size(); i++) {
-            final int y = this.menu.getRuneCategory() == list.get(i) ? 20 : 40;
+            final int y = this.menu.getRuneCategory() == list.get(i) ? 32 : 64;
             this.blit(stack, getTabLeftOffset(i), getTabTopOffset(i), 0, y, TAB_WIDTH, TAB_HEIGHT);
         }
     }
@@ -56,8 +56,8 @@ public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T>
         RenderHelper.drawCenteredScaledString(stack, this.font, this.menu.getRuneCategory().getTitle().getString(), 95, 18, ColorHelper.BLACK, 1F);
         final List<RuneCategories> list = this.menu.getRuneCategories();
         for(int i = 0; i < list.size(); i++) {
-            final int x = getTabLeftOffset(i) - this.leftPos + TAB_WIDTH / 2;
-            final int y = getTabTopOffset(i) - this.topPos + 5;
+            final int x = getTabLeftOffset(i) - this.leftPos + TAB_WIDTH / 2 + 4;
+            final int y = getTabTopOffset(i) - this.topPos + 12;
             final int color = list.get(i) == this.menu.getRuneCategory() ? ColorHelper.GREEN : ColorHelper.BLACK;
             RenderHelper.drawCenteredScaledString(stack, this.font, list.get(i).getTabTitle().getString(), x, y, color, 1F);
         }
@@ -80,11 +80,11 @@ public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T>
     }
 
     private int getTabLeftOffset(int id){
-        return this.leftPos - TAB_WIDTH - 5;
+        return this.leftPos - TAB_WIDTH + 11;
     }
 
     private int getTabTopOffset(int id){
-        return this.topPos + 15 + (TAB_HEIGHT + 5) * id;
+        return this.topPos + 15 + (TAB_HEIGHT + 10) * id;
     }
 
 }

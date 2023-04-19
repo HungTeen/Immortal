@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,7 @@ public abstract class RuneItem extends Item {
                 if(Util.getProxy().isShiftKeyDown()){
                     this.addHideComponents(stack, components);
                 } else {
-                    components.add(TipUtil.SHIFT_TO_SEE_DETAILS);
+                    components.add(TipUtil.rune("shift_to_see_details").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
                 }
             }
         }
