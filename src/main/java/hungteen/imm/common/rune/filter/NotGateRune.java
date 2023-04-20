@@ -2,6 +2,8 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -18,6 +20,11 @@ public record NotGateRune(Item item, IFilterRune filter) implements IFilterRune{
             ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(NotGateRune::item),
             FilterRuneTypes.getCodec().fieldOf("filters").forGetter(NotGateRune::filter)
     ).apply(instance, NotGateRune::new)).codec();
+
+    @Override
+    public MutableComponent getFilterText() {
+        return TipUtil.rune("not_rune", filter().getFilterText());
+    }
 
     @Override
     public <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate) {

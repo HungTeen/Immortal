@@ -12,6 +12,8 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public interface IFilterRuneType<P extends IFilterRune> extends ISimpleEntry {
 
+    boolean isBaseType();
+
     int requireMinEntry();
 
     int requireMaxEntry();

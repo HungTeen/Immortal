@@ -1,7 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import hungteen.htlib.util.helper.CodecHelper;
-import net.minecraft.network.chat.Component;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 
 import java.util.function.Predicate;
@@ -13,10 +12,9 @@ import java.util.function.Predicate;
  **/
 public interface IFilterRune {
 
-    default MutableComponent getFilterText(){
-        return Component.literal(CodecHelper.encodeNbt(FilterRuneTypes.getCodec(), this)
-                .result().orElseThrow().getAsString());
-    }
+    MutableComponent UNKNOWN_COMPONENT = TipUtil.rune("unknown_rune_data");
+
+    MutableComponent getFilterText();
 
     <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate);
 

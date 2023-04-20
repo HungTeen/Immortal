@@ -9,6 +9,7 @@ import hungteen.imm.common.menu.RuneGateMenu;
 import hungteen.imm.common.rune.filter.IFilterRuneType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -48,16 +49,25 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
         }
 
         if(this.menu.getValidStatus() > 0){
-            this.blit(stack, 109, 100, 1, 231, 8, 8);
+            this.blit(stack, this.leftPos + 109, this.topPos + 100, 1, 231, 8, 8);
         }
     }
 
     @Override
     protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
         super.renderLabels(stack, mouseX, mouseY);
+        for (int i = 0; i < Math.min(this.menu.getGateNums(), LEN); ++i) {
+            final int x = getLeftOffset(i) + 8;
+            final int y = getTopOffset(i) + 3;
+            final IFilterRuneType<?> type = this.menu.getGateTypes().get(i);
+            RenderHelper.drawCenteredScaledString(stack, this.font, type.getComponent().getString(), x, y, ColorHelper.BLACK, 0.5F);
+        }
         if(this.menu.getValidStatus() > 0){
-            final Component component = TipUtil.gui("rune_conflict");
-            RenderHelper.drawCenteredScaledString(stack, this.font, component.getString(), 110, 81, ColorHelper.DARK_RED, 1F);
+            final int status = this.menu.getValidStatus();
+            final Component component = status == 1 ? TipUtil.gui("rune_conflict") :
+                    status == 2 ? TipUtil.gui("need_more_rune") :
+                    TipUtil.gui("need_less_rune");
+            RenderHelper.drawCenteredScaledString(stack, this.font, component.getString(), 115, 85, ColorHelper.DARK_RED, 0.8F);
         }
     }
 
@@ -70,7 +80,7 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
             if (MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)) {
                 final IFilterRuneType<?> type = this.menu.getGateTypes().get(i);
                 this.renderComponentTooltip(stack, List.of(
-                        type.getComponent(), type.getDesc()
+                        type.getComponent(), type.getDesc().withStyle(ChatFormatting.GREEN)
                 ), mouseX, mouseY);
             }
         }

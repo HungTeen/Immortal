@@ -2,7 +2,9 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 
 /**
@@ -27,6 +29,11 @@ public class EqualGateRune extends BaseFilterRune {
     @Override
     public boolean check(Object target, Object current) {
         return target.equals(current);
+    }
+
+    @Override
+    public MutableComponent getFilterText() {
+        return TipUtil.rune("equal_rune", getDataText());
     }
 
     @Override

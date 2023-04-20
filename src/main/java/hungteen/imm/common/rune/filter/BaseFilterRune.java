@@ -2,10 +2,13 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
@@ -18,6 +21,7 @@ import java.util.function.Predicate;
  **/
 public abstract class BaseFilterRune implements IFilterRune {
 
+    private static final String NBT = "nbt";
     private final Info info;
 
     public BaseFilterRune(Info info) {
@@ -41,11 +45,25 @@ public abstract class BaseFilterRune implements IFilterRune {
      * 得到唯一的指定值
      */
     public Optional<?> parse(){
-        if(getInfo().item() instanceof FilterRuneItem<?> infoRuneItem){
-            return infoRuneItem.getCodec().parse(NbtOps.INSTANCE, getInfo().tag())
-                    .result();
+        if(getInfo().item() instanceof FilterRuneItem<?> infoRuneItem && getInfo().tag().contains(NBT)){
+            return CodecHelper.parse(infoRuneItem.getCodec(), getInfo().tag().get(NBT)).result();
         }
         return Optional.empty();
+    }
+
+    public String getDataText(){
+        return parse().map(l -> {
+            if(l instanceof Item item) return item.getDescription();
+            if(l instanceof Block block) return block.getName();
+            if(l instanceof EntityType<?> type) return type.getDescription();
+            return UNKNOWN_COMPONENT;
+        }).orElse(UNKNOWN_COMPONENT).getString();
+    }
+
+    public static CompoundTag warp(Tag tag){
+        final CompoundTag nbt = new CompoundTag();
+        nbt.put(NBT, tag);
+        return nbt;
     }
 
     public Info getInfo() {

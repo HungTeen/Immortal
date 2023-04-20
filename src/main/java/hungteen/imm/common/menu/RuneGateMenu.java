@@ -1,8 +1,11 @@
 package hungteen.imm.common.menu;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.common.rune.filter.*;
+import hungteen.imm.util.BlockUtil;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,13 +25,14 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2023-04-18 09:14
  **/
-public class RuneGateMenu extends RuneBaseMenu{
+public class RuneGateMenu extends RuneBaseMenu {
 
     public static final int INPUT_SLOT_NUM = 3;
     private final DataSlot selectedGateIndex = DataSlot.standalone();
     private final DataSlot validStatus = DataSlot.standalone();
     public final Container inputContainer;
     public final ResultContainer resultContainer;
+    private long lastSoundTime;
 
     public RuneGateMenu(int id, Inventory inventory) {
         this(id, inventory, ContainerLevelAccess.NULL);
@@ -36,25 +40,24 @@ public class RuneGateMenu extends RuneBaseMenu{
 
     public RuneGateMenu(int id, Inventory inventory, ContainerLevelAccess access) {
         super(id, IMMMenus.RUNE_GATE.get(), inventory, access);
-        this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM){
+        this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM) {
             @Override
             public void setChanged() {
                 super.setChanged();
-//                RuneCraftingMenu.this.slotsChanged(this);
-//                RuneCraftingMenu.this.clientSlotUpdateListener.run();
+                RuneGateMenu.this.slotsChanged(this);
             }
         };
         this.resultContainer = new ResultContainer();
 
         this.addInventories(51, 96, 1, INPUT_SLOT_NUM, 0, (slot, x, y) -> {
-            return new Slot(this.inputContainer, slot, x, y){
+            return new Slot(this.inputContainer, slot, x, y) {
                 @Override
                 public boolean mayPlace(ItemStack stack) {
                     return stack.getItem() instanceof FilterRuneItem<?> item && item.getGateRune(stack).isPresent();
                 }
             };
         });
-        this.addSlot(new Slot(this.resultContainer, 3, 123, 96){
+        this.addSlot(new Slot(this.resultContainer, 3, 123, 96) {
 
             @Override
             public boolean mayPlace(ItemStack stack) {
@@ -74,24 +77,27 @@ public class RuneGateMenu extends RuneBaseMenu{
         this.addDataSlot(this.validStatus);
     }
 
-    public void craftItem(Player player, ItemStack stack){
-//        if(this.lastInputRune != null){
-//            stack.onCraftedBy(player.level, player, stack.getCount());
-//            this.resultContainer.awardUsedRecipes(player);
-//            this.inputContainer.removeItem(0, this.lastInputRune.requireAmethyst());
-//            this.inputContainer.removeItem(1, this.lastInputRune.requireRedStone());
-//            if(this.canCraft(this.lastInputRune)){
-//                this.setupResultSlot();
-//            }
-//
-//            this.access.execute((level, pos) -> {
-//                long time = level.getGameTime();
-//                if(this.lastSoundTime != time){
-//                    BlockUtil.playSound(level, pos, SoundEvents.UI_STONECUTTER_TAKE_RESULT);
-//                    this.lastSoundTime = time;
-//                }
-//            });
-//        }
+    public void craftItem(Player player, ItemStack stack) {
+        for(int i = 0; i < inputContainer.getContainerSize(); ++ i){
+            if(! inputContainer.getItem(i).isEmpty()){
+                inputContainer.removeItem(i, 1);
+            }
+        }
+        this.setupResultSlot();
+
+        this.access.execute((level, pos) -> {
+            long time = level.getGameTime();
+            if (this.lastSoundTime != time) {
+                BlockUtil.playSound(level, pos, SoundEvents.UI_STONECUTTER_TAKE_RESULT);
+                this.lastSoundTime = time;
+            }
+        });
+    }
+
+    @Override
+    public void slotsChanged(Container container) {
+        super.slotsChanged(container);
+        this.setupResultSlot();
     }
 
     @Override
@@ -116,35 +122,57 @@ public class RuneGateMenu extends RuneBaseMenu{
         } else {
             this.resultContainer.setItem(0, ItemStack.EMPTY);
         }
-
         this.broadcastChanges();
     }
 
-    protected ItemStack getResult(IFilterRuneType<?> type){
+    protected ItemStack getResult(IFilterRuneType<?> type) {
         FilterRuneItem<?> sameItem = null;
-        final List<IFilterRune> runes = new ArrayList<>();
-        for(int i = 0; i < INPUT_SLOT_NUM; ++ i){
+        final List<Pair<IFilterRune, ItemStack>> list = new ArrayList<>();
+        for (int i = 0; i < INPUT_SLOT_NUM; ++i) {
             final ItemStack stack = this.inputContainer.getItem(i);
-            if(! stack.isEmpty() && stack.getItem() instanceof FilterRuneItem<?> item){
-                if(sameItem == null){
+            if (!stack.isEmpty() && stack.getItem() instanceof FilterRuneItem<?> item) {
+                if (sameItem == null) {
                     sameItem = item;
-                } else if(! stack.is(sameItem)){
+                } else if (!stack.is(sameItem)) {
                     //符文类型不一致，报错。
                     this.setValidStatus(1);
                     return ItemStack.EMPTY;
                 }
-                item.getGateRune(stack).ifPresent(runes::add);
+                item.getGateRune(stack).map(rune -> Pair.of(rune, stack)).ifPresent(list::add);
             }
         }
         //多于一个符文才能合成。
-        if(sameItem != null && runes.size() > 1){
-            ItemStack stack = new ItemStack(sameItem);
-            if(type == FilterRuneTypes.AND){
-                sameItem.setGateRune(stack, new AndGateRune(sameItem, runes));
-            } else if(type == FilterRuneTypes.OR){
-                sameItem.setGateRune(stack, new OrGateRune(sameItem, runes));
+        if (sameItem != null) {
+            if (list.size() < type.requireMinEntry()) {
+                this.setValidStatus(3);
+                return ItemStack.EMPTY;
             }
-            return stack.copy();
+            if (list.size() > type.requireMaxEntry()) {
+                this.setValidStatus(2);
+                return ItemStack.EMPTY;
+            }
+            //基本类型只需替换。
+            if (type.isBaseType()) {
+                ItemStack stack = list.get(0).getSecond().copy();
+                final FilterRuneItem<?> finalSameItem = sameItem;
+                sameItem.getGateRune(stack).filter(BaseFilterRune.class::isInstance).map(BaseFilterRune.class::cast).ifPresent(l -> {
+                    if (type == FilterRuneTypes.EQUAL) {
+                        finalSameItem.setGateRune(stack, new EqualGateRune(l.getInfo()));
+                    }
+                });
+                return stack;
+            } else {
+                ItemStack stack = new ItemStack(sameItem);
+                List<IFilterRune> runes = list.stream().map(Pair::getFirst).toList();
+                if (type == FilterRuneTypes.AND) {
+                    sameItem.setGateRune(stack, new AndGateRune(sameItem, runes));
+                } else if (type == FilterRuneTypes.OR) {
+                    sameItem.setGateRune(stack, new OrGateRune(sameItem, runes));
+                } else if (type == FilterRuneTypes.NOT) {
+                    sameItem.setGateRune(stack, new NotGateRune(sameItem, runes.get(0)));
+                }
+                return stack.copy();
+            }
         }
         return ItemStack.EMPTY;
     }
@@ -178,7 +206,7 @@ public class RuneGateMenu extends RuneBaseMenu{
                 if (!this.moveItemStackTo(itemstack1, 0, INPUT_SLOT_NUM, false)) {
                     return ItemStack.EMPTY;
                 }
-                if(!this.moveItemStackTo(itemstack1, INPUT_SLOT_NUM + 1, INPUT_SLOT_NUM + 1 + 27, false)) {
+                if (!this.moveItemStackTo(itemstack1, INPUT_SLOT_NUM + 1, INPUT_SLOT_NUM + 1 + 27, false)) {
                     return ItemStack.EMPTY;
                 }
             }

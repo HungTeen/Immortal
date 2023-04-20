@@ -2,6 +2,8 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 
 import java.util.List;
@@ -24,6 +26,11 @@ public class AndGateRune extends ListGateRune{
 
     public AndGateRune(Info info) {
         super(info);
+    }
+
+    @Override
+    public MutableComponent getFilterText() {
+        return TipUtil.rune("and_rune", getDataText());
     }
 
     @Override

@@ -2,6 +2,8 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -22,6 +24,18 @@ public abstract class ListGateRune implements IFilterRune {
 
     public Info getInfo() {
         return info;
+    }
+
+    public String getDataText() {
+        if(getInfo().filters().size() >= 2){
+            final MutableComponent text = getInfo().filters().get(0).getFilterText();
+            for(int i = 1; i < getInfo().filters().size(); i ++){
+                text.append(Component.literal(" , "));
+                text.append(getInfo().filters().get(0).getFilterText());
+            }
+            return text.getString();
+        }
+        return UNKNOWN_COMPONENT.getString();
     }
 
     public record Info(Item item, List<IFilterRune> filters) {
