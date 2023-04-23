@@ -42,11 +42,6 @@ public class RuneBindMenu extends RuneBaseMenu{
         this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM) {
 
             @Override
-            public boolean stillValid(Player player) {
-                return super.stillValid(player);
-            }
-
-            @Override
             public void setChanged() {
                 super.setChanged();
                 RuneBindMenu.this.slotsChanged(this);
@@ -74,7 +69,7 @@ public class RuneBindMenu extends RuneBaseMenu{
 
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return stack.getItem() instanceof FilterRuneItem<?> item && item.getGateRune(stack).isPresent() && validSlot(this.getSlotIndex()) && stack.getItem() == currentBehavior.getFilterItems().get(this.getSlotIndex() - 1).get();
+                    return stack.getItem() instanceof FilterRuneItem<?> item && item.getGateRune(stack).isPresent() && matchFilter(this.getSlotIndex(), stack);
                 }
             };
         });
@@ -96,11 +91,13 @@ public class RuneBindMenu extends RuneBaseMenu{
     }
 
     public void craftItem(Player player, ItemStack stack) {
-        for(int i = 0; i < inputContainer.getContainerSize(); ++ i){
+        for(int i = 1; i < inputContainer.getContainerSize(); ++ i){
             if(! inputContainer.getItem(i).isEmpty()){
                 inputContainer.removeItem(i, 1);
             }
         }
+        //delay remove to avoid skipping
+        inputContainer.removeItem(0, 1);
         this.setupResultSlot();
 
         this.access.execute((level, pos) -> {
@@ -132,7 +129,7 @@ public class RuneBindMenu extends RuneBaseMenu{
             if(stack.getItem() instanceof BehaviorRuneItem item){
                 for(int i = 1; i < INPUT_SLOT_NUM; ++ i){
                     final ItemStack filterStack = this.inputContainer.getItem(i);
-                    if(this.matchFilter(i) && filterStack.getItem() instanceof FilterRuneItem<?> filterItem){
+                    if(this.matchFilter(i, filterStack) && filterStack.getItem() instanceof FilterRuneItem<?> filterItem){
                         final int pos = i - 1;
                         filterItem.getGateRune(filterStack).ifPresent(rune -> {
                             item.setFilter(stack, pos, rune);
@@ -210,12 +207,12 @@ public class RuneBindMenu extends RuneBaseMenu{
         });
     }
 
-    public boolean matchFilter(int slotId){
-        return validSlot(slotId) && this.inputContainer.getItem(slotId).getItem() == this.currentBehavior.getFilterItems().get(slotId - 1).get();
+    public boolean matchFilter(int slotId, ItemStack stack){
+        return validSlot(slotId) && stack.getItem() == this.currentBehavior.getFilterItems().get(slotId - 1).get();
     }
 
-    public boolean validSlot(int slotId){
-        return this.currentBehavior != null && slotId - 1 < this.currentBehavior.maxSlot();
+    public boolean validSlot(int slotId) {
+        return this.currentBehavior != null && slotId > 0 && slotId - 1 < this.currentBehavior.maxSlot();
     }
 
     @Nullable

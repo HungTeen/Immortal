@@ -26,9 +26,9 @@ public class BehaviorRunes {
 
     private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.create(Util.prefix("behavior_runes"));
 
-    public static final IBehaviorRune FIND_NEAREST_LIVINGS = register(
-            new BehaviorRune("find_nearest_livings",
-                    GolemFindNearestLivings::new,
+    public static final IBehaviorRune SENSE_NEAREST_LIVINGS = register(
+            new BehaviorRune("sense_nearest_livings",
+                    GolemSenseNearestLivings::new,
                     ImmutableList.of(),
                     () -> ImmutableMap.of(
                             MemoryModuleType.NEAREST_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT),
@@ -37,10 +37,23 @@ public class BehaviorRunes {
             )
     );
 
+    public static final IBehaviorRune SENSE_HURT_BY = register(
+            new BehaviorRune("sense_hurt_by",
+                    GolemSenseHurtBy::new,
+                    ImmutableList.of(),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.HURT_BY, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.HURT_BY_ENTITY, ImmutableList.of(MemoryStatus.REGISTERED, MemoryStatus.VALUE_PRESENT)
+                    )
+            )
+    );
+
     public static final IBehaviorRune FIND_LOOK_TARGET = register(
             new BehaviorRune("find_look_target",
                     GolemFindLookTarget::new,
-                    ImmutableList.of(),
+                    ImmutableList.of(
+                            IMMItems.ENTITY_FILTER_RUNE::get
+                    ),
                     () -> ImmutableMap.of(
                             MemoryModuleType.LOOK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
                             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
@@ -67,6 +80,19 @@ public class BehaviorRunes {
                     () -> ImmutableMap.of(
                             MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
                             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
+                    )
+            )
+    );
+
+    public static final IBehaviorRune RETALIATE = register(
+            new BehaviorRune("retaliate",
+                    GolemRetaliate::new,
+                    ImmutableList.of(
+                            IMMItems.ENTITY_FILTER_RUNE::get
+                    ),
+                    () -> ImmutableMap.of(
+                            MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
+                            MemoryModuleType.HURT_BY_ENTITY, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
                     )
             )
     );

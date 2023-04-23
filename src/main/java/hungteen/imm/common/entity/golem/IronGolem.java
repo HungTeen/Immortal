@@ -11,6 +11,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +32,15 @@ public class IronGolem extends GolemEntity{
 
     public IronGolem(EntityType<? extends GolemEntity> type, Level level) {
         super(type, level);
+    }
+
+    public static AttributeSupplier createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 100.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(Attributes.ATTACK_DAMAGE, 15.0D)
+                .build();
     }
 
     @Override
@@ -79,6 +90,11 @@ public class IronGolem extends GolemEntity{
     @Override
     public int getRuneInventorySize() {
         return 9;
+    }
+
+    @Override
+    public boolean canRangeAttack() {
+        return false;
     }
 
     @Override

@@ -36,6 +36,7 @@ public class ModelLayers {
     Golem Entities.
      */
     public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
+    public static final ModelLayerLocation SNOW_GOLEM = register("snow_golem");
 
     private static ModelLayerLocation register(String name) {
         return createLocation(name, "main");

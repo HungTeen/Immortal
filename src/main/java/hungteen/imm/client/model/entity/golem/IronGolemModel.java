@@ -1,4 +1,4 @@
-package hungteen.imm.client.model.entity;
+package hungteen.imm.client.model.entity.golem;
 
 import hungteen.imm.common.entity.golem.IronGolem;
 import net.minecraft.client.model.HierarchicalModel;
@@ -45,6 +45,7 @@ public class IronGolemModel<T extends IronGolem> extends HierarchicalModel<T> {
         return this.root;
     }
 
+    @Override
     public void setupAnim(T p_102962_, float p_102963_, float p_102964_, float p_102965_, float p_102966_, float p_102967_) {
         this.head.yRot = p_102966_ * ((float) Math.PI / 180F);
         this.head.xRot = p_102967_ * ((float) Math.PI / 180F);
@@ -54,6 +55,7 @@ public class IronGolemModel<T extends IronGolem> extends HierarchicalModel<T> {
         this.leftLeg.yRot = 0.0F;
     }
 
+    @Override
     public void prepareMobModel(T p_102957_, float p_102958_, float p_102959_, float p_102960_) {
         int i = p_102957_.getAttackAnimationTick();
         if (i > 0) {

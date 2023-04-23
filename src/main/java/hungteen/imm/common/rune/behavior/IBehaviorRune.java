@@ -4,6 +4,7 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
 import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -43,7 +44,14 @@ public interface IBehaviorRune extends ISimpleEntry, ICraftableRune {
     }
 
     default MutableComponent getComponent() {
-        return Component.translatable("rune." + getModID() + ".behavior." + this.getName()).withStyle(ChatFormatting.GOLD);
+        return TipUtil.rune("behavior." + this.getName()).withStyle(ChatFormatting.GOLD);
+    }
+
+    default MutableComponent getFilterDesc(int id) {
+        if(id < maxSlot()){
+            return TipUtil.rune("behavior." + this.getName() + ".desc_" + (id + 1));
+        }
+        return Component.empty();
     }
 
     @FunctionalInterface

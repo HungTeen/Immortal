@@ -160,6 +160,7 @@ public class RuneGateMenu extends RuneBaseMenu {
                         finalSameItem.setGateRune(stack, new EqualGateRune(l.getInfo()));
                     }
                 });
+                this.setValidStatus(0);
                 return stack;
             } else {
                 ItemStack stack = new ItemStack(sameItem);
@@ -171,9 +172,11 @@ public class RuneGateMenu extends RuneBaseMenu {
                 } else if (type == FilterRuneTypes.NOT) {
                     sameItem.setGateRune(stack, new NotGateRune(sameItem, runes.get(0)));
                 }
+                this.setValidStatus(0);
                 return stack.copy();
             }
         }
+        this.setValidStatus(0);
         return ItemStack.EMPTY;
     }
 

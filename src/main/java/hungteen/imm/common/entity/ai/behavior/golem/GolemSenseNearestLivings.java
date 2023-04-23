@@ -19,9 +19,9 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2023-04-05 11:39
  **/
-public class GolemFindNearestLivings extends GolemSensorBehavior {
+public class GolemSenseNearestLivings extends GolemSensorBehavior {
 
-    public GolemFindNearestLivings(ItemStack stack) {
+    public GolemSenseNearestLivings(ItemStack stack) {
         super(stack, ImmutableSet.of(
                 MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES
         ), 20);

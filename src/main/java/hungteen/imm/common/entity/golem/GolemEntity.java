@@ -205,6 +205,14 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public abstract int getRuneInventorySize();
 
+    public boolean canMeleeAttack(){
+        return true;
+    }
+
+    public boolean canRangeAttack(){
+        return true;
+    }
+
     public int getItemInventorySize() {
         return 0;
     }
@@ -243,6 +251,7 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
         if(tag.contains("GolemItemInventory")){
             this.itemInventory.fromTag(NBTUtil.list(tag, "GolemItemInventory"));
         }
+        this.refreshBrain();
     }
 
     public Container getRuneInventory(){

@@ -30,7 +30,7 @@ public class GolemMeleeAttack extends GolemOneShotBehavior {
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, GolemEntity golem) {
         LivingEntity target = BehaviorUtil.getAttackTarget(golem).get();
-        return golem.isWithinMeleeAttackRange(target);
+        return golem.canMeleeAttack() && golem.isWithinMeleeAttackRange(target);
     }
 
     @Override

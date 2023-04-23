@@ -30,18 +30,6 @@ public abstract class BaseFilterRune implements IFilterRune {
         this.info = info;
     }
 
-//    @Override
-//    public <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate) {
-//        Optional<?> opt = parse();
-//        FilterRuneItem<?> item;
-//        if(opt.isPresent()){
-//            if(clazz.isInstance(opt.get())){
-//                return obj -> check(obj, clazz.cast(opt.get()));
-//            }
-//        }
-//        return obj -> false;
-//    }
-
     @Override
     public <T> Predicate<T> getPredicate(FilterRuneItem<?> item, Predicate<T> predicate) {
         Optional<?> opt = parse();

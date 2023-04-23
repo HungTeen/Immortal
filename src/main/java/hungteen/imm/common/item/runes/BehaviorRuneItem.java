@@ -70,6 +70,10 @@ public class BehaviorRuneItem extends RuneItem {
         return getFilterMap(stack).containsKey(id);
     }
 
+    public Optional<IFilterRune> getFilter(ItemStack stack, int id){
+        return Optional.ofNullable(getFilterMap(stack).getOrDefault(id, null));
+    }
+
     @Override
     public String getDescriptionId() {
         return StringHelper.langKey("item", Util.id(), "behavior_rune");
@@ -86,6 +90,19 @@ public class BehaviorRuneItem extends RuneItem {
         if(! memoryComponents.isEmpty()){
             components.add(TipUtil.rune("require_memories"));
             components.addAll(memoryComponents);
+        }
+        if(getRune().maxSlot() > 0){
+            components.add(TipUtil.rune("filters"));
+            for(int i = 0; i < getRune().maxSlot(); ++ i){
+                final MutableComponent component = getRune().getFilterDesc(i).withStyle(ChatFormatting.YELLOW);
+                component.append(" : ");
+                this.getFilter(stack, i).ifPresentOrElse(rune -> {
+                    component.append(rune.getFilterText());
+                }, () -> {
+                    component.append(TipUtil.rune("default_filter"));
+                });
+                components.add(component);
+            }
         }
     }
 

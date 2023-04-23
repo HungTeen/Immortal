@@ -2,13 +2,13 @@ package hungteen.imm.common.entity;
 
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.golem.IronGolem;
+import hungteen.imm.common.entity.golem.SnowGolem;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.cultivator.EmptyCultivator;
 import hungteen.imm.common.entity.human.cultivator.SpiritualCultivator;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.entity.misc.SeatEntity;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
-import hungteen.imm.common.entity.undead.SpiritualZombie;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -57,7 +58,8 @@ public class IMMEntities {
 
     /* Golem */
 
-    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE);
+    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", IMMMobCategories.GOLEM, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", IMMMobCategories.GOLEM, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
@@ -72,7 +74,8 @@ public class IMMEntities {
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
 //
         /* golem */
-        ev.put(IRON_GOLEM.get(), SpiritualZombie.createAttributes().build());
+        ev.put(IRON_GOLEM.get(), IronGolem.createAttributes());
+        ev.put(SNOW_GOLEM.get(), SnowGolem.createAttributes());
     }
 
     /**
@@ -105,7 +108,15 @@ public class IMMEntities {
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityType(EntityType.EntityFactory factory, String name, MobCategory classification) {
-        RegistryObject<EntityType<T>> object = ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, classification).build(Util.prefix(name).toString()));
+        return registerEntityType(factory, name, classification, e -> {});
+    }
+
+    private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityType(EntityType.EntityFactory factory, String name, MobCategory classification, Consumer<EntityType.Builder<T>> consumer) {
+        RegistryObject<EntityType<T>> object = ENTITY_TYPES.register(name, () -> {
+            EntityType.Builder<T> builder = EntityType.Builder.of(factory, classification);
+            consumer.accept(builder);
+            return builder.build(Util.prefix(name).toString());
+        });
         MAP.put(object, name);
         return object;
     }

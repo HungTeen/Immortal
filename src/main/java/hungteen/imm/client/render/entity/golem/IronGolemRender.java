@@ -1,7 +1,8 @@
-package hungteen.imm.client.render.entity;
+package hungteen.imm.client.render.entity.golem;
 
 import hungteen.imm.client.model.ModelLayers;
-import hungteen.imm.client.model.entity.IronGolemModel;
+import hungteen.imm.client.model.entity.golem.IronGolemModel;
+import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.common.entity.golem.IronGolem;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

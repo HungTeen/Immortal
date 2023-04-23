@@ -31,7 +31,7 @@ public abstract class ListGateRune implements IFilterRune {
             final MutableComponent text = getInfo().filters().get(0).getFilterText();
             for(int i = 1; i < getInfo().filters().size(); i ++){
                 text.append(Component.literal(" , "));
-                text.append(getInfo().filters().get(0).getFilterText());
+                text.append(getInfo().filters().get(i).getFilterText());
             }
             return text.getString();
         }
