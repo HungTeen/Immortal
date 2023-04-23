@@ -11,6 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -28,12 +30,36 @@ public abstract class BaseFilterRune implements IFilterRune {
         this.info = info;
     }
 
+//    @Override
+//    public <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate) {
+//        Optional<?> opt = parse();
+//        FilterRuneItem<?> item;
+//        if(opt.isPresent()){
+//            if(clazz.isInstance(opt.get())){
+//                return obj -> check(obj, clazz.cast(opt.get()));
+//            }
+//        }
+//        return obj -> false;
+//    }
+
     @Override
-    public <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate) {
+    public <T> Predicate<T> getPredicate(FilterRuneItem<?> item, Predicate<T> predicate) {
         Optional<?> opt = parse();
         if(opt.isPresent()){
-            if(clazz.isInstance(opt.get())){
-                return obj -> check(obj, clazz.cast(opt.get()));
+            Class<T> clazz = null;
+            if(item.getClass().getGenericSuperclass() instanceof ParameterizedType pType){
+                final Type type = pType.getActualTypeArguments()[0];
+                if(type instanceof Class){
+                    clazz = (Class<T>) type;
+                } else if(type instanceof ParameterizedType tt){
+                    clazz = (Class<T>) tt.getRawType();
+                }
+            }
+            if(clazz != null){
+                final Class<T> c = clazz;
+                if(clazz.isInstance(opt.get())){
+                    return obj -> check(obj, c.cast(opt.get()));
+                }
             }
         }
         return obj -> false;

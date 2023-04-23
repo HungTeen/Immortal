@@ -22,8 +22,14 @@ import net.minecraft.world.phys.HitResult;
 public class ItemFilterRune extends FilterRuneItem<Item> {
 
     private static final ICraftableRune COST = new ICraftableRune() {
+
         @Override
-        public int requireAmethyst() {
+        public boolean costAmethyst() {
+            return false;
+        }
+
+        @Override
+        public int requireMaterial() {
             return 3;
         }
 
@@ -53,4 +59,5 @@ public class ItemFilterRune extends FilterRuneItem<Item> {
     public Codec<Item> getCodec() {
         return ItemHelper.get().getCodec();
     }
+
 }

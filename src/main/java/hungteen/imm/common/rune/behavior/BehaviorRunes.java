@@ -7,6 +7,8 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.ai.behavior.golem.*;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -59,7 +61,9 @@ public class BehaviorRunes {
     public static final IBehaviorRune FIND_ATTACK_TARGET = register(
             new BehaviorRune("find_attack_target",
                     GolemFindAttackTarget::new,
-                    ImmutableList.of(),
+                    ImmutableList.of(
+                            IMMItems.ENTITY_FILTER_RUNE::get
+                    ),
                     () -> ImmutableMap.of(
                             MemoryModuleType.ATTACK_TARGET, ImmutableList.of(MemoryStatus.VALUE_ABSENT, MemoryStatus.VALUE_PRESENT),
                             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, ImmutableList.of(MemoryStatus.VALUE_PRESENT)
@@ -152,18 +156,23 @@ public class BehaviorRunes {
 
         private final String name;
         private final IBehaviorFactory behaviorFunction;
-        private final List<Class<?>> predicateClasses;
+        private final List<Supplier<FilterRuneItem<?>>> filterRunes;
         private final Supplier<Map<MemoryModuleType<?>, List<MemoryStatus>>> statusMapSupplier;
 
-        public BehaviorRune(String name, IBehaviorFactory behaviorFunction, List<Class<?>> predicateClasses, Supplier<Map<MemoryModuleType<?>, List<MemoryStatus>>> statusMapSupplier) {
+        public BehaviorRune(String name, IBehaviorFactory behaviorFunction, List<Supplier<FilterRuneItem<?>>> filterRunes, Supplier<Map<MemoryModuleType<?>, List<MemoryStatus>>> statusMapSupplier) {
             this.name = name;
             this.behaviorFunction = behaviorFunction;
-            this.predicateClasses = predicateClasses;
+            this.filterRunes = filterRunes;
             this.statusMapSupplier = statusMapSupplier;
         }
 
         @Override
-        public int requireAmethyst() {
+        public boolean costAmethyst() {
+            return true;
+        }
+
+        @Override
+        public int requireMaterial() {
             return 2;
         }
 
@@ -193,8 +202,8 @@ public class BehaviorRunes {
         }
 
         @Override
-        public List<Class<?>> getPredicateClasses() {
-            return this.predicateClasses;
+        public List<Supplier<FilterRuneItem<?>>> getFilterItems() {
+            return this.filterRunes;
         }
     }
 

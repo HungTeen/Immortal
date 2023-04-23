@@ -1,5 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
+import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -16,7 +17,7 @@ public interface IFilterRune {
 
     MutableComponent getFilterText();
 
-    <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate);
+    <T> Predicate<T> getPredicate(FilterRuneItem<?> item, Predicate<T> predicate);
 
     IFilterRuneType<?> getType();
 }

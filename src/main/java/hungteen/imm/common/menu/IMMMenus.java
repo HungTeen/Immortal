@@ -45,6 +45,10 @@ public class IMMMenus {
         return IForgeMenuType.create((id, inventory, data) -> new RuneGateMenu(id, inventory));
     });
 
+    public static final RegistryObject<MenuType<RuneBindMenu>> RUNE_BIND = CONTAINER_TYPES.register("rune_bind", () -> {
+        return IForgeMenuType.create((id, inventory, data) -> new RuneBindMenu(id, inventory));
+    });
+
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
      */

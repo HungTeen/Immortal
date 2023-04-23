@@ -45,7 +45,7 @@ public class GolemBehavior extends Behavior<GolemEntity> {
     public <T> Predicate<T> get(int id, Predicate<T> defaultValue) {
         if(filterMap.containsKey(id)){
             final IFilterRune filterRune = filterMap.get(id);
-            return filterRune.getPredicate(this.behaviorRune.getPredicateClasses().get(id), defaultValue);
+            return filterRune.getPredicate(this.behaviorRune.getFilterItems().get(id).get(), defaultValue);
         }
         return defaultValue;
     }

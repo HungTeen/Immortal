@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 public class GolemFindAttackTarget extends GolemOneShotBehavior{
 
     private final Predicate<GolemEntity> attackPredicate;
+    private final Predicate<EntityType<?>> entityTypePredicate;
     private final Function<GolemEntity, Optional<? extends LivingEntity>> targetFinderFunction;
 
     public GolemFindAttackTarget(ItemStack stack) {
@@ -33,7 +34,8 @@ public class GolemFindAttackTarget extends GolemOneShotBehavior{
                 MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryStatus.VALUE_PRESENT
         ));
         this.attackPredicate = JavaHelper::alwaysTrue;
-        this.targetFinderFunction = GolemFindAttackTarget::findNearestValidAttackTarget;
+        this.entityTypePredicate = get(0, JavaHelper::alwaysTrue);
+        this.targetFinderFunction = this::findNearestValidAttackTarget;
     }
 
     @Override
@@ -54,13 +56,10 @@ public class GolemFindAttackTarget extends GolemOneShotBehavior{
         });
     }
 
-    private static Optional<? extends LivingEntity> findNearestValidAttackTarget(GolemEntity golem) {
-        return golem.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty()).findClosest((target) -> isTargetable(golem, target));
-    }
-
-    private static boolean isTargetable(GolemEntity golem, LivingEntity target) {
-        EntityType<?> entitytype = target.getType();
-        return entitytype != EntityType.ZOGLIN && entitytype != EntityType.CREEPER && Sensor.isEntityAttackable(golem, target);
+    private Optional<? extends LivingEntity> findNearestValidAttackTarget(GolemEntity golem) {
+        return golem.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty()).findClosest((target) -> {
+            return this.entityTypePredicate.test(target.getType()) && Sensor.isEntityAttackable(golem, target);
+        });
     }
 
 }

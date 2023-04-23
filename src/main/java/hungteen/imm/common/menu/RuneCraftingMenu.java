@@ -21,6 +21,7 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 public class RuneCraftingMenu extends RuneBaseMenu {
 
     public static final int INPUT_SLOT_NUM = 2;
+    private static final Predicate<ItemStack> AMETHYST_PREDICATE = stack -> stack.is(Items.AMETHYST_SHARD);
+    private static final Predicate<ItemStack> LAPIS_PREDICATE = stack -> stack.is(Items.LAPIS_LAZULI);
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     public final Container inputContainer;
     public final ResultContainer resultContainer;
@@ -60,7 +63,7 @@ public class RuneCraftingMenu extends RuneBaseMenu {
             return new Slot(this.inputContainer, slot, x, y){
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return this.getContainerSlot() == 0 ? stack.is(Items.AMETHYST_SHARD) : stack.is(Items.REDSTONE);
+                    return this.getContainerSlot() == 0 ? (AMETHYST_PREDICATE.test(stack) || LAPIS_PREDICATE.test(stack)) : stack.is(Items.REDSTONE);
                 }
             };
         });
@@ -87,7 +90,7 @@ public class RuneCraftingMenu extends RuneBaseMenu {
         if(this.lastInputRune != null){
             stack.onCraftedBy(player.level, player, stack.getCount());
             this.resultContainer.awardUsedRecipes(player);
-            this.inputContainer.removeItem(0, this.lastInputRune.requireAmethyst());
+            this.inputContainer.removeItem(0, this.lastInputRune.requireMaterial());
             this.inputContainer.removeItem(1, this.lastInputRune.requireRedStone());
             if(this.canCraft(this.lastInputRune)){
                 this.setupResultSlot();
@@ -227,8 +230,12 @@ public class RuneCraftingMenu extends RuneBaseMenu {
     }
 
     public boolean canCraft(@Nullable ICraftableRune rune){
-        return rune != null && this.inputContainer.getItem(0).getCount() >= rune.requireAmethyst()
-                && this.inputContainer.getItem(1).getCount() >= rune.requireRedStone();
+        final ItemStack stack = this.inputContainer.getItem(0);
+        if(rune != null && ((rune.costAmethyst() && AMETHYST_PREDICATE.test(stack)) || (! rune.costAmethyst() && LAPIS_PREDICATE.test(stack)))){
+            return stack.getCount() >= rune.requireMaterial()
+                    && this.inputContainer.getItem(1).getCount() >= rune.requireRedStone();
+        }
+        return false;
     }
 
     public List<Pair<ICraftableRune, ItemStack>> getRecipes() {

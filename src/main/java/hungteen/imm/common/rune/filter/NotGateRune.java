@@ -2,6 +2,7 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
@@ -27,8 +28,8 @@ public record NotGateRune(Item item, IFilterRune filter) implements IFilterRune{
     }
 
     @Override
-    public <T> Predicate<T> getPredicate(Class<?> clazz, Predicate<T> predicate) {
-        return t -> ! filter().getPredicate(clazz, predicate).test(t);
+    public <T> Predicate<T> getPredicate(FilterRuneItem<?> item, Predicate<T> predicate) {
+        return t -> ! filter().getPredicate(item, predicate).test(t);
     }
 
     @Override

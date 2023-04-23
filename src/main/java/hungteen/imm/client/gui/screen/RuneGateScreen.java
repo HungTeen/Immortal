@@ -57,10 +57,10 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
     protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
         super.renderLabels(stack, mouseX, mouseY);
         for (int i = 0; i < Math.min(this.menu.getGateNums(), LEN); ++i) {
-            final int x = getLeftOffset(i) + 8;
-            final int y = getTopOffset(i) + 3;
+            final int x = getLeftOffset(i) + 8 - this.leftPos;
+            final int y = getTopOffset(i) + 5 - this.topPos;
             final IFilterRuneType<?> type = this.menu.getGateTypes().get(i);
-            RenderHelper.drawCenteredScaledString(stack, this.font, type.getComponent().getString(), x, y, ColorHelper.BLACK, 0.5F);
+            RenderHelper.drawCenteredScaledString(stack, this.font, type.getComponent().getString(), x, y, ColorHelper.BLACK, 0.75F);
         }
         if(this.menu.getValidStatus() > 0){
             final int status = this.menu.getValidStatus();

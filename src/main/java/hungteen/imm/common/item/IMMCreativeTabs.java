@@ -65,7 +65,7 @@ public class IMMCreativeTabs {
         );
 
         RUNES = register(event, "runes", List.of(ARTIFACTS), List.of(), builder -> builder
-                .icon(() -> new ItemStack((IMMItems.RUNE.get())))
+                .icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
                     ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
                         output.accept(new ItemStack(item));

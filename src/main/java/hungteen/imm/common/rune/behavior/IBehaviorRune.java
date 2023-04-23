@@ -2,6 +2,7 @@ package hungteen.imm.common.rune.behavior;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
+import hungteen.imm.common.item.runes.info.FilterRuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -34,10 +36,10 @@ public interface IBehaviorRune extends ISimpleEntry, ICraftableRune {
      * 判断当前槽位所匹配的符文是否合适。
      * @return
      */
-    List<Class<?>> getPredicateClasses();
+    List<Supplier<FilterRuneItem<?>>> getFilterItems();
 
     default int maxSlot() {
-        return getPredicateClasses().size();
+        return getFilterItems().size();
     }
 
     default MutableComponent getComponent() {

@@ -7,7 +7,9 @@ package hungteen.imm.common.rune;
  **/
 public interface ICraftableRune {
 
-    int requireAmethyst();
+    boolean costAmethyst();
+
+    int requireMaterial();
 
     int requireRedStone();
 }

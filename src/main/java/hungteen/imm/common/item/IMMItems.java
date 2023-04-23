@@ -41,10 +41,9 @@ public class IMMItems {
 
     /* Rune Tab Items */
 
-    public static final RegistryObject<Item> RUNE = ITEMS.register("rune", () -> new Item(new Item.Properties().stacksTo(64)));
-    public static final RegistryObject<Item> ITEM_FILTER_RUNE = ITEMS.register("item_filter_rune", ItemFilterRune::new);
-    public static final RegistryObject<Item> BLOCK_FILTER_RUNE = ITEMS.register("block_filter_rune", BlockFilterRune::new);
-    public static final RegistryObject<Item> ENTITY_FILTER_RUNE = ITEMS.register("entity_filter_rune", EntityFilterRune::new);
+    public static final RegistryObject<ItemFilterRune> ITEM_FILTER_RUNE = ITEMS.register("item_filter_rune", ItemFilterRune::new);
+    public static final RegistryObject<BlockFilterRune> BLOCK_FILTER_RUNE = ITEMS.register("block_filter_rune", BlockFilterRune::new);
+    public static final RegistryObject<EntityFilterRune> ENTITY_FILTER_RUNE = ITEMS.register("entity_filter_rune", EntityFilterRune::new);
 
     /* Elixir Tab Items */
 

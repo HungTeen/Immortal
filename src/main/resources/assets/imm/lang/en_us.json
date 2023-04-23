@@ -136,9 +136,14 @@
   "rune.imm.not_rune": "Not match : %s",
   "rune.imm.equal_rune": "Is %s",
 
-  "rune.imm.filter.and": "与门",
-  "rune.imm.filter.or": "或门",
-  "rune.imm.filter.not": "非门",
+  "rune.imm.and_filter": "And",
+  "rune.imm.and_filter.desc": "Complex logic, only match when all conditions met",
+  "rune.imm.or_filter": "Or",
+  "rune.imm.or_filter.desc": "Complex logic, match if any condition met",
+  "rune.imm.not_filter": "Not",
+  "rune.imm.not_filter.desc": "Complex logic, match if the condition not met",
+  "rune.imm.equal_filter": "Equal",
+  "rune.imm.equal_filter.desc": "Basic logic, match if the target is equal to this",
 
   "rune.minecraft.memory.mobs": "Nearby Livings",
   "rune.minecraft.memory.visible_mobs": "Nearby Visible Livings",

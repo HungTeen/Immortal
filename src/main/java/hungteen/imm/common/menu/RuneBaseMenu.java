@@ -50,8 +50,9 @@ public abstract class RuneBaseMenu extends HTContainerMenu {
 
     public MenuProvider getMenuProvider(RuneCategories category) {
         return new SimpleMenuProvider((id, inventory, player) -> {
-            return category == RuneCategories.CRAFT ? new RuneCraftingMenu(id, inventory, this.access)
-                    : new RuneGateMenu(id, inventory, this.access);
+            return category == RuneCategories.CRAFT ? new RuneCraftingMenu(id, inventory, this.access) :
+                    category == RuneCategories.GATE ? new RuneGateMenu(id, inventory, this.access) :
+                    new RuneBindMenu(id, inventory, this.access);
         }, Component.empty());
     }
 

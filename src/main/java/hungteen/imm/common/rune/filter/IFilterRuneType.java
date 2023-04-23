@@ -2,7 +2,7 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import hungteen.htlib.api.interfaces.ISimpleEntry;
-import net.minecraft.network.chat.Component;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
@@ -20,11 +20,11 @@ public interface IFilterRuneType<P extends IFilterRune> extends ISimpleEntry {
 
     @Override
     default MutableComponent getComponent() {
-        return Component.translatable("rune." + this.getModID() + ".filter." + this.getName());
+        return TipUtil.rune(this.getName() + "_filter");
     }
 
     default MutableComponent getDesc() {
-        return Component.translatable("rune." + this.getModID() + ".filter." + this.getName() + ".desc");
+        return TipUtil.rune(this.getName() + "_filter.desc");
     }
 
     Codec<P> codec();

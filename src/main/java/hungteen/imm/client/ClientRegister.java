@@ -3,10 +3,7 @@ package hungteen.imm.client;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.event.OverlayEvents;
-import hungteen.imm.client.gui.screen.CultivatorTradeScreen;
-import hungteen.imm.client.gui.screen.GolemInventoryScreen;
-import hungteen.imm.client.gui.screen.RuneCraftScreen;
-import hungteen.imm.client.gui.screen.RuneGateScreen;
+import hungteen.imm.client.gui.screen.*;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
@@ -161,6 +158,7 @@ public class ClientRegister {
         MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
         MenuScreens.register(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
         MenuScreens.register(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
+        MenuScreens.register(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
     }
 
 }
