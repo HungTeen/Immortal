@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity;
 
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.entity.golem.CreeperGolem;
 import hungteen.imm.common.entity.golem.IronGolem;
 import hungteen.imm.common.entity.golem.SnowGolem;
 import hungteen.imm.common.entity.human.HumanEntity;
@@ -60,6 +61,7 @@ public class IMMEntities {
 
     public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", IMMMobCategories.GOLEM, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", IMMMobCategories.GOLEM, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", IMMMobCategories.GOLEM, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
@@ -76,6 +78,7 @@ public class IMMEntities {
         /* golem */
         ev.put(IRON_GOLEM.get(), IronGolem.createAttributes());
         ev.put(SNOW_GOLEM.get(), SnowGolem.createAttributes());
+        ev.put(CREEPER_GOLEM.get(), CreeperGolem.createAttributes());
     }
 
     /**

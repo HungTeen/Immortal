@@ -1,8 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.CultivationTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -93,8 +91,8 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
-    public boolean canRangeAttack() {
-        return false;
+    public int getMeleeAttackCD() {
+        return 20;
     }
 
     @Override
@@ -126,8 +124,4 @@ public class IronGolem extends GolemEntity{
         return List.of(SpiritualTypes.METAL);
     }
 
-    @Override
-    public ICultivationType getCultivationType() {
-        return CultivationTypes.SPIRITUAL;
-    }
 }

@@ -133,6 +133,7 @@ public class ImmortalMod {
         BehaviorRunes.register();
         FilterRuneTypes.register();
         InventoryLootTypes.InventoryLootType.register();
+        SectTypes.register();
 //        ItemUtil.registerLargeHeldItems();
     }
 

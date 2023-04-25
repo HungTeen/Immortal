@@ -1,6 +1,8 @@
 package hungteen.imm.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 /**
  * @program: Immortal
@@ -9,5 +11,9 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
  **/
 public interface ISectType extends ISimpleEntry {
 
+    @Override
+    default MutableComponent getComponent() {
+        return Component.translatable("sect." + getModID() +"." + getName());
+    }
 
 }

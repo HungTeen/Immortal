@@ -23,14 +23,13 @@ public class GolemMeleeAttack extends GolemOneShotBehavior {
                 MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED,
                 MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT,
                 MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_ABSENT
-//                MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryStatus.VALUE_PRESENT
         ));
     }
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, GolemEntity golem) {
         LivingEntity target = BehaviorUtil.getAttackTarget(golem).get();
-        return golem.canMeleeAttack() && golem.isWithinMeleeAttackRange(target);
+        return golem.getMeleeAttackCD() > 0 && golem.isWithinMeleeAttackRange(target);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class GolemMeleeAttack extends GolemOneShotBehavior {
         golemEntity.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new EntityTracker(target, true));
         golemEntity.swing(InteractionHand.MAIN_HAND);
         golemEntity.doHurtTarget(target);
-        golemEntity.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, 20);
+        golemEntity.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, golemEntity.getMeleeAttackCD());
     }
 
 }

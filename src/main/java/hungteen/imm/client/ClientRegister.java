@@ -9,6 +9,7 @@ import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.bake.ImmortalBakeModels;
 import hungteen.imm.client.model.entity.*;
+import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.particle.IMMFlameParticle;
@@ -17,6 +18,7 @@ import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.CultivatorRender;
 import hungteen.imm.client.render.entity.FlyingItemEntityRender;
+import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
 import hungteen.imm.common.entity.IMMEntities;
@@ -75,6 +77,7 @@ public class ClientRegister {
         /* golem */
         event.registerEntityRenderer(IMMEntities.IRON_GOLEM.get(), IronGolemRender::new);
         event.registerEntityRenderer(IMMEntities.SNOW_GOLEM.get(), SnowGolemRender::new);
+        event.registerEntityRenderer(IMMEntities.CREEPER_GOLEM.get(), CreeperGolemRender::new);
     }
 
     /**
@@ -86,7 +89,7 @@ public class ClientRegister {
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
         /* human */
-        event.registerLayerDefinition(ModelLayers.VILLAGER, VillagerLikeModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.VILLAGER, PillagerModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);
@@ -106,6 +109,7 @@ public class ClientRegister {
         /* golem */
         event.registerLayerDefinition(ModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);
     }
 
     @SubscribeEvent

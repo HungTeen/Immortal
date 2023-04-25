@@ -4,8 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
+import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.common.entity.IMMCreature;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
+import hungteen.imm.common.impl.CultivationTypes;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
@@ -66,9 +68,13 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        this.level.getProfiler().push("GolemBrain");
-        this.getBrain().tick((ServerLevel) this.level, this);
+        this.level.getProfiler().push("TickGolemBrain");
+        this.tickBrain();
         this.level.getProfiler().pop();
+    }
+
+    protected void tickBrain(){
+        this.getBrain().tick((ServerLevel) this.level, this);
     }
 
     public void refreshBrain(){
@@ -205,12 +211,18 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public abstract int getRuneInventorySize();
 
-    public boolean canMeleeAttack(){
-        return true;
+    /**
+     * 近战攻击的冷却时间
+     */
+    public int getMeleeAttackCD(){
+        return 0;
     }
 
-    public boolean canRangeAttack(){
-        return true;
+    /**
+     * 远程攻击的冷却时间
+     */
+    public int getRangeAttackCD(){
+        return 0;
     }
 
     public int getItemInventorySize() {
@@ -268,6 +280,11 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
 
     public void setOwnerUUID(@Nullable UUID uuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(uuid));
+    }
+
+    @Override
+    public ICultivationType getCultivationType() {
+        return CultivationTypes.SPIRITUAL;
     }
 
     public static class GolemRuneContainer extends SimpleContainer {

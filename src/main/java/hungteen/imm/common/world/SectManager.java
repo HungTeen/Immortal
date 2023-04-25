@@ -1,4 +1,4 @@
-package hungteen.imm.common;
+package hungteen.imm.common.world;
 
 /**
  * @program: Immortal

@@ -1,8 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.CultivationTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -74,8 +72,8 @@ public class SnowGolem extends GolemEntity {
     }
 
     @Override
-    public boolean canMeleeAttack() {
-        return false;
+    public int getRangeAttackCD() {
+        return 30;
     }
 
     @Override
@@ -104,11 +102,6 @@ public class SnowGolem extends GolemEntity {
     @Override
     public Vec3 getLeashOffset() {
         return new Vec3(0.0D, (0.75F * this.getEyeHeight()), (this.getBbWidth() * 0.4F));
-    }
-
-    @Override
-    public ICultivationType getCultivationType() {
-        return CultivationTypes.SPIRITUAL;
     }
 
     @Override

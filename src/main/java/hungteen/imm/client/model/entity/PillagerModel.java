@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class VillagerLikeModel<T extends VillagerLikeEntity> extends AnimatedEntityModel<T> implements ArmedModel {
+public class PillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityModel<T> implements ArmedModel {
 
 	private final ModelPart total;
 	private final ModelPart head;
@@ -23,7 +23,7 @@ public class VillagerLikeModel<T extends VillagerLikeEntity> extends AnimatedEnt
 	private final ModelPart rightLeg;
 	private final ModelPart leftLeg;
 
-	public VillagerLikeModel(ModelPart root) {
+	public PillagerModel(ModelPart root) {
 		this.total = root;
 		this.head = root.getChild("head");
 		this.leftLeg = root.getChild("left_leg");
@@ -120,6 +120,11 @@ public class VillagerLikeModel<T extends VillagerLikeEntity> extends AnimatedEnt
 	}
 
 	@Override
+	public void translateToHand(HumanoidArm arm, PoseStack stack) {
+		this.getArm(arm).translateAndRotate(stack);
+	}
+
+	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
@@ -131,10 +136,5 @@ public class VillagerLikeModel<T extends VillagerLikeEntity> extends AnimatedEnt
 
 	private ModelPart getArm(HumanoidArm arm) {
 		return arm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
-	}
-
-	@Override
-	public void translateToHand(HumanoidArm arm, PoseStack stack) {
-		this.getArm(arm).translateAndRotate(stack);
 	}
 }
