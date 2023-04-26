@@ -7,9 +7,7 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.info.BlockFilterRune;
-import hungteen.imm.common.item.runes.info.EntityFilterRune;
-import hungteen.imm.common.item.runes.info.ItemFilterRune;
+import hungteen.imm.common.item.runes.filter.*;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
@@ -44,6 +42,8 @@ public class IMMItems {
     public static final RegistryObject<ItemFilterRune> ITEM_FILTER_RUNE = ITEMS.register("item_filter_rune", ItemFilterRune::new);
     public static final RegistryObject<BlockFilterRune> BLOCK_FILTER_RUNE = ITEMS.register("block_filter_rune", BlockFilterRune::new);
     public static final RegistryObject<EntityFilterRune> ENTITY_FILTER_RUNE = ITEMS.register("entity_filter_rune", EntityFilterRune::new);
+    public static final RegistryObject<BoolFilterRune> BOOL_FILTER_RUNE = ITEMS.register("bool_filter_rune", BoolFilterRune::new);
+    public static final RegistryObject<PercentFilterRune> PERCENT_FILTER_RUNE = ITEMS.register("percent_filter_rune", PercentFilterRune::new);
 
     /* Elixir Tab Items */
 

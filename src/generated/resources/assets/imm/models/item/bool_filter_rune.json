@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "imm:item/rune"
+    "layer0": "imm:item/filter_rune"
   }
 }

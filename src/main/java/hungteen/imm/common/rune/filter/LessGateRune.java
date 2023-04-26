@@ -12,28 +12,30 @@ import net.minecraft.world.item.Item;
  * @author: HungTeen
  * @create: 2023-04-04 22:51
  **/
-public class EqualGateRune extends BaseFilterRune {
+public class LessGateRune extends BaseFilterRune {
 
-    public static final Codec<EqualGateRune> CODEC = RecordCodecBuilder.<EqualGateRune>mapCodec(instance -> instance.group(
-            BaseFilterRune.Info.CODEC.fieldOf(INFO).forGetter(EqualGateRune::getInfo)
-    ).apply(instance, EqualGateRune::new)).codec();
+    public static final Codec<LessGateRune> CODEC = RecordCodecBuilder.<LessGateRune>mapCodec(instance -> instance.group(
+            Info.CODEC.fieldOf(INFO).forGetter(LessGateRune::getInfo)
+    ).apply(instance, LessGateRune::new)).codec();
 
-    public EqualGateRune(Item item, CompoundTag tag) {
+    public LessGateRune(Item item, CompoundTag tag) {
         this(new Info(item, tag));
     }
 
-    public EqualGateRune(Info info) {
+    public LessGateRune(Info info) {
         super(info);
     }
 
     @Override
     public boolean check(Object target, Object current) {
-        return target.equals(current);
+        if(target instanceof Float a && current instanceof Float b) return Float.compare(a, b) == -1;
+        if(target instanceof Integer a && current instanceof Integer b) return Integer.compare(a, b) == -1;
+        return false;
     }
 
     @Override
     public MutableComponent getFilterText() {
-        return TipUtil.rune("equal_rune", getDataText());
+        return TipUtil.rune("less_rune", getDataText());
     }
 
     @Override

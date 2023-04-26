@@ -1,7 +1,7 @@
 package hungteen.imm.common.menu;
 
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.common.rune.behavior.IBehaviorRune;
 import hungteen.imm.util.BlockUtil;

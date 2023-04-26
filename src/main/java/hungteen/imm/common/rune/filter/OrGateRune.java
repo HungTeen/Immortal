@@ -2,7 +2,7 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;

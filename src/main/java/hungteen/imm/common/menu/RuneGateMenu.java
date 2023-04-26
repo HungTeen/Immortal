@@ -1,7 +1,7 @@
 package hungteen.imm.common.menu;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.common.rune.filter.*;
 import hungteen.imm.util.BlockUtil;

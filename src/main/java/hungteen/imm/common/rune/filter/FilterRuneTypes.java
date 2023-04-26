@@ -21,6 +21,8 @@ public class FilterRuneTypes {
     public static final IFilterRuneType<NotGateRune> NOT = register(new DefaultRuneType<>("not", false, 1, 1, NotGateRune.CODEC));
 
     public static final IFilterRuneType<EqualGateRune> EQUAL = register(new DefaultRuneType<>("equal", true, 1, 1, EqualGateRune.CODEC));
+    public static final IFilterRuneType<LessGateRune> LESS = register(new DefaultRuneType<>("less", true, 1, 1, LessGateRune.CODEC));
+    public static final IFilterRuneType<GreaterGateRune> GREATER = register(new DefaultRuneType<>("greater", true, 1, 1, GreaterGateRune.CODEC));
 
     /**
      * {@link ImmortalMod#coreRegister()}

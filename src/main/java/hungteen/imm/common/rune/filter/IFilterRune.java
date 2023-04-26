@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 

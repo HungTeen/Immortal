@@ -35,6 +35,10 @@ public class TipUtil {
         return Component.translatable("command." + Util.id() + "." + name, objects);
     }
 
+    public static MutableComponent misc(String name, Object... objects){
+        return Component.translatable("misc." + Util.id() + "." + name, objects);
+    }
+
     public static MutableComponent tooltip(String name, Object... objects){
         return Component.translatable("tooltip." + Util.id() + "." + name, objects);
     }

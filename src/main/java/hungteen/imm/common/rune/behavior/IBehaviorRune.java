@@ -2,7 +2,7 @@ package hungteen.imm.common.rune.behavior;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;

@@ -8,7 +8,7 @@ import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.ai.behavior.golem.*;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;

@@ -1,17 +1,18 @@
-package hungteen.imm.common.item.runes.info;
+package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.common.item.runes.RuneItem;
+import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.rune.filter.BaseFilterRune;
 import hungteen.imm.common.rune.filter.EqualGateRune;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.rune.filter.IFilterRune;
 import hungteen.imm.util.TipUtil;
-import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -50,48 +51,84 @@ public abstract class FilterRuneItem<T> extends RuneItem {
         return true;
     }
 
-    public void bind(Player player, ItemStack stack, T obj){
-        if(this.getGateRune(stack).isEmpty()){
+    public void bind(Player player, ItemStack stack, T obj) {
+        if (!this.alreadyBind(stack)) {
             this.setInfo(stack, obj);
         } else {
-            this.alreadyBind(player);
+            this.alertBind(player);
         }
         PlayerHelper.setCooldown(player, stack.getItem(), 10);
     }
 
-    public void setGateRune(ItemStack stack, IFilterRune gateRune){
+    public void setGateRune(ItemStack stack, IFilterRune gateRune) {
         CodecHelper.encodeNbt(FilterRuneTypes.getCodec(), gateRune)
                 .result().ifPresent(runeNbt -> {
-                    stack.getOrCreateTag().put(FILTER, runeNbt);
+                    putFilterRaw(stack, runeNbt);
                 });
     }
 
-    public Optional<IFilterRune> getGateRune(ItemStack stack){
-        if(stack.getOrCreateTag().contains(FILTER)){
-            final CompoundTag nbt = stack.getOrCreateTag().getCompound(FILTER);
+    private void putFilterRaw(ItemStack stack, Tag tag) {
+        stack.getOrCreateTag().put(FILTER, tag);
+    }
+
+    public Optional<IFilterRune> getGateRune(ItemStack stack) {
+        if (stack.getOrCreateTag().contains(FILTER)) {
+            final CompoundTag nbt = getFilterRaw(stack);
             return CodecHelper.parse(FilterRuneTypes.getCodec(), nbt).result();
         }
         return Optional.empty();
     }
 
-    /**
-     * Can only bind at the first time.
-     */
-    public void setInfo(ItemStack stack, T info){
-        if(isEmpty(stack)){
-            CodecHelper.encodeNbt(getCodec(), info)
-                    .resultOrPartial(Util::error).ifPresent(tag -> {
-                        final IFilterRune defaultRune = new EqualGateRune(FilterRuneItem.this, BaseFilterRune.warp(tag));
-                        this.setGateRune(stack, defaultRune);
-                    });
-        }
+    public Optional<T> getData(ItemStack stack) {
+        return alreadyBind(stack) || isEmpty(stack) ? Optional.empty() : BaseFilterRune.getData(getFilterRaw(stack), getCodec());
     }
 
-    public boolean isEmpty(ItemStack stack){
+    private CompoundTag getFilterRaw(ItemStack stack) {
+        return stack.getOrCreateTag().getCompound(FILTER);
+    }
+
+    public void setInfo(ItemStack stack, T info) {
+        CodecHelper.encodeNbt(getCodec(), info)
+                .result().ifPresent(tag -> {
+                    if (isEmpty(stack)) {
+                        // Default filter is equal rune.
+                        final IFilterRune defaultRune = new EqualGateRune(FilterRuneItem.this, BaseFilterRune.warp(tag));
+                        this.setGateRune(stack, defaultRune);
+                    } else {
+                        // Replace info.
+                        putFilterRaw(stack, BaseFilterRune.replace(getFilterRaw(stack), tag));
+                    }
+                });
+    }
+
+    public boolean isEmpty(ItemStack stack) {
         return getGateRune(stack).isEmpty();
     }
 
-    protected void alreadyBind(Player player){
+    protected boolean alreadyBind(ItemStack stack) {
+        return ! isEmpty(stack) && getGateRune(stack).filter(BaseFilterRune.class::isInstance).isEmpty();
+    }
+
+    protected void alertBind(Player player) {
         PlayerHelper.sendTipTo(player, ALREADY_BIND);
     }
+
+    protected record FilterCraftableRune(int cost) implements ICraftableRune {
+
+        @Override
+        public boolean costAmethyst() {
+            return false;
+        }
+
+        @Override
+        public int requireMaterial() {
+            return cost();
+        }
+
+        @Override
+        public int requireRedStone() {
+            return cost();
+        }
+    }
+
 }

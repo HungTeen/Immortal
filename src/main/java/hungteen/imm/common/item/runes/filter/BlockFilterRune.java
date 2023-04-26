@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.runes.info;
+package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.helper.registry.BlockHelper;

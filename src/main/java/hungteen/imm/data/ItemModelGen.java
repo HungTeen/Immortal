@@ -10,7 +10,7 @@ import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.item.runes.info.FilterRuneItem;
+import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
