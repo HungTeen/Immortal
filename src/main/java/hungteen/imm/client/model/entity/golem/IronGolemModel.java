@@ -1,7 +1,7 @@
 package hungteen.imm.client.model.entity.golem;
 
+import hungteen.htlib.client.model.AnimatedEntityModel;
 import hungteen.imm.common.entity.golem.IronGolem;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
  * @author: HungTeen
  * @create: 2022-10-24 12:42
  **/
-public class IronGolemModel<T extends IronGolem> extends HierarchicalModel<T> {
+public class IronGolemModel<T extends IronGolem> extends AnimatedEntityModel<T> {
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart rightArm;
@@ -46,11 +46,11 @@ public class IronGolemModel<T extends IronGolem> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T p_102962_, float p_102963_, float p_102964_, float p_102965_, float p_102966_, float p_102967_) {
-        this.head.yRot = p_102966_ * ((float) Math.PI / 180F);
-        this.head.xRot = p_102967_ * ((float) Math.PI / 180F);
-        this.rightLeg.xRot = -1.5F * Mth.triangleWave(p_102963_, 13.0F) * p_102964_;
-        this.leftLeg.xRot = 1.5F * Mth.triangleWave(p_102963_, 13.0F) * p_102964_;
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
+        this.head.xRot = headPitch * ((float) Math.PI / 180F);
+        this.rightLeg.xRot = -1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
+        this.leftLeg.xRot = 1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
         this.rightLeg.yRot = 0.0F;
         this.leftLeg.yRot = 0.0F;
     }

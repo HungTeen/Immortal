@@ -13,12 +13,12 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -60,7 +60,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 return ConfiguredModel.builder()
                         .modelFile(models().cubeBottomTop(name(block) + "_" + charge,
                                         StringHelper.suffix(BlockHelper.blockTexture(block), "side" + charge),
-                                        StringHelper.suffix(BlockHelper.blockTexture(block), "bottom"),
+                                        BlockHelper.blockTexture(Blocks.POLISHED_DEEPSLATE),
                                         StringHelper.suffix(BlockHelper.blockTexture(block), "top")
                                 ).renderType(solid())
                         ).build();
@@ -74,7 +74,7 @@ public class BlockStateGen extends HTBlockStateGen {
 //        ).forEach(pair -> {
 //            crop(pair.getFirst(), pair.getSecond(), cutout());
 //        });
-        crop(IMMBlocks.GOURD_STEM.get(), GourdStemBlock.AGE, cutout());
+        this.gen(IMMBlocks.GOURD_STEM.get(), b -> crop(b, GourdStemBlock.AGE, cutout()));
 
         /* Woods */
         IMMWoods.woods().forEach(this::woodIntegration);
@@ -82,10 +82,7 @@ public class BlockStateGen extends HTBlockStateGen {
         /* Blocks with cross style. */
         Arrays.asList(
                 IMMBlocks.MULBERRY_SAPLING.get()
-        ).forEach(block -> {
-            cross(block);
-            this.addedBlocks.add(block);
-        });
+        ).forEach(block -> this.gen(block, this::cross));
 
         /* Horizontal Blocks. */
         Arrays.asList(
@@ -181,11 +178,6 @@ public class BlockStateGen extends HTBlockStateGen {
                 .texture("insides", StringHelper.suffix(BlockHelper.blockTexture(block), "insides"))
                 .renderType(translucent())
         );
-        this.addedBlocks.add(block);
-    }
-
-    private void gen(Block block, Consumer<Block> consumer) {
-        consumer.accept(block);
         this.addedBlocks.add(block);
     }
 

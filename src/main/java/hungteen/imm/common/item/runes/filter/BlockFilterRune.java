@@ -14,22 +14,7 @@ import net.minecraft.world.level.block.Block;
  **/
 public class BlockFilterRune extends FilterRuneItem<Block> {
 
-    private static final ICraftableRune COST = new ICraftableRune() {
-        @Override
-        public boolean costAmethyst() {
-            return false;
-        }
-
-        @Override
-        public int requireMaterial() {
-            return 3;
-        }
-
-        @Override
-        public int requireRedStone() {
-            return 3;
-        }
-    };
+    private static final ICraftableRune COST = new FilterCraftableRune(3);
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
@@ -50,6 +35,11 @@ public class BlockFilterRune extends FilterRuneItem<Block> {
     @Override
     public Codec<Block> getCodec() {
         return BlockHelper.get().getCodec();
+    }
+
+    @Override
+    protected boolean isNumberData() {
+        return false;
     }
 
 }

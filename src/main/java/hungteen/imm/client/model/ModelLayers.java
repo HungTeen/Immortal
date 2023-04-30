@@ -38,6 +38,7 @@ public class ModelLayers {
     public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
     public static final ModelLayerLocation SNOW_GOLEM = register("snow_golem");
     public static final ModelLayerLocation CREEPER_GOLEM = register("creeper_golem");
+    public static final ModelLayerLocation COPPER_GOLEM = register("copper_golem");
 
     private static ModelLayerLocation register(String name) {
         return createLocation(name, "main");

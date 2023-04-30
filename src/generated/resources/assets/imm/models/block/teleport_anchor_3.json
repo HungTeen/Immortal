@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "render_type": "minecraft:solid",
   "textures": {
-    "bottom": "imm:block/teleport_anchor_bottom",
+    "bottom": "minecraft:block/polished_deepslate",
     "side": "imm:block/teleport_anchor_side3",
     "top": "imm:block/teleport_anchor_top"
   }

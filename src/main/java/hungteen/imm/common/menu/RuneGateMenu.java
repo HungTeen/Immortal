@@ -151,6 +151,11 @@ public class RuneGateMenu extends RuneBaseMenu {
                 this.setValidStatus(2);
                 return ItemStack.EMPTY;
             }
+            //不支持此种门类型。
+            if(! sameItem.fitFilterRune(type)){
+                this.setValidStatus(4);
+                return ItemStack.EMPTY;
+            }
             //基本类型只需替换。
             if (type.isBaseType()) {
                 ItemStack stack = list.get(0).getSecond().copy();
@@ -158,6 +163,10 @@ public class RuneGateMenu extends RuneBaseMenu {
                 sameItem.getGateRune(stack).filter(BaseFilterRune.class::isInstance).map(BaseFilterRune.class::cast).ifPresent(l -> {
                     if (type == FilterRuneTypes.EQUAL) {
                         finalSameItem.setGateRune(stack, new EqualGateRune(l.getInfo()));
+                    } else if(type == FilterRuneTypes.LESS){
+                        finalSameItem.setGateRune(stack, new LessGateRune(l.getInfo()));
+                    } else if(type == FilterRuneTypes.GREATER){
+                        finalSameItem.setGateRune(stack, new GreaterGateRune(l.getInfo()));
                     }
                 });
                 this.setValidStatus(0);

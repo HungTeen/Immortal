@@ -14,6 +14,8 @@ public interface IFilterRuneType<P extends IFilterRune> extends ISimpleEntry {
 
     boolean isBaseType();
 
+    boolean isNumberOperation();
+
     int requireMinEntry();
 
     int requireMaxEntry();

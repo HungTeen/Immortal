@@ -21,23 +21,7 @@ import net.minecraft.world.phys.HitResult;
  **/
 public class ItemFilterRune extends FilterRuneItem<Item> {
 
-    private static final ICraftableRune COST = new ICraftableRune() {
-
-        @Override
-        public boolean costAmethyst() {
-            return false;
-        }
-
-        @Override
-        public int requireMaterial() {
-            return 3;
-        }
-
-        @Override
-        public int requireRedStone() {
-            return 3;
-        }
-    };
+    private static final ICraftableRune COST = new FilterCraftableRune(3);
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -58,6 +42,11 @@ public class ItemFilterRune extends FilterRuneItem<Item> {
     @Override
     public Codec<Item> getCodec() {
         return ItemHelper.get().getCodec();
+    }
+
+    @Override
+    protected boolean isNumberData() {
+        return false;
     }
 
 }

@@ -9,6 +9,7 @@ import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.bake.ImmortalBakeModels;
 import hungteen.imm.client.model.entity.*;
+import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
@@ -18,6 +19,7 @@ import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.CultivatorRender;
 import hungteen.imm.client.render.entity.FlyingItemEntityRender;
+import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
@@ -78,6 +80,7 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.IRON_GOLEM.get(), IronGolemRender::new);
         event.registerEntityRenderer(IMMEntities.SNOW_GOLEM.get(), SnowGolemRender::new);
         event.registerEntityRenderer(IMMEntities.CREEPER_GOLEM.get(), CreeperGolemRender::new);
+        event.registerEntityRenderer(IMMEntities.COPPER_GOLEM.get(), CopperGolemRender::new);
     }
 
     /**
@@ -110,6 +113,7 @@ public class ClientRegister {
         event.registerLayerDefinition(ModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.COPPER_GOLEM, CopperGolemModel::createBodyLayer);
     }
 
     @SubscribeEvent

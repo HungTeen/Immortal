@@ -33,6 +33,11 @@ public class BoolFilterRune extends FilterRuneItem<Boolean>{
     }
 
     @Override
+    protected boolean isNumberData() {
+        return false;
+    }
+
+    @Override
     public ICraftableRune getRune() {
         return COST;
     }

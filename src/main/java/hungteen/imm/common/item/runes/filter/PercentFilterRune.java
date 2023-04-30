@@ -33,6 +33,11 @@ public class PercentFilterRune extends FilterRuneItem<Float>{
     }
 
     @Override
+    protected boolean isNumberData() {
+        return true;
+    }
+
+    @Override
     public ICraftableRune getRune() {
         return COST;
     }

@@ -66,7 +66,8 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
             final int status = this.menu.getValidStatus();
             final Component component = status == 1 ? TipUtil.gui("rune_conflict") :
                     status == 2 ? TipUtil.gui("need_more_rune") :
-                    TipUtil.gui("need_less_rune");
+                    status == 3 ? TipUtil.gui("need_less_rune") :
+                    TipUtil.gui("type_not_fit");
             RenderHelper.drawCenteredScaledString(stack, this.font, component.getString(), 115, 85, ColorHelper.DARK_RED, 0.8F);
         }
     }

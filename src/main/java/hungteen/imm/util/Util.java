@@ -1,6 +1,7 @@
 package hungteen.imm.util;
 
 import com.mojang.logging.LogUtils;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.CommonProxy;
 import hungteen.imm.ImmortalMod;
 import net.minecraft.resources.ResourceKey;
@@ -16,18 +17,27 @@ public class Util {
 
     // Directly reference a slf4j logger。
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final ResourceLocation EMPTY = Util.prefix("empty");
+    private static final StringHelper.ModIDHelper HELPER = new StringHelper.ModIDHelper() {
+        @Override
+        public String getModID() {
+            return id();
+        }
+    };
+
+    public static StringHelper.ModIDHelper get(){
+        return HELPER;
+    }
 
     public static String id(){
         return ImmortalMod.MOD_ID;
     }
 
     public static String mc(){
-        return "minecraft";
+        return StringHelper.mc().getModID();
     }
 
     public static String forge(){
-        return "forge";
+        return StringHelper.forge().getModID();
     }
 
     /**

@@ -5,10 +5,7 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
-import hungteen.imm.common.rune.filter.BaseFilterRune;
-import hungteen.imm.common.rune.filter.EqualGateRune;
-import hungteen.imm.common.rune.filter.FilterRuneTypes;
-import hungteen.imm.common.rune.filter.IFilterRune;
+import hungteen.imm.common.rune.filter.*;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -32,6 +29,15 @@ public abstract class FilterRuneItem<T> extends RuneItem {
     private static final String FILTER = "Filter";
 
     public abstract Codec<T> getCodec();
+
+    /**
+     * 检查保存的信息类型是否支持门操作。
+     */
+    public boolean fitFilterRune(IFilterRuneType<?> type){
+        return isNumberData() || !type.isNumberOperation();
+    }
+
+    protected abstract boolean isNumberData();
 
     @Override
     protected void addDisplayComponents(ItemStack stack, List<Component> components) {
