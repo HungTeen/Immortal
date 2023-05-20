@@ -5,9 +5,7 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ITradeType;
 import hungteen.imm.util.Util;
-import net.minecraft.server.level.ServerPlayer;
 
 /**
  * @program: Immortal
@@ -32,13 +30,6 @@ public class SectTypes {
     public static void register(){
     }
 
-    public static final ITradeType COMMON_ITEM_TRADE = new TradeTypes.TradeType("common_item_trade"){
-
-        @Override
-        public void openMenu(ServerPlayer player) {
-
-        }
-    };
 
     public record SectType(String name) implements ISectType {
 

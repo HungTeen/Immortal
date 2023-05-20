@@ -1,8 +1,15 @@
 package hungteen.imm.common.entity;
 
-import hungteen.imm.api.IMMAPI;
+import com.mojang.serialization.Codec;
+import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.registry.ISectType;
+import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -26,31 +33,10 @@ public class IMMDataSerializers {
 
     private static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
-    public static final RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new EntityDataSerializer.ForValueType<>() {
-        @Override
-        public void write(FriendlyByteBuf byteBuf, IRealmType realm) {
-            CompoundTag tag = new CompoundTag();
-            IMMAPI.get().realmRegistry().ifPresent(l ->{
-                l.byNameCodec().encodeStart(NbtOps.INSTANCE, realm)
-                        .result().ifPresent(nbt -> tag.put("EntityRealm", nbt));
-            });
-            byteBuf.writeNbt(tag);
-        }
+    public static final RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
 
-        @Override
-        public IRealmType read(FriendlyByteBuf byteBuf) {
-            CompoundTag tag = byteBuf.readNbt();
-            AtomicReference<IRealmType> realm = new AtomicReference();
-            if(Objects.requireNonNull(tag).contains("EntityRealm")){
-                IMMAPI.get().realmRegistry().ifPresent(l ->{
-                    l.byNameCodec().parse(NbtOps.INSTANCE, tag.get("EntityRealm"))
-                            .result().ifPresent(realm::set);
-                });
-            }
-            return realm.get();
-        }
-
-    });
+    public static final RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
+    public static final RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
 
     public static final RegistryObject<EntityDataSerializer<HumanSettings.HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new EntityDataSerializer.ForValueType<>() {
         @Override
@@ -101,5 +87,51 @@ public class IMMDataSerializers {
      */
     public static void register(IEventBus event){
         DATA_SERIALIZERS.register(event);
+    }
+
+    /**
+     * TODO HTLIB
+     */
+    public static class CodecEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<T> {
+
+        private final String name;
+        private final Codec<T> codec;
+
+        public CodecEntityDataSerializer(String name, Codec<T> codec) {
+            this.name = name;
+            this.codec = codec;
+        }
+
+        @Override
+        public void write(FriendlyByteBuf byteBuf, T entry) {
+            CompoundTag tag = new CompoundTag();
+            CodecHelper.encodeNbt(codec(), entry).result().ifPresent(nbt -> tag.put(name(), nbt));
+            byteBuf.writeNbt(tag);
+        }
+
+        @Override
+        public T read(FriendlyByteBuf byteBuf) {
+            CompoundTag tag = byteBuf.readNbt();
+            AtomicReference<T> entry = new AtomicReference<>();
+            if(tag != null && tag.contains(name())){
+                CodecHelper.parse(codec(), tag.get(name())).result().ifPresent(entry::set);
+            }
+            return entry.get();
+        }
+
+        public String name(){
+            return name;
+        }
+
+        public Codec<T> codec() {
+            return codec;
+        }
+    }
+
+    public static class SimpleEntityDataSerializer<T extends ISimpleEntry> extends CodecEntityDataSerializer<T> {
+
+        public SimpleEntityDataSerializer(IHTSimpleRegistry<T> registry) {
+            super(registry.getRegistryName().toString(), registry.byNameCodec());
+        }
     }
 }

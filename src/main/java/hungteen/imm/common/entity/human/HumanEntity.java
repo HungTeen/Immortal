@@ -1,16 +1,21 @@
 package hungteen.imm.common.entity.human;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.IInventoryLootType;
+import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMGrowableCreature;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -52,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -65,6 +71,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
     private static final EntityDataAccessor<HumanSettings.HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
     private static final EntityDataAccessor<List<HumanSettings.CommonTradeEntry>> TRADE_ENTRIES = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.COMMON_TRADE_ENTRIES.get());
+    private static final EntityDataAccessor<HumanSectData> SECT_DATA = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SECT_DATA.get());
     private List<ISpiritualType> rootsCache;
     @javax.annotation.Nullable
     private Player tradingPlayer;
@@ -86,6 +93,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         entityData.define(ROOTS, new CompoundTag());
         entityData.define(HUMAN_SETTING, HumanSettings.DEFAULT.getValue());
         entityData.define(TRADE_ENTRIES, List.of());
+        entityData.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
     }
 
     @org.jetbrains.annotations.Nullable
@@ -433,12 +441,15 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
             });
         }
         if(tag.contains("HumanSetting")){
-            HumanSettings.HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
+            CodecHelper.parse(HumanSettings.HumanSetting.CODEC, tag.get("HumanSetting"))
                     .result().ifPresent(this::setHumanSetting);
         }
         if(tag.contains("CommonTradeEntries")){
-            HumanSettings.CommonTradeEntry.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("CommonTradeEntries"))
+            CodecHelper.parse(HumanSettings.CommonTradeEntry.CODEC.listOf(), tag.get("CommonTradeEntries"))
                     .result().ifPresent(this::setCommonTradeEntries);
+        }
+        if(tag.contains("HumanSectData")){
+            CodecHelper.parse(HumanSectData.CODEC, tag.get("HumanSectData")).result().ifPresent(this::setSectData);
         }
         if (this.level instanceof ServerLevel) {
             this.refreshBrain((ServerLevel)this.level);
@@ -454,6 +465,8 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 .result().ifPresent(l -> tag.put("HumanSetting", l));
         HumanSettings.CommonTradeEntry.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.getCommonTradeEntries())
                 .result().ifPresent(l -> tag.put("CommonTradeEntries", l));
+        CodecHelper.encodeNbt(HumanSectData.CODEC, this.getSectData())
+                .result().ifPresent(l -> tag.put("HumanSectData", l));
     }
 
     public void addSpiritualRoots(ISpiritualType spiritualRoot){
@@ -479,6 +492,16 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return this.rootsCache;
     }
 
+    @Override
+    public Optional<ISectType> getOuterSect() {
+        return this.getSectData().outerSect();
+    }
+
+    @Override
+    public Optional<ISectType> getInnerSect() {
+        return this.getSectData().innerSect();
+    }
+
     public CompoundTag getRootTag(){
         return entityData.get(ROOTS);
     }
@@ -501,6 +524,23 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     public void setCommonTradeEntries(List<HumanSettings.CommonTradeEntry> entries) {
         entityData.set(TRADE_ENTRIES, entries);
+    }
+
+    public void setSectData(HumanSectData data){
+        entityData.set(SECT_DATA, data);
+    }
+
+    public HumanSectData getSectData(){
+        return entityData.get(SECT_DATA);
+    }
+
+    public record HumanSectData(Optional<ISectType> outerSect, Optional<ISectType> innerSect) {
+
+        public static final Codec<HumanSectData> CODEC = RecordCodecBuilder.<HumanSectData>mapCodec(instance -> instance.group(
+                Codec.optionalField("outer_sect", SectTypes.registry().byNameCodec()).forGetter(HumanSectData::outerSect),
+                Codec.optionalField("inner_sect", SectTypes.registry().byNameCodec()).forGetter(HumanSectData::innerSect)
+        ).apply(instance, HumanSectData::new)).codec();
+
     }
 
 }

@@ -5,17 +5,24 @@
 My dreaming world.
 
 ---
+### Pre-requisites
+
+OpenTD requires the following dependencies :
+
+[![]( https://cf.way2muchnoise.eu/title/hungteens-lib.svg)](https://www.curseforge.com/minecraft/mc-mods/hungteens-lib)
+
+---
+
+### Features
+* Cultivate : Players can cultivate themselves to grow stronger. 
+* Spell : There are different spells for players to learn.
+* Golem : You can make your custom AI golem in game.
+
+
+---
 ### Current Progress
 
 |   版本   |    开发状态    |
 |:------:|:----------:|
 | 1.19.3 | Developing |
----
-
-### Related Websites
-
-BiliBili: [Click Here](https://space.bilibili.com/362855464)
-
-YouTube: [Click Here](https://www.youtube.com/channel/UCc0zRvlwZdYLc4AKPafC4cg)
-
 ---
