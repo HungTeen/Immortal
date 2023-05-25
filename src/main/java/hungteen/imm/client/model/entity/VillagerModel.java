@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.client.model.AnimatedEntityModel;
 import hungteen.imm.common.entity.human.VillagerLikeEntity;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -89,6 +90,53 @@ public class VillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityM
 			this.leftLeg.zRot = 0.0F;
 		}
 
+		switch (entity.getArmPose()){
+			case ATTACKING -> {
+				if (entity.getMainHandItem().isEmpty()) {
+					AnimationUtils.animateZombieArms(this.leftArm, this.rightArm, true, this.attackTime, ageInTicks);
+				} else {
+					AnimationUtils.swingWeaponDown(this.rightArm, this.leftArm, entity, this.attackTime, ageInTicks);
+				}
+			}
+			case SPELLCASTING -> {
+				this.rightArm.z = 0.0F;
+				this.rightArm.x = -5.0F;
+				this.leftArm.z = 0.0F;
+				this.leftArm.x = 5.0F;
+				this.rightArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
+				this.leftArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
+				this.rightArm.zRot = 2.3561945F;
+				this.leftArm.zRot = -2.3561945F;
+				this.rightArm.yRot = 0.0F;
+				this.leftArm.yRot = 0.0F;
+			}
+			case BOW_AND_ARROW -> {
+				this.rightArm.yRot = -0.1F + this.head.yRot;
+				this.rightArm.xRot = (-(float)Math.PI / 2F) + this.head.xRot;
+				this.leftArm.xRot = -0.9424779F + this.head.xRot;
+				this.leftArm.yRot = this.head.yRot - 0.4F;
+				this.leftArm.zRot = ((float)Math.PI / 2F);
+			}
+			case CROSSBOW_HOLD -> {
+				AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, true);
+			}
+			case CROSSBOW_CHARGE -> {
+				AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, entity, true);
+			}
+			case CELEBRATING -> {
+				this.rightArm.z = 0.0F;
+				this.rightArm.x = -5.0F;
+				this.rightArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.05F;
+				this.rightArm.zRot = 2.670354F;
+				this.rightArm.yRot = 0.0F;
+				this.leftArm.z = 0.0F;
+				this.leftArm.x = 5.0F;
+				this.leftArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.05F;
+				this.leftArm.zRot = -2.3561945F;
+				this.leftArm.yRot = 0.0F;
+			}
+		}
+
 		this.animate(entity.mockAnimationState, Animations.VILLAGER_LIKE_MOCK, ageInTicks, 1F);
 	}
 
@@ -103,7 +151,11 @@ public class VillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityM
 	}
 
 	@Override
-	public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
+	public void translateToHand(HumanoidArm arm, PoseStack stack) {
+		this.getArm(arm).translateAndRotate(stack);
+	}
 
+	private ModelPart getArm(HumanoidArm arm) {
+		return arm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
 	}
 }

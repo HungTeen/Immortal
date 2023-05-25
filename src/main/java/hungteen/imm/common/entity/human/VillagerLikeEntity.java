@@ -32,4 +32,23 @@ public abstract class VillagerLikeEntity extends HumanEntity {
             }
         }
     }
+
+    public VillagerArmPose getArmPose() {
+        if (this.isAggressive()) {
+            return VillagerArmPose.ATTACKING;
+        } else {
+            return VillagerArmPose.NEUTRAL;
+        }
+    }
+
+    public enum VillagerArmPose {
+        CROSSED,
+        ATTACKING,
+        SPELLCASTING,
+        BOW_AND_ARROW,
+        CROSSBOW_HOLD,
+        CROSSBOW_CHARGE,
+        CELEBRATING,
+        NEUTRAL;
+    }
 }

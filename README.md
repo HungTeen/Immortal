@@ -7,7 +7,7 @@ My dreaming world.
 ---
 ### Pre-requisites
 
-OpenTD requires the following dependencies :
+Immortal requires the following dependencies :
 
 [![]( https://cf.way2muchnoise.eu/title/hungteens-lib.svg)](https://www.curseforge.com/minecraft/mc-mods/hungteens-lib)
 

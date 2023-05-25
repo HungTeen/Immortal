@@ -1,4 +1,4 @@
-package hungteen.imm.client.render.entity;
+package hungteen.imm.client.render.entity.human;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;

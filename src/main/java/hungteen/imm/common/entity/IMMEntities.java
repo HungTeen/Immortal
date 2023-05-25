@@ -8,6 +8,8 @@ import hungteen.imm.common.entity.golem.SnowGolem;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.cultivator.EmptyCultivator;
 import hungteen.imm.common.entity.human.cultivator.SpiritualCultivator;
+import hungteen.imm.common.entity.human.villager.CommonVillager;
+import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.entity.misc.SeatEntity;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
@@ -45,9 +47,9 @@ public class IMMEntities {
 
     /* Human */
 
-//    public static final RegistryObject<EntityType<DiscipleVillager>> DISCIPLE_VILLAGER = registerEntityType(DiscipleVillager::new, "disciple_villager", MobCategory.CREATURE);
-    public static final RegistryObject<EntityType<EmptyCultivator>> EMPTY_CULTIVATOR = registerEntityType(EmptyCultivator::new, "empty_cultivator", MobCategory.CREATURE);
-    public static final RegistryObject<EntityType<SpiritualCultivator>> SPIRITUAL_CULTIVATOR = registerEntityType(SpiritualCultivator::new, "spiritual_cultivator", MobCategory.CREATURE);
+    public static final RegistryObject<EntityType<EmptyCultivator>> EMPTY_CULTIVATOR = registerEntityType(EmptyCultivator::new, "empty_cultivator", IMMMobCategories.HUMAN);
+    public static final RegistryObject<EntityType<SpiritualCultivator>> SPIRITUAL_CULTIVATOR = registerEntityType(SpiritualCultivator::new, "spiritual_cultivator", IMMMobCategories.HUMAN);
+    public static final RegistryObject<EntityType<CommonVillager>> COMMON_VILLAGER = registerEntityType(CommonVillager::new, "common_villager", IMMMobCategories.HUMAN);
 
 //    /* Creature */
 //
@@ -67,9 +69,10 @@ public class IMMEntities {
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
-//        ev.put(DISCIPLE_VILLAGER.get(), HumanEntity.createAttributes().build());
         ev.put(EMPTY_CULTIVATOR.get(), HumanEntity.createAttributes().build());
         ev.put(SPIRITUAL_CULTIVATOR.get(), HumanEntity.createAttributes().build());
+        ev.put(COMMON_VILLAGER.get(), IMMVillager.createAttributes().build());
+
         /* creature */
 //        ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
 //        ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());

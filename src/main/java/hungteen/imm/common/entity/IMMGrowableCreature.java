@@ -84,6 +84,11 @@ public abstract class IMMGrowableCreature extends IMMCreature {
     }
 
     @Override
+    public float getScale() {
+        return getAge() * 1F / getMaxAge();
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("CreatureAge")){

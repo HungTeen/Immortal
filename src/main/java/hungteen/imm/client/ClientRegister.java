@@ -17,12 +17,13 @@ import hungteen.imm.client.particle.IMMFlameParticle;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
-import hungteen.imm.client.render.entity.CultivatorRender;
 import hungteen.imm.client.render.entity.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
+import hungteen.imm.client.render.entity.human.CommonVillagerRender;
+import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.menu.IMMMenus;
@@ -64,8 +65,8 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.SEAT.get(), EmptyEffectRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 //
-//        /* human */
-//        event.registerEntityRenderer(ImmortalEntities.DISCIPLE_VILLAGER.get(), VillagerLikeRender::new);
+        /* human */
+        event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
         event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_CULTIVATOR.get(), CultivatorRender::new);
 
@@ -92,7 +93,8 @@ public class ClientRegister {
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
         /* human */
-        event.registerLayerDefinition(ModelLayers.VILLAGER, PillagerModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.VILLAGER, VillagerModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.PILLAGER, PillagerModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(ModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);

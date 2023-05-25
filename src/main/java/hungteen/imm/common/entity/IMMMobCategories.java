@@ -10,6 +10,10 @@ import net.minecraft.world.entity.MobCategory;
  **/
 public class IMMMobCategories {
 
+    public static final MobCategory HUMAN = MobCategory.create(
+            "human", Util.id(), 20, true, false, 128
+    );
+
     public static final MobCategory GOLEM = MobCategory.create(
             "golem", Util.id(), 10, true, false, 128
     );

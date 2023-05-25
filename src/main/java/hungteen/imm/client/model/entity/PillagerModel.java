@@ -48,41 +48,6 @@ public class PillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityM
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
-//	public VillagerLikeModel(ModelPart root) {
-//		this.total = root.getChild("total");
-//		this.head = this.total.getChild("head");
-//		this.leftArm = this.total.getChild("leftArm");
-//		this.rightArm = this.total.getChild("rightArm");
-//		this.leftLeg = this.total.getChild("leftLeg");
-//		this.rightLeg = this.total.getChild("rightLeg");
-//	}
-//
-//	public static LayerDefinition createBodyLayer() {
-//		MeshDefinition meshdefinition = new MeshDefinition();
-//		PartDefinition partdefinition = meshdefinition.getRoot();
-//
-//		PartDefinition total = partdefinition.addOrReplaceChild("total", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-//
-//		PartDefinition head = total.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -24.0F, 0.0F));
-//
-//		PartDefinition nose = head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(24, 0).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, -4.0F));
-//
-//		PartDefinition waist = total.addOrReplaceChild("waist", CubeListBuilder.create(), PartPose.offset(0.0F, -12.0F, 0.0F));
-//
-//		PartDefinition body = waist.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 20).addBox(-4.0F, -24.0F, -3.0F, 8.0F, 12.0F, 6.0F, new CubeDeformation(0.0F))
-//				.texOffs(0, 38).addBox(-4.0F, -24.0F, -3.0F, 8.0F, 18.0F, 6.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, 12.0F, 0.0F));
-//
-//		PartDefinition leftArm = total.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(40, 46).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -22.0F, 0.0F));
-//
-//		PartDefinition rightArm = total.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(40, 46).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, -22.0F, 0.0F));
-//
-//		PartDefinition rightLeg = total.addOrReplaceChild("rightLeg", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-2.0F, -12.0F, 0.0F));
-//
-//		PartDefinition leftLeg = total.addOrReplaceChild("leftLeg", CubeListBuilder.create().texOffs(0, 22).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -12.0F, 0.0F));
-//
-//		return LayerDefinition.create(meshdefinition, 64, 64);
-//	}
-
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);

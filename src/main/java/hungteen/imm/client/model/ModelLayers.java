@@ -18,6 +18,7 @@ public class ModelLayers {
     public static final ModelLayerLocation CULTIVATOR_SLIM_INNER_ARMOR = registerInnerArmor("cultivator_slim");
     public static final ModelLayerLocation CULTIVATOR_SLIM_OUTER_ARMOR = registerOuterArmor("cultivator_slim");
     public static final ModelLayerLocation VILLAGER = register("villager");
+    public static final ModelLayerLocation PILLAGER = register("pillager");
 
     /*
     Animals.
