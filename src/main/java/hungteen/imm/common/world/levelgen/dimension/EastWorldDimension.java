@@ -82,11 +82,11 @@ public class EastWorldDimension {
             {null, null, null, null, null}
     };
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES = new ResourceKey[][]{
-            {IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS},
-            {IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS},
-            {IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS},
-            {IMMBiomes.SPIRITUAL_SAVANNA, IMMBiomes.SPIRITUAL_SAVANNA, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS, IMMBiomes.SPIRITUAL_PLAINS},
-            {IMMBiomes.SPIRITUAL_DESERT, IMMBiomes.SPIRITUAL_DESERT, IMMBiomes.SPIRITUAL_DESERT, IMMBiomes.SPIRITUAL_DESERT, IMMBiomes.SPIRITUAL_DESERT}
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT}
     };
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
             {null, null, null, null, null},

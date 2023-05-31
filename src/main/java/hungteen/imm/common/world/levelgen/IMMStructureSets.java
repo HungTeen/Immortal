@@ -1,6 +1,5 @@
 package hungteen.imm.common.world.levelgen;
 
-import hungteen.imm.common.world.levelgen.structure.OverworldTradingMarket;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -18,7 +17,7 @@ public class IMMStructureSets {
     public static final ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = create("overworld_trading_markets");
 
     public static void register(BootstapContext<StructureSet> context) {
-        OverworldTradingMarket.initStructureSets(context);
+//        OverworldTradingMarket.initStructureSets(context);
     }
 
     private static ResourceKey<StructureSet> create(String name) {

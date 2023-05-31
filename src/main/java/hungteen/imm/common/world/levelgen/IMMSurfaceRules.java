@@ -72,7 +72,7 @@ public class IMMSurfaceRules {
         SurfaceRules.RuleSource putSandOrStone = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), SAND);
         SurfaceRules.RuleSource putStoneOrGravel = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, STONE), GRAVEL);
         SurfaceRules.ConditionSource warmOceanOrBeach = SurfaceRules.isBiome(Biomes.WARM_OCEAN, Biomes.BEACH, Biomes.SNOWY_BEACH);
-        SurfaceRules.ConditionSource desert = SurfaceRules.isBiome(IMMBiomes.SPIRITUAL_DESERT);
+        SurfaceRules.ConditionSource desert = SurfaceRules.isBiome(IMMBiomes.DESERT);
         SurfaceRules.RuleSource rulesource3 = SurfaceRules.sequence(
 //                SurfaceRules.ifTrue(
 //                        SurfaceRules.isBiome(Biomes.STONY_PEAKS),

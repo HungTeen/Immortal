@@ -539,7 +539,7 @@
                               "if_true": {
                                 "type": "minecraft:biome",
                                 "biome_is": [
-                                  "imm:spiritual_desert"
+                                  "imm:desert"
                                 ]
                               },
                               "then_run": {
@@ -711,7 +711,7 @@
                               "if_true": {
                                 "type": "minecraft:biome",
                                 "biome_is": [
-                                  "imm:spiritual_desert"
+                                  "imm:desert"
                                 ]
                               },
                               "then_run": {
@@ -785,7 +785,7 @@
                     "if_true": {
                       "type": "minecraft:biome",
                       "biome_is": [
-                        "imm:spiritual_desert"
+                        "imm:desert"
                       ]
                     },
                     "then_run": {

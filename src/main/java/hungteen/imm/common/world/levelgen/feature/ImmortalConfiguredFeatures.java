@@ -1,11 +1,5 @@
 package hungteen.imm.common.world.levelgen.feature;
 
-import hungteen.imm.util.Util;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-
 /**
  * @program: Immortal
  * @author: HungTeen
@@ -13,7 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
  **/
 public class ImmortalConfiguredFeatures {
 
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Util.id());
+//    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Util.id());
 
 //    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
 //            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -25,7 +19,7 @@ public class ImmortalConfiguredFeatures {
 //            ).build())
 //    );
 
-    public static void register(IEventBus event){
-        CONFIGURED_FEATURES.register(event);
-    }
+//    public static void register(IEventBus event){
+//        CONFIGURED_FEATURES.register(event);
+//    }
 }

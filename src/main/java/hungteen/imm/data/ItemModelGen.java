@@ -44,7 +44,7 @@ public class ItemModelGen extends HTItemModelGen {
 
         /* Single add block items so that except adding by method below. */
         Arrays.asList(
-                IMMItems.GOURD_SEEDS.get()
+                IMMItems.RICE_SEEDS.get(), IMMItems.GOURD_SEEDS.get()
         ).forEach(item -> {
             genNormalModel(item);
             this.addedItems.add(item);

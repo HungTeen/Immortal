@@ -17,9 +17,9 @@ import net.minecraft.world.level.biome.Biome;
  **/
 public class IMMBiomes {
 
-    public static final ResourceKey<Biome> SPIRITUAL_PLAINS = create("spiritual_plains");
-    public static final ResourceKey<Biome> SPIRITUAL_SAVANNA = create("spiritual_savanna");
-    public static final ResourceKey<Biome> SPIRITUAL_DESERT = create("spiritual_desert");
+    public static final ResourceKey<Biome> PLAINS = create("plains");
+    public static final ResourceKey<Biome> SAVANNA = create("savanna");
+    public static final ResourceKey<Biome> DESERT = create("desert");
 
     public static void register(BootstapContext<Biome> context){
         EastWorldBiomes.initBiomes(context);

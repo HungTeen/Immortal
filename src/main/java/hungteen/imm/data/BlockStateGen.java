@@ -8,6 +8,8 @@ import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.block.plants.GourdStemBlock;
+import hungteen.imm.common.block.plants.HybridRiceBlock;
+import hungteen.imm.common.block.plants.RiceBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Direction;
@@ -53,6 +55,8 @@ public class BlockStateGen extends HTBlockStateGen {
 //        Arrays.asList(
 //                ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()
 //        ).forEach(this::spiritualRoom);
+
+        this.gen(IMMBlocks.RICE.get(), this::rice);
 
         this.gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> {
             getVariantBuilder(block).forAllStates(state -> {
@@ -123,6 +127,18 @@ public class BlockStateGen extends HTBlockStateGen {
                 simpleBlock(block);
             }
         }
+    }
+
+    private void rice(Block block) {
+        getVariantBuilder(block).forAllStates(state -> {
+            final int i = state.getValue(RiceBlock.AGE);
+            final int age = HybridRiceBlock.getIndexByAge(i);
+            final String name = name(block) + "_" + age;
+            return ConfiguredModel.builder()
+                    .modelFile(models().cross(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
+                    .build();
+
+        });
     }
 
     /**

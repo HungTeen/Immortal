@@ -1,7 +1,9 @@
 package hungteen.imm.data;
 
-import hungteen.imm.common.world.levelgen.*;
-import hungteen.imm.common.world.levelgen.feature.IMMPlacedFeatures;
+import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
+import hungteen.imm.common.world.levelgen.IMMLevelStems;
+import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -22,15 +24,16 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
-            .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
-            .add(Registries.PLACED_FEATURE, IMMPlacedFeatures::register)
-            .add(Registries.STRUCTURE, IMMStructures::register)
-            .add(Registries.STRUCTURE_SET, IMMStructureSets::register)
+//            .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
+//            .add(Registries.PLACED_FEATURE, IMMPlacedFeatures::register)
+//            .add(Registries.STRUCTURE, IMMStructures::register)
+//            .add(Registries.STRUCTURE_SET, IMMStructureSets::register)
             .add(Registries.NOISE_SETTINGS, IMMNoiseSettings::register)
-            .add(Registries.LEVEL_STEM, IMMLevelStems::register);
+            .add(Registries.LEVEL_STEM, IMMLevelStems::register)
+            ;
 
     public DatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, BUILDER, Set.of(Util.mc(), Util.forge(), Util.id()));
+        super(output, provider, BUILDER, Set.of(Util.mc(), Util.id()));
     }
 
     @Override

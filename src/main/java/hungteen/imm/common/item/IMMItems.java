@@ -35,6 +35,8 @@ public class IMMItems {
 
     /* Material Tab Items */
 
+    public static final RegistryObject<Item> RICE_SEEDS = ITEMS.register("rice_seeds", () -> new ItemNameBlockItem(IMMBlocks.RICE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RICE_STRAW = ITEMS.register("rice_straw", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(IMMBlocks.GOURD_STEM.get(), new Item.Properties()));
 
     /* Rune Tab Items */

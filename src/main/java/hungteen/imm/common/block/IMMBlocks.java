@@ -8,9 +8,7 @@ import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.artifacts.RuneWorkBench;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
-import hungteen.imm.common.block.plants.AttachedGourdStemBlock;
-import hungteen.imm.common.block.plants.GourdGrownBlock;
-import hungteen.imm.common.block.plants.GourdStemBlock;
+import hungteen.imm.common.block.plants.*;
 import hungteen.imm.common.world.levelgen.feature.tree.MulberryTreeGrower;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -39,6 +37,7 @@ public class IMMBlocks {
 
     /* Plant Blocks */
 
+    public static final RegistryObject<Block> RICE = BLOCKS.register("rice", RiceBlock::new);
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
 

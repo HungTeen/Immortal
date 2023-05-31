@@ -24,9 +24,9 @@ public class EastWorldBiomes {
     public static void initBiomes(BootstapContext<Biome> context){
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         final HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
-        context.register(IMMBiomes.SPIRITUAL_PLAINS, plains(features, carvers));
-        context.register(IMMBiomes.SPIRITUAL_SAVANNA, savanna(features, carvers));
-        context.register(IMMBiomes.SPIRITUAL_DESERT, desert(features, carvers));
+        context.register(IMMBiomes.PLAINS, plains(features, carvers));
+        context.register(IMMBiomes.SAVANNA, savanna(features, carvers));
+        context.register(IMMBiomes.DESERT, desert(features, carvers));
     }
 
     private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {

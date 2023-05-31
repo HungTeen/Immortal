@@ -27,7 +27,6 @@ import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.levelgen.biome.BiomeManager;
-import hungteen.imm.common.world.levelgen.feature.ImmortalConfiguredFeatures;
 import hungteen.imm.data.DataGenHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -101,7 +100,6 @@ public class ImmortalMod {
         IMMActivities.register(modBus);
         IMMPoiTypes.register(modBus);
         IMMProfessions.register(modBus);
-        ImmortalConfiguredFeatures.register(modBus);
     }
 
     /**
