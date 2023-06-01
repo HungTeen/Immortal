@@ -1,13 +1,10 @@
 package hungteen.imm.common.block.plants;
 
 import hungteen.imm.common.item.IMMItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -16,7 +13,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
@@ -26,10 +22,11 @@ import javax.annotation.Nullable;
  * @program Immortal
  * @data 2023/5/31 16:28
  */
-public class RiceBlock extends CropBlock implements SimpleWaterloggedBlock {
+public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
 
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
+    private static final IntegerProperty AGE = BlockStateProperties.AGE_7;
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    private static final int MAX_AGE = 7;
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
@@ -40,8 +37,6 @@ public class RiceBlock extends CropBlock implements SimpleWaterloggedBlock {
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)
     };
-
-    private static final int MAX_AGE = 7;
 
     public RiceBlock() {
         super(Properties.copy(Blocks.WHEAT));
@@ -60,17 +55,14 @@ public class RiceBlock extends CropBlock implements SimpleWaterloggedBlock {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    /**
-     * Not every age will change the state and texture.
-     */
-    public static int getIndexByAge(int age){
-        return age / 2;
+    @Override
+    public int getStateIndex(BlockState state) {
+        return getAge(state) / 2;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        final int age = getIndexByAge(state.getValue(this.getAgeProperty()));
-        return SHAPE_BY_AGE[age];
+    public VoxelShape[] getShapes() {
+        return SHAPE_BY_AGE;
     }
 
     @Override
@@ -79,7 +71,7 @@ public class RiceBlock extends CropBlock implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected ItemLike getBaseSeedId() {
+    public ItemLike getSeedItem(BlockState state) {
         return IMMItems.RICE_SEEDS.get();
     }
 

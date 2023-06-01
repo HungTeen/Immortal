@@ -35,6 +35,8 @@ public class IMMCreativeTabs {
                 .icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
                 .displayItems((featureFlagSet, output, hasPermission) -> {
                     output.acceptAll(Arrays.asList(
+                            IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
+                            IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
                             IMMItems.GOURD_SEEDS.get()
                     ).stream().map(ItemStack::new).toList());
                 })

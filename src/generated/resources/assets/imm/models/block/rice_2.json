@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cross",
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "imm:block/rice_lower_3"
+    "cross": "imm:block/rice_2"
   }
 }

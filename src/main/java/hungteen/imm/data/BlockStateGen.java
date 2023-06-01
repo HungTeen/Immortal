@@ -6,10 +6,7 @@ import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
-import hungteen.imm.common.block.plants.GourdGrownBlock;
-import hungteen.imm.common.block.plants.GourdStemBlock;
-import hungteen.imm.common.block.plants.HybridRiceBlock;
-import hungteen.imm.common.block.plants.RiceBlock;
+import hungteen.imm.common.block.plants.*;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Direction;
@@ -56,7 +53,11 @@ public class BlockStateGen extends HTBlockStateGen {
 //                ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()
 //        ).forEach(this::spiritualRoom);
 
-        this.gen(IMMBlocks.RICE.get(), this::rice);
+        Arrays.asList(
+                IMMBlocks.RICE.get()
+        ).forEach(this::rice);
+
+        this.gen(IMMBlocks.JUTE.get(), this::jute);
 
         this.gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> {
             getVariantBuilder(block).forAllStates(state -> {
@@ -130,15 +131,30 @@ public class BlockStateGen extends HTBlockStateGen {
     }
 
     private void rice(Block block) {
-        getVariantBuilder(block).forAllStates(state -> {
-            final int i = state.getValue(RiceBlock.AGE);
-            final int age = HybridRiceBlock.getIndexByAge(i);
-            final String name = name(block) + "_" + age;
-            return ConfiguredModel.builder()
-                    .modelFile(models().cross(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
-                    .build();
+        if(block instanceof IMMCropBlock b){
+            getVariantBuilder(block).forAllStates(state -> {
+                final int age = b.getStateIndex(state);
+                final String name = name(block) + "_" + age;
+                return ConfiguredModel.builder()
+                        .modelFile(models().cross(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
+                        .build();
 
-        });
+            });
+            this.add(block);
+        } else {
+            Util.error("Could not parse {} to IMMCropBlock in BlockStateGen !", name(block));
+        }
+    }
+
+    private void jute(JuteBlock block) {
+            getVariantBuilder(block).forAllStates(state -> {
+                final int age = block.getStateIndex(state);
+                final boolean isUpper = JuteBlock.isUpperState(state);
+                final String name = name(block) + (isUpper ? "_upper" : "_lower") + "_" + age;
+                return ConfiguredModel.builder()
+                        .modelFile(models().cross(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
+                        .build();
+            });
     }
 
     /**

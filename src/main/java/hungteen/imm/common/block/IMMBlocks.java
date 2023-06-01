@@ -38,6 +38,7 @@ public class IMMBlocks {
     /* Plant Blocks */
 
     public static final RegistryObject<Block> RICE = BLOCKS.register("rice", RiceBlock::new);
+    public static final RegistryObject<JuteBlock> JUTE = BLOCKS.register("jute", JuteBlock::new);
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
 
