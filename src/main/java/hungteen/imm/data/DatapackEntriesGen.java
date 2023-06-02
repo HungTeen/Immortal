@@ -4,6 +4,7 @@ import hungteen.imm.common.world.levelgen.IMMBiomes;
 import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
 import hungteen.imm.common.world.levelgen.IMMLevelStems;
 import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
+import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.feature.IMMFeatures;
 import hungteen.imm.common.world.levelgen.feature.IMMPlacements;
 import hungteen.imm.util.Util;
@@ -12,6 +13,7 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +35,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
 //            .add(Registries.STRUCTURE_SET, IMMStructureSets::register)
             .add(Registries.NOISE_SETTINGS, IMMNoiseSettings::register)
             .add(Registries.LEVEL_STEM, IMMLevelStems::register)
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, IMMBiomeModifiers::register)
             ;
 
     public DatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {

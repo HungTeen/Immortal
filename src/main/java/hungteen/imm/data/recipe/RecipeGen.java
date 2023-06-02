@@ -2,6 +2,7 @@ package hungteen.imm.data.recipe;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -25,15 +26,13 @@ public class RecipeGen extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        this.buildNormalRecipes(consumer);
+        this.buildShapedRecipes(consumer);
+        this.buildShapelessRecipes(consumer);
         this.buildElixirRecipes(consumer);
         this.buildSmithingRecipes(consumer);
     }
 
-    /**
-     * Recipes for Crafting Table.
-     */
-    protected void buildNormalRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildShapedRecipes(Consumer<FinishedRecipe> consumer) {
         for (DyeColor color : DyeColor.values()) {
             ItemHelper.get().get(WoolCushionBlock.getWoolCushionLocation(color)).ifPresent(cushion -> {
                 ItemHelper.get().get(Util.mcPrefix(color.getName() + "_wool")).ifPresent(wool -> {
@@ -48,6 +47,15 @@ public class RecipeGen extends RecipeProvider {
 //                .define('A', GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())
 //                .define('B', Items.BLAZE_ROD)
 //                .save(consumer);
+    }
+
+    protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+       ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IMMItems.JOSS_PAPER.get())
+               .requires(Items.BAMBOO)
+               .requires(IMMItems.RICE_STRAW.get())
+               .requires(IMMItems.JUTE.get())
+               .unlockedBy("has_bamboo", has(Items.BAMBOO))
+               .save(consumer);
     }
 
     /**
@@ -176,7 +184,6 @@ public class RecipeGen extends RecipeProvider {
         ItemHelper.get().get(WoolCushionBlock.getWoolCushionLocation(DyeColor.WHITE)).ifPresent(whiteCushion -> {
             if (cushion != whiteCushion) {
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cushion).requires(Items.WHITE_BED).requires(dye).group("dyed_wool_cushion").unlockedBy("has_white_cushion", has(whiteCushion)).save(consumer, conversionName(cushion, whiteCushion));
-
             }
         });
     }

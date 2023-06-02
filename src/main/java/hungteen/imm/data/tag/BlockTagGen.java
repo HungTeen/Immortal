@@ -2,6 +2,7 @@ package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -28,6 +29,9 @@ public class BlockTagGen extends HTBlockTagGen {
     }
 
     private void addMCTags(){
+        /* Ores */
+        this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
+
         /* Woods */
 //        this.woodIntegration(ImmortalWoods.MULBERRY);
 

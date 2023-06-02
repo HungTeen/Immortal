@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bamboo"
+    },
+    {
+      "item": "imm:rice_straw"
+    },
+    {
+      "item": "imm:jute"
+    }
+  ],
+  "result": {
+    "item": "imm:joss_paper"
+  }
+}

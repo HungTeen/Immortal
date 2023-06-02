@@ -2,6 +2,8 @@ package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.htlib.data.tag.HTItemTagGen;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
@@ -25,6 +27,12 @@ public class ItemTagGen extends HTItemTagGen {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        this.tag(IMMItemTags.RICE_SEEDS).add(IMMItems.RICE_SEEDS.get());
+        this.tag(IMMItemTags.JUTE_SEEDS).add(IMMItems.JUTE_SEEDS.get());
+        this.tag(IMMItemTags.JUTE).add(IMMItems.JUTE.get());
+        this.tag(IMMItemTags.CINNABAR_GEMS).add(IMMItems.CINNABAR.get());
+        this.copy(IMMBlockTags.CINNABAR_ORES, IMMItemTags.CINNABAR_ORES);
+
         this.tag(IMMItemTags.SPIRITUAL_STONES).addTags(
                 IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE,
                 IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO
