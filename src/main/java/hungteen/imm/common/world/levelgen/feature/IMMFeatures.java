@@ -1,13 +1,17 @@
 package hungteen.imm.common.world.levelgen.feature;
 
+import hungteen.imm.util.Util;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-11-12 12:38
  **/
-public class ImmortalConfiguredFeatures {
-
-//    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Util.id());
+public class IMMFeatures {
 
 //    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
 //            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -19,7 +23,13 @@ public class ImmortalConfiguredFeatures {
 //            ).build())
 //    );
 
-//    public static void register(IEventBus event){
-//        CONFIGURED_FEATURES.register(event);
-//    }
+    public static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+        IMMOreFeatures.register(context);
+    }
+
+    public static ResourceKey<ConfiguredFeature<?, ?>> create(String name){
+        return FeatureUtils.createKey(Util.prefixName(name));
+    }
+
+
 }

@@ -4,6 +4,8 @@ import hungteen.imm.common.world.levelgen.IMMBiomes;
 import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
 import hungteen.imm.common.world.levelgen.IMMLevelStems;
 import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
+import hungteen.imm.common.world.levelgen.feature.IMMFeatures;
+import hungteen.imm.common.world.levelgen.feature.IMMPlacements;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -25,7 +27,8 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
 //            .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
-//            .add(Registries.PLACED_FEATURE, IMMPlacedFeatures::register)
+            .add(Registries.CONFIGURED_FEATURE, IMMFeatures::register)
+            .add(Registries.PLACED_FEATURE, IMMPlacements::register)
 //            .add(Registries.STRUCTURE, IMMStructures::register)
 //            .add(Registries.STRUCTURE_SET, IMMStructureSets::register)
             .add(Registries.NOISE_SETTINGS, IMMNoiseSettings::register)

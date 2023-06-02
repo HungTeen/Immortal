@@ -36,7 +36,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         BiomeDefaultFeatures.addPlainGrass(generationBuilder);
         BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        BiomeDefaultFeatures.addDefaultOres(generationBuilder);
+        EastWorldFeatures.addOres(generationBuilder, true, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         return biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, spawnBuilder, generationBuilder, null);
@@ -49,7 +49,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         BiomeDefaultFeatures.addPlainGrass(generationBuilder);
         BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        BiomeDefaultFeatures.addDefaultOres(generationBuilder);
+        EastWorldFeatures.addOres(generationBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);
@@ -62,7 +62,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         BiomeDefaultFeatures.addPlainGrass(generationBuilder);
         BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        BiomeDefaultFeatures.addDefaultOres(generationBuilder);
+        EastWorldFeatures.addOres(generationBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);

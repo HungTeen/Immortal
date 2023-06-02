@@ -40,6 +40,8 @@ public class IMMItems {
     public static final RegistryObject<Item> JUTE_SEEDS = ITEMS.register("jute_seeds", () -> new ItemNameBlockItem(IMMBlocks.JUTE.get(), new Item.Properties()));
     public static final RegistryObject<Item> JUTE = ITEMS.register("jute", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(IMMBlocks.GOURD_STEM.get(), new Item.Properties()));
+    public static final RegistryObject<Item> JOSS_PAPER = ITEMS.register("joss_paper", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CINNABAR = ITEMS.register("cinnabar", () -> new Item(new Item.Properties()));
 
     /* Rune Tab Items */
 
