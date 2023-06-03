@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.levelgen.biome;
 
 import hungteen.imm.common.world.levelgen.feature.IMMOrePlacements;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -11,6 +12,16 @@ import net.minecraft.world.level.levelgen.GenerationStep;
  * @data 2023/6/2 9:18
  */
 public class EastWorldFeatures {
+
+    /**
+     * Generations that every biome will have.
+     */
+    public static void globalGeneration(BiomeGenerationSettings.Builder builder) {
+        BiomeDefaultFeatures.addDefaultCarversAndLakes(builder);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
+        BiomeDefaultFeatures.addDefaultSprings(builder);
+        BiomeDefaultFeatures.addSurfaceFreezing(builder);
+    }
 
     public static void addOres(BiomeGenerationSettings.Builder builder, boolean largeEmerald, boolean largeCopper) {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_IRON_UPPER);

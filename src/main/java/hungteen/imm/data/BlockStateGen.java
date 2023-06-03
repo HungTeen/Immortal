@@ -136,7 +136,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 final int age = b.getStateIndex(state);
                 final String name = name(block) + "_" + age;
                 return ConfiguredModel.builder()
-                        .modelFile(models().cross(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
+                        .modelFile(models().crop(name, StringHelper.blockTexture(Util.prefix(name))).renderType(cutout()))
                         .build();
 
             });

@@ -6,7 +6,7 @@
       "minecraft:canyon"
     ]
   },
-  "downfall": 0.0,
+  "downfall": 0.9,
   "effects": {
     "fog_color": 12638463,
     "mood_sound": {
@@ -15,7 +15,13 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "sky_color": 7254527,
+    "music": {
+      "max_delay": 24000,
+      "min_delay": 12000,
+      "replace_current_music": false,
+      "sound": "minecraft:music.overworld.jungle_and_forest"
+    },
+    "sky_color": 7842047,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
@@ -47,7 +53,7 @@
       "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
       "minecraft:ore_diamond_large",
-      "imm:ore_emerald_small",
+      "minecraft:ore_emerald",
       "minecraft:ore_copper",
       "imm:ore_cinnabar",
       "minecraft:disk_sand",
@@ -61,23 +67,34 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:trees_savanna",
+      "minecraft:bamboo",
+      "minecraft:bamboo_vegetation",
+      "minecraft:patch_tall_grass_2",
+      "minecraft:trees_plains",
+      "minecraft:flower_plains",
+      "minecraft:patch_grass_plain",
       "minecraft:flower_warm",
-      "minecraft:patch_grass_savanna",
-      "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_jungle",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_pumpkin"
+      "minecraft:patch_pumpkin",
+      "minecraft:vines"
     ],
     [
       "minecraft:freeze_top_layer"
     ]
   ],
-  "precipitation": "none",
+  "precipitation": "rain",
   "spawn_costs": {},
   "spawners": {
     "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 10
+      },
       {
         "type": "minecraft:bat",
         "maxCount": 8,
@@ -110,12 +127,102 @@
         "maxCount": 4,
         "minCount": 4,
         "weight": 8
+      },
+      {
+        "type": "minecraft:chicken",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:sheep",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 12
+      },
+      {
+        "type": "minecraft:pig",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:chicken",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:cow",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:horse",
+        "maxCount": 6,
+        "minCount": 2,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:donkey",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 1
       }
     ],
     "imm:golem": [],
     "imm:human": [],
     "misc": [],
     "monster": [
+      {
+        "type": "minecraft:spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 95
+      },
+      {
+        "type": "minecraft:zombie_villager",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
       {
         "type": "minecraft:spider",
         "maxCount": 4,
@@ -171,10 +278,16 @@
         "maxCount": 6,
         "minCount": 4,
         "weight": 10
+      },
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 6,
+        "minCount": 4,
+        "weight": 10
       }
     ],
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 2.0
+  "temperature": 0.95
 }

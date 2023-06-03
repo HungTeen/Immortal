@@ -1,12 +1,12 @@
-package hungteen.imm.common.item;
+package hungteen.imm.common.item.fulu;
 
 import net.minecraft.world.item.Item;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-03 22:44
- **/
+ * @author PangTeen
+ * @program Immortal
+ * @data 2023/6/3 15:58
+ */
 public class TalismanItem extends Item {
 
     public TalismanItem(Properties properties) {

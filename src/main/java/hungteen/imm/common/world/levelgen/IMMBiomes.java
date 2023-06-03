@@ -20,6 +20,7 @@ public class IMMBiomes {
     public static final ResourceKey<Biome> PLAINS = create("plains");
     public static final ResourceKey<Biome> SAVANNA = create("savanna");
     public static final ResourceKey<Biome> DESERT = create("desert");
+    public static final ResourceKey<Biome> BAMBOO_JUNGLE = create("bamboo_jungle");
 
     public static void register(BootstapContext<Biome> context){
         EastWorldBiomes.initBiomes(context);

@@ -5,16 +5,20 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.sounds.Music;
+import net.minecraft.sounds.Musics;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import javax.annotation.Nullable;
 
 /**
- * Look at {@link net.minecraft.data.worldgen.biome.OverworldBiomes}
+ * Look at {@link net.minecraft.data.worldgen.biome.OverworldBiomes}.
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-18 14:11
@@ -24,58 +28,120 @@ public class EastWorldBiomes {
     public static void initBiomes(BootstapContext<Biome> context){
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         final HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
-        context.register(IMMBiomes.PLAINS, plains(features, carvers));
-        context.register(IMMBiomes.SAVANNA, savanna(features, carvers));
+        context.register(IMMBiomes.PLAINS, plains(features, carvers, false, false));
+        context.register(IMMBiomes.SAVANNA, savanna(features, carvers, false, false));
         context.register(IMMBiomes.DESERT, desert(features, carvers));
+        context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
     }
 
-    private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
-        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(features, carvers);
-        globalGeneration(generationBuilder);
-        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        EastWorldFeatures.addOres(generationBuilder, true, false);
-        BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
-        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
-        return biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, spawnBuilder, generationBuilder, null);
+    private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean sunflower, boolean snowy) {
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        if(snowy){
+            spawnBuilder.creatureGenerationProbability(0.07F);
+            BiomeDefaultFeatures.snowySpawns(spawnBuilder);
+        } else {
+            BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
+        }
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, true, false);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        if(snowy){
+            BiomeDefaultFeatures.addSnowyTrees(genBuilder);
+            BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+            BiomeDefaultFeatures.addDefaultGrass(genBuilder);
+//            if (p_194884_) {
+//                generationBuilder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscOverworldPlacements.ICE_SPIKE);
+//                generationBuilder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscOverworldPlacements.ICE_PATCH);
+//            }
+        } else {
+            BiomeDefaultFeatures.addPlainGrass(genBuilder);
+            BiomeDefaultFeatures.addPlainVegetation(genBuilder);
+            if (sunflower) {
+                genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_SUNFLOWER);
+            }
+        }
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        if (sunflower) {
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_SUGAR_CANE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_PUMPKIN);
+        } else {
+            BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+        }
+
+        return biome(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN, snowy ? 0F : 0.8F, snowy ? 0.5F : 0.4F, spawnBuilder, genBuilder, null);
     }
 
-    private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
-        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(features, carvers);
-        globalGeneration(generationBuilder);
-        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        EastWorldFeatures.addOres(generationBuilder, false, false);
-        BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
-        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
-        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);
+    private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean windSwept, boolean plateau) {
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
+//        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 1, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 1));
+        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
+//        if (plateau) {
+//            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.LLAMA, 8, 4, 4));
+//        }
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, false, false);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        if (windSwept) {
+            BiomeDefaultFeatures.addShatteredSavannaTrees(genBuilder);
+            BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+            BiomeDefaultFeatures.addShatteredSavannaGrass(genBuilder);
+        } else {
+            BiomeDefaultFeatures.addSavannaTrees(genBuilder);
+            BiomeDefaultFeatures.addWarmFlowers(genBuilder);
+            BiomeDefaultFeatures.addSavannaExtraGrass(genBuilder);
+            BiomeDefaultFeatures.addSavannaGrass(genBuilder);
+        }
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+
+        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
     private static Biome desert(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
-        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(features, carvers);
-        globalGeneration(generationBuilder);
-        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addPlainVegetation(generationBuilder);
-        EastWorldFeatures.addOres(generationBuilder, false, false);
-        BiomeDefaultFeatures.addDefaultSoftDisks(generationBuilder);
-        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
-        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, generationBuilder, null);
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.desertSpawns(spawnBuilder);
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, false, false);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addFossilDecoration(genBuilder);
+        BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+        BiomeDefaultFeatures.addDefaultGrass(genBuilder);
+        BiomeDefaultFeatures.addDesertVegetation(genBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDesertExtraVegetation(genBuilder);
+        BiomeDefaultFeatures.addDesertExtraDecoration(genBuilder);
+
+        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
-    /**
-     * Generations that every biome will have.
-     */
-    private static void globalGeneration(BiomeGenerationSettings.Builder builder) {
-        BiomeDefaultFeatures.addDefaultCarversAndLakes(builder);
-        BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
-        BiomeDefaultFeatures.addDefaultSprings(builder);
-        BiomeDefaultFeatures.addSurfaceFreezing(builder);
+    private static Biome bambooJungle(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.baseJungleSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, true, false);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addBambooVegetation(genBuilder);
+
+        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
+        BiomeDefaultFeatures.addPlainGrass(genBuilder);
+        BiomeDefaultFeatures.addPlainVegetation(genBuilder);
+        BiomeDefaultFeatures.addWarmFlowers(genBuilder);
+        BiomeDefaultFeatures.addJungleGrass(genBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+        BiomeDefaultFeatures.addJungleVines(genBuilder);
+
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE_AND_FOREST);
+        return biome(Biome.Precipitation.RAIN, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
     }
 
     private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {

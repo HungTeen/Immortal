@@ -74,19 +74,19 @@ public class EastWorldDimension {
             {Biomes.SAVANNA, Biomes.SAVANNA, Biomes.FOREST, Biomes.JUNGLE, Biomes.JUNGLE},
             {Biomes.DESERT, Biomes.DESERT, Biomes.DESERT, Biomes.DESERT, Biomes.DESERT}
     };
+    private static final ResourceKey<Biome>[][] MIDDLE_BIOMES = new ResourceKey[][]{
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
+            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.PLAINS, IMMBiomes.BAMBOO_JUNGLE, IMMBiomes.BAMBOO_JUNGLE},
+            {IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT}
+    };
     private final ResourceKey<Biome>[][] DEFAULT_MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
             {Biomes.ICE_SPIKES, null, Biomes.SNOWY_TAIGA, null, null},
             {null, null, null, null, Biomes.OLD_GROWTH_PINE_TAIGA},
             {Biomes.SUNFLOWER_PLAINS, null, null, Biomes.OLD_GROWTH_BIRCH_FOREST, null},
             {null, null, Biomes.PLAINS, Biomes.SPARSE_JUNGLE, Biomes.BAMBOO_JUNGLE},
             {null, null, null, null, null}
-    };
-    private static final ResourceKey<Biome>[][] MIDDLE_BIOMES = new ResourceKey[][]{
-            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
-            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
-            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
-            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
-            {IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT}
     };
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
             {null, null, null, null, null},
@@ -95,6 +95,24 @@ public class EastWorldDimension {
             {null, null, null, null, null},
             {null, null, null, null, null}
     };
+    private final ResourceKey<Biome>[][] DEFAULT_PLATEAU_BIOMES = new ResourceKey[][]{
+            {Biomes.SNOWY_PLAINS, Biomes.SNOWY_PLAINS, Biomes.SNOWY_PLAINS, Biomes.SNOWY_TAIGA, Biomes.SNOWY_TAIGA},
+            {Biomes.MEADOW, Biomes.MEADOW, Biomes.FOREST, Biomes.TAIGA, Biomes.OLD_GROWTH_SPRUCE_TAIGA},
+            {Biomes.MEADOW, Biomes.MEADOW, Biomes.MEADOW, Biomes.MEADOW, Biomes.DARK_FOREST},
+            {Biomes.SAVANNA_PLATEAU, Biomes.SAVANNA_PLATEAU, Biomes.FOREST, Biomes.FOREST, Biomes.JUNGLE},
+            {Biomes.BADLANDS, Biomes.BADLANDS, Biomes.BADLANDS, Biomes.WOODED_BADLANDS, Biomes.WOODED_BADLANDS}
+    };
+    private final ResourceKey<Biome>[][] DEFAULT_PLATEAU_BIOMES_VARIANT = new ResourceKey[][]{
+            {Biomes.ICE_SPIKES, null, null, null, null},
+            {null, null, Biomes.MEADOW, Biomes.MEADOW, Biomes.OLD_GROWTH_PINE_TAIGA},
+            {null, null, Biomes.FOREST, Biomes.BIRCH_FOREST, null},
+            {null, null, null, null, null},
+            {Biomes.ERODED_BADLANDS, Biomes.ERODED_BADLANDS, null, null, null}
+    };
+
+
+
+
 
     public static void addBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
         addOffCoastBiomes(consumer);
