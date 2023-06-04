@@ -1,6 +1,5 @@
 package hungteen.imm.client;
 
-import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.event.OverlayEvents;
 import hungteen.imm.client.gui.screen.*;
@@ -26,6 +25,7 @@ import hungteen.imm.client.render.entity.human.CommonVillagerRender;
 import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.elixirs.ElixirItem;
+import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ElementToolTip;
@@ -35,6 +35,7 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,6 +55,7 @@ public class ClientRegister {
         ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
             registerScreen();
+            registerItemProperties();
         });
     }
 
@@ -62,9 +64,8 @@ public class ClientRegister {
         /* misc entity */
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
-        event.registerEntityRenderer(IMMEntities.SEAT.get(), EmptyEffectRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
-//
+
         /* human */
         event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
         event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
@@ -73,7 +74,7 @@ public class ClientRegister {
         /* creature */
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
-//
+
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
 
@@ -178,4 +179,11 @@ public class ClientRegister {
         MenuScreens.register(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
     }
 
+    public static void registerItemProperties(){
+        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(talisman -> {
+            ItemProperties.register(talisman, TalismanItem.ACTIVATE_PROPERTY, (stack, level, entity, val) -> {
+                return TalismanItem.isActivated(stack) ? 0F : 1F;
+            });
+        });
+    }
 }

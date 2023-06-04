@@ -11,6 +11,7 @@ import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
+import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
@@ -70,6 +71,9 @@ public class ItemModelGen extends HTItemModelGen {
             genLargeHeld(location.getPath(), StringHelper.itemTexture(location));
         });
 
+        /* Talismans */
+        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(this::talisman);
+
         /* Banner patterns */
         Arrays.asList(
                 IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN, IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
@@ -122,6 +126,22 @@ public class ItemModelGen extends HTItemModelGen {
 
     protected ItemModelBuilder genLargeHeld(String name, ResourceLocation... layers) {
         return this.gen(name, Util.prefixName("item/large_handheld"), layers);
+    }
+
+    protected void talisman(Item item) {
+        final String staticSuffix = "_static";
+        final String activateSuffix = "_" + TalismanItem.ACTIVATED;
+        final String parent = ItemHelper.itemTexture(item).toString();
+        ItemModelBuilder baseBuilder = this.genNormal(name(item));
+        ItemModelBuilder staticBuilder = this.gen(name(item) + staticSuffix, parent, ItemHelper.itemTexture(item, staticSuffix));
+        ItemModelBuilder activatedBuilder = this.gen(name(item) + activateSuffix, parent, ItemHelper.itemTexture(item, activateSuffix));
+        baseBuilder.override()
+                .model(activatedBuilder)
+                .predicate(TalismanItem.ACTIVATE_PROPERTY, 1F);
+        baseBuilder.override()
+                .model(staticBuilder)
+                .predicate(TalismanItem.ACTIVATE_PROPERTY, 0F);
+        this.add(item);
     }
 
 }

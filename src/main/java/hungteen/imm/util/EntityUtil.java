@@ -6,6 +6,8 @@ import hungteen.imm.api.registry.ISpiritualType;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +30,14 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static boolean notConsume(Entity entity){
+        return entity instanceof Player player && PlayerUtil.notConsume(player);
+    }
+
+    public static void playSound(Level level, Entity entity, SoundEvent soundEvent){
+        level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundEvent, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+    }
 
     public static boolean isMainHolding(LivingEntity entity, Predicate<ItemStack> predicate) {
         return predicate.test(entity.getMainHandItem());

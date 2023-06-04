@@ -38,6 +38,9 @@ import java.util.stream.Collectors;
  **/
 public class PlayerUtil {
 
+    public static boolean notConsume(Player player){
+        return player.getAbilities().instabuild;
+    }
     public static void setCoolDown(Player player, Item item, int coolDown){
         player.getCooldowns().addCooldown(item, coolDown);
     }

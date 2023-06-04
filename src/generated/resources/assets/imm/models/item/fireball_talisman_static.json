@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/fireball_talisman",
+  "textures": {
+    "layer0": "imm:item/fireball_talisman_static"
+  }
+}

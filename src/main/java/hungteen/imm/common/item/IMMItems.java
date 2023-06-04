@@ -8,6 +8,7 @@ import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.*;
+import hungteen.imm.common.item.talismans.FireballTalismanItem;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
@@ -73,6 +74,10 @@ public class IMMItems {
 //    public static final RegistryObject<Item> BRONZE_SHOVEL = ITEMS.register("bronze_shovel", () -> new ShovelItem(ImmortalTiers.BRONZE, 7));
 //    public static final RegistryObject<Item> BRONZE_HOE = ITEMS.register("bronze_hoe", () -> new HoeItem(ImmortalTiers.BRONZE, 7));
 //    public static final RegistryObject<Item> BRONZE_HAMMER = ITEMS.register("bronze_hammer", () -> new HammerItem(ImmortalTiers.BRONZE));
+
+    /* Talisman Tab Items */
+
+    public static final RegistryObject<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", FireballTalismanItem::new);
 
     /* Misc Tab Items */
 
