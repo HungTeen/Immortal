@@ -1,12 +1,8 @@
 package hungteen.imm.common.capability.chunk;
 
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.world.LevelManager;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
-
-import java.util.HashMap;
 
 /**
  * @author PangTeen
@@ -16,17 +12,26 @@ import java.util.HashMap;
 public class ChunkCapability implements IChunkCapability{
 
     private LevelChunk chunk;
+    private float spiritualRate;
 
     public void init(LevelChunk chunk){
         this.chunk = chunk;
+        this.spiritualRate = LevelManager.getChunkSpiritualRate(chunk);
     }
 
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
+        tag.putFloat("SpiritualRate", this.spiritualRate);
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
+        if(tag.contains("SpiritualRate")){
+            this.spiritualRate = tag.getFloat("SpiritualRate");
+        }
     }
 
+    public float getSpiritualRate() {
+        return spiritualRate;
+    }
 }

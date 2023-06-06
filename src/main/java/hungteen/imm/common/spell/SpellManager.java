@@ -1,20 +1,22 @@
 package hungteen.imm.common.spell;
 
+import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.events.PlayerSpellEvent;
-import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.function.Supplier;
@@ -133,7 +135,7 @@ public class SpellManager {
     }
 
     public static void costMana(Player player, int cost){
-        PlayerUtil.addIntegerData(player, PlayerRangeNumbers.SPIRITUAL_MANA, - cost);
+        PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, - cost);
     }
 
     public static Component getCostComponent(int cost){

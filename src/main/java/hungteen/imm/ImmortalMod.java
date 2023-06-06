@@ -24,9 +24,7 @@ import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.world.LevelManager;
 import hungteen.imm.common.world.levelgen.IMMLevels;
-import hungteen.imm.common.world.levelgen.biome.BiomeManager;
 import hungteen.imm.data.DataGenHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -126,7 +124,8 @@ public class ImmortalMod {
         TradeTypes.TradeType.register();
         SpiritualTypes.SpiritualType.register();
         SpellTypes.SpellType.register();
-        PlayerRangeNumbers.PlayerData.register();
+        PlayerRangeFloats.registry();
+        PlayerRangeIntegers.registry();
         RealmTypes.RealmType.register();
         BehaviorRunes.register();
         FilterRuneTypes.register();
@@ -139,10 +138,7 @@ public class ImmortalMod {
         event.enqueueWork(() -> {
             IMMLevels.register();
 ////            PotionRecipeHandler.registerPotionRecipes();
-//            SpawnRegister.registerEntitySpawns();
             CommonRegister.registerCompostable();
-            LevelManager.registerSpiritualLevels();
-            BiomeManager.registerSpiritualBiomes();
             RealmManager.updateRealmTree();
             CapabilityHandler.init();
         });

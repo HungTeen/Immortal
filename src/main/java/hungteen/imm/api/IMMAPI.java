@@ -79,6 +79,14 @@ public class IMMAPI {
         Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry();
 
         /**
+         * 注册玩家Float数据类型。<br>
+         * Stored in player capabilities.
+         * @return Registry interface.
+         */
+        Optional<IHTSimpleRegistry<IRangeNumber<Float>>> floatDataRegistry();
+
+
+        /**
          * 注册背包Loot类型。 <br>
          * @return Registry interface.
          */
@@ -99,32 +107,35 @@ public class IMMAPI {
 
         /**
          * 获取玩家灵气值。
+         *
          * @param player query player.
          * @return how many spiritual mana in player.
          */
-        int getSpiritualMana(Player player);
+        float getSpiritualMana(Player player);
 
         /**
-         * 设置群系的灵气值。
-         * @param biomeResourceKey the resource key of biome.
-         * @param spiritualValue the spiritual value in the given biome.
+         * 设置维度的境界限制。
+         * @param level the resource key of level.
+         * @param lowestRealm the lower bound realm value in the given level.
+         * @param highestRealm the upper bound realm value in the given level.
          */
-        void registerBiomeSpiritualValue(ResourceKey<Biome> biomeResourceKey, int spiritualValue);
+        void registerLevelRealmSetting(ResourceKey<Level> level, int lowestRealm, int highestRealm);
 
         /**
-         * 设置维度的灵气倍率。
-         * @param levelResourceKey the resource key of level.
-         * @param spiritualRatio the spiritual value ratio in the given level.
+         * 设置群系的灵气回复速率。
+         * @param biome the resource key of biome.
+         * @param minChange the min change value of spiritual value in the given biome.
+         * @param maxChange the max change value of spiritual value in the given biome.
          */
-        void registerLevelSpiritualRatio(ResourceKey<Level> levelResourceKey, float spiritualRatio);
+        void registerBiomeRealmSetting(ResourceKey<Biome> biome, float minChange, float maxChange);
 
         /**
-         * 获取当前位置的灵气值。
+         * 获取当前位置的灵气恢复值。
          * @param level current level to be queried.
          * @param pos current position to be queried.
-         * @return calculate the spiritual value at the given level and position.
+         * @return calculate the spiritual change value at the given level and position.
          */
-        int getSpiritualValue(Level level, BlockPos pos);
+        float getSpiritualRate(Level level, BlockPos pos);
 
     }
 

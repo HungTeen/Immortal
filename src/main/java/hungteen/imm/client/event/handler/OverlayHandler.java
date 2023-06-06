@@ -5,15 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientDatas;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.util.Colors;
-import hungteen.imm.util.Constants;
-import hungteen.imm.util.PlayerUtil;
-import hungteen.imm.util.Util;
+import hungteen.imm.util.*;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -105,15 +101,15 @@ public class OverlayHandler {
         RenderHelper.setTexture(OVERLAY);
         final int x = screenWidth / 2 - 91;
         final int y = screenHeight - 32 + 3;
-        final int currentMana = PlayerUtil.getSpiritualMana(ClientProxy.MC.player);
-        final int maxMana = PlayerUtil.getFullSpiritualMana(ClientProxy.MC.player);
-        final int cultivation = PlayerUtil.getCultivation(ClientProxy.MC.player);
+        final float currentMana = PlayerUtil.getSpiritualMana(ClientProxy.MC.player);
+        final float maxMana = PlayerUtil.getFullSpiritualMana(ClientProxy.MC.player);
+        final float cultivation = PlayerUtil.getCultivation(ClientProxy.MC.player);
         ClientProxy.MC.gui.blit(poseStack, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
         if(maxMana > 0){
-            final int backManaLen = MathHelper.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
+            final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
             ClientProxy.MC.gui.blit(poseStack, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
             if(currentMana > maxMana && cultivation > maxMana){
-                final int barLen = MathHelper.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
+                final int barLen = MathUtil.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
                 ClientProxy.MC.gui.blit(poseStack, x + 1, y + 1, 1, 16, barLen, MANA_BAR_HEIGHT - 2);
                 if(ClientDatas.ManaWarningTick == 0){
                     ClientDatas.ManaWarningTick = Constants.MANA_WARNING_CD;

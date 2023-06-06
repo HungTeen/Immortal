@@ -7,24 +7,22 @@ import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.*;
+import hungteen.imm.common.capability.chunk.ChunkCapability;
 import hungteen.imm.common.capability.player.PlayerDataManager;
-import hungteen.imm.common.impl.registry.InventoryLootTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
-import hungteen.imm.util.Constants;
+import hungteen.imm.common.world.LevelManager;
+import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import java.util.*;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -34,8 +32,6 @@ import java.util.*;
 public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
-    private static final Map<ResourceKey<Biome>, Integer> BIOME_SPIRITUAL_MAP = new HashMap<>();
-    private static final Map<ResourceKey<Level>, Float> LEVEL_SPIRITUAL_MAP = new HashMap<>();
 
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
@@ -59,7 +55,12 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry() {
-        return Optional.of(PlayerRangeNumbers.registry());
+        return Optional.of(PlayerRangeIntegers.registry());
+    }
+
+    @Override
+    public Optional<IHTSimpleRegistry<IRangeNumber<Float>>> floatDataRegistry() {
+        return Optional.of(PlayerRangeFloats.registry());
     }
 
     @Override
@@ -77,29 +78,23 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
     }
 
     @Override
-    public int getSpiritualMana(Player player) {
+    public float getSpiritualMana(Player player) {
         return PlayerUtil.getSpiritualMana(player);
     }
 
     @Override
-    public void registerBiomeSpiritualValue(ResourceKey<Biome> biomeResourceKey, int spiritualValue) {
-        BIOME_SPIRITUAL_MAP.put(biomeResourceKey, spiritualValue);
+    public void registerLevelRealmSetting(ResourceKey<Level> level, int lowestRealm, int highestRealm) {
+        LevelManager.registerLevelRealmSetting(level, new LevelManager.LevelRealmSetting(lowestRealm, highestRealm));
     }
 
     @Override
-    public void registerLevelSpiritualRatio(ResourceKey<Level> levelResourceKey, float spiritualRatio) {
-        LEVEL_SPIRITUAL_MAP.put(levelResourceKey, spiritualRatio);
+    public void registerBiomeRealmSetting(ResourceKey<Biome> biome, float minChange, float maxChange) {
+        LevelManager.registerBiomeRealmSetting(biome, new LevelManager.BiomeRealmSetting(minChange, maxChange));
     }
 
     @Override
-    public int getSpiritualValue(Level level, BlockPos pos) {
-        Optional<ResourceKey<Biome>> opt = level.getBiome(pos).unwrapKey();
-        if(opt.isPresent()){
-            final int value = BIOME_SPIRITUAL_MAP.getOrDefault(opt.get(), Constants.DEFAULT_BIOME_SPIRITUAL_VALUE);
-            final float ratio = LEVEL_SPIRITUAL_MAP.getOrDefault(level.dimension(), Constants.DEFAULT_LEVEL_SPIRITUAL_RATIO);
-            return Mth.floor(value * ratio);
-        }
-        return 0;
+    public float getSpiritualRate(Level level, BlockPos pos) {
+        return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
     }
 
 }

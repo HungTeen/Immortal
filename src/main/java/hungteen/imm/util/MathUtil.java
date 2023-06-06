@@ -1,5 +1,7 @@
 package hungteen.imm.util;
 
+import net.minecraft.util.Mth;
+
 /**
  * @program: Immortal
  * @author: HungTeen
@@ -14,4 +16,18 @@ public class MathUtil {
     public static double unwrapDegree(double degree){
         return degree * (Math.PI / 180D);
     }
+
+    public static int getBarLen(float num, float maxNum, int maxLen) {
+        if (maxNum != 0) {
+            int percent = Mth.floor(num * maxLen / maxNum);
+            if (percent <= 0 && num != 0) {
+                return 1;
+            } else {
+                return percent >= maxLen && num != maxNum ? maxLen - 1 : Mth.clamp(percent, 0, maxLen);
+            }
+        } else {
+            return 0;
+        }
+    }
+
 }

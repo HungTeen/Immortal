@@ -48,6 +48,11 @@ public class DummyAPI implements IMMAPI.IImmortalAPI {
     }
 
     @Override
+    public Optional<IHTSimpleRegistry<IRangeNumber<Float>>> floatDataRegistry() {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry() {
         return Optional.empty();
     }
@@ -58,22 +63,22 @@ public class DummyAPI implements IMMAPI.IImmortalAPI {
     }
 
     @Override
-    public int getSpiritualMana(Player player) {
+    public float getSpiritualMana(Player player) {
         return 0;
     }
 
     @Override
-    public void registerBiomeSpiritualValue(ResourceKey<Biome> biomeResourceKey, int spiritualValue) {
+    public void registerLevelRealmSetting(ResourceKey<Level> level, int lowestRealm, int highestRealm) {
 
     }
 
     @Override
-    public void registerLevelSpiritualRatio(ResourceKey<Level> levelResourceKey, float spiritualRatio) {
+    public void registerBiomeRealmSetting(ResourceKey<Biome> biome, float minChange, float maxChange) {
 
     }
 
     @Override
-    public int getSpiritualValue(Level level, BlockPos pos) {
+    public float getSpiritualRate(Level level, BlockPos pos) {
         return 0;
     }
 

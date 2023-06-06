@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -71,7 +71,7 @@ public class SpellPacket {
                 } else {// C -> S.
                     switch (message.option) {
                         case ACTIVATE -> SpellManager.checkActivateSpell(ctx.get().getSender(), (int) message.num);
-                        case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
+                        case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
                     }
                 }
             });

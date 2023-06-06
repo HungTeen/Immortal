@@ -2,7 +2,7 @@ package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,12 +32,12 @@ public abstract class CultivationElixir extends ElixirItem{
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
             if(livingEntity instanceof Player){
-                PlayerUtil.addIntegerData((Player) livingEntity, PlayerRangeNumbers.CULTIVATION, getCultivation(accuracy));
+                PlayerUtil.addFloatData((Player) livingEntity, PlayerRangeFloats.CULTIVATION, getCultivation(accuracy));
             }
         }
     }
 
-    public int getCultivation(Accuracies accuracy){
+    public float getCultivation(Accuracies accuracy){
         float multiply = 0;
         switch (accuracy) {
             case COMMON -> multiply = 1;
@@ -46,7 +46,7 @@ public abstract class CultivationElixir extends ElixirItem{
             case PERFECT -> multiply = 1.75F;
             case MASTER -> multiply = 2F;
         }
-        return (int)(this.cultivation * multiply);
+        return this.cultivation * multiply;
     }
 
     @Override

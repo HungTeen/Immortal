@@ -11,7 +11,7 @@ import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -215,7 +215,7 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.hasPassiveSpell(spell), false);
     }
 
-    /* Operations about Integer Data */
+    /* Operations about Player Range Data */
 
     public static void setIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
         getOptManager(player).ifPresent(l -> l.setIntegerData(rangeData, value));
@@ -229,16 +229,28 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.getIntegerData(rangeData), rangeData.defaultData());
     }
 
-    public static int getSpiritualMana(Player player){
-        return getIntegerData(player, PlayerRangeNumbers.SPIRITUAL_MANA);
+    public static void setFloatData(Player player, IRangeNumber<Float> rangeData, float value){
+        getOptManager(player).ifPresent(l -> l.setFloatData(rangeData, value));
     }
 
-    public static int getFullSpiritualMana(Player player){
-        return getManagerResult(player, PlayerDataManager::getFullManaValue, 0);
+    public static void addFloatData(Player player, IRangeNumber<Float> rangeData, float value){
+        getOptManager(player).ifPresent(l -> l.addFloatData(rangeData, value));
     }
 
-    public static int getCultivation(Player player){
-        return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0);
+    public static float getFloatData(Player player, IRangeNumber<Float> rangeData){
+        return getManagerResult(player, m -> m.getFloatData(rangeData), rangeData.defaultData());
+    }
+
+    public static float getSpiritualMana(Player player){
+        return getFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA);
+    }
+
+    public static float getFullSpiritualMana(Player player){
+        return getManagerResult(player, PlayerDataManager::getFullManaValue, 0F);
+    }
+
+    public static float getCultivation(Player player){
+        return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0F);
     }
 
     public static boolean requireSyncCircle(Player player){
@@ -266,8 +278,8 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(m -> {
             m.setRealmType(realm);
             if(! player.level.isClientSide){
-                m.setIntegerData(PlayerRangeNumbers.CULTIVATION, realm.requireCultivation());
-                m.setIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, 0);
+                m.setFloatData(PlayerRangeFloats.CULTIVATION, realm.requireCultivation());
+                m.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, 0);
             }
         });
     }

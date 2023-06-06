@@ -7,12 +7,10 @@ import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.network.*;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.network.IntegerDataPacket;
-import hungteen.imm.common.network.NetworkHandler;
-import hungteen.imm.common.network.SpellPacket;
-import hungteen.imm.common.network.StringDataPacket;
-import hungteen.imm.common.impl.registry.PlayerRangeNumbers;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
@@ -42,16 +40,18 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive spells.
     private IRealmType realmType = RealmTypes.MORTALITY;
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
+    private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
     /* Caches */
     private RealmManager.RealmNode realmNode;
 
     public PlayerDataManager(Player player) {
         this.player = player;
-        if (IMMAPI.get().integerDataRegistry().isPresent()) {
-            IMMAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
-                integerMap.put(data, data.defaultData());
-            });
-        }
+        PlayerRangeIntegers.registry().getValues().forEach(data -> {
+            integerMap.put(data, data.defaultData());
+        });
+        PlayerRangeFloats.registry().getValues().forEach(data -> {
+            floatMap.put(data, data.defaultData());
+        });
         // 初始化玩家的灵根
         PlayerUtil.resetSpiritualRoots(player);
     }
@@ -116,10 +116,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            IMMAPI.get().integerDataRegistry().ifPresent(l -> {
-                l.getValues().forEach(data -> {
-                    nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
-                });
+            PlayerRangeIntegers.registry().getValues().forEach(data -> {
+                nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
+            });
+            PlayerRangeFloats.registry().getValues().forEach(data -> {
+                nbt.putFloat(data.getRegistryName(), floatMap.getOrDefault(data, data.defaultData()));
             });
             tag.put("PlayerRangeData", nbt);
         }
@@ -172,13 +173,17 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
+            floatMap.clear();
             CompoundTag nbt = tag.getCompound("PlayerRangeData");
-            IMMAPI.get().integerDataRegistry().ifPresent(l -> {
-                l.getValues().forEach(type -> {
-                    if (nbt.contains(type.getRegistryName())) {
-                        integerMap.put(type, nbt.getInt(type.getRegistryName()));
-                    }
-                });
+            PlayerRangeIntegers.registry().getValues().forEach(type -> {
+                if (nbt.contains(type.getRegistryName())) {
+                    integerMap.put(type, nbt.getInt(type.getRegistryName()));
+                }
+            });
+            PlayerRangeFloats.registry().getValues().forEach(type -> {
+                if (nbt.contains(type.getRegistryName())) {
+                    floatMap.put(type, nbt.getFloat(type.getRegistryName()));
+                }
             });
         }
         if (tag.contains("MiscData")) {
@@ -211,6 +216,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             }
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
+        this.floatMap.forEach(this::sendFloatDataPacket);
     }
 
     /* SpiritualRoots related methods */
@@ -339,14 +345,22 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
     }
 
-    /* Integer related methods */
+    /* Player Number Data related methods */
 
     public int getIntegerData(IRangeNumber<Integer> rangeData) {
         return integerMap.getOrDefault(rangeData, rangeData.defaultData());
     }
 
+    public float getFloatData(IRangeNumber<Float> rangeData) {
+        return floatMap.getOrDefault(rangeData, rangeData.defaultData());
+    }
+
     public void setIntegerData(IRangeNumber<Integer> rangeData, int value) {
         setIntegerData(rangeData, value, false);
+    }
+
+    public void setFloatData(IRangeNumber<Float> rangeData, float value) {
+        setFloatData(rangeData, value, false);
     }
 
     /**
@@ -354,32 +368,46 @@ public class PlayerDataManager implements IPlayerDataManager {
      * @param ignore 防止死循环。
      */
     public void setIntegerData(IRangeNumber<Integer> rangeData, int value, boolean ignore) {
-        int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
-        if (!ignore && PlayerRangeNumbers.CULTIVATION.equals(rangeData)) {
-            updateCultivation(value - getIntegerData(PlayerRangeNumbers.CULTIVATION));
+        final int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        integerMap.put(rangeData, result);
+        sendIntegerDataPacket(rangeData, result);
+    }
+
+    /**
+     * Directly set value.
+     * @param ignore 防止死循环。
+     */
+    public void setFloatData(IRangeNumber<Float> rangeData, float value, boolean ignore) {
+        final float result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        if (!ignore && PlayerRangeFloats.CULTIVATION.equals(rangeData)) {
+            updateCultivation(value - getFloatData(PlayerRangeFloats.CULTIVATION));
         } else {
-            integerMap.put(rangeData, result);
-            sendIntegerDataPacket(rangeData, result);
+            floatMap.put(rangeData, result);
+            sendFloatDataPacket(rangeData, result);
         }
     }
 
     public void addIntegerData(IRangeNumber<Integer> rangeData, int value) {
-        if (PlayerRangeNumbers.CULTIVATION.equals(rangeData)) {
+        setIntegerData(rangeData, getIntegerData(rangeData) + value);
+    }
+
+    public void addFloatData(IRangeNumber<Float> rangeData, float value) {
+        if (PlayerRangeFloats.CULTIVATION.equals(rangeData)) {
             updateCultivation(value);
         } else {
-            setIntegerData(rangeData, getIntegerData(rangeData) + value);
+            setFloatData(rangeData, getFloatData(rangeData) + value);
         }
     }
 
-    protected void updateCultivation(int value) {
-        int oldValue = getIntegerData(PlayerRangeNumbers.CULTIVATION);
+    protected void updateCultivation(float value) {
+        float oldValue = getFloatData(PlayerRangeFloats.CULTIVATION);
         if (value < 0) {
             while (oldValue + value < 0 && getRealmNode().hasPreviousNode()) {
                 value += oldValue;
                 levelDown();
                 oldValue = getRealmType().requireCultivation(); // 上一级所需的修为。
             }
-            this.setIntegerData(PlayerRangeNumbers.CULTIVATION, oldValue + value, true);
+            this.setFloatData(PlayerRangeFloats.CULTIVATION, oldValue + value, true);
         } else if (value > 0) {
             RealmManager.RealmNode next = getRealmNode().next(getRealmType().getCultivationType());
             // 1. Cultivation reach, 2. no threshold, 3. has next.
@@ -390,10 +418,10 @@ public class PlayerDataManager implements IPlayerDataManager {
                 getRealmNode(true);
                 next = getRealmNode().next(getRealmType().getCultivationType());
             }
-            this.setIntegerData(PlayerRangeNumbers.CULTIVATION, oldValue + value, true);
+            this.setFloatData(PlayerRangeFloats.CULTIVATION, oldValue + value, true);
         }
-        if (getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA) > getLimitManaValue()) {
-            this.setIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, getLimitManaValue());
+        if (getFloatData(PlayerRangeFloats.SPIRITUAL_MANA) > getLimitManaValue()) {
+            this.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, getLimitManaValue());
         }
     }
 
@@ -408,36 +436,42 @@ public class PlayerDataManager implements IPlayerDataManager {
      * 第一层法力条的极限。
      * @return Natural increasing point.
      */
-    public int getFullManaValue() {
-        return Mth.clamp(getIntegerData(PlayerRangeNumbers.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getRealmType().getSpiritualValueLimit());
+    public float getFullManaValue() {
+        return Mth.clamp(getFloatData(PlayerRangeFloats.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getRealmType().getSpiritualValueLimit());
     }
 
     /**
      * 第二层溢出条的极限。
      * @return Explode if player has more mana than it.
      */
-    public int getLimitManaValue() {
+    public float getLimitManaValue() {
         return getRealmType().getSpiritualValueLimit();
     }
 
     public int getSpellSetLimit(){
-        return getIntegerData(PlayerRangeNumbers.PASSIVE_SPELL_COUNT_LIMIT);
+        return getIntegerData(PlayerRangeIntegers.PASSIVE_SPELL_COUNT_LIMIT);
     }
 
     /**
      * 待客户端配置文件更新该值。
      */
     public boolean requireSyncCircle(){
-        return getIntegerData(PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE) == 0;
+        return getIntegerData(PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE) == 0;
     }
 
     public boolean useDefaultCircle(){
-        return getIntegerData(PlayerRangeNumbers.DEFAULT_SPELL_CIRCLE) == 1;
+        return getIntegerData(PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE) == 1;
     }
 
     public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer) {
             NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
+        }
+    }
+
+    public void sendFloatDataPacket(IRangeNumber<Float> rangeData, float value) {
+        if (getPlayer() instanceof ServerPlayer) {
+            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
         }
     }
 
