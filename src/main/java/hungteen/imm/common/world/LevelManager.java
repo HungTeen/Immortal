@@ -45,10 +45,13 @@ public class LevelManager {
         return BIOME_REALM_SETTING_MAP.getOrDefault(biomeResourceKey, BiomeRealmSetting.DEFAULT);
     }
 
-    public static float getChunkSpiritualRate(LevelChunk chunk){
-        final Optional<ResourceKey<Biome>> biomeOpt = chunk.getLevel().getBiome(chunk.getPos().getWorldPosition()).unwrapKey();
-        final BiomeRealmSetting setting = biomeOpt.isPresent() ? getBiomeRealmSetting(biomeOpt.get()) : BiomeRealmSetting.DEFAULT;
-        return setting.getChangeRate(chunk.getLevel().getRandom());
+    public static Optional<Float> getChunkSpiritualRate(LevelChunk chunk){
+        if(! chunk.getLevel().isClientSide()){
+            final Optional<ResourceKey<Biome>> biomeOpt = chunk.getLevel().getBiome(chunk.getPos().getWorldPosition()).unwrapKey();
+            final BiomeRealmSetting setting = biomeOpt.isPresent() ? getBiomeRealmSetting(biomeOpt.get()) : BiomeRealmSetting.DEFAULT;
+            return Optional.of(setting.getChangeRate(chunk.getLevel().getRandom()));
+        }
+        return Optional.empty();
     }
 
     public record LevelRealmSetting(float lowestRealm, float highestRealm){
@@ -66,7 +69,7 @@ public class LevelManager {
         public static final BiomeRealmSetting DEFAULT = new BiomeRealmSetting(0.8F, 1.2F);
 
         public float getChangeRate(RandomSource source){
-            return Mth.clamp(Mth.normal(source, (minChange + maxChange) / 2, 10), minChange, maxChange);
+            return Mth.clamp(Mth.normal(source, (minChange() + maxChange()) / 2, (maxChange() - minChange()) / 6), minChange(), maxChange());
         }
     }
 

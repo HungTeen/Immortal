@@ -1,7 +1,5 @@
 package hungteen.imm.common.impl.codec;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryHolder;
@@ -9,20 +7,16 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.registry.IInventoryLootType;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.codec.ItemEntry;
+import hungteen.imm.common.entity.human.setting.HumanSetting;
+import hungteen.imm.common.entity.human.setting.LootSetting;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import hungteen.imm.util.Util;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.Weight;
-import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -336,107 +330,5 @@ public class HumanSettings {
         return new LootSetting(SimpleWeightedList.pair(entry1, entry2));
     }
 
-    public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting> lootSettings, Optional<CommonTradeSetting> commonTradeSetting) implements WeightedEntry {
-        public static final Codec<HumanSetting> CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(
-                InventoryLootTypes.registry().byNameCodec().fieldOf("type").forGetter(HumanSetting::type),
-                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 0).forGetter(HumanSetting::weight),
-                LootSetting.CODEC.listOf().fieldOf("loot_settings").forGetter(HumanSetting::lootSettings),
-                Codec.optionalField("trade_setting", CommonTradeSetting.CODEC).forGetter(HumanSetting::commonTradeSetting)
-        ).apply(instance, HumanSetting::new)).codec();
-
-        @Override
-        public Weight getWeight() {
-            return Weight.of(weight());
-        }
-
-        public void fillInventory(Container container, RandomSource random){
-            final int len = Math.min(container.getContainerSize(), lootSettings().size());
-            for(int i = 0; i < len; ++ i){
-                container.setItem(i, lootSettings().get(i).getItem(random));
-            }
-        }
-
-        public void fillTrade(HumanEntity entity, RandomSource random){
-            commonTradeSetting().ifPresent(setting -> {
-                entity.setCommonTradeEntries(setting.getTrades(random));
-            });
-        }
-    }
-
-    public record LootSetting(SimpleWeightedList<ItemEntry> items) {
-        public static final Codec<LootSetting> CODEC = RecordCodecBuilder.<LootSetting>mapCodec(instance -> instance.group(
-                SimpleWeightedList.wrappedCodec(ItemEntry.CODEC).fieldOf("items").forGetter(LootSetting::items)
-        ).apply(instance, LootSetting::new)).codec();
-
-        public Optional<ItemEntry> getEntry(RandomSource random){
-            return items.getItem(random);
-        }
-
-        public ItemStack getItem(RandomSource random){
-            return getEntry(random).map(l -> l.getItem(random)).orElse(ItemStack.EMPTY);
-        }
-    }
-
-    public record ItemEntry(ItemStack itemStack, IntProvider count, IntProvider enchantPoint) {
-        public static final Codec<ItemEntry> CODEC = RecordCodecBuilder.<ItemEntry>mapCodec(instance -> instance.group(
-                ItemStack.CODEC.fieldOf("item").forGetter(ItemEntry::itemStack),
-                IntProvider.codec(0, Integer.MAX_VALUE).optionalFieldOf("count", ConstantInt.of(1)).forGetter(ItemEntry::count),
-                IntProvider.codec(0, Integer.MAX_VALUE).optionalFieldOf("enchant_point", ConstantInt.of(0)).forGetter(ItemEntry::enchantPoint)
-        ).apply(instance, ItemEntry::new)).codec();
-
-        public ItemStack getItem(RandomSource random){
-            ItemStack stack = itemStack().copy();
-            stack.setCount(count().sample(random));
-            final int point = enchantPoint().sample(random);
-            if(point > 0){
-                EnchantmentHelper.enchantItem(random, stack, point, false);
-            }
-            return stack;
-        }
-
-    }
-
-    public record CommonTradeSetting(IntProvider tradeCount, boolean different, SimpleWeightedList<CommonTradeEntry> trades) {
-
-        public static final Codec<CommonTradeSetting> CODEC = RecordCodecBuilder.<CommonTradeSetting>mapCodec(instance -> instance.group(
-                IntProvider.POSITIVE_CODEC.optionalFieldOf("trade_count", ConstantInt.of(1)).forGetter(CommonTradeSetting::tradeCount),
-                Codec.BOOL.optionalFieldOf("different", true).forGetter(CommonTradeSetting::different),
-                SimpleWeightedList.wrappedCodec(CommonTradeEntry.CODEC).fieldOf("trades").forGetter(CommonTradeSetting::trades)
-        ).apply(instance, CommonTradeSetting::new)).codec();
-
-        public List<CommonTradeEntry> getTrades(RandomSource rand) {
-            return trades.getItems(rand, tradeCount.sample(rand), different);
-        }
-
-    }
-
-    public record CommonTradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems) {
-        public static final Codec<CommonTradeEntry> CODEC = RecordCodecBuilder.<CommonTradeEntry>mapCodec(instance -> instance.group(
-                ItemStack.CODEC.listOf().fieldOf("cost_items").forGetter(CommonTradeEntry::costItems),
-                ItemStack.CODEC.listOf().fieldOf("result_items").forGetter(CommonTradeEntry::resultItems)
-        ).apply(instance, CommonTradeEntry::new)).codec();
-
-        public boolean match(List<ItemStack> items){
-            if(this.costItems().size() > items.size()) return false;
-            for(int i = 0; i < Math.min(items.size(), this.costItems().size()); i++){
-                if(! this.isRequiredItem(items.get(i), this.costItems().get(i)) || items.get(i).getCount() < this.costItems().get(i).getCount()) return false;
-            }
-            return true;
-        }
-
-        private boolean isRequiredItem(ItemStack requireItem, ItemStack item) {
-            if (item.isEmpty() && requireItem.isEmpty()) {
-                return true;
-            } else {
-                ItemStack itemstack = requireItem.copy();
-                if (itemstack.getItem().isDamageable(itemstack)) {
-                    itemstack.setDamageValue(itemstack.getDamageValue());
-                }
-
-                return ItemStack.isSame(itemstack, item) && (!item.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(item.getTag(), itemstack.getTag(), false));
-            }
-        }
-
-    }
 
 }

@@ -30,7 +30,6 @@ public class TradeTypes {
 
         @Override
         public void openMenu(ServerPlayer player) {
-
         }
     };
 

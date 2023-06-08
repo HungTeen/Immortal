@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.util.Util;
@@ -20,7 +20,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -38,46 +37,24 @@ public class IMMDataSerializers {
     public static final RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
     public static final RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
 
-    public static final RegistryObject<EntityDataSerializer<HumanSettings.HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new EntityDataSerializer.ForValueType<>() {
+    public static final RegistryObject<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new EntityDataSerializer.ForValueType<>() {
         @Override
-        public void write(FriendlyByteBuf byteBuf, HumanSettings.HumanSetting humanSetting) {
+        public void write(FriendlyByteBuf byteBuf, HumanSetting humanSetting) {
             CompoundTag tag = new CompoundTag();
-            HumanSettings.HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, humanSetting)
+            HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, humanSetting)
                     .result().ifPresent(l -> tag.put("HumanSetting", l));
             byteBuf.writeNbt(tag);
         }
 
         @Override
-        public HumanSettings.HumanSetting read(FriendlyByteBuf byteBuf) {
+        public HumanSetting read(FriendlyByteBuf byteBuf) {
             CompoundTag tag = byteBuf.readNbt();
-            AtomicReference<HumanSettings.HumanSetting> humanSetting = new AtomicReference<>();
+            AtomicReference<HumanSetting> humanSetting = new AtomicReference<>();
             if(Objects.requireNonNull(tag).contains("HumanSetting")){
-                HumanSettings.HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
+                HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
                         .result().ifPresent(humanSetting::set);
             }
             return humanSetting.get();
-        }
-
-    });
-
-    public static final RegistryObject<EntityDataSerializer<List<HumanSettings.CommonTradeEntry>>> COMMON_TRADE_ENTRIES = DATA_SERIALIZERS.register("common_trade_entries", () -> new EntityDataSerializer.ForValueType<>() {
-        @Override
-        public void write(FriendlyByteBuf byteBuf, List<HumanSettings.CommonTradeEntry> entries) {
-            CompoundTag tag = new CompoundTag();
-            HumanSettings.CommonTradeEntry.CODEC.listOf().encodeStart(NbtOps.INSTANCE, entries)
-                    .result().ifPresent(l -> tag.put("CommonTradeEntries", l));
-            byteBuf.writeNbt(tag);
-        }
-
-        @Override
-        public List<HumanSettings.CommonTradeEntry> read(FriendlyByteBuf byteBuf) {
-            CompoundTag tag = byteBuf.readNbt();
-            AtomicReference<List<HumanSettings.CommonTradeEntry>> entries = new AtomicReference<>(List.of());
-            if(Objects.requireNonNull(tag).contains("CommonTradeEntries")){
-                HumanSettings.CommonTradeEntry.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("CommonTradeEntries"))
-                        .result().ifPresent(entries::set);
-            }
-            return entries.get();
         }
 
     });

@@ -51,7 +51,7 @@ public class CapabilityHandler {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void attachChunkCapabilities(AttachCapabilitiesEvent<LevelChunk> event){
-        event.addCapability(Util.prefix("spiritual_data"), new ChunkCapProvider(event.getObject()));
+        event.addCapability(Util.prefix("chunk_data"), new ChunkCapProvider(event.getObject()));
     }
 
     /**

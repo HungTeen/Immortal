@@ -1,4 +1,4 @@
-package hungteen.imm.common.entity.human;
+package hungteen.imm.common.entity.human.setting;
 
 /**
  * @author PangTeen
