@@ -15,12 +15,16 @@ import hungteen.imm.common.entity.IMMGrowableCreature;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.registry.SectTypes;
+import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -73,6 +77,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     private static final EntityDataAccessor<HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
     private static final EntityDataAccessor<HumanSectData> SECT_DATA = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SECT_DATA.get());
     private List<ISpiritualType> rootsCache;
+    private TradeOffers tradeOffers;
     @javax.annotation.Nullable
     private Player tradingPlayer;
     private final SimpleContainer inventory;
@@ -93,6 +98,18 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         entityData.define(ROOTS, new CompoundTag());
         entityData.define(HUMAN_SETTING, HumanSettings.DEFAULT.getValue());
         entityData.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        if(this.tradeOffers != null){
+            this.tradeOffers.writeToStream(buffer);
+        }
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.tradeOffers = TradeOffers.createFromStream(additionalData);
     }
 
     @org.jetbrains.annotations.Nullable
@@ -439,14 +456,11 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 l.fillInventory(this.getInventory(), this.getRandom());
             });
         }
+        this.setTradeOffers(new TradeOffers(tag));
         if(tag.contains("HumanSetting")){
             CodecHelper.parse(HumanSetting.CODEC, tag.get("HumanSetting"))
                     .result().ifPresent(this::setHumanSetting);
         }
-//        if(tag.contains("CommonTradeEntries")){
-//            CodecHelper.parse(HumanSettings.CommonTradeEntry.CODEC.listOf(), tag.get("CommonTradeEntries"))
-//                    .result().ifPresent(this::setCommonTradeEntries);
-//        }
         if(tag.contains("HumanSectData")){
             CodecHelper.parse(HumanSectData.CODEC, tag.get("HumanSectData")).result().ifPresent(this::setSectData);
         }
@@ -460,10 +474,11 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         super.addAdditionalSaveData(tag);
         tag.put("CultivatorRoots", this.getRootTag());
         tag.put("Inventory", this.inventory.createTag());
+        if(this.tradeOffers != null){
+            this.tradeOffers.addToTag(tag);
+        }
         HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, this.getHumanSetting())
                 .result().ifPresent(l -> tag.put("HumanSetting", l));
-//        HumanSettings.CommonTradeEntry.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.getCommonTradeEntries())
-//                .result().ifPresent(l -> tag.put("CommonTradeEntries", l));
         CodecHelper.encodeNbt(HumanSectData.CODEC, this.getSectData())
                 .result().ifPresent(l -> tag.put("HumanSectData", l));
     }
@@ -517,13 +532,16 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         entityData.set(HUMAN_SETTING, humanSetting);
     }
 
-//    public List<TradeEntry> getCommonTradeEntries(){
-//        return entityData.get(TRADE_ENTRIES);
-//    }
-//
-//    public void setCommonTradeEntries(List<TradeEntry> entries) {
-//        entityData.set(TRADE_ENTRIES, entries);
-//    }
+    public TradeOffers getTradeOffers() {
+        return this.tradeOffers;
+    }
+
+    public void setTradeOffers(TradeOffers tradeOffers) {
+        this.tradeOffers = tradeOffers;
+        if(! this.level.isClientSide){
+            NetworkHandler.sendToClientEntity(this, new TradeOffersPacket(this.getId(), this.tradeOffers));
+        }
+    }
 
     public void setSectData(HumanSectData data){
         entityData.set(SECT_DATA, data);

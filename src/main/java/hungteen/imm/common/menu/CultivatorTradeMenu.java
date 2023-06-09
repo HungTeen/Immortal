@@ -2,13 +2,16 @@ package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.menu.container.CommonTradeContainer;
+import hungteen.imm.common.menu.container.TradeContainer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -20,9 +23,12 @@ import java.util.List;
  */
 public class CultivatorTradeMenu extends HTContainerMenu {
 
+    protected static final int COST_SIZE = 2;
+    protected static final int RESULT_SIZE = 1;
+
     private final Player player;
-    private final HumanEntity trader;
-    private final CommonTradeContainer tradeContainer;
+    private final HumanEntity merchant;
+    private final TradeContainer tradeContainer;
 
     public CultivatorTradeMenu(int id, Inventory playerInv, FriendlyByteBuf extraData){
         this(id, playerInv, extraData.readInt());
@@ -32,9 +38,15 @@ public class CultivatorTradeMenu extends HTContainerMenu {
         super(id, IMMMenus.CULTIVATOR_TRADE.get());
         this.player = playerInv.player;
         if(this.player.level.getEntity(entityId) instanceof HumanEntity humanEntity){
-            this.trader = humanEntity;
-        } else throw new RuntimeException("No trader found !");
-        this.tradeContainer = new CommonTradeContainer(this, this.trader, 4, 4);
+            this.merchant = humanEntity;
+        } else throw new RuntimeException("No merchant found !");
+        this.tradeContainer = new TradeContainer(this, this.merchant, COST_SIZE, RESULT_SIZE);
+
+        this.addSlot(new Slot(this.tradeContainer, 0, 136, 37));
+        this.addSlot(new Slot(this.tradeContainer, 1, 162, 37));
+        this.addSlot(new Slot(this.tradeContainer, 2, 220, 37));
+
+        this.addInventoryAndHotBar(playerInv, 108, 84);
     }
 
     public void tryMoveItems(int pos) {
@@ -92,8 +104,8 @@ public class CultivatorTradeMenu extends HTContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        this.trader.setTradingPlayer(null);
-        if (! this.trader.level.isClientSide) {
+        this.merchant.setTradingPlayer(null);
+        if (! this.merchant.level.isClientSide) {
             if (! player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
                 ItemStack itemstack = this.tradeContainer.removeItemNoUpdate(0);
                 if (!itemstack.isEmpty()) {
@@ -112,16 +124,12 @@ public class CultivatorTradeMenu extends HTContainerMenu {
         }
     }
 
-    public List<HumanSettings.CommonTradeEntry> getTrades() {
-        return this.trader.getCommonTradeEntries().stream().filter(this::isEntryValid).toList();
-    }
-
-    private boolean isEntryValid(HumanSettings.CommonTradeEntry entry) {
-        return entry.costItems().size() <= this.tradeContainer.getCostSize() && entry.resultItems().size() <= this.tradeContainer.getResultSize();
+    public TradeOffers getTrades() {
+        return this.merchant.getTradeOffers();
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return this.trader.getTradingPlayer() == player;
+        return this.merchant.getTradingPlayer() == player;
     }
 }

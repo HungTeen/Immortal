@@ -1,13 +1,17 @@
 package hungteen.imm.common.menu.container;
 
 import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.menu.CultivatorTradeMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MerchantContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -17,20 +21,20 @@ import java.util.List;
  * @program Immortal
  * @data 2023/3/18 15:35
  */
-public class CommonTradeContainer implements Container {
+public class TradeContainer implements Container {
 
     private final CultivatorTradeMenu menu;
-    private final HumanEntity trader;
+    private final HumanEntity merchant;
     private final NonNullList<ItemStack> itemStacks;
     private final int costSize;
     private final int resultSize;
     @Nullable
-    private HumanSettings.CommonTradeEntry activeOffer;
+    private TradeOffer activeOffer;
     private int selectionHint;
 
-    public CommonTradeContainer(CultivatorTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
+    public TradeContainer(CultivatorTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
         this.menu = menu;
-        this.trader = trader;
+        this.merchant = trader;
         this.costSize = costSize;
         this.resultSize = resultSize;
         this.itemStacks = NonNullList.withSize(costSize + resultSize, ItemStack.EMPTY);
@@ -97,7 +101,7 @@ public class CommonTradeContainer implements Container {
 
     @Override
     public boolean stillValid(Player player) {
-        return this.trader.getTradingPlayer() == player;
+        return this.merchant.getTradingPlayer() == player;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class CommonTradeContainer implements Container {
 
     public void updateSellItem() {
         this.activeOffer = null;
-        // 没放钱
+        // 没放钱。
         if (this.isCostSlotEmpty()) {
             this.clearResultSlots();
         } else {
@@ -127,7 +131,7 @@ public class CommonTradeContainer implements Container {
     }
 
     @Nullable
-    public static HumanSettings.CommonTradeEntry match(List<HumanSettings.CommonTradeEntry> trades, List<ItemStack> items, int pos){
+    public static TradeEntry match(List<HumanSettings.CommonTradeEntry> trades, List<ItemStack> items, int pos){
         if (pos >= 0 && pos < trades.size() && trades.get(pos).match(items)) {
             return trades.get(pos);
         }

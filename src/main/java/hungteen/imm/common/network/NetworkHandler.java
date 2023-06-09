@@ -2,6 +2,7 @@ package hungteen.imm.common.network;
 
 import hungteen.imm.util.Util;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkRegistry;
@@ -32,6 +33,7 @@ public class NetworkHandler {
         CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), FloatDataPacket.class, FloatDataPacket::encode, FloatDataPacket::new, FloatDataPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), StringDataPacket.class, StringDataPacket::encode, StringDataPacket::new, StringDataPacket.Handler::onMessage);
+        CHANNEL.registerMessage(getId(), TradeOffersPacket.class, TradeOffersPacket::encode, TradeOffersPacket::new, TradeOffersPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), SmithingPacket.class, SmithingPacket::encode, SmithingPacket::new, SmithingPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket.Handler::onMessage);
 
@@ -43,6 +45,10 @@ public class NetworkHandler {
 
     public static <MSG> void sendToClient(ServerPlayer serverPlayer, MSG msg){
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), msg);
+    }
+
+    public static <MSG> void sendToClientEntity(Entity entity, MSG msg){
+        CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), msg);
     }
 
     public static <MSG> void sendToNearByClient(Level world, Vec3 vec, double dis, MSG msg){
