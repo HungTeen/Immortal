@@ -1,12 +1,10 @@
 package hungteen.imm.common.network;
 
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.menu.CultivatorTradeMenu;
+import hungteen.imm.common.menu.MerchantTradeMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -43,7 +41,7 @@ public class ScreenButtonPacket {
             ctx.get().enqueueWork(()->{
                 final ServerPlayer player = ctx.get().getSender();
                 if(player != null){
-                    if(player.containerMenu instanceof CultivatorTradeMenu menu){
+                    if(player.containerMenu instanceof MerchantTradeMenu menu){
 
                     }
                 }

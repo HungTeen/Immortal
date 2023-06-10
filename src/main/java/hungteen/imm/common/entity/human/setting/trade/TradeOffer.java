@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.human.setting.trade;
 
 import hungteen.htlib.util.helper.CodecHelper;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
@@ -28,6 +29,20 @@ public class TradeOffer {
     public TradeOffer(TradeEntry tradeEntry, int tradeCount) {
         this.tradeEntry = tradeEntry;
         this.tradeCount = tradeCount;
+    }
+
+    public boolean take(NonNullList<ItemStack> payItems) {
+        if (!this.match(payItems)) {
+            return false;
+        } else {
+            for(int i = 0; i < payItems.size(); i++) {
+                final ItemStack requiredItem = this.getTradeEntry().costItems().get(i);
+                if(! requiredItem.isEmpty()){
+                    payItems.get(i).shrink(requiredItem.getCount());
+                }
+            }
+            return true;
+        }
     }
 
     public CompoundTag createTag(){

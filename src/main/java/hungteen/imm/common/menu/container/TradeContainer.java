@@ -1,17 +1,14 @@
 package hungteen.imm.common.menu.container;
 
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
-import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.menu.CultivatorTradeMenu;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
+import hungteen.imm.common.menu.MerchantTradeMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MerchantContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -23,51 +20,44 @@ import java.util.List;
  */
 public class TradeContainer implements Container {
 
-    private final CultivatorTradeMenu menu;
+    private final MerchantTradeMenu menu;
     private final HumanEntity merchant;
-    private final NonNullList<ItemStack> itemStacks;
-    private final int costSize;
-    private final int resultSize;
+    private final NonNullList<ItemStack> costStacks;
+    private final NonNullList<ItemStack> resultStacks;
     @Nullable
     private TradeOffer activeOffer;
     private int selectionHint;
 
-    public TradeContainer(CultivatorTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
+    public TradeContainer(MerchantTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
         this.menu = menu;
         this.merchant = trader;
-        this.costSize = costSize;
-        this.resultSize = resultSize;
-        this.itemStacks = NonNullList.withSize(costSize + resultSize, ItemStack.EMPTY);
+        this.costStacks = NonNullList.withSize(costSize, ItemStack.EMPTY);
+        this.resultStacks = NonNullList.withSize(resultSize, ItemStack.EMPTY);
     }
 
     @Override
     public int getContainerSize() {
-        return this.itemStacks.size();
+        return this.getCostSize() + this.getResultSize();
     }
 
     @Override
     public boolean isEmpty() {
-        for(ItemStack itemstack : this.itemStacks) {
-            if (!itemstack.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+        return this.isCostSlotEmpty() && this.isResultSlotEmpty();
     }
 
     @Override
     public ItemStack getItem(int pos) {
-        return this.itemStacks.get(pos);
+        return this.isResultSlot(pos) ? this.resultStacks.get(pos - this.getCostSize()) : this.costStacks.get(pos);
     }
 
     @Override
     public ItemStack removeItem(int pos, int count) {
-        ItemStack itemstack = this.itemStacks.get(pos);
+        ItemStack itemstack = this.getItem(pos);
         // 售卖品直接全部拿走，钱该拿多少拿多少。
         if (this.isResultSlot(pos) && !itemstack.isEmpty()) {
-            return ContainerHelper.removeItem(this.itemStacks, pos, itemstack.getCount());
+            return ContainerHelper.removeItem(this.resultStacks, pos - this.getCostSize(), itemstack.getCount());
         } else {
-            ItemStack stack = ContainerHelper.removeItem(this.itemStacks, pos, count);
+            ItemStack stack = ContainerHelper.removeItem(this.costStacks, pos, count);
             if (!stack.isEmpty() && this.isCostSlot(pos)) {
                 this.updateSellItem();
             }
@@ -78,12 +68,17 @@ public class TradeContainer implements Container {
 
     @Override
     public ItemStack removeItemNoUpdate(int pos) {
-        return ContainerHelper.takeItem(this.itemStacks, pos);
+        return this.isResultSlot(pos) ? ContainerHelper.takeItem(this.resultStacks, pos - this.getCostSize()) : ContainerHelper.takeItem(this.costStacks, pos);
     }
 
     @Override
     public void setItem(int pos, ItemStack itemStack) {
-        this.itemStacks.set(pos, itemStack);
+        if(this.isResultSlot(pos)){
+            this.resultStacks.set(pos - this.getCostSize(), itemStack);
+        } else {
+            this.costStacks.set(pos, itemStack);
+        }
+
         if (!itemStack.isEmpty() && itemStack.getCount() > this.getMaxStackSize()) {
             itemStack.setCount(this.getMaxStackSize());
         }
@@ -106,7 +101,8 @@ public class TradeContainer implements Container {
 
     @Override
     public void clearContent() {
-        this.itemStacks.clear();
+        this.costStacks.clear();
+        this.resultStacks.clear();
     }
 
     public void updateSellItem() {
@@ -115,12 +111,11 @@ public class TradeContainer implements Container {
         if (this.isCostSlotEmpty()) {
             this.clearResultSlots();
         } else {
-            List<HumanSettings.CommonTradeEntry> trades = this.menu.getTrades();
-            if (! trades.isEmpty()) {
-                HumanSettings.CommonTradeEntry merchantoffer = match(trades, this.getCosts(), this.selectionHint);
-
-                if (merchantoffer != null) {
-                    this.activeOffer = merchantoffer;
+            final TradeOffers offers = this.menu.getTrades();
+            if (! offers.isEmpty()) {
+                final TradeOffer offer = match(offers, this.getCostStacks(), this.selectionHint);
+                if (offer != null && offer.valid()) {
+                    this.activeOffer = offer;
                     this.fillResultSlots(this.activeOffer);
                 } else {
                     this.clearResultSlots();
@@ -131,11 +126,11 @@ public class TradeContainer implements Container {
     }
 
     @Nullable
-    public static TradeEntry match(List<HumanSettings.CommonTradeEntry> trades, List<ItemStack> items, int pos){
+    public static TradeOffer match(TradeOffers trades, List<ItemStack> items, int pos){
         if (pos >= 0 && pos < trades.size() && trades.get(pos).match(items)) {
             return trades.get(pos);
         }
-        for (HumanSettings.CommonTradeEntry trade : trades) {
+        for (TradeOffer trade : trades) {
             if (trade.match(items)) {
                 return trade;
             }
@@ -143,42 +138,63 @@ public class TradeContainer implements Container {
         return null;
     }
 
-    private List<ItemStack> getCosts(){
-        return this.itemStacks.subList(0, this.costSize);
+    public NonNullList<ItemStack> getCostStacks(){
+        return this.costStacks;
+    }
+
+    public NonNullList<ItemStack> getResultStacks(){
+        return this.resultStacks;
     }
 
     public boolean isCostSlotEmpty(){
-        for(int i = 0; i < this.costSize; ++ i){
+        for(int i = 0; i < this.getCostSize(); ++ i){
+            if(! this.getItem(i).isEmpty()) return false;
+        }
+        return true;
+    }
+
+    public boolean isResultSlotEmpty(){
+        for(int i = this.getCostSize(); i < this.getContainerSize(); ++ i){
             if(! this.getItem(i).isEmpty()) return false;
         }
         return true;
     }
 
     public void clearResultSlots(){
-        for(int i = this.costSize; i < this.getContainerSize(); ++ i){
+        for(int i = this.getCostSize(); i < this.getContainerSize(); ++ i){
             this.setItem(i, ItemStack.EMPTY);
         }
     }
 
-    public void fillResultSlots(HumanSettings.CommonTradeEntry result){
-        for(int i = 0; i < Math.min(this.getResultSize(), result.resultItems().size()); ++ i){
-            this.setItem(i + this.getCostSize(), result.resultItems().get(i).copy());
+    public void fillResultSlots(TradeOffer result){
+        for(int i = 0; i < Math.min(this.getResultSize(), result.getTradeEntry().resultItems().size()); ++ i){
+            this.setItem(i + this.getCostSize(), result.getTradeEntry().resultItems().get(i).copy());
         }
     }
 
+    public void setSelectionHint(int pos) {
+        this.selectionHint = pos;
+        this.updateSellItem();
+    }
+
     public int getCostSize() {
-        return costSize;
+        return this.costStacks.size();
     }
 
     public int getResultSize() {
-        return resultSize;
+        return this.resultStacks.size();
     }
 
     public boolean isCostSlot(int pos){
-        return pos < this.costSize;
+        return pos < this.getCostSize();
     }
 
     public boolean isResultSlot(int pos){
-        return pos >= this.costSize;
+        return ! isCostSlot(pos);
     }
+
+    public TradeOffer getActiveOffer() {
+        return this.activeOffer;
+    }
+
 }
