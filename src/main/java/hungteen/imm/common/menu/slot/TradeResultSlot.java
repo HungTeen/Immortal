@@ -58,7 +58,7 @@ public class TradeResultSlot extends Slot {
         TradeOffer activeOffer = this.tradeContainer.getActiveOffer();
         if (activeOffer != null) {
             if (activeOffer.take(tradeContainer.getCostStacks())) {
-//                this.merchant.notifyTrade(activeOffer);
+                this.merchant.notifyTrade(activeOffer);
 //                player.awardStat(Stats.TRADED_WITH_VILLAGER);
 //                this.tradeContainer.setItem(0, itemstack);
 //                this.tradeContainer.setItem(1, itemstack1);

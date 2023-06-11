@@ -93,6 +93,7 @@
   "gui.imm.need_more_rune": "Runes must be less than %d !",
   "gui.imm.need_less_rune": "Runes must be more than %d !",
   "gui.imm.type_not_fit": "Gate operation not fit current rune !",
+  "gui.imm.merchant.trades": "交易",
   "gui.imm.elixir_room.title": "Elixir Smelting",
   "gui.imm.elixir_furnace.remain_count": "Remain Ingredient Count : %d",
   "gui.imm.elixir_furnace.explode": "Furnace is going to explode !",

@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/villager2.png");
+    private static final Component TRADES_LABEL = Component.translatable("gui.imm.merchant.trades");
     private static final int MAX_BUTTON_COUNT = 7;
     private static final int BUTTON_HEIGHT = 20;
     private final TradeOfferButton[] tradeButtons = new TradeOfferButton[MAX_BUTTON_COUNT];
@@ -56,19 +57,7 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
 
     @Override
     protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-//        int i = this.menu.getTraderLevel();
-//        if (i > 0 && i <= 5 && this.menu.showProgressBar()) {
-//            Component component = this.title.copy().append(LEVEL_SEPARATOR).append(Component.translatable("merchant.level." + i));
-//            int j = this.font.width(component);
-//            int k = 49 + this.imageWidth / 2 - j / 2;
-//            this.font.draw(p_99185_, component, (float)k, 6.0F, 4210752);
-//        } else {
-//            this.font.draw(p_99185_, this.title, (float)(49 + this.imageWidth / 2 - this.font.width(this.title) / 2), 6.0F, 4210752);
-//        }
-//
-//        this.font.draw(p_99185_, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
-//        int l = this.font.width(TRADES_LABEL);
-//        this.font.draw(p_99185_, TRADES_LABEL, (float)(5 - l / 2 + 48), 6.0F, 4210752);
+        RenderHelper.drawCenteredScaledString(stack, this.font, TRADES_LABEL.getString(), 53, 6, 4210752, 1F);
     }
 
     @Override
@@ -93,36 +82,36 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
         final TradeOffers offers = this.menu.getTrades();
         if (!offers.isEmpty()) {
             final int leftPos = this.leftPos + 5;
-            int topPos = this.topPos + 16 + 1;
             RenderHelper.setTexture(TEXTURE);
             this.renderScroller(stack, offers.size());
 
             // 渲染交易项。
             for (int i = 0; i < offers.size(); ++i) {
+                // 在窗口里。
                 if (i >= this.scrollOff && i < this.scrollOff + MAX_BUTTON_COUNT) {
                     final TradeOffer offer = offers.get(i);
                     this.itemRenderer.blitOffset = 100.0F;
 
-                    final int hOffset = topPos + 2;
-                    for (int j = 0; j < offer.getTradeEntry().costItems().size(); ++j) {
+                    // 渲染钱。
+                    final int hOffset = getItemOffsetY(i);
+                    for (int j = 0; j < getCostSize(offer); ++ j) {
                         final ItemStack itemStack = offer.getTradeEntry().costItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, leftPos + 35, hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, leftPos + 35, hOffset);
+                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, getCostOffsetX(j), hOffset);
+                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, getCostOffsetX(j), hOffset);
                     }
 
                     // 渲染箭头。
                     RenderHelper.setTexture(TEXTURE);
                     blit(stack, leftPos + 35 + 20, hOffset + 3, this.getBlitOffset(), offer.valid() ? 15F : 25.0F, 171.0F, 10, 9, 512, 256);
 
-                    for (int j = 0; j < offer.getTradeEntry().resultItems().size(); ++j) {
+                    // 渲染商品。
+                    for (int j = 0; j < getResultSize(offer); ++j) {
                         final ItemStack itemStack = offer.getTradeEntry().resultItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, leftPos + 68, hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, leftPos + 68, hOffset);
+                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, getResultOffsetX(j), hOffset);
+                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, getResultOffsetX(j), hOffset);
                     }
 
                     this.itemRenderer.blitOffset = 0F;
-
-                    topPos += 20;
                 }
             }
 
@@ -167,6 +156,26 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
         return true;
     }
 
+    protected int getItemOffsetY(int i){
+        return this.topPos + 18 + 2 + 20 * i;
+    }
+
+    protected int getCostOffsetX(int i){
+        return this.leftPos + 5 + 5 + 20 * i;
+    }
+
+    protected int getCostSize(TradeOffer offer) {
+        return Math.min(offer.getTradeEntry().costItems().size(), MerchantTradeMenu.COST_SIZE);
+    }
+
+    protected int getResultOffsetX(int i){
+        return this.leftPos + 6 + 68 + 20 * i;
+    }
+
+    protected int getResultSize(TradeOffer offer) {
+        return Math.min(offer.getTradeEntry().resultItems().size(), MerchantTradeMenu.RESULT_SIZE);
+    }
+
     class TradeOfferButton extends Button {
         final int index;
 
@@ -183,18 +192,28 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
         public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
             final TradeOffers offers = MerchantTradeScreen.this.menu.getTrades();
             final int scrollOff = MerchantTradeScreen.this.scrollOff;
-            if (this.isHovered && offers.size() > this.index + scrollOff) {
-                if (mouseX < this.getX() + 20) {
-                    final ItemStack itemStack = offers.get(this.index + scrollOff).getTradeEntry().costItems().get(0);
-                    MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
-                } else if (mouseX < this.getX() + 50 && mouseX > this.getX() + 30) {
-                    final ItemStack itemStack = offers.get(this.index + scrollOff).getTradeEntry().costItems().get(1);
-                    if (!itemStack.isEmpty()) {
+            if (this.isHovered && this.index + scrollOff < offers.size()) {
+                final TradeOffer offer = offers.get(this.index + scrollOff);
+                boolean hovered = false;
+                for (int i = 0; i < getCostSize(offer); ++ i) {
+                    final int x = getCostOffsetX(i);
+                    if(mouseX >= x && mouseX <= x + 16){
+                        final ItemStack itemStack = offer.getTradeEntry().costItems().get(i);
                         MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
+                        hovered = true;
+                        break;
                     }
-                } else if (mouseX > this.getX() + 65) {
-                    final ItemStack itemStack = offers.get(this.index + scrollOff).getTradeEntry().resultItems().get(0);
-                    MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
+                }
+                if(! hovered){
+                    for (int i = 0; i < getResultSize(offer); ++i) {
+                        final int x = getResultOffsetX(i);
+                        if(mouseX >= x && mouseX <= x + 16){
+                            final ItemStack itemStack = offer.getTradeEntry().resultItems().get(i);
+                            MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
+                            hovered = true;
+                            break;
+                        }
+                    }
                 }
             }
         }

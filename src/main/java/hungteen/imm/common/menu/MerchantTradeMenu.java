@@ -7,6 +7,7 @@ import hungteen.imm.common.menu.container.TradeContainer;
 import hungteen.imm.common.menu.slot.TradeResultSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,8 +23,9 @@ import java.util.List;
  */
 public class MerchantTradeMenu extends HTContainerMenu {
 
-    protected static final int COST_SIZE = 2;
-    protected static final int RESULT_SIZE = 1;
+    public static final int COST_SIZE = 2;
+    public static final int RESULT_SIZE = 1;
+    private static final int OUT_SLOT_SIZE = COST_SIZE + RESULT_SIZE;
     private final Player player;
     private final HumanEntity merchant;
     private final TradeContainer tradeContainer;
@@ -111,7 +113,6 @@ public class MerchantTradeMenu extends HTContainerMenu {
                     this.moveFromInventoryToPaymentSlot(i, stacks.get(i));
                 }
             }
-
         }
     }
 
@@ -139,6 +140,57 @@ public class MerchantTradeMenu extends HTContainerMenu {
                 }
             }
         }
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int slotId) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(slotId);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (slotId == COST_SIZE) {
+                if (!this.moveItemStackTo(itemstack1, OUT_SLOT_SIZE, OUT_SLOT_SIZE + 36, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onQuickCraft(itemstack1, itemstack);
+                this.playTradeSound();
+            } else if (slotId > OUT_SLOT_SIZE) {
+                if (slotId < OUT_SLOT_SIZE + 27) {
+                    if (!this.moveItemStackTo(itemstack1, OUT_SLOT_SIZE + 27, this.slots.size(), false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    if(!this.moveItemStackTo(itemstack1, OUT_SLOT_SIZE, OUT_SLOT_SIZE + 27, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if (!this.moveItemStackTo(itemstack1, OUT_SLOT_SIZE, this.slots.size(), false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+        }
+
+        return itemstack;
+    }
+
+    private void playTradeSound() {
+        if (! merchant.level.isClientSide) {
+            merchant.getLevel().playLocalSound(merchant.getX(), merchant.getY(), merchant.getZ(), merchant.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+        }
+
     }
 
     public void setSelectionHint(int pos) {
