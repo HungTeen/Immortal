@@ -121,8 +121,8 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
-        event.register(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new) ;
-        event.register(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new) ;
+        event.registerSpriteSet(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
     }
 
     @SubscribeEvent

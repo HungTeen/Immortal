@@ -57,8 +57,8 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
             }
         }
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 120, 53)
-                .addItemStack(recipe.getResultItem());
+//        builder.addSlot(RecipeIngredientRole.OUTPUT, 120, 53)
+//                .addItemStack(recipe.getResultItem());
     }
 
     @Override

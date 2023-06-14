@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.imm.client.ClientProxy;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -24,7 +24,7 @@ public class RawArtifactItemRender extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource source, int packedLight, int packedOverlay) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource source, int packedLight, int packedOverlay) {
 //        if(stack.is(ImmortalItems.RAW_ARTIFACT.get())){
 //            ItemStack artifact = RawArtifact.getArtifactItem(stack);
 //            BakedModel bakedmodel = ClientProxy.MC.getItemRenderer().getModel(artifact, ClientProxy.MC.level, (LivingEntity)null, 0);

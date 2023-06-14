@@ -49,13 +49,13 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ARTIFACT_ATTACK_DAMAGE_UUID, "Artifact modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ARTIFACT_ATTACK_SPEED_UUID, "Artifact modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(ARTIFACT_REACH_DISTANCE_UUID, "Artifact modifier", this.attackRange, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(ARTIFACT_REACH_DISTANCE_UUID, "Artifact modifier", this.attackRange, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
     }
 
     @Override
     public @NotNull AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player, @NotNull Entity target) {
-        final double range = Objects.requireNonNull(player.getAttribute(ForgeMod.ATTACK_RANGE.get())).getValue();
+        final double range = Objects.requireNonNull(player.getAttribute(ForgeMod.ENTITY_REACH.get())).getValue();
         return target.getBoundingBox().inflate(range / 3, 0.25D, range / 3);
     }
 

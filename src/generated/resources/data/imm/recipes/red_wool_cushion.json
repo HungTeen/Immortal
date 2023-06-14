@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:red_wool_cushion"
-  }
+  },
+  "show_notification": true
 }

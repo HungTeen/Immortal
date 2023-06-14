@@ -6,7 +6,6 @@ import hungteen.imm.util.ItemUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
@@ -15,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
@@ -38,10 +38,10 @@ public class LargeHeldItemBakeModel implements BakedModel {
     }
 
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
-        switch (transformType) {
-            case GUI: return this.guiModel.applyTransform(transformType, poseStack, applyLeftHandTransform);
-            default : return this.heldModel.applyTransform(transformType, poseStack, applyLeftHandTransform);
+    public BakedModel applyTransform(ItemDisplayContext displayContext, PoseStack poseStack, boolean applyLeftHandTransform) {
+        switch (displayContext) {
+            case GUI: return this.guiModel.applyTransform(displayContext, poseStack, applyLeftHandTransform);
+            default : return this.heldModel.applyTransform(displayContext, poseStack, applyLeftHandTransform);
         }
     }
 

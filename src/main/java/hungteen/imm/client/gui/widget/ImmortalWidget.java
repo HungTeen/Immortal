@@ -44,4 +44,13 @@ public class ImmortalWidget extends GuiComponent implements Renderable, GuiEvent
 
     }
 
+    @Override
+    public void setFocused(boolean p_265728_) {
+
+    }
+
+    @Override
+    public boolean isFocused() {
+        return false;
+    }
 }

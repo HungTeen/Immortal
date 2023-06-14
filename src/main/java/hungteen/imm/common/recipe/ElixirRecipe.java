@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpiritualType;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -60,7 +61,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer container) {
+    public ItemStack assemble(SimpleContainer container, RegistryAccess registryAccess) {
         return this.result.copy();
     }
 
@@ -70,7 +71,7 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return this.result;
     }
 

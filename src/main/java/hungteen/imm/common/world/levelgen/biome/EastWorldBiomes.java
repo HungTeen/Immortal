@@ -70,7 +70,7 @@ public class EastWorldBiomes {
             BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
         }
 
-        return biome(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN, snowy ? 0F : 0.8F, snowy ? 0.5F : 0.4F, spawnBuilder, genBuilder, null);
+        return biome(true, snowy ? 0F : 0.8F, snowy ? 0.5F : 0.4F, spawnBuilder, genBuilder, null);
     }
 
     private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean windSwept, boolean plateau) {
@@ -99,7 +99,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
 
-        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
+        return biome(false, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
     private static Biome desert(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
@@ -118,7 +118,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDesertExtraVegetation(genBuilder);
         BiomeDefaultFeatures.addDesertExtraDecoration(genBuilder);
 
-        return biome(Biome.Precipitation.NONE, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
+        return biome(false, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
     private static Biome bambooJungle(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
@@ -141,16 +141,16 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addJungleVines(genBuilder);
 
         final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE_AND_FOREST);
-        return biome(Biome.Precipitation.RAIN, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
+        return biome(true, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
     }
 
-    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
+    private static Biome biome(boolean precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
         return biome(precipitation, temperature, downfall, 4159204, 329011, spawnBuilder, generationBuilder, music);
     }
 
-    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
+    private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
         return new Biome.BiomeBuilder()
-                .precipitation(precipitation)
+                .hasPrecipitation(hasPrecipitation)
                 .temperature(temperature)
                 .downfall(downfall)
                 .specialEffects((new BiomeSpecialEffects.Builder())

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -13,6 +12,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -44,7 +44,7 @@ public class FlyingItemEntityRender extends EntityRenderer<FlyingItemEntity> {
         matrixStackIn.mulPose(Axis.XN.rotationDegrees(isBlock ? 0 : 90));
 
         matrixStackIn.pushPose();
-        this.itemRenderer.render(stack, ItemTransforms.TransformType.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, bakedmodel);
+        this.itemRenderer.render(stack, ItemDisplayContext.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, bakedmodel);
         matrixStackIn.popPose();
 
         matrixStackIn.popPose();

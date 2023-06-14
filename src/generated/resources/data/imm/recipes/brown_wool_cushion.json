@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:brown_wool_cushion"
-  }
+  },
+  "show_notification": true
 }

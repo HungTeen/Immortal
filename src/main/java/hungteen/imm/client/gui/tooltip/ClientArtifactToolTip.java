@@ -25,12 +25,12 @@ public class ClientArtifactToolTip  implements ClientTooltipComponent {
     }
 
     @Override
-    public void renderImage(Font font, int posX, int posY, PoseStack stack, ItemRenderer itemRenderer, int p_194053_) {
+    public void renderImage(Font font, int posX, int posY, PoseStack stack, ItemRenderer itemRenderer) {
         stack.pushPose();
         RenderHelper.setTexture(TEXTURE_LOCATION);
         GuiComponent.blit(stack, posX, posY, 0, 0, getHeight(), getWidth(font), 128, 128);
-        itemRenderer.renderAndDecorateItem(this.artifactToolTip.getArtifact(), posX + 1, posY + 1, 0);
-        itemRenderer.renderGuiItemDecorations(font, this.artifactToolTip.getArtifact(), posX + 1, posY + 1);
+        itemRenderer.renderAndDecorateItem(stack, this.artifactToolTip.getArtifact(), posX + 1, posY + 1, 0);
+        itemRenderer.renderGuiItemDecorations(stack, font, this.artifactToolTip.getArtifact(), posX + 1, posY + 1);
         stack.popPose();
     }
 

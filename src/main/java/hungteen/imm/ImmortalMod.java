@@ -24,7 +24,6 @@ import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.data.DataGenHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -136,7 +135,6 @@ public class ImmortalMod {
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            IMMLevels.register();
 ////            PotionRecipeHandler.registerPotionRecipes();
             CommonRegister.registerCompostable();
             RealmManager.updateRealmTree();

@@ -3,7 +3,6 @@ package hungteen.imm.common.impl.registry;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.registry.ITradeType;
 import hungteen.imm.util.Util;
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public class TradeTypes {
 
-    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.create(StringHelper.prefix("trade_type"));
+    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.create(Util.prefix("trade_type"));
     private static final List<ITradeType> TYPES = new ArrayList<>();
 
     public static IHTSimpleRegistry<ITradeType> registry() {

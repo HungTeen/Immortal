@@ -64,7 +64,7 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
+    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
 
     }
 

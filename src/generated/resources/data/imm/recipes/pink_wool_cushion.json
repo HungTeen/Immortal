@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:pink_wool_cushion"
-  }
+  },
+  "show_notification": true
 }

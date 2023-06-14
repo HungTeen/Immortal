@@ -1,12 +1,8 @@
 package hungteen.imm.client.gui.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.client.RenderHelper;
-import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.menu.tooltip.ElementToolTip;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -40,7 +36,7 @@ public class ClientElementToolTip implements ClientTooltipComponent {
     }
 
     @Override
-    public void renderImage(Font font, int posX, int posY, PoseStack stack, ItemRenderer itemRenderer, int p_194053_) {
+    public void renderImage(Font font, int posX, int posY, PoseStack stack, ItemRenderer itemRenderer) {
 //        stack.pushPose();
 //        int width = 0;
 //        for (Pair<ISpiritualType, Integer> pair : this.elementToolTip.getIngredients()) {

@@ -1,7 +1,9 @@
 package hungteen.imm.util;
 
 import com.mojang.logging.LogUtils;
-import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.ForgeHelper;
+import hungteen.htlib.util.helper.IModIDHelper;
+import hungteen.htlib.util.helper.VanillaHelper;
 import hungteen.imm.CommonProxy;
 import hungteen.imm.ImmortalMod;
 import net.minecraft.resources.ResourceKey;
@@ -17,14 +19,9 @@ public class Util {
 
     // Directly reference a slf4j logger。
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final StringHelper.ModIDHelper HELPER = new StringHelper.ModIDHelper() {
-        @Override
-        public String getModID() {
-            return id();
-        }
-    };
+    private static final IModIDHelper HELPER = () -> ImmortalMod.MOD_ID;
 
-    public static StringHelper.ModIDHelper get(){
+    public static IModIDHelper get(){
         return HELPER;
     }
 
@@ -33,44 +30,40 @@ public class Util {
     }
 
     public static String mc(){
-        return StringHelper.mc().getModID();
+        return VanillaHelper.get().getModID();
     }
 
     public static String forge(){
-        return StringHelper.forge().getModID();
+        return ForgeHelper.get().getModID();
     }
 
     /**
      * get resource with mc prefix.
      */
     public static ResourceLocation mcPrefix(String name) {
-        return new ResourceLocation(name);
+        return VanillaHelper.get().prefix(name);
     }
 
     /**
      * get resource with forge prefix.
      */
     public static ResourceLocation forgePrefix(String name) {
-        return new ResourceLocation(forge(), name);
+        return ForgeHelper.get().prefix(name);
     }
 
     /**
      * get resource with mod prefix.
      */
     public static ResourceLocation prefix(String name) {
-        return new ResourceLocation(id(), name);
+        return get().prefix(name);
     }
 
-    public static ResourceLocation suffix(ResourceLocation location, String suffix) {
-        return new ResourceLocation(location.getNamespace(), location.getPath() + "_" + suffix);
+    public static boolean in(ResourceLocation location){
+        return get().in(location);
     }
 
     public static String prefixName(String name) {
         return prefix(name).toString();
-    }
-
-    public static boolean in(ResourceLocation resourceLocation){
-        return resourceLocation.getNamespace().equals(Util.id());
     }
 
     public static String toString(ResourceKey<?> resourceKey){

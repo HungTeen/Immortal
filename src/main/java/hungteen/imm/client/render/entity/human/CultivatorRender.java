@@ -36,6 +36,7 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
                         this,
                         new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_INNER_ARMOR)),
                         new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_OUTER_ARMOR)),
+                        context.getModelManager(),
                         false
                 )
         );
@@ -43,6 +44,7 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
                         this,
                         new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM_INNER_ARMOR)),
                         new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR)),
+                        context.getModelManager(),
                         true
                 )
         );
@@ -62,18 +64,18 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
 
     @Override
     public ResourceLocation getTextureLocation(Cultivator entity) {
-        if(entity.getCultivatorType().getSkinLocation().isPresent()){
+        if (entity.getCultivatorType().getSkinLocation().isPresent()) {
             return entity.getCultivatorType().getSkinLocation().get();
-        } else if(entity.getCultivatorType().getGameProfile().isPresent()){
-            if(entity.getCultivatorType().getSkinLocation().isPresent()){
+        } else if (entity.getCultivatorType().getGameProfile().isPresent()) {
+            if (entity.getCultivatorType().getSkinLocation().isPresent()) {
                 return entity.getCultivatorType().getSkinLocation().get();
             } else {
                 final Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
-                if(map.containsKey(MinecraftProfileTexture.Type.SKIN)){
+                if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
                     final MinecraftProfileTexture texture = map.get(MinecraftProfileTexture.Type.SKIN);
                     final ResourceLocation skinLocation = ClientProxy.MC.getSkinManager().registerTexture(texture, MinecraftProfileTexture.Type.SKIN);
                     String modelValue = texture.getMetadata("model");
-                    if(modelValue != null){
+                    if (modelValue != null) {
                         entity.getCultivatorType().setSlim(modelValue.equals("slim"));
                     }
                     return skinLocation;

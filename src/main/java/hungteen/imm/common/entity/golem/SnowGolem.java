@@ -2,10 +2,9 @@ package hungteen.imm.common.entity.golem;
 
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -43,13 +41,8 @@ public class SnowGolem extends GolemEntity {
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
-            int i = Mth.floor(this.getX());
-            int j = Mth.floor(this.getY());
-            int k = Mth.floor(this.getZ());
-            BlockPos blockpos = new BlockPos(i, j, k);
-            Biome biome = this.level.getBiome(blockpos).value();
-            if (biome.shouldSnowGolemBurn(blockpos)) {
-                this.hurt(DamageSource.ON_FIRE, 1.0F);
+            if(this.level.getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
+                this.hurt(this.damageSources().onFire(), 1.0F);
             }
         }
     }

@@ -1,9 +1,6 @@
 package hungteen.imm.data;
 
-import hungteen.imm.common.world.levelgen.IMMBiomes;
-import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
-import hungteen.imm.common.world.levelgen.IMMLevelStems;
-import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
+import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.feature.IMMFeatures;
 import hungteen.imm.common.world.levelgen.feature.IMMPlacements;
@@ -33,6 +30,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.PLACED_FEATURE, IMMPlacements::register)
 //            .add(Registries.STRUCTURE, IMMStructures::register)
 //            .add(Registries.STRUCTURE_SET, IMMStructureSets::register)
+            .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, IMMNoiseParamLists::register)
             .add(Registries.NOISE_SETTINGS, IMMNoiseSettings::register)
             .add(Registries.LEVEL_STEM, IMMLevelStems::register)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, IMMBiomeModifiers::register)

@@ -143,7 +143,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, 40D)
-                .add(ForgeMod.ATTACK_RANGE.get(), 3D)
+                .add(ForgeMod.ENTITY_REACH.get(), 3D)
                 .add(Attributes.ATTACK_SPEED, 4D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
@@ -257,7 +257,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     @Override
     public double getMeleeAttackRangeSqr(LivingEntity livingEntity) {
-        final double reach = this.getAttributeValue(ForgeMod.ATTACK_RANGE.get());
+        final double reach = this.getAttributeValue(ForgeMod.ENTITY_REACH.get());
         return Math.max(reach * reach + livingEntity.getBbWidth(), super.getMeleeAttackRangeSqr(livingEntity));
     }
 

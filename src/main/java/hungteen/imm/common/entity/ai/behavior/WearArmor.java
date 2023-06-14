@@ -36,7 +36,7 @@ public class WearArmor extends Behavior<HumanEntity> {
         if(! entity.getOffhandItem().isEmpty() || entity.getRandom().nextFloat() < 0.1F) return false;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if(slot.getType() != EquipmentSlot.Type.ARMOR) continue;
-            if(entity.getItemBySlot(slot).isEmpty() && entity.hasItemStack(stack -> stack.getItem() instanceof ArmorItem item && item.getSlot() == slot)){
+            if(entity.getItemBySlot(slot).isEmpty() && entity.hasItemStack(stack -> stack.getItem() instanceof ArmorItem item && item.getEquipmentSlot() == slot)){
                 this.slot = slot;
                 return true;
             }

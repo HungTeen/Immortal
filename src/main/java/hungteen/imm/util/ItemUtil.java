@@ -1,6 +1,7 @@
 package hungteen.imm.util;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.item.runes.RuneItem;
@@ -34,7 +35,7 @@ public class ItemUtil {
     }
 
     public static boolean isArmor(ItemStack stack, EquipmentSlot slot) {
-        return isArmor(stack) && ((ArmorItem) stack.getItem()).getSlot() == slot;
+        return isArmor(stack) && ((ArmorItem) stack.getItem()).getEquipmentSlot() == slot;
     }
 
     public static boolean isShield(ItemStack stack) {
@@ -50,7 +51,7 @@ public class ItemUtil {
     }
 
     public static ResourceLocation getLargeHeldLocation(Item item){
-        return Util.suffix(ItemHelper.get().getKey(item), SUFFIX);
+        return StringHelper.suffix(ItemHelper.get().getKey(item), SUFFIX);
     }
 
     public static List<Pair<ICraftableRune, ItemStack>> getCraftableRunes(){

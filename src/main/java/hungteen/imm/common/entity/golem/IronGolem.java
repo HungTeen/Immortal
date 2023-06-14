@@ -55,7 +55,7 @@ public class IronGolem extends GolemEntity{
         this.level.broadcastEntityEvent(this, (byte)4);
         float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float f1 = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean flag = entity.hurt(DamageSource.mobAttack(this), f1);
+        boolean flag = entity.hurt(this.damageSources().mobAttack(this), f1);
         if (flag) {
             double d2;
             if (entity instanceof LivingEntity) {

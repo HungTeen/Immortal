@@ -57,8 +57,8 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
             }
         }
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 23)
-                        .addItemStack(recipe.getResultItem());
+//        builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 23)
+//                        .addItemStack(recipe.getResultItem());
     }
 
     @Override

@@ -143,8 +143,8 @@ public class FlyingItemEntity extends HTEntity {
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+    public LivingEntity getControllingPassenger() {
+        return ! this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity entity ? entity : null;
     }
 
     @OnlyIn(Dist.CLIENT)

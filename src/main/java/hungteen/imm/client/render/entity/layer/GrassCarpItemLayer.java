@@ -5,9 +5,9 @@ import hungteen.imm.client.model.entity.GrassCarpModel;
 import hungteen.imm.common.entity.creature.GrassCarp;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -30,7 +30,7 @@ public class GrassCarpItemLayer<T extends GrassCarp> extends RenderLayer<T, Gras
         poseStack.translate(0, 0.75, 0);
 
         ItemStack itemstack = grassCarp.getMainHandItem();
-        this.itemInHandRenderer.renderItem(grassCarp, itemstack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, packedLightIn);
+        this.itemInHandRenderer.renderItem(grassCarp, itemstack, ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLightIn);
         poseStack.popPose();
     }
 }

@@ -1,16 +1,16 @@
 package hungteen.imm.common.world.levelgen.dimension;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.world.levelgen.*;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -225,10 +225,14 @@ public class EastWorldDimension {
     }
 
     public static void initLevelStem(BootstapContext<LevelStem> context){
+        final HolderGetter<MultiNoiseBiomeSourceParameterList> holderGetter = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
+        final ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> builder = ImmutableList.builder();
+        EastWorldDimension.addBiomes(resourceKeyPair -> builder.add(resourceKeyPair.mapSecond(res -> context.lookup(Registries.BIOME).getOrThrow(res))));
         context.register(IMMLevelStems.EAST_WORLD, new LevelStem(
                 context.lookup(Registries.DIMENSION_TYPE).getOrThrow(IMMDimensionTypes.EAST_WORLD),
                 new NoiseBasedChunkGenerator(
-                        IMMLevels.EAST_WORLD_PRESET.biomeSource(context.lookup(Registries.BIOME)),
+//                        MultiNoiseBiomeSource.createFromPreset(holderGetter.getOrThrow(IMMNoiseParamLists.EAST_WORLD)),
+                        MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(builder.build())),
                         context.lookup(Registries.NOISE_SETTINGS).getOrThrow(IMMNoiseSettings.EAST_WORLD)
                 )
         ));

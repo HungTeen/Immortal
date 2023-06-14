@@ -2,6 +2,7 @@ package hungteen.imm.common.recipe;
 
 import hungteen.htlib.common.menu.container.SimpleCraftingContainer;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -67,7 +68,7 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
     }
 
     @Override
-    public ItemStack assemble(SimpleCraftingContainer container) {
+    public ItemStack assemble(SimpleCraftingContainer container, RegistryAccess registryAccess) {
         return this.result.copy();
     }
 
@@ -77,7 +78,7 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         //TODO 配方注释了
 //        if(this.needRecovery){
 //            ItemStack stack = new ItemStack(ImmortalItems.RAW_ARTIFACT_BOX.get());

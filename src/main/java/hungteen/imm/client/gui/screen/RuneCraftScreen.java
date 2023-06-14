@@ -55,7 +55,7 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(stack, partialTicks, mouseX, mouseY);
         RenderHelper.setTexture(TEXTURE);
-        this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         final List<Pair<ICraftableRune, ItemStack>> list = this.menu.getRecipes();
         for (int i = 0; i < SIZE; ++i) {
@@ -71,9 +71,9 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
                 }
 
                 RenderHelper.setTexture(TEXTURE);
-                this.blit(stack, x, y, startX, 240, 16, 16);
+                blit(stack, x, y, startX, 240, 16, 16);
 
-                this.minecraft.getItemRenderer().renderAndDecorateItem(list.get(id).getSecond(), x, y);
+                this.itemRenderer.renderAndDecorateItem(stack, list.get(id).getSecond(), x, y);
             }
         }
     }

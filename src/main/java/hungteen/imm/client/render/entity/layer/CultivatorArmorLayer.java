@@ -6,6 +6,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.resources.model.ModelManager;
 
 /**
  * @program: Immortal
@@ -16,8 +17,8 @@ public class CultivatorArmorLayer<T extends Cultivator, M extends HumanoidModel<
 
     private final boolean isSlim;
 
-    public CultivatorArmorLayer(RenderLayerParent<T, M> layerParent, A innerModel, A outerModel, boolean isSlim) {
-        super(layerParent, innerModel, outerModel);
+    public CultivatorArmorLayer(RenderLayerParent<T, M> layerParent, A innerModel, A outerModel, ModelManager manager, boolean isSlim) {
+        super(layerParent, innerModel, outerModel, manager);
         this.isSlim = isSlim;
     }
 

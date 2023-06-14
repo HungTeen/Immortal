@@ -47,7 +47,7 @@ public class FlameGourd extends ArtifactItem {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
+    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
         if(stack.getItem() instanceof FlameGourd && player instanceof Player){
             final HitResult hitResult = PlayerUtil.getHitResult((Player) player);
             final FlameGourd flameGourd = (FlameGourd) stack.getItem();
@@ -123,8 +123,8 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, components, tooltipFlag);
-        components.add(Component.translatable("tooltip.immortal.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
-        components.add(Component.translatable("tooltip.immortal.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
+        components.add(Component.translatable("tooltip.imm.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
+        components.add(Component.translatable("tooltip.imm.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
 
 //    @Override

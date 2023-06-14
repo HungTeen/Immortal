@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:light_blue_wool_cushion"
-  }
+  },
+  "show_notification": true
 }

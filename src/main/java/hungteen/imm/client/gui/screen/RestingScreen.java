@@ -98,7 +98,7 @@ public class RestingScreen extends HTScreen {
         }
 
         @Override
-        public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
             RenderHelper.setTexture(SPELL_CIRCLE);
             blit(poseStack, this.getX(), this.getY(), this.isSelected ? 20 : 0, 128, this.height, this.width);
         }

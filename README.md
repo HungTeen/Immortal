@@ -22,7 +22,7 @@ Immortal requires the following dependencies :
 ---
 ### Current Progress
 
-|   版本   |    开发状态    |
-|:------:|:----------:|
-| 1.19.3 | Developing |
+| Version |   Status   |
+|:-------:|:----------:|
+| 1.19.4  | Developing |
 ---

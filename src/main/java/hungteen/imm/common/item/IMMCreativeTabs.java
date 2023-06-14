@@ -16,6 +16,7 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * @program: Immortal
@@ -33,12 +34,12 @@ public class IMMCreativeTabs {
     public static void register(CreativeModeTabEvent.Register event){
         MATERIALS = register(event, "materials", List.of(CreativeModeTabs.SPAWN_EGGS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
-                .displayItems((featureFlagSet, output, hasPermission) -> {
-                    output.acceptAll(Arrays.asList(
+                .displayItems((parameters, output) -> {
+                    output.acceptAll(Stream.of(
                             IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
                             IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
                             IMMItems.GOURD_SEEDS.get()
-                    ).stream().map(ItemStack::new).toList());
+                    ).map(ItemStack::new).toList());
                 })
         );
 
@@ -59,7 +60,7 @@ public class IMMCreativeTabs {
 
         ARTIFACTS = register(event, "artifacts", List.of(MATERIALS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
-                .displayItems((featureFlagSet, output, hasPermission) -> {
+                .displayItems((parameters, output) -> {
                     ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
                         output.accept(new ItemStack(item));
                     });
@@ -68,7 +69,7 @@ public class IMMCreativeTabs {
 
         RUNES = register(event, "runes", List.of(ARTIFACTS), List.of(), builder -> builder
                 .icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
-                .displayItems((featureFlagSet, output, hasPermission) -> {
+                .displayItems((parameters, output) -> {
                     ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
                         output.accept(new ItemStack(item));
                     });

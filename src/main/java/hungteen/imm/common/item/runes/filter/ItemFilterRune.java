@@ -26,7 +26,7 @@ public class ItemFilterRune extends FilterRuneItem<Item> {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if(! level.isClientSide() && player.getItemInHand(hand).getItem() instanceof ItemFilterRune rune){
-            final HitResult hitResult = PlayerUtil.getHitResult(player, player.getReachDistance());
+            final HitResult hitResult = PlayerUtil.getHitResult(player, player.getEntityReach());
             if(hitResult instanceof EntityHitResult result && result.getEntity() instanceof ItemEntity itemEntity && ! itemEntity.getItem().isEmpty()){
                 rune.bind(player, player.getItemInHand(hand), itemEntity.getItem().getItem());
             }

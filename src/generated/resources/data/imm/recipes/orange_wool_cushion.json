@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:orange_wool_cushion"
-  }
+  },
+  "show_notification": true
 }

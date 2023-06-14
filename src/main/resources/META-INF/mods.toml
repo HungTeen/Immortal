@@ -1,19 +1,19 @@
-modLoader="javafml"
-loaderVersion="[43,)"
-license="GNU LESSER GENERAL PUBLIC LICENSE"
-issueTrackerURL="https://github.com/HungTeen/imm/issues"
+modLoader = "javafml"
+loaderVersion = "[45,)"
+license = "GNU LESSER GENERAL PUBLIC LICENSE"
+issueTrackerURL = "https://github.com/HungTeen/imm/issues"
 
 [[mods]]
-modId="imm"
-version="${file.jarVersion}"
-displayName="Immortal"
+modId = "imm"
+version = "${file.jarVersion}"
+displayName = "Immortal"
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
-displayURL="https://space.bilibili.com/362855464"
-logoFile="examplemod.png"
-credits="Thanks for this example mod goes to Java"
-authors="HungTeen, GrassCrap"
-description='''
+displayURL = "https://space.bilibili.com/362855464"
+logoFile = "examplemod.png"
+credits = "Thanks for this example mod goes to Java"
+authors = "HungTeen, GrassCrap"
+description = '''
 I am mortal, but i will be immortal !
 '''
 
@@ -21,41 +21,41 @@ I am mortal, but i will be immortal !
 #configBackground="pvz:textures/block/amethyst_block.png"
 
 [[dependencies.imm]]
-    modId="forge"
-    mandatory=true
-    versionRange="[43.2.0,)"
+modId = "forge"
+mandatory = true
+versionRange = "[45,)"
 
 [[dependencies.imm]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.19.2,1.20)"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.4,1.20)"
 
 [[dependencies.imm]]
-modId="htlib"
-mandatory=true
-versionRange="[0.9.2,)"
+modId = "htlib"
+mandatory = true
+versionRange = "[0.9.3,)"
 
 [[dependencies.imm]]
-modId="jei"
-mandatory=false
-versionRange="[11.4.0.285,)"
+modId = "jei"
+mandatory = false
+versionRange = "[13.1.0.13,)"
 
 [[dependencies.imm]]
-modId="curios"
-mandatory=false
-versionRange="[1.19.2-5.1.1.0,)"
+modId = "curios"
+mandatory = false
+versionRange = "[1.19.4-5.1.5.3,)"
 
 [[dependencies.imm]]
-modId="patchouli"
-mandatory=false
-versionRange="[1.19.2-77,)"
+modId = "patchouli"
+mandatory = false
+versionRange = "[1.19.4-79,)"
 
 [[dependencies.imm]]
-modId="jade"
-mandatory=false
-versionRange="[8.3.2,)"
+modId = "jade"
+mandatory = false
+versionRange = "[10.3.1,)"
 
 [[dependencies.imm]]
-modId="configured"
-mandatory=false
-versionRange="[2.0.1,)"
+modId = "configured"
+mandatory = false
+versionRange = "[2.1.1,)"

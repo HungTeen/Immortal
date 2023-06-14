@@ -75,13 +75,13 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(stack, partialTicks, mouseX, mouseY);
         RenderHelper.setTexture(TEXTURE);
-        blit(stack, this.leftPos, this.topPos, this.getBlitOffset(), 0.0F, 0.0F, this.imageWidth, this.imageHeight, 512, 256);
+        blit(stack, this.leftPos, this.topPos, 0, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 512, 256);
 
         final TradeOffers offers = this.menu.getTrades();
         if (!offers.isEmpty()) {
             // 选中的暂时卖完了。
             if (this.menu.isValidButtonIndex(this.shopItem) && !offers.get(this.shopItem).valid()) {
-                blit(stack, this.leftPos + 83 + 99, this.topPos + 35, this.getBlitOffset(), 311.0F, 0.0F, 28, 21, 512, 256);
+                blit(stack, this.leftPos + 83 + 99, this.topPos + 35, 0, 311.0F, 0.0F, 28, 21, 512, 256);
             }
         }
     }
@@ -101,26 +101,27 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
             for (int i = 0; i < offers.size(); ++i) {
                 if (i >= this.scrollOff && i < this.scrollOff + MAX_BUTTON_COUNT) {
                     final TradeOffer offer = offers.get(i);
-                    this.itemRenderer.blitOffset = 100.0F;
+                    stack.pushPose();
+                    stack.translate(0, 0, 100F);
 
                     final int hOffset = topPos + 2;
                     for (int j = 0; j < offer.getTradeEntry().costItems().size(); ++j) {
                         final ItemStack itemStack = offer.getTradeEntry().costItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, leftPos + 35, hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, leftPos + 35, hOffset);
+                        this.itemRenderer.renderAndDecorateFakeItem(stack, itemStack, leftPos + 35, hOffset);
+                        this.itemRenderer.renderGuiItemDecorations(stack, this.font, itemStack, leftPos + 35, hOffset);
                     }
 
                     // 渲染箭头。
                     RenderHelper.setTexture(TEXTURE);
-                    blit(stack, leftPos + 35 + 20, hOffset + 3, this.getBlitOffset(), offer.valid() ? 15F : 25.0F, 171.0F, 10, 9, 512, 256);
+                    blit(stack, leftPos + 35 + 20, hOffset + 3, 0, offer.valid() ? 15F : 25.0F, 171.0F, 10, 9, 512, 256);
 
                     for (int j = 0; j < offer.getTradeEntry().resultItems().size(); ++j) {
                         final ItemStack itemStack = offer.getTradeEntry().resultItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(itemStack, leftPos + 68, hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(this.font, itemStack, leftPos + 68, hOffset);
+                        this.itemRenderer.renderAndDecorateFakeItem(stack, itemStack, leftPos + 68, hOffset);
+                        this.itemRenderer.renderGuiItemDecorations(stack, this.font, itemStack, leftPos + 68, hOffset);
                     }
 
-                    this.itemRenderer.blitOffset = 0F;
+                    stack.popPose();
 
                     topPos += 20;
                 }
@@ -148,9 +149,9 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
             if (this.scrollOff == i - 1) {
                 i1 = 113;
             }
-            blit(stack, this.leftPos + 94, this.topPos + 18 + i1, this.getBlitOffset(), 0.0F, 199.0F, 6, 27, 512, 256);
+            blit(stack, this.leftPos + 94, this.topPos + 18 + i1, 0, 0.0F, 199.0F, 6, 27, 512, 256);
         } else {
-            blit(stack, this.leftPos + 94, this.topPos + 18, this.getBlitOffset(), 6.0F, 199.0F, 6, 27, 512, 256);
+            blit(stack, this.leftPos + 94, this.topPos + 18, 0, 6.0F, 199.0F, 6, 27, 512, 256);
         }
     }
 

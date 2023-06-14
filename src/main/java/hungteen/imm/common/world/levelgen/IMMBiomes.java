@@ -4,7 +4,6 @@ import hungteen.htlib.util.helper.registry.BiomeHelper;
 import hungteen.imm.common.world.levelgen.biome.EastWorldBiomes;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.biome.Biomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -13,7 +12,7 @@ import net.minecraft.world.level.biome.Biome;
  * @author: HungTeen
  * @create: 2022-10-18 14:03
  *
- * Look at {@link Biomes}
+ * Look at {@link net.minecraft.world.level.biome.Biomes}
  **/
 public class IMMBiomes {
 

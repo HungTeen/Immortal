@@ -3,7 +3,6 @@ package hungteen.imm.common.impl.registry;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.util.Util;
 
@@ -14,7 +13,7 @@ import hungteen.imm.util.Util;
  **/
 public class SectTypes {
 
-    private static final HTSimpleRegistry<ISectType> TRADE_TYPES = HTRegistryManager.create(StringHelper.prefix("sect_type"));
+    private static final HTSimpleRegistry<ISectType> TRADE_TYPES = HTRegistryManager.create(Util.prefix("sect_type"));
 
     public static final ISectType VILLAGER_KINGDOM = register(new SectType("villager_kingdom"));
     public static final ISectType PILLAGER_TRIBE = register(new SectType("pillager_tribe"));

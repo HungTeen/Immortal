@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "imm:cyan_wool_cushion"
-  }
+  },
+  "show_notification": true
 }
