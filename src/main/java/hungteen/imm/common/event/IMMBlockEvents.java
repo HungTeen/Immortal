@@ -1,8 +1,12 @@
 package hungteen.imm.common.event;
 
+import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.IMMBlockPatterns;
+import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.EntityUtil;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.level.BlockEvent;
@@ -22,6 +26,15 @@ public class IMMBlockEvents {
         if(! event.getLevel().isClientSide() && event.getLevel() instanceof Level level){
             if(IMMBlockPatterns.PUMPKINS_PREDICATE.test(event.getPlacedBlock())){
                 EntityUtil.multiblockSpawn(level, event.getPos(), IMMBlockPatterns.getCreeperPattern(), EntityType.CREEPER);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void breakBlock(BlockEvent.BreakEvent event){
+        if(event.getState().is(IMMBlockTags.SPIRITUAL_ORES) && event.getLevel() instanceof Level level){
+            for(int i = 0; i < 5; ++ i){
+                ParticleHelper.spawnRandomSpeedParticle(level, ParticleTypes.GLOW, MathHelper.toVec3(event.getPos()), 0.1F, 0.1F);
             }
         }
     }

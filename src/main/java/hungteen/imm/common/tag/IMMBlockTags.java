@@ -14,6 +14,7 @@ public class IMMBlockTags {
 
     /* Forge */
 
+    public static final TagKey<Block> SPIRITUAL_ORES = forgeTag("spiritual_ores");
     public static final TagKey<Block> CINNABAR_ORES = forgeTag("ores/cinnabar");
 
 
