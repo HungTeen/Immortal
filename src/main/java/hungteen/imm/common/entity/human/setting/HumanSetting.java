@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import net.minecraft.util.RandomSource;
@@ -41,7 +43,11 @@ public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting
 
     public void fillTrade(HumanEntity entity, RandomSource random){
         tradeSetting().ifPresent(setting -> {
-//            entity.setCommonTradeEntries(setting.getTrades(random));
+            final TradeOffers offers = new TradeOffers();
+            setting.sampleTradeEntries(random).forEach(entry -> {
+                offers.add(new TradeOffer(entry, random));
+            });
+            entity.setTradeOffers(offers);
         });
     }
 }

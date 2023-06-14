@@ -15,9 +15,12 @@ import hungteen.imm.common.entity.IMMGrowableCreature;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
+import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.registry.SectTypes;
+import hungteen.imm.common.menu.ImmortalMenuProvider;
+import hungteen.imm.common.menu.MerchantTradeMenu;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
@@ -25,10 +28,14 @@ import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -44,10 +51,12 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -57,6 +66,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.ITeleporter;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -77,7 +87,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     private static final EntityDataAccessor<HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
     private static final EntityDataAccessor<HumanSectData> SECT_DATA = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SECT_DATA.get());
     private List<ISpiritualType> rootsCache;
-    private TradeOffers tradeOffers;
+    private TradeOffers tradeOffers = new TradeOffers();
     @javax.annotation.Nullable
     private Player tradingPlayer;
     private final SimpleContainer inventory;
@@ -102,7 +112,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
-        if(this.tradeOffers != null){
+        if (this.tradeOffers != null) {
             this.tradeOffers.writeToStream(buffer);
         }
     }
@@ -115,7 +125,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @org.jetbrains.annotations.Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable SpawnGroupData groupData, @org.jetbrains.annotations.Nullable CompoundTag compoundTag) {
-        if(!accessor.isClientSide()){
+        if (!accessor.isClientSide()) {
             PlayerUtil.getSpiritualRoots(accessor.getRandom()).forEach(this::addSpiritualRoots);
             this.updateHumanSetting();
         }
@@ -149,9 +159,9 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     }
 
     /**
-     * 填充背包。
+     * 填充背包 & 交易列表。
      */
-    public void updateHumanSetting(){
+    public void updateHumanSetting() {
         HumanSettings.getHumanSetting(getInventoryLootType(), this.getRandom()).ifPresent(l -> {
             this.setHumanSetting(l);
             l.fillInventory(this.getInventory(), this.getRandom());
@@ -161,31 +171,33 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     /**
      * Refresh brain.
+     *
      * @param level is the server side level.
      */
-    public void refreshBrain(ServerLevel level){
+    public void refreshBrain(ServerLevel level) {
 
     }
 
     /**
      * Used for update brain.
+     *
      * @param level is the server side level.
      */
     public abstract void updateBrain(ServerLevel level);
 
-    public boolean hasItemStack(Predicate<ItemStack> predicate){
-        for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
-            if(predicate.test(this.getInventory().getItem(i))){
+    public boolean hasItemStack(Predicate<ItemStack> predicate) {
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            if (predicate.test(this.getInventory().getItem(i))) {
                 return true;
             }
         }
         return false;
     }
 
-    public List<ItemStack> filterFromInventory(Predicate<ItemStack> predicate){
+    public List<ItemStack> filterFromInventory(Predicate<ItemStack> predicate) {
         List<ItemStack> list = new ArrayList<>();
-        for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
-            if(predicate.test(this.getInventory().getItem(i))){
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            if (predicate.test(this.getInventory().getItem(i))) {
                 list.add(this.getInventory().getItem(i));
             }
         }
@@ -195,9 +207,9 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     /**
      * Switch one predicate item from inventory to equipment slot.
      */
-    public boolean switchInventory(EquipmentSlot equipmentSlot, Predicate<ItemStack> predicate){
-        for(int i = 0; i < this.getInventory().getContainerSize(); ++ i){
-            if(predicate.test(this.getInventory().getItem(i))){
+    public boolean switchInventory(EquipmentSlot equipmentSlot, Predicate<ItemStack> predicate) {
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            if (predicate.test(this.getInventory().getItem(i))) {
                 ItemStack stack = this.getItemBySlot(equipmentSlot).copy();
                 this.setItemSlot(equipmentSlot, this.getInventory().getItem(i).copy());
                 this.getInventory().setItem(i, stack);
@@ -210,23 +222,23 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     /**
      * Switch one predicate item from inventory to hand.
      */
-    public boolean switchInventory(InteractionHand hand, Predicate<ItemStack> predicate){
+    public boolean switchInventory(InteractionHand hand, Predicate<ItemStack> predicate) {
         return switchInventory(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, predicate);
     }
 
     @Override
     public void performRangedAttack(LivingEntity target, float strength) {
         final ItemStack projectile = this.getProjectile(this.getMainHandItem());
-        if(this.getMainHandItem().getItem() instanceof BowItem){
+        if (this.getMainHandItem().getItem() instanceof BowItem) {
             AbstractArrow abstractarrow = this.getArrow(projectile, strength);
             abstractarrow = ((BowItem) this.getMainHandItem().getItem()).customArrow(abstractarrow);
             double d0 = target.getX() - this.getX();
             double d1 = target.getY(0.3333333333333333D) - abstractarrow.getY();
             double d2 = target.getZ() - this.getZ();
             double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-            abstractarrow.shoot(d0, d1 + d3 * (double)0.2F, d2, 2F, 2F);
+            abstractarrow.shoot(d0, d1 + d3 * (double) 0.2F, d2, 2F, 2F);
             this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            if(this.getRandom().nextFloat() < 0.4F) {
+            if (this.getRandom().nextFloat() < 0.4F) {
                 abstractarrow.setCritArrow(true);
             }
             this.level.addFreshEntity(abstractarrow);
@@ -236,7 +248,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     public ItemStack getProjectile(ItemStack stack) {
         if (stack.getItem() instanceof ProjectileWeaponItem) {
-            Predicate<ItemStack> predicate = ((ProjectileWeaponItem)stack.getItem()).getSupportedHeldProjectiles();
+            Predicate<ItemStack> predicate = ((ProjectileWeaponItem) stack.getItem()).getSupportedHeldProjectiles();
             ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
             return net.minecraftforge.common.ForgeHooks.getProjectile(this, stack, itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack);
         } else {
@@ -246,9 +258,9 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     @Override
     public ItemStack eat(Level level, ItemStack itemStack) {
-        if(itemStack.isEdible()){
+        if (itemStack.isEdible()) {
             FoodProperties foodProperties = itemStack.getFoodProperties(this);
-            if(foodProperties != null){
+            if (foodProperties != null) {
                 this.heal(foodProperties.getNutrition() * 0.5F);
             }
         }
@@ -269,7 +281,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return this.distanceToSqr(entity) <= this.getMeleeAttackRangeSqr(entity);
     }
 
-    public double getAttackCoolDown(){
+    public double getAttackCoolDown() {
         final double speed = this.getAttributeValue(Attributes.ATTACK_SPEED);
         return speed == 0 ? 1000 : 1 / speed;
     }
@@ -283,7 +295,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return ProjectileUtil.getMobArrow(this, stack, strength);
     }
 
-    protected SimpleContainer createInventory(){
+    protected SimpleContainer createInventory() {
         return new SimpleContainer(8);
     }
 
@@ -355,20 +367,38 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if(! this.spawnEggMatch(itemstack) && this.canTradeWith(player)) {
+        if (!this.spawnEggMatch(itemstack) && this.canTradeWith(player)) {
 //            if (hand == InteractionHand.MAIN_HAND) {
 //                player.awardStat(Stats.TALKED_TO_VILLAGER);
 //            }
-            if (!this.level.isClientSide) {
+            if (!this.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
                 this.setTradingPlayer(player);
-//                this.openTradingScreen(player, this.getDisplayName(), 1);
+                NetworkHooks.openScreen(serverPlayer, new ImmortalMenuProvider() {
+                    @Override
+                    public  AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+                        return new MerchantTradeMenu(id, inventory, HumanEntity.this.getId());
+                    }
+                }, buf -> buf.writeInt(this.getId()));
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         return super.mobInteract(player, hand);
     }
 
-    public boolean canTradeWith(Player player){
+    public void notifyTrade(TradeOffer offer) {
+        offer.consume();
+        this.ambientSoundTime = -this.getAmbientSoundInterval();
+        if(! this.level.isClientSide){
+            this.setTradeOffers(this.getTradeOffers());
+        }
+//        this.rewardTradeXp(offer);
+//        if (this.tradingPlayer instanceof ServerPlayer) {
+//            CriteriaTriggers.TRADE.trigger((ServerPlayer)this.tradingPlayer, this, offer.getResult());
+//        }
+//        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.player.TradeWithVillagerEvent(this.tradingPlayer, offer, this));
+    }
+
+    public boolean canTradeWith(Player player) {
         return this.isAlive() && !this.isTrading() && !this.isBaby() && BehaviorUtil.isIdle(this);
     }
 
@@ -401,19 +431,19 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         super.die(damageSource);
         this.stopTrading();
     }
-    
-    public void fillInventoryWith(ItemStack stack, int minCount, int maxCount){
+
+    public void fillInventoryWith(ItemStack stack, int minCount, int maxCount) {
         fillInventoryWith(stack, 1F, minCount, maxCount);
     }
 
-    public void fillInventoryWith(ItemStack stack, float chance, int count){
+    public void fillInventoryWith(ItemStack stack, float chance, int count) {
         fillInventoryWith(stack, chance, count, count);
     }
 
     public void fillInventoryWith(ItemStack stack, float chance, int minCount, int maxCount) {
-        if(RandomHelper.chance(this.getRandom(), chance) && this.getInventory().canAddItem(stack)){
+        if (RandomHelper.chance(this.getRandom(), chance) && this.getInventory().canAddItem(stack)) {
             final int count = RandomHelper.getMinMax(this.getRandom(), minCount, maxCount);
-            for(int i = 0; i < count; ++ i){
+            for (int i = 0; i < count; ++i) {
                 this.getInventory().addItem(stack);
             }
         }
@@ -442,30 +472,34 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     public abstract IInventoryLootType getInventoryLootType();
 
+    public SoundEvent getNotifyTradeSound() {
+        return SoundEvents.VILLAGER_TRADE;
+    }
+
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(tag.contains("CultivatorRoots")){
+        if (tag.contains("CultivatorRoots")) {
             setRootTag(tag.getCompound("CultivatorRoots"));
         }
-        if(tag.contains("Inventory")){
+        if (tag.contains("Inventory")) {
             this.inventory.fromTag(tag.getList("Inventory", 10));
         }
-        if(tag.contains("InventoryLoot")){ // allow setting loot by nbt.
+        if (tag.contains("InventoryLoot")) { // allow setting loot by nbt.
             HumanSettings.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
                 l.fillInventory(this.getInventory(), this.getRandom());
             });
         }
         this.setTradeOffers(new TradeOffers(tag));
-        if(tag.contains("HumanSetting")){
+        if (tag.contains("HumanSetting")) {
             CodecHelper.parse(HumanSetting.CODEC, tag.get("HumanSetting"))
                     .result().ifPresent(this::setHumanSetting);
         }
-        if(tag.contains("HumanSectData")){
+        if (tag.contains("HumanSectData")) {
             CodecHelper.parse(HumanSectData.CODEC, tag.get("HumanSectData")).result().ifPresent(this::setSectData);
         }
         if (this.level instanceof ServerLevel) {
-            this.refreshBrain((ServerLevel)this.level);
+            this.refreshBrain((ServerLevel) this.level);
         }
     }
 
@@ -474,7 +508,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         super.addAdditionalSaveData(tag);
         tag.put("CultivatorRoots", this.getRootTag());
         tag.put("Inventory", this.inventory.createTag());
-        if(this.tradeOffers != null){
+        if (this.tradeOffers != null) {
             this.tradeOffers.addToTag(tag);
         }
         HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, this.getHumanSetting())
@@ -483,10 +517,10 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 .result().ifPresent(l -> tag.put("HumanSectData", l));
     }
 
-    public void addSpiritualRoots(ISpiritualType spiritualRoot){
+    public void addSpiritualRoots(ISpiritualType spiritualRoot) {
         final CompoundTag tag = getRootTag();
         tag.putBoolean(spiritualRoot.getRegistryName(), true);
-        if(this.rootsCache == null){
+        if (this.rootsCache == null) {
             this.rootsCache = new ArrayList<>();
         }
         this.rootsCache.add(spiritualRoot);
@@ -495,10 +529,10 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     @Override
     public Collection<ISpiritualType> getSpiritualTypes() {
-        if(this.rootsCache == null && IMMAPI.get().spiritualRegistry().isPresent()){
+        if (this.rootsCache == null && IMMAPI.get().spiritualRegistry().isPresent()) {
             this.rootsCache = new ArrayList<>();
             IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
-                if(getRootTag().contains(root.getRegistryName()) && getRootTag().getBoolean(root.getRegistryName())){
+                if (getRootTag().contains(root.getRegistryName()) && getRootTag().getBoolean(root.getRegistryName())) {
                     this.rootsCache.add(root);
                 }
             });
@@ -516,7 +550,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return this.getSectData().innerSect();
     }
 
-    public CompoundTag getRootTag(){
+    public CompoundTag getRootTag() {
         return entityData.get(ROOTS);
     }
 
@@ -524,7 +558,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         entityData.set(ROOTS, rootTag);
     }
 
-    public HumanSetting getHumanSetting(){
+    public HumanSetting getHumanSetting() {
         return entityData.get(HUMAN_SETTING);
     }
 
@@ -538,17 +572,22 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     public void setTradeOffers(TradeOffers tradeOffers) {
         this.tradeOffers = tradeOffers;
-        if(! this.level.isClientSide){
+        if (!this.level.isClientSide) {
             NetworkHandler.sendToClientEntity(this, new TradeOffersPacket(this.getId(), this.tradeOffers));
         }
     }
 
-    public void setSectData(HumanSectData data){
+    public void setSectData(HumanSectData data) {
         entityData.set(SECT_DATA, data);
     }
 
-    public HumanSectData getSectData(){
+    public HumanSectData getSectData() {
         return entityData.get(SECT_DATA);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public record HumanSectData(Optional<ISectType> outerSect, Optional<ISectType> innerSect) {

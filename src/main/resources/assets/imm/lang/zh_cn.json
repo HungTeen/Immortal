@@ -93,6 +93,7 @@
   "gui.imm.need_more_rune": "放入的符文太多",
   "gui.imm.need_less_rune": "放入的符文太少",
   "gui.imm.type_not_fit": "门操作与符文类型不匹配",
+  "gui.imm.merchant.trades": "交易",
   "gui.imm.elixir_room.title": "炼丹",
   "gui.imm.elixir_furnace.remain_count": "剩余可加辅药 : %d个",
   "gui.imm.elixir_furnace.explode": "炼丹炉即将爆炸 !",

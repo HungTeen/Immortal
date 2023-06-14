@@ -35,7 +35,7 @@ public class TradeOffer {
         if (!this.match(payItems)) {
             return false;
         } else {
-            for(int i = 0; i < payItems.size(); i++) {
+            for(int i = 0; i < Math.min(payItems.size(), this.getTradeEntry().costItems().size()); i++) {
                 final ItemStack requiredItem = this.getTradeEntry().costItems().get(i);
                 if(! requiredItem.isEmpty()){
                     payItems.get(i).shrink(requiredItem.getCount());
