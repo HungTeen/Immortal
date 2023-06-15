@@ -12,7 +12,8 @@ import net.minecraft.world.level.biome.Biome;
  **/
 public class IMMBiomeTags {
 
-    public static final TagKey<Biome> HAS_OVERWORLD_TRADING_MARKET = tag("has_structure/overworld_trading_market");
+    public static final TagKey<Biome> HAS_TELEPORT_RUIN = tag("has_structure/teleport_ruin");
+    public static final TagKey<Biome> HAS_TRADING_MARKET = tag("has_structure/overworld_trading_market");
 
     private static TagKey<Biome> tag(String name){
         return BiomeHelper.get().tag(Util.prefix(name));

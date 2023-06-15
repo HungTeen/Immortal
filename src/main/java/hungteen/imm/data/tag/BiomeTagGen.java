@@ -31,8 +31,9 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(IMMBiomeTags.HAS_OVERWORLD_TRADING_MARKET)
-                .add(Biomes.DRIPSTONE_CAVES, Biomes.LUSH_CAVES);
+        this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
+                .addTags(BiomeTags.IS_MOUNTAIN, Tags.Biomes.IS_PLAINS, Tags.Biomes.IS_PLATEAU)
+                .add(Biomes.DRIPSTONE_CAVES);
         bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
         bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
         bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
