@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 957627271,
+    "separation": 12,
+    "spacing": 28
+  },
+  "structures": [
+    {
+      "structure": "imm:teleport_ruin",
+      "weight": 1
+    }
+  ]
+}

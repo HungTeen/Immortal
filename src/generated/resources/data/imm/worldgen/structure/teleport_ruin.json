@@ -1,0 +1,6 @@
+{
+  "type": "imm:teleport_ruin",
+  "biomes": "#imm:has_structure/teleport_ruin",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

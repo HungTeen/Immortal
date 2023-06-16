@@ -4,10 +4,12 @@ import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.network.*;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
@@ -38,9 +40,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // store the end time of specific spells.
     private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // active spells.
     private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive spells.
+    private final HashMap<ISectType, Float> sectRelations = new HashMap<>();
     private IRealmType realmType = RealmTypes.MORTALITY;
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
     private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
+    private long nextRefreshTick;
     /* Caches */
     private RealmManager.RealmNode realmNode;
 
@@ -77,6 +81,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 //                    }
 //                }
 //            }
+            //TODO 随时间更新Sect
         }
     }
 
@@ -116,6 +121,13 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
+            this.sectRelations.forEach((type, relation) -> {
+                nbt.putFloat(type.getRegistryName(), relation);
+            });
+            tag.put("SectRelations", nbt);
+        }
+        {
+            CompoundTag nbt = new CompoundTag();
             PlayerRangeIntegers.registry().getValues().forEach(data -> {
                 nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
             });
@@ -126,6 +138,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             final CompoundTag nbt = new CompoundTag();
+            nbt.putLong("NextRefreshTick", this.nextRefreshTick);
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             tag.put("MiscData", nbt);
         }
@@ -148,7 +161,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         if (tag.contains("Spells")) {
             learnSpells.clear();
             spellCDs.clear();
-            CompoundTag nbt = tag.getCompound("Spells");
+            final CompoundTag nbt = tag.getCompound("Spells");
             SpellTypes.registry().getValues().forEach(type -> {
                 if (nbt.contains("learn_" + type.getRegistryName())) {
                     learnSpells.put(type, nbt.getInt("learn_" + type.getRegistryName()));
@@ -159,7 +172,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             });
         }
         if (tag.contains("SpellList")) {
-            CompoundTag nbt = tag.getCompound("SpellList");
+            final CompoundTag nbt = tag.getCompound("SpellList");
             IMMAPI.get().spellRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if (nbt.contains("active_" + type.getRegistryName())) {
@@ -171,10 +184,18 @@ public class PlayerDataManager implements IPlayerDataManager {
                 });
             });
         }
+        if (tag.contains("SectRelations")){
+            final CompoundTag nbt = tag.getCompound("SectRelations");
+            SectTypes.registry().getValues().forEach(type -> {
+                if(nbt.contains(type.getRegistryName())){
+                    this.sectRelations.put(type, nbt.getFloat(type.getRegistryName()));
+                }
+            });
+        }
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
             floatMap.clear();
-            CompoundTag nbt = tag.getCompound("PlayerRangeData");
+            final CompoundTag nbt = tag.getCompound("PlayerRangeData");
             PlayerRangeIntegers.registry().getValues().forEach(type -> {
                 if (nbt.contains(type.getRegistryName())) {
                     integerMap.put(type, nbt.getInt(type.getRegistryName()));
@@ -188,6 +209,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
+            if(nbt.contains("NextRefreshTick")){
+                this.nextRefreshTick = nbt.getLong("NextRefreshTick");
+            }
             if (nbt.contains("PlayerRealmType")) {
                 IMMAPI.get().realmRegistry().flatMap(l -> l.getValue(nbt.getString("PlayerRealmType"))).ifPresent(r -> this.realmType = r);
             }
@@ -345,7 +369,28 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
     }
 
-    /* Player Number Data related methods */
+    /* Sect Related Methods */
+
+    public float getSectRelation(ISectType sectType){
+        return this.sectRelations.getOrDefault(sectType, 0F);
+    }
+
+    public void setSectRelation(ISectType sectType, float value){
+        this.sectRelations.put(sectType, value);
+        this.sendSectPacket(sectType, value);
+    }
+
+    public void addSectRelation(ISectType sectType, float value){
+        this.setSectRelation(sectType, this.getSectRelation(sectType) + value);
+    }
+
+    public void sendSectPacket(ISectType sect, float value) {
+        if (getPlayer() instanceof ServerPlayer p) {
+            NetworkHandler.sendToClient(p, new SectRelationPacket(sect, value));
+        }
+    }
+
+    /* Player Number Data Related Methods */
 
     public int getIntegerData(IRangeNumber<Integer> rangeData) {
         return integerMap.getOrDefault(rangeData, rangeData.defaultData());

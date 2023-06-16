@@ -6,6 +6,7 @@ import hungteen.htlib.util.WeightedList;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.capability.CapabilityHandler;
@@ -213,6 +214,20 @@ public class PlayerUtil {
 
     public static boolean hasPassiveSpell(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.hasPassiveSpell(spell), false);
+    }
+
+    /* Sect Related Methods */
+
+    public static float getSectRelation(Player player, ISectType sectType){
+        return getManagerResult(player, m -> m.getSectRelation(sectType), 0F);
+    }
+
+    public static void setSectRelation(Player player, ISectType sectType, float value){
+        getOptManager(player).ifPresent(l -> l.setSectRelation(sectType, value));
+    }
+
+    public static void addSectRelation(Player player, ISectType sectType, float value){
+        getOptManager(player).ifPresent(l -> l.addSectRelation(sectType, value));
     }
 
     /* Operations about Player Range Data */

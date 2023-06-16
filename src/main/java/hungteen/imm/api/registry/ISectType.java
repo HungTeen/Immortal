@@ -11,6 +11,8 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public interface ISectType extends ISimpleEntry {
 
+
+
     @Override
     default MutableComponent getComponent() {
         return Component.translatable("sect." + getModID() +"." + getName());

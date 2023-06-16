@@ -10,6 +10,8 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
@@ -32,8 +34,12 @@ public class EastWorldBiomes {
         context.register(IMMBiomes.SAVANNA, savanna(features, carvers, false, false));
         context.register(IMMBiomes.DESERT, desert(features, carvers));
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
+        context.register(IMMBiomes.MEADOW, meadow(features, carvers));
     }
 
+    /**
+     * East World Plain: <br>
+     */
     private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean sunflower, boolean snowy) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         if(snowy){
@@ -73,8 +79,29 @@ public class EastWorldBiomes {
         return biome(true, snowy ? 0F : 0.8F, snowy ? 0.5F : 0.4F, spawnBuilder, genBuilder, null);
     }
 
+    public static Biome meadow(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+//        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 2)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 2, 2, 4));
+        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
+//        globalOverworldGeneration(genBuilder);
+        BiomeDefaultFeatures.addPlainGrass(genBuilder);
+        BiomeDefaultFeatures.addDefaultOres(genBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addMeadowVegetation(genBuilder);
+
+        BiomeDefaultFeatures.addExtraEmeralds(genBuilder);
+        BiomeDefaultFeatures.addInfestedStone(genBuilder);
+        Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_MEADOW);
+        return biome(true, 0.5F, 0.8F, 937679, 329011, null, null, spawnBuilder, genBuilder, music);
+    }
+
+    /**
+     * Spawn Ravager.
+     */
     private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean windSwept, boolean plateau) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.RAVAGER, 1, 1, 1));
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
 //        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 1, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 1));
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
@@ -102,9 +129,12 @@ public class EastWorldBiomes {
         return biome(false, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
+    /**
+     *
+     */
     private static Biome desert(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        BiomeDefaultFeatures.desertSpawns(spawnBuilder);
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -149,20 +179,32 @@ public class EastWorldBiomes {
     }
 
     private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
-        return new Biome.BiomeBuilder()
+        return biome(hasPrecipitation, temperature, downfall, waterColor, waterFogColor, null, null, spawnBuilder, generationBuilder, music);
+    }
+
+    private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, int waterColor, int waterFogColor, @Nullable Integer grassColor, @Nullable Integer leavesColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder genBuilder, @Nullable Music backgroundMusic) {
+        final BiomeSpecialEffects.Builder builder = (new BiomeSpecialEffects.Builder())
+                .waterColor(waterColor)
+                .waterFogColor(waterFogColor)
+                .fogColor(12638463)
+                .skyColor(calculateSkyColor(temperature))
+                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                .backgroundMusic(backgroundMusic);
+        if (grassColor != null) {
+            builder.grassColorOverride(grassColor);
+        }
+
+        if (leavesColor != null) {
+            builder.foliageColorOverride(leavesColor);
+        }
+
+        return (new Biome.BiomeBuilder())
                 .hasPrecipitation(hasPrecipitation)
                 .temperature(temperature)
                 .downfall(downfall)
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(waterColor)
-                        .waterFogColor(waterFogColor)
-                        .fogColor(12638463)
-                        .skyColor(calculateSkyColor(temperature))
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(music).build()
-                )
+                .specialEffects(builder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .generationSettings(generationBuilder.build())
+                .generationSettings(genBuilder.build())
                 .build();
     }
 
