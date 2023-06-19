@@ -1,9 +1,9 @@
 package hungteen.imm.mixin;
 
 import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.tag.IMMBlockTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +30,7 @@ public class MixinBlock {
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand, CallbackInfo result) {
         if(state.is(IMMBlockTags.SPIRITUAL_ORES) && level.getRandom().nextFloat() < 0.1F){
             for(int i = 0; i < 4; ++ i){
-                ParticleHelper.spawnRandomSpeedParticle(level, ParticleTypes.GLOW, new Vec3(pos.getX() + rand.nextDouble(), pos.getY() + 1.1, pos.getZ() + rand.nextDouble()),0.1F, 0.05F);
+                ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRIT.get(), new Vec3(pos.getX() + rand.nextDouble(), pos.getY() + 1.1, pos.getZ() + rand.nextDouble()),0.1F, 0.05F);
             }
         }
     }

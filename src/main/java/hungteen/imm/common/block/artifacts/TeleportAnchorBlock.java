@@ -1,12 +1,12 @@
 package hungteen.imm.common.block.artifacts;
 
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMStateProperties;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -72,7 +72,7 @@ public class TeleportAnchorBlock extends Block {
             double d1 = (double)pos.getY() + 1.1D;
             double d2 = (double)pos.getZ() + 0.5D + (0.5D - randomSource.nextDouble());
             double d3 = (double)randomSource.nextFloat() * 0.04D;
-            level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, d3, 0.0D);
+            level.addParticle(IMMParticles.SPIRIT.get(), d0, d1, d2, 0.0D, d3, 0.0D);
         }
     }
 

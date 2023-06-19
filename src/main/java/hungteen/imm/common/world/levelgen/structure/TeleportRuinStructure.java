@@ -2,8 +2,12 @@ package hungteen.imm.common.world.levelgen.structure;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
+import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.world.levelgen.IMMStructurePieces;
 import hungteen.imm.common.world.levelgen.IMMStructureTypes;
+import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +18,8 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -26,6 +32,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.Map;
 import java.util.Optional;
@@ -38,11 +45,13 @@ import java.util.Optional;
 public class TeleportRuinStructure extends Structure {
 
     public static final Codec<TeleportRuinStructure> CODEC = simpleCodec(TeleportRuinStructure::new);
-    static final ResourceLocation STRUCTURE_LOCATION_IGLOO = new ResourceLocation("igloo/top");
-    private static final ResourceLocation STRUCTURE_LOCATION_LADDER = new ResourceLocation("igloo/middle");
-    private static final ResourceLocation STRUCTURE_LOCATION_LABORATORY = new ResourceLocation("igloo/bottom");
-    static final Map<ResourceLocation, BlockPos> PIVOTS = ImmutableMap.of(STRUCTURE_LOCATION_IGLOO, new BlockPos(3, 5, 5), STRUCTURE_LOCATION_LADDER, new BlockPos(1, 3, 1), STRUCTURE_LOCATION_LABORATORY, new BlockPos(3, 6, 7));
-    static final Map<ResourceLocation, BlockPos> OFFSETS = ImmutableMap.of(STRUCTURE_LOCATION_IGLOO, BlockPos.ZERO, STRUCTURE_LOCATION_LADDER, new BlockPos(2, -3, 4), STRUCTURE_LOCATION_LABORATORY, new BlockPos(0, -3, -2));
+    static final ResourceLocation MUD_HOUSE = Util.prefix("teleport_ruins/mud_house");
+    private static final ResourceLocation PASSAGE = Util.prefix("teleport_ruins/passage");
+    private static final ResourceLocation TELEPORT_RUIN = Util.prefix("teleport_ruins/teleport_ruin");
+    private static final int PASSAGE_LEN = 10;
+    private static final int LOWEST_HEIGHT = -40;
+    static final Map<ResourceLocation, BlockPos> PIVOTS = ImmutableMap.of(MUD_HOUSE, new BlockPos(4, 2, 4), PASSAGE, new BlockPos(1, 5, 1), TELEPORT_RUIN, new BlockPos(4, 2, 7));
+    static final Map<ResourceLocation, BlockPos> OFFSETS = ImmutableMap.of(MUD_HOUSE, BlockPos.ZERO, PASSAGE, new BlockPos(7, 0, 6), TELEPORT_RUIN, new BlockPos(0, -3, -2));
 
     public TeleportRuinStructure(StructureSettings settings) {
         super(settings);
@@ -64,14 +73,18 @@ public class TeleportRuinStructure extends Structure {
     public static void addPieces(StructureTemplateManager manager, BlockPos pos, Rotation rotation, StructurePieceAccessor accessor, RandomSource randomSource) {
         if (randomSource.nextDouble() < 0.5D) {
             int i = randomSource.nextInt(8) + 4;
-            accessor.addPiece(new Piece(manager, STRUCTURE_LOCATION_LABORATORY, pos, rotation, i * 3));
+            accessor.addPiece(new Piece(manager, TELEPORT_RUIN, pos, rotation, i * 3));
 
             for(int j = 0; j < i - 1; ++j) {
-                accessor.addPiece(new Piece(manager, STRUCTURE_LOCATION_LADDER, pos, rotation, j * 3));
+                accessor.addPiece(new Piece(manager, PASSAGE, pos, rotation, j * 3));
             }
         }
-
-        accessor.addPiece(new Piece(manager, STRUCTURE_LOCATION_IGLOO, pos, rotation, 0));
+        final int passageCnt = Math.max(RandomHelper.getMinMax(randomSource, pos.getY() / PASSAGE_LEN, (pos.getY() - LOWEST_HEIGHT) / PASSAGE_LEN), 0);
+        accessor.addPiece(new Piece(manager, MUD_HOUSE, pos, rotation, 0));
+        for(int i = 0; i < passageCnt; ++ i){
+            accessor.addPiece(new Piece(manager, PASSAGE, pos, rotation, (i + 1) * PASSAGE_LEN));
+        }
+        accessor.addPiece(new Piece(manager, TELEPORT_RUIN, pos, rotation, passageCnt * PASSAGE_LEN + 6));
     }
 
     @Override
@@ -116,7 +129,14 @@ public class TeleportRuinStructure extends Structure {
 
         @Override
         protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor accessor, RandomSource randomSource, BoundingBox boundingBox) {
-
+            if(label.equals("teleport_anchor")){
+                accessor.setBlock(pos, IMMBlocks.TELEPORT_ANCHOR.get().defaultBlockState().setValue(TeleportAnchorBlock.CHARGE, randomSource.nextInt(1)), 3);
+            } else if(label.equals("chest")){
+                BlockEntity blockentity = accessor.getBlockEntity(pos);
+                if (blockentity instanceof ChestBlockEntity) {
+                    ((ChestBlockEntity)blockentity).setLootTable(BuiltInLootTables.IGLOO_CHEST, randomSource.nextLong());
+                }
+            }
         }
     }
 

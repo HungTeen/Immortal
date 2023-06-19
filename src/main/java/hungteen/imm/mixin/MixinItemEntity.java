@@ -1,8 +1,8 @@
 package hungteen.imm.mixin;
 
 import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.tag.IMMItemTags;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,7 +33,7 @@ public abstract class MixinItemEntity {
         final Vec3 pos = ((ItemEntity)(Object)this).position();
         if(level.isClientSide && this.getItem().is(IMMItemTags.SPIRITUAL_STONES) && level.getRandom().nextFloat() < 0.1F){
             for(int i = 0; i < 2; ++ i){
-                ParticleHelper.spawnRandomSpeedParticle(level, ParticleTypes.GLOW, pos,0.1F, 0.1F);
+                ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRIT.get(), pos,0.1F, 0.1F);
             }
         }
     }

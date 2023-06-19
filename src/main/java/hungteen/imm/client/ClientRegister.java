@@ -1,5 +1,6 @@
 package hungteen.imm.client;
 
+import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.event.OverlayEvents;
 import hungteen.imm.client.gui.screen.*;
@@ -14,6 +15,7 @@ import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.particle.IMMFlameParticle;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.client.particle.SpiritParticle;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.FlyingItemEntityRender;
@@ -62,6 +64,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* misc entity */
+        event.registerEntityRenderer(IMMEntities.TELEPORT_FORMATION.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
@@ -123,6 +126,7 @@ public class ClientRegister {
     public static void registerFactories(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new);
         event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.SPIRIT.get(), SpiritParticle.Factory::new);
     }
 
     @SubscribeEvent

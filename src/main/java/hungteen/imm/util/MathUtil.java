@@ -1,6 +1,8 @@
 package hungteen.imm.util;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @program: Immortal
@@ -28,6 +30,10 @@ public class MathUtil {
         } else {
             return 0;
         }
+    }
+
+    public static boolean inAABB(Vec3 pos, AABB aabb){
+        return aabb.contains(pos);
     }
 
 }
