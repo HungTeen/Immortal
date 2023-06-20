@@ -16,6 +16,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
@@ -46,12 +49,11 @@ public class TeleportRuinStructure extends Structure {
 
     public static final Codec<TeleportRuinStructure> CODEC = simpleCodec(TeleportRuinStructure::new);
     static final ResourceLocation MUD_HOUSE = Util.prefix("teleport_ruins/mud_house");
-    private static final ResourceLocation PASSAGE = Util.prefix("teleport_ruins/passage");
     private static final ResourceLocation TELEPORT_RUIN = Util.prefix("teleport_ruins/teleport_ruin");
-    private static final int PASSAGE_LEN = 10;
+    private static final int RUIN_HEIGHT = 5;
     private static final int LOWEST_HEIGHT = -40;
-    static final Map<ResourceLocation, BlockPos> PIVOTS = ImmutableMap.of(MUD_HOUSE, new BlockPos(4, 2, 4), PASSAGE, new BlockPos(1, 5, 1), TELEPORT_RUIN, new BlockPos(4, 2, 7));
-    static final Map<ResourceLocation, BlockPos> OFFSETS = ImmutableMap.of(MUD_HOUSE, BlockPos.ZERO, PASSAGE, new BlockPos(7, 0, 6), TELEPORT_RUIN, new BlockPos(0, -3, -2));
+    static final Map<ResourceLocation, BlockPos> PIVOTS = ImmutableMap.of(MUD_HOUSE, new BlockPos(5, 1, 6), TELEPORT_RUIN, new BlockPos(4, RUIN_HEIGHT, 11));
+    static final Map<ResourceLocation, BlockPos> OFFSETS = ImmutableMap.of(MUD_HOUSE, BlockPos.ZERO, TELEPORT_RUIN, new BlockPos(1, -RUIN_HEIGHT, -5));
 
     public TeleportRuinStructure(StructureSettings settings) {
         super(settings);
@@ -65,26 +67,15 @@ public class TeleportRuinStructure extends Structure {
     private void generatePieces(StructurePiecesBuilder builder, Structure.GenerationContext context) {
         final ChunkPos chunkpos = context.chunkPos();
         final WorldgenRandom worldgenrandom = context.random();
-        final BlockPos blockpos = new BlockPos(chunkpos.getMinBlockX(), 90, chunkpos.getMinBlockZ());
+        final BlockPos blockpos = new BlockPos(chunkpos.getMinBlockX(), 0, chunkpos.getMinBlockZ());
         final Rotation rotation = Rotation.getRandom(worldgenrandom);
         addPieces(context.structureTemplateManager(), blockpos, rotation, builder, worldgenrandom);
     }
 
     public static void addPieces(StructureTemplateManager manager, BlockPos pos, Rotation rotation, StructurePieceAccessor accessor, RandomSource randomSource) {
-        if (randomSource.nextDouble() < 0.5D) {
-            int i = randomSource.nextInt(8) + 4;
-            accessor.addPiece(new Piece(manager, TELEPORT_RUIN, pos, rotation, i * 3));
-
-            for(int j = 0; j < i - 1; ++j) {
-                accessor.addPiece(new Piece(manager, PASSAGE, pos, rotation, j * 3));
-            }
-        }
-        final int passageCnt = Math.max(RandomHelper.getMinMax(randomSource, pos.getY() / PASSAGE_LEN, (pos.getY() - LOWEST_HEIGHT) / PASSAGE_LEN), 0);
-        accessor.addPiece(new Piece(manager, MUD_HOUSE, pos, rotation, 0));
-        for(int i = 0; i < passageCnt; ++ i){
-            accessor.addPiece(new Piece(manager, PASSAGE, pos, rotation, (i + 1) * PASSAGE_LEN));
-        }
-        accessor.addPiece(new Piece(manager, TELEPORT_RUIN, pos, rotation, passageCnt * PASSAGE_LEN + 6));
+        final int baseHeight = RandomHelper.getMinMax(randomSource, LOWEST_HEIGHT, - RUIN_HEIGHT - 5);
+        accessor.addPiece(new Piece(manager, MUD_HOUSE, pos, rotation, baseHeight));
+        accessor.addPiece(new Piece(manager, TELEPORT_RUIN, pos, rotation, baseHeight));
     }
 
     @Override
@@ -94,14 +85,18 @@ public class TeleportRuinStructure extends Structure {
 
     public static class Piece extends HTTemplateStructurePiece {
 
-        public Piece(StructureTemplateManager manager, ResourceLocation location, BlockPos pos, Rotation rotation, int below) {
-            super(IMMStructurePieces.TELEPORT_RUIN.get(), 0, manager, location, location.toString(), makeSettings(rotation, location), makePosition(location, pos, below));
+        private final int baseHeight;
+
+        public Piece(StructureTemplateManager manager, ResourceLocation location, BlockPos pos, Rotation rotation, int baseHeight) {
+            super(IMMStructurePieces.TELEPORT_RUIN.get(), 0, manager, location, location.toString(), makeSettings(rotation, location), makePosition(location, pos));
+            this.baseHeight = baseHeight;
         }
 
         public Piece(StructureTemplateManager manager, CompoundTag tag) {
             super(IMMStructurePieces.TELEPORT_RUIN.get(), manager, tag, location -> {
                 return makeSettings(Rotation.valueOf(tag.getString("Rot")), location);
             });
+            this.baseHeight = tag.getInt("BaseHeight");
         }
 
         private static StructurePlaceSettings makeSettings(Rotation rotation, ResourceLocation location) {
@@ -109,22 +104,45 @@ public class TeleportRuinStructure extends Structure {
                     .setRotation(rotation)
                     .setMirror(Mirror.NONE)
                     .setRotationPivot(PIVOTS.get(location))
-                    .addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR);
+                    .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
         }
 
-        private static BlockPos makePosition(ResourceLocation location, BlockPos pos, int below) {
-            return pos.offset(OFFSETS.get(location)).below(below);
+        private static BlockPos makePosition(ResourceLocation location, BlockPos pos) {
+            return pos.offset(OFFSETS.get(location));
         }
 
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
             super.addAdditionalSaveData(context, tag);
             tag.putString("Rot", this.placeSettings.getRotation().name());
+            tag.putInt("BaseHeight", this.baseHeight);
         }
 
         @Override
         public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource randomSource, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+            final ResourceLocation location = new ResourceLocation(this.templateName);
+            final StructurePlaceSettings settings = makeSettings(this.placeSettings.getRotation(), location);
+            if(location.equals(MUD_HOUSE)){
+                final BlockPos blockpos = OFFSETS.get(location);
+                final BlockPos pos = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(settings, new BlockPos(3 - blockpos.getX(), 0, -blockpos.getZ())));
+                final int height = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+                this.templatePosition = this.templatePosition.offset(0, height - 1, 0);
+            } else {
+                this.templatePosition = new BlockPos(this.templatePosition.getX(), this.baseHeight, this.templatePosition.getZ());
+            }
             super.postProcess(level, manager, generator, randomSource, boundingBox, chunkPos, blockPos);
+            if(location.equals(MUD_HOUSE)){
+                final int topY = this.templatePosition.getY();
+                BlockPos pos = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(settings, new BlockPos(5, 1, 6)));
+                for(int h = this.baseHeight + RUIN_HEIGHT; h <= topY; ++ h){
+                    for(int x = -1; x <= 1; ++ x){
+                        for(int z = -1; z <= 1; ++ z){
+                            final Block block = (x == 0 && z == 0) ? Blocks.AIR : Blocks.DEEPSLATE_TILES;
+                            level.setBlock(new BlockPos(pos.getX() + x, h, pos.getZ() + z), block.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
         }
 
         @Override
@@ -132,6 +150,7 @@ public class TeleportRuinStructure extends Structure {
             if(label.equals("teleport_anchor")){
                 accessor.setBlock(pos, IMMBlocks.TELEPORT_ANCHOR.get().defaultBlockState().setValue(TeleportAnchorBlock.CHARGE, randomSource.nextInt(1)), 3);
             } else if(label.equals("chest")){
+                accessor.setBlock(pos, Blocks.CHEST.defaultBlockState(), 3);
                 BlockEntity blockentity = accessor.getBlockEntity(pos);
                 if (blockentity instanceof ChestBlockEntity) {
                     ((ChestBlockEntity)blockentity).setLootTable(BuiltInLootTables.IGLOO_CHEST, randomSource.nextLong());

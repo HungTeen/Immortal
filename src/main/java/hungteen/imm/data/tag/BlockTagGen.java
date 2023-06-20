@@ -7,7 +7,6 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +30,7 @@ public class BlockTagGen extends HTBlockTagGen {
 
     private void addMCTags(){
         /* Ores */
-        this.tag(IMMBlockTags.SPIRITUAL_ORES).add(Blocks.EMERALD_ORE);
+        this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
         this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
 
         /* Woods */
