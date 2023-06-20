@@ -9,7 +9,7 @@ import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.common.world.IMMTeleporters;
+import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -141,7 +141,7 @@ public class IMMCommand {
         for (ServerPlayer player : targets) {
             ServerLevel serverlevel = ((ServerLevel) player.level).getServer().getLevel(resourceKey);
             if (serverlevel != null) {
-                player.changeDimension(serverlevel, IMMTeleporters.INSTANCE);
+                player.changeDimension(serverlevel, IMMTeleporter.INSTANCE);
             }
         }
         return targets.size();

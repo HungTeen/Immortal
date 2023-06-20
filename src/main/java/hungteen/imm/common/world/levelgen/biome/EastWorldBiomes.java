@@ -84,10 +84,11 @@ public class EastWorldBiomes {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 //        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 2)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 2, 2, 4));
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-//        globalOverworldGeneration(genBuilder);
-        BiomeDefaultFeatures.addPlainGrass(genBuilder);
-        BiomeDefaultFeatures.addDefaultOres(genBuilder);
+
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addPlainGrass(genBuilder);
         BiomeDefaultFeatures.addMeadowVegetation(genBuilder);
 
         BiomeDefaultFeatures.addExtraEmeralds(genBuilder);
@@ -161,7 +162,6 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
         BiomeDefaultFeatures.addBambooVegetation(genBuilder);
 
-        BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         BiomeDefaultFeatures.addPlainGrass(genBuilder);
         BiomeDefaultFeatures.addPlainVegetation(genBuilder);
         BiomeDefaultFeatures.addWarmFlowers(genBuilder);

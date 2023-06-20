@@ -32,8 +32,8 @@ public class EastWorldFeatures {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_REDSTONE_LOWER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_DIAMOND);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_DIAMOND_LARGE);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, largeEmerald ? OrePlacements.ORE_EMERALD : IMMOrePlacements.ORE_EMERALD_SMALL);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, largeCopper ? OrePlacements.ORE_COPPER_LARGE : OrePlacements.ORE_COPPER);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, largeEmerald ? IMMOrePlacements.ORE_EMERALD : IMMOrePlacements.ORE_EMERALD_SMALL);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, IMMOrePlacements.ORE_CINNABAR);
     }
 

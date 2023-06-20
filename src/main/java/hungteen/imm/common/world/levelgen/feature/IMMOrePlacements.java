@@ -20,13 +20,15 @@ import java.util.List;
  */
 public class IMMOrePlacements {
 
-    public static final ResourceKey<PlacedFeature> ORE_CINNABAR = IMMPlacements.create("ore_cinnabar");
+    public static final ResourceKey<PlacedFeature> ORE_EMERALD = IMMPlacements.create("ore_emerald");
     public static final ResourceKey<PlacedFeature> ORE_EMERALD_SMALL = IMMPlacements.create("ore_emerald_small");
+    public static final ResourceKey<PlacedFeature> ORE_CINNABAR = IMMPlacements.create("ore_cinnabar");
 
     public static void register(BootstapContext<PlacedFeature> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
         final Holder<ConfiguredFeature<?, ?>> emeraldOre = features.getOrThrow(OreFeatures.ORE_EMERALD);
         final Holder<ConfiguredFeature<?, ?>> cinnabarOre = features.getOrThrow(IMMOreFeatures.ORE_CINNABAR);
+        PlacementUtils.register(context, ORE_EMERALD, emeraldOre, commonOrePlacement(30, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480))));
         PlacementUtils.register(context, ORE_EMERALD_SMALL, emeraldOre, commonOrePlacement(20, HeightRangePlacement.triangle(VerticalAnchor.absolute(-16), VerticalAnchor.absolute(480))));
         PlacementUtils.register(context, ORE_CINNABAR, cinnabarOre, commonOrePlacement(15, HeightRangePlacement.triangle(VerticalAnchor.absolute(16), VerticalAnchor.absolute(64))));
     }

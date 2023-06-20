@@ -38,8 +38,11 @@ public class IMMBlockPatterns {
     public static BlockPattern getTeleportPattern(){
         if(TeleportPattern == null){
             TeleportPattern = BlockPatternBuilder.start()
-                    .aisle("^   ^", "     ", "     ", "     ", "^   ^")
-                    .aisle("#   #", "     ", "     ", "     ", "#   #")
+                    .aisle("^   ^", "#   #")
+                    .aisle("     ", "     ")
+                    .aisle("     ", "     ")
+                    .aisle("     ", "     ")
+                    .aisle("^   ^", "#   #")
                     .where('^', BlockInWorld.hasState(TeleportAnchorBlock.ANCHOR_PREDICATE))
                     .where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.POLISHED_DEEPSLATE)))
                     .build();

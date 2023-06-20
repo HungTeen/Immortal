@@ -1,10 +1,14 @@
 package hungteen.imm.common.entity.misc.formation;
 
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -18,6 +22,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author PangTeen
@@ -28,12 +34,18 @@ public class TeleportFormation extends FormationEntity {
 
     private static final float TELEPORT_WIDTH = 4F;
     private static final float TELEPORT_HEIGHT = 3F;
-    private static final float TELEPORT_CD = 30;
+    private static final float TELEPORT_CD = 100;
     private final HashMap<Integer, Integer> entityInsideTicks = new HashMap<>();
     private int remainExistTick = 0;
 
     public TeleportFormation(EntityType<?> type, Level level) {
         super(type, level);
+    }
+
+    public TeleportFormation(Level level, BlockPos pos, int remainExistTick) {
+        super(IMMEntities.TELEPORT_FORMATION.get(), level);
+        this.setPos(MathHelper.toVec3(pos.below()));
+        this.setRemainExistTick(remainExistTick);
     }
 
     @Override
@@ -45,30 +57,32 @@ public class TeleportFormation extends FormationEntity {
             } else {
                 final AABB aabb = new AABB(this.position().add(- TELEPORT_WIDTH, - TELEPORT_HEIGHT, - TELEPORT_WIDTH), this.position().add(TELEPORT_WIDTH, TELEPORT_HEIGHT, TELEPORT_WIDTH));
                 // Update ticks.
-                entityInsideTicks.keySet().forEach(id -> {
+                Iterator<Map.Entry<Integer, Integer>> iterator = entityInsideTicks.entrySet().iterator();
+                while(iterator.hasNext()){
+                    final Map.Entry<Integer, Integer> pair = iterator.next();
+                    final int id = pair.getKey();
+                    final int tick = pair.getValue();
                     final Entity entity = this.level.getEntity(id);
                     // Not in same dimension.
                     if(! EntityHelper.isEntityValid(entity) || ! this.level.dimension().equals(entity.level.dimension())){
-                        entityInsideTicks.remove(id);
+                        iterator.remove();
                     } else {
                         // Still inside.
-                        final int ticks = entityInsideTicks.get(id) + (aabb.intersects(entity.getBoundingBox()) ? 1 : -2);
+                        final int ticks = tick + (aabb.intersects(entity.getBoundingBox()) ? 1 : -2);
                         if(ticks > TELEPORT_CD){
                             final MinecraftServer server = serverLevel.getServer();
                             final ResourceKey<Level> dst = this.level.dimension() == IMMLevels.EAST_WORLD ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
                             final ServerLevel dstLevel = server.getLevel(dst);
                             if(dstLevel != null){
-                                this.level.getProfiler().push("portal");
-                                this.setPortalCooldown();
-                                this.changeDimension(dstLevel);
-                                this.level.getProfiler().pop();
+                                entity.setPortalCooldown();
+                                entity.changeDimension(dstLevel, IMMTeleporter.INSTANCE);
                             }
                         } else {
                             this.spawnTeleportParticles(entity, ticks);
                         }
-                        entityInsideTicks.put(id, ticks);
+                        pair.setValue(ticks);
                     }
-                });
+                }
                 // Find new inside entities.
                 if(this.random.nextFloat() < 0.1F){
                     EntityHelper.getPredicateEntities(this, aabb, Entity.class, Entity::canChangeDimensions).forEach(entity -> {

@@ -21,16 +21,11 @@ public class SpiritParticle extends HTTextureParticle {
     private final SpriteSet sprites;
 
     public SpiritParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(clientLevel, x, y, z, 0.5D - RANDOM.nextDouble(), ySpeed, 0.5D - RANDOM.nextDouble());
+        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         this.friction = 0.96F;
         this.gravity = 0F;
         this.speedUpWhenYMotionIsBlocked = true;
-        this.yd *= 0.2F;
-        if (xSpeed == 0.0D && zSpeed == 0.0D) {
-            this.xd *= 0.1F;
-            this.zd *= 0.1F;
-        }
 
         this.quadSize *= 0.75F;
         this.lifetime = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
@@ -54,8 +49,7 @@ public class SpiritParticle extends HTTextureParticle {
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
-            SpiritualManaParticle particle = new SpiritualManaParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
-//            particle.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
+            SpiritParticle particle = new SpiritParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
             return particle;
         }
     }

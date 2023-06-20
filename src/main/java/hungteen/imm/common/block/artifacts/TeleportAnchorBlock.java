@@ -1,9 +1,11 @@
 package hungteen.imm.common.block.artifacts;
 
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMStateProperties;
+import hungteen.imm.common.entity.misc.formation.TeleportFormation;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import net.minecraft.core.BlockPos;
@@ -24,8 +26,10 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * @program: Immortal
@@ -68,11 +72,10 @@ public class TeleportAnchorBlock extends Block {
                 BlockUtil.playSound(level, pos, SoundEvents.RESPAWN_ANCHOR_AMBIENT);
             }
 
-            double d0 = (double)pos.getX() + 0.5D + (0.5D - randomSource.nextDouble());
-            double d1 = (double)pos.getY() + 1.1D;
-            double d2 = (double)pos.getZ() + 0.5D + (0.5D - randomSource.nextDouble());
-            double d3 = (double)randomSource.nextFloat() * 0.04D;
-            level.addParticle(IMMParticles.SPIRIT.get(), d0, d1, d2, 0.0D, d3, 0.0D);
+            final double x = pos.getX() + 0.5D + (0.5D - randomSource.nextDouble());
+            final double y = pos.getY() + 1.1D;
+            final double z = pos.getZ() + 0.5D + (0.5D - randomSource.nextDouble());
+            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRIT.get(), new Vec3(x, y, z),0.06F, 0.05F);
         }
     }
 
@@ -82,7 +85,19 @@ public class TeleportAnchorBlock extends Block {
         if(! level.isClientSide){
             BlockPattern.BlockPatternMatch match = IMMBlockPatterns.getTeleportPattern().find(level, pos);
             if(match != null){
-                level.setBlock(pos, state.setValue(CHARGE, 0), 3);
+                final BlockPos center = match.getBlock(2, 1, 2).getPos();
+                TeleportFormation formation = new TeleportFormation(level, center, 400);
+                level.addFreshEntity(formation);
+                Stream.of(
+                        match.getBlock(0, 0, 0),
+                        match.getBlock(4, 0, 0),
+                        match.getBlock(0, 0, 4),
+                        match.getBlock(4, 0, 4)
+                ).forEach(blockInWorld -> {
+                    if(blockInWorld.getState().is(IMMBlocks.TELEPORT_ANCHOR.get())){
+                        level.setBlock(blockInWorld.getPos(), blockInWorld.getState().setValue(CHARGE, 0), 3);
+                    }
+                });
             }
         }
     }
