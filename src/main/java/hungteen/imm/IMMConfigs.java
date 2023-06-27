@@ -89,25 +89,15 @@ public class IMMConfigs {
                             .comment("The weight that players have earth spiritual root.")
                             .defineInRange("EarthRootChance", 100, 0, 1000000);
 
-                    RuleSettings.windRootWeight = builder
-                            .translation("config.immortal.wind_root_weight")
-                            .comment("The weight that players have wind spiritual root (valid only when one spirit root).")
-                            .defineInRange("WindRootChance", 30, 0, 1000000);
+                    RuleSettings.spiritRootWeight = builder
+                            .translation("config.immortal.spirit_root_weight")
+                            .comment("The weight that players have spirit spiritual root.")
+                            .defineInRange("SpiritRootChance", 40, 0, 1000000);
 
-                    RuleSettings.electricRootWeight = builder
-                            .translation("config.immortal.electric_root_weight")
-                            .comment("The weight that players have electric spiritual root (valid only when one spirit root).")
-                            .defineInRange("ElectricRootChance", 20, 0, 1000000);
-
-                    RuleSettings.drugRootWeight = builder
-                            .translation("config.immortal.drug_root_weight")
-                            .comment("The weight that players have drug spiritual root (valid only when one spirit root).")
-                            .defineInRange("DrugRootChance", 20, 0, 1000000);
-
-                    RuleSettings.iceRootWeight = builder
-                            .translation("config.immortal.ice_root_weight")
-                            .comment("The weight that players have ice spiritual root (valid only when one spirit root).")
-                            .defineInRange("IceRootChance", 30, 0, 1000000);
+//                    RuleSettings.windRootWeight = builder
+//                            .translation("config.immortal.wind_root_weight")
+//                            .comment("The weight that players have wind spiritual root (valid only when one spirit root).")
+//                            .defineInRange("WindRootChance", 30, 0, 1000000);
 
 
                 }
@@ -145,10 +135,7 @@ public class IMMConfigs {
             public ForgeConfigSpec.IntValue waterRootWeight;
             public ForgeConfigSpec.IntValue fireRootWeight;
             public ForgeConfigSpec.IntValue earthRootWeight;
-            public ForgeConfigSpec.IntValue windRootWeight;
-            public ForgeConfigSpec.IntValue drugRootWeight;
-            public ForgeConfigSpec.IntValue electricRootWeight;
-            public ForgeConfigSpec.IntValue iceRootWeight;
+            public ForgeConfigSpec.IntValue spiritRootWeight;
         }
 
         public static class BlockSettings {
@@ -212,24 +199,8 @@ public class IMMConfigs {
         return COMMON_CONFIG.RuleSettings.earthRootWeight.get();
     }
 
-    public static int getWindWeight() {
-        return COMMON_CONFIG.RuleSettings.windRootWeight.get();
-    }
-
-    public static int getElectricWeight() {
-        return COMMON_CONFIG.RuleSettings.electricRootWeight.get();
-    }
-
-    public static int getDrugWeight() {
-        return COMMON_CONFIG.RuleSettings.drugRootWeight.get();
-    }
-
-    public static int getIceWeight() {
-        return COMMON_CONFIG.RuleSettings.iceRootWeight.get();
-    }
-
-    public static int getFurnaceExplodeCD() {
-        return COMMON_CONFIG.BlockSettings.furnaceExplodeCD.get();
+    public static int getSpiritWeight() {
+        return COMMON_CONFIG.RuleSettings.spiritRootWeight.get();
     }
 
     /* Client */

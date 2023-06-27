@@ -99,7 +99,7 @@ public class SnowGolem extends GolemEntity {
 
     @Override
     public Collection<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.ICE);
+        return List.of(SpiritualTypes.WATER);
     }
 
 }

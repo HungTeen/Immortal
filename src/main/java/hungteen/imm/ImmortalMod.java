@@ -125,7 +125,7 @@ public class ImmortalMod {
         HumanSettings.register();
 
         TradeTypes.TradeType.register();
-        SpiritualTypes.SpiritualType.register();
+        SpiritualTypes.registry();
         SpellTypes.SpellType.register();
         PlayerRangeFloats.registry();
         PlayerRangeIntegers.registry();

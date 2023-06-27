@@ -39,6 +39,6 @@ public abstract class UndeadEntity extends IMMCreature implements IUndead {
 
     @Override
     public Collection<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.DRUG);
+        return List.of(SpiritualTypes.SPIRIT);
     }
 }
