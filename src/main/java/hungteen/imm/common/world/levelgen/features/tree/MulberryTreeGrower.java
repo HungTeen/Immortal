@@ -1,4 +1,4 @@
-package hungteen.imm.common.world.levelgen.feature.tree;
+package hungteen.imm.common.world.levelgen.features.tree;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;

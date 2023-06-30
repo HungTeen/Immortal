@@ -1,10 +1,19 @@
-package hungteen.imm.common.world.levelgen.feature;
+package hungteen.imm.common.world.levelgen.features;
 
+import hungteen.imm.common.world.levelgen.features.configuration.HorizontalStakeConfiguration;
+import hungteen.imm.common.world.levelgen.features.configuration.WoodStakeConfiguration;
+import hungteen.imm.common.world.levelgen.features.feature.HorizontalStakeFeature;
+import hungteen.imm.common.world.levelgen.features.feature.WoodStakeFeature;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * @program: Immortal
@@ -23,8 +32,18 @@ public class IMMFeatures {
 //            ).build())
 //    );
 
+    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Util.id());
+
+    public static final RegistryObject<WoodStakeFeature> WOOD_STAKE = FEATURES.register("wood_stake", () -> new WoodStakeFeature(WoodStakeConfiguration.CODEC));
+    public static final RegistryObject<HorizontalStakeFeature> HORIZONTAL_STAKE = FEATURES.register("horizontal_stake", () -> new HorizontalStakeFeature(HorizontalStakeConfiguration.CODEC));
+
     public static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
         IMMOreFeatures.register(context);
+        IMMPlantFeatures.register(context);
+    }
+
+    public static void register(IEventBus modBus){
+        FEATURES.register(modBus);
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name){

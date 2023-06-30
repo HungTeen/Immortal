@@ -9,7 +9,7 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.artifacts.RuneWorkBench;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.*;
-import hungteen.imm.common.world.levelgen.feature.tree.MulberryTreeGrower;
+import hungteen.imm.common.world.levelgen.features.tree.MulberryTreeGrower;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.world.item.BlockItem;

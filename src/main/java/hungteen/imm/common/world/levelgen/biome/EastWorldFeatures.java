@@ -1,6 +1,6 @@
 package hungteen.imm.common.world.levelgen.biome;
 
-import hungteen.imm.common.world.levelgen.feature.IMMOrePlacements;
+import hungteen.imm.common.world.levelgen.features.IMMOrePlacements;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;

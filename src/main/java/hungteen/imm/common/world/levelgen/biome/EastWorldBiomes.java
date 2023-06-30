@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.levelgen.biome;
 
 import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.levelgen.features.IMMPlantPlacements;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -21,13 +22,14 @@ import javax.annotation.Nullable;
 
 /**
  * Look at {@link net.minecraft.data.worldgen.biome.OverworldBiomes}.
+ *
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-18 14:11
  **/
 public class EastWorldBiomes {
 
-    public static void initBiomes(BootstapContext<Biome> context){
+    public static void initBiomes(BootstapContext<Biome> context) {
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         final HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
         context.register(IMMBiomes.PLAINS, plains(features, carvers, false, false));
@@ -35,6 +37,8 @@ public class EastWorldBiomes {
         context.register(IMMBiomes.DESERT, desert(features, carvers));
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
         context.register(IMMBiomes.MEADOW, meadow(features, carvers));
+        context.register(IMMBiomes.BIRCH_FOREST, forest(features, carvers, false, false));
+        context.register(IMMBiomes.CUT_BIRCH_FOREST, forest(features, carvers, true, true));
     }
 
     /**
@@ -42,7 +46,7 @@ public class EastWorldBiomes {
      */
     private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean sunflower, boolean snowy) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        if(snowy){
+        if (snowy) {
             spawnBuilder.creatureGenerationProbability(0.07F);
             BiomeDefaultFeatures.snowySpawns(spawnBuilder);
         } else {
@@ -53,7 +57,7 @@ public class EastWorldBiomes {
         EastWorldFeatures.globalGeneration(genBuilder);
         EastWorldFeatures.addOres(genBuilder, true, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
-        if(snowy){
+        if (snowy) {
             BiomeDefaultFeatures.addSnowyTrees(genBuilder);
             BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
             BiomeDefaultFeatures.addDefaultGrass(genBuilder);
@@ -150,6 +154,45 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDesertExtraDecoration(genBuilder);
 
         return biome(false, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
+    }
+
+    public static Biome forest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean cut, boolean hasFlower) {
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
+        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
+        if (hasFlower) {
+            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
+        } else {
+            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 5, 4, 4));
+        }
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        if (hasFlower) {
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FOREST_FLOWERS);
+        } else {
+            BiomeDefaultFeatures.addForestFlowers(genBuilder);
+        }
+        BiomeDefaultFeatures.addDefaultOres(genBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        if (hasFlower) {
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_FLOWER_FOREST);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FLOWER_FOREST);
+            BiomeDefaultFeatures.addDefaultGrass(genBuilder);
+        } else {
+            BiomeDefaultFeatures.addBirchTrees(genBuilder);
+            BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+            BiomeDefaultFeatures.addForestGrass(genBuilder);
+        }
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+        if (cut) {
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMPlantPlacements.OAK_STAKE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMPlantPlacements.OAK_HORIZONTAL_STAKE);
+        }
+
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE_AND_FOREST);
+        return biome(true, 0.6F, 0.6F, spawnBuilder, genBuilder, music);
     }
 
     private static Biome bambooJungle(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {

@@ -1,4 +1,4 @@
-package hungteen.imm.common.world.levelgen.feature;
+package hungteen.imm.common.world.levelgen.features;
 
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -20,6 +20,7 @@ public class IMMPlacements {
 
     public static void register(BootstapContext<PlacedFeature> context) {
         IMMOrePlacements.register(context);
+        IMMPlantPlacements.register(context);
     }
 
     public static ResourceKey<PlacedFeature> create(String name){

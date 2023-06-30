@@ -26,6 +26,7 @@ import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMStructurePieces;
 import hungteen.imm.common.world.levelgen.IMMStructureTypes;
+import hungteen.imm.common.world.levelgen.features.IMMFeatures;
 import hungteen.imm.data.DataGenHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -101,6 +102,7 @@ public class ImmortalMod {
         IMMProfessions.register(modBus);
         IMMStructureTypes.register(modBus);
         IMMStructurePieces.register(modBus);
+        IMMFeatures.register(modBus);
     }
 
     /**

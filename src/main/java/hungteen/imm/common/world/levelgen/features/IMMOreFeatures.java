@@ -1,4 +1,4 @@
-package hungteen.imm.common.world.levelgen.feature;
+package hungteen.imm.common.world.levelgen.features;
 
 import hungteen.imm.common.block.IMMBlocks;
 import net.minecraft.data.worldgen.BootstapContext;

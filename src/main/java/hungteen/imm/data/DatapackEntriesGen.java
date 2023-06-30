@@ -2,8 +2,8 @@ package hungteen.imm.data;
 
 import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
-import hungteen.imm.common.world.levelgen.feature.IMMFeatures;
-import hungteen.imm.common.world.levelgen.feature.IMMPlacements;
+import hungteen.imm.common.world.levelgen.features.IMMFeatures;
+import hungteen.imm.common.world.levelgen.features.IMMPlacements;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;

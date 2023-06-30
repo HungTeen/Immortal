@@ -1,4 +1,4 @@
-package hungteen.imm.common.world.levelgen.feature;
+package hungteen.imm.common.world.levelgen.features;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
