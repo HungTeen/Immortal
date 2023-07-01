@@ -15,18 +15,18 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2023-02-25 22:01
  **/
-public class EntityCapProvider implements ICapabilitySerializable<CompoundTag> {
+public class IMMEntityCapProvider implements ICapabilitySerializable<CompoundTag> {
 
-    private EntitySpiritualCapability entityCapability;
-    private LazyOptional<EntitySpiritualCapability> entityCapOpt = LazyOptional.of(this::create);
+    private IMMEntityCapability entityCapability;
+    private LazyOptional<IMMEntityCapability> entityCapOpt = LazyOptional.of(this::create);
 
-    public EntityCapProvider(Entity entity){
+    public IMMEntityCapProvider(Entity entity){
         this.entityCapOpt.ifPresent(cap -> cap.init(entity));
     }
 
-    private @NotNull EntitySpiritualCapability create(){
+    private @NotNull IMMEntityCapability create(){
         if(entityCapability == null){
-            entityCapability = new EntitySpiritualCapability();
+            entityCapability = new IMMEntityCapability();
         }
         return entityCapability;
     }

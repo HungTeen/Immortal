@@ -4,8 +4,8 @@ import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.capability.chunk.ChunkCapProvider;
 import hungteen.imm.common.capability.chunk.ChunkCapability;
-import hungteen.imm.common.capability.entity.EntityCapProvider;
-import hungteen.imm.common.capability.entity.EntitySpiritualCapability;
+import hungteen.imm.common.capability.entity.IMMEntityCapProvider;
+import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.capability.player.PlayerCapProvider;
 import hungteen.imm.common.capability.player.PlayerCapability;
 import hungteen.imm.util.Util;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class CapabilityHandler {
 
     public static Capability<PlayerCapability> PLAYER_CAP = CapabilityManager.get(new CapabilityToken<>() {});
-    public static Capability<EntitySpiritualCapability> ENTITY_CAP = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<IMMEntityCapability> ENTITY_CAP = CapabilityManager.get(new CapabilityToken<>() {});
     public static Capability<ChunkCapability> CHUNK_CAP = CapabilityManager.get(new CapabilityToken<>() {});
 
     /**
@@ -44,7 +44,7 @@ public class CapabilityHandler {
         if(event.getObject() instanceof Player){
             event.addCapability(Util.prefix("player_data"), new PlayerCapProvider((Player) event.getObject()));
         }
-        event.addCapability(Util.prefix("spiritual_data"), new EntityCapProvider(event.getObject()));
+        event.addCapability(Util.prefix("spiritual_data"), new IMMEntityCapProvider(event.getObject()));
     }
 
     /**

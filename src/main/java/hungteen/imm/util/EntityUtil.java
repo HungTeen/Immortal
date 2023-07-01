@@ -3,6 +3,8 @@ package hungteen.imm.util;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.capability.CapabilityHandler;
+import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,8 +22,11 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import org.apache.commons.lang3.tuple.Triple;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -30,6 +35,19 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    @Nullable
+    public static IMMEntityCapability getEntityCapability(Entity entity) {
+        return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
+    }
+
+    public static Optional<IMMEntityCapability> getOptCapability(Entity entity) {
+        return Optional.ofNullable(getEntityCapability(entity));
+    }
+
+    public static <U> U getCapabilityResult(Entity entity, Function<IMMEntityCapability, U> function, U defaultValue) {
+        return getOptCapability(entity).map(function).orElse(defaultValue);
+    }
 
     public static boolean notConsume(Entity entity){
         return entity instanceof Player player && PlayerUtil.notConsume(player);

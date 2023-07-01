@@ -8,7 +8,7 @@ import net.minecraftforge.common.capabilities.AutoRegisterCapability;
  * @create: 2023-02-25 21:35
  **/
 @AutoRegisterCapability
-public interface ISpiritualCapability {
+public interface IIMMEntityCapability {
 
 
 }
