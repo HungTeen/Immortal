@@ -20,6 +20,18 @@ public class ClientProxy extends CommonProxy {
 
     public static final Minecraft MC = Minecraft.getInstance();
 
+    public static Minecraft mc(){
+        return MC;
+    }
+
+    public static void push(String name){
+        mc().getProfiler().push(name);
+    }
+
+    public static void pop(){
+        mc().getProfiler().pop();
+    }
+
     @Override
     public void openRestingScreen() {
 

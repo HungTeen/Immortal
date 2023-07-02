@@ -53,6 +53,10 @@ public class NetworkHandler {
         CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), msg);
     }
 
+    public static <MSG> void sendToClientEntityAndSelf(Entity entity, MSG msg){
+        CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), msg);
+    }
+
     public static <MSG> void sendToNearByClient(Level world, Vec3 vec, double dis, MSG msg){
         CHANNEL.send(PacketDistributor.NEAR.with(() -> {
             return new PacketDistributor.TargetPoint(vec.x, vec.y, vec.z, dis, world.dimension());

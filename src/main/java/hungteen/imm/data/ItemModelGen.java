@@ -129,6 +129,11 @@ public class ItemModelGen extends HTItemModelGen {
     }
 
     protected void talisman(Item item) {
+        this.withExistingParent(this.name(item), Util.prefix("item/talisman"));
+        this.add(item);
+    }
+
+    protected void talismanAnimated(Item item) {
         final String staticSuffix = "_static";
         final String activateSuffix = "_" + TalismanItem.ACTIVATED;
         final String parent = ItemHelper.itemTexture(item).toString();

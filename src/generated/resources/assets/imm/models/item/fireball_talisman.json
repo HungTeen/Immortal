@@ -1,17 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "overrides": [
-    {
-      "model": "imm:item/fireball_talisman_activated",
-      "predicate": {
-        "imm:activated": 1.0
-      }
-    },
-    {
-      "model": "imm:item/fireball_talisman_static",
-      "predicate": {
-        "imm:activated": 0.0
-      }
-    }
-  ]
+  "parent": "imm:item/talisman"
 }

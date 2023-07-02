@@ -119,6 +119,26 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         return robust ? this.robustElementData.getAmount(element) : this.weakElementData.getAmount(element);
     }
 
+    /**
+     * Negative float means weak, vise versa robust.
+     * @return (Elements -> float)
+     */
+    public Map<Elements, Float> getElementMap() {
+        final Map<Elements, Float> map = new EnumMap<>(Elements.class);
+        for (Elements element : Elements.values()) {
+            float amount = getElementAmount(element, true);
+            if(amount > 0){
+                map.put(element, amount);
+            } else {
+                amount = getElementAmount(element, false);
+                if(amount > 0){
+                    map.put(element, - amount);
+                }
+            }
+        }
+        return map;
+    }
+
     private void setLastUpdateTick(Elements element, boolean robust) {
         if (!this.entity.level.isClientSide) {
             if (robust) {
@@ -149,7 +169,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
 
     public void sendElementPacket(Elements element, boolean robust, float amount) {
         if (!this.entity.level.isClientSide) {
-            NetworkHandler.sendToClientEntity(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
+            NetworkHandler.sendToClientEntityAndSelf(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
         }
     }
 

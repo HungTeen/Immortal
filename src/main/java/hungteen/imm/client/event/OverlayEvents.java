@@ -2,7 +2,7 @@ package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientDatas;
-import hungteen.imm.client.event.handler.OverlayHandler;
+import hungteen.imm.client.event.handler.RenderEventHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -21,7 +21,7 @@ public class OverlayEvents {
     @SubscribeEvent
     public static void onPostRenderOverlay(RenderGuiOverlayEvent.Pre ev) {
         if(ev.getOverlay() == VanillaGuiOverlay.EXPERIENCE_BAR.type() || ev.getOverlay() == VanillaGuiOverlay.JUMP_BAR.type()){
-            if(OverlayHandler.canRenderManaBar()){
+            if(RenderEventHandler.canRenderManaBar()){
                 ev.setCanceled(true);
             }
         }
@@ -36,19 +36,24 @@ public class OverlayEvents {
      */
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("spiritual_mana_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if (OverlayHandler.canRenderManaBar()) {
+            if (RenderEventHandler.canRenderManaBar()) {
                 gui.setupOverlayRenderState(true, false);
-                OverlayHandler.renderSpiritualMana(poseStack, screenHeight, screenWidth);
+                RenderEventHandler.renderSpiritualMana(poseStack, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("spell_circle", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if(OverlayHandler.canRenderOverlay() && ClientDatas.ShowSpellCircle){
-                OverlayHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
+            if(RenderEventHandler.canRenderOverlay() && ClientDatas.ShowSpellCircle){
+                RenderEventHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
+            }
+        });
+        event.registerAboveAll("elements", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            if(RenderEventHandler.canRenderOverlay()){
+                RenderEventHandler.renderElements(poseStack, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("smithing_progress_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-            if(OverlayHandler.canRenderOverlay()){
-                OverlayHandler.renderSmithingBar(poseStack, screenHeight, screenWidth);
+            if(RenderEventHandler.canRenderOverlay()){
+                RenderEventHandler.renderSmithingBar(poseStack, screenHeight, screenWidth);
             }
         });
     }

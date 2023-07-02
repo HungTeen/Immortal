@@ -1,7 +1,9 @@
 package hungteen.imm.client;
 
-import java.util.HashMap;
-import java.util.Set;
+import hungteen.imm.api.enums.Elements;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @program: Immortal
@@ -16,6 +18,11 @@ public class ClientDatas {
     public static double SpellMousePositionX = 0D; // 模拟鼠标的X值。
     public static double SpellMousePositionY = 0D; // 模拟鼠标的Y值。
     public static int lastSelectedPosition = - 1; // 保存上一次法术轮盘选择的位置，-1表示啥也没选。
+
+    /* 元素相关 */
+
+    public static final Map<Elements, Integer> DisappearTicks = new EnumMap<>(Elements.class);
+    public static final Map<Elements, Integer> DisplayRobustTicks = new EnumMap<>(Elements.class);
 
     public static boolean StartSmithing = false;
     public static float SmithingProgress = 0;
