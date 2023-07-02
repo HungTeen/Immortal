@@ -131,6 +131,7 @@ public class ImmortalMod {
         SpellTypes.SpellType.register();
         PlayerRangeFloats.registry();
         PlayerRangeIntegers.registry();
+        ElementReactions.registry();
         RealmTypes.RealmType.register();
         BehaviorRunes.register();
         FilterRuneTypes.register();

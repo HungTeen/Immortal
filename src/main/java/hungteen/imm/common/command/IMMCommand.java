@@ -1,13 +1,17 @@
 package hungteen.imm.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
@@ -21,9 +25,11 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -121,6 +127,21 @@ public class IMMCommand {
                                         ))
                         ));
             });
+        }
+        {
+            Arrays.stream(Elements.values()).forEach(element -> {
+                builder.then(Commands.literal("element")
+                        .then(Commands.literal("add")
+                                .then(Commands.argument("targets", EntityArgument.entities())
+                                        .then(Commands.literal(element.name())
+                                                .then(Commands.argument("robust", BoolArgumentType.bool())
+                                                        .then(Commands.argument("value", FloatArgumentType.floatArg())
+                                                                .executes(command -> addElementAmount(command.getSource(), EntityArgument.getEntities(command, "targets"), element, BoolArgumentType.getBool(command, "robust"), FloatArgumentType.getFloat(command, "value")))
+                                                        ))))
+                        )
+                );
+            });
+
         }
         {
             builder.then(Commands.literal("tp")
@@ -285,6 +306,13 @@ public class IMMCommand {
 
     private static Component getIntegerComponent(IRangeNumber<Integer> data, int value) {
         return Component.literal(data.getComponent().getString() + " : " + value);
+    }
+
+    private static int addElementAmount(CommandSourceStack source, Collection<? extends Entity> targets, Elements element, boolean robust, float amount) {
+        targets.forEach(target -> {
+            ElementManager.addElementAmount(target, element, robust, amount);
+        });
+        return targets.size();
     }
 
 }

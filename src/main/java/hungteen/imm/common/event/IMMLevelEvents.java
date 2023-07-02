@@ -19,9 +19,8 @@ public class IMMLevelEvents {
 
     @SubscribeEvent
     public static void tick(TickEvent.LevelTickEvent event) {
-        /* handle player death */
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
-            if(event.level instanceof ServerLevel serverLevel && serverLevel.getGameTime() % ElementManager.UPDATE_CD == 10){
+            if(event.level instanceof ServerLevel serverLevel){
                 for (Entity entity : serverLevel.getEntities().getAll()) {
                     ElementManager.tickElements(entity);
                 }

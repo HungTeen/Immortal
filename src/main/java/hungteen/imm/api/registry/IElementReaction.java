@@ -8,11 +8,13 @@ import net.minecraft.world.entity.Entity;
  * @program Immortal
  * @data 2023/7/1 16:22
  */
-public interface IElementReactionType extends ISimpleEntry {
+public interface IElementReaction extends ISimpleEntry {
 
     boolean match(Entity entity);
 
-    void reaction(Entity entity);
+    void doReaction(Entity entity);
 
     void consume(Entity entity);
+
+    int priority();
 }

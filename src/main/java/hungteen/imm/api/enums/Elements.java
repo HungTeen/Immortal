@@ -11,40 +11,52 @@ public enum Elements {
     /**
      * 金元素。
      */
-    METAL(true),
+    METAL(true, 0.05F, 0.25F),
 
     /**
      * 木元素。
      */
-    WOOD(true),
+    WOOD(true, 0.06F, 0.15F),
 
     /**
      * 水元素。
      */
-    WATER(true),
+    WATER(true, 0.15F, 0.04F),
 
     /**
      * 火元素。
      */
-    FIRE(true),
+    FIRE(true, 0.2F, 0.05F),
 
     /**
      * 土元素。
      */
-    EARTH(true),
+    EARTH(true, 0.1F, 0.1F),
 
     /**
      * 业元素。
      */
-    SPIRIT(false);
+    SPIRIT(false, 0.1F, 0.1F);
 
     private final boolean isPhysical;
+    private final float attachChance;
+    private final float decaySpeed;
 
-    Elements(boolean isPhysical) {
+    Elements(boolean isPhysical, float attachChance, float decaySpeed) {
         this.isPhysical = isPhysical;
+        this.attachChance = attachChance;
+        this.decaySpeed = decaySpeed;
     }
 
     public boolean isPhysical() {
         return isPhysical;
+    }
+
+    public float getAttachChance() {
+        return attachChance;
+    }
+
+    public float getDecaySpeed() {
+        return decaySpeed;
     }
 }

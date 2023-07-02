@@ -21,14 +21,12 @@ public class EntityElementPacket {
     private final String type;
     private final boolean robust;
     private final float value;
-    private final long lastTick;
 
-    public EntityElementPacket(int entityId, Elements elements, boolean robust, float value, long lastTick) {
+    public EntityElementPacket(int entityId, Elements elements, boolean robust, float value) {
         this.entityId = entityId;
         this.type = elements.name();
         this.robust = robust;
         this.value = value;
-        this.lastTick = lastTick;
     }
 
     public EntityElementPacket(FriendlyByteBuf buffer) {
@@ -36,7 +34,6 @@ public class EntityElementPacket {
         this.type = buffer.readUtf();
         this.robust = buffer.readBoolean();
         this.value = buffer.readFloat();
-        this.lastTick = buffer.readLong();
     }
 
     public void encode(FriendlyByteBuf buffer) {
@@ -44,7 +41,6 @@ public class EntityElementPacket {
         buffer.writeUtf(this.type);
         buffer.writeBoolean(this.robust);
         buffer.writeFloat(this.value);
-        buffer.writeLong(this.lastTick);
     }
 
     public static class Handler {
@@ -58,7 +54,7 @@ public class EntityElementPacket {
                     final Entity entity = level.getEntity(message.entityId);
                     final Elements element = Elements.valueOf(message.type);
                     if(entity != null){
-                        ElementManager.setEntityElement(entity, element, message.robust, message.value, message.lastTick);
+                        ElementManager.setElementAmount(entity, element, message.robust, message.value);
                     }
                 });
             });
