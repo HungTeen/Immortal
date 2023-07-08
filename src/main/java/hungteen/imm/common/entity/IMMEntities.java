@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity;
 
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.entity.creature.monster.SharpStake;
 import hungteen.imm.common.entity.golem.CopperGolem;
 import hungteen.imm.common.entity.golem.CreeperGolem;
 import hungteen.imm.common.entity.golem.IronGolem;
@@ -55,7 +56,9 @@ public class IMMEntities {
 //
 //    public static final RegistryObject<EntityType<GrassCarp>> GRASS_CARP = registerEntityType(GrassCarp::new, "grass_carp", MobCategory.WATER_CREATURE);
 //    public static final RegistryObject<EntityType<SilkWorm>> SILK_WORM = registerEntityType(SilkWorm::new, "silk_worm", MobCategory.CREATURE);
-//
+
+    /* Monster */
+    public static final RegistryObject<EntityType<SharpStake>> SHARP_STAKE = registerEntityType(SharpStake::new, "sharp_stake", MobCategory.MONSTER);
 //    /* Undead */
 //
 //    public static final RegistryObject<EntityType<SpiritualZombie>> SPIRITUAL_ZOMBIE = registerEntityType(SpiritualZombie::new, "spiritual_zombie", MobCategory.MONSTER);
@@ -76,7 +79,9 @@ public class IMMEntities {
         /* creature */
 //        ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
 //        ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());
-//
+
+        /* Monster */
+        ev.put(SHARP_STAKE.get(), SharpStake.createAttributes().build());
 //        /* undead */
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
 //

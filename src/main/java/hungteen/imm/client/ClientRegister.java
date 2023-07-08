@@ -19,6 +19,7 @@ import hungteen.imm.client.particle.SpiritParticle;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
 import hungteen.imm.client.render.entity.FlyingItemEntityRender;
+import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
@@ -78,6 +79,9 @@ public class ClientRegister {
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
 
+        /* Monster */
+        event.registerEntityRenderer(IMMEntities.SHARP_STAKE.get(), SharpStakeRender::new);
+
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
 
@@ -109,6 +113,9 @@ public class ClientRegister {
         /* creature */
         event.registerLayerDefinition(ModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
+
+        /* Monster */
+        event.registerLayerDefinition(ModelLayers.SHARP_STAKE, EmptyModel::createBodyLayer);
 
         /* zombie entity */
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);

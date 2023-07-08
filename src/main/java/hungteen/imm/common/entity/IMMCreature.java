@@ -10,9 +10,17 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -24,7 +32,7 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
     private static final EntityDataAccessor<IRealmType> REALM = SynchedEntityData.defineId(IMMCreature.class, IMMDataSerializers.REALM.get());
     private static final EntityDataAccessor<Integer> ANIMATIONS = SynchedEntityData.defineId(IMMCreature.class, EntityDataSerializers.INT);
 
-    protected IMMCreature(EntityType<? extends IMMCreature> type, Level level) {
+    public IMMCreature(EntityType<? extends IMMCreature> type, Level level) {
         super(type, level);
     }
 
@@ -33,6 +41,15 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
         super.defineSynchedData();
         entityData.define(REALM, getDefaultRealm());
         entityData.define(ANIMATIONS, 0);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+        if(! accessor.isClientSide()){
+            Optional.ofNullable(this.getSpawnSound()).ifPresent(l -> this.playSound(l, this.getSoundVolume(), this.getVoicePitch()));
+        }
+        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data, tag);
     }
 
     @Override
@@ -92,5 +109,10 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
 
     protected IRealmType getDefaultRealm(){
         return RealmTypes.MORTALITY;
+    }
+
+    @Nullable
+    protected SoundEvent getSpawnSound() {
+        return null;
     }
 }

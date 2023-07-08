@@ -1,7 +1,8 @@
-package hungteen.imm.client.render.entity;
+package hungteen.imm.client.render.entity.creature;
 
 import hungteen.imm.client.model.ModelLayers;
 import hungteen.imm.client.model.entity.GrassCarpModel;
+import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.client.render.entity.layer.GrassCarpItemLayer;
 import hungteen.imm.common.entity.creature.GrassCarp;
 import hungteen.imm.util.Util;

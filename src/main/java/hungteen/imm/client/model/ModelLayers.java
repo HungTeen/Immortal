@@ -26,6 +26,9 @@ public class ModelLayers {
     public static final ModelLayerLocation GRASS_CARP = register("grass_carp");
     public static final ModelLayerLocation SILK_WORM = register("silk_worm");
 
+    /* Monsters */
+    public static final ModelLayerLocation SHARP_STAKE = register("sharp_stake");
+
     /*
     Zombie Entities.
      */

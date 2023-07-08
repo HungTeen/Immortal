@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity;
 
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.RandomUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -29,7 +30,7 @@ public abstract class IMMGrowableCreature extends IMMCreature {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(AGE, 1);
+        entityData.define(AGE, 1); // [1, max age].
     }
 
     @Override
@@ -86,6 +87,15 @@ public abstract class IMMGrowableCreature extends IMMCreature {
     @Override
     public float getScale() {
         return getAge() * 1F / getMaxAge();
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return RandomUtil.getTriangle(this.random) * 0.2F + (1.5F - 0.5F * getGrowPercent());
+    }
+
+    public float getGrowPercent(){
+        return getMaxAge() <= 1 ? 1F : (getAge() - 1F) / (getMaxAge() - 1);
     }
 
     @Override
