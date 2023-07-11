@@ -21,10 +21,10 @@ public class IMMMenus {
         return IForgeMenuType.create(MerchantTradeMenu::new);
     });
 
-//    public static final RegistryObject<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {
-//        return IForgeMenuType.create(SpiritualFurnaceMenu::new);
-//    });
-//
+    public static final RegistryObject<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {
+        return IForgeMenuType.create(SpiritualFurnaceMenu::new);
+    });
+
 //    public static final RegistryObject<MenuType<ElixirRoomMenu>> ELIXIR_ROOM = CONTAINER_TYPES.register("elixir_room", () -> {
 //        return IForgeMenuType.create(ElixirRoomMenu::new);
 //    });

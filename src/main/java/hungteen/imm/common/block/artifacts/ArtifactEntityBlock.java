@@ -20,7 +20,6 @@ public abstract class ArtifactEntityBlock extends HTEntityBlock implements IArti
         this.artifactType = artifactType;
     }
 
-
     @Override
     public IArtifactType getArtifactType(BlockState state) {
         return this.artifactType;

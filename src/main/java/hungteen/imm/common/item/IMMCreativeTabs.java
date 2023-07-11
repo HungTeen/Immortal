@@ -1,7 +1,9 @@
 package hungteen.imm.common.item;
 
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.runes.RuneItem;
@@ -17,6 +19,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -60,10 +63,13 @@ public class IMMCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> ARTIFACTS = register("artifacts", builder ->
             builder.icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
-                    .withTabsBefore(MATERIALS.getKey())
+                    .withTabsBefore(SPELL_BOOKS.getKey())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
                             output.accept(new ItemStack(item));
+                        });
+                        BlockHelper.get().filterValues(IArtifactBlock.class::isInstance).forEach(block -> {
+                            output.accept(new ItemStack(block));
                         });
                     })
     );
@@ -96,7 +102,10 @@ public class IMMCreativeTabs {
             BlockUtil.getWoolCushions().forEach(pair -> {
                 event.accept(new ItemStack(pair.getSecond()));
             });
-            event.accept(new ItemStack(IMMBlocks.TELEPORT_ANCHOR.get()));
+            event.acceptAll(List.of(
+                    new ItemStack(IMMBlocks.TELEPORT_ANCHOR.get()),
+                    new ItemStack(IMMBlocks.COPPER_FURNACE.get())
+            ));
         } else if (event.getTabKey().equals(CreativeModeTabs.FOOD_AND_DRINKS)) {
             Arrays.asList(
                     IMMItems.MULBERRY

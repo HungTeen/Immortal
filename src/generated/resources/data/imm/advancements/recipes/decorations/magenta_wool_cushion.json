@@ -30,5 +30,6 @@
     "recipes": [
       "imm:magenta_wool_cushion"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

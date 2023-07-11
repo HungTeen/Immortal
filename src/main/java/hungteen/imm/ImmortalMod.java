@@ -85,6 +85,7 @@ public class ImmortalMod {
      */
     public static void defferRegister(IEventBus modBus) {
         /* HungTeen Registers */
+        InventoryLootTypes.registry().register(modBus);
         HumanSettings.registry().register(modBus);
         SpellTutorials.registry().register(modBus);
 
@@ -93,8 +94,8 @@ public class ImmortalMod {
         IMMBlocks.register(modBus);
         IMMEntities.register(modBus);
         IMMCreativeTabs.register(modBus);
-        IMMBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
-        IMMSchedules.SCHEDULES.register(modBus);
+        IMMBlockEntities.register(modBus);
+        IMMSchedules.register(modBus);
         IMMRecipes.register(modBus);
         IMMRecipeSerializers.register(modBus);
         IMMMenus.register(modBus);
@@ -139,7 +140,6 @@ public class ImmortalMod {
         RealmTypes.RealmType.register();
         BehaviorRunes.register();
         FilterRuneTypes.register();
-        InventoryLootTypes.InventoryLootType.register();
         SectTypes.register();
 //        ItemUtil.registerLargeHeldItems();
     }

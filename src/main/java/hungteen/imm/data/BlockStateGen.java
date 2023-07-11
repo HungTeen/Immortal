@@ -5,12 +5,17 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
-import hungteen.imm.common.block.plants.*;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
+import hungteen.imm.common.block.plants.GourdStemBlock;
+import hungteen.imm.common.block.plants.IMMCropBlock;
+import hungteen.imm.common.block.plants.JuteBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -37,10 +42,10 @@ public class BlockStateGen extends HTBlockStateGen {
          */
 //        addedBlocks.addAll();
 
-//        Arrays.asList(
-//                ImmortalBlocks.COPPER_SPIRITUAL_FURNACE.get()
-//        ).forEach(this::spiritualFurnace);
-//
+        Arrays.asList(
+                IMMBlocks.COPPER_FURNACE.get()
+        ).forEach(this::spiritualFurnace);
+
 //        Arrays.asList(
 //                ImmortalBlocks.COPPER_ELIXIR_ROOM.get()
 //        ).forEach(this::elixirRoom);
@@ -166,18 +171,18 @@ public class BlockStateGen extends HTBlockStateGen {
     }
 
     public void spiritualFurnace(Block block) {
-//        getVariantBuilder(block).forAllStates(state -> {
-//            final Direction dir = state.getValue(SpiritualFurnace.FACING);
-//            final boolean lit = state.getValue(SpiritualFurnace.LIT);
-//            final ResourceLocation texture = BlockHelper.blockTexture(block);
-//            return ConfiguredModel.builder()
-//                    .modelFile(models().withExistingParent(name(block) + (lit ? "_lit" : ""), Util.prefix("block/spiritual_furnace_base"))
-//                            .texture("furnace", lit ? StringHelper.suffix(texture, "lit") : texture)
-//                            .renderType(cutout())
-//                    )
-//                    .rotationY(((int) dir.toYRot() + 180) % 360).build();
-//        });
-        this.addedBlocks.add(block);
+        getVariantBuilder(block).forAllStates(state -> {
+            final Direction dir = state.getValue(SpiritualFurnaceBlock.FACING);
+            final boolean lit = state.getValue(SpiritualFurnaceBlock.LIT);
+            final ResourceLocation texture = BlockHelper.blockTexture(block);
+            return ConfiguredModel.builder()
+                    .modelFile(models()
+                            .orientable(name(block) + (lit ? "_lit" : ""), BlockHelper.blockTexture(Blocks.COPPER_BLOCK), lit ? StringHelper.suffix(texture, "lit") : texture, BlockHelper.blockTexture(Blocks.COPPER_BLOCK))
+                            .renderType(solid())
+                    )
+                    .rotationY(((int) dir.toYRot() + 180) % 360).build();
+        });
+        this.add(block);
     }
 
     public void elixirRoom(Block block) {

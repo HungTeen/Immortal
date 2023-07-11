@@ -30,5 +30,6 @@
     "recipes": [
       "imm:joss_paper"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

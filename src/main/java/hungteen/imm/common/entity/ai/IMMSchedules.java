@@ -4,6 +4,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMSchedules {
 
-    public static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, Util.id());
+    private static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, Util.id());
 
     public static final RegistryObject<Schedule> DAY_WORK = SCHEDULES.register("day_work", () -> builder()
                 .changeActivityAt(10, Activity.IDLE)
@@ -37,6 +38,10 @@ public class IMMSchedules {
 
     private static ScheduleBuilder builder() {
         return new ScheduleBuilder(new Schedule());
+    }
+
+    public static void register(IEventBus modBus){
+        SCHEDULES.register(modBus);
     }
 
 }

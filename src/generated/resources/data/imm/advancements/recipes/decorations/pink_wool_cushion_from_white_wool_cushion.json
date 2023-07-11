@@ -30,5 +30,6 @@
     "recipes": [
       "imm:pink_wool_cushion_from_white_wool_cushion"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

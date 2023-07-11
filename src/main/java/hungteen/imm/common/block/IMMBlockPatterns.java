@@ -51,7 +51,7 @@ public class IMMBlockPatterns {
     }
 
     public static BlockPattern getFurnacePattern(){
-        if(FurnacePattern == null){
+//        if(FurnacePattern == null){
             FurnacePattern = furnace(
                     BlockInWorld.hasState(state ->
                             state.is(Blocks.CUT_COPPER_SLAB) || state.is(Blocks.EXPOSED_CUT_COPPER_SLAB) || state.is(Blocks.WEATHERED_CUT_COPPER_SLAB) || state.is(Blocks.OXIDIZED_CUT_COPPER_SLAB)
@@ -60,23 +60,39 @@ public class IMMBlockPatterns {
                             state.is(Blocks.COPPER_BLOCK) || state.is(Blocks.EXPOSED_COPPER) || state.is(Blocks.WEATHERED_COPPER) || state.is(Blocks.OXIDIZED_COPPER)
                     ),
                     BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK)),
+                    BlockInWorld.hasState(BlockStatePredicate.forBlock(IMMBlocks.COPPER_FURNACE.get())),
                     BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK))
             );
-        }
+//        }
         return FurnacePattern;
     }
 
-    private static BlockPattern furnace(Predicate<BlockInWorld> top, Predicate<BlockInWorld> basis, Predicate<BlockInWorld> functional, Predicate<BlockInWorld> fuel){
+    private static BlockPattern furnace(Predicate<BlockInWorld> slab, Predicate<BlockInWorld> block, Predicate<BlockInWorld> functional, Predicate<BlockInWorld> furnace, Predicate<BlockInWorld> output){
         return BlockPatternBuilder.start()
-                .aisle("       ", "       ", "   ^   ", "  ^x^  ", "   ^   ", "       ", "       ")
-                .aisle("       ", "       ", "  ###  ", "# # # #", "  ###  ", "       ", "       ")
-                .aisle("       ", "       ", "  ###  ", " ## ## ", "  ###  ", "       ", "       ")
-                .aisle("       ", "       ", "  ###  ", "  #y#  ", "  ###  ", "       ", "       ")
-                .aisle("       ", "       ", " #   # ", "       ", " #   # ", "       ", "       ")
-                .where('^', top)
-                .where('#', basis)
+                .aisle("       ", "       ", "       ", "       ", "       ", "       ", "       ")
+                .aisle("       ", "       ", "       ", "       ", "       ", "       ", "       ")
+                .aisle("       ", "       ", "  ###  ", "  ###  ", "  ###  ", "       ", "       ")
+                .aisle("       ", "       ", "# ### #", " ## ## ", "  ###  ", "       ", "       ")
+                .aisle("       ", "       ", "  ###  ", "  #f#  ", "  ###  ", "       ", "       ")
+                .aisle("       ", "       ", "       ", "       ", "       ", "       ", "       ")
+                .aisle("       ", "       ", "       ", "       ", "       ", "       ", "       ")
+                .where('^', slab)
+                .where('#', block)
                 .where('x', functional)
-                .where('y', fuel)
+                .where('f', furnace)
+                .where('o', output)
                 .build();
+//        return BlockPatternBuilder.start()
+//                .aisle("       ", "       ", "       ", "       ", " #   # ")
+//                .aisle("   ^   ", "  ###  ", "  #o#  ", "  ###  ", "       ")
+//                .aisle("  ^x^  ", "# # # #", " ## ## ", "  #o#  ", "       ")
+//                .aisle("   ^   ", "  ###  ", "  #f#  ", "  ###  ", "       ")
+//                .aisle("       ", "       ", "       ", "       ", " #   # ")
+//                .where('^', slab)
+//                .where('#', block)
+//                .where('x', functional)
+//                .where('f', furnace)
+//                .where('o', output)
+//                .build();
     }
 }

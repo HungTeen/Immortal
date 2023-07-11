@@ -3,7 +3,6 @@ package hungteen.imm.data.tag;
 import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.registry.BiomeHelper;
 import hungteen.imm.common.tag.IMMBiomeTags;
-import hungteen.imm.common.world.levelgen.IMMBiomes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -34,10 +33,10 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
         this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
                 .addTags(BiomeTags.IS_MOUNTAIN, Tags.Biomes.IS_PLAINS, Tags.Biomes.IS_PLATEAU)
                 .add(Biomes.DRIPSTONE_CAVES);
-        bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
-        bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
-        bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
-        bind(IMMBiomes.BAMBOO_JUNGLE, BiomeTags.IS_JUNGLE, Tags.Biomes.IS_HOT, Tags.Biomes.IS_WET);
+//        bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
+//        bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
+//        bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
+//        bind(IMMBiomes.BAMBOO_JUNGLE, BiomeTags.IS_JUNGLE, Tags.Biomes.IS_HOT, Tags.Biomes.IS_WET);
     }
 
     @SafeVarargs
