@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -53,7 +54,7 @@ public class FlyingItemEntity extends HTEntity {
 
         this.tickLerp();
 
-        if(! this.level.isClientSide){
+        if(EntityHelper.isServer(this)){
             if(this.getControllingPassenger() != null){
                 this.updateMotion(this.getControllingPassenger());
 
@@ -69,8 +70,8 @@ public class FlyingItemEntity extends HTEntity {
 //            this.level.addParticle(this.getTrailParticle(), d2, d0 + 0.5D, d1, 0.0D, 0.0D, 0.0D);
 //        }
 
-        if (!level.isClientSide) {// hasRecipe collide or passenger
-            for (Entity entity : this.level.getEntities(this,
+        if (EntityHelper.isServer(this)) {// hasRecipe collide or passenger
+            for (Entity entity : this.level().getEntities(this,
                     this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F),
                     EntitySelector.pushableBy(this))) {
                 if (!entity.isPassenger()) {
@@ -81,7 +82,7 @@ public class FlyingItemEntity extends HTEntity {
     }
 
     private void tickLerp() {
-        if (! this.level.isClientSide) {
+        if (EntityHelper.isServer(this)) {
             this.lerpSteps = 0;
             this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
         }
@@ -129,7 +130,7 @@ public class FlyingItemEntity extends HTEntity {
             }
             return InteractionResult.PASS;
         } else {
-            if (!this.level.isClientSide) {
+            if (EntityHelper.isServer(this)) {
                 return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
             } else {
                 return InteractionResult.SUCCESS;

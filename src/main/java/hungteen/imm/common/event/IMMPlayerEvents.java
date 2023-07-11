@@ -1,5 +1,6 @@
 package hungteen.imm.common.event;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.item.artifacts.HammerItem;
@@ -22,14 +23,14 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (! event.getEntity().level.isClientSide) {
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.onPlayerLogin(event.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (! event.getEntity().level.isClientSide) {
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.onPlayerLogout(event.getEntity());
         }
     }
@@ -41,21 +42,21 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific event) {
-        if(! event.getEntity().level.isClientSide) {
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.rayTrace(event.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if(! event.getEntity().level.isClientSide) {
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.rayTrace(event.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if(! event.getEntity().level.isClientSide) {
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.rayTrace(event.getEntity());
         }
         HammerItem.smithing(event.getEntity(), event.getHand(), event.getFace(), event.getPos());
@@ -71,7 +72,7 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerTossItem(ItemTossEvent event) {
-        if(! event.getPlayer().level.isClientSide){
+        if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.onTossItem(event.getPlayer(), event.getEntity());
         }
     }

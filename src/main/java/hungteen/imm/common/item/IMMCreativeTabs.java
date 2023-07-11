@@ -11,10 +11,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -25,64 +27,63 @@ import java.util.stream.Stream;
  **/
 public class IMMCreativeTabs {
 
-    public static CreativeModeTab MATERIALS;
-    public static CreativeModeTab ELIXIRS;
-    public static CreativeModeTab SPELL_BOOKS;
-    public static CreativeModeTab ARTIFACTS;
-    public static CreativeModeTab RUNES;
+    private static final DeferredRegister<CreativeModeTab> TABS = ItemHelper.tab().createRegister(Util.id());
+    public static final RegistryObject<CreativeModeTab> MATERIALS = register("materials", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .displayItems((parameters, output) -> {
+                        output.acceptAll(Stream.of(
+                                IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
+                                IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
+                                IMMItems.GOURD_SEEDS.get()
+                        ).map(ItemStack::new).toList());
+                    })
+    );
 
-    public static void register(CreativeModeTabEvent.Register event){
-        MATERIALS = register(event, "materials", List.of(CreativeModeTabs.SPAWN_EGGS), List.of(), builder -> builder
-                .icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
-                .displayItems((parameters, output) -> {
-                    output.acceptAll(Stream.of(
-                            IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
-                            IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
-                            IMMItems.GOURD_SEEDS.get()
-                    ).map(ItemStack::new).toList());
-                })
-        );
+    public static final RegistryObject<CreativeModeTab> ELIXIRS = register("elixirs", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
+                    .withTabsBefore(MATERIALS.getKey())
+                    .displayItems((parameters, output) -> {
 
-//        ELIXIRS = register(event, "elixirs", List.of(MATERIALS), List.of(), builder -> builder
-//                .icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
-//                .displayItems((featureFlagSet, output, hasPermission) -> {
-//                })
-//        );
-//
-//        SPELL_BOOKS = register(event, "books", List.of(ELIXIRS), List.of(), builder -> builder
-//                .icon(() -> new ItemStack((IMMItems.SPELL_BOOK.get())))
-//                .displayItems((featureFlagSet, output, hasPermission) -> {
-////                    ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
-////                        output.accept(new ItemStack(item));
-////                    });
-//                })
-//        );
+                    })
+    );
 
-        ARTIFACTS = register(event, "artifacts", List.of(MATERIALS), List.of(), builder -> builder
-                .icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
-                .displayItems((parameters, output) -> {
-                    ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
-                        output.accept(new ItemStack(item));
-                    });
-                })
-        );
+    public static final RegistryObject<CreativeModeTab> SPELL_BOOKS = register("books", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.SPELL_BOOK.get())))
+                    .withTabsBefore(ELIXIRS.getKey())
+                    .displayItems((parameters, output) -> {
+                        ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
+                            output.accept(new ItemStack(item));
+                        });
+                    })
+    );
 
-        RUNES = register(event, "runes", List.of(ARTIFACTS), List.of(), builder -> builder
-                .icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
-                .displayItems((parameters, output) -> {
-                    ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
-                        output.accept(new ItemStack(item));
-                    });
-                })
-        );
-    }
+    public static final RegistryObject<CreativeModeTab> ARTIFACTS = register("artifacts", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
+                    .withTabsBefore(MATERIALS.getKey())
+                    .displayItems((parameters, output) -> {
+                        ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
+                            output.accept(new ItemStack(item));
+                        });
+                    })
+    );
 
-    public static void fillCreativeTabs(CreativeModeTabEvent.BuildContents event) {
-        if(event.getTab() == CreativeModeTabs.BUILDING_BLOCKS){
+    public static final RegistryObject<CreativeModeTab> RUNES = register("runes", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
+                    .withTabsBefore(ARTIFACTS.getKey())
+                    .displayItems((parameters, output) -> {
+                        ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
+                            output.accept(new ItemStack(item));
+                        });
+                    })
+    );
 
-        } else if(event.getTab() == CreativeModeTabs.COLORED_BLOCKS){
+    public static void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {
 
-        } else if(event.getTab() == CreativeModeTabs.NATURAL_BLOCKS){
+        } else if (event.getTabKey().equals(CreativeModeTabs.COLORED_BLOCKS)) {
+
+        } else if (event.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
             BlockUtil.getGourds().forEach(pair -> {
                 event.accept(new ItemStack(pair.getSecond()));
             });
@@ -91,18 +92,18 @@ public class IMMCreativeTabs {
             ).forEach(obj -> {
                 event.accept(obj.get());
             });
-        } else if(event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS){
+        } else if (event.getTabKey().equals(CreativeModeTabs.FUNCTIONAL_BLOCKS)) {
             BlockUtil.getWoolCushions().forEach(pair -> {
                 event.accept(new ItemStack(pair.getSecond()));
             });
             event.accept(new ItemStack(IMMBlocks.TELEPORT_ANCHOR.get()));
-        } else if(event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS){
+        } else if (event.getTabKey().equals(CreativeModeTabs.FOOD_AND_DRINKS)) {
             Arrays.asList(
                     IMMItems.MULBERRY
             ).forEach(obj -> {
                 event.accept(obj.get());
             });
-        } else if(event.getTab() == CreativeModeTabs.INGREDIENTS){
+        } else if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
             Arrays.asList(
                     IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN,
                     IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
@@ -112,12 +113,16 @@ public class IMMCreativeTabs {
         }
     }
 
-    private static CreativeModeTab register(CreativeModeTabEvent.Register event, String name, List<Object> after, List<Object> before, Consumer<CreativeModeTab.Builder> consumer){
-        return event.registerCreativeModeTab(Util.prefix(name), before, after, builder -> {
-            builder.title(Component.translatable(StringHelper.langKey("itemGroup", Util.id(), name)));
-            consumer.accept(builder);
-        });
+    public static void register(IEventBus modBus){
+        TABS.register(modBus);
     }
 
+    private static RegistryObject<CreativeModeTab> register(String name, Consumer<CreativeModeTab.Builder> consumer) {
+        return TABS.register(name, () -> {
+            final CreativeModeTab.Builder builder = CreativeModeTab.builder().title(Component.translatable(StringHelper.langKey("itemGroup", Util.id(), name)));
+            consumer.accept(builder);
+            return builder.build();
+        });
+    }
 
 }

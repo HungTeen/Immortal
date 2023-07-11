@@ -13,6 +13,7 @@ import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
 import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.impl.codec.SpellTutorials;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
@@ -62,7 +63,6 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
         modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::fillCreativeTabs);
-        modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::register);
         defferRegister(modBus);
 
         /* Forge Bus Events */
@@ -84,9 +84,15 @@ public class ImmortalMod {
      * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
      */
     public static void defferRegister(IEventBus modBus) {
+        /* HungTeen Registers */
+        HumanSettings.registry().register(modBus);
+        SpellTutorials.registry().register(modBus);
+
+        /* Deferred Registers */
         IMMItems.register(modBus);
         IMMBlocks.register(modBus);
         IMMEntities.register(modBus);
+        IMMCreativeTabs.register(modBus);
         IMMBlockEntities.BLOCK_ENTITY_TYPES.register(modBus);
         IMMSchedules.SCHEDULES.register(modBus);
         IMMRecipes.register(modBus);
@@ -123,8 +129,6 @@ public class ImmortalMod {
      */
     public static void coreRegister() {
         IMMWoods.register();
-
-        HumanSettings.register();
 
         TradeTypes.TradeType.register();
         SpiritualTypes.registry();

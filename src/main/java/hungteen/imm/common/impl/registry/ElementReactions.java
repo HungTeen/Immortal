@@ -19,7 +19,7 @@ import java.util.Map;
  **/
 public class ElementReactions {
 
-    private static final HTSimpleRegistry<IElementReaction> REACTIONS = HTRegistryManager.create(Util.prefix("element_reaction"));
+    private static final HTSimpleRegistry<IElementReaction> REACTIONS = HTRegistryManager.createSimple(Util.prefix("element_reaction"));
 
     public static IElementReaction ASHING = register(new GenerationReaction(
             "ashing", Elements.FIRE, 10, Elements.EARTH, 10, 5) {

@@ -2,8 +2,6 @@ package hungteen.imm.common.impl;
 
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.*;
@@ -14,7 +12,6 @@ import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
-import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -31,8 +28,6 @@ import java.util.Optional;
  **/
 public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
-    private static final HTSimpleRegistry<ISectType> SECT_TYPES = HTRegistryManager.create(Util.prefix("sect"));
-
     @Override
     public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
         return Optional.of(SpiritualTypes.registry());
@@ -45,7 +40,7 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public Optional<IHTSimpleRegistry<ISectType>> sectRegistry() {
-        return Optional.of(SECT_TYPES);
+        return Optional.of(SectTypes.registry());
     }
 
     @Override

@@ -3,10 +3,13 @@ package hungteen.imm.common.impl.codec;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.util.Util;
+import net.minecraft.data.worldgen.BootstapContext;
 
 import java.util.List;
 
@@ -20,8 +23,11 @@ public class SpellTutorials {
     /**
      * 不是全局数据包！
      */
-    private static final HTCodecRegistry<SpellTutorial> TUTORIALS = HTRegistryManager.create(SpellTutorial.class, "spell_tutorials", () -> SpellTutorial.CODEC);
+    private static final HTCodecRegistry<SpellTutorial> TUTORIALS = HTRegistryManager.create(Util.prefix("spell_tutorial"), () -> SpellTutorial.CODEC, () -> SpellTutorial.CODEC);
 
+    public static void register(BootstapContext<SpellTutorial> context){
+
+    }
 
     public record SpellTutorial(int treasureWeight, int tradeWeight, List<TutorialEntry> spells) {
         public static final Codec<SpellTutorial> CODEC = RecordCodecBuilder.<SpellTutorial>mapCodec(instance -> instance.group(
@@ -40,5 +46,9 @@ public class SpellTutorials {
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("spell_level")
                 ).codec().listOf().optionalFieldOf("require_learned_spells", List.of()).forGetter(TutorialEntry::preSpells)
         ).apply(instance, TutorialEntry::new)).codec();
+    }
+
+    public static IHTCodecRegistry<SpellTutorial> registry(){
+        return TUTORIALS;
     }
 }

@@ -1,5 +1,6 @@
 package hungteen.imm.common.capability.entity;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
@@ -140,7 +141,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     }
 
     private void setLastUpdateTick(Elements element, boolean robust) {
-        if (!this.entity.level.isClientSide) {
+        if (EntityHelper.isServer(entity)) {
             if (robust) {
                 this.robustElementData.setLastUpdateTick(element, this.getTime());
             } else {
@@ -158,8 +159,8 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     }
 
     public void checkValid(Elements element, boolean robust) {
-        if (!this.entity.level.isClientSide) {
-            if (this.getLastUpdateTick(element, robust) + ElementManager.ESCAPE_UPDATE_CD < this.entity.level.getGameTime()) {
+        if (EntityHelper.isServer(entity)) {
+            if (this.getLastUpdateTick(element, robust) + ElementManager.ESCAPE_UPDATE_CD < this.entity.level().getGameTime()) {
                 if (this.hasElement(element, robust)) {
                     this.setElementAmount(element, robust, 0, false);
                 }
@@ -168,13 +169,13 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     }
 
     public void sendElementPacket(Elements element, boolean robust, float amount) {
-        if (!this.entity.level.isClientSide) {
+        if (EntityHelper.isServer(entity)) {
             NetworkHandler.sendToClientEntityAndSelf(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
         }
     }
 
     private long getTime() {
-        return this.entity.level.getGameTime();
+        return this.entity.level().getGameTime();
     }
 
     private static class ElementData {

@@ -25,10 +25,10 @@ public class PickUpBlockSpell extends SpellTypes.SpellType {
     @Override
     public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
         if (result.hasBlock() && owner instanceof Player player) {
-            final BlockState state = player.level.getBlockState(result.getBlockPos());
+            final BlockState state = player.level().getBlockState(result.getBlockPos());
             // ban bedrock like blocks.
-            if (state.getDestroySpeed(player.level, result.getBlockPos()) >= 0) {
-                final BlockEntity blockentity = state.hasBlockEntity() ? player.level.getBlockEntity(result.getBlockPos()) : null;
+            if (state.getDestroySpeed(player.level(), result.getBlockPos()) >= 0) {
+                final BlockEntity blockentity = state.hasBlockEntity() ? player.level().getBlockEntity(result.getBlockPos()) : null;
                 final ItemStack stack = new ItemStack(state.getBlock().asItem());
                 if (blockentity != null) {
                     blockentity.saveToItem(stack);
@@ -37,7 +37,7 @@ public class PickUpBlockSpell extends SpellTypes.SpellType {
                     }
                 }
                 PlayerUtil.addItem(player, stack);
-                player.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+                player.level().setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
             }
         }
         return false;

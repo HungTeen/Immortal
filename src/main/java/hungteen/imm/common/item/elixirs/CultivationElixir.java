@@ -57,7 +57,7 @@ public abstract class CultivationElixir extends ElixirItem{
     public static class FiveFlowersElixir extends CultivationElixir{
 
         public FiveFlowersElixir() {
-            super(1, Rarity.COMMON, ColorHelper.LITTLE_YELLOW1);
+            super(1, Rarity.COMMON, ColorHelper.LITTLE_YELLOW1.rgb());
         }
 
         @Override
@@ -69,7 +69,7 @@ public abstract class CultivationElixir extends ElixirItem{
     public static class GatherBreathElixir extends CultivationElixir{
 
         public GatherBreathElixir() {
-            super(4, Rarity.COMMON, ColorHelper.YELLOW_GREEN);
+            super(4, Rarity.COMMON, ColorHelper.YELLOW_GREEN.rgb());
         }
 
         @Override

@@ -1,16 +1,16 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.menu.RuneGateMenu;
 import hungteen.imm.common.rune.filter.IFilterRuneType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,31 +36,30 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
-        RenderHelper.setTexture(TEXTURE);
-        this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         for (int i = 0; i < Math.min(this.menu.getGateNums(), LEN); ++i) {
             final int x = getLeftOffset(i);
             final int y = getTopOffset(i);
             final int tx = (i == this.menu.getSelectedGateIndex()) ? 0 : 32;
-            this.blit(stack, x, y, tx, 240, 16, 16);
+            graphics.blit(TEXTURE, x, y, tx, 240, 16, 16);
         }
 
         if(this.menu.getValidStatus() > 0){
-            this.blit(stack, this.leftPos + 109, this.topPos + 100, 1, 231, 8, 8);
+            graphics.blit(TEXTURE, this.leftPos + 109, this.topPos + 100, 1, 231, 8, 8);
         }
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-        super.renderLabels(stack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
         for (int i = 0; i < Math.min(this.menu.getGateNums(), LEN); ++i) {
             final int x = getLeftOffset(i) + 8 - this.leftPos;
             final int y = getTopOffset(i) + 5 - this.topPos;
             final IFilterRuneType<?> type = this.menu.getGateTypes().get(i);
-            RenderHelper.drawCenteredScaledString(stack, this.font, type.getComponent().getString(), x, y, ColorHelper.BLACK, 0.75F);
+            RenderUtil.renderCenterScaledText(graphics.pose(), type.getComponent(), x, y, 0.75F, ColorHelper.BLACK.rgb(), ColorHelper.BLACK.rgb());
         }
         if(this.menu.getValidStatus() > 0){
             final int status = this.menu.getValidStatus();
@@ -68,19 +67,19 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
                     status == 2 ? TipUtil.gui("need_more_rune") :
                     status == 3 ? TipUtil.gui("need_less_rune") :
                     TipUtil.gui("type_not_fit");
-            RenderHelper.drawCenteredScaledString(stack, this.font, component.getString(), 115, 85, ColorHelper.DARK_RED, 0.8F);
+            RenderUtil.renderCenterScaledText(graphics.pose(), component, 115, 85, 0.8F, ColorHelper.DARK_RED.rgb(), ColorHelper.BLACK.rgb());
         }
     }
 
     @Override
-    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
-        super.renderTooltip(stack, mouseX, mouseY);
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderTooltip(graphics, mouseX, mouseY);
         for (int i = 0; i < Math.min(this.menu.getGateNums(), LEN); ++i) {
             final int x = getLeftOffset(i);
             final int y = getTopOffset(i);
             if (MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)) {
                 final IFilterRuneType<?> type = this.menu.getGateTypes().get(i);
-                this.renderComponentTooltip(stack, List.of(
+                graphics.renderComponentTooltip(this.font, List.of(
                         type.getComponent(), type.getDesc().withStyle(ChatFormatting.GREEN)
                 ), mouseX, mouseY);
             }

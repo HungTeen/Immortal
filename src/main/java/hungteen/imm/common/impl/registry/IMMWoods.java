@@ -1,6 +1,6 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.common.WoodIntegrations;
+import hungteen.htlib.common.registry.suit.TreeSuits;
 import hungteen.imm.ImmortalMod;
 
 import java.util.List;
@@ -19,10 +19,10 @@ public class IMMWoods {
      * {@link ImmortalMod#coreRegister()}
      */
     public static void register(){
-        woods().forEach(WoodIntegrations::registerWoodIntegration);
+        woods().forEach(TreeSuits::registerWoodIntegration);
     }
 
-    public static List<WoodIntegrations.WoodIntegration> woods(){
+    public static List<TreeSuits.TreeSuit> woods(){
         return List.of();
 //        return Arrays.asList(MULBERRY);
     }

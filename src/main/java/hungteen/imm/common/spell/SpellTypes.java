@@ -23,7 +23,7 @@ import java.util.List;
  **/
 public class SpellTypes {
 
-    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.create(Util.prefix("spell_type"));
+    private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.createSimple(Util.prefix("spell_type"));
     private static final List<ISpellType> TYPES = new ArrayList<>();
 
     public static IHTSimpleRegistry<ISpellType> registry() {

@@ -35,7 +35,7 @@ public class GolemStopAttackingIfTargetInvalid extends GolemOneShotBehavior{
         LivingEntity target = BehaviorUtil.getAttackTarget(golemEntity).get();
         final boolean closeAttack = true;
         if (golemEntity.canAttack(target) && (!closeAttack || !isTiredOfTryingToReachTarget(golemEntity))
-                && EntityHelper.isEntityValid(target) && golemEntity.level == target.level && targetPredicate.test(target)) {
+                && EntityHelper.isEntityValid(target) && golemEntity.level() == target.level() && targetPredicate.test(target)) {
             // Pass.
         } else {
             golemEntity.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
@@ -44,6 +44,6 @@ public class GolemStopAttackingIfTargetInvalid extends GolemOneShotBehavior{
 
     private static boolean isTiredOfTryingToReachTarget(GolemEntity golem) {
         final Optional<Long> opt = golem.getBrain().getMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
-        return opt.isPresent() && golem.level.getGameTime() - opt.get() > 200L;
+        return opt.isPresent() && golem.level().getGameTime() - opt.get() > 200L;
     }
 }

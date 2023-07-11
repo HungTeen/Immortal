@@ -35,7 +35,7 @@ public class FlyingItemEntityRender extends EntityRenderer<FlyingItemEntity> {
         final ItemStack stack = entityIn.getItemStack();
         final boolean isBlock = stack.getItem() instanceof BlockItem;
         matrixStackIn.pushPose();
-        BakedModel bakedmodel = this.itemRenderer.getModel(stack, entityIn.level, (LivingEntity) null, entityIn.getId());
+        BakedModel bakedmodel = this.itemRenderer.getModel(stack, entityIn.level(), (LivingEntity) null, entityIn.getId());
         final float sz = 1F;
         matrixStackIn.scale(sz, sz, sz);
         matrixStackIn.translate(0, isBlock ? 0.5 : 0.1, 0);

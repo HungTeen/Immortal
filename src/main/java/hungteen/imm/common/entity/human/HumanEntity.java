@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.IInventoryLootType;
@@ -33,6 +34,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -77,6 +79,7 @@ import java.util.function.Predicate;
 
 /**
  * 村民、刁民、玩家都算人类。
+ *
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-21 18:23
@@ -106,7 +109,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(ROOTS, new CompoundTag());
-        entityData.define(HUMAN_SETTING, HumanSettings.DEFAULT.getValue());
+        entityData.define(HUMAN_SETTING, HumanSettings.registry().getValue(level(), HumanSettings.DEFAULT));
         entityData.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
     }
 
@@ -135,9 +138,9 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        this.level.getProfiler().push("HumanBrain");
-        this.updateBrain((ServerLevel) this.level);
-        this.level.getProfiler().pop();
+        this.level().getProfiler().push("HumanBrain");
+        this.updateBrain((ServerLevel) this.level());
+        this.level().getProfiler().pop();
     }
 
     @Override
@@ -162,7 +165,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
      * 填充背包 & 交易列表。
      */
     public void updateHumanSetting() {
-        HumanSettings.getHumanSetting(getInventoryLootType(), this.getRandom()).ifPresent(l -> {
+        HumanSettings.getRandomSetting(level(), getInventoryLootType(), this.getRandom()).ifPresent(l -> {
             this.setHumanSetting(l);
             l.fillInventory(this.getInventory(), this.getRandom());
             l.fillTrade(this, this.getRandom());
@@ -241,7 +244,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
             if (this.getRandom().nextFloat() < 0.4F) {
                 abstractarrow.setCritArrow(true);
             }
-            this.level.addFreshEntity(abstractarrow);
+            this.level().addFreshEntity(abstractarrow);
         }
     }
 
@@ -371,16 +374,16 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 //            if (hand == InteractionHand.MAIN_HAND) {
 //                player.awardStat(Stats.TALKED_TO_VILLAGER);
 //            }
-            if (!this.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+            if (EntityHelper.isServer(this) && player instanceof ServerPlayer serverPlayer) {
                 this.setTradingPlayer(player);
                 NetworkHooks.openScreen(serverPlayer, new ImmortalMenuProvider() {
                     @Override
-                    public  AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+                    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new MerchantTradeMenu(id, inventory, HumanEntity.this.getId());
                     }
                 }, buf -> buf.writeInt(this.getId()));
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
@@ -388,7 +391,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     public void notifyTrade(TradeOffer offer) {
         offer.consume();
         this.ambientSoundTime = -this.getAmbientSoundInterval();
-        if(! this.level.isClientSide){
+        if (EntityHelper.isServer(this)) {
             this.setTradeOffers(this.getTradeOffers());
         }
 //        this.rewardTradeXp(offer);
@@ -486,9 +489,10 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
             this.inventory.fromTag(tag.getList("Inventory", 10));
         }
         if (tag.contains("InventoryLoot")) { // allow setting loot by nbt.
-            HumanSettings.registry().getValue(tag.getString("InventoryLoot")).ifPresent(l -> {
-                l.fillInventory(this.getInventory(), this.getRandom());
-            });
+            CodecHelper.parse(ResourceKey.codec(HumanSettings.registry().getRegistryKey()), tag.get("InventoryLoot"))
+                    .result().ifPresent(key -> {
+                        HumanSettings.registry().getValue(level(), key).fillInventory(this.getInventory(), this.getRandom());
+                    });
         }
         this.setTradeOffers(new TradeOffers(tag));
         if (tag.contains("HumanSetting")) {
@@ -498,8 +502,8 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         if (tag.contains("HumanSectData")) {
             CodecHelper.parse(HumanSectData.CODEC, tag.get("HumanSectData")).result().ifPresent(this::setSectData);
         }
-        if (this.level instanceof ServerLevel) {
-            this.refreshBrain((ServerLevel) this.level);
+        if (this.level() instanceof ServerLevel) {
+            this.refreshBrain((ServerLevel) this.level());
         }
     }
 
@@ -572,7 +576,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     public void setTradeOffers(TradeOffers tradeOffers) {
         this.tradeOffers = tradeOffers;
-        if (!this.level.isClientSide) {
+        if (EntityHelper.isServer(this)) {
             NetworkHandler.sendToClientEntity(this, new TradeOffersPacket(this.getId(), this.tradeOffers));
         }
     }

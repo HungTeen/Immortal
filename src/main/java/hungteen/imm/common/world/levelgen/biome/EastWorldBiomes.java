@@ -191,7 +191,7 @@ public class EastWorldBiomes {
             genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMPlantPlacements.OAK_HORIZONTAL_STAKE);
         }
 
-        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE_AND_FOREST);
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE);
         return biome(true, 0.6F, 0.6F, spawnBuilder, genBuilder, music);
     }
 
@@ -213,7 +213,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
         BiomeDefaultFeatures.addJungleVines(genBuilder);
 
-        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE_AND_FOREST);
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE);
         return biome(true, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
     }
 

@@ -16,7 +16,7 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public class PlayerRangeIntegers {
 
-    private static final HTSimpleRegistry<IRangeNumber<Integer>> PLAYER_RANGE_NUMBERS = HTRegistryManager.create(Util.prefix("player_range_numbers"));
+    private static final HTSimpleRegistry<IRangeNumber<Integer>> PLAYER_RANGE_NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_numbers"));
 
     public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
         return PLAYER_RANGE_NUMBERS;

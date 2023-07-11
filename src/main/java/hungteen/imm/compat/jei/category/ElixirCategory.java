@@ -1,6 +1,5 @@
 package hungteen.imm.compat.jei.category;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.util.Util;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -11,6 +10,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -38,11 +38,16 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
     }
 
     @Override
-    public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        stack.pushPose();
-//        this.arrowDraw.draw(stack, 50, 23);
-        stack.popPose();
+    public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+
     }
+
+//    @Override
+//    public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+//        stack.pushPose();
+////        this.arrowDraw.draw(stack, 50, 23);
+//        stack.popPose();
+//    }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ElixirRecipe recipe, IFocusGroup focuses) {

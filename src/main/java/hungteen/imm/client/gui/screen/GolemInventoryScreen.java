@@ -1,11 +1,10 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.util.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,21 +31,20 @@ public class GolemInventoryScreen extends HTContainerScreen<GolemInventoryMenu> 
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(stack, mouseX, mouseY);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         //Dynamically render background.
-        RenderHelper.setTexture(TEXTURE);
-        this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, TOP_HEIGHT);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, TOP_HEIGHT);
         for(int i = 0; i < this.rows; ++ i){
-            this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * i, 0, 131, this.imageWidth, SLOT_HEIGHT);
+            graphics.blit(TEXTURE, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * i, 0, 131, this.imageWidth, SLOT_HEIGHT);
         }
-        this.blit(stack, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * this.rows, 0, 119, this.imageWidth, BOTTOM_HEIGHT);
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + TOP_HEIGHT + SLOT_HEIGHT * this.rows, 0, 119, this.imageWidth, BOTTOM_HEIGHT);
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
 
     private int getTotalHeight(){

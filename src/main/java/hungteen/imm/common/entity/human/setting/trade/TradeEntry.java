@@ -58,7 +58,7 @@ public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems,
                 itemstack.setDamageValue(itemstack.getDamageValue());
             }
 
-            return ItemStack.isSame(itemstack, costItem) && (!costItem.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(costItem.getTag(), itemstack.getTag(), false));
+            return ItemStack.isSameItem(itemstack, costItem) && (!costItem.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(costItem.getTag(), itemstack.getTag(), false));
         }
     }
     

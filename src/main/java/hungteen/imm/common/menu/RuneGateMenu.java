@@ -198,7 +198,7 @@ public class RuneGateMenu extends RuneBaseMenu {
             Item item = itemstack1.getItem();
             result = itemstack1.copy();
             if (slotId == INPUT_SLOT_NUM) {
-                item.onCraftedBy(itemstack1, player.level, player);
+                item.onCraftedBy(itemstack1, player.level(), player);
                 if (!this.moveItemStackTo(itemstack1, INPUT_SLOT_NUM + 1, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
@@ -240,7 +240,7 @@ public class RuneGateMenu extends RuneBaseMenu {
     }
 
     public List<IFilterRuneType<?>> getGateTypes() {
-        return FilterRuneTypes.registry().getValues();
+        return FilterRuneTypes.registry().getValues().stream().toList();
     }
 
     public int getGateNums() {

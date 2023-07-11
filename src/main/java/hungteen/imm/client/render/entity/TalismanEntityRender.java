@@ -43,7 +43,7 @@ public class TalismanEntityRender<T extends TalismanEntity> extends EntityRender
             stack.scale(this.scale, this.scale, this.scale);
 //            stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
             stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-            this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, stack, source, entity.level, entity.getId());
+            this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, stack, source, entity.level(), entity.getId());
             stack.popPose();
             super.render(entity, entityYaw, partialTicks, stack, source, packedLightIn);
         }

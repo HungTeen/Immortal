@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -40,15 +41,15 @@ public class SnowGolem extends GolemEntity {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide) {
-            if(this.level.getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
+        if (EntityHelper.isServer(this)) {
+            if(this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
                 this.hurt(this.damageSources().onFire(), 1.0F);
             }
         }
     }
 
     public void performRangedAttack(LivingEntity p_29912_, float p_29913_) {
-        Snowball snowball = new Snowball(this.level, this);
+        Snowball snowball = new Snowball(this.level(), this);
         double d0 = p_29912_.getEyeY() - (double)1.1F;
         double d1 = p_29912_.getX() - this.getX();
         double d2 = d0 - snowball.getY();
@@ -56,7 +57,7 @@ public class SnowGolem extends GolemEntity {
         double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double)0.2F;
         snowball.shoot(d1, d2 + d4, d3, 1.6F, 12.0F);
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(snowball);
+        this.level().addFreshEntity(snowball);
     }
 
     @Override

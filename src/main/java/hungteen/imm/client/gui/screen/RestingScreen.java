@@ -2,11 +2,10 @@ package hungteen.imm.client.gui.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.imm.client.ImmortalKeyBinds;
 import hungteen.imm.util.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -48,17 +47,14 @@ public class RestingScreen extends HTScreen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (!this.checkToClose()) {
-            poseStack.pushPose();
             RenderSystem.enableBlend();
-            RenderHelper.setTexture(SPELL_CIRCLE);
-            blit(poseStack, this.leftPos, this.topPos, 0, 0, 128, 128);
-            super.render(poseStack, mouseX, mouseY, partialTicks);
-            poseStack.popPose();
+            graphics.blit(SPELL_CIRCLE, this.leftPos, this.topPos, 0, 0, 128, 128);
+            super.render(graphics, mouseX, mouseY, partialTicks);
 
             for(SpellSlot spellSlot : SLOTS){
-                spellSlot.render(poseStack, mouseX, mouseY, partialTicks);
+                spellSlot.render(graphics, mouseX, mouseY, partialTicks);
             }
         }
     }
@@ -98,9 +94,8 @@ public class RestingScreen extends HTScreen {
         }
 
         @Override
-        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-            RenderHelper.setTexture(SPELL_CIRCLE);
-            blit(poseStack, this.getX(), this.getY(), this.isSelected ? 20 : 0, 128, this.height, this.width);
+        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+            graphics.blit(SPELL_CIRCLE, this.getX(), this.getY(), this.isSelected ? 20 : 0, 128, this.height, this.width);
         }
 
         @Override

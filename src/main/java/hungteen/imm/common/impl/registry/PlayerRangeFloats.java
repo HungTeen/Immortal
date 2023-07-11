@@ -15,7 +15,7 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public class PlayerRangeFloats {
 
-    private static final HTSimpleRegistry<IRangeNumber<Float>> PLAYER_RANGE_NUMBERS = HTRegistryManager.create(Util.prefix("player_range_numbers"));
+    private static final HTSimpleRegistry<IRangeNumber<Float>> PLAYER_RANGE_NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_numbers"));
 
     public static IHTSimpleRegistry<IRangeNumber<Float>> registry() {
         return PLAYER_RANGE_NUMBERS;

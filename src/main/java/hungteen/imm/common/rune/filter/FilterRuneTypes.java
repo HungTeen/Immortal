@@ -14,7 +14,7 @@ import hungteen.imm.util.Util;
  **/
 public class FilterRuneTypes {
 
-    private static final HTSimpleRegistry<IFilterRuneType<?>> FILTER_RUNE_TYPES = HTRegistryManager.create(Util.prefix("filter_rune_types"));
+    private static final HTSimpleRegistry<IFilterRuneType<?>> FILTER_RUNE_TYPES = HTRegistryManager.createSimple(Util.prefix("filter_rune_types"));
 
     public static final IFilterRuneType<AndGateRune> AND = register(new DefaultRuneType<>("and", false, false, 2, Integer.MAX_VALUE, AndGateRune.CODEC));
     public static final IFilterRuneType<OrGateRune> OR = register(new DefaultRuneType<>("or", false, false, 2, Integer.MAX_VALUE, OrGateRune.CODEC));

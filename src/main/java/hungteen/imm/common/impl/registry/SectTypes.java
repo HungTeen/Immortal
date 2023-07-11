@@ -13,7 +13,7 @@ import hungteen.imm.util.Util;
  **/
 public class SectTypes {
 
-    private static final HTSimpleRegistry<ISectType> TRADE_TYPES = HTRegistryManager.create(Util.prefix("sect_type"));
+    private static final HTSimpleRegistry<ISectType> TRADE_TYPES = HTRegistryManager.createSimple(Util.prefix("sect_type"));
 
     public static final ISectType VILLAGER_KINGDOM = register(new SectType("villager_kingdom"));
     public static final ISectType PILLAGER_TRIBE = register(new SectType("pillager_tribe"));

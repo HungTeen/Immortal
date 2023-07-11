@@ -1,14 +1,14 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.client.RenderHelper;
+import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -52,10 +52,10 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
         RenderHelper.setTexture(TEXTURE);
-        blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         final List<Pair<ICraftableRune, ItemStack>> list = this.menu.getRecipes();
         for (int i = 0; i < SIZE; ++i) {
@@ -71,16 +71,16 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
                 }
 
                 RenderHelper.setTexture(TEXTURE);
-                blit(stack, x, y, startX, 240, 16, 16);
+                graphics.blit(TEXTURE, x, y, startX, 240, 16, 16);
 
-                this.itemRenderer.renderAndDecorateItem(stack, list.get(id).getSecond(), x, y);
+                graphics.renderItem(list.get(id).getSecond(), x, y);
             }
         }
     }
 
     @Override
-    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
-        super.renderTooltip(stack, mouseX, mouseY);
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderTooltip(graphics, mouseX, mouseY);
         if (this.displayRecipes) {
             final List<Pair<ICraftableRune, ItemStack>> list = this.menu.getRecipes();
 
@@ -90,7 +90,7 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
                     final int x = this.leftPos + CORNER_OFFSET_X + i % COLS * 18;
                     final int y = this.topPos + CORNER_OFFSET_Y + i / COLS * 18;
                     if(MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)){
-                        this.renderTooltip(stack, list.get(id).getSecond(), mouseX, mouseY);
+                        graphics.renderTooltip(this.font, list.get(id).getSecond(), mouseX, mouseY);
                     }
                 }
             }

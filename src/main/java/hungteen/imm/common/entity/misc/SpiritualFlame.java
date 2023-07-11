@@ -38,8 +38,8 @@ public class SpiritualFlame extends HTEntity {
     public void tick() {
         super.tick();
         //TODO 灵火一段时间后消失
-        if(this.level.isClientSide){
-            spawnFlames(this.level, this.position(), this.getFlameLevel(), this.random);
+        if(this.level().isClientSide){
+            spawnFlames(this.level(), this.position(), this.getFlameLevel(), this.random);
         }
     }
 

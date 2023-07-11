@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  **/
 public class BehaviorRunes {
 
-    private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.create(Util.prefix("behavior_runes"));
+    private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.createSimple(Util.prefix("behavior_runes"));
 
     public static final IBehaviorRune SENSE_NEAREST_LIVINGS = register(
             new BehaviorRune("sense_nearest_livings",

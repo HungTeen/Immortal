@@ -20,13 +20,13 @@ public class FlyWithItemSpell extends SpellTypes.SpellType {
     @Override
     public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
         if(result.getEntity() instanceof ItemEntity itemEntity){
-            FlyingItemEntity flyingItem = IMMEntities.FLYING_ITEM.get().create(owner.level);
+            FlyingItemEntity flyingItem = IMMEntities.FLYING_ITEM.get().create(owner.level());
             if(flyingItem != null){
                 flyingItem.setDeltaMovement(itemEntity.getDeltaMovement());
                 flyingItem.setPos(itemEntity.position());
                 flyingItem.setItemStack(itemEntity.getItem());
                 itemEntity.discard();
-                owner.level.addFreshEntity(flyingItem);
+                owner.level().addFreshEntity(flyingItem);
                 return true;
             }
         }

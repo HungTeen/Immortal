@@ -55,7 +55,7 @@ public abstract class SpiritualElixir extends ElixirItem{
     public static class SpiritRecoveryElixir extends SpiritualElixir{
 
         public SpiritRecoveryElixir() {
-            super(50, Rarity.COMMON, ColorHelper.IRIS_BLUE);
+            super(50, Rarity.COMMON, ColorHelper.IRIS_BLUE.rgb());
         }
 
         @Override

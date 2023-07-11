@@ -19,7 +19,7 @@ public class IMMEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Util.id());
 
     public static final RegistryObject<MobEffect> CORPSE_POISON_EFFECT = EFFECTS.register("corpse_poison", () -> {
-        return new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_GREEN);
+        return new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_GREEN.rgb());
     });
 
 }

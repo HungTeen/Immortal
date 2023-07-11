@@ -160,7 +160,7 @@ public class IMMCommand {
 
     private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey) {
         for (ServerPlayer player : targets) {
-            ServerLevel serverlevel = ((ServerLevel) player.level).getServer().getLevel(resourceKey);
+            ServerLevel serverlevel = ((ServerLevel) player.level()).getServer().getLevel(resourceKey);
             if (serverlevel != null) {
                 player.changeDimension(serverlevel, IMMTeleporter.INSTANCE);
             }
@@ -213,7 +213,7 @@ public class IMMCommand {
                 component.append(list.get(i).getComponent());
             }
             if (spread) PlayerHelper.sendMsgTo(player, component);
-            source.sendSuccess(component, true);
+            source.sendSuccess(() -> component, true);
         });
     }
 
@@ -224,7 +224,7 @@ public class IMMCommand {
             PlayerUtil.learnSpell(player, spell, level);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(spell.getComponent(), true);
+        source.sendSuccess(() -> spell.getComponent(), true);
         return targets.size();
     }
 
@@ -233,7 +233,7 @@ public class IMMCommand {
             PlayerUtil.forgetSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(spell.getComponent(), true);
+        source.sendSuccess(() -> spell.getComponent(), true);
         return targets.size();
     }
 
@@ -242,7 +242,7 @@ public class IMMCommand {
             SpellManager.checkActivateSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(spell.getComponent(), true);
+        source.sendSuccess(() -> spell.getComponent(), true);
         return targets.size();
     }
 
@@ -251,7 +251,7 @@ public class IMMCommand {
             PlayerUtil.setSpellList(player, pos, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(spell.getComponent(), true);
+        source.sendSuccess(() -> spell.getComponent(), true);
         return targets.size();
     }
 
@@ -260,7 +260,7 @@ public class IMMCommand {
             PlayerUtil.learnAllSpell(player, level);
             PlayerHelper.sendMsgTo(player, COMMAND_LEARN_ALL_SPELLS);
         }
-        source.sendSuccess(COMMAND_LEARN_ALL_SPELLS, true);
+        source.sendSuccess(() -> COMMAND_LEARN_ALL_SPELLS, true);
         return targets.size();
     }
 
@@ -269,7 +269,7 @@ public class IMMCommand {
             PlayerUtil.forgetAllSpell(player);
             PlayerHelper.sendMsgTo(player, COMMAND_FORGET_ALL_SPELLS);
         }
-        source.sendSuccess(COMMAND_FORGET_ALL_SPELLS, true);
+        source.sendSuccess(() -> COMMAND_FORGET_ALL_SPELLS, true);
         return targets.size();
     }
 
@@ -279,7 +279,7 @@ public class IMMCommand {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getIntegerComponent(data, value));
-            source.sendSuccess(getIntegerComponent(player, data, value), true);
+            source.sendSuccess(() -> getIntegerComponent(player, data, value), true);
         }
         return targets.size();
     }
@@ -288,14 +288,14 @@ public class IMMCommand {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getIntegerComponent(data, PlayerUtil.getIntegerData(player, data)));
-            source.sendSuccess(getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
+            source.sendSuccess(() -> getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
     private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data) {
         for (ServerPlayer player : targets) {
-            source.sendSuccess(getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
+            source.sendSuccess(() -> getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }

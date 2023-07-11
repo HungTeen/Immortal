@@ -1,6 +1,7 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
@@ -70,12 +71,12 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public static void absorbFlame(LivingEntity livingEntity, SpiritualFlame flame, ItemStack stack, FlameGourd flameGourd){
-        if(! livingEntity.level.isClientSide){
+        if(EntityHelper.isServer(livingEntity)){
             final int speed = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) * 2 + 1;
             addFlameAmount(stack, flame.getFlameLevel(), speed);
         } else{
             final int num = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) / 2 + 1;
-            ParticleHelper.spawnLineMovingParticle(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
+            ParticleHelper.spawnLineMovingParticle(livingEntity.level(), SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
 //            final double distance = livingEntity.distanceTo(flame);
 //            final int particleNum = Mth.ceil(distance);
 //            for(int i = 0; i < particleNum; ++ i){
@@ -155,7 +156,7 @@ public class FlameGourd extends ArtifactItem {
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return ColorHelper.RED;
+        return ColorHelper.RED.rgb();
     }
 
     public int getMaxFlameLevel(){

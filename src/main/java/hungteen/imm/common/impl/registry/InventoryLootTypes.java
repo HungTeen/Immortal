@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class InventoryLootTypes {
 
-    private static final HTSimpleRegistry<IInventoryLootType> LOOT_TYPES = HTRegistryManager.create(Util.prefix("inventory_loot_type"));
+    private static final HTSimpleRegistry<IInventoryLootType> LOOT_TYPES = HTRegistryManager.createSimple(Util.prefix("inventory_loot_type"));
     private static final List<IInventoryLootType> LIST = new ArrayList<>();
 
     public static IHTSimpleRegistry<IInventoryLootType> registry(){

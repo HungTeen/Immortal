@@ -1,6 +1,5 @@
 package hungteen.imm.common.block;
 
-import hungteen.htlib.common.block.HTLeavesBlock;
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTSaplingBlock;
 import hungteen.htlib.util.helper.registry.BlockHelper;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -62,8 +62,8 @@ public class IMMBlocks {
     /* Tree Suits */
 
     public static final RegistryObject<Block> MULBERRY_SAPLING = BLOCKS.register("mulberry_sapling", () -> new HTSaplingBlock(new MulberryTreeGrower()));
-    public static final RegistryObject<Block> MULBERRY_LEAVES = BLOCKS.register("mulberry_leaves", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
-    public static final RegistryObject<Block> MULBERRY_LEAVES_WITH_MULBERRIES = BLOCKS.register("mulberry_leaves_with_mulberries", () -> new HTLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
+    public static final RegistryObject<Block> MULBERRY_LEAVES = BLOCKS.register("mulberry_leaves", () -> new LeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
+    public static final RegistryObject<Block> MULBERRY_LEAVES_WITH_MULBERRIES = BLOCKS.register("mulberry_leaves_with_mulberries", () -> new LeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES)));
 
     /**
      * register blocks.

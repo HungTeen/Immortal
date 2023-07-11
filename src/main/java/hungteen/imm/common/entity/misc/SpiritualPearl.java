@@ -84,8 +84,8 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
 
     @Nullable
     public Entity getOwner(){
-        if(this.owner == null && this.level instanceof ServerLevel){
-            this.owner = ((ServerLevel) this.level).getEntity(this.uuid);
+        if(this.owner == null && this.level() instanceof ServerLevel){
+            this.owner = ((ServerLevel) this.level()).getEntity(this.uuid);
         }
         return this.owner;
     }

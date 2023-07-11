@@ -51,7 +51,7 @@ public class TeleportFormation extends FormationEntity {
     @Override
     public void tick() {
         super.tick();
-        if(! this.level.isClientSide && level instanceof ServerLevel serverLevel){
+        if(EntityHelper.isServer(this) && level() instanceof ServerLevel serverLevel){
             if(-- this.remainExistTick < 0){
                 this.discard();
             } else {
@@ -62,16 +62,16 @@ public class TeleportFormation extends FormationEntity {
                     final Map.Entry<Integer, Integer> pair = iterator.next();
                     final int id = pair.getKey();
                     final int tick = pair.getValue();
-                    final Entity entity = this.level.getEntity(id);
+                    final Entity entity = this.level().getEntity(id);
                     // Not in same dimension.
-                    if(! EntityHelper.isEntityValid(entity) || ! this.level.dimension().equals(entity.level.dimension())){
+                    if(! EntityHelper.isEntityValid(entity) || ! this.level().dimension().equals(entity.level().dimension())){
                         iterator.remove();
                     } else {
                         // Still inside.
                         final int ticks = tick + (aabb.intersects(entity.getBoundingBox()) ? 1 : -2);
                         if(ticks > TELEPORT_CD){
                             final MinecraftServer server = serverLevel.getServer();
-                            final ResourceKey<Level> dst = this.level.dimension() == IMMLevels.EAST_WORLD ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
+                            final ResourceKey<Level> dst = EntityHelper.inDimension(this, IMMLevels.EAST_WORLD) ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
                             final ServerLevel dstLevel = server.getLevel(dst);
                             if(dstLevel != null){
                                 entity.setPortalCooldown();
@@ -94,11 +94,11 @@ public class TeleportFormation extends FormationEntity {
             }
         } else {
             if (random.nextInt(150) == 0) {
-                level.playLocalSound(getX(), getY(), getZ(), SoundEvents.PORTAL_AMBIENT, SoundSource.AMBIENT, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
+                level().playLocalSound(getX(), getY(), getZ(), SoundEvents.PORTAL_AMBIENT, SoundSource.AMBIENT, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
             }
             for(int i = 0; i < 5; ++ i){
                 final Vec3 pos = position().add(RandomHelper.doubleRange(this.random, TELEPORT_WIDTH), RandomHelper.doubleRange(this.random, TELEPORT_HEIGHT), RandomHelper.doubleRange(this.random, TELEPORT_WIDTH));
-                ParticleHelper.spawnRandomSpeedParticle(this.level, IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
+                ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
             }
         }
     }
@@ -107,7 +107,7 @@ public class TeleportFormation extends FormationEntity {
         final int cnt = ticks / 8 + 1;
         for(int i = 0; i < cnt; ++i) {
             final Vec3 pos = new Vec3(entity.getRandomX(0.5D), entity.getRandomY() - 0.25D, entity.getRandomZ(0.5D));
-            ParticleHelper.spawnRandomSpeedParticle(this.level, IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
+            ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
         }
     }
 

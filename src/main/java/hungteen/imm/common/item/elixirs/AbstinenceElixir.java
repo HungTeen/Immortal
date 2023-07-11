@@ -20,7 +20,7 @@ import java.util.Optional;
 public class AbstinenceElixir extends ElixirItem{
 
     public AbstinenceElixir() {
-        super(Rarity.COMMON, ColorHelper.WHITE);
+        super(Rarity.COMMON, ColorHelper.WHITE.rgb());
     }
 
     @Override

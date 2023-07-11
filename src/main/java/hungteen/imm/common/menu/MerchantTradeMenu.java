@@ -1,6 +1,7 @@
 package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.menu.container.TradeContainer;
@@ -37,7 +38,7 @@ public class MerchantTradeMenu extends HTContainerMenu {
     public MerchantTradeMenu(int id, Inventory playerInv, int entityId) {
         super(id, IMMMenus.CULTIVATOR_TRADE.get());
         this.player = playerInv.player;
-        if(this.player.level.getEntity(entityId) instanceof HumanEntity humanEntity){
+        if(this.player.level().getEntity(entityId) instanceof HumanEntity humanEntity){
             this.merchant = humanEntity;
         } else throw new RuntimeException("No merchant found !");
         this.tradeContainer = new TradeContainer(this, this.merchant, COST_SIZE, RESULT_SIZE);
@@ -69,7 +70,7 @@ public class MerchantTradeMenu extends HTContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         this.merchant.setTradingPlayer(null);
-        if (! this.merchant.level.isClientSide) {
+        if (EntityHelper.isServer(this.merchant)) {
             if (! player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
                 for(int i = 0; i < this.tradeContainer.getContainerSize(); ++ i){
                     if(this.tradeContainer.isCostSlot(i)){
@@ -187,8 +188,8 @@ public class MerchantTradeMenu extends HTContainerMenu {
     }
 
     private void playTradeSound() {
-        if (! merchant.level.isClientSide) {
-            merchant.getLevel().playLocalSound(merchant.getX(), merchant.getY(), merchant.getZ(), merchant.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+        if (EntityHelper.isServer(this.merchant)) {
+            merchant.level().playLocalSound(merchant.getX(), merchant.getY(), merchant.getZ(), merchant.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
         }
 
     }

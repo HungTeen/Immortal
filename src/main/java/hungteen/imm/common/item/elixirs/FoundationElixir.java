@@ -17,7 +17,7 @@ import java.util.Optional;
 public class FoundationElixir extends ElixirItem{
 
     public FoundationElixir() {
-        super(Rarity.RARE, ColorHelper.BLACK);
+        super(Rarity.RARE, ColorHelper.BLACK.rgb());
     }
 
     @Override

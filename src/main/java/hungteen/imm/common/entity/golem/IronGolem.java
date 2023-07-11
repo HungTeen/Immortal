@@ -52,7 +52,7 @@ public class IronGolem extends GolemEntity{
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.attackAnimationTick = 10;
-        this.level.broadcastEntityEvent(this, (byte)4);
+        this.level().broadcastEntityEvent(this, (byte)4);
         float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float f1 = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
         boolean flag = entity.hurt(this.damageSources().mobAttack(this), f1);

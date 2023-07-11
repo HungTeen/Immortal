@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.creature;
 
 import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.util.EntityUtil;
@@ -98,7 +99,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide) {
+        if (EntityHelper.isServer(this)) {
             //grow hair.
             if (this.isBald() && --this.growHairTick <= 0) {
                 this.setBald(false);
@@ -113,7 +114,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
                             final BlockPos pos = this.blockPosition().offset(i, h, j);
                             if (checkBlock(pos)) {
                                 for (int k = -range; k < range; ++k) {
-                                    ParticleHelper.spawnParticles(this.level, ParticleTypes.COMPOSTER, MathHelper.toVec3(pos.above()));
+                                    ParticleHelper.spawnParticles(this.level(), ParticleTypes.COMPOSTER, MathHelper.toVec3(pos.above()));
                                 }
                             }
                         }
@@ -145,9 +146,9 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     public void aiStep() {
-        if (!this.isInWater() && this.onGround && this.verticalCollision) {
+        if (!this.isInWater() && this.onGround() && this.verticalCollision) {
             this.setDeltaMovement(this.getDeltaMovement().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double) 0.4F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-            this.onGround = false;
+            this.setOnGround(false);
             this.hasImpulse = true;
 //            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
         }
@@ -167,7 +168,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     protected boolean checkBlock(BlockPos pos) {
-        if (!this.level.getFluidState(pos.above()).isEmpty()) {
+        if (!this.level().getFluidState(pos.above()).isEmpty()) {
             return false;
         }
 
@@ -176,8 +177,8 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 //            return true;
 //        }
 
-        if (this.level.getBlockState(pos).is(Tags.Blocks.STONE)) {
-            this.level.setBlock(pos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
+        if (this.level().getBlockState(pos).is(Tags.Blocks.STONE)) {
+            this.level().setBlock(pos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
             return true;
         }
 
@@ -439,7 +440,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             }
             if (!EntityUtil.isEntityValid(target)) {
                 if (--this.cooldown <= 0) {
-                    final List<ItemEntity> list = this.grassCarp.level.getEntitiesOfClass(ItemEntity.class, this.grassCarp.getBoundingBox().inflate(16), ALLOWED_ITEMS);
+                    final List<ItemEntity> list = this.grassCarp.level().getEntitiesOfClass(ItemEntity.class, this.grassCarp.getBoundingBox().inflate(16), ALLOWED_ITEMS);
                     if (!list.isEmpty()) {
                         target = list.get(0);
                         return true;
@@ -508,12 +509,12 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 
         private void drop(ItemStack itemStack) {
             if (!itemStack.isEmpty()) {
-                ItemEntity itementity = new ItemEntity(this.grassCarp.level, this.grassCarp.getX(), this.grassCarp.getEyeY(), this.grassCarp.getZ(), itemStack);
+                ItemEntity itementity = new ItemEntity(this.grassCarp.level(), this.grassCarp.getX(), this.grassCarp.getEyeY(), this.grassCarp.getZ(), itemStack);
                 itementity.setPickUpDelay(40);
                 itementity.setThrower(this.grassCarp.getUUID());
                 final Vec3 speed = MathHelper.toVec3(this.blockPos).subtract(this.grassCarp.position()).add(0, 1.2, 0).normalize();
                 itementity.setDeltaMovement(speed.scale(0.5F));
-                this.grassCarp.level.addFreshEntity(itementity);
+                this.grassCarp.level().addFreshEntity(itementity);
             }
         }
     }

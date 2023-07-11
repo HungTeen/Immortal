@@ -2,6 +2,7 @@ package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
@@ -62,7 +63,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     @Override
     public void tick() {
-        if (!player.level.isClientSide) {
+        if (EntityHelper.isServer(player)) {
             //TODO 灵气自然恢复
 //            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
 //                final int value = getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA);
@@ -555,11 +556,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public boolean isClientSide(){
-        return getPlayer().level.isClientSide();
+        return getPlayer().level().isClientSide();
     }
 
     public long getGameTime() {
-        return getPlayer().level.getGameTime();
+        return getPlayer().level().getGameTime();
     }
 
 }

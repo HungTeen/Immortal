@@ -22,7 +22,7 @@ import java.util.List;
  **/
 public class RealmTypes {
 
-    private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.create(Util.prefix("realm"));
+    private static final HTSimpleRegistry<IRealmType> REALM_TYPES = HTRegistryManager.createSimple(Util.prefix("realm"));
     private static final List<IRealmType> TYPES = new ArrayList<>();
 
     public static IHTSimpleRegistry<IRealmType> registry() {

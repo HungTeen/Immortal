@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifacts;
 
-import hungteen.htlib.client.RenderHelper;
+import hungteen.htlib.client.util.RenderHelper;
 import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;

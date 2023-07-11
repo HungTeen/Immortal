@@ -24,14 +24,6 @@ public class ClientProxy extends CommonProxy {
         return MC;
     }
 
-    public static void push(String name){
-        mc().getProfiler().push(name);
-    }
-
-    public static void pop(){
-        mc().getProfiler().pop();
-    }
-
     @Override
     public void openRestingScreen() {
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AntidoteElixir extends ElixirItem{
 
     public AntidoteElixir() {
-        super(Rarity.COMMON, ColorHelper.DARK_GREEN);
+        super(Rarity.COMMON, ColorHelper.DARK_GREEN.rgb());
     }
 
     @Override

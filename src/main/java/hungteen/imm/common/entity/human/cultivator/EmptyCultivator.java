@@ -33,7 +33,7 @@ public class EmptyCultivator extends Cultivator {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean flag = super.hurt(source, amount);
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             return false;
         } else {
             if (flag && source.getEntity() instanceof LivingEntity) {

@@ -31,7 +31,7 @@ public class IMMTeleporter implements ITeleporter {
     @Nullable
     @Override
     public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-        final ResourceKey<Level> srcLevel = entity.level.dimension();
+        final ResourceKey<Level> srcLevel = entity.level().dimension();
         final ResourceKey<Level> destLevel = destWorld.dimension();
         Vec3 destination = entity.position();
         if((srcLevel.equals(Level.OVERWORLD) && destLevel.equals(IMMLevels.EAST_WORLD)) ||

@@ -1,8 +1,6 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.RecipeRenderManager;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
@@ -10,6 +8,7 @@ import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.RuneBindMenu;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,16 +53,15 @@ public class RuneBindScreen extends RuneBaseScreen<RuneBindMenu> {
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        super.render(stack, mouseX, mouseY, partialTicks);
-        this.recipeRenderManager.render(this.minecraft, stack, this.leftPos, this.topPos, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
+        this.recipeRenderManager.render(this.minecraft, graphics, this.leftPos, this.topPos, partialTicks);
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
-        RenderHelper.setTexture(TEXTURE);
-        this.blit(stack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         if(this.menu.getCurrentBehavior() != null){
             for(int i = 0; i < COLS; i++) {
                 int tx = 32;
@@ -77,21 +75,21 @@ public class RuneBindScreen extends RuneBaseScreen<RuneBindMenu> {
                         }
                     }
                 }
-                this.blit(stack, getLeftOffset(i), getTopOffset(i), tx, 240, 16, 16);
+                graphics.blit(TEXTURE, getLeftOffset(i), getTopOffset(i), tx, 240, 16, 16);
             }
         }
     }
 
     @Override
-    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
-        super.renderTooltip(stack, mouseX, mouseY);
-        this.recipeRenderManager.renderGhostRecipeTooltip(this.minecraft, stack, this.leftPos, this.topPos, mouseX, mouseY);
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderTooltip(graphics, mouseX, mouseY);
+        this.recipeRenderManager.renderGhostRecipeTooltip(this.minecraft, graphics, this.font, this.leftPos, this.topPos, mouseX, mouseY);
         if(this.menu.getCurrentBehavior() != null){
             for(int i = 0; i < COLS; i++) {
                 final int x = getLeftOffset(i);
                 final int y = getTopOffset(i);
                 if(i < this.menu.getCurrentBehavior().maxSlot() && MathHelper.isInArea(mouseX, mouseY, x, y, 16, 16)){
-                    this.renderComponentTooltip(stack, List.of(
+                    graphics.renderComponentTooltip(this.font, List.of(
                             this.menu.getCurrentBehavior().getFilterDesc(i).withStyle(ChatFormatting.GREEN)
                     ), mouseX, mouseY);
                 }

@@ -29,7 +29,7 @@ public abstract class MixinItemEntity {
             locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void tick(CallbackInfo result) {
-        final Level level = ((ItemEntity)(Object)this).level;
+        final Level level = ((ItemEntity)(Object)this).level();
         final Vec3 pos = ((ItemEntity)(Object)this).position().add(0, 0.5, 0);
         if(level.isClientSide && this.getItem().is(IMMItemTags.SPIRITUAL_STONES) && level.getRandom().nextFloat() < 0.1F){
             for(int i = 0; i < 2; ++ i){

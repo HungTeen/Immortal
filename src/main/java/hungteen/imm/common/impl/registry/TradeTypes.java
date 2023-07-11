@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class TradeTypes {
 
-    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.create(Util.prefix("trade_type"));
+    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.createSimple(Util.prefix("trade_type"));
     private static final List<ITradeType> TYPES = new ArrayList<>();
 
     public static IHTSimpleRegistry<ITradeType> registry() {

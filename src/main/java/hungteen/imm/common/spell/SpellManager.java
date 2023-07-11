@@ -119,15 +119,15 @@ public class SpellManager {
     public static EntityBlockResult getResult(Player player) {
         final HitResult hitResult = PlayerUtil.getHitResult(player);
         if(hitResult instanceof EntityHitResult result){
-            return new EntityBlockResult(player.level, result.getEntity());
+            return new EntityBlockResult(player.level(), result.getEntity());
         } else if(hitResult instanceof BlockHitResult result){
-            return new EntityBlockResult(player.level, result.getBlockPos(), result.getDirection());
+            return new EntityBlockResult(player.level(), result.getBlockPos(), result.getDirection());
         }
         return null;
     }
 
     public static long getSpellCDTime(Player player, ISpellType spell){
-        return player.level.getGameTime() + spell.getCooldown();
+        return player.level().getGameTime() + spell.getCooldown();
     }
 
     public static boolean canSpellStart(Player player, ISpellType spell){

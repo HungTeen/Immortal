@@ -68,13 +68,13 @@ public abstract class GolemEntity extends IMMCreature implements ContainerListen
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        this.level.getProfiler().push("TickGolemBrain");
+        this.level().getProfiler().push("TickGolemBrain");
         this.tickBrain();
-        this.level.getProfiler().pop();
+        this.level().getProfiler().pop();
     }
 
     protected void tickBrain(){
-        this.getBrain().tick((ServerLevel) this.level, this);
+        this.getBrain().tick((ServerLevel) this.level(), this);
     }
 
     public void refreshBrain(){

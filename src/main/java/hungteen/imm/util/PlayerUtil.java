@@ -3,6 +3,7 @@ package hungteen.imm.util;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.WeightedList;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
@@ -14,6 +15,7 @@ import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -48,7 +50,7 @@ public class PlayerUtil {
 
     public static boolean addItem(Player player, ItemStack stack){
         if (player.addItem(stack)) {
-            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
             return true;
         } else {
             ItemEntity itementity = player.drop(stack, false);
@@ -73,12 +75,12 @@ public class PlayerUtil {
         final Vec3 startVec = player.getEyePosition(1.0F);
         final Vec3 lookVec = player.getViewVector(1.0F);
         Vec3 endVec = startVec.add(lookVec.scale(distance));
-        BlockHitResult blockHitResult = player.level.clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        BlockHitResult blockHitResult = player.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
         if(blockHitResult.getType() != HitResult.Type.MISS){
             endVec = blockHitResult.getLocation();
         }
         final AABB aabb = player.getBoundingBox().inflate(distance);
-        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(player.level, player, startVec, endVec, aabb, (entity) -> {
+        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(player.level(), player, startVec, endVec, aabb, (entity) -> {
             return !entity.isSpectator();
         });
         return entityHitResult != null ? entityHitResult : blockHitResult;
@@ -120,7 +122,7 @@ public class PlayerUtil {
         final List<ISpiritualType> rootChosen = new ArrayList<>();
         if(IMMAPI.get().spiritualRegistry().isPresent()){
             if(rootCount == 1){
-                rootChosen.addAll(WeightedList.create(IMMAPI.get().spiritualRegistry().get().getValues()).getRandomItems(random, 1, true));
+                rootChosen.addAll(WeightedList.create(SpiritualTypes.registry().getValues().stream().toList()).getRandomItems(random, 1, true));
             } else if(rootCount > 1){
                 rootChosen.addAll(WeightedList.create(IMMAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList())).getRandomItems(random, 1, true));
             }
@@ -292,7 +294,7 @@ public class PlayerUtil {
     public static void setRealm(Player player, IRealmType realm){
         getOptManager(player).ifPresent(m -> {
             m.setRealmType(realm);
-            if(! player.level.isClientSide){
+            if(EntityHelper.isServer(player)){
                 m.setFloatData(PlayerRangeFloats.CULTIVATION, realm.requireCultivation());
                 m.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, 0);
             }

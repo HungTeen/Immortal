@@ -21,7 +21,7 @@ public class RestSpell extends SpellTypes.SpellType {
     public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
         //TODO 可以调息的条件。
         if(EntityHelper.isEntityValid(owner)){
-            SeatEntity.seatAt(owner.level, owner, owner.blockPosition(), 0, owner.getYRot(), 30, true);
+            SeatEntity.seatAt(owner.level(), owner, owner.blockPosition(), 0, owner.getYRot(), 30, true);
             return true;
         }
         return false;

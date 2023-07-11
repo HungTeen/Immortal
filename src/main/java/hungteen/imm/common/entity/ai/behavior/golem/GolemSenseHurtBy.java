@@ -36,7 +36,7 @@ public class GolemSenseHurtBy extends GolemSensorBehavior{
         }
 
         brain.getMemory(MemoryModuleType.HURT_BY_ENTITY).ifPresent((target) -> {
-            if (! target.isAlive() || target.level != level) {
+            if (! target.isAlive() || target.level() != level) {
                 brain.eraseMemory(MemoryModuleType.HURT_BY_ENTITY);
             }
         });

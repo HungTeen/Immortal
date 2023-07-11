@@ -30,7 +30,7 @@ public class GolemInventoryMenu extends HTContainerMenu {
 
     public GolemInventoryMenu(int id, Inventory inventory, int golemId) {
         super(id, IMMMenus.GOLEM_INVENTORY.get());
-        final Entity entity=  inventory.player.level.getEntity(golemId);
+        final Entity entity=  inventory.player.level().getEntity(golemId);
         assert entity instanceof GolemEntity;
         this.golem = (GolemEntity) entity;
         this.runeContainer = this.golem.getRuneInventory();

@@ -31,7 +31,7 @@ public class WoolCushionBlock extends CushionBlock{
     }
 
     public WoolCushionBlock(DyeColor dyeColor) {
-        super(BlockBehaviour.Properties.copy(Blocks.BLACK_BED).color(dyeColor.getMaterialColor()));
+        super(BlockBehaviour.Properties.copy(Blocks.BLACK_BED).mapColor(dyeColor.getMapColor()));
         this.dyeColor = dyeColor;
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }

@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 public class SpiritualTypes {
 
     public static final int TEX_WIDTH = 9;
-    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.create(Util.prefix("spiritual_root"));
+    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.createSimple(Util.prefix("spiritual_root"));
 
     public static IHTSimpleRegistry<ISpiritualType> registry() {
         return SPIRITUAL_TYPES;

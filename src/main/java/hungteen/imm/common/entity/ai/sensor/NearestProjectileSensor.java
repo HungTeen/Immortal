@@ -37,7 +37,7 @@ public class NearestProjectileSensor<T extends Mob> extends Sensor<T> {
     }
 
     public static boolean isProjectile(Entity target) {
-        return target instanceof Projectile && ! target.isOnGround();
+        return target instanceof Projectile && ! target.onGround();
     }
 
     @Override

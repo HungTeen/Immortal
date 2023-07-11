@@ -45,7 +45,7 @@ public class HorizontalStakeFeature extends Feature<HorizontalStakeConfiguration
             }
         }
         List<BlockPos> base = positions.stream().filter(pos -> pos.getY() == context.origin().getY()).toList();
-        final long solidCount = base.stream().filter(pos -> context.level().getBlockState(pos.below()).getMaterial().isSolid()).count();
+        final long solidCount = base.stream().filter(pos -> context.level().getBlockState(pos.below()).isSolid()).count();
         if(solidCount > base.size() * 0.9){
             positions.forEach(pos -> {
                 final BlockState logState = context.config().logState().getState(context.random(), pos).setValue(RotatedPillarBlock.AXIS, axis);

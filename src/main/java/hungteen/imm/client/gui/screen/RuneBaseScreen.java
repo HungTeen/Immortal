@@ -1,14 +1,14 @@
 package hungteen.imm.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.menu.RuneBaseMenu;
 import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -35,31 +35,30 @@ public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T>
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(stack, mouseX, mouseY);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderBackground(stack);
-        RenderHelper.setTexture(WIDGETS);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        this.renderBackground(graphics);
         final List<RuneCategories> list = this.menu.getRuneCategories();
         for(int i = 0; i < list.size(); i++) {
             final int y = this.menu.getRuneCategory() == list.get(i) ? 20 : 40;
-            this.blit(stack, getTabLeftOffset(i), getTabTopOffset(i), 0, y, TAB_WIDTH, TAB_HEIGHT);
+            graphics.blit(WIDGETS, getTabLeftOffset(i), getTabTopOffset(i), 0, y, TAB_WIDTH, TAB_HEIGHT);
         }
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-        RenderHelper.drawCenteredScaledString(stack, this.font, this.menu.getRuneCategory().getTitle().getString(), 95, 18, ColorHelper.BLACK, 1F);
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        RenderUtil.renderCenterScaledText(graphics.pose(), this.menu.getRuneCategory().getTitle(), 95, 18, 1F, ColorHelper.BLACK.rgb(), ColorHelper.BLACK.rgb());
         final List<RuneCategories> list = this.menu.getRuneCategories();
         for(int i = 0; i < list.size(); i++) {
             final int x = getTabLeftOffset(i) - this.leftPos + TAB_WIDTH / 2;
             final int y = getTabTopOffset(i) - this.topPos + 5;
-            final int color = list.get(i) == this.menu.getRuneCategory() ? ColorHelper.toRGB(119, 105, 86) : ColorHelper.BLACK;
-            RenderHelper.drawCenteredScaledString(stack, this.font, list.get(i).getTabTitle().getString(), x, y, color, 1F);
+            final int color = list.get(i) == this.menu.getRuneCategory() ? ColorHelper.toRGB(119, 105, 86) : ColorHelper.BLACK.rgb();
+            RenderUtil.renderCenterScaledText(graphics.pose(), list.get(i).getTabTitle(), x, y, 1F, color, 0);
         }
     }
 

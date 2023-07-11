@@ -48,7 +48,7 @@ public class TradeResultSlot extends Slot {
 
     @Override
     protected void checkTakeAchievements(ItemStack stack) {
-        stack.onCraftedBy(this.player.level, this.player, this.removeCount);
+        stack.onCraftedBy(this.player.level(), this.player, this.removeCount);
         this.removeCount = 0;
     }
 

@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -87,8 +88,8 @@ public class CreeperGolem extends GolemEntity {
     }
 
     private void explodeCreeper() {
-        if (!this.level.isClientSide) {
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius, Level.ExplosionInteraction.MOB);
+        if (EntityHelper.isServer(this)) {
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius, Level.ExplosionInteraction.MOB);
         }
     }
 

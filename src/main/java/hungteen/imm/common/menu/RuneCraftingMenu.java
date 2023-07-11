@@ -88,8 +88,8 @@ public class RuneCraftingMenu extends RuneBaseMenu {
 
     public void craftItem(Player player, ItemStack stack){
         if(this.lastInputRune != null){
-            stack.onCraftedBy(player.level, player, stack.getCount());
-            this.resultContainer.awardUsedRecipes(player);
+            stack.onCraftedBy(player.level(), player, stack.getCount());
+            this.resultContainer.awardUsedRecipes(player, List.of(stack));
             this.inputContainer.removeItem(0, this.lastInputRune.requireMaterial());
             this.inputContainer.removeItem(1, this.lastInputRune.requireRedStone());
             if(this.canCraft(this.lastInputRune)){
@@ -158,7 +158,7 @@ public class RuneCraftingMenu extends RuneBaseMenu {
             Item item = itemstack1.getItem();
             result = itemstack1.copy();
             if (slotId == 2) {
-                item.onCraftedBy(itemstack1, player.level, player);
+                item.onCraftedBy(itemstack1, player.level(), player);
                 if (!this.moveItemStackTo(itemstack1, 3, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }

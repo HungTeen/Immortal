@@ -50,7 +50,7 @@ public class EntityElementPacket {
          */
         public static void onMessage(EntityElementPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).map(Entity::getLevel).ifPresent(level -> {
+                Optional.ofNullable(PlayerHelper.getClientPlayer()).map(Entity::level).ifPresent(level -> {
                     final Entity entity = level.getEntity(message.entityId);
                     final Elements element = Elements.valueOf(message.type);
                     if(entity != null){

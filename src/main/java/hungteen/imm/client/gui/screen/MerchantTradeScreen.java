@@ -1,12 +1,14 @@
 package hungteen.imm.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.client.RenderHelper;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
+import hungteen.htlib.client.util.RenderHelper;
+import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.menu.MerchantTradeMenu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -56,69 +58,67 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-        RenderHelper.drawCenteredScaledString(stack, this.font, TRADES_LABEL.getString(), 53, 6, 4210752, 1F);
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        RenderUtil.renderCenterScaledText(graphics.pose(), TRADES_LABEL, 53, 6, 1F, 4210752, ColorHelper.BLACK.rgb());
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
-        RenderHelper.setTexture(TEXTURE);
-        blit(stack, this.leftPos, this.topPos, 0, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 512, 256);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(graphics, partialTicks, mouseX, mouseY);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 512, 256);
 
         final TradeOffers offers = this.menu.getTrades();
         if (!offers.isEmpty()) {
             // 选中的暂时卖完了。
             if (this.menu.isValidButtonIndex(this.shopItem) && !offers.get(this.shopItem).valid()) {
-                blit(stack, this.leftPos + 83 + 99, this.topPos + 35, 0, 311.0F, 0.0F, 28, 21, 512, 256);
+                graphics.blit(TEXTURE, this.leftPos + 83 + 99, this.topPos + 35, 0, 311.0F, 0.0F, 28, 21, 512, 256);
             }
         }
     }
 
     @Override
-    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(stack);
-        super.render(stack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTicks);
         final TradeOffers offers = this.menu.getTrades();
         if (!offers.isEmpty()) {
             final int leftPos = this.leftPos + 5;
             RenderHelper.setTexture(TEXTURE);
-            this.renderScroller(stack, offers.size());
+            this.renderScroller(graphics, offers.size());
 
             // 渲染交易项。
             for (int i = 0; i < offers.size(); ++i) {
                 // 在窗口里。
                 if (i >= this.scrollOff && i < this.scrollOff + MAX_BUTTON_COUNT) {
                     final TradeOffer offer = offers.get(i);
-                    stack.pushPose();
-                    stack.translate(0, 0, 100);
+                    RenderHelper.push(graphics);
+                    graphics.pose().translate(0, 0, 100);
 
                     // 渲染钱。
                     final int hOffset = getItemOffsetY(i);
                     for (int j = 0; j < getCostSize(offer); ++ j) {
                         final ItemStack itemStack = offer.getTradeEntry().costItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(stack, itemStack, getCostOffsetX(j), hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(stack, this.font, itemStack, getCostOffsetX(j), hOffset);
+                        graphics.renderFakeItem(itemStack, getCostOffsetX(j), hOffset);
+                        graphics.renderItemDecorations(this.font, itemStack, getCostOffsetX(j), hOffset);
                     }
 
                     // 渲染箭头。
-                    RenderHelper.setTexture(TEXTURE);
-                    blit(stack, leftPos + 35 + 20, hOffset + 3, 0, offer.valid() ? 15F : 25.0F, 171.0F, 10, 9, 512, 256);
+                    graphics.blit(TEXTURE, leftPos + 35 + 20, hOffset + 3, 0, offer.valid() ? 15F : 25.0F, 171.0F, 10, 9, 512, 256);
 
                     // 渲染商品。
                     for (int j = 0; j < getResultSize(offer); ++j) {
                         final ItemStack itemStack = offer.getTradeEntry().resultItems().get(j);
-                        this.itemRenderer.renderAndDecorateFakeItem(stack, itemStack, getResultOffsetX(j), hOffset);
-                        this.itemRenderer.renderGuiItemDecorations(stack, this.font, itemStack, getResultOffsetX(j), hOffset);
+                        graphics.renderFakeItem(itemStack, getResultOffsetX(j), hOffset);
+                        graphics.renderItemDecorations(this.font, itemStack, getResultOffsetX(j), hOffset);
                     }
 
-                    stack.popPose();
+                    RenderHelper.pop(graphics);
                 }
             }
 
             for (TradeOfferButton button : this.tradeButtons) {
                 if (button.isHoveredOrFocused()) {
-                    button.renderToolTip(stack, mouseX, mouseY);
+                    button.renderToolTip(graphics, mouseX, mouseY);
                 }
 
                 button.visible = button.index < this.menu.getTrades().size();
@@ -126,10 +126,10 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
 
             RenderSystem.enableDepthTest();
         }
-        this.renderTooltip(stack, mouseX, mouseY);
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
-    protected void renderScroller(PoseStack stack, int len) {
+    protected void renderScroller(GuiGraphics graphics, int len) {
         final int i = len + 1 - MAX_BUTTON_COUNT;
         if (this.canScroll(len)) {
             final int j = 139 - (27 + (i - 1) * 139 / i);
@@ -138,9 +138,9 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
             if (this.scrollOff == i - 1) {
                 i1 = 113;
             }
-            blit(stack, this.leftPos + 94, this.topPos + 18 + i1, 0, 0.0F, 199.0F, 6, 27, 512, 256);
+            graphics.blit(TEXTURE, this.leftPos + 94, this.topPos + 18 + i1, 0, 0.0F, 199.0F, 6, 27, 512, 256);
         } else {
-            blit(stack, this.leftPos + 94, this.topPos + 18, 0, 6.0F, 199.0F, 6, 27, 512, 256);
+            graphics.blit(TEXTURE, this.leftPos + 94, this.topPos + 18, 0, 6.0F, 199.0F, 6, 27, 512, 256);
         }
     }
 
@@ -190,7 +190,7 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
             return this.index;
         }
 
-        public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
+        public void renderToolTip(GuiGraphics graphics, int mouseX, int mouseY) {
             final TradeOffers offers = MerchantTradeScreen.this.menu.getTrades();
             final int scrollOff = MerchantTradeScreen.this.scrollOff;
             if (this.isHovered && this.index + scrollOff < offers.size()) {
@@ -200,7 +200,7 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
                     final int x = getCostOffsetX(i);
                     if(mouseX >= x && mouseX <= x + 16){
                         final ItemStack itemStack = offer.getTradeEntry().costItems().get(i);
-                        MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
+                        graphics.renderTooltip(MerchantTradeScreen.this.font, itemStack, mouseX, mouseY);
                         hovered = true;
                         break;
                     }
@@ -210,7 +210,7 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
                         final int x = getResultOffsetX(i);
                         if(mouseX >= x && mouseX <= x + 16){
                             final ItemStack itemStack = offer.getTradeEntry().resultItems().get(i);
-                            MerchantTradeScreen.this.renderTooltip(stack, itemStack, mouseX, mouseY);
+                            graphics.renderTooltip(MerchantTradeScreen.this.font, itemStack, mouseX, mouseY);
                             hovered = true;
                             break;
                         }

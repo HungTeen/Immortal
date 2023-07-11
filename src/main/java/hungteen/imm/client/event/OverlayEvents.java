@@ -35,25 +35,25 @@ public class OverlayEvents {
      * {@link hungteen.imm.client.ClientRegister#registerGuiOverlays(RegisterGuiOverlaysEvent)}
      */
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("spiritual_mana_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+        event.registerAboveAll("spiritual_mana_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if (RenderEventHandler.canRenderManaBar()) {
                 gui.setupOverlayRenderState(true, false);
-                RenderEventHandler.renderSpiritualMana(poseStack, screenHeight, screenWidth);
+                RenderEventHandler.renderSpiritualMana(graphics, screenHeight, screenWidth);
             }
         });
-        event.registerAboveAll("spell_circle", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+        event.registerAboveAll("spell_circle", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if(RenderEventHandler.canRenderOverlay() && ClientDatas.ShowSpellCircle){
-                RenderEventHandler.renderSpellCircle(poseStack, screenHeight, screenWidth);
+                RenderEventHandler.renderSpellCircle(graphics, screenHeight, screenWidth);
             }
         });
-        event.registerAboveAll("elements", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+        event.registerAboveAll("elements", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if(RenderEventHandler.canRenderOverlay()){
-                RenderEventHandler.renderElements(poseStack, screenHeight, screenWidth);
+                RenderEventHandler.renderElements(graphics, screenHeight, screenWidth);
             }
         });
-        event.registerAboveAll("smithing_progress_bar", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if(RenderEventHandler.canRenderOverlay()){
-                RenderEventHandler.renderSmithingBar(poseStack, screenHeight, screenWidth);
+                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
             }
         });
     }

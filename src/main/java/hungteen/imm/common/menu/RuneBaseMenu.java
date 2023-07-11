@@ -33,7 +33,7 @@ public abstract class RuneBaseMenu extends HTContainerMenu {
     public RuneBaseMenu(int id, @Nullable MenuType<?> menuType, Inventory inventory, ContainerLevelAccess access) {
         super(id, menuType);
         this.access = access;
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.player = inventory.player;
     }
 

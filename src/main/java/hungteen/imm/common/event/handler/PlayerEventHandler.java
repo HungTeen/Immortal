@@ -42,7 +42,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level, itemEntity));
+        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level(), itemEntity));
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
