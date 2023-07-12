@@ -93,7 +93,7 @@ public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
             final double dy = mouseY - getTopOffset(i);
             if (dx >= 0 && dy >= 0 && dx < 16 && dy < 16 && this.menu.clickMenuButton(this.minecraft.player, i)) {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-                this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, i);
+                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
                 return true;
             }
         }

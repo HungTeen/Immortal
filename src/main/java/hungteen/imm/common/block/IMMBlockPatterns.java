@@ -56,26 +56,26 @@ public class IMMBlockPatterns {
             FurnacePattern = furnace(
                     BlockInWorld.hasState(state -> state.is(IMMBlockTags.COPPER_SLABS)),
                     BlockInWorld.hasState(state -> state.is(IMMBlockTags.COPPER_BLOCKS)),
-                    BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK)),
+                    BlockInWorld.hasState(BlockState::isAir),
                     BlockInWorld.hasState(BlockStatePredicate.forBlock(IMMBlocks.COPPER_FURNACE.get())),
-                    BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.COPPER_BLOCK))
+                    BlockInWorld.hasState(state -> state.is(IMMBlockTags.COPPER_BLOCKS))
             );
         }
         return FurnacePattern;
     }
 
-    private static BlockPattern furnace(Predicate<BlockInWorld> slab, Predicate<BlockInWorld> block, Predicate<BlockInWorld> functional, Predicate<BlockInWorld> furnace, Predicate<BlockInWorld> output){
+    private static BlockPattern furnace(Predicate<BlockInWorld> slab, Predicate<BlockInWorld> block, Predicate<BlockInWorld> air, Predicate<BlockInWorld> furnace, Predicate<BlockInWorld> output){
         return BlockPatternBuilder.start()
                 .aisle("       ", "       ", "       ", "       ", " #   # ")
-                .aisle("   ^   ", "  ###  ", "  #o#  ", "  ###  ", "       ")
-                .aisle("  ^x^  ", "# # # #", " ## ## ", "  #o#  ", "       ")
+                .aisle("   ^   ", "  ###  ", "  #i#  ", "  ###  ", "       ")
+                .aisle("  ^ ^  ", "# ### #", " ##a## ", "  #i#  ", "       ")
                 .aisle("   ^   ", "  ###  ", "  #f#  ", "  ###  ", "       ")
                 .aisle("       ", "       ", "       ", "       ", " #   # ")
                 .where('^', slab)
                 .where('#', block)
-                .where('x', functional)
+                .where('a', air)
                 .where('f', furnace)
-                .where('o', output)
+                .where('i', output)
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package hungteen.imm.util;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.WeightedList;
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
@@ -22,9 +23,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.*;
 
 import javax.annotation.Nullable;
@@ -46,6 +49,13 @@ public class PlayerUtil {
     }
     public static void setCoolDown(Player player, Item item, int coolDown){
         player.getCooldowns().addCooldown(item, coolDown);
+    }
+
+    /**
+     * Add distance parameter.
+     */
+    public static boolean stillValid(ContainerLevelAccess levelAccess, Player player, Block block, double distance) {
+        return levelAccess.evaluate((level, blockPos) -> level.getBlockState(blockPos).is(block) && player.distanceToSqr(MathHelper.toVec3(blockPos)) <= distance, true);
     }
 
     public static boolean addItem(Player player, ItemStack stack){

@@ -2,11 +2,14 @@ package hungteen.imm.client.gui.screen;
 
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.imm.common.menu.SpiritualFurnaceMenu;
+import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
@@ -47,6 +50,17 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+        if(delta < 0 && this.menu.canSwitchToFunctionalMenu()){
+            if(this.canClickInventoryButton(0)){
+                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
+                this.sendInventoryButtonClickPacket(0);
+            }
+        }
+        return super.mouseScrolled(mouseX, mouseY, delta);
     }
 
 }

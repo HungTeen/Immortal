@@ -1,12 +1,14 @@
-package hungteen.imm.common.menu;
+package hungteen.imm.common.menu.furnace;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -15,6 +17,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * @program: Immortal
@@ -40,6 +43,7 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
         BlockEntity blockEntity = inventory.player.level().getBlockEntity(pos);
         if(blockEntity instanceof SpiritualFurnaceBlockEntity){
             this.blockEntity = (SpiritualFurnaceBlockEntity) blockEntity;
+            this.blockEntity.opened();
         } else{
             throw new RuntimeException("Invalid block entity !");
         }
@@ -65,6 +69,19 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
         this.addDataSlots(this.accessData);
     }
 
+    @Override
+    public boolean clickMenuButton(Player player, int slotId) {
+        if(slotId == 0 && this.canSwitchToFunctionalMenu()){
+            if(player instanceof ServerPlayer serverPlayer){
+                NetworkHooks.openScreen(serverPlayer, this.blockEntity.getFunctionalBlockEntity(), buf -> {
+                    buf.writeBlockPos(this.blockEntity.getFunctionalBlockEntity().getBlockPos());
+                });
+            }
+            return true;
+        }
+        return super.clickMenuButton(player, slotId);
+    }
+
     public int getFlameValue(){
         return this.accessData.get(0);
     }
@@ -80,6 +97,10 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int slotId) {
         return ItemStack.EMPTY;
+    }
+
+    public boolean canSwitchToFunctionalMenu(){
+        return this.blockEntity.getFunctionalBlockEntity() != null;
     }
 
     @Override

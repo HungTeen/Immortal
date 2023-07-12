@@ -1,7 +1,7 @@
 {
   "values": [
+    "imm:copper_furnace",
     "#imm:copper_blocks",
-    "#imm:copper_slabs",
-    "#imm:functional_coppers"
+    "#imm:copper_slabs"
   ]
 }

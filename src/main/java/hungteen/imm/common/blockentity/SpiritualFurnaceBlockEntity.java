@@ -6,7 +6,7 @@ import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.item.artifacts.FlameGourd;
-import hungteen.imm.common.menu.SpiritualFurnaceMenu;
+import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -60,12 +61,19 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
             return 3;
         }
     };
+
     private int currentFlameValue = 0;
     private int maxFlameValue = 0;
     private boolean triggered = false;
+    private BlockPattern.BlockPatternMatch lastMatch;
+    private FunctionalFurnaceBlockEntity functionalBlockEntity;
 
     public SpiritualFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IMMBlockEntities.SPIRITUAL_FURNACE.get(), blockPos, blockState);
+    }
+
+    public void opened() {
+        this.getFunctionalBlockEntity();
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState state, SpiritualFurnaceBlockEntity blockEntity) {
@@ -162,6 +170,26 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         tag.putBoolean("HasTriggered", this.triggered);
         tag.putInt("CurrentFlameValue", this.currentFlameValue);
         tag.putInt("MaxFlameValue", this.maxFlameValue);
+    }
+
+    public BlockPattern.BlockPatternMatch getLastMatch(){
+        if(this.lastMatch == null){
+            this.lastMatch = SpiritualFurnaceBlock.getMatch(this.level, this.getBlockPos());
+        }
+        return this.lastMatch;
+    }
+
+    @Nullable
+    public FunctionalFurnaceBlockEntity getFunctionalBlockEntity(){
+        if(this.functionalBlockEntity == null){
+            if(this.getLastMatch() != null){
+                this.functionalBlockEntity = SpiritualFurnaceBlock.getFunctionalBlockEntity(this.getLastMatch());
+                if(this.functionalBlockEntity == null){
+                    this.lastMatch = null;
+                }
+            }
+        }
+        return this.functionalBlockEntity;
     }
 
     @Override

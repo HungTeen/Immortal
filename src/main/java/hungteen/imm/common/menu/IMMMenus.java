@@ -1,5 +1,7 @@
 package hungteen.imm.common.menu;
 
+import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
+import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.util.Util;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;

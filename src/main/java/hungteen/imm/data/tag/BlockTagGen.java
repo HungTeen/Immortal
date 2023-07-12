@@ -35,8 +35,10 @@ public class BlockTagGen extends HTBlockTagGen {
         this.tag(IMMBlockTags.COPPER_SLABS)
                 .add(Blocks.CUT_COPPER_SLAB, Blocks.EXPOSED_CUT_COPPER_SLAB, Blocks.WEATHERED_CUT_COPPER_SLAB, Blocks.OXIDIZED_CUT_COPPER_SLAB);
         this.tag(IMMBlockTags.FUNCTIONAL_COPPERS)
-                .add(IMMBlocks.COPPER_FURNACE.get(), IMMBlocks.COPPER_ELIXIR_ROOM.get());
-        this.tag(IMMBlockTags.FURNACE_BLOCKS).addTags(IMMBlockTags.COPPER_BLOCKS, IMMBlockTags.COPPER_SLABS, IMMBlockTags.FUNCTIONAL_COPPERS);
+                .add(IMMBlocks.COPPER_ELIXIR_ROOM.get());
+        this.tag(IMMBlockTags.FURNACE_BLOCKS)
+                .add(IMMBlocks.COPPER_FURNACE.get())
+                .addTags(IMMBlockTags.COPPER_BLOCKS, IMMBlockTags.COPPER_SLABS);
     }
 
     private void addMCTags(){

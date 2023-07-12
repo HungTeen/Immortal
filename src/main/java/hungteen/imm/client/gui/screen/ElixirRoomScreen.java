@@ -1,12 +1,9 @@
 package hungteen.imm.client.gui.screen;
 
-import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.client.RenderUtil;
-import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
-import hungteen.imm.common.menu.ElixirRoomMenu;
-import hungteen.imm.util.Colors;
+import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.util.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -18,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
  * @author: HungTeen
  * @create: 2022-10-28 18:17
  **/
-public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
+public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 
     private static final ResourceLocation TEXTURE = Util.get().containerTexture("elixir_room");
     private static final int FLAME_ANIM_CD = 20;
@@ -36,15 +33,15 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
         super.render(graphics, mouseX, mouseY, partialTicks);
         //Render Title.
         RenderUtil.renderCenterScaledText(graphics.pose(), this.getTitle(), this.leftPos + 100, this.topPos + 20, 0.6F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
-        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
-            final Component text = Component.translatable("gui.imm.elixir_furnace.remain_count", this.menu.getIngredientLimit());
-            RenderUtil.renderCenterScaledText(graphics.pose(), text, this.leftPos + 162, this.topPos + 70, 0.6F, Colors.WORD, ColorHelper.BLACK.rgb());
-
-            if(this.menu.getExplodeTick() > 0){
-                final Component warn = Component.translatable("gui.imm.elixir_furnace.explode");
-                RenderUtil.renderCenterScaledText(graphics.pose(), warn, this.leftPos + 160, this.topPos + 80, 0.8F, ColorHelper.DARK_RED.rgb(), ColorHelper.BLACK.rgb());
-            }
-        }
+//        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
+//            final Component text = Component.translatable("gui.imm.elixir_furnace.remain_count", this.menu.getIngredientLimit());
+//            RenderUtil.renderCenterScaledText(graphics.pose(), text, this.leftPos + 162, this.topPos + 70, 0.6F, Colors.WORD, ColorHelper.BLACK.rgb());
+//
+//            if(this.menu.getExplodeTick() > 0){
+//                final Component warn = Component.translatable("gui.imm.elixir_furnace.explode");
+//                RenderUtil.renderCenterScaledText(graphics.pose(), warn, this.leftPos + 160, this.topPos + 80, 0.8F, ColorHelper.DARK_RED.rgb(), ColorHelper.BLACK.rgb());
+//            }
+//        }
         //Render Result Item.
 //        final int resultX = this.leftPos + 142 + 11;
 //        final int resultY = this.topPos + 16 + 1;
@@ -64,24 +61,24 @@ public class ElixirRoomScreen extends HTContainerScreen<ElixirRoomMenu> {
 //            this.blit(graphics, this.leftPos + 142, this.topPos + 16, 200, 0, 38, 18);
 //        }
         // Render Flame.
-        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.PREPARE_INGREDIENTS){
-            this.renderFlame(graphics, true);
-        }
-        // Render Flame & Close Slot.
-        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.SMELTING){
-            this.renderFlame(graphics, false);
-            graphics.blit(TEXTURE, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
-        }
-        // Render Spiritual Map.
-        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
-            this.renderSpiritualMap(graphics);
-
-            if(this.menu.getExplodeTick() > 0){
-                graphics.blit(TEXTURE, this.leftPos + 140, this.topPos + 93, 200, 155, 41, 5);
-                final int len = MathHelper.getBarLen(this.menu.getExplodeTick(), 200, 39);
-                graphics.blit(TEXTURE, this.leftPos + 141, this.topPos + 94, 201, 161, len, 3);
-            }
-        }
+//        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.PREPARE_INGREDIENTS){
+//            this.renderFlame(graphics, true);
+//        }
+//        // Render Flame & Close Slot.
+//        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.SMELTING){
+//            this.renderFlame(graphics, false);
+//            graphics.blit(TEXTURE, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
+//        }
+//        // Render Spiritual Map.
+//        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
+//            this.renderSpiritualMap(graphics);
+//
+//            if(this.menu.getExplodeTick() > 0){
+//                graphics.blit(TEXTURE, this.leftPos + 140, this.topPos + 93, 200, 155, 41, 5);
+//                final int len = MathHelper.getBarLen(this.menu.getExplodeTick(), 200, 39);
+//                graphics.blit(TEXTURE, this.leftPos + 141, this.topPos + 94, 201, 161, len, 3);
+//            }
+//        }
         // Render Tooltip.
         this.renderTooltip(graphics, mouseX, mouseY);
         // Render Tooltip for Result Item.

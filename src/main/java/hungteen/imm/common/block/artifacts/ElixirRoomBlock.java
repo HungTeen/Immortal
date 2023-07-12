@@ -4,6 +4,10 @@ import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -12,8 +16,10 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -30,24 +36,19 @@ public class ElixirRoomBlock extends ArtifactEntityBlock {
         super(properties, artifactType);
     }
 
-//    @Override
-//    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-//        if (level.isClientSide) {
-//            return InteractionResult.SUCCESS;
-//        } else {
-//            if(player instanceof ServerPlayer){
-//                if(level.getBlockEntity(blockPos.below()) instanceof SpiritualFurnaceBlockEntity){
-//                    NetworkHooks.openScreen((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
-//                        buf.writeBlockPos(blockPos);
-//                    });
-//                } else{
-//                    PlayerHelper.sendTipTo(player, TipUtil.ELIXIR_ROOM_TIP.withStyle(ChatFormatting.RED));
-//                    return InteractionResult.PASS;
-//                }
-//            }
-//            return InteractionResult.CONSUME;
-//        }
-//    }
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            if(player instanceof ServerPlayer){
+                    NetworkHooks.openScreen((ServerPlayer)player, getMenuProvider(blockState, level, blockPos), buf -> {
+                        buf.writeBlockPos(blockPos);
+                    });
+            }
+            return InteractionResult.CONSUME;
+        }
+    }
 
     @org.jetbrains.annotations.Nullable
     @Override

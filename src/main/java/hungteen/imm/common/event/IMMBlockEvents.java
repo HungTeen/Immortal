@@ -27,6 +27,9 @@ public class IMMBlockEvents {
             if(IMMBlockPatterns.PUMPKINS_PREDICATE.test(event.getPlacedBlock())){
                 EntityUtil.multiblockSpawn(level, event.getPos(), IMMBlockPatterns.getCreeperPattern(), EntityType.CREEPER);
             }
+            if(event.getPlacedBlock().is(IMMBlockTags.FURNACE_BLOCKS)){
+
+            }
         }
     }
 

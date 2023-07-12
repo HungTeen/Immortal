@@ -22,6 +22,7 @@ public class IMMBlockTags {
     public static final TagKey<Block> COPPER_BLOCKS = tag("copper_blocks");
     public static final TagKey<Block> COPPER_SLABS = tag("copper_slabs");
     public static final TagKey<Block> FUNCTIONAL_COPPERS = tag("functional_coppers");
+    public static final TagKey<Block> COPPER_INTERFACES = tag("copper_interfaces");
     public static final TagKey<Block> FURNACE_BLOCKS = tag("furnace_blocks");
 
     private static TagKey<Block> tag(String name){
