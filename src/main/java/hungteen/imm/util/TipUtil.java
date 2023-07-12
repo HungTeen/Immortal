@@ -17,7 +17,6 @@ public class TipUtil {
 
     public static final Function<Integer, MutableComponent> SPELL_COST = cost -> info("spell_cost", cost);
     public static final Function<Integer, MutableComponent> SPELL_CD = cd -> info("spell_cd", cd);
-    public static final MutableComponent ELIXIR_ROOM_TIP = info("elixir_room.no_furnace");
 
     public static MutableComponent gui(String name, Object... objects){
         return Component.translatable("gui." + Util.id() + "." + name, objects);

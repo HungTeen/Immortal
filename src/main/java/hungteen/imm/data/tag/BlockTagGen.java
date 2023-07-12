@@ -7,6 +7,8 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +28,15 @@ public class BlockTagGen extends HTBlockTagGen {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.addMCTags();
+
+        this.tag(IMMBlockTags.COPPER_BLOCKS)
+                .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
+                .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);
+        this.tag(IMMBlockTags.COPPER_SLABS)
+                .add(Blocks.CUT_COPPER_SLAB, Blocks.EXPOSED_CUT_COPPER_SLAB, Blocks.WEATHERED_CUT_COPPER_SLAB, Blocks.OXIDIZED_CUT_COPPER_SLAB);
+        this.tag(IMMBlockTags.FUNCTIONAL_COPPERS)
+                .add(IMMBlocks.COPPER_FURNACE.get(), IMMBlocks.COPPER_ELIXIR_ROOM.get());
+        this.tag(IMMBlockTags.FURNACE_BLOCKS).addTags(IMMBlockTags.COPPER_BLOCKS, IMMBlockTags.COPPER_SLABS, IMMBlockTags.FUNCTIONAL_COPPERS);
     }
 
     private void addMCTags(){

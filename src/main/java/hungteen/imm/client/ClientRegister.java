@@ -182,7 +182,7 @@ public class ClientRegister {
     public static void registerScreen() {
         MenuScreens.register(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
         MenuScreens.register(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
-//        MenuScreens.register(ImmortalMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+        MenuScreens.register(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
 //        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
         MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
         MenuScreens.register(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);

@@ -11,8 +11,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.phys.AABB;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,23 @@ public class BlockUtil {
 
     public static AABB getBlockAABB(BlockPos pos){
         return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+    }
+
+    /**
+     * 麻将害我debug一晚上！！！
+     */
+    @Nullable
+    public static BlockPattern.BlockPatternMatch match(Level level, BlockPattern pattern, BlockPos blockPos){
+        final int size = Math.max(pattern.getDepth(), Math.max(pattern.getWidth(), pattern.getHeight()));
+        for(int i = 0; i < 4; ++ i){
+            final int mx = (i & 1) == 1 ? 0 : -1;
+            final int mz = ((i >> 1) & 1) == 1 ? 0 : -1;
+            final BlockPattern.BlockPatternMatch patternMatch = pattern.find(level, blockPos.offset(mx * size, 0, mz * size));
+            if(patternMatch != null){
+                return patternMatch;
+            }
+        }
+        return null;
     }
 
     public static List<Pair<ResourceLocation, Block>> getWoolCushions(){

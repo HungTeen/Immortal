@@ -46,10 +46,10 @@ public class BlockStateGen extends HTBlockStateGen {
                 IMMBlocks.COPPER_FURNACE.get()
         ).forEach(this::spiritualFurnace);
 
-//        Arrays.asList(
-//                ImmortalBlocks.COPPER_ELIXIR_ROOM.get()
-//        ).forEach(this::elixirRoom);
-//
+        Arrays.asList(
+                IMMBlocks.COPPER_ELIXIR_ROOM.get()
+        ).forEach(this::elixirRoom);
+
 //        Arrays.asList(
 //                ImmortalBlocks.COPPER_SMITHING_ARTIFACT.get()
 //        ).forEach(this::smithingArtifact);
@@ -192,7 +192,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 .texture("sides", StringHelper.suffix(BlockHelper.blockTexture(block), "sides"))
                 .renderType(cutout())
         );
-        this.addedBlocks.add(block);
+        this.add(block);
     }
 
     public void smithingArtifact(Block block) {

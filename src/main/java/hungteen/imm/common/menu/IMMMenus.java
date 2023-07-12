@@ -25,10 +25,10 @@ public class IMMMenus {
         return IForgeMenuType.create(SpiritualFurnaceMenu::new);
     });
 
-//    public static final RegistryObject<MenuType<ElixirRoomMenu>> ELIXIR_ROOM = CONTAINER_TYPES.register("elixir_room", () -> {
-//        return IForgeMenuType.create(ElixirRoomMenu::new);
-//    });
-//
+    public static final RegistryObject<MenuType<ElixirRoomMenu>> ELIXIR_ROOM = CONTAINER_TYPES.register("elixir_room", () -> {
+        return IForgeMenuType.create(ElixirRoomMenu::new);
+    });
+
 //    public static final RegistryObject<MenuType<SmithingArtifactMenu>> SMITHING_ARTIFACT = CONTAINER_TYPES.register("smithing_artifact", () -> {
 //        return IForgeMenuType.create(SmithingArtifactMenu::new);
 //    });

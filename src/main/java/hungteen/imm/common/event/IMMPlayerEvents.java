@@ -2,10 +2,12 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.item.artifacts.HammerItem;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.tag.IMMBlockTags;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -57,6 +59,9 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (EntityHelper.isServer(event.getEntity())) {
+            if(event.getLevel().getBlockState(event.getPos()).is(IMMBlockTags.FURNACE_BLOCKS)){
+                SpiritualFurnaceBlock.use(event.getLevel(), event.getEntity(), event.getLevel().getBlockState(event.getPos()), event.getPos());
+            }
             PlayerEventHandler.rayTrace(event.getEntity());
         }
         HammerItem.smithing(event.getEntity(), event.getHand(), event.getFace(), event.getPos());

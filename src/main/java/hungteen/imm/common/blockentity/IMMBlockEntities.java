@@ -21,10 +21,10 @@ public class IMMBlockEntities {
         return BlockEntityType.Builder.of(SpiritualFurnaceBlockEntity::new, IMMBlocks.COPPER_FURNACE.get()).build(null);
     });
 
-//    public static final RegistryObject<BlockEntityType<ElixirRoomBlockEntity>> ELIXIR_ROOM = BLOCK_ENTITY_TYPES.register("elixir_room", () -> {
-//        return BlockEntityType.Builder.of(ElixirRoomBlockEntity::new, ImmortalBlocks.COPPER_ELIXIR_ROOM.get()).build(null);
-//    });
-//
+    public static final RegistryObject<BlockEntityType<ElixirRoomBlockEntity>> ELIXIR_ROOM = TYPES.register("elixir_room", () -> {
+        return BlockEntityType.Builder.of(ElixirRoomBlockEntity::new, IMMBlocks.COPPER_ELIXIR_ROOM.get()).build(null);
+    });
+
 //    public static final RegistryObject<BlockEntityType<SpiritualRoomBlockEntity>> SPIRITUAL_ROOM = BLOCK_ENTITY_TYPES.register("spiritual_room", () -> {
 //        return BlockEntityType.Builder.of(SpiritualRoomBlockEntity::new, ImmortalBlocks.COPPER_SPIRITUAL_ROOM.get()).build(null);
 //    });

@@ -5,6 +5,7 @@ import hungteen.htlib.common.block.plants.HTSaplingBlock;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.block.artifacts.ElixirRoomBlock;
 import hungteen.imm.common.block.artifacts.RuneWorkBench;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
@@ -57,7 +58,7 @@ public class IMMBlocks {
     /* Entity Blocks */
 
     public static final RegistryObject<Block> COPPER_FURNACE = BLOCKS.register("copper_furnace", () -> new SpiritualFurnaceBlock(Block.Properties.copy(Blocks.COPPER_BLOCK), ArtifactTypes.COMMON_ARTIFACT));
-//    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoom(ArtifactTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoomBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL), ArtifactTypes.COMMON_ARTIFACT));
 //    public static final RegistryObject<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.register("copper_spiritual_room", () -> new SpiritualRoom(ArtifactTypes.COMMON_ARTIFACT));
 //    public static final RegistryObject<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.register("copper_smithing_artifact", () -> new SmithingArtifact(ArtifactTypes.COMMON_ARTIFACT));
 
@@ -100,7 +101,7 @@ public class IMMBlocks {
             ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
         });
         Arrays.asList(
-                CINNABAR_ORE, COPPER_FURNACE,
+                CINNABAR_ORE, COPPER_FURNACE, COPPER_ELIXIR_ROOM,
                 TELEPORT_ANCHOR, RUNE_WORK_BENCH,
                 MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_SAPLING
         ).forEach(obj -> {

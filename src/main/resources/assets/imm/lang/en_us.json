@@ -109,7 +109,7 @@
   "info.imm.close_to_inspiration": "It seems felt some spiritual mana, Try more times",
   "info.imm.spell_cost": "Cost %d Spiritual Mana",
   "info.imm.spell_cd": "CD %d s",
-  "info.imm.elixir_room.no_furnace": "Need Spiritual Furnace Below !",
+  "info.imm.no_furnace_around": "There's no complete furnace structure around",
   "_comment9": "--------------------------------------------Enchantment-------------------------------------------",
   "_comment10": "--------------------------------------------Potion Effect-------------------------------------------",
   "_comment11": "--------------------------------------------Death Msg-------------------------------------------",
