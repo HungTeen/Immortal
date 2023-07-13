@@ -45,6 +45,7 @@ public class IMMBlocks {
     public static final RegistryObject<JuteBlock> JUTE = BLOCKS.register("jute", JuteBlock::new);
     public static final RegistryObject<Block> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     public static final RegistryObject<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
+    public static final RegistryObject<Block> GANODERMA = BLOCKS.register("ganoderma", GanodermaBlock::new);
 
     /* Natural Blocks */
 
@@ -101,6 +102,7 @@ public class IMMBlocks {
             ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
         });
         Arrays.asList(
+                GANODERMA,
                 CINNABAR_ORE, COPPER_FURNACE, COPPER_ELIXIR_ROOM,
                 TELEPORT_ANCHOR, RUNE_WORK_BENCH,
                 MULBERRY_LEAVES, MULBERRY_LEAVES_WITH_MULBERRIES, MULBERRY_SAPLING

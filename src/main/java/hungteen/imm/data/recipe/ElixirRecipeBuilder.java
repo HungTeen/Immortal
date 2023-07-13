@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import hungteen.htlib.data.recipe.HTFinishedRecipe;
 import hungteen.htlib.data.recipe.HTRecipeBuilder;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.RecipeHelper;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.util.RecipeUtil;
 import net.minecraft.advancements.Advancement;
@@ -101,7 +100,7 @@ public class ElixirRecipeBuilder extends HTRecipeBuilder {
         public void serializeRecipeData(JsonObject jsonObject) {
             RecipeUtil.writeGroup(jsonObject, this.group);
             RecipeUtil.writeIngredients(jsonObject, this.ingredients);
-            RecipeHelper.writeResultItem(jsonObject, this.result, this.count);
+            RecipeUtil.writeResultItem(jsonObject, this.result, this.count);
             jsonObject.addProperty("smelting_cd", this.smeltingCD);
             jsonObject.addProperty("require_level", this.requireLevel);
         }

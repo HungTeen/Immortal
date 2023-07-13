@@ -48,7 +48,7 @@ public class ItemModelGen extends HTItemModelGen {
                 IMMItems.RICE_SEEDS.get(), IMMItems.JUTE_SEEDS.get(), IMMItems.GOURD_SEEDS.get()
         ).forEach(item -> {
             genNormalModel(item);
-            this.addedItems.add(item);
+            this.add(item);
         });
 
         /* Woods */
@@ -59,6 +59,14 @@ public class ItemModelGen extends HTItemModelGen {
                 IMMBlocks.MULBERRY_SAPLING
         ).forEach(block -> {
             genItemModelWithBlock(block.get().asItem());
+        });
+
+        /* Block-items with tex in item folder */
+        Arrays.asList(
+                IMMBlocks.GANODERMA
+        ).forEach(block -> {
+            genNormalModel(block.get().asItem());
+            this.add(block.get().asItem());
         });
 
         gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> genBlockModel(block, name(block) + "_0"));

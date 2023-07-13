@@ -3,6 +3,7 @@ package hungteen.imm.common.recipe;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import hungteen.htlib.util.helper.registry.RecipeHelper;
+import hungteen.imm.util.RecipeUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -123,8 +124,8 @@ public class ElixirRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public ElixirRecipe fromJson(ResourceLocation location, JsonObject jsonObject) {
-            final String group = RecipeHelper.readGroup(jsonObject);
-            final NonNullList<Ingredient> ingredients = RecipeHelper.readIngredients(jsonObject);
+            final String group = RecipeUtil.readGroup(jsonObject);
+            final NonNullList<Ingredient> ingredients = RecipeUtil.readIngredients(jsonObject);
             if (ingredients.isEmpty()) {
                 throw new JsonParseException("No ingredients for shapeless recipe");
             } else if (ingredients.size() > 9) {

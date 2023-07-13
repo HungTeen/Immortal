@@ -1,4 +1,4 @@
-package hungteen.imm.client.gui.screen;
+package hungteen.imm.client.gui.screen.furnace;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
@@ -21,7 +21,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 
     private static final ResourceLocation TEXTURE = Util.get().containerTexture("elixir_room");
-    private static final int FLAME_ANIM_CD = 20;
     private static final int FULL_FLAME_HEIGHT = 16;
     private static final int FULL_FLAME_LEN = 35;
     private static final int COUNT_PER_PAGE = 5;
@@ -100,32 +99,7 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
 
-    private void renderSpiritualMap(GuiGraphics graphics) {
-//        Set<ISpiritualType> roots = new HashSet<>();
-//        roots.addAll(this.menu.getRecipeMap().keySet());
-//        roots.addAll(this.menu.getSpiritualMap().keySet());
-//        List<ISpiritualType> list = roots.stream().sorted(Comparator.comparingInt(ISpiritualType::getSortPriority)).toList();
-//        for(int i = 0; i < Math.min(list.size(), COUNT_PER_PAGE); ++ i){
-//            final int y = 18 + i * 17; // width = 34, height = 17.
-//            final int x = 15;
-//            final ISpiritualType root = list.get(i);
-//
-//            RenderHelper.setTexture(root.getResourceLocation());
-//            this.blit(graphics, this.leftPos + x + 1, this.topPos + y + 1, root.getTexturePosition().getFirst(), root.getTexturePosition().getSecond(), SpiritualTypes.TEX_WIDTH, SpiritualTypes.TEX_WIDTH);
-//
-//            RenderHelper.setTexture(TEXTURE);
-//            this.blit(graphics, this.leftPos + x + 1, this.topPos + y + 11, 218, 166, 31, 5);
-//
-//            final int recipeValue = this.menu.getRecipeMap().getOrDefault(root, 0);
-//            final int currentValue = this.menu.getSpiritualMap().getOrDefault(root, 0);
-//            final int len = Math.min(29, MathHelper.getBarLen(currentValue, recipeValue, 29));
-//            this.blit(graphics, this.leftPos + x + 2, this.topPos + y + 12, 219, 172, len, 3);
-//
-//            final String currentText = currentValue + "";
-//            final int color = (currentValue <= recipeValue) ? Colors.WORD : ColorHelper.RED; //7825750;
-//            RenderHelper.drawCenteredScaledString(graphics, font, currentText, this.leftPos + x + 22, this.topPos + y + 5, color, 0.6F);
-//        }
-//
+    private void renderRecipes(GuiGraphics graphics) {
 //        /* Render Scroll Bar */
 //        graphics.pushPose();
 //        RenderHelper.setTexture(TEXTURE);
@@ -141,9 +115,7 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
     private void renderFlame(GuiGraphics graphics) {
         if (this.menu.started() || this.menu.canStart()) {
             final boolean isWhite = !this.menu.started();
-            final int cd = FLAME_ANIM_CD * 2;
-            final int tick = this.menu.getSmeltingTick() % cd;
-            final int len = isWhite ? FULL_FLAME_HEIGHT : MathHelper.getBarLen(tick, cd, FULL_FLAME_HEIGHT) + 1;
+            final int len = isWhite ? FULL_FLAME_HEIGHT : MathHelper.getBarLen(this.menu.getSmeltingTick(), this.menu.getSmeltingCD(), FULL_FLAME_HEIGHT) + 1;
             graphics.blit(TEXTURE, this.leftPos + 82, this.topPos + 108 + FULL_FLAME_HEIGHT - len, 202, (isWhite ? 61 : 81) + FULL_FLAME_HEIGHT - len, FULL_FLAME_LEN, len);
         }
     }

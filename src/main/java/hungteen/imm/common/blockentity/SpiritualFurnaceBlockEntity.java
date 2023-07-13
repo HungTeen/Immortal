@@ -8,9 +8,11 @@ import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.common.tag.IMMItemTags;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -83,6 +85,9 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         if(blockEntity.triggered){
             if(blockEntity.enoughFlame()){
                 blockEntity.smelting(1);
+                if(level.getRandom().nextFloat() < 0.02F){
+                    BlockUtil.playSound(level, blockPos, SoundEvents.FIRE_AMBIENT);
+                }
             } else {
                 blockEntity.stop();
             }

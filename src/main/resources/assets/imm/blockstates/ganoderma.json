@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "imm:block/elixir_room"
+      "model": "imm:block/ganoderma"
     }
   }
 }

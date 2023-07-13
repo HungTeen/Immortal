@@ -38,7 +38,7 @@ public class IMMCreativeTabs {
                         output.acceptAll(Stream.of(
                                 IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
                                 IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
-                                IMMItems.GOURD_SEEDS.get()
+                                IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get()
                         ).map(ItemStack::new).toList());
                     })
     );

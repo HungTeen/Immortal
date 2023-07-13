@@ -1,4 +1,4 @@
-package hungteen.imm.client.gui.screen;
+package hungteen.imm.client.gui.screen.furnace;
 
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.imm.common.menu.furnace.FunctionalFurnaceMenu;
@@ -75,7 +75,7 @@ public class FunctionalFurnaceScreen<T extends FunctionalFurnaceMenu> extends HT
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        if(delta > 0 && this.menu.canSwitchToFurnaceMenu()){
+        if(delta < 0 && this.menu.canSwitchToFurnaceMenu()){
             if(this.canClickInventoryButton(0)){
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
                 this.sendInventoryButtonClickPacket(0);

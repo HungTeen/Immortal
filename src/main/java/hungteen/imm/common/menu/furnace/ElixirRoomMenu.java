@@ -66,7 +66,11 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
     }
 
     public int getSmeltingTick(){
-        return this.accessData.get(0);
+        return this.accessData.get(1);
+    }
+
+    public int getSmeltingCD(){
+        return this.blockEntity.getSmeltingCD();
     }
 
     public void start(){

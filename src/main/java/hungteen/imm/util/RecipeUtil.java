@@ -2,6 +2,11 @@ package hungteen.imm.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.registry.RecipeHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Iterator;
@@ -20,6 +25,10 @@ public class RecipeUtil {
         }
     }
 
+    public static String readGroup(JsonObject jsonObject){
+        return GsonHelper.getAsString(jsonObject, "group", "");
+    }
+
     public static void writeIngredients(JsonObject jsonObject, List<Ingredient> ingredients) {
         JsonArray jsonarray = new JsonArray();
         Iterator var3 = ingredients.iterator();
@@ -30,6 +39,19 @@ public class RecipeUtil {
         }
 
         jsonObject.add("ingredients", jsonarray);
+    }
+
+    public static NonNullList<Ingredient> readIngredients(JsonObject jsonObject) {
+        return RecipeHelper.readIngredients(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
+    }
+
+    public static void writeResultItem(JsonObject jsonObject, Item result, int count) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("item", ItemHelper.get().getKey(result).toString());
+        if (count > 1) {
+            obj.addProperty("count", count);
+        }
+        jsonObject.add("result", obj);
     }
 
 }

@@ -4,6 +4,8 @@ import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.event.OverlayEvents;
 import hungteen.imm.client.gui.screen.*;
+import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
+import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;

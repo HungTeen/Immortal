@@ -1,4 +1,4 @@
-package hungteen.imm.client.gui.screen;
+package hungteen.imm.client.gui.screen.furnace;
 
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.MathHelper;
@@ -54,7 +54,7 @@ public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMe
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        if(delta < 0 && this.menu.canSwitchToFunctionalMenu()){
+        if(delta > 0 && this.menu.canSwitchToFunctionalMenu()){
             if(this.canClickInventoryButton(0)){
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
                 this.sendInventoryButtonClickPacket(0);

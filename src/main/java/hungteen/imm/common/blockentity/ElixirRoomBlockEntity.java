@@ -156,6 +156,10 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
         return false;
     }
 
+    public int getSmeltingCD() {
+        return smeltingCD;
+    }
+
     @Override
     public CompoundTag getUpdateTag() {
         return saveWithoutMetadata();
