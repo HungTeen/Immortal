@@ -36,7 +36,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
     private final int color;
 
     public ElixirItem(Rarity rarity, int color) {
-        super(new Properties());
+        super(new Properties().stacksTo(16));
         this.elixirRarity = rarity;
         this.color = color;
     }

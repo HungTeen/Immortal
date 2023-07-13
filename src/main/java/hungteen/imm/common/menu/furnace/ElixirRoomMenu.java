@@ -1,16 +1,21 @@
 package hungteen.imm.common.menu.furnace;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.menu.IMMMenus;
+import hungteen.imm.common.recipe.ElixirRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * @program: Immortal
@@ -30,7 +35,12 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
             return new SlotItemHandler(this.blockEntity.getItemHandler(), i, x, y) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    return ElixirRoomMenu.this.blockEntity.isSmeltStart();
+                    return ! ElixirRoomMenu.this.started();
+                }
+
+                @Override
+                public boolean isActive() {
+                    return ! ElixirRoomMenu.this.started();
                 }
             };
         });
@@ -38,6 +48,17 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
         this.addInventoryAndHotBar(inventory, 19, 140);
 
         this.addDataSlots(this.accessData);
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int slotId) {
+        if(slotId == 1 && this.canStart()){
+            if(EntityHelper.isServer(player)){
+                this.start();
+            }
+            return true;
+        }
+        return super.clickMenuButton(player, slotId);
     }
 
     public ItemStack getResultItem(){
@@ -48,9 +69,63 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
         return this.accessData.get(0);
     }
 
+    public void start(){
+        this.blockEntity.onStart(this.player.level());
+    }
+
+    public boolean started(){
+        return this.blockEntity.started();
+    }
+
+    public boolean canStart(){
+        return this.blockEntity.canStart() && this.blockEntity.hasIngredient();
+    }
+
+    public List<ElixirRecipe> getAvailableRecipes(){
+        return this.blockEntity.getAvailableRecipes(this.player.level());
+    }
+
     @Override
     public ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
+        ItemStack result = ItemStack.EMPTY;
+        Slot slot = this.slots.get(slotId);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            result = itemstack1.copy();
+            if (slotId < 9) {
+                if (!this.moveItemStackTo(itemstack1, 9, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (slotId < 9 + 27) {
+                if (!this.moveItemStackTo(itemstack1, 0, 9, false)) {
+                    return ItemStack.EMPTY;
+                }
+                if (!this.moveItemStackTo(itemstack1, 9 + 27, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (!this.moveItemStackTo(itemstack1, 0, 9, false)) {
+                    return ItemStack.EMPTY;
+                }
+                if (!this.moveItemStackTo(itemstack1, 9, 9 + 27, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == result.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+            this.broadcastChanges();
+        }
+
+        return result;
     }
 
 }

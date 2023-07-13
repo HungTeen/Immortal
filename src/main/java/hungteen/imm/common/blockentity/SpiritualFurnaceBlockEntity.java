@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraftforge.items.ItemStackHandler;
@@ -32,8 +33,6 @@ import java.util.Optional;
  **/
 public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
 
-    private static final int[] SLOTS_FOR_DIRECTIONS = new int[]{1, 2, 3};
-    /* first slot is for flame gourd, the rest are spiritual stone slots. */
     protected final ItemStackHandler itemHandler = new ItemStackHandler(4);
     protected final ContainerData accessData = new ContainerData() {
         @Override
@@ -66,10 +65,14 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     private int maxFlameValue = 0;
     private boolean triggered = false;
     private BlockPattern.BlockPatternMatch lastMatch;
-    private FunctionalFurnaceBlockEntity functionalBlockEntity;
+    protected FunctionalFurnaceBlockEntity functionalBlockEntity;
 
     public SpiritualFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IMMBlockEntities.SPIRITUAL_FURNACE.get(), blockPos, blockState);
+    }
+
+    public SpiritualFurnaceBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+        super(type, blockPos, blockState);
     }
 
     public void opened() {
@@ -78,9 +81,9 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState state, SpiritualFurnaceBlockEntity blockEntity) {
         if(blockEntity.triggered){
-            if(blockEntity.canSmelt()){
+            if(blockEntity.enoughFlame()){
                 blockEntity.smelting(1);
-            } else{
+            } else {
                 blockEntity.stop();
             }
             blockEntity.setChanged();
@@ -102,31 +105,34 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     }
 
     public void smelting(int consumeValue){
-        if(currentFlameValue >= consumeValue){
-            currentFlameValue -= consumeValue;
-        } else{
-            while(FlameGourd.getFlameAmount(getGourd()) > 0 && currentFlameValue < consumeValue){
-                FlameGourd.addFlameAmount(getGourd(), FlameGourd.getFlameLevel(getGourd()), -1);
-                currentFlameValue += getGourdFlameValue();
-                getFirstStone().ifPresent(stack -> {
-                    if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE)){
-                        currentFlameValue += 40;
-                    } else if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO)){
-                        currentFlameValue += 80;
-                    }
-                });
-            }
-            currentFlameValue -= consumeValue;
-            maxFlameValue = currentFlameValue;
-            if(currentFlameValue < 0){
+        currentFlameValue = Math.max(0, currentFlameValue - consumeValue);
+        if(currentFlameValue == 0){
+            if(this.requireMoreFlame()){
+                while(FlameGourd.getFlameAmount(getGourd()) > 0 && currentFlameValue < consumeValue){
+                    FlameGourd.addFlameAmount(getGourd(), FlameGourd.getFlameLevel(getGourd()), -1);
+                    currentFlameValue += getGourdFlameValue();
+                    getFirstStone().ifPresent(stack -> {
+                        if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE)){
+                            currentFlameValue += 40;
+                        } else if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO)){
+                            currentFlameValue += 80;
+                        }
+                    });
+                }
+                maxFlameValue = currentFlameValue;
+            } else {
                 this.stop();
             }
         }
         this.setChanged();
     }
 
-    public boolean canSmelt(){
-        return this.triggered && (this.currentFlameValue > 0 || FlameGourd.getFlameAmount(getGourd()) > 0);
+    public boolean enoughFlame(){
+        return this.currentFlameValue > 0 || FlameGourd.getFlameAmount(getGourd()) > 0;
+    }
+
+    public boolean requireMoreFlame(){
+        return this.getFunctionalBlockEntity() != null && this.getFunctionalBlockEntity().requireFlame();
     }
 
     public int getGourdFlameValue(){

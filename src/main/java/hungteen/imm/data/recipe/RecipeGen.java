@@ -1,6 +1,7 @@
 package hungteen.imm.data.recipe;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.Util;
@@ -11,6 +12,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -50,12 +53,12 @@ public class RecipeGen extends RecipeProvider {
     }
 
     protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
-       ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IMMItems.JOSS_PAPER.get())
-               .requires(Items.BAMBOO)
-               .requires(IMMItems.RICE_STRAW.get())
-               .requires(IMMItems.JUTE.get())
-               .unlockedBy("has_bamboo", has(Items.BAMBOO))
-               .save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IMMItems.JOSS_PAPER.get())
+                .requires(Items.BAMBOO)
+                .requires(IMMItems.RICE_STRAW.get())
+                .requires(IMMItems.JUTE.get())
+                .unlockedBy("has_bamboo", has(Items.BAMBOO))
+                .save(consumer);
     }
 
     /**
@@ -86,78 +89,9 @@ public class RecipeGen extends RecipeProvider {
      * Recipes for Elixir Furnace.
      */
     protected void buildElixirRecipes(Consumer<FinishedRecipe> consumer) {
-//        genElixir(consumer, ImmortalItems.FIVE_FLOWERS_ELIXIR.get(), 600, 1200, 10, 1,
-//                Arrays.asList(
-//                        Items.SUNFLOWER, Items.LILAC, Items.ROSE_BUSH, Items.PEONY, Items.SPORE_BLOSSOM
-//                ), Map.of(
-//                        SpiritualTypes.METAL, 5,
-//                        SpiritualTypes.WOOD, 5,
-//                        SpiritualTypes.WATER, 5,
-//                        SpiritualTypes.FIRE, 5,
-//                        SpiritualTypes.EARTH, 5
-//                )
-//        );
-//        genElixir(consumer, ImmortalItems.ANTIDOTE_ELIXIR.get(), 600, 1200, 10, 1,
-//                Arrays.asList(
-//                        Items.MILK_BUCKET, Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE
-//                ), Map.of(
-//                        SpiritualTypes.WOOD, 5,
-//                        SpiritualTypes.WATER, 5,
-//                        SpiritualTypes.FIRE, 5,
-//                        SpiritualTypes.EARTH, 5,
-//                        SpiritualTypes.DRUG, 10
-//                )
-//        );
-//        genElixir(consumer, ImmortalItems.SPIRIT_RECOVERY_ELIXIR.get(), 600, 300, 10, 1,
-//                Arrays.asList(
-//                        Items.BROWN_MUSHROOM, Items.RED_MUSHROOM, Items.SWEET_BERRIES, Items.BEETROOT
-//                ), Map.of(
-//                        SpiritualTypes.METAL, 5,
-//                        SpiritualTypes.WOOD, 10,
-//                        SpiritualTypes.WATER, 5,
-//                        SpiritualTypes.FIRE, 5,
-//                        SpiritualTypes.EARTH, 5
-//                )
-//        );
-//        genElixir(consumer, ImmortalItems.ABSTINENCE_ELIXIR.get(), 600, 2400, 12, 1,
-//                Arrays.asList(
-//                        Items.WHEAT, Items.EGG, Items.SUGAR, Items.MILK_BUCKET, Items.GOLDEN_APPLE
-//                ), Map.of(
-//                        SpiritualTypes.METAL, 5,
-//                        SpiritualTypes.WOOD, 10,
-//                        SpiritualTypes.WATER, 15,
-//                        SpiritualTypes.FIRE, 15,
-//                        SpiritualTypes.EARTH, 10
-//                )
-//        );
-//        genElixir(consumer, ImmortalItems.GATHER_BREATH_ELIXIR.get(), 800, 2400, 15, 1,
-//                Arrays.asList(
-//                        GourdGrownBlock.GourdTypes.RED.getGourdItem(),
-//                        GourdGrownBlock.GourdTypes.ORANGE.getGourdItem(),
-//                        GourdGrownBlock.GourdTypes.YELLOW.getGourdItem()
-//                ), Map.of(
-//                        SpiritualTypes.METAL, 15,
-//                        SpiritualTypes.WOOD, 15,
-//                        SpiritualTypes.WATER, 15,
-//                        SpiritualTypes.FIRE, 15,
-//                        SpiritualTypes.EARTH, 15,
-//                        SpiritualTypes.WIND, 15
-//                )
-//        );
-//        genElixir(consumer, ImmortalItems.ANTIDOTE_ELIXIR.get(), 800, 2400, 15, 1,
-//                Arrays.asList(
-//                        GourdGrownBlock.GourdTypes.RED.getGourdItem(),
-//                        GourdGrownBlock.GourdTypes.ORANGE.getGourdItem(),
-//                        GourdGrownBlock.GourdTypes.YELLOW.getGourdItem()
-//                ), Map.of(
-//                        SpiritualTypes.METAL, 15,
-//                        SpiritualTypes.WOOD, 15,
-//                        SpiritualTypes.WATER, 15,
-//                        SpiritualTypes.FIRE, 15,
-//                        SpiritualTypes.EARTH, 15,
-//                        SpiritualTypes.WIND, 15
-//                )
-//        );
+        genElixir(consumer, IMMItems.FIVE_FLOWERS_ELIXIR.get(), 600, 1, Arrays.asList(
+                Items.SUNFLOWER, Items.LILAC, Items.ROSE_BUSH, Items.PEONY, Items.SPORE_BLOSSOM
+        ));
     }
 
 //    private void genSmithing(Consumer<FinishedRecipe> consumer, ItemLike result, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple, List<String> pattern, Consumer<SmithingRecipeBuilder> patternConsumer){
@@ -167,14 +101,13 @@ public class RecipeGen extends RecipeProvider {
 //        patternConsumer.accept(builder);
 //        builder.save(consumer, Util.prefix("smithing/" + ItemHelper.getKey(result.asItem()).getPath()));
 //    }
-//
-//    private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int preCD, int smeltCD, int ingredientLimit, int requireFlameLevel, List<ItemLike> ingredients, Map<ISpiritualType, Integer> map){
-//        ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, preCD, smeltCD, ingredientLimit, requireFlameLevel);
-//        builder.unlockedBy("has_elixir_furnace", has(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
-//        ingredients.forEach(builder::requires);
-//        map.forEach(builder::put);
-//        builder.save(consumer, Util.prefix("elixir/" + ItemHelper.getKey(result.asItem()).getPath()));
-//    }
+
+    private void genElixir(Consumer<FinishedRecipe> consumer, ItemLike result, int smeltCD, int requireFlameLevel, List<ItemLike> ingredients) {
+        final ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, smeltCD, requireFlameLevel);
+        builder.unlockedBy("has_elixir_furnace", has(IMMBlocks.COPPER_ELIXIR_ROOM.get()));
+        ingredients.forEach(builder::requires);
+        builder.save(consumer, Util.prefix("elixirs/" + ItemHelper.get().getKey(result.asItem()).getPath()));
+    }
 
     protected static void woolCushion(Consumer<FinishedRecipe> consumer, ItemLike cushion, ItemLike wool) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, cushion).define('#', wool).define('X', ItemTags.PLANKS).pattern("##").pattern("XX").group("wool_cushion").unlockedBy(getHasName(wool), has(wool)).save(consumer);

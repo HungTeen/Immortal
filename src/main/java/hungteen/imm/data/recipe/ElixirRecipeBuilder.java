@@ -1,54 +1,41 @@
 package hungteen.imm.data.recipe;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.htlib.data.recipe.HTFinishedRecipe;
+import hungteen.htlib.data.recipe.HTRecipeBuilder;
+import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.RecipeHelper;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
+import hungteen.imm.util.RecipeUtil;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-29 12:34
  **/
-public class ElixirRecipeBuilder implements RecipeBuilder {
+public class ElixirRecipeBuilder extends HTRecipeBuilder {
 
-    private final Item result;
-    private final int count;
     private final List<Ingredient> ingredients = Lists.newArrayList();
-    private final Map<ISpiritualType, Integer> spiritualMap = new HashMap<>();
-    private final Advancement.Builder advancement = Advancement.Builder.advancement();
-    @javax.annotation.Nullable
-    private String group;
-    private final int prepareCD;
+    private final int count;
     private final int smeltingCD;
-    private final int ingredientLimit;
-    private final int requireFlameLevel;
+    private final int requireLevel;
 
-    public ElixirRecipeBuilder(ItemLike itemLike, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel) {
-        this.result = itemLike.asItem();
+    public ElixirRecipeBuilder(ItemLike itemLike, int count, int smeltingCD, int requireLevel) {
+        super(itemLike.asItem());
         this.count = count;
-        this.prepareCD = prepareCD;
         this.smeltingCD = smeltingCD;
-        this.ingredientLimit = ingredientLimit;
-        this.requireFlameLevel = requireFlameLevel;
+        this.requireLevel = requireLevel;
     }
 
     public ElixirRecipeBuilder requires(TagKey<Item> tagKey) {
@@ -70,123 +57,53 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
         return this.requires(ingredient, 1);
     }
 
-    public ElixirRecipeBuilder requires(Ingredient p_126187_, int count) {
+    public ElixirRecipeBuilder requires(Ingredient ingredient, int count) {
         for (int i = 0; i < count; ++i) {
-            this.ingredients.add(p_126187_);
+            this.ingredients.add(ingredient);
         }
         return this;
     }
 
     @Override
-    public ElixirRecipeBuilder unlockedBy(String name, CriterionTriggerInstance triggerInstance) {
-        this.advancement.addCriterion(name, triggerInstance);
-        return this;
+    public FinishedRecipe createFinishedRecipe(ResourceLocation location) {
+        return new Result(
+                location,
+                this.getResult(),
+                this.count,
+                this.smeltingCD,
+                this.requireLevel,
+                this.getGroup(),
+                this.ingredients,
+                this.getAdvancement(),
+                StringHelper.prefix(location, "recipes/elixirs/" + location.getPath())
+        );
     }
 
-    @Override
-    public ElixirRecipeBuilder group(@Nullable String group) {
-        this.group = group;
-        return this;
-    }
-
-    public ElixirRecipeBuilder put(ISpiritualType root, int value) {
-        this.spiritualMap.put(root, value);
-        return this;
-    }
-
-    @Override
-    public Item getResult() {
-        return this.result;
-    }
-
-    @Override
-    public void save(Consumer<FinishedRecipe> consumer, ResourceLocation location) {
-        this.ensureValid(location);
-//        this.advancement.parent(Util.mcPrefix("recipes/root"))
-//                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
-//                .rewards(AdvancementRewards.Builder.recipe(location))
-//                .requirements(RequirementsStrategy.OR);
-//        consumer.accept(new Result(
-//                        location,
-//                        this.result,
-//                        this.count,
-//                        this.prepareCD,
-//                        this.smeltingCD,
-//                        this.ingredientLimit,
-//                        this.requireFlameLevel,
-//                        this.group == null ? "" : this.group,
-//                        this.ingredients,
-//                        this.spiritualMap,
-//                        this.advancement,
-//                        new ResourceLocation(location.getNamespace(), "recipes/" + this.result.get().getRecipeFolderName() + "/" + location.getPath())
-//                )
-//        );
-    }
-
-    private void ensureValid(ResourceLocation location) {
-        if (this.advancement.getCriteria().isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + location);
-        }
-    }
-
-    public static class Result implements FinishedRecipe {
-        private final ResourceLocation id;
+    public static class Result extends HTFinishedRecipe {
         private final Item result;
         private final int count;
         private final String group;
         private final List<Ingredient> ingredients;
-        private final Map<ISpiritualType, Integer> spiritualMap;
-        private final Advancement.Builder advancement;
-        private final ResourceLocation advancementId;
-        private final int prepareCD;
         private final int smeltingCD;
-        private final int ingredientLimit;
-        private final int requireFlameLevel;
+        private final int requireLevel;
 
-        public Result(ResourceLocation location, Item result, int count, int prepareCD, int smeltingCD, int ingredientLimit, int requireFlameLevel, String group, List<Ingredient> ingredients, Map<ISpiritualType, Integer> spiritualMap, Advancement.Builder builder, ResourceLocation advancement) {
-            this.id = location;
+        public Result(ResourceLocation id, Item result, int count, int smeltingCD, int requireLevel, String group, List<Ingredient> ingredients, Advancement.Builder builder, ResourceLocation advancement) {
+            super(id, builder, advancement);
             this.result = result;
             this.count = count;
-            this.prepareCD = prepareCD;
             this.smeltingCD = smeltingCD;
-            this.ingredientLimit = ingredientLimit;
-            this.requireFlameLevel = requireFlameLevel;
+            this.requireLevel = requireLevel;
             this.group = group;
             this.ingredients = ingredients;
-            this.spiritualMap = spiritualMap;
-            this.advancement = builder;
-            this.advancementId = advancement;
         }
 
         @Override
         public void serializeRecipeData(JsonObject jsonObject) {
-            if (!this.group.isEmpty()) {
-                jsonObject.addProperty("group", this.group);
-            }
-            JsonArray jsonarray = new JsonArray();
-            for (Ingredient ingredient : this.ingredients) {
-                jsonarray.add(ingredient.toJson());
-            }
-            jsonObject.add("ingredients", jsonarray);
-            JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item", ItemHelper.get().getKey(this.result).toString());
-            if (this.count > 1) {
-                jsonobject.addProperty("count", this.count);
-            }
-            jsonObject.add("result", jsonobject);
-            jsonObject.addProperty("prepare_cd", this.prepareCD);
+            RecipeUtil.writeGroup(jsonObject, this.group);
+            RecipeUtil.writeIngredients(jsonObject, this.ingredients);
+            RecipeHelper.writeResultItem(jsonObject, this.result, this.count);
             jsonObject.addProperty("smelting_cd", this.smeltingCD);
-            jsonObject.addProperty("ingredient_limit", this.ingredientLimit);
-            jsonObject.addProperty("require_flame_level", this.requireFlameLevel);
-
-            JsonArray map = new JsonArray();
-            this.spiritualMap.forEach((root, value) -> {
-                final JsonObject obj = new JsonObject();
-                obj.addProperty("spiritual_root", root.getRegistryName());
-                obj.addProperty("spiritual_value", value);
-                map.add(obj);
-            });
-            jsonObject.add("spiritual_map", map);
+            jsonObject.addProperty("require_level", this.requireLevel);
         }
 
         @Override
@@ -194,21 +111,5 @@ public class ElixirRecipeBuilder implements RecipeBuilder {
             return IMMRecipeSerializers.ELIXIR.get();
         }
 
-        @Override
-        public ResourceLocation getId() {
-            return this.id;
-        }
-
-        @Override
-        @javax.annotation.Nullable
-        public JsonObject serializeAdvancement() {
-            return this.advancement.serializeToJson();
-        }
-
-        @Override
-        @javax.annotation.Nullable
-        public ResourceLocation getAdvancementId() {
-            return this.advancementId;
-        }
     }
 }

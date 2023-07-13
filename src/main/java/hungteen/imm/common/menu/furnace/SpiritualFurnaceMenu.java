@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
@@ -96,7 +97,45 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
+        ItemStack result = ItemStack.EMPTY;
+        Slot slot = this.slots.get(slotId);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            result = itemstack1.copy();
+            if (slotId < 4) {
+                if (!this.moveItemStackTo(itemstack1, 4, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (slotId < 4 + 27) {
+                if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
+                    return ItemStack.EMPTY;
+                }
+                if (!this.moveItemStackTo(itemstack1, 4 + 27, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
+                    return ItemStack.EMPTY;
+                }
+                if (!this.moveItemStackTo(itemstack1, 4, 4 + 27, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == result.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+            this.broadcastChanges();
+        }
+
+        return result;
     }
 
     public boolean canSwitchToFunctionalMenu(){

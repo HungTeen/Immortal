@@ -6,13 +6,16 @@ import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.impl.ArtifactTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -36,39 +39,33 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
         this.getFurnaceBlockEntity();
     }
 
-    public void serverTick() {
-        if(this.started()){
-            // Furnace is broken !
-            if(! SpiritualFurnaceBlock.persist(this.level, this.getLastMatch())){
-                this.explode();
-            }
-        }
+    public boolean canContinue(){
+        return SpiritualFurnaceBlock.persist(this.level, this.getLastMatch());
     }
 
     /**
      * Click white flame to start.
      */
-    public void onStart(Level level) {
-        this.start = true;
-        this.update();
+    public void onStart(Level level){
+        this.getFurnaceOpt().ifPresent(furnace -> {
+            this.start = true;
+            furnace.start();
+        });
     }
 
     public void onFinish(){
         this.start = false;
-        this.update();
     }
 
-    public void explode(){
-//        this.level.explode(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 10, true, Explosion.BlockInteraction.DESTROY);
-//        getBelowBlockEntity().ifPresent(SpiritualFurnaceBlockEntity::stop);
-//        this.reset();
+    public boolean requireFlame(){
+        return this.start;
     }
 
     /**
      * Must have furnace below.
      */
     public boolean canStart(){
-        return ! started() && getFurnaceBlockEntity() != null && getFurnaceBlockEntity().canSmelt();
+        return ! started() && getFurnaceBlockEntity() != null && getFurnaceBlockEntity().enoughFlame();
     }
 
     public boolean started(){
@@ -90,7 +87,13 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
     @Nullable
     public SpiritualFurnaceBlockEntity getFurnaceBlockEntity(){
         if(this.furnaceBlockEntity == null){
-            if(this.getLastMatch() != null){
+            if(this.level != null){
+                final BlockEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().below());
+                if(blockEntity instanceof MiniFurnaceBlockEntity entity){
+                    this.furnaceBlockEntity = entity;
+                }
+            }
+            if(this.furnaceBlockEntity == null && this.getLastMatch() != null){
                 this.furnaceBlockEntity = SpiritualFurnaceBlock.getFurnaceBlockEntity(this.getLastMatch());
                 if(this.furnaceBlockEntity == null){
                     this.lastMatch = null;
@@ -98,6 +101,32 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
             }
         }
         return this.furnaceBlockEntity;
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if(tag.contains("SmeltingStart")){
+            this.start = tag.getBoolean("SmeltingStart");
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putBoolean("SmeltingStart", this.start);
+    }
+
+    public Optional<SpiritualFurnaceBlockEntity> getFurnaceOpt(){
+        return Optional.ofNullable(this.getFurnaceBlockEntity());
+    }
+
+    public boolean isMiniFurnace(){
+        return this.furnaceBlockEntity instanceof MiniFurnaceBlockEntity;
+    }
+
+    public boolean isLargeFurnace(){
+        return this.furnaceBlockEntity != null && ! isMiniFurnace();
     }
 
     public IArtifactType getArtifactType() {

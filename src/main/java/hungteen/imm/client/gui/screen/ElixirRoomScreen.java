@@ -5,9 +5,12 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
@@ -19,6 +22,8 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 
     private static final ResourceLocation TEXTURE = Util.get().containerTexture("elixir_room");
     private static final int FLAME_ANIM_CD = 20;
+    private static final int FULL_FLAME_HEIGHT = 16;
+    private static final int FULL_FLAME_LEN = 35;
     private static final int COUNT_PER_PAGE = 5;
     private int currentPos = 0; //TODO Mouse Scroll.
 
@@ -26,6 +31,18 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
         super(screenContainer, inv, titleIn);
         this.imageHeight = 230;
         this.imageWidth = 198;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int key) {
+        final double dx = mouseX - (this.leftPos + 82);
+        final double dy = mouseY - (this.topPos + 108);
+        if (dx >= 0 && dy >= 0 && dx < FULL_FLAME_LEN && dy < FULL_FLAME_HEIGHT && this.menu.clickMenuButton(this.minecraft.player, 1)) {
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1);
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, key);
     }
 
     @Override
@@ -60,25 +77,11 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 //        } else{
 //            this.blit(graphics, this.leftPos + 142, this.topPos + 16, 200, 0, 38, 18);
 //        }
-        // Render Flame.
-//        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.PREPARE_INGREDIENTS){
-//            this.renderFlame(graphics, true);
-//        }
-//        // Render Flame & Close Slot.
-//        if(this.menu.getElixirStates() == ElixirRoomBlockEntity.SmeltingStates.SMELTING){
-//            this.renderFlame(graphics, false);
-//            graphics.blit(TEXTURE, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
-//        }
-//        // Render Spiritual Map.
-//        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
-//            this.renderSpiritualMap(graphics);
-//
-//            if(this.menu.getExplodeTick() > 0){
-//                graphics.blit(TEXTURE, this.leftPos + 140, this.topPos + 93, 200, 155, 41, 5);
-//                final int len = MathHelper.getBarLen(this.menu.getExplodeTick(), 200, 39);
-//                graphics.blit(TEXTURE, this.leftPos + 141, this.topPos + 94, 201, 161, len, 3);
-//            }
-//        }
+        this.renderFlame(graphics);
+        // Close Slot.
+        if(this.menu.started()){
+            graphics.blit(TEXTURE, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
+        }
         // Render Tooltip.
         this.renderTooltip(graphics, mouseX, mouseY);
         // Render Tooltip for Result Item.
@@ -97,7 +100,7 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
 
-    private void renderSpiritualMap(GuiGraphics graphics){
+    private void renderSpiritualMap(GuiGraphics graphics) {
 //        Set<ISpiritualType> roots = new HashSet<>();
 //        roots.addAll(this.menu.getRecipeMap().keySet());
 //        roots.addAll(this.menu.getSpiritualMap().keySet());
@@ -135,11 +138,14 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 //        graphics.popPose();
     }
 
-    private void renderFlame(GuiGraphics graphics, boolean isWhite){
-        final int cd = isWhite ? FLAME_ANIM_CD * 2 : FLAME_ANIM_CD * 5;
-        final int tick = this.menu.getSmeltingTick() % cd;
-        final int len = MathHelper.getBarLen(tick, cd, 16) + 1;
-        graphics.blit(TEXTURE, this.leftPos + 82, this.topPos + 108 + 16 - len, 202, (isWhite ? 61 : 81) + 16 - len, 35, len);
+    private void renderFlame(GuiGraphics graphics) {
+        if (this.menu.started() || this.menu.canStart()) {
+            final boolean isWhite = !this.menu.started();
+            final int cd = FLAME_ANIM_CD * 2;
+            final int tick = this.menu.getSmeltingTick() % cd;
+            final int len = isWhite ? FULL_FLAME_HEIGHT : MathHelper.getBarLen(tick, cd, FULL_FLAME_HEIGHT) + 1;
+            graphics.blit(TEXTURE, this.leftPos + 82, this.topPos + 108 + FULL_FLAME_HEIGHT - len, 202, (isWhite ? 61 : 81) + FULL_FLAME_HEIGHT - len, FULL_FLAME_LEN, len);
+        }
     }
 
 }

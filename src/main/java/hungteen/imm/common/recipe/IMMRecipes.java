@@ -1,5 +1,6 @@
 package hungteen.imm.common.recipe;
 
+import hungteen.htlib.common.recipe.HTRecipeType;
 import hungteen.imm.util.Util;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -25,20 +26,12 @@ public class IMMRecipes {
     public static final RegistryObject<RecipeType<ElixirRecipe>> ELIXIR = register("elixir");
     public static final RegistryObject<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT = register("smithing_artifact");
 
-    /**
-     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
-     */
     public static void register(IEventBus event){
         RECIPE_TYPES.register(event);
     }
 
     private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> register(String name){
-        return RECIPE_TYPES.register(name, () -> new RecipeType<>() {
-            @Override
-            public String toString() {
-                return Util.prefixName(name);
-            }
-        });
+        return RECIPE_TYPES.register(name, () -> new HTRecipeType<>(Util.prefix(name)));
     }
 
 }
