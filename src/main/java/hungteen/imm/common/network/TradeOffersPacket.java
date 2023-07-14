@@ -7,7 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -42,7 +41,7 @@ public class TradeOffersPacket {
          */
         public static void onMessage(TradeOffersPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                PlayerHelper.getClientPlayer().ifPresent(player -> {
                     Entity entity = player.level().getEntity(message.entityId);
                     if(entity instanceof HumanEntity human){
                         human.setTradeOffers(message.tradeOffers);

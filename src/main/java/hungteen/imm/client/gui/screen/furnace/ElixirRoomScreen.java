@@ -3,7 +3,10 @@ package hungteen.imm.client.gui.screen.furnace;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.gui.IScrollableScreen;
+import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
+import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,24 +15,29 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-28 18:17
  **/
-public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
+public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> implements IScrollableScreen<ElixirRecipe> {
 
     private static final ResourceLocation TEXTURE = Util.get().containerTexture("elixir_room");
+    private static final int RECIPE_PER_ROW = 2;
+    private static final int RECIPE_ROWS = 6;
     private static final int FULL_FLAME_HEIGHT = 16;
     private static final int FULL_FLAME_LEN = 35;
-    private static final int COUNT_PER_PAGE = 5;
-    private int currentPos = 0; //TODO Mouse Scroll.
+    private final ScrollComponent<ElixirRecipe> scrollComponent;
 
     public ElixirRoomScreen(ElixirRoomMenu screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.imageHeight = 230;
         this.imageWidth = 198;
+        this.scrollComponent = new ScrollComponent<>(this, this.leftPos + 100, this.topPos + 100, 18, 6, 2);
     }
 
     @Override
@@ -45,19 +53,13 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
     }
 
     @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+        return this.scrollComponent.mouseScrolled(delta);
+    }
+
+    @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
-        //Render Title.
-        RenderUtil.renderCenterScaledText(graphics.pose(), this.getTitle(), this.leftPos + 100, this.topPos + 20, 0.6F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
-//        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
-//            final Component text = Component.translatable("gui.imm.elixir_furnace.remain_count", this.menu.getIngredientLimit());
-//            RenderUtil.renderCenterScaledText(graphics.pose(), text, this.leftPos + 162, this.topPos + 70, 0.6F, Colors.WORD, ColorHelper.BLACK.rgb());
-//
-//            if(this.menu.getExplodeTick() > 0){
-//                final Component warn = Component.translatable("gui.imm.elixir_furnace.explode");
-//                RenderUtil.renderCenterScaledText(graphics.pose(), warn, this.leftPos + 160, this.topPos + 80, 0.8F, ColorHelper.DARK_RED.rgb(), ColorHelper.BLACK.rgb());
-//            }
-//        }
         //Render Result Item.
 //        final int resultX = this.leftPos + 142 + 11;
 //        final int resultY = this.topPos + 16 + 1;
@@ -76,21 +78,22 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
 //        } else{
 //            this.blit(graphics, this.leftPos + 142, this.topPos + 16, 200, 0, 38, 18);
 //        }
+
+        // Render Scroll Bar.
+        if (this.scrollComponent.canScroll()) {
+            final int len = (int)((85 - 19) * this.scrollComponent.getScrollPercent());
+            graphics.blit(TEXTURE, this.leftPos + 53, this.topPos + 18 + len, 208, 184, 6, 19);
+        } else {
+            graphics.blit(TEXTURE, this.leftPos + 53, topPos + 18, 200, 184, 6, 19);
+        }
+        // Render Recipes.
+        this.scrollComponent.renderItems(this.getMinecraft(), graphics);
         this.renderFlame(graphics);
         // Close Slot.
         if(this.menu.started()){
             graphics.blit(TEXTURE, this.leftPos + 73, this.topPos + 53, 200, 100, 52, 52);
         }
-        // Render Tooltip.
         this.renderTooltip(graphics, mouseX, mouseY);
-        // Render Tooltip for Result Item.
-//        if(! this.menu.getResultItem().isEmpty()){
-//            if(MathHelper.isInArea(mouseX, mouseY, resultX, resultY, 16, 16)){
-//                // Can not put the tooltip over JEI !!!
-//                stack.translate(0, 0, 900);
-//                this.renderTooltip(graphics, this.menu.getResultItem(), mouseX, mouseY);
-//            }
-//        }
     }
 
     @Override
@@ -99,17 +102,26 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
 
-    private void renderRecipes(GuiGraphics graphics) {
-//        /* Render Scroll Bar */
-//        graphics.pushPose();
-//        RenderHelper.setTexture(TEXTURE);
-//        if (list.size() > COUNT_PER_PAGE) {
-//            final int len = MathHelper.getBarLen(currentPos, list.size() - COUNT_PER_PAGE, 85 - 19);
-//            this.blit(graphics, this.leftPos + 53, this.topPos + 18 + len, 208, 184, 6, 19);
-//        } else {
-//            this.blit(graphics, this.leftPos + 53, topPos + 18, 200, 184, 6, 19);
+    @Override
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
+        //Render Title.
+        RenderUtil.renderCenterScaledText(graphics.pose(), this.getTitle(), this.leftPos + 100, this.topPos + 20, 0.6F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
+//        if(this.menu.getElixirStates() != ElixirRoomBlockEntity.SmeltingStates.PREPARE_RECIPE){
+//            final Component text = Component.translatable("gui.imm.elixir_furnace.remain_count", this.menu.getIngredientLimit());
+//            RenderUtil.renderCenterScaledText(graphics.pose(), text, this.leftPos + 162, this.topPos + 70, 0.6F, Colors.WORD, ColorHelper.BLACK.rgb());
+//
+//            if(this.menu.getExplodeTick() > 0){
+//                final Component warn = Component.translatable("gui.imm.elixir_furnace.explode");
+//                RenderUtil.renderCenterScaledText(graphics.pose(), warn, this.leftPos + 160, this.topPos + 80, 0.8F, ColorHelper.DARK_RED.rgb(), ColorHelper.BLACK.rgb());
+//            }
 //        }
-//        graphics.popPose();
+    }
+
+    @Override
+    protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderTooltip(graphics, mouseX, mouseY);
+        this.scrollComponent.renderTooltip(this.getMinecraft(), graphics, mouseX, mouseY);
     }
 
     private void renderFlame(GuiGraphics graphics) {
@@ -120,4 +132,18 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> {
         }
     }
 
+    @Override
+    public List<ElixirRecipe> getItems() {
+        return this.menu.getAvailableRecipes();
+    }
+
+    @Override
+    public void renderItem(Level level, GuiGraphics graphics, ElixirRecipe item, int x, int y) {
+        graphics.renderItem(item.getResultItem(level.registryAccess()), x, y);
+    }
+
+    @Override
+    public void renderTooltip(Level level, GuiGraphics graphics, ElixirRecipe item, int x, int y) {
+        graphics.renderTooltip(this.font, item.getResultItem(level.registryAccess()), x, y);
+    }
 }

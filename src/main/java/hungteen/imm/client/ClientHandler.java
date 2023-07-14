@@ -172,9 +172,11 @@ public class ClientHandler {
         // Open the spell circle.
         if(ClientDatas.ShowSpellCircle){
             // check whether there need sync config file or not.
-            if(PlayerUtil.requireSyncCircle(PlayerHelper.getClientPlayer())){
-                NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, ClientDatas.lastSelectedPosition));
-            }
+            PlayerHelper.getClientPlayer().ifPresent(player -> {
+                if(PlayerUtil.requireSyncCircle(player)){
+                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, ClientDatas.lastSelectedPosition));
+                }
+            });
             ClientDatas.SpellMousePositionX = 0;
             ClientDatas.SpellMousePositionY = 0;
             ClientDatas.lastSelectedPosition = useDefaultCircle() ? -1 : 0;

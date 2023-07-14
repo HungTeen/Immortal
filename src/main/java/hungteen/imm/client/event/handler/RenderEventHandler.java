@@ -163,7 +163,7 @@ public class RenderEventHandler {
         if (! ClientUtil.getMode().map(MultiPlayerGameMode::canHurtPlayer).orElse(false)) {
             topPos += 14;
         }
-        final Entity entity = PlayerHelper.getClientPlayer();
+        final Entity entity = PlayerHelper.getClientPlayer().get();
         final Map<Elements, Float> elements = ElementManager.getElements(entity);
         final int cnt = elements.size();
         final int barWidth = cnt * ELEMENT_LEN + (cnt - 1) * ELEMENT_GUI_INTERVAL;
@@ -191,7 +191,7 @@ public class RenderEventHandler {
 
     public static void renderEntityElements(Entity entity, EntityRenderer<?> renderer, PoseStack stack, MultiBufferSource bufferSource, int packedLight) {
         final double distance = renderer.entityRenderDispatcher.distanceToSqr(entity);
-        final Player player = PlayerHelper.getClientPlayer();
+        final Player player = PlayerHelper.getClientPlayer().get();
         if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
             final Map<Elements, Float> elements = ElementManager.getElements(entity);

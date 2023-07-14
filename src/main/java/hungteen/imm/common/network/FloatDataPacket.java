@@ -7,7 +7,6 @@ import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -42,7 +41,7 @@ public class FloatDataPacket {
          */
         public static void onMessage(FloatDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                PlayerHelper.getClientPlayer().ifPresent(player -> {
                     PlayerRangeFloats.registry().getValue(message.type).ifPresent(data -> {
                         PlayerUtil.setFloatData(player, data, message.value);
                     });

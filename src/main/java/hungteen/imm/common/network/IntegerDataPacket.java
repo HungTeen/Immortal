@@ -7,7 +7,6 @@ import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -42,7 +41,7 @@ public class IntegerDataPacket {
          */
         public static void onMessage(IntegerDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                PlayerHelper.getClientPlayer().ifPresent(player -> {
                     PlayerRangeIntegers.registry().getValue(message.type).ifPresent(data -> {
                         PlayerUtil.setIntegerData(player, data, message.value);
                     });

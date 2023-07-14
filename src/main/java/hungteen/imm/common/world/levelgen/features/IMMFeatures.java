@@ -39,7 +39,8 @@ public class IMMFeatures {
 
     public static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
         IMMOreFeatures.register(context);
-        IMMPlantFeatures.register(context);
+        IMMVegetationFeatures.register(context);
+        IMMTreeFeatures.register(context);
     }
 
     public static void register(IEventBus modBus){

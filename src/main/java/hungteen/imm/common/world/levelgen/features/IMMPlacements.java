@@ -20,7 +20,8 @@ public class IMMPlacements {
 
     public static void register(BootstapContext<PlacedFeature> context) {
         IMMOrePlacements.register(context);
-        IMMPlantPlacements.register(context);
+        IMMVegetationPlacements.register(context);
+        IMMTreePlacements.register(context);
     }
 
     public static ResourceKey<PlacedFeature> create(String name){

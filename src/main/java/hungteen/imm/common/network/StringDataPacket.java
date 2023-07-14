@@ -6,7 +6,6 @@ import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -41,7 +40,7 @@ public class StringDataPacket {
          */
         public static void onMessage(StringDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                PlayerHelper.getClientPlayer().ifPresent(player -> {
                     final Types type = Types.values()[message.type];
                     switch (type) {
                         case REALM -> {

@@ -7,7 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -50,7 +49,7 @@ public class EntityElementPacket {
          */
         public static void onMessage(EntityElementPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-                Optional.ofNullable(PlayerHelper.getClientPlayer()).map(Entity::level).ifPresent(level -> {
+                PlayerHelper.getClientPlayer().map(Entity::level).ifPresent(level -> {
                     final Entity entity = level.getEntity(message.entityId);
                     final Elements element = Elements.valueOf(message.type);
                     if(entity != null){

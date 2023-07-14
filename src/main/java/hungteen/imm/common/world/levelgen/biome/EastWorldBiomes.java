@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.levelgen.biome;
 
 import hungteen.imm.common.world.levelgen.IMMBiomes;
-import hungteen.imm.common.world.levelgen.features.IMMPlantPlacements;
+import hungteen.imm.common.world.levelgen.features.IMMVegetationPlacements;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 /**
  * Look at {@link net.minecraft.data.worldgen.biome.OverworldBiomes}.
@@ -42,7 +43,11 @@ public class EastWorldBiomes {
     }
 
     /**
-     * East World Plain: <br>
+     * Tall Grass patch.
+     * Rush Cow.
+     * Mulberry Tree.
+     * Silk Worm.
+     * Wild Silk Worm.
      */
     private static Biome plains(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean sunflower, boolean snowy) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -83,6 +88,9 @@ public class EastWorldBiomes {
         return biome(true, snowy ? 0F : 0.8F, snowy ? 0.5F : 0.4F, spawnBuilder, genBuilder, null);
     }
 
+    /**
+     * Village Kingdom Base.
+     */
     public static Biome meadow(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -98,11 +106,13 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addExtraEmeralds(genBuilder);
         BiomeDefaultFeatures.addInfestedStone(genBuilder);
         Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_MEADOW);
-        return biome(true, 0.5F, 0.8F, 937679, 329011, null, null, spawnBuilder, genBuilder, music);
+        return biome(true, 0.5F, 0.8F, builder -> builder.waterColor(937679).waterFogColor(329011), spawnBuilder, genBuilder, music);
     }
 
     /**
-     * Spawn Ravager.
+     * Pillager Base.
+     * Spiritual Market.
+     * Ravager.
      */
     private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean windSwept, boolean plateau) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -156,6 +166,9 @@ public class EastWorldBiomes {
         return biome(false, 2.0F, 0.0F, spawnBuilder, genBuilder, null);
     }
 
+    /**
+     *
+     */
     public static Biome forest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean cut, boolean hasFlower) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
@@ -187,8 +200,8 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
         if (cut) {
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMPlantPlacements.OAK_STAKE);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMPlantPlacements.OAK_HORIZONTAL_STAKE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.OAK_STAKE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.OAK_HORIZONTAL_STAKE);
         }
 
         final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE);
@@ -217,29 +230,48 @@ public class EastWorldBiomes {
         return biome(true, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
     }
 
+    /**
+     * Tree House above leaves.
+     * Tall Dark Oak Tree.
+     * Poison Spider.
+     * Ganoderma.
+     * Hunter.
+     */
+    public static Biome darkForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
+        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, true, false);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.DARK_FOREST_VEGETATION);
+        BiomeDefaultFeatures.addForestFlowers(genBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+        BiomeDefaultFeatures.addForestGrass(genBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_FOREST);
+        return biome(true, 0.7F, 0.8F, builder -> {
+            builder.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST);
+        }, spawnBuilder, genBuilder, music);
+    }
+
     private static Biome biome(boolean precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
-        return biome(precipitation, temperature, downfall, 4159204, 329011, spawnBuilder, generationBuilder, music);
+        return biome(precipitation, temperature, downfall, builder -> {}, spawnBuilder, generationBuilder, music);
     }
 
-    private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, int waterColor, int waterFogColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
-        return biome(hasPrecipitation, temperature, downfall, waterColor, waterFogColor, null, null, spawnBuilder, generationBuilder, music);
-    }
-
-    private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, int waterColor, int waterFogColor, @Nullable Integer grassColor, @Nullable Integer leavesColor, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder genBuilder, @Nullable Music backgroundMusic) {
+    private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, Consumer<BiomeSpecialEffects.Builder> consumer, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder genBuilder, @Nullable Music backgroundMusic) {
         final BiomeSpecialEffects.Builder builder = (new BiomeSpecialEffects.Builder())
-                .waterColor(waterColor)
-                .waterFogColor(waterFogColor)
+                .waterColor(4159204)
+                .waterFogColor(329011)
                 .fogColor(12638463)
                 .skyColor(calculateSkyColor(temperature))
                 .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                 .backgroundMusic(backgroundMusic);
-        if (grassColor != null) {
-            builder.grassColorOverride(grassColor);
-        }
-
-        if (leavesColor != null) {
-            builder.foliageColorOverride(leavesColor);
-        }
+        consumer.accept(builder);
 
         return (new Biome.BiomeBuilder())
                 .hasPrecipitation(hasPrecipitation)
@@ -251,8 +283,8 @@ public class EastWorldBiomes {
                 .build();
     }
 
-    protected static int calculateSkyColor(float p_194844_) {
-        float $$1 = p_194844_ / 3.0F;
+    protected static int calculateSkyColor(float temperature) {
+        float $$1 = temperature / 3.0F;
         $$1 = Mth.clamp($$1, -1.0F, 1.0F);
         return Mth.hsvToRgb(0.62222224F - $$1 * 0.05F, 0.5F + $$1 * 0.1F, 1.0F);
     }

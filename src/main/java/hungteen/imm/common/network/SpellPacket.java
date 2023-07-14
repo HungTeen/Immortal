@@ -2,16 +2,15 @@ package hungteen.imm.common.network;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.IMMConfigs;
-import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -53,11 +52,11 @@ public class SpellPacket {
                 if (ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER) {
                     // No spell operation must run first !
                     if (message.option == SpellOptions.CLEAR_SET) {
-                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(PlayerUtil::clearSpellSet);
+                        PlayerHelper.getClientPlayer().ifPresent(PlayerUtil::clearSpellSet);
                         return;
                     }
                     SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
-                        Optional.ofNullable(PlayerHelper.getClientPlayer()).ifPresent(player -> {
+                        PlayerHelper.getClientPlayer().ifPresent(player -> {
                             switch (message.option) {
                                 case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
                                 case SET_POS_ON_CIRCLE -> PlayerUtil.setSpellList(player, (int) message.num, spell);

@@ -1,5 +1,6 @@
 package hungteen.imm.client;
 
+import net.minecraft.client.Options;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 
 import java.util.Optional;
@@ -13,6 +14,10 @@ public class ClientUtil {
 
     public static Optional<MultiPlayerGameMode> getMode(){
         return Optional.ofNullable(ClientProxy.mc().gameMode);
+    }
+
+    public static Options getOption(){
+        return ClientProxy.mc().options;
     }
 
     public static void push(String name, Runnable runnable) {
