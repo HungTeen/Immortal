@@ -7,13 +7,11 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.registry.*;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
@@ -309,6 +307,17 @@ public class PlayerUtil {
                 m.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, 0);
             }
         });
+    }
+
+    public static ICultivationType getCultivationType(Player player){
+        return getManagerResult(player, PlayerDataManager::getCultivationType, CultivationTypes.MORTAL);
+    }
+
+    /**
+     * 直接改变境界，会降低修为，同时灵气值归零。
+     */
+    public static void setCultivationType(Player player, ICultivationType type){
+        getOptManager(player).ifPresent(m -> m.setCultivationType(type));
     }
 
 }

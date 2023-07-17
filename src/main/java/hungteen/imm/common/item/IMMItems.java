@@ -34,7 +34,7 @@ public class IMMItems {
 
     /* Spell Books */
 
-    public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book", SpellBookItem::new);
+    public static final RegistryObject<Item> SECRET_MANUAL = ITEMS.register("secret_manual", SecretManualItem::new);
 
     /* Material Tab Items */
 

@@ -24,6 +24,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     private final ElementData robustElementData = new ElementData();
     private final ElementData weakElementData = new ElementData();
     private final Set<IElementReaction> possibleReactions = new TreeSet<>(COMPARATOR);
+    private Entity lastAttachedEntity = null;
     private boolean dirty = false;
 
     public void init(Entity entity) {
@@ -42,6 +43,9 @@ public class IMMEntityCapability implements IIMMEntityCapability {
             tag.put("PossibleReactions", nbt);
         }
         tag.putBoolean("ElementDirty", this.dirty);
+        if(this.lastAttachedEntity != null){
+            tag.putInt("LastAttachedEntity", this.lastAttachedEntity.getId());
+        }
         return tag;
     }
 
@@ -63,6 +67,9 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         }
         if (tag.contains("ElementDirty")) {
             this.dirty = tag.getBoolean("ElementDirty");
+        }
+        if(tag.contains("LastAttachedEntity")){
+            this.lastAttachedEntity = this.entity.level().getEntity(tag.getInt("LastAttachedEntity"));
         }
     }
 
@@ -156,6 +163,14 @@ public class IMMEntityCapability implements IIMMEntityCapability {
 
     public boolean hasElement(Elements element, boolean robust) {
         return getElementAmount(element, robust) > 0;
+    }
+
+    public void setLastAttachedEntity(Entity lastAttachedEntity) {
+        this.lastAttachedEntity = lastAttachedEntity;
+    }
+
+    public Entity getLastAttachedEntity() {
+        return lastAttachedEntity;
     }
 
     public void checkValid(Elements element, boolean robust) {

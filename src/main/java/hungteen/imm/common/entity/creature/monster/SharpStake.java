@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMCreature;
-import hungteen.imm.common.impl.CultivationTypes;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

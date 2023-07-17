@@ -7,7 +7,6 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.CultivationTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

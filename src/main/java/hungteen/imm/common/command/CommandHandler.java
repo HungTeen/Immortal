@@ -16,7 +16,7 @@ public class CommandHandler {
 //            }));
 //
 //    public static final SuggestionProvider<CommandSourceStack> ALL_SPELLS = SuggestionProviders.register(
-//            Util.prefix("spells"), ((context, builder) -> {
+//            Util.prefix("entries"), ((context, builder) -> {
 //                return SharedSuggestionProvider.suggest(ImmortalAPI.get().getSpells().stream().map(IComponentEntry::getName).collect(Collectors.toList()), builder);
 //            }));
 

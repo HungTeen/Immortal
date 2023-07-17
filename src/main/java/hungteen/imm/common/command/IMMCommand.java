@@ -70,7 +70,7 @@ public class IMMCommand {
                             )
                     ));
         }
-        if (IMMAPI.get().spellRegistry().isPresent()) {// about spells.
+        if (IMMAPI.get().spellRegistry().isPresent()) {// about entries.
             IMMAPI.get().spellRegistry().get().getValues().forEach(spell -> {
                 builder.then(Commands.literal("spell")
                         .then(Commands.argument("targets", EntityArgument.players())

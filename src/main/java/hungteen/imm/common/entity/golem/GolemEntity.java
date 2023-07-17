@@ -7,7 +7,7 @@ import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.common.entity.IMMCreature;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
-import hungteen.imm.common.impl.CultivationTypes;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;

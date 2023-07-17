@@ -4,7 +4,7 @@ import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.impl.CultivationTypes;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;

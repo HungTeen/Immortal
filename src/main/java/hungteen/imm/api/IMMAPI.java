@@ -65,7 +65,7 @@ public class IMMAPI {
 
         /**
          * 注册法术类型。 <br>
-         * Only registered spells can be displayed on Spell Menu.
+         * Only registered entries can be displayed on Spell Menu.
          * @return Registry interface.
          */
         Optional<IHTSimpleRegistry<ISpellType>> spellRegistry();

@@ -56,6 +56,8 @@ public class StringDataPacket {
     }
 
     public enum Types{
+
+        CULTIVATION,
         REALM
     }
 

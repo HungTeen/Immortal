@@ -4,16 +4,12 @@ import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.impl.CultivationTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 /**

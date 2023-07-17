@@ -13,13 +13,13 @@ public interface ISpellBook extends ISimpleEntry {
 
     /**
      * Get Spells in this book ordered by spell level.
-     * @return the list of spells.
+     * @return the list of entries.
      */
     List<ISpellType> getSpells();
 
     /**
-     * How many spells in this book.
-     * @return the number of spells.
+     * How many entries in this book.
+     * @return the number of entries.
      */
     default int getTotalSpellCount(){
         return getSpells().size();

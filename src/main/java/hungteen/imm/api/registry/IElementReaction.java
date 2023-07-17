@@ -4,6 +4,7 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
 import net.minecraft.world.entity.Entity;
 
 /**
+ * TODO 追加施加元素反应的实体。
  * @author PangTeen
  * @program Immortal
  * @data 2023/7/1 16:22

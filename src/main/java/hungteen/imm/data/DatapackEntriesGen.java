@@ -1,7 +1,9 @@
 package hungteen.imm.data;
 
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.impl.codec.SpellTutorials;
+import hungteen.imm.common.impl.manuals.ManualContents;
+import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.features.IMMFeatures;
@@ -37,7 +39,9 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.LEVEL_STEM, IMMLevelStems::register)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, IMMBiomeModifiers::register)
             .add(HumanSettings.registry().getRegistryKey(), HumanSettings::register)
-            .add(SpellTutorials.registry().getRegistryKey(), SpellTutorials::register)
+            .add(ManualContents.registry().getRegistryKey(), ManualContents::register)
+            .add(LearnRequirements.registry().getRegistryKey(), LearnRequirements::register)
+            .add(SecretManuals.registry().getRegistryKey(), SecretManuals::register)
             ;
 
     public DatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {

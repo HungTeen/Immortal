@@ -4,17 +4,11 @@ import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.SectTypes;
+import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.network.*;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -38,10 +32,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final Player player;
     private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>();
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>();
-    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // store the end time of specific spells.
-    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // active spells.
-    private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive spells.
+    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // store the end time of specific entries.
+    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // active entries.
+    private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive entries.
     private final HashMap<ISectType, Float> sectRelations = new HashMap<>();
+    private ICultivationType cultivationType = CultivationTypes.MORTAL;
     private IRealmType realmType = RealmTypes.MORTALITY;
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
     private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
@@ -140,6 +135,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         {
             final CompoundTag nbt = new CompoundTag();
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
+            nbt.putString("PlayerCultivationType", this.cultivationType.getRegistryName());
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             tag.put("MiscData", nbt);
         }
@@ -213,8 +209,11 @@ public class PlayerDataManager implements IPlayerDataManager {
             if(nbt.contains("NextRefreshTick")){
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }
+            if(nbt.contains("PlayerCultivationType")){
+                CultivationTypes.registry().getValue(nbt.getString("PlayerCultivationType")).ifPresent(r -> this.cultivationType = r);
+            }
             if (nbt.contains("PlayerRealmType")) {
-                IMMAPI.get().realmRegistry().flatMap(l -> l.getValue(nbt.getString("PlayerRealmType"))).ifPresent(r -> this.realmType = r);
+                RealmTypes.registry().getValue(nbt.getString("PlayerRealmType")).ifPresent(r -> this.realmType = r);
             }
         }
     }
@@ -242,6 +241,8 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
         this.floatMap.forEach(this::sendFloatDataPacket);
+        this.setCultivationType(this.cultivationType);
+        this.setRealmType(this.realmType);
     }
 
     /* SpiritualRoots related methods */
@@ -531,6 +532,15 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.realmType = realmType;
         this.getRealmNode(true); // Update realm node manually.
         this.sendStringDataPacket(StringDataPacket.Types.REALM, realmType.getRegistryName());
+    }
+
+    public ICultivationType getCultivationType() {
+        return cultivationType;
+    }
+
+    public void setCultivationType(ICultivationType cultivationType){
+        this.cultivationType = cultivationType;
+        this.sendStringDataPacket(StringDataPacket.Types.CULTIVATION, cultivationType.getRegistryName());
     }
 
     public void sendStringDataPacket(StringDataPacket.Types type, String data) {

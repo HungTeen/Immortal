@@ -20,7 +20,7 @@ import java.util.*;
 public class SpellBookManager extends SimpleJsonResourceReloadListener {
 
 //    public static final Codec<SpellBook> CODEC = RecordCodecBuilder.create(spellBookInstance -> spellBookInstance.group(
-//            new SpellCodec().listOf().fieldOf("spells").forGetter(SpellBook::spells)
+//            new SpellCodec().listOf().fieldOf("entries").forGetter(SpellBook::entries)
 //    ).apply(spellBookInstance, SpellBook::new));
     private static final Gson GSON = (new GsonBuilder()).create();
     public static final String NAME= "spell_books";

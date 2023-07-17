@@ -6,9 +6,13 @@ import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.codec.SecretManual;
+import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -31,6 +35,7 @@ import java.util.stream.Stream;
 public class IMMCreativeTabs {
 
     private static final DeferredRegister<CreativeModeTab> TABS = ItemHelper.tab().createRegister(Util.id());
+
     public static final RegistryObject<CreativeModeTab> MATERIALS = register("materials", builder ->
             builder.icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
@@ -47,23 +52,26 @@ public class IMMCreativeTabs {
             builder.icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
                     .withTabsBefore(MATERIALS.getKey())
                     .displayItems((parameters, output) -> {
-
+                        output.acceptAll(ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ItemStack::new).toList());
                     })
     );
 
-    public static final RegistryObject<CreativeModeTab> SPELL_BOOKS = register("books", builder ->
-            builder.icon(() -> new ItemStack((IMMItems.SPELL_BOOK.get())))
+    public static final RegistryObject<CreativeModeTab> SECRET_MANUALS = register("secret_manuals", builder ->
+            builder.icon(() -> new ItemStack((IMMItems.SECRET_MANUAL.get())))
                     .withTabsBefore(ELIXIRS.getKey())
                     .displayItems((parameters, output) -> {
-                        ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
-                            output.accept(new ItemStack(item));
+                        HolderLookup.RegistryLookup<SecretManual> secretManuals = parameters.holders().lookupOrThrow(SecretManuals.registry().getRegistryKey());
+                        secretManuals.listElementIds().forEach(r -> {
+                            final ItemStack stack = new ItemStack(IMMItems.SECRET_MANUAL.get());
+                            SecretManualItem.setSpellBook(stack, r.location());
+                            output.accept(stack);
                         });
                     })
     );
 
     public static final RegistryObject<CreativeModeTab> ARTIFACTS = register("artifacts", builder ->
             builder.icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
-                    .withTabsBefore(SPELL_BOOKS.getKey())
+                    .withTabsBefore(SECRET_MANUALS.getKey())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
                             output.accept(new ItemStack(item));
@@ -122,7 +130,7 @@ public class IMMCreativeTabs {
         }
     }
 
-    public static void register(IEventBus modBus){
+    public static void register(IEventBus modBus) {
         TABS.register(modBus);
     }
 

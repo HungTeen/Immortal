@@ -13,7 +13,9 @@ import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.impl.codec.SpellTutorials;
+import hungteen.imm.common.impl.manuals.*;
+import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
+import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
@@ -86,8 +88,13 @@ public class ImmortalMod {
     public static void defferRegister(IEventBus modBus) {
         /* HungTeen Registers */
         InventoryLootTypes.registry().register(modBus);
+        CultivationTypes.registry().register(modBus);
         HumanSettings.registry().register(modBus);
-        SpellTutorials.registry().register(modBus);
+        ManualTypes.registry().register(modBus);
+        ManualContents.registry().register(modBus);
+        RequirementTypes.registry().register(modBus);
+        LearnRequirements.registry().register(modBus);
+        SecretManuals.registry().register(modBus);
 
         /* Deferred Registers */
         IMMItems.register(modBus);
