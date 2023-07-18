@@ -1,5 +1,6 @@
 package hungteen.imm.data;
 
+import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
@@ -39,6 +40,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.LEVEL_STEM, IMMLevelStems::register)
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, IMMBiomeModifiers::register)
             .add(HumanSettings.registry().getRegistryKey(), HumanSettings::register)
+            .add(ElixirEffects.registry().getRegistryKey(), ElixirEffects::register)
             .add(ManualContents.registry().getRegistryKey(), ManualContents::register)
             .add(LearnRequirements.registry().getRegistryKey(), LearnRequirements::register)
             .add(SecretManuals.registry().getRegistryKey(), SecretManuals::register)

@@ -32,7 +32,8 @@ import java.util.Optional;
  **/
 public class ElixirManager extends SavedData {
 
-    public static final int BITS = 64;
+    public static final int BITS = 7;
+    public static final int CLAMPED_BITS = 3;
     public static final int EXPLODE_BIT = 0;
     private final ServerLevel level;
     private final Map<ResourceLocation, BitSet> elixirValue = new HashMap<>();
@@ -54,7 +55,7 @@ public class ElixirManager extends SavedData {
                 final ResourceLocation key = ItemHelper.get().getKey(container.getItem(i).getItem());
                 final BitSet value = manager.getElixirValue(key);
                 final BitSet direction = manager.getElixirDirection(key);
-                for(int j = 0; j < value.length(); ++ j){
+                for(int j = 0; j < BITS; ++ j){
                     if(value.get(j)){
                         final int v = bins.getOrDefault(j, 0);
                         bins.put(j, v + (direction.get(j) ? 1 : -1));
@@ -67,7 +68,7 @@ public class ElixirManager extends SavedData {
             CustomElixirItem.setEffects(stack, ElixirEffects.registry().getValues(level).stream()
                     .map(effect -> Pair.of(effect.effect(), getEffectLevel(effect.maxMatchCnt(bins))))
                     .filter(p -> p.getSecond() > 0)
-                    .map(pair -> EffectHelper.effect(pair.getFirst(), 200, pair.getSecond()))
+                    .map(pair -> EffectHelper.effect(pair.getFirst(), 200, pair.getSecond() - 1))
                     .toList()
             );
             return Optional.of(stack);
@@ -121,21 +122,21 @@ public class ElixirManager extends SavedData {
         });
     }
 
-    private BitSet getRandomElixirValue(){
+    private BitSet getRandomElixirDirection(){
         final RandomSource random = level.getRandom();
         final BitSet bitSet = new BitSet(BITS);
-        for(int i = 0; i < bitSet.length(); ++ i){
+        for(int i = 0; i < BITS; ++ i){
             if(random.nextFloat() < 0.5F) bitSet.set(i);
         }
         return bitSet;
     }
 
-    private BitSet getRandomElixirDirection(){
+    private BitSet getRandomElixirValue(){
         final RandomSource random = level.getRandom();
-        final int bitCnt = Math.abs(ClampedNormalInt.of(0, 1, - BITS / 2, BITS / 2).sample(random));
+        final int bitCnt = 1 + Math.abs(ClampedNormalInt.of(0, 1, - CLAMPED_BITS, CLAMPED_BITS).sample(random));
         final BitSet bitSet = new BitSet(BITS);
         // Just try set bit, not exactly.
-        for(int i = 0; i <= bitCnt; ++ i){
+        for(int i = 0; i < bitCnt; ++ i){
             final int bit = random.nextInt(BITS);
             bitSet.set(bit);
         }
@@ -172,11 +173,12 @@ public class ElixirManager extends SavedData {
                 final CompoundTag nbt = new CompoundTag();
                 nbt.putString("Name", key.toString());
                 nbt.putByteArray("Value", this.elixirValue.get(key).toByteArray());
-                nbt.putByteArray("Direction", this.elixirDirection.get(key).toByteArray());
+                nbt.putByteArray("Direction", this.getElixirDirection(key).toByteArray());
                 list.add(nbt);
             });
             tag.put("ElixirValues", list);
         }
         return tag;
     }
+
 }

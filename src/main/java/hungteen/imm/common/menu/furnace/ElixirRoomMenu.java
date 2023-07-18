@@ -24,6 +24,9 @@ import java.util.List;
  **/
 public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity> {
 
+    public static final int SLOT_ID_OFFSET = 2;
+    private int selectedRecipe;
+
     public ElixirRoomMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
         this(id, inventory, new SimpleContainerData(3), buffer.readBlockPos());
     }
@@ -56,6 +59,9 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
             if(EntityHelper.isServer(player)){
                 this.start();
             }
+            return true;
+        } else if(slotId - SLOT_ID_OFFSET < this.getAvailableRecipes().size()){
+            this.selectedRecipe = slotId - SLOT_ID_OFFSET;
             return true;
         }
         return super.clickMenuButton(player, slotId);
