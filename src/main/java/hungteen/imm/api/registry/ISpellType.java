@@ -43,6 +43,16 @@ public interface ISpellType extends ISimpleEntry {
     int getCooldown();
 
     /**
+     * 施法前摇。
+     * @return Prepare time to release the spell.
+     */
+    int getPrepareCD();
+
+    default boolean isImmediateSpell(){
+        return getPrepareCD() == 0 || isPassiveSpell();
+    }
+
+    /**
      * 是否是被动法术，即放置在常驻法术轮盘上的法术。
      * @return Whether it is a spell that triggers passively.
      */

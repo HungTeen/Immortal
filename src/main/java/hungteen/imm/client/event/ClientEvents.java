@@ -1,20 +1,13 @@
 package hungteen.imm.client.event;
 
-import com.mojang.datafixers.util.Either;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
-import hungteen.imm.common.ElixirManager;
-import hungteen.imm.common.menu.tooltip.ElementToolTip;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.List;
 
 /**
  * @program: Immortal

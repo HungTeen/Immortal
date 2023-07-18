@@ -6,19 +6,20 @@ import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.common.recipe.IMMRecipes;
+import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
@@ -112,7 +113,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public void updateResult(){
-        if(level != null){
+        if(level instanceof ServerLevel serverLevel){
             final SimpleContainer container = new SimpleContainer(9);
             for(int i = 0; i < this.itemHandler.getSlots(); ++ i){
                 container.setItem(i, this.itemHandler.getStackInSlot(i));
@@ -124,7 +125,11 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
                 this.smeltingCD = recipe.get().getSmeltingCD();
             } else {
                 // Custom recipe.
-                this.result = new ItemStack(Items.EMERALD);
+                ElixirManager.getElixirResult(serverLevel, container).ifPresentOrElse(stack -> {
+                    this.result = stack.copy();
+                }, () -> {
+                    this.elixirExplode();
+                });
                 this.smeltingCD = 100;
             }
         }
@@ -135,9 +140,10 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public void elixirExplode(){
-//        this.level.explode(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 10, true, Explosion.BlockInteraction.DESTROY);
-//        getBelowBlockEntity().ifPresent(SpiritualFurnaceBlockEntity::stop);
-//        this.reset();
+        if(level != null){
+            this.level.explode(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 10, true, Level.ExplosionInteraction.BLOCK);
+            getFurnaceOpt().ifPresent(SpiritualFurnaceBlockEntity::stop);
+        }
     }
 
     /**

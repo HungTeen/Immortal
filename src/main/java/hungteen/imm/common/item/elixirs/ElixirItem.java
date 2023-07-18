@@ -113,7 +113,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
             final ResourceLocation location = ItemHelper.get().getKey(this);
             components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
         }
-        components.add(Component.translatable("tooltip.immortal.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
+        components.add(Component.translatable("tooltip.imm.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
                 .append(Accuracies.getComponent(accuracy))
         );
     }
@@ -234,7 +234,7 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         private final List<ChatFormatting> formats;
 
         public static MutableComponent getComponent(Accuracies accuracy){
-            return Component.translatable("misc.immortal.accuracy." + accuracy.toString().toLowerCase(Locale.ROOT)).withStyle(accuracy.getFormats());
+            return Component.translatable("misc.imm.accuracy." + accuracy.toString().toLowerCase(Locale.ROOT)).withStyle(accuracy.getFormats());
         }
 
         public static boolean hasUsage(Accuracies accuracy){

@@ -1,5 +1,6 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
@@ -8,6 +9,7 @@ import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.codec.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.common.item.elixirs.CustomElixirItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.util.BlockUtil;
@@ -52,7 +54,8 @@ public class IMMCreativeTabs {
             builder.icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
                     .withTabsBefore(MATERIALS.getKey())
                     .displayItems((parameters, output) -> {
-                        output.acceptAll(ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ItemStack::new).toList());
+                        output.acceptAll(ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream()
+                                .filter(JavaHelper.not(CustomElixirItem.class::isInstance)).map(ItemStack::new).toList());
                     })
     );
 

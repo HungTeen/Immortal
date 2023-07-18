@@ -8,12 +8,14 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.command.CommandHandler;
-import hungteen.imm.common.datapack.IMMDataPacks;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
+import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.codec.HumanSettings;
-import hungteen.imm.common.impl.manuals.*;
+import hungteen.imm.common.impl.manuals.ManualContents;
+import hungteen.imm.common.impl.manuals.ManualTypes;
+import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
 import hungteen.imm.common.impl.registry.*;
@@ -72,7 +74,7 @@ public class ImmortalMod {
         forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
         forgeBus.addGenericListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
-        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
+//        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
         /* Config Setup */
@@ -89,6 +91,8 @@ public class ImmortalMod {
         /* HungTeen Registers */
         InventoryLootTypes.registry().register(modBus);
         CultivationTypes.registry().register(modBus);
+        SpellTypes.registry().register(modBus);
+        ElixirEffects.registry().register(modBus);
         HumanSettings.registry().register(modBus);
         ManualTypes.registry().register(modBus);
         ManualContents.registry().register(modBus);
@@ -140,7 +144,6 @@ public class ImmortalMod {
 
         TradeTypes.TradeType.register();
         SpiritualTypes.registry();
-        SpellTypes.SpellType.register();
         PlayerRangeFloats.registry();
         PlayerRangeIntegers.registry();
         ElementReactions.registry();

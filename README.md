@@ -15,6 +15,7 @@ Immortal requires the following dependencies :
 
 ### Features
 * Cultivate : Players can cultivate themselves to grow stronger. 
+* Elixir : Try various ingredients to find out new elixirs.
 * Spell : There are different spells for players to learn.
 * Golem : You can make your custom AI golem in game.
 

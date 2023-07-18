@@ -33,9 +33,6 @@ import java.util.Optional;
  */
 public class HumanSettings {
 
-    /**
-     * 不是全局数据包！
-     */
     private static final HTCodecRegistry<HumanSetting> SETTING = HTRegistryManager.create(Util.prefix("human_setting"), () -> HumanSetting.CODEC, () -> HumanSetting.CODEC);
 
     public static final ResourceKey<HumanSetting> DEFAULT = create("default");

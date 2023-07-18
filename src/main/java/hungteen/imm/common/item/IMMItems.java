@@ -62,6 +62,7 @@ public class IMMItems {
     public static final RegistryObject<Item> ABSTINENCE_ELIXIR = ITEMS.register("abstinence_elixir", AbstinenceElixir::new);
     public static final RegistryObject<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", CultivationElixir.GatherBreathElixir::new);
     public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
+    public static final RegistryObject<Item> CUSTOM_ELIXIR = ITEMS.register("custom_elixir", CustomElixirItem::new);
 
     /* Artifact Tab Items */
 

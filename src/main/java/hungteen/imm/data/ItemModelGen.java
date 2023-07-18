@@ -4,7 +4,7 @@ import hungteen.htlib.data.HTItemModelGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IElixirItem;
-import hungteen.imm.common.ElixirManager;
+import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
