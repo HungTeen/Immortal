@@ -32,7 +32,9 @@ public interface IRealmType extends ISimpleEntry {
      * 能承载的极限灵气值。
      * @return the boundary value entity can take.
      */
-    int getSpiritualValueLimit();
+    default int getSpiritualValueLimit(){
+        return getBaseSpiritualValue() << 1;
+    }
 
     /**
      * 有突破门槛。

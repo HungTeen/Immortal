@@ -2,7 +2,7 @@ package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ public abstract class CultivationElixir extends ElixirItem{
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
         if(! level.isClientSide){
             if(livingEntity instanceof Player){
-                PlayerUtil.addFloatData((Player) livingEntity, PlayerRangeFloats.CULTIVATION, getCultivation(accuracy));
+                PlayerUtil.addExperience((Player) livingEntity, ExperienceTypes.ELIXIR, getCultivation(accuracy));
             }
         }
     }

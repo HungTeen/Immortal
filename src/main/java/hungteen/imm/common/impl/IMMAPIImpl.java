@@ -74,7 +74,7 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public float getSpiritualMana(Player player) {
-        return PlayerUtil.getSpiritualMana(player);
+        return PlayerUtil.getMana(player);
     }
 
     @Override

@@ -8,24 +8,29 @@ package hungteen.imm.api.enums;
 public enum RealmStages {
 
     /**
-     * Pre Stage, 前期
+     * 前期。
      */
-    PRELIMINARY(0.2F),
+    PRELIMINARY(0F),
 
     /**
-     * Mid Stage, 中期
+     * 中期。
      */
-    MIDTERM(0.45F),
+    MIDTERM(0.35F),
 
     /**
-     * Post Stage, 后期
+     * 后期。
      */
-    SOPHISTICATION(0.75F),
+    SOPHISTICATION(0.7F),
 
     /**
-     * Complete Stage, 圆满
+     * 小圆满。
      */
-    PERFECTION(0.9F),
+    CLOSE_TO_PERFECTION(0.9F),
+
+    /**
+     * 大圆满。
+     */
+    PERFECTION(1F);
     ;
 
     private final float percent;

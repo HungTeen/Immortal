@@ -119,15 +119,15 @@ public class RenderEventHandler {
         ClientUtil.push("spiritualManaBar");
         final int x = screenWidth / 2 - 91;
         final int y = screenHeight - 32 + 3;
-        final float currentMana = PlayerUtil.getSpiritualMana(ClientProxy.MC.player);
-        final float maxMana = PlayerUtil.getFullSpiritualMana(ClientProxy.MC.player);
-        final float cultivation = PlayerUtil.getCultivation(ClientProxy.MC.player);
+        final float currentMana = PlayerUtil.getMana(ClientProxy.MC.player);
+        final float maxMana = PlayerUtil.getFullMana(ClientProxy.MC.player);
+        final float limitMana = PlayerUtil.getLimitMana(ClientProxy.MC.player);
         graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
         if (maxMana > 0) {
             final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
             graphics.blit(OVERLAY, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
-            if (currentMana > maxMana && cultivation > maxMana) {
-                final int barLen = MathUtil.getBarLen(currentMana - maxMana, cultivation - maxMana, MANA_BAR_LEN - 2);
+            if (currentMana > maxMana && limitMana > maxMana) {
+                final int barLen = MathUtil.getBarLen(currentMana - maxMana, limitMana - maxMana, MANA_BAR_LEN - 2);
                 graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, barLen, MANA_BAR_HEIGHT - 2);
                 if (ClientDatas.ManaWarningTick == 0) {
                     ClientDatas.ManaWarningTick = Constants.MANA_WARNING_CD;
@@ -288,7 +288,7 @@ public class RenderEventHandler {
     }
 
     public static boolean canRenderManaBar() {
-        return canRenderOverlay() && (PlayerUtil.getSpiritualMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
+        return canRenderOverlay() && (PlayerUtil.getMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
     }
 
     public static boolean canRenderOverlay() {

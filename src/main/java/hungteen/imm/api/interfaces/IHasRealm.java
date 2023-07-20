@@ -1,5 +1,6 @@
 package hungteen.imm.api.interfaces;
 
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 
@@ -15,6 +16,8 @@ public interface IHasRealm {
      * @return Realm type of entity.
      */
     IRealmType getRealm();
+
+    RealmStages getRealmStage();
 
     /**
      * 获取生物的修行方式

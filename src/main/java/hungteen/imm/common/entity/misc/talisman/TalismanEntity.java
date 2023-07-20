@@ -21,4 +21,5 @@ public abstract class TalismanEntity extends ThrowableItemProjectile implements 
     public IRealmType getRealm() {
         return null;
     }
+
 }

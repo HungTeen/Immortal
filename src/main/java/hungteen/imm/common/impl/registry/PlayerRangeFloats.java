@@ -15,17 +15,14 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public class PlayerRangeFloats {
 
-    private static final HTSimpleRegistry<IRangeNumber<Float>> PLAYER_RANGE_NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_numbers"));
+    private static final HTSimpleRegistry<IRangeNumber<Float>> NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_float"));
+
+    public static final IRangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
+    public static final IRangeNumber<Float> MAX_SPIRITUAL_MANA = register(new PlayerData("max_spiritual_mana", 0, 0, Float.MAX_VALUE));
 
     public static IHTSimpleRegistry<IRangeNumber<Float>> registry() {
-        return PLAYER_RANGE_NUMBERS;
+        return NUMBERS;
     }
-
-    /* Just like vanilla experience, 玩家的修仙经验值 */
-    public static final IRangeNumber<Float> CULTIVATION = register(new PlayerData("cultivation", 0, 0, Float.MAX_VALUE));
-    public static final IRangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
-    /* additional mana limit, 额外的附加灵气值 */
-    public static final IRangeNumber<Float> MAX_SPIRITUAL_MANA = register(new PlayerData("max_spiritual_mana", 0, 0, Float.MAX_VALUE));
 
     public static IRangeNumber<Float> register(IRangeNumber<Float> number){
         return registry().register(number);

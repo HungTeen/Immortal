@@ -16,11 +16,7 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public class PlayerRangeIntegers {
 
-    private static final HTSimpleRegistry<IRangeNumber<Integer>> PLAYER_RANGE_NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_numbers"));
-
-    public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
-        return PLAYER_RANGE_NUMBERS;
-    }
+    private static final HTSimpleRegistry<IRangeNumber<Integer>> NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_integer"));
 
     /* Just like vanilla experience, 玩家的修仙经验值 */
     public static final IRangeNumber<Integer> CONSCIOUSNESS = register(new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE));
@@ -32,9 +28,14 @@ public class PlayerRangeIntegers {
     /* 可用的常驻法术槽位 */
     public static final IRangeNumber<Integer> PASSIVE_SPELL_COUNT_LIMIT = register(new PlayerData("passive_spell_count_limit", 3, 0, Constants.SPELL_CIRCLE_SIZE));
 
+    public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
+        return NUMBERS;
+    }
+
     public static IRangeNumber<Integer> register(IRangeNumber<Integer> number){
         return registry().register(number);
     }
+
     public record PlayerData(String name, int defaultValue, int minValue, int maxValue) implements IRangeNumber<Integer> {
 
         @Override

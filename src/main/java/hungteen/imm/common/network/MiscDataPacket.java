@@ -1,7 +1,9 @@
 package hungteen.imm.common.network;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.common.impl.registry.CultivationTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -13,24 +15,28 @@ import java.util.function.Supplier;
  * @author: HungTeen
  * @create: 2022-10-26 18:48
  **/
-public class StringDataPacket {
+public class MiscDataPacket {
 
-    private int type;
-    private String data;
+    private final int type;
+    private final String data;
+    private final float value;
 
-    public StringDataPacket(Types type, String data) {
+    public MiscDataPacket(Types type, String data, float value) {
         this.type = type.ordinal();
         this.data = data;
+        this.value = value;
     }
 
-    public StringDataPacket(FriendlyByteBuf buffer) {
+    public MiscDataPacket(FriendlyByteBuf buffer) {
         this.type = buffer.readInt();
         this.data = buffer.readUtf();
+        this.value = buffer.readFloat();
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(this.type);
         buffer.writeUtf(this.data);
+        buffer.writeFloat(this.value);
     }
 
     public static class Handler {
@@ -38,16 +44,14 @@ public class StringDataPacket {
         /**
          * Only Server sync to Client.
          */
-        public static void onMessage(StringDataPacket message, Supplier<NetworkEvent.Context> ctx) {
+        public static void onMessage(MiscDataPacket message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(()->{
                 PlayerHelper.getClientPlayer().ifPresent(player -> {
                     final Types type = Types.values()[message.type];
                     switch (type) {
-                        case REALM -> {
-                            IMMAPI.get().realmRegistry().ifPresent(l -> {
-                                l.getValue(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
-                            });
-                        }
+                        case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
+                        case CULTIVATION -> CultivationTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setCultivationType(player, l));
+                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
                     }
                 });
             });
@@ -57,8 +61,10 @@ public class StringDataPacket {
 
     public enum Types{
 
+        EXPERIENCE,
         CULTIVATION,
-        REALM
+        REALM,
+        ;
     }
 
 }

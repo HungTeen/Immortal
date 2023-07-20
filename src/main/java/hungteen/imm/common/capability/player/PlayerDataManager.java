@@ -4,6 +4,7 @@ import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.*;
@@ -18,9 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: Immortal
@@ -38,6 +37,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final HashMap<ISectType, Float> sectRelations = new HashMap<>();
     private ICultivationType cultivationType = CultivationTypes.MORTAL;
     private IRealmType realmType = RealmTypes.MORTALITY;
+    private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class);
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
     private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
     private long nextRefreshTick;
@@ -124,6 +124,13 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
+            this.experienceMap.forEach((type, value) -> {
+                nbt.putFloat(type.toString(), value);
+            });
+            tag.put("ExperienceMap", nbt);
+        }
+        {
+            CompoundTag nbt = new CompoundTag();
             PlayerRangeIntegers.registry().getValues().forEach(data -> {
                 nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
             });
@@ -189,6 +196,14 @@ public class PlayerDataManager implements IPlayerDataManager {
                 }
             });
         }
+        if(tag.contains("ExperienceMap")){
+            final CompoundTag nbt = tag.getCompound("ExperienceMap");
+            for (ExperienceTypes type : ExperienceTypes.values()) {
+                if(nbt.contains(type.toString())){
+                    this.experienceMap.put(type, nbt.getFloat(type.toString()));
+                }
+            }
+        }
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
             floatMap.clear();
@@ -241,6 +256,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
         this.floatMap.forEach(this::sendFloatDataPacket);
+        Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
         this.setCultivationType(this.cultivationType);
         this.setRealmType(this.realmType);
     }
@@ -392,6 +408,25 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
     }
 
+    /* Experience Related Methods */
+
+    public void setExperience(ExperienceTypes type, float value) {
+        this.experienceMap.put(type, value);
+        this.sendMiscDataPacket(MiscDataPacket.Types.EXPERIENCE, type.toString(), value);
+    }
+
+    public void addExperience(ExperienceTypes type, float value) {
+        this.setExperience(type, this.getExperience(type) + value);
+    }
+
+    public float getExperience(ExperienceTypes type){
+        return this.experienceMap.getOrDefault(type, 0F);
+    }
+
+    public float getCultivation(){
+        return Arrays.stream(ExperienceTypes.values()).map(xp -> Math.min(this.realmType.requireCultivation(), getExperience(xp))).reduce(0F, Float::sum);
+    }
+
     /* Player Number Data Related Methods */
 
     public int getIntegerData(IRangeNumber<Integer> rangeData) {
@@ -403,35 +438,15 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setIntegerData(IRangeNumber<Integer> rangeData, int value) {
-        setIntegerData(rangeData, value, false);
+        value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        integerMap.put(rangeData, value);
+        sendIntegerDataPacket(rangeData, value);
     }
 
     public void setFloatData(IRangeNumber<Float> rangeData, float value) {
-        setFloatData(rangeData, value, false);
-    }
-
-    /**
-     * Directly set value.
-     * @param ignore 防止死循环。
-     */
-    public void setIntegerData(IRangeNumber<Integer> rangeData, int value, boolean ignore) {
-        final int result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
-        integerMap.put(rangeData, result);
-        sendIntegerDataPacket(rangeData, result);
-    }
-
-    /**
-     * Directly set value.
-     * @param ignore 防止死循环。
-     */
-    public void setFloatData(IRangeNumber<Float> rangeData, float value, boolean ignore) {
-        final float result = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
-        if (!ignore && PlayerRangeFloats.CULTIVATION.equals(rangeData)) {
-            updateCultivation(value - getFloatData(PlayerRangeFloats.CULTIVATION));
-        } else {
-            floatMap.put(rangeData, result);
-            sendFloatDataPacket(rangeData, result);
-        }
+        value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        floatMap.put(rangeData, value);
+        sendFloatDataPacket(rangeData, value);
     }
 
     public void addIntegerData(IRangeNumber<Integer> rangeData, int value) {
@@ -439,37 +454,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void addFloatData(IRangeNumber<Float> rangeData, float value) {
-        if (PlayerRangeFloats.CULTIVATION.equals(rangeData)) {
-            updateCultivation(value);
-        } else {
-            setFloatData(rangeData, getFloatData(rangeData) + value);
-        }
-    }
-
-    protected void updateCultivation(float value) {
-        float oldValue = getFloatData(PlayerRangeFloats.CULTIVATION);
-        if (value < 0) {
-            while (oldValue + value < 0 && getRealmNode().hasPreviousNode()) {
-                value += oldValue;
-                levelDown();
-                oldValue = getRealmType().requireCultivation(); // 上一级所需的修为。
-            }
-            this.setFloatData(PlayerRangeFloats.CULTIVATION, oldValue + value, true);
-        } else if (value > 0) {
-            RealmManager.RealmNode next = getRealmNode().next(getRealmType().getCultivationType());
-            // 1. Cultivation reach, 2. no threshold, 3. has next.
-            while (oldValue + value >= getRealmType().requireCultivation() && !getRealmType().hasThreshold() && next != null) {
-                value -= getRealmType().requireCultivation() - oldValue;
-                oldValue = 0;
-                this.setRealmType(next.getRealm());
-                getRealmNode(true);
-                next = getRealmNode().next(getRealmType().getCultivationType());
-            }
-            this.setFloatData(PlayerRangeFloats.CULTIVATION, oldValue + value, true);
-        }
-        if (getFloatData(PlayerRangeFloats.SPIRITUAL_MANA) > getLimitManaValue()) {
-            this.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, getLimitManaValue());
-        }
+        setFloatData(rangeData, getFloatData(rangeData) + value);
     }
 
     protected void levelDown() {
@@ -531,7 +516,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void setRealmType(IRealmType realmType) {
         this.realmType = realmType;
         this.getRealmNode(true); // Update realm node manually.
-        this.sendStringDataPacket(StringDataPacket.Types.REALM, realmType.getRegistryName());
+        this.sendMiscDataPacket(MiscDataPacket.Types.REALM, realmType.getRegistryName());
     }
 
     public ICultivationType getCultivationType() {
@@ -540,12 +525,16 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void setCultivationType(ICultivationType cultivationType){
         this.cultivationType = cultivationType;
-        this.sendStringDataPacket(StringDataPacket.Types.CULTIVATION, cultivationType.getRegistryName());
+        this.sendMiscDataPacket(MiscDataPacket.Types.CULTIVATION, cultivationType.getRegistryName());
     }
 
-    public void sendStringDataPacket(StringDataPacket.Types type, String data) {
+    public void sendMiscDataPacket(MiscDataPacket.Types type, String data) {
+        sendMiscDataPacket(type, data, 0F);
+    }
+
+    public void sendMiscDataPacket(MiscDataPacket.Types type, String data, float value) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new StringDataPacket(type, data));
+            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
         }
     }
 

@@ -2,16 +2,24 @@ package hungteen.imm.common;
 
 import hungteen.htlib.HTLib;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.RealmStages;
+import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -32,6 +40,28 @@ public class RealmManager {
                 RealmTypes.SPIRITUAL_LEVEL_2,
                 RealmTypes.SPIRITUAL_LEVEL_3
         ));
+    }
+
+    /**
+     * Get Realm Stage of the specific entity.
+     */
+    public static RealmStages getRealmStage(Entity entity){
+        RealmStages ans = RealmStages.PRELIMINARY;
+        if(entity instanceof Player player){
+            final IRealmType realmType = PlayerUtil.getPlayerRealm(player);
+            final RealmNode node = findRealmNode(realmType);
+            final float previousValue = node.hasPreviousNode() ? node.getPreviousRealm().requireCultivation() : 0;
+            final float currentValue = PlayerUtil.getCultivation(player);
+            final float percent = (currentValue - previousValue) / (realmType.requireCultivation() - previousValue);
+            for (RealmStages stage : RealmStages.values()) {
+                if(percent > stage.getPercent()){
+                    ans = stage;
+                } else break;
+            }
+        } else if(entity instanceof IHasRealm realmEntity){
+            ans = realmEntity.getRealmStage();
+        }
+        return ans;
     }
 
     /**

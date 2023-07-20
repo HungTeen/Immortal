@@ -7,6 +7,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
@@ -240,6 +241,24 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.addSectRelation(sectType, value));
     }
 
+    /* Experience Related Methods */
+
+    public static void setExperience(Player player, ExperienceTypes type, float value){
+        getOptManager(player).ifPresent(l -> l.setExperience(type, value));
+    }
+
+    public static void addExperience(Player player, ExperienceTypes type, float value){
+        getOptManager(player).ifPresent(l -> l.addExperience(type, value));
+    }
+
+    public static float getExperience(Player player, ExperienceTypes type){
+        return getManagerResult(player, l -> l.getExperience(type), 0F);
+    }
+
+    public static float getCultivation(Player player){
+        return getManagerResult(player, PlayerDataManager::getCultivation, 0F);
+    }
+
     /* Operations about Player Range Data */
 
     public static void setIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
@@ -266,15 +285,15 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.getFloatData(rangeData), rangeData.defaultData());
     }
 
-    public static float getSpiritualMana(Player player){
+    public static float getMana(Player player){
         return getFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA);
     }
 
-    public static float getFullSpiritualMana(Player player){
+    public static float getFullMana(Player player){
         return getManagerResult(player, PlayerDataManager::getFullManaValue, 0F);
     }
 
-    public static float getCultivation(Player player){
+    public static float getLimitMana(Player player){
         return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0F);
     }
 
@@ -303,7 +322,6 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(m -> {
             m.setRealmType(realm);
             if(EntityHelper.isServer(player)){
-                m.setFloatData(PlayerRangeFloats.CULTIVATION, realm.requireCultivation());
                 m.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, 0);
             }
         });

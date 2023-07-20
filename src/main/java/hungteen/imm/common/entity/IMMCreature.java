@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity;
 
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.registry.IRealmType;
@@ -30,6 +31,7 @@ import java.util.Optional;
 public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHasRealm {
 
     private static final EntityDataAccessor<IRealmType> REALM = SynchedEntityData.defineId(IMMCreature.class, IMMDataSerializers.REALM.get());
+    private static final EntityDataAccessor<Integer> REALM_STAGE = SynchedEntityData.defineId(IMMCreature.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ANIMATIONS = SynchedEntityData.defineId(IMMCreature.class, EntityDataSerializers.INT);
 
     public IMMCreature(EntityType<? extends IMMCreature> type, Level level) {
@@ -40,6 +42,7 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(REALM, getDefaultRealm());
+        entityData.define(REALM_STAGE, 0);
         entityData.define(ANIMATIONS, 0);
     }
 
@@ -61,6 +64,9 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
                         .result().ifPresentOrElse(this::setRealm, () -> this.setRealm(this.getDefaultRealm()));
             });
         }
+        if(tag.contains("RealmStage")){
+            this.setRealmStage(RealmStages.values()[tag.getInt("RealmStage")]);
+        }
         if(tag.contains("AnimationFlags")){
             this.setAnimations(tag.getInt("AnimationFlags"));
         }
@@ -75,6 +81,7 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
                         .result().ifPresent(nbt -> tag.put("EntityRealm", nbt));
             });
         }
+        tag.putInt("RealmStage", this.getRealmStage().ordinal());
         tag.putInt("AnimationFlags", this.getAnimations());
     }
 
@@ -87,7 +94,16 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
         return entityData.get(REALM);
     }
 
-    public void setAnimation(int id, boolean flag){
+    public void setRealmStage(RealmStages stage){
+        entityData.set(REALM_STAGE, stage.ordinal());
+    }
+
+    @Override
+    public RealmStages getRealmStage(){
+        return RealmStages.values()[entityData.get(REALM_STAGE)];
+    }
+
+    public void setAnimation(int id, boolean flag) {
         if(flag){
             this.setAnimations(this.getAnimations() | (1 << id));
         } else{

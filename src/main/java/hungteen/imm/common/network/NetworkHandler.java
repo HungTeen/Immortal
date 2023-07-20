@@ -32,7 +32,7 @@ public class NetworkHandler {
         CHANNEL.registerMessage(getId(), EmptyClickPacket.class, EmptyClickPacket::encode, EmptyClickPacket::new, EmptyClickPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), FloatDataPacket.class, FloatDataPacket::encode, FloatDataPacket::new, FloatDataPacket.Handler::onMessage);
-        CHANNEL.registerMessage(getId(), StringDataPacket.class, StringDataPacket::encode, StringDataPacket::new, StringDataPacket.Handler::onMessage);
+        CHANNEL.registerMessage(getId(), MiscDataPacket.class, MiscDataPacket::encode, MiscDataPacket::new, MiscDataPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), TradeOffersPacket.class, TradeOffersPacket::encode, TradeOffersPacket::new, TradeOffersPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), SectRelationPacket.class, SectRelationPacket::encode, SectRelationPacket::new, SectRelationPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), EntityElementPacket.class, EntityElementPacket::encode, EntityElementPacket::new, EntityElementPacket.Handler::onMessage);
