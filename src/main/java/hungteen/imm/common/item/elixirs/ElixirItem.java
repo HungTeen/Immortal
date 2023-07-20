@@ -1,6 +1,5 @@
 package hungteen.imm.common.item.elixirs;
 
-import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IElixirItem;
 import hungteen.imm.api.registry.IRealmType;
@@ -8,7 +7,6 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -60,14 +58,15 @@ public abstract class ElixirItem extends Item implements IElixirItem{
         Optional<Boolean> canOpt = checkEating(level, livingEntity, stack);
         if(canOpt.isPresent()){
             if(canOpt.get()){
-                Accuracies accuracy = getAccuracy(stack);
-                if(Accuracies.hasUsage(accuracy)){
-                    eatElixir(level, livingEntity, stack, getAccuracy(stack));
-                } else if(accuracy == Accuracies.TRASH){
-                    eatTrash(level, livingEntity, stack);
-                } else if(accuracy == Accuracies.TOXIC){
-                    eatToxic(level, livingEntity, stack);
-                }
+                eatElixir(level, livingEntity, stack, getAccuracy(stack));
+//                Accuracies accuracy = getAccuracy(stack);
+//                if(Accuracies.hasUsage(accuracy)){
+//                    eatElixir(level, livingEntity, stack, getAccuracy(stack));
+//                } else if(accuracy == Accuracies.TRASH){
+//                    eatTrash(level, livingEntity, stack);
+//                } else if(accuracy == Accuracies.TOXIC){
+//                    eatToxic(level, livingEntity, stack);
+//                }
             } else{
                 explode(level, livingEntity, stack);
             }
@@ -108,14 +107,14 @@ public abstract class ElixirItem extends Item implements IElixirItem{
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
-        final Accuracies accuracy = getAccuracy(stack);
-        if(Accuracies.hasUsage(accuracy)){
-            final ResourceLocation location = ItemHelper.get().getKey(this);
-            components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
-        }
-        components.add(Component.translatable("tooltip.imm.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
-                .append(Accuracies.getComponent(accuracy))
-        );
+//        final Accuracies accuracy = getAccuracy(stack);
+//        if(Accuracies.hasUsage(accuracy)){
+//            final ResourceLocation location = ItemHelper.get().getKey(this);
+//            components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
+//        }
+//        components.add(Component.translatable("tooltip.imm.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
+//                .append(Accuracies.getComponent(accuracy))
+//        );
     }
 
 //    @Override

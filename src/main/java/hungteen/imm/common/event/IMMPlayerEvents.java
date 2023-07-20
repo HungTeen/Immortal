@@ -53,6 +53,9 @@ public class IMMPlayerEvents {
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
         if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.rayTrace(event.getEntity());
+//            if(event.getLevel() instanceof ServerLevel serverLevel){
+//                System.out.println(ElixirManager.getElixirValue(serverLevel, event.getItemStack().getItem()));
+//            }
         }
     }
 

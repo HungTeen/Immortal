@@ -37,7 +37,14 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> im
         super(screenContainer, inv, titleIn);
         this.imageHeight = 230;
         this.imageWidth = 198;
-        this.scrollComponent = new ScrollComponent<>(this, this.leftPos + 100, this.topPos + 100, 18, 6, 2);
+        this.scrollComponent = new ScrollComponent<>(this, 17, 5, 2);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.scrollComponent.setOffset(this.leftPos + 16, this.topPos + 19);
+        this.scrollComponent.setSlotIdOffset(ElixirRoomMenu.SLOT_ID_OFFSET);
     }
 
     @Override

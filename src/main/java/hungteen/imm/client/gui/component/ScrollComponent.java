@@ -4,6 +4,9 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.imm.client.gui.IScrollableScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 
 import java.util.List;
@@ -16,30 +19,57 @@ import java.util.List;
 public class ScrollComponent<T> {
 
     private final IScrollableScreen<T> screen;
-    private final int leftPos;
-    private final int topPos;
     private final int len;
     private final int rows;
     private final int columns;
+    private int leftPos = 0;
+    private int topPos = 0;
+    private int slotIdOffset = 0;
     private double scrollPercent;
     private int startIndex;
 
     /**
      * Main Constructor.
      * @param screen       The component belongs to (Item list getter).
-     * @param leftPos      Left position of the scroll component.
-     * @param topPos       Top position of the scroll component.
      * @param len          Square render length of each item.
      * @param rows         How many rows to display items.
      * @param columns      How many columns to display items.
      */
-    public ScrollComponent(IScrollableScreen<T> screen, int leftPos, int topPos, int len, int rows, int columns) {
+    public ScrollComponent(IScrollableScreen<T> screen, int len, int rows, int columns) {
         this.screen = screen;
-        this.leftPos = leftPos;
-        this.topPos = topPos;
         this.len = len;
         this.rows = rows;
         this.columns = columns;
+    }
+
+    public void setOffset(int leftPos, int topPos){
+        this.leftPos = leftPos;
+        this.topPos = topPos;
+    }
+
+    public void setSlotIdOffset(int slotIdOffset) {
+        this.slotIdOffset = slotIdOffset;
+    }
+
+    public boolean mouseClicked(Minecraft mc, ContainerScreen screen, double mouseX, double mouseY, int key) {
+        final double dx = mouseX - (this.leftPos + 82);
+        final double dy = mouseY - (this.topPos + 108);
+        if(mc != null && mc.level != null && mc.player != null && mc.gameMode != null){
+            for(int i = 0; i < this.rows; ++ i){
+                for(int j = 0; j < this.columns; ++ j){
+                    if(this.hovered(i, j, mouseX, mouseY)){
+                        final List<T> items = this.screen.getItems();
+                        final int pos = this.getPos(i, j) + this.slotIdOffset;
+                        if(pos >= 0 && pos < items.size() && screen.getMenu().clickMenuButton(mc.player, pos)){
+                            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
+                            mc.gameMode.handleInventoryButtonClick(screen.getMenu().containerId, 0);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public boolean mouseScrolled(double delta) {
@@ -93,9 +123,9 @@ public class ScrollComponent<T> {
         return (this.screen.getItems().size() + this.columns - 1) / this.columns - this.rows;
     }
 
-    protected boolean hovered(int r, int c, int mouseX, int mouseY) {
+    protected boolean hovered(int r, int c, double mouseX, double mouseY) {
         final Pair<Integer, Integer> pair = getXY(r, c);
-        return pair.getFirst() >= mouseX && pair.getFirst() + this.len <= mouseX && pair.getSecond() >= mouseY && pair.getSecond() + this.len <= mouseY;
+        return pair.getFirst() <= mouseX && pair.getFirst() + this.len >= mouseX && pair.getSecond() <= mouseY && pair.getSecond() + this.len >= mouseY;
     }
 
     public int getPos(int r, int c){
