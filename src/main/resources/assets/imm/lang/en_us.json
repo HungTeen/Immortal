@@ -103,6 +103,7 @@
   "command.imm.learn_all_spells": "Learned all spells",
   "command.imm.forget_all_spells": "Forgot all spells",
   "command.imm.spiritual_root": "Spiritual roots of %s : ",
+  "command.imm.cultivation_not_enough": "Set failed : Cultivation is not enough",
 
   "info.imm.rune_already_bind": "Your rune already bind",
   "info.imm.no_root_for_inspiration": "There is no inspiration",
@@ -227,6 +228,13 @@
   "misc.imm.realm.monster_stage9": "Level 9 Monster",
   "misc.imm.realm.monster_stage10": "Level 10 Monster",
 
+  "misc.imm.realm_stage": "Realm Stage",
+  "misc.imm.realm_stage.preliminary": "Preliminary",
+  "misc.imm.realm_stage.midterm": "Midterm",
+  "misc.imm.realm_stage.sophistication": "Sophistication",
+  "misc.imm.realm_stage.close_to_perfection": "Close to perfect",
+  "misc.imm.realm_stage.perfection": "Perfection",
+
   "misc.imm.player_data.cultivation" : "Cultivation",
   "misc.imm.player_data.spiritual_mana" : "Spiritual Mana",
   "misc.imm.player_data.consciousness" : "Consciousness",
@@ -251,5 +259,11 @@
   "misc.imm.accuracy.nice" : "(Nice)",
   "misc.imm.accuracy.excellent" : "(Excellent)",
   "misc.imm.accuracy.perfect" : "(Perfect)",
-  "misc.imm.accuracy.master" : "(Master)"
+  "misc.imm.accuracy.master" : "(Master)",
+
+  "misc.imm.xp_type": "Experience Type",
+  "misc.imm.xp_type.elixir": "Elixir",
+  "misc.imm.xp_type.fighting": "Fighting",
+  "misc.imm.xp_type.spell": "Spell",
+  "misc.imm.xp_type.mission": "Mission"
 }

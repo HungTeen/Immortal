@@ -36,6 +36,7 @@ public abstract class IMMCreature extends PathfinderMob implements IHasRoot, IHa
 
     public IMMCreature(EntityType<? extends IMMCreature> type, Level level) {
         super(type, level);
+        this.xpReward = 0;
     }
 
     @Override

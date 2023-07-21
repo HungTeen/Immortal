@@ -5,6 +5,7 @@ import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.*;
@@ -37,6 +38,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final HashMap<ISectType, Float> sectRelations = new HashMap<>();
     private ICultivationType cultivationType = CultivationTypes.MORTAL;
     private IRealmType realmType = RealmTypes.MORTALITY;
+    private RealmStages realmStage = RealmStages.PRELIMINARY;
     private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class);
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
     private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
@@ -144,6 +146,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
             nbt.putString("PlayerCultivationType", this.cultivationType.getRegistryName());
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
+            nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
             tag.put("MiscData", nbt);
         }
         return tag;
@@ -229,6 +232,9 @@ public class PlayerDataManager implements IPlayerDataManager {
             }
             if (nbt.contains("PlayerRealmType")) {
                 RealmTypes.registry().getValue(nbt.getString("PlayerRealmType")).ifPresent(r -> this.realmType = r);
+            }
+            if(nbt.contains("PlayerRealmStage")){
+                this.realmStage = RealmStages.values()[nbt.getInt("PlayerRealmStage")];
             }
         }
     }
@@ -457,27 +463,12 @@ public class PlayerDataManager implements IPlayerDataManager {
         setFloatData(rangeData, getFloatData(rangeData) + value);
     }
 
-    protected void levelDown() {
-        if (getRealmNode().hasPreviousNode()) {
-            this.setRealmType(getRealmNode().getPreviousRealm());
-            getRealmNode(true);
-        }
-    }
-
     /**
-     * 第一层法力条的极限。
+     * 灵力条的极限。
      * @return Natural increasing point.
      */
     public float getFullManaValue() {
-        return Mth.clamp(getFloatData(PlayerRangeFloats.MAX_SPIRITUAL_MANA) + getRealmType().getBaseSpiritualValue(), 0, getRealmType().getSpiritualValueLimit());
-    }
-
-    /**
-     * 第二层溢出条的极限。
-     * @return Explode if player has more mana than it.
-     */
-    public float getLimitManaValue() {
-        return getRealmType().getSpiritualValueLimit();
+        return getFloatData(PlayerRangeFloats.MAX_SPIRITUAL_MANA) + getRealmType().getSpiritualValue();
     }
 
     public int getSpellSetLimit(){
@@ -517,6 +508,15 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.realmType = realmType;
         this.getRealmNode(true); // Update realm node manually.
         this.sendMiscDataPacket(MiscDataPacket.Types.REALM, realmType.getRegistryName());
+    }
+
+    public RealmStages getRealmStage(){
+        return this.realmStage;
+    }
+
+    public void setRealmStage(RealmStages stage){
+        this.realmStage = stage;
+        this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
     }
 
     public ICultivationType getCultivationType() {

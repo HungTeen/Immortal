@@ -102,7 +102,7 @@ public class RealmTypes {
         }
 
         @Override
-        public int getBaseSpiritualValue() {
+        public int getSpiritualValue() {
             return spiritualValue();
         }
 

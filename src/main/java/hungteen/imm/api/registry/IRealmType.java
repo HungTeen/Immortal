@@ -26,15 +26,7 @@ public interface IRealmType extends ISimpleEntry {
      * 根本的灵力值（不考虑后天加成）。
      * @return the base spiritual value.
      */
-    int getBaseSpiritualValue();
-
-    /**
-     * 能承载的极限灵气值。
-     * @return the boundary value entity can take.
-     */
-    default int getSpiritualValueLimit(){
-        return getBaseSpiritualValue() << 1;
-    }
+    int getSpiritualValue();
 
     /**
      * 有突破门槛。

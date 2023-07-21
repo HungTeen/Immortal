@@ -43,8 +43,8 @@ import java.util.Map;
  **/
 public class RenderEventHandler {
 
-    private static final ResourceLocation SPELL_CIRCLE = Util.prefix("textures/gui/overlay/spell_circle.png");
-    private static final ResourceLocation OVERLAY = Util.prefix("textures/gui/overlay/overlay.png");
+    private static final ResourceLocation SPELL_CIRCLE = Util.get().overlayTexture("spell_circle");
+    private static final ResourceLocation OVERLAY = Util.get().overlayTexture("overlay");
     private static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
     private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;
 
@@ -121,28 +121,11 @@ public class RenderEventHandler {
         final int y = screenHeight - 32 + 3;
         final float currentMana = PlayerUtil.getMana(ClientProxy.MC.player);
         final float maxMana = PlayerUtil.getFullMana(ClientProxy.MC.player);
-        final float limitMana = PlayerUtil.getLimitMana(ClientProxy.MC.player);
         graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
         if (maxMana > 0) {
             final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
             graphics.blit(OVERLAY, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
-            if (currentMana > maxMana && limitMana > maxMana) {
-                final int barLen = MathUtil.getBarLen(currentMana - maxMana, limitMana - maxMana, MANA_BAR_LEN - 2);
-                graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, barLen, MANA_BAR_HEIGHT - 2);
-                if (ClientDatas.ManaWarningTick == 0) {
-                    ClientDatas.ManaWarningTick = Constants.MANA_WARNING_CD;
-                } else {
-                    --ClientDatas.ManaWarningTick;
-                }
-                if (ClientDatas.ManaWarningTick > (Constants.MANA_WARNING_CD >> 1)) {
-                    graphics.blit(OVERLAY, x, y, 0, 10, MANA_BAR_LEN, MANA_BAR_HEIGHT);
-                }
-            }
         }
-
-        ClientUtil.pop();
-
-        ClientUtil.push("spiritualValue");
         final float scale = 1;
         final Component text = Component.literal(currentMana + " / " + maxMana);
 //        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 - 1, ColorHelper.BLACK, scale);
@@ -151,6 +134,12 @@ public class RenderEventHandler {
 //        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) - 1, y - 6, ColorHelper.BLACK, scale);
 //        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6, Colors.SPIRITUAL_MANA, scale);
         RenderUtil.renderCenterScaledText(graphics.pose(), text, (screenWidth >> 1), y - 6, scale, Colors.SPIRITUAL_MANA, ColorHelper.BLACK.rgb());
+        ClientUtil.pop();
+    }
+
+    public static void renderMeditationOptions(GuiGraphics graphics, int screenHeight, int screenWidth) {
+        ClientUtil.push("meditationOptions");
+
         ClientUtil.pop();
     }
 
@@ -287,12 +276,16 @@ public class RenderEventHandler {
 //        }
     }
 
+    public static boolean canRenderOverlay() {
+        return ClientProxy.MC.screen == null && !ClientProxy.MC.options.hideGui && ClientProxy.MC.level != null && ClientProxy.MC.player != null && !ClientProxy.MC.player.isSpectator();
+    }
+
     public static boolean canRenderManaBar() {
         return canRenderOverlay() && (PlayerUtil.getMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
     }
 
-    public static boolean canRenderOverlay() {
-        return ClientProxy.MC.screen == null && !ClientProxy.MC.options.hideGui && ClientProxy.MC.level != null && ClientProxy.MC.player != null && !ClientProxy.MC.player.isSpectator();
+    public static boolean canRenderMeditationOptions() {
+        return canRenderOverlay() && PlayerUtil.isSitInMeditation(ClientProxy.MC.player);
     }
 
 }

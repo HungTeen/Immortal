@@ -29,7 +29,7 @@ public class IMMBiomeModifiers {
         context.register(SPAWN_CULTIVATOR, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 List.of(
-                        new MobSpawnSettings.SpawnerData(IMMEntities.EMPTY_CULTIVATOR.get(), 10, 1, 1)
+                        new MobSpawnSettings.SpawnerData(IMMEntities.EMPTY_CULTIVATOR.get(), 1, 1, 1)
                 )
         ));
     }

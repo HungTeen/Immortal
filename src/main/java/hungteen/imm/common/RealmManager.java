@@ -2,24 +2,29 @@ package hungteen.imm.common;
 
 import hungteen.htlib.HTLib;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -29,12 +34,24 @@ import java.util.function.Consumer;
  **/
 public class RealmManager {
 
-    public static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
+    public static final int MAX_VALID_KILL_COUNT = 5;
+    private static final float DEFAULT_KILL_XP = 1;
+    private static final Map<EntityType<?>, Float> killXpMap = new HashMap<>();
+    private static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
 
     /**
      * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
      */
-    public static void updateRealmTree() {
+    public static void init(){
+        fillXpMap();
+        updateRealmTree();
+    }
+
+    private static void fillXpMap(){
+        addKillXp(IMMEntities.EMPTY_CULTIVATOR.get(), 10);
+    }
+
+    private static void updateRealmTree() {
         addRealmLine(ROOT, Arrays.asList(
                 RealmTypes.SPIRITUAL_LEVEL_1,
                 RealmTypes.SPIRITUAL_LEVEL_2,
@@ -42,26 +59,38 @@ public class RealmManager {
         ));
     }
 
+    public static void onPlayerKillLiving(ServerPlayer player, LivingEntity living){
+        final int count = player.getStats().getValue(Stats.ENTITY_KILLED, living.getType());
+        if(count < MAX_VALID_KILL_COUNT){
+            final float xp = getKillXp(living.getType()) * (1 - count * 1F / MAX_VALID_KILL_COUNT);
+            PlayerUtil.addExperience(player, ExperienceTypes.FIGHTING, xp);
+        }
+    }
+
+    public static void addKillXp(EntityType<?> type, float value){
+        killXpMap.put(type, value);
+    }
+
+    public static float getKillXp(EntityType<?> type){
+        return killXpMap.getOrDefault(type, DEFAULT_KILL_XP);
+    }
+
     /**
      * Get Realm Stage of the specific entity.
      */
     public static RealmStages getRealmStage(Entity entity){
-        RealmStages ans = RealmStages.PRELIMINARY;
         if(entity instanceof Player player){
-            final IRealmType realmType = PlayerUtil.getPlayerRealm(player);
-            final RealmNode node = findRealmNode(realmType);
-            final float previousValue = node.hasPreviousNode() ? node.getPreviousRealm().requireCultivation() : 0;
-            final float currentValue = PlayerUtil.getCultivation(player);
-            final float percent = (currentValue - previousValue) / (realmType.requireCultivation() - previousValue);
-            for (RealmStages stage : RealmStages.values()) {
-                if(percent > stage.getPercent()){
-                    ans = stage;
-                } else break;
-            }
+            return PlayerUtil.getPlayerRealmStage(player);
         } else if(entity instanceof IHasRealm realmEntity){
-            ans = realmEntity.getRealmStage();
+            return realmEntity.getRealmStage();
         }
-        return ans;
+        return RealmStages.PRELIMINARY;
+    }
+
+    public static float getStageRequiredCultivation(IRealmType realm, RealmStages stage){
+        final RealmNode node = findRealmNode(realm);
+        final float previousValue = node.hasPreviousNode() ? node.getPreviousRealm().requireCultivation() : 0;
+        return stage.getPercent() * (realm.requireCultivation() - previousValue);
     }
 
     /**
@@ -100,6 +129,23 @@ public class RealmManager {
         }
         return null;
     }
+
+    public static MutableComponent getExperienceComponent(){
+        return TipUtil.misc("xp_type");
+    }
+
+    public static MutableComponent getExperienceComponent(ExperienceTypes type){
+        return TipUtil.misc("xp_type." + type.name().toLowerCase());
+    }
+
+    public static MutableComponent getStageComponent(){
+        return TipUtil.misc("realm_stage");
+    }
+
+    public static MutableComponent getStageComponent(RealmStages stage){
+        return TipUtil.misc("realm_stage." + stage.name().toLowerCase());
+    }
+
 
     /**
      * A tree node.

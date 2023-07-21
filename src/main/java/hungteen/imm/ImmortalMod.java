@@ -158,7 +158,7 @@ public class ImmortalMod {
         event.enqueueWork(() -> {
 ////            PotionRecipeHandler.registerPotionRecipes();
             CommonRegister.registerCompostable();
-            RealmManager.updateRealmTree();
+            RealmManager.init();
             CapabilityHandler.init();
         });
         NetworkHandler.init();

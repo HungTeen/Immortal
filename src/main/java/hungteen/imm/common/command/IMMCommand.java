@@ -6,13 +6,22 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.enums.RealmStages;
+import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
+import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellManager;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.PlayerUtil;
@@ -42,119 +51,168 @@ public class IMMCommand {
 
     private static final Component COMMAND_LEARN_ALL_SPELLS = TipUtil.command("learn_all_spells");
     private static final Component COMMAND_FORGET_ALL_SPELLS = TipUtil.command("forget_all_spells");
+    private static final Component COMMAND_CULTIVATION_NOT_ENOUGH = TipUtil.command("cultivation_not_enough");
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("imm").requires((ctx) -> ctx.hasPermission(2));
-        if (IMMAPI.get().spiritualRegistry().isPresent()) {// about spiritual roots.
-            IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
-                builder.then(Commands.literal("root")
-                        .then(Commands.argument("targets", EntityArgument.players())
-                                .then(Commands.literal("add")
-                                        .then(Commands.literal(root.getRegistryName())
-                                                .executes(command -> addSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
-                                        ))
-                                .then(Commands.literal("remove")
-                                        .then(Commands.literal(root.getRegistryName())
-                                                .executes(command -> removeSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
-                                        ))
-                        ));
-            });
-
+        // Command about spiritual roots.
+        SpiritualTypes.registry().getValues().forEach(root -> {
             builder.then(Commands.literal("root")
                     .then(Commands.argument("targets", EntityArgument.players())
-                            .then(Commands.literal("reset")
-                                    .executes(command -> resetSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
-                            )
-                            .then(Commands.literal("query")
-                                    .executes(command -> querySpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
-                            )
+                            .then(Commands.literal("add")
+                                    .then(Commands.literal(root.getRegistryName())
+                                            .executes(command -> addSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
+                                    ))
+                            .then(Commands.literal("remove")
+                                    .then(Commands.literal(root.getRegistryName())
+                                            .executes(command -> removeSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
+                                    ))
                     ));
-        }
-        if (IMMAPI.get().spellRegistry().isPresent()) {// about entries.
-            IMMAPI.get().spellRegistry().get().getValues().forEach(spell -> {
-                builder.then(Commands.literal("spell")
-                        .then(Commands.argument("targets", EntityArgument.players())
-                                .then(Commands.literal("learn")
-                                        .then(Commands.literal(spell.getRegistryName())
-                                                .then(Commands.argument("level", IntegerArgumentType.integer())
-                                                        .executes(command -> learnSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "level")))
-                                                )))
-                                .then(Commands.literal("forget")
-                                        .then(Commands.literal(spell.getRegistryName())
-                                                .executes(command -> forgetSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
-                                        ))
-                                .then(Commands.literal("activate")
-                                        .then(Commands.literal(spell.getRegistryName())
-                                                .executes(command -> activateSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
-                                        ))
-                                .then(Commands.literal("set")
-                                        .then(Commands.literal(spell.getRegistryName())
-                                                .then(Commands.argument("pos", IntegerArgumentType.integer(0, 7))
-                                                        .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
-                                                )))
-                        ));
-            });
+        });
+        builder.then(Commands.literal("root")
+                .then(Commands.argument("targets", EntityArgument.players())
+                        .then(Commands.literal("reset")
+                                .executes(command -> resetSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                        )
+                        .then(Commands.literal("query")
+                                .executes(command -> querySpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                        )
+                ));
+
+        // Command about spells.
+        SpellTypes.registry().getValues().forEach(spell -> {
             builder.then(Commands.literal("spell")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("learn")
-                                    .then(Commands.literal("all")
+                                    .then(Commands.literal(spell.getRegistryName())
                                             .then(Commands.argument("level", IntegerArgumentType.integer())
-                                                    .executes(command -> learnAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), IntegerArgumentType.getInteger(command, "level")))
+                                                    .executes(command -> learnSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "level")))
                                             )))
                             .then(Commands.literal("forget")
-                                    .then(Commands.literal("all")
-                                            .executes(command -> forgetAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                                    .then(Commands.literal(spell.getRegistryName())
+                                            .executes(command -> forgetSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
+                                    ))
+                            .then(Commands.literal("activate")
+                                    .then(Commands.literal(spell.getRegistryName())
+                                            .executes(command -> activateSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
+                                    ))
+                            .then(Commands.literal("set")
+                                    .then(Commands.literal(spell.getRegistryName())
+                                            .then(Commands.argument("pos", IntegerArgumentType.integer(0, 7))
+                                                    .executes(command -> setSpellAt(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell, IntegerArgumentType.getInteger(command, "pos")))
+                                            )))
+                    ));
+        });
+        builder.then(Commands.literal("spell")
+                .then(Commands.argument("targets", EntityArgument.players())
+                        .then(Commands.literal("learn")
+                                .then(Commands.literal("all")
+                                        .then(Commands.argument("level", IntegerArgumentType.integer())
+                                                .executes(command -> learnAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), IntegerArgumentType.getInteger(command, "level")))
+                                        )))
+                        .then(Commands.literal("forget")
+                                .then(Commands.literal("all")
+                                        .executes(command -> forgetAllSpell(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                                ))
+                ));
+
+        // Command about cultivation.
+        for (ExperienceTypes experienceType : ExperienceTypes.values()) {
+            builder.then(Commands.literal("cultivation")
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.literal("set")
+                                    .then(Commands.literal(experienceType.toString().toLowerCase())
+                                            .then(Commands.argument("value", FloatArgumentType.floatArg(0))
+                                                    .executes(command -> setExperience(command.getSource(), EntityArgument.getPlayers(command, "targets"), experienceType, FloatArgumentType.getFloat(command, "value")))
+                                            )))
+                            .then(Commands.literal("add")
+                                    .then(Commands.literal(experienceType.toString().toLowerCase())
+                                            .then(Commands.argument("value", FloatArgumentType.floatArg())
+                                                    .executes(command -> addExperience(command.getSource(), EntityArgument.getPlayers(command, "targets"), experienceType, FloatArgumentType.getFloat(command, "value")))
+                                            )))
+                            .then(Commands.literal("show")
+                                    .then(Commands.literal(experienceType.toString().toLowerCase())
+                                            .executes(command -> showExperience(command.getSource(), EntityArgument.getPlayers(command, "targets"), experienceType))
                                     ))
                     ));
         }
-        if (IMMAPI.get().integerDataRegistry().isPresent()) {// about other data.
-            IMMAPI.get().integerDataRegistry().get().getValues().forEach(data -> {
-                builder.then(Commands.literal("data")
-                        .then(Commands.argument("targets", EntityArgument.players())
-                                .then(Commands.literal("set")
-                                        .then(Commands.literal(data.getRegistryName())
-                                                .then(Commands.argument("value", IntegerArgumentType.integer(data.getMinData(), data.getMaxData()))
-                                                        .executes(command -> setIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
-                                                )))
-                                .then(Commands.literal("add")
-                                        .then(Commands.literal(data.getRegistryName())
-                                                .then(Commands.argument("value", IntegerArgumentType.integer())
-                                                        .executes(command -> addIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
-                                                )))
-                                .then(Commands.literal("show")
-                                        .then(Commands.literal(data.getRegistryName())
-                                                .executes(command -> showIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
-                                        ))
-                        ));
-            });
-        }
-        {
-            Arrays.stream(Elements.values()).forEach(element -> {
-                builder.then(Commands.literal("element")
-                        .then(Commands.literal("add")
-                                .then(Commands.argument("targets", EntityArgument.entities())
-                                        .then(Commands.literal(element.name())
-                                                .then(Commands.argument("robust", BoolArgumentType.bool())
-                                                        .then(Commands.argument("value", FloatArgumentType.floatArg())
-                                                                .executes(command -> addElementAmount(command.getSource(), EntityArgument.getEntities(command, "targets"), element, BoolArgumentType.getBool(command, "robust"), FloatArgumentType.getFloat(command, "value")))
-                                                        ))))
-                        )
-                );
-            });
 
-        }
-        {
-            builder.then(Commands.literal("tp")
+        // Command about realm.
+        RealmTypes.registry().getValues().forEach(realm -> {
+            builder.then(Commands.literal("realm")
                     .then(Commands.argument("targets", EntityArgument.players())
-                            .then(Commands.literal("east_world")
-                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), IMMLevels.EAST_WORLD))
-                            )
-                            .then(Commands.literal("overworld")
-                                    .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), Level.OVERWORLD))
-                            )
+                            .then(Commands.literal("set")
+                                    .then(Commands.literal(realm.getRegistryName())
+                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm))
+                                    ))
+                    ));
+        });
+
+        // Command about player number data.
+        PlayerRangeIntegers.registry().getValues().forEach(data -> {
+            builder.then(Commands.literal("data")
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.literal("set")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .then(Commands.argument("value", IntegerArgumentType.integer(data.getMinData(), data.getMaxData()))
+                                                    .executes(command -> setIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
+                                            )))
+                            .then(Commands.literal("add")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .then(Commands.argument("value", IntegerArgumentType.integer())
+                                                    .executes(command -> addIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
+                                            )))
+                            .then(Commands.literal("show")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .executes(command -> showIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
+                                    ))
+                    ));
+        });
+        PlayerRangeFloats.registry().getValues().forEach(data -> {
+            builder.then(Commands.literal("data")
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.literal("set")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .then(Commands.argument("value", FloatArgumentType.floatArg(data.getMinData(), data.getMaxData()))
+                                                    .executes(command -> setFloatData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, FloatArgumentType.getFloat(command, "value")))
+                                            )))
+                            .then(Commands.literal("add")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .then(Commands.argument("value", FloatArgumentType.floatArg())
+                                                    .executes(command -> addFloatData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, FloatArgumentType.getFloat(command, "value")))
+                                            )))
+                            .then(Commands.literal("show")
+                                    .then(Commands.literal(data.getRegistryName())
+                                            .executes(command -> showFloatData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
+                                    ))
+                    ));
+        });
+
+        // Command about element reactions.
+        Arrays.stream(Elements.values()).forEach(element -> {
+            builder.then(Commands.literal("element")
+                    .then(Commands.literal("add")
+                            .then(Commands.argument("targets", EntityArgument.entities())
+                                    .then(Commands.literal(element.name())
+                                            .then(Commands.argument("robust", BoolArgumentType.bool())
+                                                    .then(Commands.argument("value", FloatArgumentType.floatArg())
+                                                            .executes(command -> addElementAmount(command.getSource(), EntityArgument.getEntities(command, "targets"), element, BoolArgumentType.getBool(command, "robust"), FloatArgumentType.getFloat(command, "value")))
+                                                    ))))
                     )
             );
-        }
+        });
+
+        // Misc Commands.
+        builder.then(Commands.literal("tp")
+                .then(Commands.argument("targets", EntityArgument.players())
+                        .then(Commands.literal("east_world")
+                                .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), IMMLevels.EAST_WORLD))
+                        )
+                        .then(Commands.literal("overworld")
+                                .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), Level.OVERWORLD))
+                        )
+                )
+        );
         dispatcher.register(builder);
     }
 
@@ -251,7 +309,7 @@ public class IMMCommand {
             PlayerUtil.setSpellList(player, pos, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(() -> spell.getComponent(), true);
+        source.sendSuccess(spell::getComponent, true);
         return targets.size();
     }
 
@@ -273,13 +331,64 @@ public class IMMCommand {
         return targets.size();
     }
 
-    /* Integers */
+    /* Cultivation */
+
+    private static int setExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type, float value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.setExperience(player, type, value);
+            final Component info = getExperienceComponent(type, value);
+            PlayerHelper.sendMsgTo(player, info);
+            source.sendSuccess(() -> getPlayerInfo(player, info), true);
+        }
+        return targets.size();
+    }
+
+    private static int addExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type, float value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.addExperience(player, type, value);
+            final Component info = getExperienceComponent(type, PlayerUtil.getExperience(player, type));
+            PlayerHelper.sendMsgTo(player, info);
+            source.sendSuccess(() -> getPlayerInfo(player, info), true);
+        }
+        return targets.size();
+    }
+
+    private static int showExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type) {
+        for (ServerPlayer player : targets) {
+            source.sendSuccess(() -> getPlayerInfo(player, getExperienceComponent(type, PlayerUtil.getExperience(player, type))), true);
+        }
+        return targets.size();
+    }
+
+    /* Realm */
+
+    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm) {
+        for (ServerPlayer player : targets) {
+            final boolean result = PlayerUtil.checkAndSetRealm(player, realm);
+            final Component info = result ? realm.getComponent() : COMMAND_CULTIVATION_NOT_ENOUGH;
+            PlayerHelper.sendMsgTo(player, info);
+            source.sendSuccess(() -> getPlayerInfo(player, info), true);
+        }
+        return targets.size();
+    }
+
+    private static int setRealmStage(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RealmStages stage) {
+        for (ServerPlayer player : targets) {
+            final boolean result = PlayerUtil.checkAndSetRealmStage(player, stage);
+            final Component info = result ? getRealmStageComponent(stage) : COMMAND_CULTIVATION_NOT_ENOUGH;
+            PlayerHelper.sendMsgTo(player, info);
+            source.sendSuccess(() -> getPlayerInfo(player, info), true);
+        }
+        return targets.size();
+    }
+
+    /* Numbers */
 
     private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
-            PlayerHelper.sendMsgTo(player, getIntegerComponent(data, value));
-            source.sendSuccess(() -> getIntegerComponent(player, data, value), true);
+            PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
+            source.sendSuccess(() -> getNumberComponent(player, data, value), true);
         }
         return targets.size();
     }
@@ -287,32 +396,73 @@ public class IMMCommand {
     private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
-            PlayerHelper.sendMsgTo(player, getIntegerComponent(data, PlayerUtil.getIntegerData(player, data)));
-            source.sendSuccess(() -> getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
+            PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getIntegerData(player, data)));
+            source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
     private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data) {
         for (ServerPlayer player : targets) {
-            source.sendSuccess(() -> getIntegerComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
+            source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
-    private static Component getIntegerComponent(Player player, IRangeNumber<Integer> data, int value) {
-        return Component.literal(player.getName().getString() + " -> " + data.getComponent().getString() + " : " + value);
+    private static int setFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data, float value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.setFloatData(player, data, value);
+            PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
+            source.sendSuccess(() -> getNumberComponent(player, data, value), true);
+        }
+        return targets.size();
     }
 
-    private static Component getIntegerComponent(IRangeNumber<Integer> data, int value) {
-        return Component.literal(data.getComponent().getString() + " : " + value);
+    private static int addFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data, float value) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.addFloatData(player, data, value);
+            PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getFloatData(player, data)));
+            source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getFloatData(player, data)), true);
+        }
+        return targets.size();
     }
+
+    private static int showFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data) {
+        for (ServerPlayer player : targets) {
+            source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getFloatData(player, data)), true);
+        }
+        return targets.size();
+    }
+
+    /* Element Reaction */
 
     private static int addElementAmount(CommandSourceStack source, Collection<? extends Entity> targets, Elements element, boolean robust, float amount) {
         targets.forEach(target -> {
             ElementManager.addElementAmount(target, element, robust, amount);
         });
         return targets.size();
+    }
+
+    /* Misc Methods */
+
+    private static Component getPlayerInfo(Player player, Component component) {
+        return Component.literal(player.getName().getString() + " -> ").append(component);
+    }
+
+    private static <T extends Number> Component getNumberComponent(Player player, ISimpleEntry data, T value) {
+        return getPlayerInfo(player, getNumberComponent(data, value));
+    }
+
+    private static <T extends Number> Component getNumberComponent(ISimpleEntry data, T value) {
+        return Component.literal(data.getComponent().getString() + " : " + value);
+    }
+
+    private static Component getExperienceComponent(ExperienceTypes type, float value) {
+        return RealmManager.getExperienceComponent().append(" - ").append(RealmManager.getExperienceComponent(type).append(" : " + value));
+    }
+
+    private static Component getRealmStageComponent(RealmStages stage) {
+        return RealmManager.getStageComponent().append(" - ").append(RealmManager.getStageComponent(stage));
     }
 
 }

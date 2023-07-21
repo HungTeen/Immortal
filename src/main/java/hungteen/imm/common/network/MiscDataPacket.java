@@ -2,6 +2,7 @@ package hungteen.imm.common.network;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
@@ -51,7 +52,8 @@ public class MiscDataPacket {
                     switch (type) {
                         case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
                         case CULTIVATION -> CultivationTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setCultivationType(player, l));
-                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.setRealm(player, realm));
+                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.checkAndSetRealm(player, realm));
+                        case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
                     }
                 });
             });
@@ -64,6 +66,7 @@ public class MiscDataPacket {
         EXPERIENCE,
         CULTIVATION,
         REALM,
+        REALM_STAGE
         ;
     }
 

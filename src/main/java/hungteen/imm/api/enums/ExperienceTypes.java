@@ -20,7 +20,7 @@ public enum ExperienceTypes {
     /**
      * Learn spells to gain experience.
      */
-    LEARNING,
+    SPELL,
 
     /**
      * Complete missions to gain experience.

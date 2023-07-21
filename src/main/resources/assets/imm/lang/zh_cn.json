@@ -103,6 +103,7 @@
   "command.imm.learn_all_spells": "已学习所有法术",
   "command.imm.forget_all_spells": "已遗忘所有法术",
   "command.imm.spiritual_root": "%s的灵根：",
+  "command.imm.cultivation_not_enough": "设置失败：当前修为不够",
 
   "info.imm.rune_already_bind": "该符文已绑定",
   "info.imm.no_root_for_inspiration": "好像没有什么启发",
@@ -227,6 +228,13 @@
   "misc.imm.realm.monster_stage9": "九阶妖兽",
   "misc.imm.realm.monster_stage10": "十阶妖兽",
 
+  "misc.imm.realm_stage": "境界阶段",
+  "misc.imm.realm_stage.preliminary": "前期",
+  "misc.imm.realm_stage.midterm": "中期",
+  "misc.imm.realm_stage.sophistication": "后期",
+  "misc.imm.realm_stage.close_to_perfection": "小圆满",
+  "misc.imm.realm_stage.perfection": "大圆满",
+
   "misc.imm.player_data.cultivation" : "修为",
   "misc.imm.player_data.spiritual_mana" : "灵力",
   "misc.imm.player_data.consciousness" : "神识",
@@ -251,5 +259,11 @@
   "misc.imm.accuracy.nice" : "（良丹）",
   "misc.imm.accuracy.excellent" : "（精丹）",
   "misc.imm.accuracy.perfect" : "（地丹）",
-  "misc.imm.accuracy.master" : "（天丹）"
+  "misc.imm.accuracy.master" : "（天丹）",
+
+  "misc.imm.xp_type": "修为类型",
+  "misc.imm.xp_type.elixir": "丹药",
+  "misc.imm.xp_type.fighting": "战斗",
+  "misc.imm.xp_type.spell": "功法",
+  "misc.imm.xp_type.mission": "任务"
 }

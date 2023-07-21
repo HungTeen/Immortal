@@ -8,14 +8,13 @@ import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
-import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -33,6 +32,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -46,8 +46,23 @@ public class PlayerUtil {
     public static boolean notConsume(Player player){
         return player.getAbilities().instabuild;
     }
+
     public static void setCoolDown(Player player, Item item, int coolDown){
         player.getCooldowns().addCooldown(item, coolDown);
+    }
+
+    public static void sitToMeditate(Player player){
+        if(! isSitInMeditation(player)){
+            setIntegerData(player, PlayerRangeIntegers.IS_MEDITATING, 1);
+        }
+    }
+
+    public static void quitMeditate(Player player){
+        setIntegerData(player, PlayerRangeIntegers.IS_MEDITATING, 0);
+    }
+
+    public static boolean isSitInMeditation(Player player){
+        return getIntegerData(player, PlayerRangeIntegers.IS_MEDITATING) == 1;
     }
 
     /**
@@ -293,10 +308,6 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getFullManaValue, 0F);
     }
 
-    public static float getLimitMana(Player player){
-        return getManagerResult(player, PlayerDataManager::getLimitManaValue, 0F);
-    }
-
     public static boolean requireSyncCircle(Player player){
         return getManagerResult(player, PlayerDataManager::requireSyncCircle, false);
     }
@@ -315,16 +326,51 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
     }
 
+    public static RealmStages getPlayerRealmStage(Player player){
+        return getManagerResult(player, PlayerDataManager::getRealmStage, RealmStages.PRELIMINARY);
+    }
+
     /**
-     * 直接改变境界，会降低修为，同时灵气值归零。
+     * 尝试直接改变境界。
+     * @return 是否改变成功。
      */
-    public static void setRealm(Player player, IRealmType realm){
+    public static boolean checkAndSetRealm(Player player, IRealmType realm){
+        final AtomicBoolean success = new AtomicBoolean(true);
         getOptManager(player).ifPresent(m -> {
-            m.setRealmType(realm);
             if(EntityHelper.isServer(player)){
-                m.setFloatData(PlayerRangeFloats.SPIRITUAL_MANA, 0);
+                // 自身修为达到了此境界的要求。
+                if(m.getCultivation() >= realm.requireCultivation()){
+                    m.setRealmType(realm);
+                    m.setRealmStage(RealmStages.PRELIMINARY);
+                } else {
+                    success.set(false);
+                }
+            } else {
+                m.setRealmType(realm);
             }
         });
+        return success.get();
+    }
+
+    /**
+     * 直接改变境界阶段。
+     * @return 是否改变成功。
+     */
+    public static boolean checkAndSetRealmStage(Player player, RealmStages stage){
+        final AtomicBoolean success = new AtomicBoolean(true);
+        getOptManager(player).ifPresent(m -> {
+            if(EntityHelper.isServer(player)) {
+                // 自身修为达到了此境界阶段的要求。
+                if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(m.getRealmType(), stage)) {
+                    m.setRealmStage(stage);
+                } else {
+                    success.set(false);
+                }
+            } else {
+                m.setRealmStage(stage);
+            }
+        });
+        return success.get();
     }
 
     public static ICultivationType getCultivationType(Player player){
