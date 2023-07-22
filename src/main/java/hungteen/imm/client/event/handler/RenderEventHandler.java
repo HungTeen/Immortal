@@ -14,6 +14,7 @@ import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.*;
 import net.minecraft.client.gui.Gui;
@@ -139,7 +140,14 @@ public class RenderEventHandler {
 
     public static void renderMeditationOptions(GuiGraphics graphics, int screenHeight, int screenWidth) {
         ClientUtil.push("meditationOptions");
+        float tick = PlayerUtil.getIntegerData(ClientUtil.player(), PlayerRangeIntegers.MEDITATE_TICK);
+        float percent = tick / 100.0F;
+        if (percent > 1.0F) {
+            percent = 1.0F - (tick - 100.0F) / 10.0F;
+        }
 
+        final int color = (int)(220.0F * percent) << 24 | 1052704;
+        graphics.fill(RenderType.guiOverlay(), 0, 0, screenWidth, screenHeight, color);
         ClientUtil.pop();
     }
 
@@ -149,7 +157,7 @@ public class RenderEventHandler {
     public static void renderElements(GuiGraphics graphics, int height, int width) {
         ClientUtil.push("renderElements");
         int topPos = height - 59 - 12;
-        if (! ClientUtil.getMode().map(MultiPlayerGameMode::canHurtPlayer).orElse(false)) {
+        if (! ClientUtil.mode().map(MultiPlayerGameMode::canHurtPlayer).orElse(false)) {
             topPos += 14;
         }
         final Entity entity = PlayerHelper.getClientPlayer().get();

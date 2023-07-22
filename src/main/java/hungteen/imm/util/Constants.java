@@ -9,6 +9,8 @@ public class Constants {
 
     public static final int SPELL_CIRCLE_SIZE = 8;
 
+    public static final int MEDITATE_CD = 100;
+
     public static final int MAX_FLAME_LEVEL = 9;
     public static final int MAX_ARTIFACT_LEVEL = MAX_FLAME_LEVEL;
 

@@ -2,6 +2,7 @@ package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
+import hungteen.imm.client.gui.screen.MeditationScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -19,8 +20,11 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event){
-        ClientHandler.onSmithing();
-        ClientHandler.tickSpellCircle();
+        if(event.phase == TickEvent.Phase.END){
+            ClientHandler.onSmithing();
+            ClientHandler.tickSpellCircle();
+            MeditationScreen.tickMeditation();
+        }
     }
 
     @SubscribeEvent

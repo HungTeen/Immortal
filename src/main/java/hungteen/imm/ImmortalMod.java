@@ -91,6 +91,7 @@ public class ImmortalMod {
         /* HungTeen Registers */
         InventoryLootTypes.registry().register(modBus);
         CultivationTypes.registry().register(modBus);
+        RealmTypes.registry().register(modBus);
         SpellTypes.registry().register(modBus);
         ElixirEffects.registry().register(modBus);
         HumanSettings.registry().register(modBus);
@@ -147,7 +148,6 @@ public class ImmortalMod {
         PlayerRangeFloats.registry();
         PlayerRangeIntegers.registry();
         ElementReactions.registry();
-        RealmTypes.RealmType.register();
         BehaviorRunes.register();
         FilterRuneTypes.register();
         SectTypes.register();

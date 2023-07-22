@@ -2,6 +2,7 @@ package hungteen.imm.util;
 
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
+import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
@@ -15,10 +16,12 @@ import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
 import hungteen.imm.common.impl.registry.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -51,18 +54,26 @@ public class PlayerUtil {
         player.getCooldowns().addCooldown(item, coolDown);
     }
 
-    public static void sitToMeditate(Player player){
+    public static void sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock){
         if(! isSitInMeditation(player)){
-            setIntegerData(player, PlayerRangeIntegers.IS_MEDITATING, 1);
+            final Vec3 vec = MathHelper.toVec3(pos);
+            List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(MathHelper.toVec3(pos), 8F, 5F), (entity) -> {
+                return entity.isPreventingPlayerRest(player);
+            });
+            setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+            SeatEntity.seatAt(player.level(), player, pos, yOffset, player.getYRot(), 120F, relyOnBlock);
         }
     }
 
     public static void quitMeditate(Player player){
-        setIntegerData(player, PlayerRangeIntegers.IS_MEDITATING, 0);
+        if(isSitInMeditation(player)){
+            setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 0);
+            player.stopRiding();
+        }
     }
 
     public static boolean isSitInMeditation(Player player){
-        return getIntegerData(player, PlayerRangeIntegers.IS_MEDITATING) == 1;
+        return getIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK) > 0;
     }
 
     /**

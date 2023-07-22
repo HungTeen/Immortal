@@ -1,6 +1,6 @@
 package hungteen.imm.common.block;
 
-import hungteen.htlib.common.entity.SeatEntity;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,7 +26,7 @@ public class CushionBlock extends Block {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if(! level.isClientSide){
-            SeatEntity.seatAt(level, player, pos, 0.5F, player.getYRot(), 120F, true);
+            PlayerUtil.sitToMeditate(player, pos, 0.5F, true);
         }
         return InteractionResult.SUCCESS;
     }

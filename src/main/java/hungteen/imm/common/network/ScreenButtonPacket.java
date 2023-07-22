@@ -1,6 +1,6 @@
 package hungteen.imm.common.network;
 
-import hungteen.imm.common.menu.MerchantTradeMenu;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -17,8 +17,12 @@ public class ScreenButtonPacket {
     private final int id;
     private final int val;
 
-    public ScreenButtonPacket(int id, int val) {
-        this.id = id;
+    public ScreenButtonPacket(Types type) {
+        this(type, 0);
+    }
+
+    public ScreenButtonPacket(Types type, int val) {
+        this.id = type.ordinal();
         this.val = val;
     }
 
@@ -41,13 +45,20 @@ public class ScreenButtonPacket {
             ctx.get().enqueueWork(()->{
                 final ServerPlayer player = ctx.get().getSender();
                 if(player != null){
-                    if(player.containerMenu instanceof MerchantTradeMenu menu){
-
+                    switch (Types.values()[message.id]){
+                        case QUIT_MEDITATION -> PlayerUtil.quitMeditate(player);
                     }
                 }
             });
             ctx.get().setPacketHandled(true);
         }
+    }
+
+    public enum Types {
+
+        QUIT_MEDITATION,
+
+        ;
     }
 
 }

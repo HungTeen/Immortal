@@ -8,6 +8,7 @@ import hungteen.imm.common.item.artifacts.HammerItem;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.tag.IMMBlockTags;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -22,6 +23,13 @@ import net.minecraftforge.fml.common.Mod;
  **/
 @Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
 public class IMMPlayerEvents {
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && EntityHelper.isServer(event.player)) {
+            PlayerEventHandler.tick(event.player);
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {

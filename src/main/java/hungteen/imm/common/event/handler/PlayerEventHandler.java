@@ -1,16 +1,20 @@
 package hungteen.imm.common.event.handler;
 
 import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.IMMLivingEvents;
 import hungteen.imm.common.event.IMMPlayerEvents;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.item.artifacts.FlameGourd;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -20,6 +24,16 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
  * @create: 2022-09-25 15:54
  **/
 public class PlayerEventHandler {
+
+    /**
+     * Only Server side.
+     * {@link IMMPlayerEvents#onPlayerTick(TickEvent.PlayerTickEvent)}
+     */
+    public static void tick(Player player) {
+        if(PlayerUtil.isSitInMeditation(player)){
+            PlayerUtil.addIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+        }
+    }
 
     /**
      * send packet from server to client to sync player's data.

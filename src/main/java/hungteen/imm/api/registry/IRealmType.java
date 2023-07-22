@@ -17,8 +17,8 @@ public interface IRealmType extends ISimpleEntry {
     int requireCultivation();
 
     /**
-     * 境界用一个数来对应，数越大境界越高。
-     * @return the bigger the number is, the higher realm it has.
+     * 境界用一个数来对应，数越大境界越高。注意：这表示的是大圆满时的值！ <br>
+     * @return the bigger the number is, the higher realm it has. Warning: the realm value represent the Perfection Stage.
      */
     int getRealmValue();
 
@@ -27,12 +27,6 @@ public interface IRealmType extends ISimpleEntry {
      * @return the base spiritual value.
      */
     int getSpiritualValue();
-
-    /**
-     * 有突破门槛。
-     * @return whether can living naturally level up.
-     */
-    boolean hasThreshold();
 
     /**
      * 修炼的类型。
