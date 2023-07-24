@@ -2,7 +2,7 @@ package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
-import hungteen.imm.client.gui.screen.MeditationScreen;
+import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;

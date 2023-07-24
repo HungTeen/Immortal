@@ -25,9 +25,6 @@ public class OverlayEvents {
                 ev.setCanceled(true);
             }
         }
-        if(ev.getOverlay() == VanillaGuiOverlay.PLAYER_LIST.type() && RenderEventHandler.canRenderMeditationOptions()){
-            ev.setCanceled(true);
-        }
     }
 
     @SubscribeEvent
@@ -52,11 +49,6 @@ public class OverlayEvents {
         event.registerAboveAll("elements", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if(RenderEventHandler.canRenderOverlay()){
                 RenderEventHandler.renderElements(graphics, screenHeight, screenWidth);
-            }
-        });
-        event.registerAboveAll("meditation_options", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
-            if (RenderEventHandler.canRenderMeditationOptions()) {
-                RenderEventHandler.renderMeditationOptions(graphics, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {

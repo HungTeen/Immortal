@@ -32,14 +32,14 @@ public class FunctionalFurnaceScreen<T extends FunctionalFurnaceMenu> extends HT
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
     }
     @Override
-    public boolean keyPressed(int p_97765_, int p_97766_, int p_97767_) {
-        final InputConstants.Key mouseKey = InputConstants.getKey(p_97765_, p_97766_);
+    public boolean keyPressed(int key, int code, int p_97767_) {
+        final InputConstants.Key mouseKey = InputConstants.getKey(key, code);
         if(ClientUtil.option().keyPlayerList.isActiveAndMatches(mouseKey) && this.menu.canSwitchToFurnaceMenu() && this.canClickInventoryButton(0)){
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
             this.sendInventoryButtonClickPacket(0);
             return true;
         }
-        return super.keyPressed(p_97765_, p_97766_, p_97767_);
+        return super.keyPressed(key, code, p_97767_);
     }
 
 }

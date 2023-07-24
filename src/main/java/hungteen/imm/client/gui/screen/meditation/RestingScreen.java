@@ -1,4 +1,4 @@
-package hungteen.imm.client.gui.screen;
+package hungteen.imm.client.gui.screen.meditation;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;

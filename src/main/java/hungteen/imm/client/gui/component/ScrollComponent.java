@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.imm.client.gui.IScrollableScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
@@ -51,7 +52,7 @@ public class ScrollComponent<T> {
         this.slotIdOffset = slotIdOffset;
     }
 
-    public boolean mouseClicked(Minecraft mc, ContainerScreen screen, double mouseX, double mouseY, int key) {
+    public boolean mouseClicked(Minecraft mc, Screen screen, double mouseX, double mouseY, int key) {
         final double dx = mouseX - (this.leftPos + 82);
         final double dy = mouseY - (this.topPos + 108);
         if(mc != null && mc.level != null && mc.player != null && mc.gameMode != null){
@@ -60,13 +61,24 @@ public class ScrollComponent<T> {
                     if(this.hovered(i, j, mouseX, mouseY)){
                         final List<T> items = this.screen.getItems();
                         final int pos = this.getPos(i, j) + this.slotIdOffset;
-                        if(pos >= 0 && pos < items.size() && screen.getMenu().clickMenuButton(mc.player, pos)){
-                            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
-                            mc.gameMode.handleInventoryButtonClick(screen.getMenu().containerId, 0);
-                            return true;
+                        if(pos >= 0 && pos < items.size()){
+                            if(this.onClick(mc, screen, pos)){
+                                return true;
+                            }
                         }
                     }
                 }
+            }
+        }
+        return false;
+    }
+
+    protected boolean onClick(Minecraft mc, Screen screen, int slotId){
+        if(screen instanceof ContainerScreen containerScreen){
+            if(containerScreen.getMenu().clickMenuButton(mc.player, slotId)){
+                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
+                mc.gameMode.handleInventoryButtonClick(containerScreen.getMenu().containerId, 0);
+                return true;
             }
         }
         return false;

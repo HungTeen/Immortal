@@ -1,9 +1,7 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.chat.Component;
@@ -32,11 +30,11 @@ public class InspireSpell extends SpellTypes.SpellType {
                 PlayerHelper.sendTipTo(player, NO_ROOT_FOR_INSPIRATION);
             } else {
                 //TODO 启灵有点粗糙
-                if(RandomHelper.chance(player.getRandom(), 0.9F / rootCount)){
-                    PlayerUtil.setRealm(player, RealmTypes.SPIRITUAL_LEVEL_1);
-                } else {
-                    PlayerHelper.sendTipTo(player, CLOSE_TO_INSPIRATION);
-                }
+//                if(RandomHelper.chance(player.getRandom(), 0.9F / rootCount)){
+//                    PlayerUtil.setRealm(player, RealmTypes.SPIRITUAL_LEVEL_1);
+//                } else {
+//                    PlayerHelper.sendTipTo(player, CLOSE_TO_INSPIRATION);
+//                }
                 return true;
             }
         }
