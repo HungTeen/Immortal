@@ -306,7 +306,7 @@ public class IMMCommand {
 
     private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell, int pos) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.setSpellList(player, pos, spell);
+            PlayerUtil.setSpellAt(player, pos, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
         source.sendSuccess(spell::getComponent, true);

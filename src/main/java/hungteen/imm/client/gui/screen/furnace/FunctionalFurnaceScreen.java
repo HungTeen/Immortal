@@ -2,7 +2,6 @@ package hungteen.imm.client.gui.screen.furnace;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
-import hungteen.imm.client.ClientUtil;
 import hungteen.imm.common.menu.furnace.FunctionalFurnaceMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,8 +32,7 @@ public class FunctionalFurnaceScreen<T extends FunctionalFurnaceMenu> extends HT
     }
     @Override
     public boolean keyPressed(int key, int code, int p_97767_) {
-        final InputConstants.Key mouseKey = InputConstants.getKey(key, code);
-        if(ClientUtil.option().keyPlayerList.isActiveAndMatches(mouseKey) && this.menu.canSwitchToFurnaceMenu() && this.canClickInventoryButton(0)){
+        if(key == InputConstants.KEY_TAB && this.menu.canSwitchToFurnaceMenu() && this.canClickInventoryButton(0)){
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
             this.sendInventoryButtonClickPacket(0);
             return true;

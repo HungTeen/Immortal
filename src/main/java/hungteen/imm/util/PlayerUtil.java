@@ -16,6 +16,7 @@ import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
 import hungteen.imm.common.impl.registry.*;
+import hungteen.imm.common.spell.SpellTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -189,19 +190,33 @@ public class PlayerUtil {
     }
 
     public static void learnAllSpell(Player player, int level) {
-        getOptManager(player).ifPresent(l -> l.learnAllSpells(level));
+        getOptManager(player).ifPresent(l -> {
+            SpellTypes.registry().getValues().forEach(spell -> {
+                l.learnSpell(spell, level);
+            });
+        });
     }
 
     public static void forgetAllSpell(Player player){
         getOptManager(player).ifPresent(PlayerDataManager::forgetAllSpells);
     }
 
-    public static void setSpellList(Player player, int pos, ISpellType spell){
-        getOptManager(player).ifPresent(l -> l.setSpellList(pos, spell));
+    public static void setSpellAt(Player player, int pos, @Nullable ISpellType spell){
+        getOptManager(player).ifPresent(l -> {
+            if(spell == null){
+                l.removeSpellAt(pos);
+            } else {
+                // 没有学会则先学。
+                if(! l.hasLearnedSpell(spell, 1)){
+                    l.learnSpell(spell, 1);
+                }
+                l.setSpellAt(pos, spell);
+            }
+        });
     }
 
-    public static void removeSpellList(Player player, int pos, ISpellType spell){
-        getOptManager(player).ifPresent(l -> l.removeSpellList(pos, spell));
+    public static void removeSpellAt(Player player, int pos){
+        getOptManager(player).ifPresent(l -> l.removeSpellAt(pos));
     }
 
     public static void addSpellSet(Player player, ISpellType spell){

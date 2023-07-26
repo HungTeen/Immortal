@@ -3,6 +3,7 @@ package hungteen.imm.client.event;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientDatas;
 import hungteen.imm.client.event.handler.RenderEventHandler;
+import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -49,6 +50,11 @@ public class OverlayEvents {
         event.registerAboveAll("elements", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
             if(RenderEventHandler.canRenderOverlay()){
                 RenderEventHandler.renderElements(graphics, screenHeight, screenWidth);
+            }
+        });
+        event.registerAboveAll("meditation", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+            if(MeditationScreen.canRenderMeditation()){
+                RenderEventHandler.renderMeditation(graphics, screenHeight, screenWidth);
             }
         });
         event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {

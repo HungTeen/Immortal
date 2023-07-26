@@ -14,7 +14,7 @@ public interface IScrollableScreen<T> {
 
     List<T> getItems();
 
-    void renderItem(Level level, GuiGraphics graphics, T item, int x, int y);
+    void renderItem(Level level, GuiGraphics graphics, T item, int slotId, int x, int y);
 
-    void renderTooltip(Level level, GuiGraphics graphics, T item, int x, int y);
+    void renderTooltip(Level level, GuiGraphics graphics, T item, int slotId, int x, int y);
 }

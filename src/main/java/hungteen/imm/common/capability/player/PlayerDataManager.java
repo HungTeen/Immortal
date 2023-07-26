@@ -257,7 +257,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         });
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
             if (this.spellList[i] != null) {
-                this.sendSpellPacket(SpellPacket.SpellOptions.SET_POS_ON_CIRCLE, this.spellList[i], i);
+                this.sendSpellPacket(SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, this.spellList[i], i);
             }
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
@@ -296,30 +296,31 @@ public class PlayerDataManager implements IPlayerDataManager {
     /* Spell related methods */
 
     public void learnSpell(ISpellType spell, int level) {
-        this.learnSpells.put(spell, Mth.clamp(level, 0, spell.getMaxLevel()));
-        this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
+        final int lvl = Mth.clamp(level, 0, spell.getMaxLevel());
+        this.learnSpells.put(spell, lvl);
+        this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, lvl);
     }
 
     public void forgetSpell(ISpellType spell) {
         this.learnSpell(spell, 0);
     }
 
-    public void learnAllSpells(int level) {
-        this.learnSpells.forEach((spell, time) -> learnSpell(spell, level));
-    }
-
     public void forgetAllSpells() {
         this.learnSpells.forEach((spell, time) -> forgetSpell(spell));
     }
 
-    public void setSpellList(int pos, ISpellType spell) {
+    public void setSpellAt(int pos, ISpellType spell) {
         this.spellList[pos] = spell;
-        this.sendSpellPacket(SpellPacket.SpellOptions.SET_POS_ON_CIRCLE, spell, pos);
+        this.sendSpellPacket(SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, spell, pos);
     }
 
-    public void removeSpellList(int pos, ISpellType spell) {
+    public void removeSpellAt(int pos) {
         this.spellList[pos] = null;
-        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_POS_ON_CIRCLE, spell, pos);
+        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, SpellTypes.RESTING, pos);
+    }
+
+    public ISpellType getSpellAt(int pos) {
+        return this.spellList[Mth.clamp(pos, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
     }
 
     /**
@@ -357,10 +358,6 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void cooldownSpell(@NotNull ISpellType spell, long num) {
         this.spellCDs.put(spell, num);
         this.sendSpellPacket(SpellPacket.SpellOptions.COOL_DOWN, spell, num);
-    }
-
-    public ISpellType getSpellAt(int num) {
-        return this.spellList[Mth.clamp(num, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
     }
 
     public boolean isSpellOnCoolDown(@NotNull ISpellType spell) {

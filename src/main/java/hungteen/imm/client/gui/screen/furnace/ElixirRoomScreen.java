@@ -145,12 +145,12 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> im
     }
 
     @Override
-    public void renderItem(Level level, GuiGraphics graphics, ElixirRecipe item, int x, int y) {
+    public void renderItem(Level level, GuiGraphics graphics, ElixirRecipe item, int slotId, int x, int y) {
         graphics.renderItem(item.getResultItem(level.registryAccess()), x, y);
     }
 
     @Override
-    public void renderTooltip(Level level, GuiGraphics graphics, ElixirRecipe item, int x, int y) {
+    public void renderTooltip(Level level, GuiGraphics graphics, ElixirRecipe item, int slotId, int x, int y) {
         graphics.renderTooltip(this.font, item.getResultItem(level.registryAccess()), x, y);
     }
 }

@@ -62,7 +62,7 @@ public class ScrollComponent<T> {
                         final List<T> items = this.screen.getItems();
                         final int pos = this.getPos(i, j) + this.slotIdOffset;
                         if(pos >= 0 && pos < items.size()){
-                            if(this.onClick(mc, screen, pos)){
+                            if(this.onClick(mc, screen, items.get(pos), pos)){
                                 return true;
                             }
                         }
@@ -73,7 +73,7 @@ public class ScrollComponent<T> {
         return false;
     }
 
-    protected boolean onClick(Minecraft mc, Screen screen, int slotId){
+    protected boolean onClick(Minecraft mc, Screen screen, T item, int slotId){
         if(screen instanceof ContainerScreen containerScreen){
             if(containerScreen.getMenu().clickMenuButton(mc.player, slotId)){
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0F));
@@ -103,7 +103,7 @@ public class ScrollComponent<T> {
                     final int pos = this.getPos(i, j);
                     if(pos >= 0 && pos < items.size()){
                         final Pair<Integer, Integer> xy = getXY(i, j);
-                        this.screen.renderItem(mc.level, graphics, items.get(pos), xy.getFirst(), xy.getSecond());
+                        this.screen.renderItem(mc.level, graphics, items.get(pos), pos, xy.getFirst(), xy.getSecond());
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class ScrollComponent<T> {
                         final int pos = this.getPos(i, j);
                         if(pos >= 0 && pos < items.size()){
                             final Pair<Integer, Integer> xy = getXY(i, j);
-                            this.screen.renderTooltip(mc.level, graphics, items.get(pos), xy.getFirst(), xy.getSecond());
+                            this.screen.renderTooltip(mc.level, graphics, items.get(pos), pos, xy.getFirst(), xy.getSecond());
                         }
                     }
                 }
@@ -144,6 +144,10 @@ public class ScrollComponent<T> {
         return this.startIndex + r * this.columns + c;
     }
 
+    public Pair<Integer, Integer> getXY(int slotId){
+        return getXY((slotId - this.startIndex) / getColumns(), (slotId - this.startIndex) % getColumns());
+    }
+
     public Pair<Integer, Integer> getXY(int r, int c){
         return Pair.of(this.leftPos + c * this.len, this.topPos + r * this.len);
     }
@@ -162,5 +166,9 @@ public class ScrollComponent<T> {
 
     public int getStartIndex() {
         return startIndex;
+    }
+
+    public boolean inPage(int slotId){
+        return slotId >= getStartIndex() && slotId < getStartIndex() + getRows() * getColumns();
     }
 }

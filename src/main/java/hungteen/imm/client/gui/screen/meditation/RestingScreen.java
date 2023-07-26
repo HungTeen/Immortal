@@ -1,106 +1,57 @@
 package hungteen.imm.client.gui.screen.meditation;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import hungteen.htlib.client.gui.screen.HTScreen;
-import hungteen.imm.client.ImmortalKeyBinds;
-import hungteen.imm.util.Util;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-09 21:34
  **/
-public class RestingScreen extends HTScreen {
+public class RestingScreen extends MeditationScreen {
 
-    private static final ResourceLocation SPELL_CIRCLE = Util.prefix("textures/gui/overlay/spell_circle.png");
-    private static final List<SpellSlot> SLOTS = new ArrayList<>();
+    private static final int SWITCH_BAR_WIDTH = 125;
+    private static final int SWITCH_BAR_HEIGHT = 75;
+    private static final int SLOT_LEN = 26;
 
     public RestingScreen(){
-        this.imageHeight = 128;
-        this.imageWidth = 128;
+        super(MeditationTypes.REST);
     }
 
     @Override
     protected void init() {
         super.init();
-        final int ox = this.height / 2;
-        final int oy = this.width / 2;
-        final int r = 50;
-        SLOTS.clear();
-        for(int i = 0; i < 8; ++ i){
-            final double alpha = 2 * Mth.PI / 8 * i;
-            final int x = (int)(Math.sin(alpha) * r) + ox;
-            final int y = (int)(Math.cos(alpha) * r)  + oy;
-            SLOTS.add(new SpellSlot(i, y, x));
-            System.out.println(x + " " + y);
-        }
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        if (!this.checkToClose()) {
-            RenderSystem.enableBlend();
-            graphics.blit(SPELL_CIRCLE, this.leftPos, this.topPos, 0, 0, 128, 128);
-            super.render(graphics, mouseX, mouseY, partialTicks);
-
-            for(SpellSlot spellSlot : SLOTS){
-                spellSlot.render(graphics, mouseX, mouseY, partialTicks);
-            }
-        }
     }
 
     @Override
-    public boolean mouseScrolled(double p_94686_, double p_94687_, double p_94688_) {
-        return super.mouseScrolled(p_94686_, p_94687_, p_94688_);
+    public boolean mouseClicked(double mouseX, double mouseY, int key) {
+        final double dx = mouseX - (this.leftPos + 82);
+        final double dy = mouseY - (this.topPos + 108);
+//        if (dx >= 0 && dy >= 0 && dx < FULL_FLAME_LEN && dy < FULL_FLAME_HEIGHT && this.menu.clickMenuButton(this.minecraft.player, 1)) {
+//            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+//            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1);
+//            return true;
+//        }
+//        for (MeditationTypes type : MeditationTypes.values()) {
+//            final boolean selected = type.ordinal() == this.selectedIndex;
+//            graphics.blit(SLOTS, this.getSlotX(type.ordinal()), this.getSlotY(),  selected ? 26 : 0, 75, SLOT_LEN, SLOT_LEN);
+//        }
+        return super.mouseClicked(mouseX, mouseY, key);
     }
 
-    @Override
-    public boolean keyPressed(int keyId, int p_96553_, int p_96554_) {
-        return super.keyPressed(keyId, p_96553_, p_96554_);
+    private int getSlotX(int i){
+        return (this.width - SWITCH_BAR_WIDTH) / 2 + i * 26 + (i + 1) * this.getInterval();
     }
 
-    private boolean checkToClose() {
-        if (!InputConstants.isKeyDown(this.minecraft.getWindow().getWindow(), ImmortalKeyBinds.getKeyValue(ImmortalKeyBinds.SPELL_CIRCLE))) {
-            this.minecraft.setScreen(null);
-            return true;
-        } else {
-            return false;
-        }
+    private int getSlotY(){
+        return 20 + 22 + 13;
     }
 
-    @Override
-    public boolean isPauseScreen() {
-        return false;
+    private int getInterval(){
+        return (SWITCH_BAR_WIDTH - SLOT_LEN * this.getLen()) / (this.getLen() + 1);
     }
 
-    public static class SpellSlot extends AbstractWidget {
-
-        private final int spellId;
-        private boolean isSelected;
-
-        public SpellSlot(int spellId, int posX, int posY) {
-            super(posX - 10, posY - 10, 20, 20, Component.empty());
-            this.spellId = spellId;
-        }
-
-        @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-            graphics.blit(SPELL_CIRCLE, this.getX(), this.getY(), this.isSelected ? 20 : 0, 128, this.height, this.width);
-        }
-
-        @Override
-        public void updateWidgetNarration(NarrationElementOutput p_259858_) {
-
-        }
-    }
 }

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ScreenButtonPacket;
@@ -12,7 +11,6 @@ import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -25,18 +23,15 @@ import java.util.function.Supplier;
  * @program Immortal
  * @data 2023/7/21 16:56
  */
-public class MeditationScreen extends HTScreen {
+public abstract class MeditationScreen extends HTScreen {
 
     private static final ResourceLocation SLOTS = Util.get().containerTexture("meditation");
     private static final int QUIT_BUTTON_WIDTH = 200;
     private static final int QUIT_TEXT_HEIGHT = 20;
-    private static final int SWITCH_BAR_WIDTH = 125;
-    private static final int SWITCH_BAR_HEIGHT = 75;
-    private static final int SLOT_LEN = 26;
     private MeditationTypes type;
     private Button quitButton;
 
-    public MeditationScreen(MeditationTypes  type) {
+    public MeditationScreen(MeditationTypes type) {
         this.type = type;
     }
 
@@ -55,7 +50,7 @@ public class MeditationScreen extends HTScreen {
     public static void tickMeditation(){
         if (ClientUtil.screen() == null && ClientUtil.player() != null) {
             if(PlayerUtil.isSitInMeditation(ClientUtil.player())){
-                ClientProxy.mc().setScreen(new MeditationScreen(MeditationTypes.REST));
+                ClientProxy.mc().setScreen(new RestingScreen());
             }
         }
         if(ClientUtil.screen() instanceof MeditationScreen){
@@ -65,6 +60,10 @@ public class MeditationScreen extends HTScreen {
         }
     }
 
+    public static boolean canRenderMeditation() {
+        return ClientProxy.MC.screen instanceof MeditationScreen;
+    }
+
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBg(graphics, partialTicks);
@@ -72,29 +71,11 @@ public class MeditationScreen extends HTScreen {
     }
 
     protected void renderBg(GuiGraphics graphics, float partialTicks){
-        final float tick = PlayerUtil.getIntegerData(ClientUtil.player(), PlayerRangeIntegers.MEDITATE_TICK);
-        float percent = tick / 100.0F;
-        if (percent > 1.0F) {
-            percent = 1.0F - (tick - 100.0F) / 10.0F;
-        }
 
-        final int color = (int)(220.0F * percent) << 24 | 1052704;
-        graphics.fill(RenderType.guiOverlay(), 0, 0, this.width, this.height, color);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int key) {
-//        final double dx = mouseX - (this.leftPos + 82);
-//        final double dy = mouseY - (this.topPos + 108);
-//        if (dx >= 0 && dy >= 0 && dx < FULL_FLAME_LEN && dy < FULL_FLAME_HEIGHT && this.menu.clickMenuButton(this.minecraft.player, 1)) {
-//            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-//            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1);
-//            return true;
-//        }
-//        for (MeditationTypes type : MeditationTypes.values()) {
-//            final boolean selected = type.ordinal() == this.selectedIndex;
-//            graphics.blit(SLOTS, this.getSlotX(type.ordinal()), this.getSlotY(),  selected ? 26 : 0, 75, SLOT_LEN, SLOT_LEN);
-//        }
         return super.mouseClicked(mouseX, mouseY, key);
     }
 
@@ -105,17 +86,16 @@ public class MeditationScreen extends HTScreen {
 
     @Override
     public boolean keyPressed(int key, int code, int p_96072_) {
-        final InputConstants.Key inputKey = InputConstants.getKey(key, code);
         // Press Escape to wake up.
-        if (key == InputConstants.KEY_ESCAPE || ClientUtil.option().keyInventory.isActiveAndMatches(inputKey)) {
+        if (key == InputConstants.KEY_ESCAPE || key == InputConstants.KEY_E) {
             this.sendWakeUp();
         }
         // Previous page.
-        if (key == InputConstants.KEY_LEFT || ClientUtil.option().keyLeft.isActiveAndMatches(inputKey)) {
+        if (key == InputConstants.KEY_LEFT || key == InputConstants.KEY_A) {
             switchScreen(-1);
         }
         // Next page.
-        if (key == InputConstants.KEY_RIGHT || ClientUtil.option().keyRight.isActiveAndMatches(inputKey)) {
+        if (key == InputConstants.KEY_RIGHT || key == InputConstants.KEY_D) {
             switchScreen(1);
         }
         return true;
@@ -143,19 +123,7 @@ public class MeditationScreen extends HTScreen {
         }
     }
 
-    private int getSlotX(int i){
-        return (this.width - SWITCH_BAR_WIDTH) / 2 + i * 26 + (i + 1) * this.getInterval();
-    }
-
-    private int getSlotY(){
-        return 20 + 22 + 13;
-    }
-
-    private int getInterval(){
-        return (SWITCH_BAR_WIDTH - SLOT_LEN * this.getLen()) / (this.getLen() + 1);
-    }
-
-    private int getLen(){
+    protected int getLen(){
         return MeditationTypes.values().length;
     }
 

@@ -3,7 +3,6 @@ package hungteen.imm.client.event.handler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
@@ -13,7 +12,9 @@ import hungteen.imm.client.ClientDatas;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.gui.screen.meditation.SpellScreen;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.*;
 import net.minecraft.client.gui.Gui;
@@ -32,8 +33,6 @@ import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,15 +42,9 @@ import java.util.Map;
  **/
 public class RenderEventHandler {
 
-    private static final ResourceLocation SPELL_CIRCLE = Util.get().overlayTexture("spell_circle");
     private static final ResourceLocation OVERLAY = Util.get().overlayTexture("overlay");
     private static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
     private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;
-
-    private static final int CIRCLE_LEN = 128;
-    private static final int CIRCLE_RADIUS = 48;
-    private static final int INNER_LEN = 40;
-    private static final int SPELL_SLOT_LEN = 20;
     private static final int MANA_BAR_LEN = 182;
     private static final int MANA_BAR_HEIGHT = 5;
     private static final int ELEMENT_LEN = 9;
@@ -59,36 +52,26 @@ public class RenderEventHandler {
     private static final float ELEMENT_INTERVAL = 0.2F;
     private static final int SMITHING_BAR_LEN = 65;
     private static final int SMITHING_BAR_HEIGHT = 10;
-    private static List<Pair<Integer, Integer>> SpellSlots = new ArrayList<>();
-
-    static {
-        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
-            final double alpha = 2 * Mth.PI / 8 * i;
-            final int x = (int) (Math.sin(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
-            final int y = (int) (-Math.cos(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
-            SpellSlots.add(Pair.of(x, y));
-        }
-    }
 
     public static void renderSpellCircle(GuiGraphics graphics, int height, int width) {
         ClientUtil.push("renderSpellCircle");
-        final int leftPos = (width - CIRCLE_LEN) >> 1;
-        final int topPos = (height - CIRCLE_LEN) >> 1;
+        final int leftPos = (width - SpellScreen.CIRCLE_LEN) >> 1;
+        final int topPos = (height - SpellScreen.CIRCLE_LEN) >> 1;
         final int selectPos = ClientDatas.lastSelectedPosition;
         RenderHelper.push(graphics);
         RenderSystem.enableBlend();
-        graphics.blit(SPELL_CIRCLE, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);
+        graphics.blit(SpellScreen.SPELL_CIRCLE, leftPos, topPos, 0, 0, SpellScreen.CIRCLE_LEN, SpellScreen.CIRCLE_LEN);
         // Render Mid Selected White Circle.
         if (selectPos != -1) {
-            graphics.blit(SPELL_CIRCLE, (width - INNER_LEN) >> 1, (height - INNER_LEN) >> 1, (selectPos % 4) * INNER_LEN, selectPos < 4 ? 160 : 200, INNER_LEN, INNER_LEN);
+            graphics.blit(SpellScreen.SPELL_CIRCLE, (width - SpellScreen.INNER_LEN) >> 1, (height - SpellScreen.INNER_LEN) >> 1, (selectPos % 4) * SpellScreen.INNER_LEN, selectPos < 4 ? 160 : 200, SpellScreen.INNER_LEN, SpellScreen.INNER_LEN);
         }
         // Render Spell Slots.
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final boolean isSelected = i == selectPos;
             // Render the empty spell slot.
-            final int x = SpellSlots.get(i).getFirst() + width / 2;
-            final int y = SpellSlots.get(i).getSecond() + height / 2;
-            graphics.blit(SPELL_CIRCLE, x, y, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
+            final int x = SpellScreen.getSlotX(width / 2, i);
+            final int y = SpellScreen.getSlotY(height / 2, i);
+            graphics.blit(SpellScreen.SPELL_CIRCLE, x, y, isSelected ? 20 : 0, 128, SpellScreen.SPELL_SLOT_LEN, SpellScreen.SPELL_SLOT_LEN);
             // Render the spell texture.
             final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null) {
@@ -98,8 +81,8 @@ public class RenderEventHandler {
                 final double progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
                 if (progress > 0) {
                     RenderSystem.enableBlend();
-                    final int CDBarLen = Mth.clamp((int) (progress * SPELL_SLOT_LEN), 1, SPELL_SLOT_LEN);
-                    graphics.blit(SPELL_CIRCLE, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
+                    final int CDBarLen = Mth.clamp((int) (progress * SpellScreen.SPELL_SLOT_LEN), 1, SpellScreen.SPELL_SLOT_LEN);
+                    graphics.blit(SpellScreen.SPELL_CIRCLE, x, y + SpellScreen.SPELL_SLOT_LEN - CDBarLen, 150, 130, SpellScreen.SPELL_SLOT_LEN, CDBarLen);
                 }
 
                 if (isSelected) {
@@ -107,7 +90,7 @@ public class RenderEventHandler {
                     if (progress > 0) {
                         text = text.append("-").append(SpellManager.getCDComponent((int) (spell.getCooldown() * progress)));
                     }
-                    RenderUtil.renderCenterScaledText(graphics.pose(), text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, 1F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
+                    RenderUtil.renderCenterScaledText(graphics.pose(), text, width >> 1, (height + SpellScreen.CIRCLE_LEN + 10) >> 1, 1F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
                 }
             }
         }
@@ -135,6 +118,18 @@ public class RenderEventHandler {
 //        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6, Colors.SPIRITUAL_MANA, scale);
         RenderUtil.renderCenterScaledText(graphics.pose(), text, (screenWidth >> 1), y - 6, scale, Colors.SPIRITUAL_MANA, ColorHelper.BLACK.rgb());
         ClientUtil.pop();
+    }
+
+    public static void renderMeditation(GuiGraphics graphics, int height, int width){
+        final float tick = PlayerUtil.getIntegerData(ClientUtil.player(), PlayerRangeIntegers.MEDITATE_TICK);
+        float percent = tick / 100.0F;
+        if (percent > 1.0F) {
+            percent = 1.0F - (tick - 100.0F) / 10.0F;
+        }
+
+        final int color = (int)(220.0F * percent) << 24 | 1052704;
+        graphics.fill(RenderType.guiOverlay(), 0, 0, width, height, color);
+
     }
 
     /**

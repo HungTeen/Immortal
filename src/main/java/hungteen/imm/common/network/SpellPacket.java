@@ -59,8 +59,8 @@ public class SpellPacket {
                         PlayerHelper.getClientPlayer().ifPresent(player -> {
                             switch (message.option) {
                                 case LEARN -> PlayerUtil.learnSpell(player, spell, (int) message.num);
-                                case SET_POS_ON_CIRCLE -> PlayerUtil.setSpellList(player, (int) message.num, spell);
-                                case REMOVE_POS_ON_CIRCLE -> PlayerUtil.removeSpellList(player, (int) message.num, spell);
+                                case SET_SPELL_ON_CIRCLE -> PlayerUtil.setSpellAt(player, (int) message.num, spell);
+                                case REMOVE_SPELL_ON_CIRCLE -> PlayerUtil.removeSpellAt(player, (int) message.num);
                                 case COOL_DOWN -> PlayerUtil.cooldownSpell(player, spell, message.num);
                                 case ADD_SET -> PlayerUtil.addSpellSet(player, spell);
                                 case REMOVE_SET -> PlayerUtil.removeSpellSet(player, spell);
@@ -71,6 +71,11 @@ public class SpellPacket {
                     switch (message.option) {
                         case ACTIVATE -> SpellManager.checkActivateSpell(ctx.get().getSender(), (int) message.num);
                         case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
+                        case SET_SPELL_ON_CIRCLE -> {
+                            SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
+                                PlayerUtil.setSpellAt(ctx.get().getSender(), (int) message.num, spell);
+                            });
+                        }
                     }
                 }
             });
@@ -86,14 +91,14 @@ public class SpellPacket {
         LEARN,
 
         /**
-         * 发法术设置在轮盘上。
+         * 把法术设置在轮盘上(客户端 & 服务端）。
          */
-        SET_POS_ON_CIRCLE,
+        SET_SPELL_ON_CIRCLE,
 
         /**
          * 将法术移除出轮盘。
          */
-        REMOVE_POS_ON_CIRCLE,
+        REMOVE_SPELL_ON_CIRCLE,
 
         /**
          * 法术的CD时间。
