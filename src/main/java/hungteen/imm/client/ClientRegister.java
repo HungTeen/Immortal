@@ -2,7 +2,10 @@ package hungteen.imm.client;
 
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.client.event.OverlayEvents;
+import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.client.gui.overlay.ElementOverlay;
+import hungteen.imm.client.gui.overlay.MeditationOverlay;
+import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.screen.*;
 import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
 import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
@@ -140,12 +143,21 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
-        OverlayEvents.registerOverlay(event);
+        event.registerAboveAll("spiritual_mana_bar", CommonOverlay.SPIRITUAL_MANA);
+        event.registerAboveAll("spell_circle", SpellOverlay.SPELL_CIRCLE);
+        event.registerAboveAll("prepare_bar", SpellOverlay.PREPARE_BAR);
+        event.registerAboveAll("elements", ElementOverlay.INSTANCE);
+        event.registerAboveAll("meditation", MeditationOverlay.INSTANCE);
+//        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+//            if(RenderEventHandler.canRenderOverlay()){
+//                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
+//            }
+//        });
     }
 
     @SubscribeEvent
-    public static void registerGuiOverlays(RegisterKeyMappingsEvent event){
-        ImmortalKeyBinds.register(event);
+    public static void registerKeyBinds(RegisterKeyMappingsEvent event){
+        IMMKeyBinds.register(event);
     }
 
     @SubscribeEvent

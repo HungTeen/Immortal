@@ -6,6 +6,7 @@ import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.util.Constants;
@@ -27,6 +28,16 @@ import java.util.function.Supplier;
  * @create: 2022-10-14 10:28
  **/
 public class SpellManager {
+
+    /**
+     * Only on Client Side.
+     * @param position determines which spell will be triggered.
+     */
+    public static void activateAt(int position){
+        if(position >= 0 && position < Constants.SPELL_CIRCLE_SIZE){
+            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, position));
+        }
+    }
 
     /**
      * Only on Server Side.
@@ -54,7 +65,7 @@ public class SpellManager {
                 return;
             }
             if(result != null && !MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
-                final boolean success = spell.onActivate(player, result, level);
+                final boolean success = onSpellTriggered(player, result, spell, level);
                 if(success){
                     PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
                     costMana(player, spell.getConsumeMana());
@@ -64,13 +75,15 @@ public class SpellManager {
         }
     }
 
-    /**
-     * 常驻法术的被动触发。
-     */
-    public static void checkPassiveSpell(Player player, ISpellType spell, EntityBlockResult result){
-        if(PlayerUtil.hasPassiveSpell(player, spell)){
-            checkActivateSpell(player, spell, result);
+    public static boolean onSpellTriggered(Player player, EntityBlockResult result, ISpellType spell, int level){
+        if(spell.canTrigger()){
+            if(! spell.isImmediateSpell()){
+                PlayerUtil.setIntegerData(player, PlayerRangeIntegers.SPELL_PRE_TICK, spell.getPrepareCD());
+                return true;
+            }
+            return spell.onActivate(player, result, level);
         }
+        return false;
     }
 
     /**
@@ -131,11 +144,25 @@ public class SpellManager {
     }
 
     public static boolean canSpellStart(Player player, ISpellType spell){
-        return IMMAPI.get().getSpiritualMana(player) >= spell.getConsumeMana();
+        return IMMAPI.get().getSpiritualMana(player) >= spell.getConsumeMana() && ! isPreparing(player);
     }
 
     public static void costMana(Player player, int cost){
         PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, - cost);
+    }
+
+    /**
+     * 能否使用法术轮盘。
+     */
+    public static boolean canUseCircle(Player player){
+        return ! isPreparing(player);
+    }
+
+    /**
+     * 是否正在吟唱法术。
+     */
+    public static boolean isPreparing(Player player){
+        return PlayerUtil.getIntegerData(player, PlayerRangeIntegers.SPELL_PRE_TICK) > 0;
     }
 
     public static Component getCostComponent(int cost){
@@ -147,12 +174,6 @@ public class SpellManager {
      */
     public static Component getCDComponent(int cd){
         return TipUtil.SPELL_CD.apply(Mth.ceil(cd * 1.0F / 20));
-    }
-
-    public static void activateAt(int position){
-        if(position >= 0 && position < Constants.SPELL_CIRCLE_SIZE){
-            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, position));
-        }
     }
 
 }

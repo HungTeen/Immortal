@@ -43,8 +43,4 @@ public class PickUpBlockSpell extends SpellTypes.SpellType {
         return false;
     }
 
-    @Override
-    public boolean isPassiveSpell() {
-        return false;
-    }
 }

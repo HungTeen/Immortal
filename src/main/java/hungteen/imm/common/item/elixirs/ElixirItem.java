@@ -117,19 +117,6 @@ public abstract class ElixirItem extends Item implements IElixirItem{
 //        );
     }
 
-//    @Override
-//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-//        if(this.allowedIn(tab)){
-//            for (Accuracies value : Accuracies.values()) {
-//                if(tab == CreativeModeTab.TAB_SEARCH || value == Accuracies.COMMON || value == Accuracies.MASTER){
-//                    ItemStack stack = new ItemStack(this);
-//                    setAccuracy(stack, value.getAccuracy());
-//                    stacks.add(stack);
-//                }
-//            }
-//        }
-//    }
-
     protected List<Object> getUsagesComponentArgs(Accuracies accuracy){
         return List.of();
     }

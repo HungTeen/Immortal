@@ -4,15 +4,11 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.spell.spells.*;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -62,21 +58,21 @@ public class SpellTypes {
         private final int consumeMana;
         private final int prepareCD;
         private final int cooldown;
-        private final List<ISpiritualType> requireRoots;
+        private final boolean canTrigger;
         private final ResourceLocation resourceLocation;
 
         public SpellType(String name, SpellProperties properties) {
-           this(name, properties.maxLevel, properties.consumeMana, properties.prepareCD, properties.cooldown, properties.requireRoots);
+           this(name, properties.maxLevel, properties.consumeMana, properties.prepareCD, properties.cooldown, properties.canTrigger);
         }
 
-        public SpellType(String name, int maxLevel, int consumeMana, int prepareCD, int cooldown, List<ISpiritualType> requireRoots) {
+        public SpellType(String name, int maxLevel, int consumeMana, int prepareCD, int cooldown, boolean canTrigger) {
             this.name = name;
             this.maxLevel = maxLevel;
             this.consumeMana = consumeMana;
             this.prepareCD = prepareCD;
             this.cooldown = cooldown;
-            this.requireRoots = requireRoots;
-            this.resourceLocation = Util.prefix("textures/spell/" + this.name + ".png");
+            this.canTrigger = canTrigger;
+            this.resourceLocation = Util.get().texture("spell/" + this.name);
         }
 
         @Override
@@ -100,8 +96,8 @@ public class SpellTypes {
         }
 
         @Override
-        public List<ISpiritualType> requireSpiritualRoots() {
-            return requireRoots;
+        public boolean canTrigger() {
+            return canTrigger;
         }
 
         @Override
@@ -136,7 +132,7 @@ public class SpellTypes {
         private int consumeMana = 0;
         private int prepareCD = 0;
         private int cooldown = 0;
-        private final List<ISpiritualType> requireRoots = new ArrayList<>();
+        private boolean canTrigger = true;
 
         public SpellProperties maxLevel(int maxLevel){
             this.maxLevel = maxLevel;
@@ -158,8 +154,8 @@ public class SpellTypes {
             return this;
         }
 
-        public SpellProperties root(ISpiritualType root){
-            this.requireRoots.add(root);
+        public SpellProperties notTrigger(){
+            this.canTrigger = false;
             return this;
         }
 

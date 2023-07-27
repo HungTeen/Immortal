@@ -113,9 +113,15 @@ public class ClientHandler {
      * {@link hungteen.imm.client.event.ClientEvents#tick(TickEvent.ClientTickEvent)}
      */
     public static void tickSpellCircle(){
+        // 不能使用轮盘时，强制关闭。
+        if(ClientDatas.ShowSpellCircle){
+            if(! SpellManager.canUseCircle(ClientUtil.player())){
+                ClientDatas.ShowSpellCircle = false;
+            }
+        }
         // update change.
         if(useDefaultCircle()){
-            if(ClientDatas.ShowSpellCircle ^ ImmortalKeyBinds.displayingSpellCircle()){
+            if(ClientDatas.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()){
                 // Close spell circle and activate spell.
                 if(ClientDatas.ShowSpellCircle){
                     SpellManager.activateAt(ClientDatas.lastSelectedPosition);

@@ -3,31 +3,16 @@ package hungteen.imm.client.event.handler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import hungteen.htlib.client.util.RenderHelper;
-import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.Elements;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.client.ClientDatas;
-import hungteen.imm.client.ClientProxy;
-import hungteen.imm.client.ClientUtil;
-import hungteen.imm.client.RenderUtil;
-import hungteen.imm.client.gui.screen.meditation.SpellScreen;
+import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.util.*;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix3f;
@@ -42,130 +27,10 @@ import java.util.Map;
  **/
 public class RenderEventHandler {
 
-    private static final ResourceLocation OVERLAY = Util.get().overlayTexture("overlay");
-    private static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
+    private static final ResourceLocation ELEMENTS = ElementOverlay.ELEMENTS;
     private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;
-    private static final int MANA_BAR_LEN = 182;
-    private static final int MANA_BAR_HEIGHT = 5;
-    private static final int ELEMENT_LEN = 9;
-    private static final int ELEMENT_GUI_INTERVAL = 3;
+    private static final int ELEMENT_LEN = ElementOverlay.ELEMENT_LEN;
     private static final float ELEMENT_INTERVAL = 0.2F;
-    private static final int SMITHING_BAR_LEN = 65;
-    private static final int SMITHING_BAR_HEIGHT = 10;
-
-    public static void renderSpellCircle(GuiGraphics graphics, int height, int width) {
-        ClientUtil.push("renderSpellCircle");
-        final int leftPos = (width - SpellScreen.CIRCLE_LEN) >> 1;
-        final int topPos = (height - SpellScreen.CIRCLE_LEN) >> 1;
-        final int selectPos = ClientDatas.lastSelectedPosition;
-        RenderHelper.push(graphics);
-        RenderSystem.enableBlend();
-        graphics.blit(SpellScreen.SPELL_CIRCLE, leftPos, topPos, 0, 0, SpellScreen.CIRCLE_LEN, SpellScreen.CIRCLE_LEN);
-        // Render Mid Selected White Circle.
-        if (selectPos != -1) {
-            graphics.blit(SpellScreen.SPELL_CIRCLE, (width - SpellScreen.INNER_LEN) >> 1, (height - SpellScreen.INNER_LEN) >> 1, (selectPos % 4) * SpellScreen.INNER_LEN, selectPos < 4 ? 160 : 200, SpellScreen.INNER_LEN, SpellScreen.INNER_LEN);
-        }
-        // Render Spell Slots.
-        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
-            final boolean isSelected = i == selectPos;
-            // Render the empty spell slot.
-            final int x = SpellScreen.getSlotX(width / 2, i);
-            final int y = SpellScreen.getSlotY(height / 2, i);
-            graphics.blit(SpellScreen.SPELL_CIRCLE, x, y, isSelected ? 20 : 0, 128, SpellScreen.SPELL_SLOT_LEN, SpellScreen.SPELL_SLOT_LEN);
-            // Render the spell texture.
-            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
-            if (spell != null) {
-                graphics.blit(spell.getSpellTexture(), x + 2, y + 2, 0, 0, 16, 16, 16, 16);
-
-                // Render CD.
-                final double progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
-                if (progress > 0) {
-                    RenderSystem.enableBlend();
-                    final int CDBarLen = Mth.clamp((int) (progress * SpellScreen.SPELL_SLOT_LEN), 1, SpellScreen.SPELL_SLOT_LEN);
-                    graphics.blit(SpellScreen.SPELL_CIRCLE, x, y + SpellScreen.SPELL_SLOT_LEN - CDBarLen, 150, 130, SpellScreen.SPELL_SLOT_LEN, CDBarLen);
-                }
-
-                if (isSelected) {
-                    MutableComponent text = spell.getComponent().append("-").append(SpellManager.getCostComponent(spell.getConsumeMana()));
-                    if (progress > 0) {
-                        text = text.append("-").append(SpellManager.getCDComponent((int) (spell.getCooldown() * progress)));
-                    }
-                    RenderUtil.renderCenterScaledText(graphics.pose(), text, width >> 1, (height + SpellScreen.CIRCLE_LEN + 10) >> 1, 1F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
-                }
-            }
-        }
-        RenderHelper.pop(graphics);
-        ClientUtil.pop();
-    }
-
-    public static void renderSpiritualMana(GuiGraphics graphics, int screenHeight, int screenWidth) {
-        ClientUtil.push("spiritualManaBar");
-        final int x = screenWidth / 2 - 91;
-        final int y = screenHeight - 32 + 3;
-        final float currentMana = PlayerUtil.getMana(ClientProxy.MC.player);
-        final float maxMana = PlayerUtil.getFullMana(ClientProxy.MC.player);
-        graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
-        if (maxMana > 0) {
-            final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
-            graphics.blit(OVERLAY, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
-        }
-        final float scale = 1;
-        final Component text = Component.literal(currentMana + " / " + maxMana);
-//        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 - 1, ColorHelper.BLACK, scale);
-//        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6 + 1, ColorHelper.BLACK, scale);
-//        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) + 1, y - 6, ColorHelper.BLACK, scale);
-//        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1) - 1, y - 6, ColorHelper.BLACK, scale);
-//        RenderHelper.renderCenterScaledText(poseStack, ClientProxy.MC.font, text, (screenWidth >> 1), y - 6, Colors.SPIRITUAL_MANA, scale);
-        RenderUtil.renderCenterScaledText(graphics.pose(), text, (screenWidth >> 1), y - 6, scale, Colors.SPIRITUAL_MANA, ColorHelper.BLACK.rgb());
-        ClientUtil.pop();
-    }
-
-    public static void renderMeditation(GuiGraphics graphics, int height, int width){
-        final float tick = PlayerUtil.getIntegerData(ClientUtil.player(), PlayerRangeIntegers.MEDITATE_TICK);
-        float percent = tick / 100.0F;
-        if (percent > 1.0F) {
-            percent = 1.0F - (tick - 100.0F) / 10.0F;
-        }
-
-        final int color = (int)(220.0F * percent) << 24 | 1052704;
-        graphics.fill(RenderType.guiOverlay(), 0, 0, width, height, color);
-
-    }
-
-    /**
-     * Above {@link Gui#renderSelectedItemName(GuiGraphics)}.
-     */
-    public static void renderElements(GuiGraphics graphics, int height, int width) {
-        ClientUtil.push("renderElements");
-        int topPos = height - 59 - 12;
-        if (! ClientUtil.mode().map(MultiPlayerGameMode::canHurtPlayer).orElse(false)) {
-            topPos += 14;
-        }
-        final Entity entity = PlayerHelper.getClientPlayer().get();
-        final Map<Elements, Float> elements = ElementManager.getElements(entity);
-        final int cnt = elements.size();
-        final int barWidth = cnt * ELEMENT_LEN + (cnt - 1) * ELEMENT_GUI_INTERVAL;
-        int startX = (width - barWidth) >> 1;
-        if (!elements.isEmpty()) {
-            RenderHelper.push(graphics);
-            RenderSystem.enableBlend();
-            for (Elements element : Elements.values()) {
-                if (!elements.containsKey(element)) continue;
-                final float amount = elements.get(element);
-                final boolean robust = (elements.get(element) > 0);
-                final boolean warn = ElementManager.needWarn(entity, element, robust, Math.abs(amount));
-                if (!warn || ElementManager.notDisappear(entity)) {
-                    graphics.blit(ELEMENTS, startX, topPos, 10 * element.ordinal(), 0, ELEMENT_LEN, ELEMENT_LEN);
-                    if (robust && ElementManager.displayRobust(entity)) {
-                        graphics.blit(ELEMENTS, startX, topPos, 10 * element.ordinal(), 10, ELEMENT_LEN, ELEMENT_LEN);
-                    }
-                }
-                startX += ELEMENT_LEN + ELEMENT_GUI_INTERVAL;
-            }
-            RenderHelper.pop(graphics);
-        }
-        ClientUtil.pop();
-    }
 
     public static void renderEntityElements(Entity entity, EntityRenderer<?> renderer, PoseStack stack, MultiBufferSource bufferSource, int packedLight) {
         final double distance = renderer.entityRenderDispatcher.distanceToSqr(entity);
@@ -263,14 +128,6 @@ public class RenderEventHandler {
 //        if(quit){
 //            ClientHandler.quitSmithing();
 //        }
-    }
-
-    public static boolean canRenderOverlay() {
-        return ClientProxy.MC.screen == null && !ClientProxy.MC.options.hideGui && ClientProxy.MC.level != null && ClientProxy.MC.player != null && !ClientProxy.MC.player.isSpectator();
-    }
-
-    public static boolean canRenderManaBar() {
-        return canRenderOverlay() && (PlayerUtil.getMana(ClientProxy.MC.player) > 0 || ClientDatas.ShowSpellCircle);
     }
 
 }

@@ -8,6 +8,7 @@ import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -73,6 +74,10 @@ public class RealmManager {
 
     public static float getKillXp(EntityType<?> type){
         return killXpMap.getOrDefault(type, DEFAULT_KILL_XP);
+    }
+
+    public static float getBreakThroughProgress(Player player){
+        return PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS);
     }
 
     /**

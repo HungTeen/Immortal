@@ -10,6 +10,7 @@ import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.network.*;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
@@ -30,19 +31,20 @@ import java.util.*;
 public class PlayerDataManager implements IPlayerDataManager {
 
     private final Player player;
-    private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>();
-    private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>();
-    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // store the end time of specific entries.
-    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // active entries.
-    private final HashSet<ISpellType> spellSet = new HashSet<>(); // passive entries.
-    private final HashMap<ISectType, Float> sectRelations = new HashMap<>();
-    private ICultivationType cultivationType = CultivationTypes.MORTAL;
-    private IRealmType realmType = RealmTypes.MORTALITY;
-    private RealmStages realmStage = RealmStages.PRELIMINARY;
-    private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class);
-    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // misc sync integers.
-    private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // misc sync floats.
+    private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>(); // 灵根。
+    private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>(); // 学习的法术。
+    private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // 法术的冷却。
+    private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // 法术轮盘。
+    private final HashMap<ISectType, Float> sectRelations = new HashMap<>(); // 宗门关系。
+    private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class); // 修为。
+    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // 其他整数数据。
+    private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // 其他小数数据。
+    private ICultivationType cultivationType = CultivationTypes.MORTAL; // 修为类型。
+    private IRealmType realmType = RealmTypes.MORTALITY; // 当前境界。
+    private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
+    private ISpellType preparingSpell = null; // 当前吟唱的法术。
     private long nextRefreshTick;
+
     /* Caches */
     private RealmManager.RealmNode realmNode;
 
@@ -61,6 +63,15 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public void tick() {
         if (EntityHelper.isServer(player)) {
+            if(this.getPreparingSpell() != null){
+                final int tick = this.getIntegerData(PlayerRangeIntegers.SPELL_PRE_TICK);
+                if(tick > 0){
+                    this.setIntegerData(PlayerRangeIntegers.SPELL_PRE_TICK, tick - 1);
+                } else {
+                    this.getPreparingSpell().onActivate(player, SpellManager.getResult(player), getSpellLevel(getPreparingSpell()));
+                    this.setPreparingSpell(null);
+                }
+            }
             //TODO 灵气自然恢复
 //            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
 //                final int value = getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA);
@@ -112,9 +123,6 @@ public class PlayerDataManager implements IPlayerDataManager {
                     nbt.putInt("active_" + spellList[i].getRegistryName(), i);
                 }
             }
-            this.spellSet.forEach(spell -> {
-                nbt.putBoolean("passive_" + spell.getRegistryName(), true);
-            });
             tag.put("SpellList", nbt);
         }
         {
@@ -147,6 +155,9 @@ public class PlayerDataManager implements IPlayerDataManager {
             nbt.putString("PlayerCultivationType", this.cultivationType.getRegistryName());
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
+            if(this.preparingSpell != null){
+                nbt.putString("PreparingSpell", this.preparingSpell.getRegistryName());
+            }
             tag.put("MiscData", nbt);
         }
         return tag;
@@ -184,9 +195,6 @@ public class PlayerDataManager implements IPlayerDataManager {
                 l.getValues().forEach(type -> {
                     if (nbt.contains("active_" + type.getRegistryName())) {
                         spellList[nbt.getInt(type.getRegistryName())] = type;
-                    }
-                    if (nbt.contains("passive_" + type.getRegistryName())) {
-                        spellSet.add(type);
                     }
                 });
             });
@@ -236,6 +244,9 @@ public class PlayerDataManager implements IPlayerDataManager {
             if(nbt.contains("PlayerRealmStage")){
                 this.realmStage = RealmStages.values()[nbt.getInt("PlayerRealmStage")];
             }
+            if(nbt.contains("PreparingSpell")){
+                SpellTypes.registry().getValue(nbt.getString("PreparingSpell")).ifPresent(l -> this.preparingSpell = l);
+            }
         }
     }
 
@@ -265,6 +276,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
         this.setCultivationType(this.cultivationType);
         this.setRealmType(this.realmType);
+        if(this.preparingSpell != null) {
+            this.setPreparingSpell(this.preparingSpell);
+        }
     }
 
     /* SpiritualRoots related methods */
@@ -323,38 +337,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spellList[Mth.clamp(pos, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
     }
 
-    /**
-     * Check whether the spell set out of bound of limit.
-     */
-    private void checkSpellSet(){
-        if(this.spellSet.size() > getSpellSetLimit()){
-            List<ISpellType> list = this.spellSet.stream().limit(getSpellSetLimit()).toList();
-            this.clearSpellSet();
-            list.forEach(this::addSpellSet);
-        }
-    }
-
-    public void addSpellSet(ISpellType spell){
-        if(! this.isClientSide()) checkSpellSet();
-        if(! this.spellSet.contains(spell) && this.spellSet.size() < getSpellSetLimit()){
-            this.spellSet.add(spell);
-            this.sendSpellPacket(SpellPacket.SpellOptions.ADD_SET, spell, 0);
-        }
-    }
-
-    public void removeSpellSet(ISpellType spell){
-        if(! this.isClientSide()) checkSpellSet();
-        if(this.spellSet.contains(spell)){
-            this.spellSet.remove(spell);
-            this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SET, spell, 0);
-        }
-    }
-
-    public void clearSpellSet(){
-        this.spellSet.clear();
-        this.sendSpellPacket(SpellPacket.SpellOptions.CLEAR_SET, null, 0);
-    }
-
     public void cooldownSpell(@NotNull ISpellType spell, long num) {
         this.spellCDs.put(spell, num);
         this.sendSpellPacket(SpellPacket.SpellOptions.COOL_DOWN, spell, num);
@@ -374,14 +356,6 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public int getSpellLevel(@NotNull ISpellType spell) {
         return this.learnSpells.getOrDefault(spell, 0);
-    }
-
-    public boolean hasPassiveSpell(@NotNull ISpellType spell, int level) {
-        return this.hasLearnedSpell(spell, level) && this.hasPassiveSpell(spell);
-    }
-
-    public boolean hasPassiveSpell(@NotNull ISpellType spell) {
-        return this.spellSet.contains(spell);
     }
 
     public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpellType spell, long num) {
@@ -468,10 +442,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         return getFloatData(PlayerRangeFloats.MAX_SPIRITUAL_MANA) + getRealmType().getSpiritualValue();
     }
 
-    public int getSpellSetLimit(){
-        return getIntegerData(PlayerRangeIntegers.PASSIVE_SPELL_COUNT_LIMIT);
-    }
-
     /**
      * 待客户端配置文件更新该值。
      */
@@ -523,6 +493,20 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void setCultivationType(ICultivationType cultivationType){
         this.cultivationType = cultivationType;
         this.sendMiscDataPacket(MiscDataPacket.Types.CULTIVATION, cultivationType.getRegistryName());
+    }
+
+    @Nullable
+    public ISpellType getPreparingSpell() {
+        return preparingSpell;
+    }
+
+    public void setPreparingSpell(@Nullable ISpellType spell){
+        this.preparingSpell = spell;
+        if(spell != null){
+            this.sendMiscDataPacket(MiscDataPacket.Types.PREPARING_SPELL, spell.getRegistryName());
+        } else {
+            this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_PREPARING_SPELL, "");
+        }
     }
 
     public void sendMiscDataPacket(MiscDataPacket.Types type, String data) {

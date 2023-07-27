@@ -3,9 +3,9 @@ package hungteen.imm.client.event;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
+import hungteen.imm.common.spell.SpellManager;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,15 +28,10 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void gatherComponents(RenderTooltipEvent.GatherComponents event){
-//        if(ElixirManager.isElixirIngredient(event.getItemStack())){
-//            List<Either<FormattedText, TooltipComponent>> components = event.getTooltipElements();
-//            components.add(components.size(), Either.right(new ElementToolTip(ElixirManager.getElixirIngredient(event.getItemStack()))));
-//        }
-    }
-
-    @SubscribeEvent
-    public static void gatherComponents(RenderLevelStageEvent event){
+    public static void playerMove(MovementInputUpdateEvent event){
+        if(SpellManager.isPreparing(event.getEntity())){
+            event.getInput().forwardImpulse *= 0.2;
+        }
     }
 
 }

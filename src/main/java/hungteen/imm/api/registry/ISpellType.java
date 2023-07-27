@@ -5,8 +5,6 @@ import hungteen.imm.api.EntityBlockResult;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.List;
-
 /**
  * 法术。
  * @program: Immortal
@@ -43,26 +41,24 @@ public interface ISpellType extends ISimpleEntry {
     int getCooldown();
 
     /**
-     * 施法前摇。
+     * 吟唱时间（施法前摇）。
      * @return Prepare time to release the spell.
      */
     int getPrepareCD();
 
+    /**
+     * 是否是即可释放不需要吟唱的法术。
+     * @return Does the spell require preparing time.
+     */
     default boolean isImmediateSpell(){
-        return getPrepareCD() == 0 || isPassiveSpell();
+        return getPrepareCD() == 0;
     }
 
     /**
-     * 是否是被动法术，即放置在常驻法术轮盘上的法术。
-     * @return Whether it is a spell that triggers passively.
+     * 法术是否能被触发，能则会被放置在法术轮盘上。
+     * @return Whether can the spell be triggered.
      */
-    boolean isPassiveSpell();
-
-    /**
-     * 学习此法术需要什么灵根。
-     * @return How many types of roots required to learn this spell.
-     */
-    List<ISpiritualType> requireSpiritualRoots();
+    boolean canTrigger();
 
     /**
      * 获取法术贴图位置、

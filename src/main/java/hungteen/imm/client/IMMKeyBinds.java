@@ -10,9 +10,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
  * @author: HungTeen
  * @create: 2022-10-09 21:42
  **/
-public class ImmortalKeyBinds {
+public class IMMKeyBinds {
 
-    public static final KeyMapping SPELL_CIRCLE = new KeyMapping("key.immortal.spell_circle", InputConstants.KEY_Z, "key.categories.immortal");
+    public static final KeyMapping SPELL_CIRCLE = new KeyMapping("key.imm.spell_circle", InputConstants.KEY_Z, "key.categories.imm");
 
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
@@ -30,6 +30,6 @@ public class ImmortalKeyBinds {
     }
 
     public static boolean displayingSpellCircle(){
-        return ImmortalKeyBinds.SPELL_CIRCLE.isDown();
+        return IMMKeyBinds.SPELL_CIRCLE.isDown();
     }
 }

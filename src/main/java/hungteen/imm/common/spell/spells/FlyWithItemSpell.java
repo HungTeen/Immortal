@@ -13,6 +13,7 @@ import net.minecraft.world.entity.item.ItemEntity;
  * @data 2023/3/6 20:14
  */
 public class FlyWithItemSpell extends SpellTypes.SpellType {
+
     public FlyWithItemSpell(SpellTypes.SpellProperties properties) {
         super("fly_with_item", properties);
     }
@@ -33,8 +34,4 @@ public class FlyWithItemSpell extends SpellTypes.SpellType {
         return false;
     }
 
-    @Override
-    public boolean isPassiveSpell() {
-        return true;
-    }
 }

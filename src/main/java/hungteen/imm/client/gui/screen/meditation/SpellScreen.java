@@ -8,20 +8,18 @@ import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
+import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
-import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,24 +29,12 @@ import java.util.List;
  **/
 public class SpellScreen extends MeditationScreen implements IScrollableScreen<ISpellType> {
 
-    public static final ResourceLocation SPELL_CIRCLE = Util.get().overlayTexture("spell_circle");
-    private static final List<Pair<Integer, Integer>> SPELL_SLOTS = new ArrayList<>();
+    private static final ResourceLocation SPELL_CIRCLE = SpellOverlay.TEXTURE;
     private static final int MENU_HEIGHT = 129;
-    public static final int CIRCLE_LEN = 128;
-    public static final int CIRCLE_RADIUS = 48;
-    public static final int INNER_LEN = 40;
-    public static final int SPELL_SLOT_LEN = 20;
+    private static final int CIRCLE_LEN = SpellOverlay.CIRCLE_LEN;
+    private static final int SPELL_SLOT_LEN = SpellOverlay.SPELL_SLOT_LEN;
     private final ScrollComponent<ISpellType> scrollComponent;
     private int selectPos = 0; // 0 means no selection, negative means selected on spell circle, or circle list.
-
-    static {
-        for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
-            final double alpha = 2 * Mth.PI / 8 * i;
-            final int x = (int) (Math.sin(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
-            final int y = (int) (-Math.cos(alpha) * CIRCLE_RADIUS) - SPELL_SLOT_LEN / 2 + 1;
-            SPELL_SLOTS.add(Pair.of(x, y));
-        }
-    }
 
     public SpellScreen() {
         super(MeditationTypes.SPELL);
@@ -100,8 +86,8 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         }
         // Render Circle Spell Tooltip.
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
-            final int x = getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
-            final int y = getSlotY(topPos + CIRCLE_LEN / 2, i);
+            final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
+            final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null && MathHelper.isInArea(mouseX, mouseY, x, y, SPELL_SLOT_LEN, SPELL_SLOT_LEN)) {
                 graphics.renderTooltip(font, spell.getComponent(), mouseX, mouseY);
@@ -125,8 +111,8 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final boolean isSelected = (i + 1 + this.selectPos == 0); // selected this one.
             // Render the empty spell slot.
-            final int x = getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
-            final int y = getSlotY(topPos + CIRCLE_LEN / 2, i);
+            final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
+            final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
             graphics.blit(SPELL_CIRCLE, x, y, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             // Render the spell texture.
             final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
@@ -150,8 +136,8 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     public boolean mouseClicked(double mouseX, double mouseY, int key) {
         if(! this.scrollComponent.mouseClicked(getMinecraft(), this, mouseX, mouseY, key)){
             for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
-                final int x = getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
-                final int y = getSlotY(topPos + CIRCLE_LEN / 2, i);
+                final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
+                final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
                 // mouse in range.
                 if(mouseX >= x && mouseX <= x + SPELL_SLOT_LEN && mouseY >= y && mouseY <= y + SPELL_SLOT_LEN){
                     final int lastSlotId = - this.selectPos - 1;
@@ -195,14 +181,6 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     public void setSpellAt(int pos, ISpellType spell){
         NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
-    }
-
-    public static int getSlotX(int centerX, int slotId){
-        return SPELL_SLOTS.get(slotId).getFirst() + centerX;
-    }
-
-    public static int getSlotY(int centerY, int slotId){
-        return SPELL_SLOTS.get(slotId).getSecond() + centerY;
     }
 
     private boolean noSelection(){

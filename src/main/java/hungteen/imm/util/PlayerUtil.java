@@ -219,18 +219,6 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(l -> l.removeSpellAt(pos));
     }
 
-    public static void addSpellSet(Player player, ISpellType spell){
-        getOptManager(player).ifPresent(l -> l.addSpellSet(spell));
-    }
-
-    public static void removeSpellSet(Player player, ISpellType spell){
-        getOptManager(player).ifPresent(l -> l.removeSpellSet(spell));
-    }
-
-    public static void clearSpellSet(Player player){
-        getOptManager(player).ifPresent(PlayerDataManager::clearSpellSet);
-    }
-
     public static void cooldownSpell(Player player, ISpellType spell, long num){
         getOptManager(player).ifPresent(l -> l.cooldownSpell(spell, num));
     }
@@ -258,14 +246,6 @@ public class PlayerUtil {
 
     public static int getSpellLevel(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.getSpellLevel(spell), 0);
-    }
-
-    public static boolean hasPassiveSpell(Player player, ISpellType spell, int level) {
-        return getManagerResult(player, m -> m.hasPassiveSpell(spell, level), false);
-    }
-
-    public static boolean hasPassiveSpell(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.hasPassiveSpell(spell), false);
     }
 
     /* Sect Related Methods */
@@ -403,11 +383,17 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getCultivationType, CultivationTypes.MORTAL);
     }
 
-    /**
-     * 直接改变境界，会降低修为，同时灵气值归零。
-     */
     public static void setCultivationType(Player player, ICultivationType type){
         getOptManager(player).ifPresent(m -> m.setCultivationType(type));
+    }
+
+    @Nullable
+    public static ISpellType getPreparingSpell(Player player){
+        return getManagerResult(player, PlayerDataManager::getPreparingSpell, null);
+    }
+
+    public static void setPreparingSpell(Player player, @Nullable ISpellType type){
+        getOptManager(player).ifPresent(m -> m.setPreparingSpell(type));
     }
 
 }

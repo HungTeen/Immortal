@@ -5,6 +5,7 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -54,6 +55,8 @@ public class MiscDataPacket {
                         case CULTIVATION -> CultivationTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setCultivationType(player, l));
                         case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.checkAndSetRealm(player, realm));
                         case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
+                        case PREPARING_SPELL -> SpellTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setPreparingSpell(player, l));
+                        case CLEAR_PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, null);
                     }
                 });
             });
@@ -66,7 +69,9 @@ public class MiscDataPacket {
         EXPERIENCE,
         CULTIVATION,
         REALM,
-        REALM_STAGE
+        REALM_STAGE,
+        PREPARING_SPELL,
+        CLEAR_PREPARING_SPELL,
         ;
     }
 

@@ -18,15 +18,32 @@ public class PlayerRangeIntegers {
 
     private static final HTSimpleRegistry<IRangeNumber<Integer>> NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_integer"));
 
+    /**
+     * 精神力 or 神识。
+     */
     public static final IRangeNumber<Integer> CONSCIOUSNESS = register(new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE));
+
     public static final IRangeNumber<Integer> OPPORTUNITY = register(new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE));
+
     public static final IRangeNumber<Integer> PERSONALITY = register(new PlayerData("personality", 0, 0, Integer.MAX_VALUE));
+
     public static final IRangeNumber<Integer> IS_GHOST = register(new PlayerData("is_ghost", 0, 0, 1));
+
+    /**
+     * 打坐冥想tick。
+     */
     public static final IRangeNumber<Integer> MEDITATE_TICK = register(new PlayerData("meditate_tick", 0, 0, Constants.MEDITATE_CD));
-    /* 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮 */
+
+    /**
+     * 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮
+     */
     public static final IRangeNumber<Integer> DEFAULT_SPELL_CIRCLE = register(new PlayerData("default_spell_circle", 0, 0, 2));
-    /* 可用的常驻法术槽位 */
-    public static final IRangeNumber<Integer> PASSIVE_SPELL_COUNT_LIMIT = register(new PlayerData("passive_spell_count_limit", 3, 0, Constants.SPELL_CIRCLE_SIZE));
+
+    /**
+     * 法术吟唱tick。
+     */
+    public static final IRangeNumber<Integer> SPELL_PRE_TICK = register(new PlayerData("spell_pre_tick", 0, 0, Integer.MAX_VALUE));
+    public static final IRangeNumber<Integer> BREAK_THROUGH_TRIES = register(new PlayerData("break_through_tries", 0, 0, Integer.MAX_VALUE));
 
     public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
         return NUMBERS;

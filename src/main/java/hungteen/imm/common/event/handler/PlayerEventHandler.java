@@ -1,13 +1,11 @@
 package hungteen.imm.common.event.handler;
 
-import hungteen.imm.api.EntityBlockResult;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.IMMLivingEvents;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -56,7 +54,7 @@ public class PlayerEventHandler {
     }
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level(), itemEntity));
+//        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level(), itemEntity));
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {

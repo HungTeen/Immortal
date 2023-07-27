@@ -10,36 +10,43 @@ public enum RealmStages {
     /**
      * 前期。
      */
-    PRELIMINARY(0F),
+    PRELIMINARY(0F, false),
 
     /**
      * 中期。
      */
-    MIDTERM(0.35F),
+    MIDTERM(0.35F, false),
 
     /**
      * 后期。
      */
-    SOPHISTICATION(0.7F),
+    SOPHISTICATION(0.7F, false),
 
     /**
      * 小圆满。
      */
-    CLOSE_TO_PERFECTION(0.9F),
+    CLOSE_TO_PERFECTION(0.9F, true),
 
     /**
      * 大圆满。
      */
-    PERFECTION(1F);
+    PERFECTION(1F, true);
     ;
 
     private final float percent;
+    private final boolean canLevelUp;
 
-    RealmStages(float percent) {
+    RealmStages(float percent, boolean canLevelUp) {
+
         this.percent = percent;
+        this.canLevelUp = canLevelUp;
     }
 
     public float getPercent() {
         return percent;
+    }
+
+    public boolean canLevelUp() {
+        return canLevelUp;
     }
 }
