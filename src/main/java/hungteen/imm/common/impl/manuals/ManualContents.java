@@ -19,8 +19,9 @@ public class ManualContents {
 
     private static final IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
 
-    public static void register(BootstapContext<IManualContent> context){
+    public static final ResourceKey<IManualContent> LEARN_SPELL = create("learn_spell");
 
+    public static void register(BootstapContext<IManualContent> context){
     }
 
     public static Codec<IManualContent> getDirectCodec(){

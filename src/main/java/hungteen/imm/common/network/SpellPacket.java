@@ -50,11 +50,6 @@ public class SpellPacket {
             ctx.get().enqueueWork(() -> {
                 // S -> C.
                 if (ctx.get().getDirection().getOriginationSide() == LogicalSide.SERVER) {
-                    // No spell operation must run first !
-                    if (message.option == SpellOptions.CLEAR_SET) {
-                        PlayerHelper.getClientPlayer().ifPresent(PlayerUtil::clearSpellSet);
-                        return;
-                    }
                     SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
                         PlayerHelper.getClientPlayer().ifPresent(player -> {
                             switch (message.option) {
@@ -62,8 +57,6 @@ public class SpellPacket {
                                 case SET_SPELL_ON_CIRCLE -> PlayerUtil.setSpellAt(player, (int) message.num, spell);
                                 case REMOVE_SPELL_ON_CIRCLE -> PlayerUtil.removeSpellAt(player, (int) message.num);
                                 case COOL_DOWN -> PlayerUtil.cooldownSpell(player, spell, message.num);
-                                case ADD_SET -> PlayerUtil.addSpellSet(player, spell);
-                                case REMOVE_SET -> PlayerUtil.removeSpellSet(player, spell);
                             }
                         });
                     });
@@ -109,21 +102,6 @@ public class SpellPacket {
          * 客户端按键触发后， 发送给服务端。
          */
         ACTIVATE,
-
-        /**
-         * 添加到常驻法术。
-         */
-        ADD_SET,
-
-        /**
-         * 从常驻法术移除。
-         */
-        REMOVE_SET,
-
-        /**
-         * 清空常驻法术。
-         */
-        CLEAR_SET,
 
         /**
          * 更新法术操作方式在客户端的配置文件。

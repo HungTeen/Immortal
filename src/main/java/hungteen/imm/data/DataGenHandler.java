@@ -21,8 +21,8 @@ public class DataGenHandler {
     public static void dataGen(GatherDataEvent event) {
         final DataGenerator generators = event.getGenerator();
         final PackOutput output = event.getGenerator().getPackOutput();
-        final ExistingFileHelper fileHelper = event.getExistingFileHelper();
         final CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+        final ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
         /* Tags */
         final BlockTagGen generator = new BlockTagGen(output, provider, fileHelper);
@@ -30,7 +30,6 @@ public class DataGenHandler {
         generators.addProvider(event.includeServer(), new ItemTagGen(output, generator, provider, fileHelper));
         generators.addProvider(event.includeServer(), new EntityTagGen(output, provider, fileHelper));
         generators.addProvider(event.includeServer(), new BannerPatternTagGen(output, provider, fileHelper));
-        generators.addProvider(event.includeServer(), new BiomeTagGen(output, provider, fileHelper));
 
         /* Recipes */
         generators.addProvider(event.includeServer(), new RecipeGen(output));
@@ -50,7 +49,7 @@ public class DataGenHandler {
         generators.addProvider(event.includeClient(), new ItemModelGen(output, fileHelper));
 
         /* Datapack */
-        generators.addProvider(event.includeServer(), new DatapackEntriesGen(output, provider));
+        DatapackEntriesGen.addProviders(event.includeServer(), generators, output, provider, fileHelper);
 
         /* Codecs */
     }

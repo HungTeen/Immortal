@@ -27,6 +27,11 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
     }
 
     @Override
+    public void consume(Level level, Player player) {
+
+    }
+
+    @Override
     public IRequirementType<?> getType() {
         return RequirementTypes.CULTIVATION_TYPE;
     }

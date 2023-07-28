@@ -46,11 +46,11 @@ public class LargeHeldItemBakeModel implements BakedModel {
     }
 
     public static ResourceLocation getModelLocation(Item item){
-        return new ModelResourceLocation(ItemHelper.get().getKey(item), ImmortalBakeModels.INVENTORY);
+        return new ModelResourceLocation(ItemHelper.get().getKey(item), IMMBakeModels.INVENTORY);
     }
 
     public static ResourceLocation getHeldModelLocation(Item item){
-        return new ModelResourceLocation(ItemUtil.getLargeHeldLocation(item), ImmortalBakeModels.INVENTORY);
+        return new ModelResourceLocation(ItemUtil.getLargeHeldLocation(item), IMMBakeModels.INVENTORY);
     }
 
     @Override

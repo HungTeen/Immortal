@@ -6,22 +6,31 @@ import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
+import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/7/17 16:52
  */
-public record SecretManual(int treasureWeight, int tradeWeight, List<ManualEntry> entries) {
+public record SecretManual(ResourceLocation model, List<ManualEntry> entries, List<String> texts) {
     public static final Codec<SecretManual> CODEC = RecordCodecBuilder.<SecretManual>mapCodec(instance -> instance.group(
-            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("treasure_weight", 0).forGetter(SecretManual::treasureWeight),
-            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("trade_weight", 0).forGetter(SecretManual::tradeWeight),
-            ManualEntry.CODEC.listOf().fieldOf("entries").forGetter(SecretManual::entries)
+            ResourceLocation.CODEC.optionalFieldOf("entries", Util.prefix("secret_manual")).forGetter(SecretManual::model),
+            ManualEntry.CODEC.listOf().fieldOf("entries").forGetter(SecretManual::entries),
+            Codec.STRING.listOf().fieldOf("texts").forGetter(SecretManual::texts)
     ).apply(instance, SecretManual::new)).codec();
+
+    public List<Component> getManualInfo(){
+        return texts().stream().map(Component::translatable).collect(Collectors.toList());
+    }
 
     public record ManualEntry(Holder<ILearnRequirement> requirement, Holder<IManualContent> content) {
         public static final Codec<ManualEntry> CODEC = RecordCodecBuilder.<ManualEntry>mapCodec(instance -> instance.group(
@@ -29,8 +38,17 @@ public record SecretManual(int treasureWeight, int tradeWeight, List<ManualEntry
                 ManualContents.getCodec().fieldOf("content").forGetter(ManualEntry::content)
         ).apply(instance, ManualEntry::new)).codec();
 
-        public List<Component> getManualInfo(){
-            return List.of();
+        public boolean canLearn(Level level, Player player){
+            return requirement().get().check(level, player);
+        }
+
+        public void learn(Level level, Player player){
+            content().get().learn(player);
+            requirement().get().consume(level, player);
+        }
+
+        public List<Component> getContentInfo(){
+            return content().get().getInfo();
         }
     }
 }

@@ -12,7 +12,7 @@ import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.model.ModelLayers;
-import hungteen.imm.client.model.bake.ImmortalBakeModels;
+import hungteen.imm.client.model.bake.IMMBakeModels;
 import hungteen.imm.client.model.entity.*;
 import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
@@ -180,12 +180,12 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.BakingCompleted event) {
-        ImmortalBakeModels.registerBakeModels(event);
+        IMMBakeModels.registerBakeModels(event);
     }
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.RegisterAdditional event) {
-        ImmortalBakeModels.registerBakeModels(event);
+        IMMBakeModels.registerBakeModels(event);
     }
 
     @SubscribeEvent

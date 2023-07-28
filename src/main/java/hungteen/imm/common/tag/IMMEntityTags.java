@@ -11,15 +11,15 @@ import net.minecraft.world.entity.EntityType;
  * @program Immortal
  * @data 2023/3/2 11:26
  */
-public class IMMEntityTags {
+public interface IMMEntityTags {
 
     /* forge */
-    public static final TagKey<EntityType<?>> VILLAGERS = forgeTag("villagers");
-    public static final TagKey<EntityType<?>> PILLAGERS = forgeTag("pillagers");
+    TagKey<EntityType<?>> VILLAGERS = forgeTag("villagers");
+    TagKey<EntityType<?>> PILLAGERS = forgeTag("pillagers");
 
     /* immortal */
-    public static final TagKey<EntityType<?>> CULTIVATORS = tag("cultivators");
-    public static final TagKey<EntityType<?>> HUMAN_BEINGS = tag("human_beings");
+    TagKey<EntityType<?>> CULTIVATORS = tag("cultivators");
+    TagKey<EntityType<?>> HUMAN_BEINGS = tag("human_beings");
 
 
     private static TagKey<EntityType<?>> tag(String name){

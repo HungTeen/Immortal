@@ -35,6 +35,11 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
     }
 
     @Override
+    public void consume(Level level, Player player) {
+
+    }
+
+    @Override
     public IRequirementType<?> getType() {
         return RequirementTypes.SPELL;
     }

@@ -1,7 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,10 +13,10 @@ import net.minecraft.world.item.ItemStack;
  * @program Immortal
  * @data 2023/3/6 17:02
  */
-public class PickUpItemSpell extends SpellTypes.SpellType {
+public class PickupItemSpell extends SpellType {
 
-    public PickUpItemSpell(SpellTypes.SpellProperties properties) {
-        super("item_picking", properties);
+    public PickupItemSpell() {
+        super("pickup_item", properties().maxLevel(2).mana(5).cd(20));
     }
 
     @Override

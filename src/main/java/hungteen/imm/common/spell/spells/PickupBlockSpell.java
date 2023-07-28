@@ -1,7 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,10 +15,10 @@ import net.minecraft.world.level.block.state.BlockState;
  * @program Immortal
  * @data 2023/3/6 19:30
  */
-public class PickUpBlockSpell extends SpellTypes.SpellType {
+public class PickupBlockSpell extends SpellType {
 
-    public PickUpBlockSpell(SpellTypes.SpellProperties properties) {
-        super("block_picking", properties);
+    public PickupBlockSpell() {
+        super("pickup_block", properties().maxLevel(2).mana(10).cd(400));
     }
 
     @Override

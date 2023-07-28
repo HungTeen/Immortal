@@ -330,7 +330,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void removeSpellAt(int pos) {
         this.spellList[pos] = null;
-        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, SpellTypes.RESTING, pos);
+        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, SpellTypes.MEDITATE, pos);
     }
 
     public ISpellType getSpellAt(int pos) {

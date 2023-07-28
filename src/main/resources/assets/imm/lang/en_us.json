@@ -105,6 +105,8 @@
   "command.imm.spiritual_root": "Spiritual roots of %s : ",
   "command.imm.cultivation_not_enough": "Set failed : Cultivation is not enough",
 
+  "info.imm.teleport_ruin_map": "There is no treasure !",
+  "info.imm.unsafe_surround": "It's not safe surround",
   "info.imm.rune_already_bind": "Your rune already bind",
   "info.imm.spell_cost": "Cost %d Spiritual Mana",
   "info.imm.spell_cd": "CD %d s",

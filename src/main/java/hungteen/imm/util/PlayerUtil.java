@@ -5,6 +5,7 @@ import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
@@ -55,15 +56,20 @@ public class PlayerUtil {
         player.getCooldowns().addCooldown(item, coolDown);
     }
 
-    public static void sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock){
+    public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock){
         if(! isSitInMeditation(player)){
             final Vec3 vec = MathHelper.toVec3(pos);
             List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(MathHelper.toVec3(pos), 8F, 5F), (entity) -> {
                 return entity.isPreventingPlayerRest(player);
             });
-            setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
-            SeatEntity.seatAt(player.level(), player, pos, yOffset, player.getYRot(), 120F, relyOnBlock);
+            if(list.isEmpty()){
+                setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+                SeatEntity.seatAt(player.level(), player, pos, yOffset, player.getYRot(), 120F, relyOnBlock);
+            } else {
+                PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround"));
+            }
         }
+        return false;
     }
 
     public static void quitMeditate(Player player){

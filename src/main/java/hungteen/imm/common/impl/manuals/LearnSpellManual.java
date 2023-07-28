@@ -6,7 +6,11 @@ import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.IManualType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.util.PlayerUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.List;
 
 /**
  * @author PangTeen
@@ -23,7 +27,12 @@ public record LearnSpellManual(ISpellType spellType, int level) implements IManu
     
     @Override
     public void learn(Player player) {
-        
+        PlayerUtil.learnSpell(player, spellType(), level());
+    }
+
+    @Override
+    public List<Component> getInfo() {
+        return List.of(spellType().getComponent());
     }
 
     @Override

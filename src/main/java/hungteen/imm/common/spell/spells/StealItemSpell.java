@@ -1,7 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,10 +15,10 @@ import java.util.List;
  * @program Immortal
  * @data 2023/3/6 17:02
  */
-public class StealItemSpell extends SpellTypes.SpellType {
+public class StealItemSpell extends SpellType {
 
-    public StealItemSpell(SpellTypes.SpellProperties properties) {
-        super("item_stealing", properties);
+    public StealItemSpell() {
+        super("steal_item", properties().maxLevel(1).mana(50).cd(1800));
     }
 
     @Override

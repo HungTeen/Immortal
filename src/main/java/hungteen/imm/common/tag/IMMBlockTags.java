@@ -10,20 +10,20 @@ import net.minecraft.world.level.block.Block;
  * @program Immortal
  * @data 2023/6/2 17:06
  */
-public class IMMBlockTags {
+public interface IMMBlockTags {
 
     /* Forge */
 
-    public static final TagKey<Block> SPIRITUAL_ORES = forgeTag("spiritual_ores");
-    public static final TagKey<Block> CINNABAR_ORES = forgeTag("ores/cinnabar");
+    TagKey<Block> SPIRITUAL_ORES = forgeTag("spiritual_ores");
+    TagKey<Block> CINNABAR_ORES = forgeTag("ores/cinnabar");
 
     /* IMM */
 
-    public static final TagKey<Block> COPPER_BLOCKS = tag("copper_blocks");
-    public static final TagKey<Block> COPPER_SLABS = tag("copper_slabs");
-    public static final TagKey<Block> FUNCTIONAL_COPPERS = tag("functional_coppers");
-    public static final TagKey<Block> COPPER_INTERFACES = tag("copper_interfaces");
-    public static final TagKey<Block> FURNACE_BLOCKS = tag("furnace_blocks");
+    TagKey<Block> COPPER_BLOCKS = tag("copper_blocks");
+    TagKey<Block> COPPER_SLABS = tag("copper_slabs");
+    TagKey<Block> FUNCTIONAL_COPPERS = tag("functional_coppers");
+    TagKey<Block> COPPER_INTERFACES = tag("copper_interfaces");
+    TagKey<Block> FURNACE_BLOCKS = tag("furnace_blocks");
 
     private static TagKey<Block> tag(String name){
         return BlockTags.create(Util.prefix(name));

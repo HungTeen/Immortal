@@ -27,6 +27,11 @@ public record AndRequirement(List<Holder<ILearnRequirement>> requirements) imple
     }
 
     @Override
+    public void consume(Level level, Player player) {
+        requirements().forEach(r -> r.get().consume(level, player));
+    }
+
+    @Override
     public IRequirementType<?> getType() {
         return RequirementTypes.AND;
     }

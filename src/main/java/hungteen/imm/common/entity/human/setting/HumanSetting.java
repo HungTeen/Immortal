@@ -7,11 +7,13 @@ import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
+import hungteen.imm.common.event.events.HumanFillTradeEvent;
 import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.Container;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +49,8 @@ public record HumanSetting(IInventoryLootType type, int weight, List<LootSetting
             setting.sampleTradeEntries(random).forEach(entry -> {
                 offers.add(new TradeOffer(entry, random));
             });
+            entity.fillSpecialTrade(offers, random);
+            MinecraftForge.EVENT_BUS.post(new HumanFillTradeEvent(entity, offers));
             entity.setTradeOffers(offers);
         });
     }

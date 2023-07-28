@@ -39,6 +39,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -187,6 +188,10 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
      * @param level is the server side level.
      */
     public abstract void updateBrain(ServerLevel level);
+
+    public void fillSpecialTrade(TradeOffers offers, RandomSource random){
+
+    }
 
     public boolean hasItemStack(Predicate<ItemStack> predicate) {
         for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {

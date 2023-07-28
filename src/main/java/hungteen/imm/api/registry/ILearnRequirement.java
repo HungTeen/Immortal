@@ -12,6 +12,8 @@ public interface ILearnRequirement {
 
     boolean check(Level level, Player player);
 
+    void consume(Level level, Player player);
+
     IRequirementType<?> getType();
 
 }

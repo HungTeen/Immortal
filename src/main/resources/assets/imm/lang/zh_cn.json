@@ -105,9 +105,9 @@
   "command.imm.spiritual_root": "%s的灵根：",
   "command.imm.cultivation_not_enough": "设置失败：当前修为不够",
 
+  "info.imm.teleport_ruin_map": "此地无银三百两 ！",
+  "info.imm.unsafe_surround": "周围并不安全",
   "info.imm.rune_already_bind": "该符文已绑定",
-  "info.imm.no_root_for_inspiration": "好像没有什么启发",
-  "info.imm.close_to_inspiration": "好像感受到了一丝灵气，再多试试",
   "info.imm.spell_cost": "消耗%d灵力",
   "info.imm.spell_cd": "冷却%d秒",
   "info.imm.no_furnace_around": "周围没有完整的炉鼎结构",

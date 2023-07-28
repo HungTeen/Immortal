@@ -1,6 +1,9 @@
 package hungteen.imm.api.registry;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.List;
 
 /**
  * @author PangTeen
@@ -10,6 +13,8 @@ import net.minecraft.world.entity.player.Player;
 public interface IManualContent {
 
     void learn(Player player);
+
+    List<Component> getInfo();
 
     IManualType<?> getType();
 }

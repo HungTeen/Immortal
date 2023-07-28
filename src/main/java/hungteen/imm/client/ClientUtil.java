@@ -5,6 +5,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 
@@ -52,6 +54,10 @@ public class ClientUtil {
 
     public static void pop(){
         ClientProxy.mc().getProfiler().pop();
+    }
+
+    public static ModelResourceLocation getModelLocation(ResourceLocation location){
+        return new ModelResourceLocation(location, "inventory");
     }
 
     public static boolean canRenderOverlay() {

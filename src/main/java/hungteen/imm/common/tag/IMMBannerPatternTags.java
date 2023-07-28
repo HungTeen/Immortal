@@ -11,12 +11,12 @@ import net.minecraft.world.level.block.entity.BannerPattern;
  * @program Immortal
  * @data 2023/3/8 20:45
  */
-public class IMMBannerPatternTags {
+public interface IMMBannerPatternTags {
 
-    public static final TagKey<BannerPattern> CONTINUOUS_MOUNTAIN = tag("continuous_mountain");
-    public static final TagKey<BannerPattern> FLOWING_CLOUD = tag("flowing_cloud");
-    public static final TagKey<BannerPattern> FOLDED_THUNDER = tag("folded_thunder");
-    public static final TagKey<BannerPattern> RHOMBUS = tag("rhombus");
+    TagKey<BannerPattern> CONTINUOUS_MOUNTAIN = tag("continuous_mountain");
+    TagKey<BannerPattern> FLOWING_CLOUD = tag("flowing_cloud");
+    TagKey<BannerPattern> FOLDED_THUNDER = tag("folded_thunder");
+    TagKey<BannerPattern> RHOMBUS = tag("rhombus");
     
     private static TagKey<BannerPattern> tag(String name){
         return create(Util.prefix(name));
