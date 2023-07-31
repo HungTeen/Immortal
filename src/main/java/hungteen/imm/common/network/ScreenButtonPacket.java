@@ -46,6 +46,10 @@ public class ScreenButtonPacket {
                 final ServerPlayer player = ctx.get().getSender();
                 if(player != null){
                     switch (Types.values()[message.id]){
+                        case SET_SPAWN_POINT -> {
+                            // See SetSpawnCommand.
+                            player.setRespawnPosition(player.level().dimension(), player.blockPosition().above(), 0, true, false);
+                        }
                         case QUIT_MEDITATION -> PlayerUtil.quitMeditate(player);
                     }
                 }
@@ -57,6 +61,8 @@ public class ScreenButtonPacket {
     public enum Types {
 
         QUIT_MEDITATION,
+
+        SET_SPAWN_POINT,
 
         ;
     }

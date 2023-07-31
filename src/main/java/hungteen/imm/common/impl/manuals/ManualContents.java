@@ -5,6 +5,7 @@ import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.IManualType;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -19,9 +20,10 @@ public class ManualContents {
 
     private static final IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
 
-    public static final ResourceKey<IManualContent> LEARN_SPELL = create("learn_spell");
+    public static final ResourceKey<IManualContent> LEARN_RESTING = create("learn_resting");
 
     public static void register(BootstapContext<IManualContent> context){
+        context.register(LEARN_RESTING, new LearnSpellManual(SpellTypes.MEDITATE, 1));
     }
 
     public static Codec<IManualContent> getDirectCodec(){

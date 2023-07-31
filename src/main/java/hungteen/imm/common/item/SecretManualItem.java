@@ -1,5 +1,7 @@
 package hungteen.imm.common.item;
 
+import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.common.codec.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import net.minecraft.network.chat.Component;
@@ -39,22 +41,30 @@ public class SecretManualItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-//        get(stack).ifPresent(res -> {
-//            components.add(Component.translatable("item." + res.getNamespace() + ".spell_book." + res.getPath()));
-//        });
+    public Component getName(ItemStack stack) {
+        return getLocation(stack).map(key -> {
+            return StringHelper.langKey("misc", key.getNamespace(), "secret_manual." + key.getPath());
+        }).map(Component::translatable).map(Component.class::cast).orElse(super.getName(stack));
     }
 
-//    @Override
-//    public void fillItemCategory(CreativeModeTab creativeModeTab, NonNullList<ItemStack> itemStacks) {
-//        if(this.allowedIn(creativeModeTab)){
-//            SpellBookManager.getBooks().forEach(res -> {
-//                ItemStack stack = new ItemStack(this);
-//                setSpellBook(stack, res);
-//                itemStacks.add(stack);
-//            });
-//        }
-//    }
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        if(level != null) {
+            getSecretManualPair(level, stack).ifPresent(res -> {
+                for (int i = 0; i < res.getSecond().textLine(); i++) {
+                    components.add(Component.translatable(lang(res.getFirst().location(), i + 1)));
+                }
+            });
+        }
+    }
+
+    private static String lang(ResourceLocation key, int line){
+        return lang(key) + "_" + line;
+    }
+
+    private static String lang(ResourceLocation key){
+        return StringHelper.langKey("secret_manual", key.getNamespace(), key.getPath());
+    }
 
     public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {
         stack.getOrCreateTag().putString(SECRET_MANUAL, spellBook.toString());
@@ -70,6 +80,10 @@ public class SecretManualItem extends Item {
 
     public static Optional<SecretManual> getSecretManual(Level level, ItemStack stack) {
         return getResourceKey(stack).map(key -> SecretManuals.registry().getValue(level, key));
+    }
+
+    public static Optional<Pair<ResourceKey<SecretManual>, SecretManual>> getSecretManualPair(Level level, ItemStack stack) {
+        return getResourceKey(stack).map(key -> Pair.of(key, SecretManuals.registry().getValue(level, key)));
     }
 
 }

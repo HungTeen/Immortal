@@ -20,11 +20,11 @@ public class IMMBakeModels {
     public static final String INVENTORY = "inventory";
 
     /**
-     * {@link hungteen.imm.client.ClientRegister#bakeModel(ModelEvent.BakingCompleted)}
+     * {@link hungteen.imm.client.ClientRegister#bakeModel(ModelEvent.ModifyBakingResult)}
      */
-    public static void registerBakeModels(ModelEvent.BakingCompleted event){
+    public static void registerBakeModels(ModelEvent.ModifyBakingResult event){
         ItemUtil.getLargeHeldItems().forEach(item -> {
-            event.getModels().put(LargeHeldItemBakeModel.getModelLocation(item), new LargeHeldItemBakeModel(item, event.getModelManager()));
+            event.getModels().put(LargeHeldItemBakeModel.getModelLocation(item), new LargeHeldItemBakeModel(item, event.getModels()));
         });
         {
             final ModelResourceLocation key = ClientUtil.getModelLocation(IMMItems.SECRET_MANUAL.getId());

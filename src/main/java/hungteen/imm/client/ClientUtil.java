@@ -1,5 +1,6 @@
 package hungteen.imm.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -58,6 +59,10 @@ public class ClientUtil {
 
     public static ModelResourceLocation getModelLocation(ResourceLocation location){
         return new ModelResourceLocation(location, "inventory");
+    }
+
+    public static InputConstants.Key getKey(int key){
+        return InputConstants.getKey(key, 0);
     }
 
     public static boolean canRenderOverlay() {

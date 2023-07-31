@@ -11,6 +11,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 
+import java.util.List;
+
 /**
  * @author PangTeen
  * @program Immortal
@@ -20,9 +22,11 @@ public class LearnRequirements {
 
     private static final IHTCodecRegistry<ILearnRequirement> TYPES = HTRegistryManager.create(Util.prefix("learn_requirement"), LearnRequirements::getDirectCodec, LearnRequirements::getDirectCodec);
 
+    public static final ResourceKey<ILearnRequirement> NO_REQUIREMENT = create("not_requirement");
     public static final ResourceKey<ILearnRequirement> SPIRITUAL_CULTIVATOR = create("spiritual_cultivator");
 
     public static void register(BootstapContext<ILearnRequirement> context){
+        context.register(NO_REQUIREMENT, new OrRequirement(List.of()));
         context.register(SPIRITUAL_CULTIVATOR, new CultivationTypeRequirement(CultivationTypes.SPIRITUAL));
     }
 

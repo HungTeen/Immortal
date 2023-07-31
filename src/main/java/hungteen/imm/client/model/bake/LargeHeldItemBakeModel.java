@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: Immortal
@@ -32,9 +32,9 @@ public class LargeHeldItemBakeModel implements BakedModel {
     private final BakedModel heldModel;
     private final BakedModel guiModel;
 
-    public LargeHeldItemBakeModel(Item item, ModelManager manager) {
-        this.heldModel = manager.getModel(getHeldModelLocation(item));
-        this.guiModel = manager.getModel(getModelLocation(item));
+    public LargeHeldItemBakeModel(Item item, Map<ResourceLocation, BakedModel> bakedModels) {
+        this.heldModel = bakedModels.get(getHeldModelLocation(item));
+        this.guiModel = bakedModels.get(getModelLocation(item));
     }
 
     @Override

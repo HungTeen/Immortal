@@ -179,7 +179,7 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
-    public static void bakeModel(ModelEvent.BakingCompleted event) {
+    public static void bakeModel(ModelEvent.ModifyBakingResult event) {
         IMMBakeModels.registerBakeModels(event);
     }
 

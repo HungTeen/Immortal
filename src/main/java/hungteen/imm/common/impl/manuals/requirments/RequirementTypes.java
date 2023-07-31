@@ -17,6 +17,8 @@ public class RequirementTypes {
     private static final IHTSimpleRegistry<IRequirementType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("requirement_type"));
 
     public static final IRequirementType<AndRequirement> AND = register(new RequirementType<>("and", AndRequirement.CODEC));
+    public static final IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
+    public static final IRequirementType<NotRequirement> NOT = register(new RequirementType<>("not", NotRequirement.CODEC));
     public static final IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
     public static final IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
 

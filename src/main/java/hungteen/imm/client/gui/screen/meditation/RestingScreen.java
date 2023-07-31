@@ -3,10 +3,16 @@ package hungteen.imm.client.gui.screen.meditation;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.network.ScreenButtonPacket;
+import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,64 +27,77 @@ public class RestingScreen extends MeditationScreen {
     private static final ResourceLocation OVERLAY = CommonOverlay.OVERLAY;
     private static final int MANA_BAR_LEN = CommonOverlay.MANA_BAR_LEN;
     private static final int MANA_BAR_HEIGHT = CommonOverlay.MANA_BAR_HEIGHT;
-    private static final int SWITCH_BAR_WIDTH = 125;
-    private static final int SWITCH_BAR_HEIGHT = 75;
-    private static final int SLOT_LEN = 26;
+    private static final int BUTTON_WIDTH = 106;
+    private static final int BUTTON_HEIGHT = 28;
+    private static final int BUTTON_DISTANCE = 40;
+    private MeditationButton breakThroughButton;
+    private MeditationButton spawnPointButton;
+    private MeditationButton quitButton;
 
     public RestingScreen() {
-        super(MeditationTypes.REST);
+        super(MeditationTypes.RESTING);
     }
 
     @Override
     protected void init() {
         super.init();
+        final int x = (this.width - BUTTON_WIDTH) >> 1;
+        final int y = (this.height - BUTTON_HEIGHT) >> 1;
+        this.breakThroughButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.break_through"), (button) -> {
+//            this.sendWakeUp();
+        }).pos(x, y - BUTTON_DISTANCE)){
+            @Override
+            public boolean isActive() {
+                return false;
+            }
+        };
+        this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
+            NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.SET_SPAWN_POINT));
+        }).pos(x, y));
+        this.quitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit"), (button) -> {
+            this.sendWakeUp();
+        }).pos(x, y + BUTTON_DISTANCE));
+        this.addRenderableWidget(this.breakThroughButton);
+        this.addRenderableWidget(this.spawnPointButton);
+        this.addRenderableWidget(this.quitButton);
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
-        final int x = (this.width << 1) - 91;
+        final int x = (this.width >> 1) - 91;
         int y = this.height - 32 + 3;
         CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
         // Render Break Through Bar.
         if (PlayerUtil.getPlayerRealmStage(ClientUtil.player()).canLevelUp()) {
-            y += 10;
-            graphics.blit(OVERLAY, x, y + 30, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
+            y -= 10;
+            graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
             final float progress = RealmManager.getBreakThroughProgress(ClientUtil.player());
             final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);
-            graphics.blit(OVERLAY, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
+            graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, backManaLen, MANA_BAR_HEIGHT);
             final float scale = 1;
             final Component text = Component.literal(String.format("%.2f", progress * 100));
             RenderUtil.renderCenterScaledText(graphics.pose(), text, (width >> 1), y - 6, scale, ColorHelper.GOLD.rgb(), ColorHelper.BLACK.rgb());
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int key) {
-        final double dx = mouseX - (this.leftPos + 82);
-        final double dy = mouseY - (this.topPos + 108);
-//        if (dx >= 0 && dy >= 0 && dx < FULL_FLAME_LEN && dy < FULL_FLAME_HEIGHT && this.menu.clickMenuButton(this.minecraft.player, 1)) {
-//            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-//            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1);
-//            return true;
-//        }
-//        for (MeditationTypes type : MeditationTypes.values()) {
-//            final boolean selected = type.ordinal() == this.selectedIndex;
-//            graphics.blit(SLOTS, this.getSlotX(type.ordinal()), this.getSlotY(),  selected ? 26 : 0, 75, SLOT_LEN, SLOT_LEN);
-//        }
-        return super.mouseClicked(mouseX, mouseY, key);
+    static class MeditationButton extends HTButton {
+
+        protected MeditationButton(Builder builder) {
+            super(builder.size(BUTTON_WIDTH, BUTTON_HEIGHT), RestingScreen.TEXTURE);
+        }
+
+        @Override
+        protected int getColor(boolean active) {
+            return active ? Colors.WORD : super.getColor(false);
+        }
+
+        @Override
+        protected int getTextureY() {
+            return ! this.isActive() ? 228 : this.isHovered() ? 199 : 170;
+        }
     }
 
-    private int getSlotX(int i) {
-        return (this.width - SWITCH_BAR_WIDTH) / 2 + i * 26 + (i + 1) * this.getInterval();
-    }
 
-    private int getSlotY() {
-        return 20 + 22 + 13;
-    }
-
-    private int getInterval() {
-        return (SWITCH_BAR_WIDTH - SLOT_LEN * this.getLen()) / (this.getLen() + 1);
-    }
 
 }

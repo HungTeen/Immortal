@@ -14,23 +14,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/7/17 16:52
  */
-public record SecretManual(ResourceLocation model, List<ManualEntry> entries, List<String> texts) {
+public record SecretManual(ResourceLocation model, List<ManualEntry> entries, int textLine) {
     public static final Codec<SecretManual> CODEC = RecordCodecBuilder.<SecretManual>mapCodec(instance -> instance.group(
             ResourceLocation.CODEC.optionalFieldOf("entries", Util.prefix("secret_manual")).forGetter(SecretManual::model),
             ManualEntry.CODEC.listOf().fieldOf("entries").forGetter(SecretManual::entries),
-            Codec.STRING.listOf().fieldOf("texts").forGetter(SecretManual::texts)
+            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("text_line", 0).forGetter(SecretManual::textLine)
     ).apply(instance, SecretManual::new)).codec();
-
-    public List<Component> getManualInfo(){
-        return texts().stream().map(Component::translatable).collect(Collectors.toList());
-    }
 
     public record ManualEntry(Holder<ILearnRequirement> requirement, Holder<IManualContent> content) {
         public static final Codec<ManualEntry> CODEC = RecordCodecBuilder.<ManualEntry>mapCodec(instance -> instance.group(
