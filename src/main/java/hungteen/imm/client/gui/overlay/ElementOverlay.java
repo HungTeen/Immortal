@@ -26,6 +26,7 @@ public class ElementOverlay implements IGuiOverlay {
 
     public static final IGuiOverlay INSTANCE = new ElementOverlay();
     public static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
+    public static final int ELEMENT_INTERVAL = 10;
     public static final int ELEMENT_LEN = 9;
     private static final int ELEMENT_GUI_INTERVAL = 3;
 
@@ -54,9 +55,9 @@ public class ElementOverlay implements IGuiOverlay {
                     final boolean robust = (elements.get(element) > 0);
                     final boolean warn = ElementManager.needWarn(entity, element, robust, Math.abs(amount));
                     if (!warn || ElementManager.notDisappear(entity)) {
-                        graphics.blit(ELEMENTS, startX, topPos, 10 * element.ordinal(), 0, ELEMENT_LEN, ELEMENT_LEN);
+                        graphics.blit(ELEMENTS, startX, topPos, ELEMENT_INTERVAL * element.ordinal(), 0, ELEMENT_LEN, ELEMENT_LEN);
                         if (robust && ElementManager.displayRobust(entity)) {
-                            graphics.blit(ELEMENTS, startX, topPos, 10 * element.ordinal(), 10, ELEMENT_LEN, ELEMENT_LEN);
+                            graphics.blit(ELEMENTS, startX, topPos, ELEMENT_INTERVAL * element.ordinal(), 10, ELEMENT_LEN, ELEMENT_LEN);
                         }
                     }
                     startX += ELEMENT_LEN + ELEMENT_GUI_INTERVAL;

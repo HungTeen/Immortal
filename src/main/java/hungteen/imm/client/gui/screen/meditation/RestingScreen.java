@@ -44,11 +44,12 @@ public class RestingScreen extends MeditationScreen {
         final int x = (this.width - BUTTON_WIDTH) >> 1;
         final int y = (this.height - BUTTON_HEIGHT) >> 1;
         this.breakThroughButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.break_through"), (button) -> {
-//            this.sendWakeUp();
+            NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.BREAK_THROUGH));
+            this.sendWakeUp();
         }).pos(x, y - BUTTON_DISTANCE)){
             @Override
             public boolean isActive() {
-                return false;
+                return RealmManager.canBreakThrough(ClientUtil.player());
             }
         };
         this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
@@ -69,14 +70,14 @@ public class RestingScreen extends MeditationScreen {
         int y = this.height - 32 + 3;
         CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
         // Render Break Through Bar.
-        if (PlayerUtil.getPlayerRealmStage(ClientUtil.player()).canLevelUp()) {
+        if (PlayerUtil.reachThreshold(ClientUtil.player())) {
             y -= 10;
             graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
             final float progress = RealmManager.getBreakThroughProgress(ClientUtil.player());
             final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);
             graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, backManaLen, MANA_BAR_HEIGHT);
             final float scale = 1;
-            final Component text = Component.literal(String.format("%.2f", progress * 100));
+            final Component text = TipUtil.PERCENT.apply(progress);
             RenderUtil.renderCenterScaledText(graphics.pose(), text, (width >> 1), y - 6, scale, ColorHelper.GOLD.rgb(), ColorHelper.BLACK.rgb());
         }
     }

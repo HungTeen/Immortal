@@ -5,8 +5,8 @@ import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
@@ -27,7 +27,6 @@ public class PlayerRangeIntegers {
 
     public static final IRangeNumber<Integer> PERSONALITY = register(new PlayerData("personality", 0, 0, Integer.MAX_VALUE));
 
-    public static final IRangeNumber<Integer> IS_GHOST = register(new PlayerData("is_ghost", 0, 0, 1));
 
     /**
      * 打坐冥想tick。
@@ -37,13 +36,22 @@ public class PlayerRangeIntegers {
     /**
      * 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮
      */
-    public static final IRangeNumber<Integer> DEFAULT_SPELL_CIRCLE = register(new PlayerData("default_spell_circle", 0, 0, 2));
+    public static final IRangeNumber<Integer> SPELL_CIRCLE_MODE = register(new PlayerData("spell_circle_mode", 0, 0, 2));
 
     /**
      * 法术吟唱tick。
      */
     public static final IRangeNumber<Integer> SPELL_PRE_TICK = register(new PlayerData("spell_pre_tick", 0, 0, Integer.MAX_VALUE));
+
+    /**
+     * 突破尝试次数。
+     */
     public static final IRangeNumber<Integer> BREAK_THROUGH_TRIES = register(new PlayerData("break_through_tries", 0, 0, Integer.MAX_VALUE));
+
+    /**
+     * 是否知道自身灵根。
+     */
+    public static final IRangeNumber<Integer> KNOW_SPIRITUAL_ROOTS = register(new PlayerData("know_spiritual_roots", 0, 0, 1));
 
     public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
         return NUMBERS;
@@ -82,7 +90,7 @@ public class PlayerRangeIntegers {
 
         @Override
         public MutableComponent getComponent() {
-            return Component.translatable("misc." + getModID() +".player_data." + getName());
+            return TipUtil.misc("player_data." + getName());
         }
 
     }

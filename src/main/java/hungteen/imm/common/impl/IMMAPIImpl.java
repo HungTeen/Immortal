@@ -3,10 +3,9 @@ package hungteen.imm.common.impl;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.*;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.capability.chunk.ChunkCapability;
-import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
@@ -65,11 +64,7 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public IRealmType getEntityRealm(Entity entity) {
-        if(entity instanceof Player){
-            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
-        }
-        //TODO 境界
-        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
+        return RealmManager.getEntityRealm(entity);
     }
 
     @Override

@@ -63,7 +63,7 @@ public class SpellPacket {
                 } else {// C -> S.
                     switch (message.option) {
                         case ACTIVATE -> SpellManager.checkActivateSpell(ctx.get().getSender(), (int) message.num);
-                        case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
+                        case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.SPELL_CIRCLE_MODE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
                         case SET_SPELL_ON_CIRCLE -> {
                             SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
                                 PlayerUtil.setSpellAt(ctx.get().getSender(), (int) message.num, spell);

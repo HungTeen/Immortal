@@ -4,8 +4,8 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
@@ -58,7 +58,7 @@ public class PlayerRangeFloats {
 
         @Override
         public MutableComponent getComponent() {
-            return Component.translatable("misc." + getModID() +".player_data." + getName());
+            return TipUtil.misc("player_data." + getName());
         }
 
     }

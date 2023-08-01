@@ -245,7 +245,7 @@ public class IMMCommand {
 
     private static int addSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.getOptManager(player).ifPresent(l -> l.addSpiritualRoot(root));
+            PlayerUtil.addSpiritualRoot(player, root);
             showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
@@ -253,7 +253,7 @@ public class IMMCommand {
 
     private static int removeSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.getOptManager(player).ifPresent(l -> l.removeSpiritualRoot(root));
+            PlayerUtil.removeSpiritualRoot(player, root);
             showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
@@ -282,7 +282,7 @@ public class IMMCommand {
             PlayerUtil.learnSpell(player, spell, level);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(() -> spell.getComponent(), true);
+        source.sendSuccess(spell::getComponent, true);
         return targets.size();
     }
 
@@ -291,7 +291,7 @@ public class IMMCommand {
             PlayerUtil.forgetSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(() -> spell.getComponent(), true);
+        source.sendSuccess(spell::getComponent, true);
         return targets.size();
     }
 
@@ -300,7 +300,7 @@ public class IMMCommand {
             SpellManager.checkActivateSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
         }
-        source.sendSuccess(() -> spell.getComponent(), true);
+        source.sendSuccess(spell::getComponent, true);
         return targets.size();
     }
 

@@ -25,6 +25,10 @@ import javax.annotation.Nullable;
  */
 public class RenderUtil {
 
+    public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
+        RenderHelper.renderScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
+    }
+
     public static void renderCenterScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderCenterScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }

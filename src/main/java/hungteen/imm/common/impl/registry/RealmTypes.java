@@ -56,7 +56,7 @@ public class RealmTypes {
         return registry().register(type);
     }
 
-    public record RealmType(String name, int requireCultivation, int realmValue, int spiritualValue, ICultivationType cultivationType) implements IRealmType {
+    public record RealmType(String name, int maxCultivation, int realmValue, int spiritualValue, ICultivationType cultivationType) implements IRealmType {
 
         @Override
         public int getSpiritualValue() {

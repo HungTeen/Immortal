@@ -53,6 +53,14 @@ public class RecipeGen extends RecipeProvider {
     }
 
     protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, IMMItems.FIVE_FLOWERS_ELIXIR.get())
+                .requires(Items.SUNFLOWER)
+                .requires(Items.LILAC)
+                .requires(Items.ROSE_BUSH)
+                .requires(Items.PEONY)
+                .requires(Items.SPORE_BLOSSOM)
+                .unlockedBy("has_flower", has(ItemTags.FLOWERS))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IMMItems.JOSS_PAPER.get())
                 .requires(Items.BAMBOO)
                 .requires(IMMItems.RICE_STRAW.get())
@@ -116,7 +124,7 @@ public class RecipeGen extends RecipeProvider {
     protected static void woolCushionFromDye(Consumer<FinishedRecipe> consumer, ItemLike cushion, ItemLike dye) {
         ItemHelper.get().get(WoolCushionBlock.getWoolCushionLocation(DyeColor.WHITE)).ifPresent(whiteCushion -> {
             if (cushion != whiteCushion) {
-                ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cushion).requires(Items.WHITE_BED).requires(dye).group("dyed_wool_cushion").unlockedBy("has_white_cushion", has(whiteCushion)).save(consumer, conversionName(cushion, whiteCushion));
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cushion).requires(whiteCushion).requires(dye).group("dyed_wool_cushion").unlockedBy("has_white_cushion", has(whiteCushion)).save(consumer, conversionName(cushion, whiteCushion));
             }
         });
     }

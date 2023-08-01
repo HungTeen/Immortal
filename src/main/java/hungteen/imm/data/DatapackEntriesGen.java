@@ -1,10 +1,16 @@
 package hungteen.imm.data;
 
+import hungteen.htlib.common.impl.position.HTPositionComponents;
+import hungteen.htlib.common.impl.raid.HTRaidComponents;
+import hungteen.htlib.common.impl.result.HTResultComponents;
+import hungteen.htlib.common.impl.spawn.HTSpawnComponents;
+import hungteen.htlib.common.impl.wave.HTWaveComponents;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
+import hungteen.imm.common.world.entity.trial.*;
 import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.features.IMMFeatures;
@@ -34,9 +40,10 @@ import java.util.concurrent.CompletableFuture;
 public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
 
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            // Vanilla.
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
-//            .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
+            .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
             .add(Registries.CONFIGURED_FEATURE, IMMFeatures::register)
             .add(Registries.PLACED_FEATURE, IMMPlacements::register)
             .add(Registries.STRUCTURE, IMMStructures::register)
@@ -44,7 +51,15 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, IMMNoiseParamLists::register)
             .add(Registries.NOISE_SETTINGS, IMMNoiseSettings::register)
             .add(Registries.LEVEL_STEM, IMMLevelStems::register)
+            // Forge.
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, IMMBiomeModifiers::register)
+            // HTLib.
+            .add(HTPositionComponents.registry().getRegistryKey(), IMMPositionComponents::register)
+            .add(HTResultComponents.registry().getRegistryKey(), IMMResultComponents::register)
+            .add(HTSpawnComponents.registry().getRegistryKey(), IMMSpawnComponents::register)
+            .add(HTWaveComponents.registry().getRegistryKey(), IMMWaveComponents::register)
+            .add(HTRaidComponents.registry().getRegistryKey(), IMMRaidComponents::register)
+            // Immortal.
             .add(HumanSettings.registry().getRegistryKey(), HumanSettings::register)
             .add(ElixirEffects.registry().getRegistryKey(), ElixirEffects::register)
             .add(ManualContents.registry().getRegistryKey(), ManualContents::register)

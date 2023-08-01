@@ -38,7 +38,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     public SpellScreen() {
         super(MeditationTypes.SPELL);
-        this.scrollComponent = new ScrollComponent<>(this, 18, 6, 5){
+        this.scrollComponent = new ScrollComponent<>(this, 16, 6, 5){
             @Override
             protected boolean onClick(Minecraft mc, Screen screen, ISpellType spell, int slotId) {
                 if(SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()){
@@ -60,6 +60,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     protected void init() {
         super.init();
         this.scrollComponent.setOffset(this.leftPos + 15, this.topPos + 13);
+        this.scrollComponent.setInterval(2);
     }
 
     @Override

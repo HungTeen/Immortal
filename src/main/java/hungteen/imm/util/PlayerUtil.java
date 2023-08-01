@@ -129,17 +129,6 @@ public class PlayerUtil {
     }
 
     /**
-     * 重置玩家的灵根。
-     * {@link IMMCommand}
-     */
-    public static void resetSpiritualRoots(Player player){
-        getOptManager(player).ifPresent(l -> {
-            l.clearSpiritualRoot();
-            getSpiritualRoots(player.getRandom()).forEach(l::addSpiritualRoot);
-        });
-    }
-
-    /**
      * 玩家灵根的生成规则： <br>
      * 1. 首先依据概率选择是几个灵根（0 - 5）。 <br>
      * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。 <br>
@@ -166,7 +155,7 @@ public class PlayerUtil {
             if(rootCount == 1){
                 rootChosen.addAll(WeightedList.create(SpiritualTypes.registry().getValues().stream().toList()).getRandomItems(random, 1, true));
             } else if(rootCount > 1){
-                rootChosen.addAll(WeightedList.create(IMMAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList())).getRandomItems(random, 1, true));
+                rootChosen.addAll(WeightedList.create(IMMAPI.get().spiritualRegistry().get().getValues().stream().filter(ISpiritualType::isCommonRoot).collect(Collectors.toList())).getRandomItems(random, rootCount, true));
             }
         }
         return rootChosen;
@@ -183,6 +172,31 @@ public class PlayerUtil {
 
     public static <T> T getManagerResult(Player player, Function<PlayerDataManager, T> function, T defaultValue) {
         return PlayerCapabilityManager.getManagerResult(player, CapabilityHandler.PLAYER_CAP, function, defaultValue);
+    }
+
+    /* Operations About Spiritual Roots */
+
+    public static void addSpiritualRoot(Player player, ISpiritualType root){
+        getOptManager(player).ifPresent(l -> l.addSpiritualRoot(root));
+    }
+
+    public static void removeSpiritualRoot(Player player, ISpiritualType root){
+        getOptManager(player).ifPresent(l -> l.removeSpiritualRoot(root));
+    }
+
+    public static void clearSpiritualRoot(Player player){
+        getOptManager(player).ifPresent(PlayerDataManager::clearSpiritualRoot);
+    }
+
+    /**
+     * 重置玩家的灵根。
+     * {@link IMMCommand}
+     */
+    public static void resetSpiritualRoots(Player player){
+        getOptManager(player).ifPresent(l -> {
+            l.clearSpiritualRoot();
+            getSpiritualRoots(player.getRandom()).forEach(l::addSpiritualRoot);
+        });
     }
 
     /* Operations About Spells */
@@ -316,7 +330,7 @@ public class PlayerUtil {
         return getFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA);
     }
 
-    public static float getFullMana(Player player){
+    public static float getMaxMana(Player player){
         return getManagerResult(player, PlayerDataManager::getFullManaValue, 0F);
     }
 
@@ -326,6 +340,10 @@ public class PlayerUtil {
 
     public static boolean useDefaultCircle(Player player){
         return getManagerResult(player, PlayerDataManager::useDefaultCircle, true);
+    }
+
+    public static boolean knowSpiritualRoots(Player player){
+        return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1, false);
     }
 
     /* Misc Operations */
@@ -351,7 +369,7 @@ public class PlayerUtil {
         getOptManager(player).ifPresent(m -> {
             if(EntityHelper.isServer(player)){
                 // 自身修为达到了此境界的要求。
-                if(m.getCultivation() >= realm.requireCultivation()){
+                if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, RealmStages.PRELIMINARY)){
                     m.setRealmType(realm);
                     m.setRealmStage(RealmStages.PRELIMINARY);
                 } else {
@@ -383,6 +401,18 @@ public class PlayerUtil {
             }
         });
         return success.get();
+    }
+
+    public static float getEachMaxCultivation(Player player){
+        return getManagerResult(player, l -> RealmManager.getEachCultivation(l.getRealmType()), 0F);
+    }
+
+    public static float getMaxCultivation(Player player){
+        return getManagerResult(player, l -> RealmManager.getStageRequiredCultivation(l.getRealmType(), l.getRealmStage()), 0F);
+    }
+
+    public static boolean reachThreshold(Player player){
+        return getPlayerRealmStage(player).canLevelUp() || getCultivation(player) >= getMaxCultivation(player);
     }
 
     public static ICultivationType getCultivationType(Player player){

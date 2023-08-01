@@ -4,7 +4,7 @@
   "group": "dyed_wool_cushion",
   "ingredients": [
     {
-      "item": "minecraft:white_bed"
+      "item": "imm:white_wool_cushion"
     },
     {
       "item": "minecraft:red_dye"

@@ -1,26 +1,35 @@
 package hungteen.imm.common;
 
 import hungteen.htlib.HTLib;
+import hungteen.htlib.common.impl.raid.HTRaidComponents;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
+import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
+import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,6 +69,39 @@ public class RealmManager {
         ));
     }
 
+    public static void onPlayerBreakThrough(ServerPlayer player){
+        final IRealmType currentRealm = PlayerUtil.getPlayerRealm(player);
+        final RealmStages currentStage = PlayerUtil.getPlayerRealmStage(player);
+        final IRealmType nextRealm;
+        final RealmStages nextStage;
+        if(currentStage.canLevelUp()){
+            final RealmNode currentNode = findRealmNode(currentRealm);
+            final RealmNode nextNode = currentNode.next(CultivationTypes.SPIRITUAL);
+            if(nextNode != null){
+                nextRealm = nextNode.getRealm();
+                nextStage = RealmStages.PRELIMINARY;
+            } else {
+                nextStage = currentStage;
+                nextRealm = currentRealm;
+                return;
+            }
+        } else {
+            nextRealm = currentRealm;
+            nextStage = RealmStages.next(currentStage);
+        }
+        if(player.level() instanceof ServerLevel serverLevel){
+            SimpleWeightedList.list(breakThroughRaids(player.level()).stream().filter(raid -> {
+                return raid.match(nextRealm, nextStage);
+            }).toList()).getItem(player.getRandom()).ifPresent(raid -> {
+                DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, raid));
+            });
+        }
+    }
+
+    public static List<BreakThroughRaid> breakThroughRaids(Level level){
+        return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
+    }
+
     public static void onPlayerKillLiving(ServerPlayer player, LivingEntity living){
         final int count = player.getStats().getValue(Stats.ENTITY_KILLED, living.getType());
         if(count < MAX_VALID_KILL_COUNT){
@@ -74,6 +116,10 @@ public class RealmManager {
 
     public static float getKillXp(EntityType<?> type){
         return killXpMap.getOrDefault(type, DEFAULT_KILL_XP);
+    }
+
+    public static boolean canBreakThrough(Player player){
+        return PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS) >= 1;
     }
 
     public static float getBreakThroughProgress(Player player){
@@ -92,10 +138,22 @@ public class RealmManager {
         return RealmStages.PRELIMINARY;
     }
 
+    public static IRealmType getEntityRealm(Entity entity) {
+        if(entity instanceof Player){
+            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
+        }
+        //TODO 境界
+        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
+    }
+
     public static float getStageRequiredCultivation(IRealmType realm, RealmStages stage){
         final RealmNode node = findRealmNode(realm);
-        final float previousValue = node.hasPreviousNode() ? node.getPreviousRealm().requireCultivation() : 0;
-        return stage.getPercent() * (realm.requireCultivation() - previousValue);
+        final float previousValue = node.hasPreviousNode() ? node.getPreviousRealm().maxCultivation() : 0;
+        return stage.getPercent() * (realm.maxCultivation() - previousValue) + previousValue;
+    }
+
+    public static float getEachCultivation(IRealmType realm){
+        return (float) realm.maxCultivation() / ExperienceTypes.values().length;
     }
 
     /**
@@ -133,6 +191,11 @@ public class RealmManager {
             if(node != null) return node;
         }
         return null;
+    }
+
+    public static MutableComponent getRealmInfo(IRealmType realm, RealmStages stage){
+        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY) return realm.getComponent();
+        return realm.getComponent().append(" - ").append(getStageComponent(stage));
     }
 
     public static MutableComponent getExperienceComponent(){

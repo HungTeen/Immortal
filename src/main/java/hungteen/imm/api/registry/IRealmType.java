@@ -11,10 +11,10 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
 public interface IRealmType extends ISimpleEntry {
 
     /**
-     * 达到此境界所需的修为。
+     * 此境界的最大修为。
      * @return how many xp needed for level up.
      */
-    int requireCultivation();
+    int maxCultivation();
 
     /**
      * 境界用一个数来对应，数越大境界越高。注意：这表示的是大圆满时的值！ <br>

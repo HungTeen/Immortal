@@ -39,8 +39,8 @@ public class ClientElementToolTip implements ClientTooltipComponent {
 //        stack.pushPose();
 //        int width = 0;
 //        for (Pair<ISpiritualType, Integer> pair : this.elementToolTip.getIngredients()) {
-//            RenderHelper.setTexture(pair.getFirst().getResourceLocation());
-//            GuiComponent.blit(stack, posX + width + 2, posY, pair.getFirst().getTexturePosition().getFirst(), pair.getFirst().getTexturePosition().getSecond(), 10, 10, 256, 256);
+//            RenderHelper.setTexture(pair.getFirst().getTexture());
+//            GuiComponent.blit(stack, posX + width + 2, posY, pair.getFirst().getTexturePos().getFirst(), pair.getFirst().getTexturePos().getSecond(), 10, 10, 256, 256);
 //            width += ElementToolTip.SINGLE_WIDTH;
 //        }
 //        stack.popPose();

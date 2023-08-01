@@ -118,9 +118,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
+            for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i ++) {
                 if (spellList[i] != null) {
-                    nbt.putInt("active_" + spellList[i].getRegistryName(), i);
+                    nbt.putString("active_" + i, spellList[i].getRegistryName());
                 }
             }
             tag.put("SpellList", nbt);
@@ -191,13 +191,14 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("SpellList")) {
             final CompoundTag nbt = tag.getCompound("SpellList");
-            IMMAPI.get().spellRegistry().ifPresent(l -> {
-                l.getValues().forEach(type -> {
-                    if (nbt.contains("active_" + type.getRegistryName())) {
-                        spellList[nbt.getInt(type.getRegistryName())] = type;
-                    }
-                });
-            });
+            for(int i = 0; i < this.spellList.length; ++ i){
+                if(nbt.contains("active_" + i)){
+                    final int pos = i;
+                    SpellTypes.registry().getValue(nbt.getString("active_" + i)).ifPresent(type -> {
+                        this.spellList[pos] = type;
+                    });
+                }
+            }
         }
         if (tag.contains("SectRelations")){
             final CompoundTag nbt = tag.getCompound("SectRelations");
@@ -256,6 +257,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public void cloneFromExistingPlayerData(IPlayerDataManager data, boolean died) {
         this.loadFromNBT(data.saveToNBT());
+        this.syncToClient();
     }
 
     /**
@@ -263,6 +265,10 @@ public class PlayerDataManager implements IPlayerDataManager {
      */
     @Override
     public void syncToClient() {
+        this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
+        this.spiritualRoots.forEach(l -> {
+            this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, l.getRegistryName());
+        });
         this.learnSpells.forEach((spell, level) -> {
             this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
         });
@@ -281,18 +287,21 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
     }
 
-    /* SpiritualRoots related methods */
+    /* Spiritual Roots related methods */
 
     public void addSpiritualRoot(ISpiritualType spiritualRoot) {
         this.spiritualRoots.add(spiritualRoot);
+        this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, spiritualRoot.getRegistryName());
     }
 
     public void removeSpiritualRoot(ISpiritualType spiritualRoot) {
         this.spiritualRoots.remove(spiritualRoot);
+        this.sendMiscDataPacket(MiscDataPacket.Types.REMOVE_ROOT, spiritualRoot.getRegistryName());
     }
 
     public void clearSpiritualRoot() {
         this.spiritualRoots.clear();
+        this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
     }
 
     public boolean hasSpiritualRoot(ISpiritualType spiritualRoot) {
@@ -389,6 +398,16 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void setExperience(ExperienceTypes type, float value) {
         this.experienceMap.put(type, value);
+        if(EntityHelper.isServer(getPlayer())){
+            final RealmStages currentStage = this.getRealmStage();
+            // 没有门槛时，自动进到下一个阶段。
+            if(! currentStage.hasThreshold() && currentStage.hasNextStage()){
+                final RealmStages nextStage = RealmStages.next(currentStage);
+                if(this.getCultivation() >= RealmManager.getStageRequiredCultivation(this.getRealmType(), nextStage)){
+                    this.setRealmStage(nextStage);
+                }
+            }
+        }
         this.sendMiscDataPacket(MiscDataPacket.Types.EXPERIENCE, type.toString(), value);
     }
 
@@ -401,7 +420,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public float getCultivation(){
-        return Arrays.stream(ExperienceTypes.values()).map(xp -> Math.min(this.realmType.requireCultivation(), getExperience(xp))).reduce(0F, Float::sum);
+        return Arrays.stream(ExperienceTypes.values()).map(xp -> Math.min(RealmManager.getEachCultivation(this.realmType), getExperience(xp))).reduce(0F, Float::sum);
     }
 
     /* Player Number Data Related Methods */
@@ -446,11 +465,11 @@ public class PlayerDataManager implements IPlayerDataManager {
      * 待客户端配置文件更新该值。
      */
     public boolean requireSyncCircle(){
-        return getIntegerData(PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE) == 0;
+        return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 0;
     }
 
     public boolean useDefaultCircle(){
-        return getIntegerData(PlayerRangeIntegers.DEFAULT_SPELL_CIRCLE) == 1;
+        return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 1;
     }
 
     public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {
@@ -482,8 +501,14 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setRealmStage(RealmStages stage){
-        this.realmStage = stage;
-        this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
+        if(this.realmStage != stage){
+            this.realmStage = stage;
+            // 突破次数重设。
+            this.setIntegerData(PlayerRangeIntegers.BREAK_THROUGH_TRIES, 0);
+            // 突破进度重设。
+            this.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
+            this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
+        }
     }
 
     public ICultivationType getCultivationType() {
@@ -505,8 +530,12 @@ public class PlayerDataManager implements IPlayerDataManager {
         if(spell != null){
             this.sendMiscDataPacket(MiscDataPacket.Types.PREPARING_SPELL, spell.getRegistryName());
         } else {
-            this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_PREPARING_SPELL, "");
+            this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_PREPARING_SPELL);
         }
+    }
+
+    public void sendMiscDataPacket(MiscDataPacket.Types type) {
+        sendMiscDataPacket(type, "");
     }
 
     public void sendMiscDataPacket(MiscDataPacket.Types type, String data) {

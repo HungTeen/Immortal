@@ -23,6 +23,9 @@ public class HTButton extends Button {
 
     @Override
     protected void renderWidget(GuiGraphics graphics, int x, int y, float partialTicks) {
+        if(this.active != this.isActive()){
+            this.active = this.isActive();
+        }
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         graphics.blit(this.textureLocation, this.getX(), this.getY(), this.getTextureX(), this.getTextureY(), this.getWidth(), this.getHeight());

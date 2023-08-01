@@ -20,13 +20,18 @@ public class MathUtil {
     }
 
     public static int getBarLen(float num, float maxNum, int maxLen) {
-        if (maxNum != 0) {
-            int percent = Mth.floor(num * maxLen / maxNum);
-            if (percent <= 0 && num != 0) {
+        return getBarLen(maxNum == 0 ? 1F : num / maxNum, maxLen);
+    }
+
+    public static int getBarLen(float percent, int maxLen) {
+        if (percent >= 0) {
+            int len = Mth.floor(percent * maxLen);
+            if (len <= 0 && percent != 0) {
                 return 1;
-            } else {
-                return percent >= maxLen && num != maxNum ? maxLen - 1 : Mth.clamp(percent, 0, maxLen);
+            } else if(len >= maxLen && percent < 1) {
+                return maxLen - 1;
             }
+            return Mth.clamp(len, 0, maxLen);
         } else {
             return 0;
         }

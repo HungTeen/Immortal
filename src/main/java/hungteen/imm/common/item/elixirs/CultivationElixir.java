@@ -54,18 +54,6 @@ public abstract class CultivationElixir extends ElixirItem{
         return List.of(getCultivation(accuracy));
     }
 
-    public static class FiveFlowersElixir extends CultivationElixir{
-
-        public FiveFlowersElixir() {
-            super(1, Rarity.COMMON, ColorHelper.LITTLE_YELLOW1.rgb());
-        }
-
-        @Override
-        protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-            return immortal().apply(IMMAPI.get().getEntityRealm(livingEntity));
-        }
-    }
-
     public static class GatherBreathElixir extends CultivationElixir{
 
         public GatherBreathElixir() {

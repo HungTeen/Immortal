@@ -3,11 +3,14 @@ package hungteen.imm.common.event;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
+import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.item.artifacts.HammerItem;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.tag.IMMBlockTags;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -27,21 +30,33 @@ public class IMMPlayerEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END && EntityHelper.isServer(event.player)) {
-            PlayerEventHandler.tick(event.player);
+            if(PlayerUtil.isSitInMeditation(event.player)){
+                PlayerUtil.addIntegerData(event.player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+            }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerEventHandler.onPlayerLogin(event.getEntity());
+            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerEventHandler.onPlayerLogout(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (EntityHelper.isServer(event.getEntity())) {
+            PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
+                PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
+                    l.cloneFromExistingPlayerData(r, event.isWasDeath());
+                });
+            });
         }
     }
 

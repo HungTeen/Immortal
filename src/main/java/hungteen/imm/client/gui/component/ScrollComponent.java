@@ -20,25 +20,34 @@ import java.util.List;
 public class ScrollComponent<T> {
 
     private final IScrollableScreen<T> screen;
-    private final int len;
+    private final int width;
+    private final int height;
     private final int rows;
     private final int columns;
+    private int widthInterval = 0;
+    private int heightInterval = 0;
     private int leftPos = 0;
     private int topPos = 0;
     private int slotIdOffset = 0;
     private double scrollPercent;
     private int startIndex;
 
+    public ScrollComponent(IScrollableScreen<T> screen, int len, int rows, int columns) {
+        this(screen, len, len, rows, columns);
+    }
+
     /**
      * Main Constructor.
      * @param screen       The component belongs to (Item list getter).
-     * @param len          Square render length of each item.
+     * @param width        Square render width of each item.
+     * @param height       Square render height of each item.
      * @param rows         How many rows to display items.
      * @param columns      How many columns to display items.
      */
-    public ScrollComponent(IScrollableScreen<T> screen, int len, int rows, int columns) {
+    public ScrollComponent(IScrollableScreen<T> screen, int width, int height, int rows, int columns) {
         this.screen = screen;
-        this.len = len;
+        this.width = width;
+        this.height = height;
         this.rows = rows;
         this.columns = columns;
     }
@@ -46,6 +55,15 @@ public class ScrollComponent<T> {
     public void setOffset(int leftPos, int topPos){
         this.leftPos = leftPos;
         this.topPos = topPos;
+    }
+
+    public void setInterval(int len){
+        this.setInterval(len, len);
+    }
+
+    public void setInterval(int width, int height){
+        this.widthInterval = width;
+        this.heightInterval = height;
     }
 
     public void setSlotIdOffset(int slotIdOffset) {
@@ -137,7 +155,7 @@ public class ScrollComponent<T> {
 
     protected boolean hovered(int r, int c, double mouseX, double mouseY) {
         final Pair<Integer, Integer> pair = getXY(r, c);
-        return pair.getFirst() <= mouseX && pair.getFirst() + this.len >= mouseX && pair.getSecond() <= mouseY && pair.getSecond() + this.len >= mouseY;
+        return pair.getFirst() <= mouseX && pair.getFirst() + this.width >= mouseX && pair.getSecond() <= mouseY && pair.getSecond() + this.height >= mouseY;
     }
 
     public int getPos(int r, int c){
@@ -149,7 +167,7 @@ public class ScrollComponent<T> {
     }
 
     public Pair<Integer, Integer> getXY(int r, int c){
-        return Pair.of(this.leftPos + c * this.len, this.topPos + r * this.len);
+        return Pair.of(this.leftPos + c * (this.width + this.widthInterval), this.topPos + r * (this.height + this.heightInterval));
     }
 
     public int getRows() {
@@ -160,8 +178,8 @@ public class ScrollComponent<T> {
         return columns;
     }
 
-    public double getScrollPercent() {
-        return scrollPercent;
+    public float getScrollPercent() {
+        return (float) scrollPercent;
     }
 
     public int getStartIndex() {

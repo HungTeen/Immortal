@@ -1,7 +1,9 @@
 package hungteen.imm.api.registry;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.api.enums.Elements;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 
@@ -38,16 +40,16 @@ public interface ISpiritualType extends ISimpleEntry, WeightedEntry {
      */
     int getSpiritualColor();
 
-//    /**
-//     * 元素图标的位置。
-//     */
-//    Pair<Integer, Integer> getTexturePosition();
-//
-//    /**
-//     * 图片的地址
-//     */
-//    ResourceLocation getResourceLocation();
-//
+    /**
+     * 元素图标的位置。
+     */
+    Pair<Integer, Integer> getTexturePos();
+
+    /**
+     * 图片的地址
+     */
+    ResourceLocation getTexture();
+
 //    /**
 //     * 炼丹炉中的排序。
 //     */

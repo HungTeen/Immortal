@@ -29,6 +29,7 @@ import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.world.entity.IMMDummyEntities;
 import hungteen.imm.common.world.levelgen.IMMStructurePieces;
 import hungteen.imm.common.world.levelgen.IMMStructureTypes;
 import hungteen.imm.common.world.levelgen.features.IMMFeatures;
@@ -142,6 +143,7 @@ public class ImmortalMod {
      */
     public static void coreRegister() {
         IMMWoods.register();
+        IMMDummyEntities.init();
 
         TradeTypes.TradeType.register();
         SpiritualTypes.registry();

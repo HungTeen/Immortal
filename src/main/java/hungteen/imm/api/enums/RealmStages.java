@@ -37,7 +37,6 @@ public enum RealmStages {
     private final boolean canLevelUp;
 
     RealmStages(float percent, boolean canLevelUp) {
-
         this.percent = percent;
         this.canLevelUp = canLevelUp;
     }
@@ -48,5 +47,17 @@ public enum RealmStages {
 
     public boolean canLevelUp() {
         return canLevelUp;
+    }
+
+    public boolean hasThreshold() {
+        return ! canLevelUp();
+    }
+
+    public boolean hasNextStage(){
+        return this != PERFECTION;
+    }
+
+    public static RealmStages next(RealmStages stage){
+        return RealmStages.values()[Math.min(stage.ordinal() + 1, RealmStages.values().length - 1)];
     }
 }

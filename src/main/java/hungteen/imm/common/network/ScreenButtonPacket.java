@@ -1,5 +1,6 @@
 package hungteen.imm.common.network;
 
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,6 +47,9 @@ public class ScreenButtonPacket {
                 final ServerPlayer player = ctx.get().getSender();
                 if(player != null){
                     switch (Types.values()[message.id]){
+                        case BREAK_THROUGH -> {
+                            RealmManager.onPlayerBreakThrough(player);
+                        }
                         case SET_SPAWN_POINT -> {
                             // See SetSpawnCommand.
                             player.setRespawnPosition(player.level().dimension(), player.blockPosition().above(), 0, true, false);
@@ -60,9 +64,11 @@ public class ScreenButtonPacket {
 
     public enum Types {
 
-        QUIT_MEDITATION,
+        BREAK_THROUGH,
 
         SET_SPAWN_POINT,
+
+        QUIT_MEDITATION,
 
         ;
     }

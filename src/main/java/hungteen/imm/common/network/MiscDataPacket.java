@@ -5,6 +5,7 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -51,6 +52,9 @@ public class MiscDataPacket {
                 PlayerHelper.getClientPlayer().ifPresent(player -> {
                     final Types type = Types.values()[message.type];
                     switch (type) {
+                        case ADD_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.addSpiritualRoot(player, l));
+                        case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
+                        case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
                         case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
                         case CULTIVATION -> CultivationTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setCultivationType(player, l));
                         case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.checkAndSetRealm(player, realm));
@@ -66,6 +70,9 @@ public class MiscDataPacket {
 
     public enum Types{
 
+        ADD_ROOT,
+        REMOVE_ROOT,
+        CLEAR_ROOT,
         EXPERIENCE,
         CULTIVATION,
         REALM,
