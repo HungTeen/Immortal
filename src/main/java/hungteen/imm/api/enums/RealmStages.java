@@ -1,11 +1,15 @@
 package hungteen.imm.api.enums;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/2/24 9:51
  */
-public enum RealmStages {
+public enum RealmStages implements StringRepresentable {
 
     /**
      * 前期。
@@ -33,6 +37,7 @@ public enum RealmStages {
     PERFECTION(1F, true);
     ;
 
+    public static final Codec<RealmStages> CODEC = StringRepresentable.fromEnum(RealmStages::values);
     private final float percent;
     private final boolean canLevelUp;
 
@@ -59,5 +64,10 @@ public enum RealmStages {
 
     public static RealmStages next(RealmStages stage){
         return RealmStages.values()[Math.min(stage.ordinal() + 1, RealmStages.values().length - 1)];
+    }
+
+    @Override
+    public @NotNull String getSerializedName() {
+        return name().toLowerCase();
     }
 }

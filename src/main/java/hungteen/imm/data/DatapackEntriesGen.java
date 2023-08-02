@@ -10,7 +10,7 @@ import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
-import hungteen.imm.common.world.entity.trial.*;
+import hungteen.imm.common.impl.raid.*;
 import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.features.IMMFeatures;

@@ -6,9 +6,14 @@ import hungteen.htlib.util.helper.IModIDHelper;
 import hungteen.htlib.util.helper.VanillaHelper;
 import hungteen.imm.CommonProxy;
 import hungteen.imm.ImmortalMod;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -72,6 +77,10 @@ public class Util {
 
     public static CommonProxy getProxy(){
         return ImmortalMod.PROXY;
+    }
+
+    public static <T> List<Holder<T>> wrap(HolderGetter<T> getter, List<ResourceKey<T>> keys){
+        return keys.stream().map(getter::getOrThrow).collect(Collectors.toList());
     }
 
     public static void error(String message, Object... arguments){

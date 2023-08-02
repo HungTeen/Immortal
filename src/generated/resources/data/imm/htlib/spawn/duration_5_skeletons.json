@@ -1,0 +1,10 @@
+{
+  "type": "htlib:duration",
+  "duration": 120,
+  "each_spawn_count": 1,
+  "spawn_interval": 30,
+  "spawn_settings": {
+    "enable_default_spawn": false,
+    "entity_type": "minecraft:skeleton"
+  }
+}

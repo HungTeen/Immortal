@@ -23,9 +23,13 @@ public class PlayerRangeIntegers {
      */
     public static final IRangeNumber<Integer> CONSCIOUSNESS = register(new PlayerData("consciousness", 0, 0, Integer.MAX_VALUE));
 
-    public static final IRangeNumber<Integer> OPPORTUNITY = register(new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE));
-
-    public static final IRangeNumber<Integer> PERSONALITY = register(new PlayerData("personality", 0, 0, Integer.MAX_VALUE));
+    /**
+     * 业障。
+     */
+    public static final IRangeNumber<Integer> KARMA = register(new PlayerData("karma", 0, 0, Integer.MAX_VALUE));
+//    public static final IRangeNumber<Integer> OPPORTUNITY = register(new PlayerData("opportunity", 0, 0, Integer.MAX_VALUE));
+//
+//    public static final IRangeNumber<Integer> PERSONALITY = register(new PlayerData("personality", 0, 0, Integer.MAX_VALUE));
 
 
     /**

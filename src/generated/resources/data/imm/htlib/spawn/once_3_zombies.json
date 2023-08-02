@@ -1,0 +1,8 @@
+{
+  "type": "htlib:once",
+  "setting": {
+    "enable_default_spawn": false,
+    "entity_type": "minecraft:zombie"
+  },
+  "spawn_count": 3
+}

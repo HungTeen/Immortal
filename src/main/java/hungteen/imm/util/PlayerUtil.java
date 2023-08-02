@@ -360,18 +360,22 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getRealmStage, RealmStages.PRELIMINARY);
     }
 
+    public static boolean checkAndSetRealm(Player player, IRealmType realm){
+        return checkAndSetRealm(player, realm, RealmStages.PRELIMINARY);
+    }
+
     /**
      * 尝试直接改变境界。
      * @return 是否改变成功。
      */
-    public static boolean checkAndSetRealm(Player player, IRealmType realm){
+    public static boolean checkAndSetRealm(Player player, IRealmType realm, RealmStages stage){
         final AtomicBoolean success = new AtomicBoolean(true);
         getOptManager(player).ifPresent(m -> {
             if(EntityHelper.isServer(player)){
                 // 自身修为达到了此境界的要求。
-                if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, RealmStages.PRELIMINARY)){
+                if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, stage)){
                     m.setRealmType(realm);
-                    m.setRealmStage(RealmStages.PRELIMINARY);
+                    m.setRealmStage(stage);
                 } else {
                     success.set(false);
                 }
@@ -408,7 +412,10 @@ public class PlayerUtil {
     }
 
     public static float getMaxCultivation(Player player){
-        return getManagerResult(player, l -> RealmManager.getStageRequiredCultivation(l.getRealmType(), l.getRealmStage()), 0F);
+        return getManagerResult(player, l -> {
+            final RealmStages nextStage = RealmStages.next(l.getRealmStage());
+            return RealmManager.getStageRequiredCultivation(l.getRealmType(), nextStage);
+        }, 0F);
     }
 
     public static boolean reachThreshold(Player player){

@@ -48,7 +48,7 @@ public class ScreenButtonPacket {
                 if(player != null){
                     switch (Types.values()[message.id]){
                         case BREAK_THROUGH -> {
-                            RealmManager.onPlayerBreakThrough(player);
+                            RealmManager.tryBreakThrough(player);
                         }
                         case SET_SPAWN_POINT -> {
                             // See SetSpawnCommand.

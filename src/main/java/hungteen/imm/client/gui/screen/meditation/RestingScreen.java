@@ -13,6 +13,7 @@ import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -46,7 +47,7 @@ public class RestingScreen extends MeditationScreen {
         this.breakThroughButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.break_through"), (button) -> {
             NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.BREAK_THROUGH));
             this.sendWakeUp();
-        }).pos(x, y - BUTTON_DISTANCE)){
+        }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.break_through_button")))){
             @Override
             public boolean isActive() {
                 return RealmManager.canBreakThrough(ClientUtil.player());
@@ -54,10 +55,10 @@ public class RestingScreen extends MeditationScreen {
         };
         this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
             NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.SET_SPAWN_POINT));
-        }).pos(x, y));
+        }).pos(x, y).tooltip(Tooltip.create(TipUtil.gui("meditation.set_spawn_point_button"))));
         this.quitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit"), (button) -> {
             this.sendWakeUp();
-        }).pos(x, y + BUTTON_DISTANCE));
+        }).pos(x, y + BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.quit_button"))));
         this.addRenderableWidget(this.breakThroughButton);
         this.addRenderableWidget(this.spawnPointButton);
         this.addRenderableWidget(this.quitButton);
@@ -71,7 +72,7 @@ public class RestingScreen extends MeditationScreen {
         CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
         // Render Break Through Bar.
         if (PlayerUtil.reachThreshold(ClientUtil.player())) {
-            y -= 10;
+            y -= 20;
             graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
             final float progress = RealmManager.getBreakThroughProgress(ClientUtil.player());
             final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);

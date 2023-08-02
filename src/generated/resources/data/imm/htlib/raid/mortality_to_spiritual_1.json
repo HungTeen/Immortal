@@ -1,0 +1,29 @@
+{
+  "type": "imm:break_through_trial",
+  "setting": {
+    "bar_setting": {
+      "loss_title": "{\"translate\":\"info.imm.trial.loss_title\"}",
+      "raid_bar_color": "purple",
+      "raid_title": "{\"translate\":\"info.imm.trial.title\"}",
+      "victory_title": "{\"translate\":\"info.imm.trial.victory_title\"}"
+    },
+    "border_setting": {
+      "block_inside": true,
+      "block_outside": true,
+      "border_color": 16733695,
+      "raid_range": 25.0,
+      "render_border": true
+    },
+    "placement_type": "imm:around_20_blocks",
+    "sound_setting": {
+      "raid_start_sound": "minecraft:entity.enderman.stare"
+    }
+  },
+  "target_realm": "imm:spiritual_level_1",
+  "target_stage": "preliminary",
+  "waves": [
+    "imm:mortality_wave_1",
+    "imm:mortality_wave_2",
+    "imm:mortality_wave_3"
+  ]
+}

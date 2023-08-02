@@ -3,7 +3,7 @@ package hungteen.imm.common;
 import hungteen.htlib.HTLib;
 import hungteen.htlib.common.impl.raid.HTRaidComponents;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
-import hungteen.htlib.util.SimpleWeightedList;
+import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
@@ -14,6 +14,7 @@ import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
@@ -25,6 +26,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,12 +71,22 @@ public class RealmManager {
         ));
     }
 
-    public static void onPlayerBreakThrough(ServerPlayer player){
+    public static void breakThrough(ServerPlayer player, IRealmType realm, RealmStages stage){
+        final IRealmType oldRealm = PlayerUtil.getPlayerRealm(player);
+        final RealmStages oldStage = PlayerUtil.getPlayerRealmStage(player);
+        if(oldRealm != realm){
+            PlayerUtil.checkAndSetRealm(player, realm, stage);
+        } else if(oldStage != stage){
+            PlayerUtil.checkAndSetRealmStage(player, stage);
+        }
+    }
+
+    public static void tryBreakThrough(ServerPlayer player){
         final IRealmType currentRealm = PlayerUtil.getPlayerRealm(player);
         final RealmStages currentStage = PlayerUtil.getPlayerRealmStage(player);
         final IRealmType nextRealm;
         final RealmStages nextStage;
-        if(currentStage.canLevelUp()){
+        if(currentRealm == RealmTypes.MORTALITY || currentStage.canLevelUp()){
             final RealmNode currentNode = findRealmNode(currentRealm);
             final RealmNode nextNode = currentNode.next(CultivationTypes.SPIRITUAL);
             if(nextNode != null){
@@ -90,16 +102,23 @@ public class RealmManager {
             nextStage = RealmStages.next(currentStage);
         }
         if(player.level() instanceof ServerLevel serverLevel){
-            SimpleWeightedList.list(breakThroughRaids(player.level()).stream().filter(raid -> {
-                return raid.match(nextRealm, nextStage);
-            }).toList()).getItem(player.getRandom()).ifPresent(raid -> {
-                DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, raid));
+            final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
+            WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
+                return raid.match(nextRealm, nextStage, difficulty);
+            }).toList()).getRandomItem(player.getRandom()).ifPresent(raid -> {
+                DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
+                PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
             });
         }
     }
 
     public static List<BreakThroughRaid> breakThroughRaids(Level level){
         return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
+    }
+
+    public static float getTrialDifficulty(Player player, IRealmType realm, RealmStages stage){
+        final float karma = Mth.clamp(KarmaManager.calculateKarma(player) + (player.getRandom().nextFloat() < 0.5F ? 0 : player.getRandom().nextInt(10)), 0, KarmaManager.MAX_KARMA_VALUE);
+        return karma + (realm == RealmTypes.MORTALITY ? 0 : (stage.canLevelUp() ? 100 : stage == RealmStages.PRELIMINARY ? 0 : stage == RealmStages.MIDTERM ? 30 : 60));
     }
 
     public static void onPlayerKillLiving(ServerPlayer player, LivingEntity living){
@@ -195,7 +214,7 @@ public class RealmManager {
 
     public static MutableComponent getRealmInfo(IRealmType realm, RealmStages stage){
         if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY) return realm.getComponent();
-        return realm.getComponent().append(" - ").append(getStageComponent(stage));
+        return realm.getComponent().append("-").append(getStageComponent(stage));
     }
 
     public static MutableComponent getExperienceComponent(){

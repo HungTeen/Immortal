@@ -1,4 +1,4 @@
-package hungteen.imm.common.world.entity.trial;
+package hungteen.imm.common.impl.raid;
 
 import hungteen.htlib.api.interfaces.raid.IResultComponent;
 import hungteen.htlib.common.impl.result.HTResultComponents;

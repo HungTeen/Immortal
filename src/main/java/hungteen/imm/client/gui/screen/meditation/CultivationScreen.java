@@ -9,8 +9,10 @@ import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
+import hungteen.imm.common.KarmaManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -36,6 +38,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     private static final int LIVING_HEIGHT = 66;
     private static final int PROGRESS_BAR_WIDTH = 101;
     private static final int PROGRESS_BAR_HEIGHT = 5;
+    private static final int KARMA_WIDTH = 40;
+    private static final int KARMA_HEIGHT = 18;
     private final ScrollComponent<CultivationEntries> scrollComponent;
 
     public CultivationScreen() {
@@ -100,7 +104,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 for (ISpiritualType root : roots) {
                     var pair = root.getTexturePos();
                     graphics.blit(root.getTexture(), posX, posY, pair.getFirst(), pair.getSecond(), ElementOverlay.ELEMENT_LEN, ElementOverlay.ELEMENT_LEN);
-                    posX += interval;
+                    posX += interval + ElementOverlay.ELEMENT_LEN;
                 }
             }
         } else {
@@ -123,50 +127,63 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         final Player player = ClientUtil.player();
         switch (item) {
             case ELIXIR_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player));
+                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case FIGHT_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceTypes.FIGHTING), PlayerUtil.getEachMaxCultivation(player));
+                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceTypes.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case LEARN_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceTypes.SPELL), PlayerUtil.getEachMaxCultivation(player));
+                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceTypes.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case MISSION_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player));
+                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case CULTIVATION -> {
-                this.renderProgressWithText(graphics, TipUtil.CULTIVATION, x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player));
+                this.renderProgressWithText(graphics, TipUtil.CULTIVATION, x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
+            }
+            case KARMA -> {
+                final float value = KarmaManager.calculateKarma(ClientUtil.player());
+                final int width = MathUtil.getBarLen(value, KarmaManager.MAX_KARMA_VALUE, PROGRESS_BAR_WIDTH - 2);
+                int now = 0;
+                while(now + KARMA_WIDTH <= width){
+                    graphics.blit(TEXTURE, x + now, y + 1, 133, 150, KARMA_WIDTH, KARMA_HEIGHT);
+                    now += KARMA_WIDTH;
+                }
+                if(now < width){
+                    graphics.blit(TEXTURE, x + now, y + 1, 133, 150, width - now, KARMA_HEIGHT);
+                }
+                this.renderProgressWithText(graphics, PlayerRangeIntegers.KARMA.getComponent(), x, y, value, KarmaManager.MAX_KARMA_VALUE, true);
             }
             case SPIRITUAL_MANA -> {
-                this.renderProgressWithText(graphics, PlayerRangeFloats.SPIRITUAL_MANA.getComponent(), x, y, PlayerUtil.getMana(player), PlayerUtil.getMaxMana(player));
+                this.renderProgressWithText(graphics, PlayerRangeFloats.SPIRITUAL_MANA.getComponent(), x, y, PlayerUtil.getMana(player), PlayerUtil.getMaxMana(player), false);
             }
             case BREAK_THROUGH_PROGRESS -> {
-                this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS));
+                this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS), false);
             }
         }
     }
 
-    private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float value, float maxValue) {
-        this.renderProgress(graphics, x, y, value, maxValue);
+    private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float value, float maxValue, boolean karma) {
+        this.renderProgress(graphics, x, y, value, maxValue, karma);
         RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
-    private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float percent) {
-        this.renderProgress(graphics, x, y, percent);
+    private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float percent, boolean karma) {
+        this.renderProgress(graphics, x, y, percent, karma);
         RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(TipUtil.PERCENT.apply(percent)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
-    private void renderProgress(GuiGraphics graphics, int x, int y, float value, float maxValue) {
-        this.renderProgress(graphics, x, y, MathUtil.getBarLen(value, maxValue, PROGRESS_BAR_WIDTH - 2));
+    private void renderProgress(GuiGraphics graphics, int x, int y, float value, float maxValue, boolean karma) {
+        this.renderProgress(graphics, x, y, MathUtil.getBarLen(value, maxValue, PROGRESS_BAR_WIDTH - 2), karma);
     }
 
-    private void renderProgress(GuiGraphics graphics, int x, int y, float percent) {
-        this.renderProgress(graphics, x, y, MathUtil.getBarLen(percent, PROGRESS_BAR_WIDTH - 2));
+    private void renderProgress(GuiGraphics graphics, int x, int y, float percent, boolean karma) {
+        this.renderProgress(graphics, x, y, MathUtil.getBarLen(percent, PROGRESS_BAR_WIDTH - 2), karma);
     }
 
-    private void renderProgress(GuiGraphics graphics, int x, int y, int width) {
-        graphics.blit(TEXTURE, x, y + 14, 94, 130, PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT);
-        graphics.blit(TEXTURE, x + 1, y + 14 + 1, 95, 136, width, PROGRESS_BAR_HEIGHT - 2);
+    private void renderProgress(GuiGraphics graphics, int x, int y, int width, boolean karma) {
+        graphics.blit(TEXTURE, x, y + 14, 94, karma ? 140 : 130, PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT);
+        graphics.blit(TEXTURE, x + 1, y + 14 + 1, 95, karma ? 146 : 136, width, PROGRESS_BAR_HEIGHT - 2);
     }
 
     enum CultivationEntries {
@@ -180,6 +197,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         MISSION_CULTIVATION,
 
         CULTIVATION,
+
+        KARMA,
 
         SPIRITUAL_MANA,
 

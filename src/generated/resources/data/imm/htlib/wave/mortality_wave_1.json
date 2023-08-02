@@ -1,0 +1,12 @@
+{
+  "type": "htlib:common",
+  "setting": {
+    "wave_duration": 600
+  },
+  "spawns": [
+    {
+      "spawn": "imm:once_3_zombies",
+      "start_tick": 20
+    }
+  ]
+}
