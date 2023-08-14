@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public class PickupBlockSpell extends SpellType {
     }
 
     @Override
-    public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (result.hasBlock() && owner instanceof Player player) {
             final BlockState state = player.level().getBlockState(result.getBlockPos());
             // ban bedrock like blocks.

@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public class StealItemSpell extends SpellType {
     }
 
     @Override
-    public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (result.getEntity() instanceof LivingEntity living && owner instanceof Player player) {
                 List<ItemStack> items = Arrays.stream(EquipmentSlot.values())
                         .map(living::getItemBySlot)

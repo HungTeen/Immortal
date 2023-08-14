@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +18,7 @@ public class FlyWithItemSpell extends SpellType {
     }
 
     @Override
-    public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(result.getEntity() instanceof ItemEntity itemEntity){
             FlyingItemEntity flyingItem = IMMEntities.FLYING_ITEM.get().create(owner.level());
             if(flyingItem != null){

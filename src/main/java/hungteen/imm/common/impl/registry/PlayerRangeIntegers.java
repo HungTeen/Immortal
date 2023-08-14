@@ -43,11 +43,6 @@ public class PlayerRangeIntegers {
     public static final IRangeNumber<Integer> SPELL_CIRCLE_MODE = register(new PlayerData("spell_circle_mode", 0, 0, 2));
 
     /**
-     * 法术吟唱tick。
-     */
-    public static final IRangeNumber<Integer> SPELL_PRE_TICK = register(new PlayerData("spell_pre_tick", 0, 0, Integer.MAX_VALUE));
-
-    /**
      * 突破尝试次数。
      */
     public static final IRangeNumber<Integer> BREAK_THROUGH_TRIES = register(new PlayerData("break_through_tries", 0, 0, Integer.MAX_VALUE));

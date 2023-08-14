@@ -43,7 +43,7 @@ public class InputEvents {
 
                 // Right click to activate spell.
                 if(ClientDatas.ShowSpellCircle && event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
-                    SpellManager.activateAt(ClientDatas.lastSelectedPosition);
+                    SpellManager.selectSpellOnCircle(ClientDatas.lastSelectedPosition);
                     ClientHandler.switchSpellCircle();
                     event.setCanceled(true);
                 }

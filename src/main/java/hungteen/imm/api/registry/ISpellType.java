@@ -1,7 +1,7 @@
 package hungteen.imm.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -20,7 +20,7 @@ public interface ISpellType extends ISimpleEntry {
      * @param level spell level.
      * @return activate successfully.
      */
-    boolean onActivate(LivingEntity owner, EntityBlockResult result, int level);
+    boolean checkActivate(LivingEntity owner, HTHitResult result, int level);
 
     /**
      * 此法术有多少层。
@@ -39,20 +39,6 @@ public interface ISpellType extends ISimpleEntry {
      * @return Each releasing cool down.
      */
     int getCooldown();
-
-    /**
-     * 吟唱时间（施法前摇）。
-     * @return Prepare time to release the spell.
-     */
-    int getPrepareCD();
-
-    /**
-     * 是否是即可释放不需要吟唱的法术。
-     * @return Does the spell require preparing time.
-     */
-    default boolean isImmediateSpell(){
-        return getPrepareCD() == 0;
-    }
 
     /**
      * 法术是否能被触发，能则会被放置在法术轮盘上。

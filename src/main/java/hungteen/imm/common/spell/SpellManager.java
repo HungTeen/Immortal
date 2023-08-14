@@ -1,25 +1,25 @@
 package hungteen.imm.common.spell;
 
-import hungteen.imm.api.EntityBlockResult;
-import hungteen.imm.api.IMMAPI;
+import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
@@ -29,13 +29,17 @@ import java.util.function.Supplier;
  **/
 public class SpellManager {
 
+    private static final MutableComponent FORGOT_SPELL = TipUtil.info("spell.forgot");
+    private static final MutableComponent SPELL_ON_CD = TipUtil.info("spell.on_cooldown");
+    private static final MutableComponent NO_ENOUGH_MANA = TipUtil.info("spell.no_enough_mana");
+
     /**
      * Only on Client Side.
-     * @param position determines which spell will be triggered.
+     * @param position determines which spell will be selected.
      */
-    public static void activateAt(int position){
+    public static void selectSpellOnCircle(int position){
         if(position >= 0 && position < Constants.SPELL_CIRCLE_SIZE){
-            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, position));
+            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT_ON_CIRCLE, position));
         }
     }
 
@@ -43,47 +47,44 @@ public class SpellManager {
      * Only on Server Side.
      * {@link SpellPacket.Handler#onMessage(SpellPacket, Supplier)}
      */
-    public static void checkActivateSpell(Player player, int position){
-        checkActivateSpell(player, PlayerUtil.getSpellAt(player, position));
+    public static void selectSpellOnCircle(Player player, int position){
+        selectSpellOnCircle(player, PlayerUtil.getSpellAt(player, position));
     }
 
     /**
-     * Use this method to activate spell.
+     * Use this method to select spell.
      */
-    public static void checkActivateSpell(Player player, ISpellType spell){
-        checkActivateSpell(player, spell, SpellManager.getResult(player));
+    public static void selectSpellOnCircle(Player player, @Nullable ISpellType spell){
+        PlayerUtil.setPreparingSpell(player, spell);
     }
 
-    public static void checkActivateSpell(Player player, ISpellType spell, EntityBlockResult result){
+    public static void activateSpell(Player player, HTHitResult result){
+        final ISpellType spell = PlayerUtil.getPreparingSpell(player);
         if(spell != null){
             final int level = PlayerUtil.getSpellLevel(player, spell);
-            // 等级不够 或 在冷却。
-            if(level <= 0 || PlayerUtil.isSpellOnCooldown(player, spell)){
-                return;
-            }
-            if(! canSpellStart(player, spell)){
-                return;
-            }
-            if(result != null && !MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
-                final boolean success = onSpellTriggered(player, result, spell, level);
-                if(success){
-                    PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
-                    costMana(player, spell.getConsumeMana());
+            if(level > 0){
+                // 冷却结束。
+                if(! PlayerUtil.isSpellOnCooldown(player, spell)){
+                    // 灵力足够。
+                    if(PlayerUtil.getMana(player) >= spell.getConsumeMana()){
+                        if(result != null && !MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
+                            final boolean success = spell.checkActivate(player, result, level);
+                            if(success){
+                                PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
+                                costMana(player, spell.getConsumeMana());
+                            }
+                            MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, success));
+                        }
+                    } else {
+                        PlayerHelper.sendTipTo(player, NO_ENOUGH_MANA);
+                    }
+                } else {
+                    PlayerHelper.sendTipTo(player, SPELL_ON_CD);
                 }
-                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, success));
+            } else {
+                PlayerHelper.sendTipTo(player, FORGOT_SPELL);
             }
         }
-    }
-
-    public static boolean onSpellTriggered(Player player, EntityBlockResult result, ISpellType spell, int level){
-        if(spell.canTrigger()){
-            if(! spell.isImmediateSpell()){
-                PlayerUtil.setIntegerData(player, PlayerRangeIntegers.SPELL_PRE_TICK, spell.getPrepareCD());
-                return true;
-            }
-            return spell.onActivate(player, result, level);
-        }
-        return false;
     }
 
     /**
@@ -129,22 +130,8 @@ public class SpellManager {
         }
     }
 
-    public static EntityBlockResult getResult(Player player) {
-        final HitResult hitResult = PlayerUtil.getHitResult(player);
-        if(hitResult instanceof EntityHitResult result){
-            return new EntityBlockResult(player.level(), result.getEntity());
-        } else if(hitResult instanceof BlockHitResult result){
-            return new EntityBlockResult(player.level(), result.getBlockPos(), result.getDirection());
-        }
-        return null;
-    }
-
     public static long getSpellCDTime(Player player, ISpellType spell){
         return player.level().getGameTime() + spell.getCooldown();
-    }
-
-    public static boolean canSpellStart(Player player, ISpellType spell){
-        return IMMAPI.get().getSpiritualMana(player) >= spell.getConsumeMana() && ! isPreparing(player);
     }
 
     public static void costMana(Player player, int cost){
@@ -152,17 +139,17 @@ public class SpellManager {
     }
 
     /**
-     * 能否使用法术轮盘。
+     * 是否已经选择了法术。
      */
-    public static boolean canUseCircle(Player player){
-        return ! isPreparing(player);
+    public static boolean hasSpellSelected(Player player){
+        return PlayerUtil.getPreparingSpell(player) != null;
     }
 
     /**
-     * 是否正在吟唱法术。
+     * 能否使用法术轮盘。
      */
-    public static boolean isPreparing(Player player){
-        return PlayerUtil.getIntegerData(player, PlayerRangeIntegers.SPELL_PRE_TICK) > 0;
+    public static boolean canUseCircle(Player player){
+        return true;
     }
 
     public static Component getCostComponent(int cost){

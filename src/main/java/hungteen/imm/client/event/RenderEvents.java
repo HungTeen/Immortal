@@ -4,10 +4,7 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.event.handler.RenderEventHandler;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderNameTagEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 public class RenderEvents {
 
     @SubscribeEvent
-    public static void onPostRenderOverlay(RenderGuiOverlayEvent.Pre ev) {
+    public static void preRenderOverlay(RenderGuiOverlayEvent.Pre ev) {
         if(ev.getOverlay() == VanillaGuiOverlay.EXPERIENCE_BAR.type() || ev.getOverlay() == VanillaGuiOverlay.JUMP_BAR.type()){
             if(CommonOverlay.canRenderManaBar()){
                 ev.setCanceled(true);
@@ -30,11 +27,16 @@ public class RenderEvents {
     }
 
     @SubscribeEvent
-    public static void onPostRenderOverlay(RenderGuiOverlayEvent.Post ev) {
+    public static void postRenderOverlay(RenderGuiOverlayEvent.Post ev) {
     }
 
     @SubscribeEvent
-    public static void onPostRenderOverlay(RenderNameTagEvent ev) {
+    public static void renderPlayer(RenderPlayerEvent ev) {
+
+    }
+
+    @SubscribeEvent
+    public static void renderNameTag(RenderNameTagEvent ev) {
         RenderEventHandler.renderEntityElements(ev.getEntity(), ev.getEntityRenderer(), ev.getPoseStack(), ev.getMultiBufferSource(), ev.getPackedLight());
     }
 

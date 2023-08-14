@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells;
 
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,7 +20,7 @@ public class PickupItemSpell extends SpellType {
     }
 
     @Override
-    public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (result.hasEntity() && owner instanceof Player player) {
             if (result.getEntity() instanceof ItemEntity item) {
                 item.setPos(owner.position());

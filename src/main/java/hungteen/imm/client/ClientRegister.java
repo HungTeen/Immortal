@@ -145,7 +145,7 @@ public class ClientRegister {
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
         event.registerAboveAll("spiritual_mana_bar", CommonOverlay.SPIRITUAL_MANA);
         event.registerAboveAll("spell_circle", SpellOverlay.SPELL_CIRCLE);
-        event.registerAboveAll("prepare_bar", SpellOverlay.PREPARE_BAR);
+        event.registerAboveAll("prepared_spell", SpellOverlay.PREPARE_SPELL);
         event.registerAboveAll("elements", ElementOverlay.INSTANCE);
         event.registerAboveAll("meditation", MeditationOverlay.INSTANCE);
 //        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {

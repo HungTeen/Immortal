@@ -38,6 +38,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -92,9 +93,11 @@ public class IMMCommand {
                                     .then(Commands.literal(spell.getRegistryName())
                                             .executes(command -> forgetSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
                                     ))
-                            .then(Commands.literal("activate")
+                            .then(Commands.literal("select")
                                     .then(Commands.literal(spell.getRegistryName())
-                                            .executes(command -> activateSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
+                                            .executes(command -> selectSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), spell))
+                                    ).then(Commands.literal("nothing")
+                                            .executes(command -> selectSpell(command.getSource(), EntityArgument.getPlayers(command, "targets"), null))
                                     ))
                             .then(Commands.literal("set")
                                     .then(Commands.literal(spell.getRegistryName())
@@ -295,12 +298,16 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int activateSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell) {
+    private static int selectSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, @Nullable ISpellType spell) {
         for (ServerPlayer player : targets) {
-            SpellManager.checkActivateSpell(player, spell);
-            PlayerHelper.sendMsgTo(player, spell.getComponent());
+            SpellManager.selectSpellOnCircle(player, spell);
+            if(spell != null) {
+                PlayerHelper.sendMsgTo(player, spell.getComponent());
+            }
         }
-        source.sendSuccess(spell::getComponent, true);
+        if(spell != null) {
+            source.sendSuccess(spell::getComponent, true);
+        }
         return targets.size();
     }
 

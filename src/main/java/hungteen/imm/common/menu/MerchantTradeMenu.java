@@ -43,11 +43,11 @@ public class MerchantTradeMenu extends HTContainerMenu {
         } else throw new RuntimeException("No merchant found !");
         this.tradeContainer = new TradeContainer(this, this.merchant, COST_SIZE, RESULT_SIZE);
 
-        this.addSlot(new Slot(this.tradeContainer, 0, 136, 37));
-        this.addSlot(new Slot(this.tradeContainer, 1, 162, 37));
-        this.addSlot(new TradeResultSlot(this.tradeContainer, playerInv.player, this.merchant, 2, 220, 37));
+        this.addSlot(new Slot(this.tradeContainer, 0, 146, 37));
+        this.addSlot(new Slot(this.tradeContainer, 1, 172, 37));
+        this.addSlot(new TradeResultSlot(this.tradeContainer, playerInv.player, this.merchant, 2, 230, 37));
 
-        this.addInventoryAndHotBar(playerInv, 108, 84);
+        this.addInventoryAndHotBar(playerInv, 118, 84);
     }
 
     @Override

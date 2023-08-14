@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells;
 
 import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.api.EntityBlockResult;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +19,7 @@ public class MeditateSpell extends SpellType {
     }
 
     @Override
-    public boolean onActivate(LivingEntity owner, EntityBlockResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(owner instanceof Player player){
             return PlayerUtil.sitToMeditate(player, player.blockPosition(), (float) (player.getY() - player.blockPosition().getY()), false);
         } else if(EntityHelper.isEntityValid(owner)){

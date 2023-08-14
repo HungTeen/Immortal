@@ -10,7 +10,6 @@ import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.network.*;
-import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
@@ -42,7 +41,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private ICultivationType cultivationType = CultivationTypes.MORTAL; // 修为类型。
     private IRealmType realmType = RealmTypes.MORTALITY; // 当前境界。
     private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
-    private ISpellType preparingSpell = null; // 当前吟唱的法术。
+    private ISpellType preparingSpell = null; // 当前选好的法术。
     private long nextRefreshTick;
 
     /* Caches */
@@ -63,15 +62,6 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public void tick() {
         if (EntityHelper.isServer(player)) {
-            if(this.getPreparingSpell() != null){
-                final int tick = this.getIntegerData(PlayerRangeIntegers.SPELL_PRE_TICK);
-                if(tick > 0){
-                    this.setIntegerData(PlayerRangeIntegers.SPELL_PRE_TICK, tick - 1);
-                } else {
-                    this.getPreparingSpell().onActivate(player, SpellManager.getResult(player), getSpellLevel(getPreparingSpell()));
-                    this.setPreparingSpell(null);
-                }
-            }
             //TODO 灵气自然恢复
 //            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
 //                final int value = getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA);

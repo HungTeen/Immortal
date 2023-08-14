@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
@@ -27,7 +28,7 @@ public class SpellPacket {
     /**
      * spell only empty when option is CLEAR_SET.
      */
-    public SpellPacket(ISpellType spell, SpellOptions option, long num) {
+    public SpellPacket(@Nullable ISpellType spell, SpellOptions option, long num) {
         this.type = spell != null ? spell.getRegistryName() : "empty";
         this.option = option;
         this.num = num;
@@ -62,7 +63,7 @@ public class SpellPacket {
                     });
                 } else {// C -> S.
                     switch (message.option) {
-                        case ACTIVATE -> SpellManager.checkActivateSpell(ctx.get().getSender(), (int) message.num);
+                        case SELECT_ON_CIRCLE -> SpellManager.selectSpellOnCircle(ctx.get().getSender(), (int) message.num);
                         case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.SPELL_CIRCLE_MODE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
                         case SET_SPELL_ON_CIRCLE -> {
                             SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
@@ -101,7 +102,7 @@ public class SpellPacket {
         /**
          * 客户端按键触发后， 发送给服务端。
          */
-        ACTIVATE,
+        SELECT_ON_CIRCLE,
 
         /**
          * 更新法术操作方式在客户端的配置文件。

@@ -1,5 +1,6 @@
 package hungteen.imm.common.event.handler;
 
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifacts.FlameGourd;
@@ -44,6 +45,10 @@ public class PlayerEventHandler {
      */
     public static void rayTrace(Player player) {
         final HitResult hitResult = PlayerUtil.getHitResult(player);
+        // 使用法术的判断。
+        if(SpellManager.hasSpellSelected(player)){
+            SpellManager.activateSpell(player, HTHitResult.create(hitResult));
+        }
         switch (hitResult.getType()){
             case BLOCK -> {
                 onTraceBlock(player, (BlockHitResult) hitResult);

@@ -124,7 +124,7 @@ public class ClientHandler {
             if(ClientDatas.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()){
                 // Close spell circle and activate spell.
                 if(ClientDatas.ShowSpellCircle){
-                    SpellManager.activateAt(ClientDatas.lastSelectedPosition);
+                    SpellManager.selectSpellOnCircle(ClientDatas.lastSelectedPosition);
                 }
                 switchSpellCircle();
             }
@@ -180,7 +180,7 @@ public class ClientHandler {
             // check whether there need sync config file or not.
             PlayerHelper.getClientPlayer().ifPresent(player -> {
                 if(PlayerUtil.requireSyncCircle(player)){
-                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.ACTIVATE, ClientDatas.lastSelectedPosition));
+                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT_ON_CIRCLE, ClientDatas.lastSelectedPosition));
                 }
             });
             ClientDatas.SpellMousePositionX = 0;
