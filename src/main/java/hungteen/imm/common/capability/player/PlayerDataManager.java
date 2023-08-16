@@ -345,8 +345,8 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spellCDs.containsKey(spell) && this.spellCDs.get(spell) > getGameTime();
     }
 
-    public double getSpellCoolDown(@NotNull ISpellType spell) {
-        return isSpellOnCoolDown(spell) ? (this.spellCDs.get(spell) - getGameTime()) * 1.0 / spell.getCooldown() : 0;
+    public float getSpellCoolDown(@NotNull ISpellType spell) {
+        return isSpellOnCoolDown(spell) ? (this.spellCDs.get(spell) - getGameTime()) * 1.0F / spell.getCooldown() : 0;
     }
 
     public boolean hasLearnedSpell(@NotNull ISpellType spell, int level) {

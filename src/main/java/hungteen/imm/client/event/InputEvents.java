@@ -21,10 +21,13 @@ public class InputEvents {
 
     @SubscribeEvent
     public static void onKeyDown(InputEvent.Key event) {
-        if(ClientProxy.MC.isWindowActive() && ClientProxy.MC.player != null) {
+        if(ClientProxy.MC.isWindowActive() && ClientUtil.player() != null) {
+            if(IMMKeyBinds.keyDown(IMMKeyBinds.ACTIVATE_SPELL)){
+                SpellManager.pressToActivateSpell(ClientUtil.player());
+            }
             if(! ClientHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())) {
                 // Switch display of spell circle.
-                if(!IMMKeyBinds.isMouseInput(IMMKeyBinds.SPELL_CIRCLE) && IMMKeyBinds.SPELL_CIRCLE.consumeClick()){
+                if(IMMKeyBinds.keyDown(IMMKeyBinds.SPELL_CIRCLE)){
                     ClientHandler.switchSpellCircle();
                 }
             }
@@ -33,10 +36,13 @@ public class InputEvents {
 
     @SubscribeEvent
     public static void onMouseDown(InputEvent.MouseButton.Pre event) {
-        if(ClientProxy.MC.isWindowActive() && ClientProxy.MC.player != null) {
+        if(ClientProxy.MC.isWindowActive() && ClientUtil.player() != null) {
+            if(IMMKeyBinds.mouseDown(IMMKeyBinds.ACTIVATE_SPELL)){
+                SpellManager.pressToActivateSpell(ClientUtil.player());
+            }
             if(! ClientHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
                 // Switch display of spell circle.
-                if(IMMKeyBinds.isMouseInput(IMMKeyBinds.SPELL_CIRCLE) && IMMKeyBinds.SPELL_CIRCLE.consumeClick()){
+                if(IMMKeyBinds.mouseDown(IMMKeyBinds.SPELL_CIRCLE)){
                     ClientHandler.switchSpellCircle();
                     event.setCanceled(true);
                 }
@@ -56,7 +62,7 @@ public class InputEvents {
 		double delta = event.getScrollDelta();
         if(! ClientHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
             // Scroll to switch select position.
-            if(delta != 0.0 && ClientProxy.MC.player != null && ClientDatas.ShowSpellCircle) {
+            if(delta != 0.0 && ClientUtil.player() != null && ClientDatas.ShowSpellCircle) {
                 ClientDatas.lastSelectedPosition = Mth.clamp(ClientDatas.lastSelectedPosition + delta < 0 ? 1 : -1, 0, Constants.SPELL_CIRCLE_SIZE);
                 event.setCanceled(true);
             }

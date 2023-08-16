@@ -52,11 +52,13 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
-                PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
+            event.getOriginal().reviveCaps();
+            PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
+                PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
                     l.cloneFromExistingPlayerData(r, event.isWasDeath());
                 });
             });
+            event.getOriginal().invalidateCaps();
         }
     }
 

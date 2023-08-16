@@ -15,20 +15,18 @@ public abstract class SpellType implements ISpellType {
     private final String name;
     private final int maxLevel;
     private final int consumeMana;
-    private final int prepareCD;
     private final int cooldown;
     private final boolean canTrigger;
     private final ResourceLocation resourceLocation;
 
     public SpellType(String name, SpellProperties properties) {
-        this(name, properties.maxLevel, properties.consumeMana, properties.prepareCD, properties.cooldown, properties.canTrigger);
+        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger);
     }
 
-    public SpellType(String name, int maxLevel, int consumeMana, int prepareCD, int cooldown, boolean canTrigger) {
+    public SpellType(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.consumeMana = consumeMana;
-        this.prepareCD = prepareCD;
         this.cooldown = cooldown;
         this.canTrigger = canTrigger;
         this.resourceLocation = Util.get().texture("spell/" + this.name);
@@ -42,11 +40,6 @@ public abstract class SpellType implements ISpellType {
     @Override
     public int getConsumeMana() {
         return this.consumeMana;
-    }
-
-    @Override
-    public int getPrepareCD() {
-        return this.prepareCD;
     }
 
     @Override
@@ -87,7 +80,6 @@ public abstract class SpellType implements ISpellType {
 
         private int maxLevel = 1;
         private int consumeMana = 0;
-        private int prepareCD = 0;
         private int cooldown = 0;
         private boolean canTrigger = true;
 
@@ -98,11 +90,6 @@ public abstract class SpellType implements ISpellType {
 
         public SpellProperties mana(int mana){
             this.consumeMana = mana;
-            return this;
-        }
-
-        public SpellProperties pre(int cd){
-            this.prepareCD = cd;
             return this;
         }
 

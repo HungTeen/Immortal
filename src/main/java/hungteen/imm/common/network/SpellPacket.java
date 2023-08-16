@@ -25,6 +25,14 @@ public class SpellPacket {
     private final SpellOptions option;
     private final long num;
 
+    public SpellPacket(SpellOptions option) {
+        this(option, 0);
+    }
+
+    public SpellPacket(SpellOptions option, long num) {
+        this(null, option, num);
+    }
+
     /**
      * spell only empty when option is CLEAR_SET.
      */
@@ -70,6 +78,9 @@ public class SpellPacket {
                                 PlayerUtil.setSpellAt(ctx.get().getSender(), (int) message.num, spell);
                             });
                         }
+                        case ACTIVATE -> {
+                            SpellManager.pressToActivateSpell(ctx.get().getSender());
+                        }
                     }
                 }
             });
@@ -107,7 +118,14 @@ public class SpellPacket {
         /**
          * 更新法术操作方式在客户端的配置文件。
          */
-        SYNC_CIRCLE_OP
+        SYNC_CIRCLE_OP,
+
+        /**
+         * 客户端触发法术。
+         */
+        ACTIVATE,
+
+        ;
     }
 
 }

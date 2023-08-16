@@ -65,6 +65,7 @@ public class PlayerUtil {
             if(list.isEmpty()){
                 setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
                 SeatEntity.seatAt(player.level(), player, pos, yOffset, player.getYRot(), 120F, relyOnBlock);
+                return true;
             } else {
                 PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround"));
             }
@@ -252,8 +253,8 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.isSpellOnCoolDown(spell), false);
     }
 
-    public static double getSpellCDValue(Player player, ISpellType spell) {
-        return getManagerResult(player, m -> m.getSpellCoolDown(spell), 0D);
+    public static float getSpellCDValue(Player player, ISpellType spell) {
+        return getManagerResult(player, m -> m.getSpellCoolDown(spell), 0F);
     }
 
     public static boolean hasLearnedSpell(Player player, ISpellType spell) {

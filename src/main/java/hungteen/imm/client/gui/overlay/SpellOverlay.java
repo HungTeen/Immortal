@@ -11,10 +11,12 @@ import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -105,8 +107,9 @@ public class SpellOverlay {
         final ISpellType spell = PlayerUtil.getPreparingSpell(ClientUtil.player());
         if (ClientUtil.canRenderOverlay() && spell != null) {
             ClientUtil.push("renderPreparedSpell");
-            final int x = ((width >> 1) - 91 - 26);
-            final int y = (height - 16 - 3) - 18;
+            final int x = ((width >> 1) - 91 - 26) - 2;
+            final int y = (height - 16 - 3) - 22;
+            graphics.blit(TEXTURE, x, y, 20, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             renderSpellSlot(graphics, spell, x, y, true);
             ClientUtil.pop();
         }
@@ -116,10 +119,10 @@ public class SpellOverlay {
         graphics.blit(spell.getSpellTexture(), x + 2, y + 2, 0, 0, 16, 16, 16, 16);
 
         if(renderCD){
-            final double progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
+            final float progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
             if (progress > 0) {
-                RenderSystem.enableBlend();
-                final int CDBarLen = Mth.clamp((int) (progress * SPELL_SLOT_LEN), 1, SPELL_SLOT_LEN);
+                final int CDBarLen = MathUtil.getBarLen(progress, SPELL_SLOT_LEN);
+                graphics.fill(RenderType.guiOverlay(), x, y + SPELL_SLOT_LEN - CDBarLen, x + SPELL_SLOT_LEN, y + SPELL_SLOT_LEN, Integer.MAX_VALUE);
                 graphics.blit(TEXTURE, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
             }
         }

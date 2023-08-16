@@ -1,6 +1,7 @@
 package hungteen.imm.common.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.registry.ISpellType;
@@ -17,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
@@ -32,6 +34,19 @@ public class SpellManager {
     private static final MutableComponent FORGOT_SPELL = TipUtil.info("spell.forgot");
     private static final MutableComponent SPELL_ON_CD = TipUtil.info("spell.on_cooldown");
     private static final MutableComponent NO_ENOUGH_MANA = TipUtil.info("spell.no_enough_mana");
+    private static final int FAIL_CD = 20;
+
+    public static void pressToActivateSpell(Player player){
+        if(EntityHelper.isServer(player)){
+            final HitResult hitResult = PlayerUtil.getHitResult(player);
+            // 使用法术的判断。
+            if(EntityHelper.isEntityValid(player) && SpellManager.hasSpellSelected(player)){
+                SpellManager.activateSpell(player, HTHitResult.create(hitResult));
+            }
+        } else {
+            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
+        }
+    }
 
     /**
      * Only on Client Side.
@@ -72,8 +87,10 @@ public class SpellManager {
                             if(success){
                                 PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
                                 costMana(player, spell.getConsumeMana());
+                                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, success));
+                            } else {
+                                PlayerUtil.cooldownSpell(player, spell, FAIL_CD);
                             }
-                            MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, success));
                         }
                     } else {
                         PlayerHelper.sendTipTo(player, NO_ENOUGH_MANA);

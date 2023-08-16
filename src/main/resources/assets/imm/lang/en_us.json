@@ -138,6 +138,7 @@
   "_comment15": "--------------------------------------------KeyBind-------------------------------------------",
   "key.categories.imm": "IMM Keys",
   "key.imm.spell_circle": "Spell Circle",
+  "key.imm.activate_spell": "Activate Spell",
   "_comment16": "--------------------------------------------Config-------------------------------------------",
   "_comment17": "--------------------------------------------Spell-------------------------------------------",
   "spell.imm.releasing": "Spiritual Releasing",

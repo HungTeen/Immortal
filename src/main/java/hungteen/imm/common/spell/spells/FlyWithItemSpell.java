@@ -14,7 +14,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 public class FlyWithItemSpell extends SpellType {
 
     public FlyWithItemSpell() {
-        super("fly_with_item", properties().maxLevel(3).mana(20).pre(20).cd(200));
+        super("fly_with_item", properties().maxLevel(3).mana(20).cd(200));
     }
 
     @Override
