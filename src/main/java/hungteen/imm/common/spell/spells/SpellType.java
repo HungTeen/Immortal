@@ -1,6 +1,7 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -65,6 +66,11 @@ public abstract class SpellType implements ISpellType {
     @Override
     public String getModID() {
         return Util.id();
+    }
+
+    @Override
+    public MutableComponent getSpellDesc(int level) {
+        return TipUtil.spell(this, level);
     }
 
     @Override

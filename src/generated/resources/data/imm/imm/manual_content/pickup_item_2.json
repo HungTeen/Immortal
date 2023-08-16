@@ -1,0 +1,5 @@
+{
+  "type": "imm:learn_spell",
+  "level": 2,
+  "spell": "imm:pickup_item"
+}

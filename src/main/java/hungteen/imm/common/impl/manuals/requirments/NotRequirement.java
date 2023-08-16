@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -26,6 +28,11 @@ public record NotRequirement(Holder<ILearnRequirement> requirement) implements I
 
     @Override
     public void consume(Level level, Player player) {
+    }
+
+    @Override
+    public MutableComponent getRequirementInfo() {
+        return TipUtil.misc("requirement.not").append("{").append(requirement().get().getRequirementInfo()).append("}");
     }
 
     @Override

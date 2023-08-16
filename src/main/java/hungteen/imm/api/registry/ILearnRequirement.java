@@ -1,5 +1,6 @@
 package hungteen.imm.api.registry;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -13,6 +14,8 @@ public interface ILearnRequirement {
     boolean check(Level level, Player player);
 
     void consume(Level level, Player player);
+
+    MutableComponent getRequirementInfo();
 
     IRequirementType<?> getType();
 

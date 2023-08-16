@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.codec.SecretManual;
+import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.item.elixirs.CustomElixirItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;

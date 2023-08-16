@@ -204,11 +204,27 @@
   "misc.imm.false": "False",
   "misc.imm.percent": "%d%%",
 
+  "misc.imm.level1": "Level 1",
+  "misc.imm.level2": "Level 2",
+  "misc.imm.level3": "Level 3",
+  "misc.imm.level4": "Level 4",
+  "misc.imm.level5": "Level 5",
+  "misc.imm.level6": "Level 6",
+  "misc.imm.level7": "Level 7",
+  "misc.imm.level8": "Level 8",
+  "misc.imm.level9": "Level 9",
+  "misc.imm.level10": "Level 10",
+
   "misc.imm.num1": "Single",
   "misc.imm.num2": "Double",
   "misc.imm.num3": "Triple",
   "misc.imm.num4": "Quadruple",
   "misc.imm.num5": "Fivefold",
+
+  "misc.imm.requirement.and": "And",
+  "misc.imm.requirement.or": "Or",
+  "misc.imm.requirement.not": "Not",
+  "misc.imm.requirement.spell": "Learned: ",
 
   "misc.imm.spiritual_root": "Spiritual Root",
   "misc.imm.no_spiritual_root": "No Spiritual Root",

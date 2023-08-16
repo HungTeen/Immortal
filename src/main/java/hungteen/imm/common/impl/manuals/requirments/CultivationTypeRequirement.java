@@ -7,6 +7,7 @@ import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.util.PlayerUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -29,6 +30,11 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
     @Override
     public void consume(Level level, Player player) {
 
+    }
+
+    @Override
+    public MutableComponent getRequirementInfo() {
+        return cultivationType.getComponent();
     }
 
     @Override

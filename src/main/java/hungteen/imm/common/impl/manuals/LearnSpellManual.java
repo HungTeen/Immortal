@@ -32,7 +32,7 @@ public record LearnSpellManual(ISpellType spellType, int level) implements IManu
 
     @Override
     public List<Component> getInfo() {
-        return List.of(spellType().getComponent());
+        return List.of(spellType().getSpellDesc(level()));
     }
 
     @Override

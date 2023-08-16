@@ -180,4 +180,8 @@ public class SpellManager {
         return TipUtil.SPELL_CD.apply(Mth.ceil(cd * 1.0F / 20));
     }
 
+    public static MutableComponent spellName(ISpellType spell, int level){
+        return spell.getComponent().append(TipUtil.misc("level" + level));
+    }
+
 }

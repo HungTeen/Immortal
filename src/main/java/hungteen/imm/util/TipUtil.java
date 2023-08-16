@@ -1,6 +1,7 @@
 package hungteen.imm.util;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -37,17 +38,21 @@ public class TipUtil {
         return Component.translatable("command." + Util.id() + "." + name, objects);
     }
 
+    public static MutableComponent spell(ISpellType spell, int level, Object... objects){
+        return Component.translatable("spell." + spell.getModID() + "." + spell.getName() + "_" + level, objects);
+    }
+
     public static MutableComponent misc(String name, Object... objects){
         return Component.translatable("misc." + Util.id() + "." + name, objects);
     }
 
-    public static MutableComponent tooltip(String name, Object... objects){
-        return Component.translatable("tooltip." + Util.id() + "." + name, objects);
+    public static MutableComponent tooltip(Item item, Object... objects){
+        return tooltip(item, "", objects);
     }
 
-    public static MutableComponent tooltip(Item item, Object... objects){
+    public static MutableComponent tooltip(Item item, String name, Object... objects){
         final ResourceLocation location = ItemHelper.get().getKey(item);
-        return Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), objects);
+        return Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath() + "." + name, objects);
     }
 
 }

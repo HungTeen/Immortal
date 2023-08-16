@@ -2,6 +2,7 @@ package hungteen.imm.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.api.HTHitResult;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -45,6 +46,8 @@ public interface ISpellType extends ISimpleEntry {
      * @return Whether can the spell be triggered.
      */
     boolean canTrigger();
+
+    MutableComponent getSpellDesc(int level);
 
     /**
      * 获取法术贴图位置、

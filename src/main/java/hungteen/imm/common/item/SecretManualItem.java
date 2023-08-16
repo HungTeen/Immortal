@@ -2,8 +2,9 @@ package hungteen.imm.common.item;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.imm.common.codec.SecretManual;
+import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +44,7 @@ public class SecretManualItem extends Item {
     @Override
     public Component getName(ItemStack stack) {
         return getLocation(stack).map(key -> {
-            return StringHelper.langKey("misc", key.getNamespace(), "secret_manual." + key.getPath());
+            return StringHelper.langKey("item", key.getNamespace(), "secret_manual." + key.getPath());
         }).map(Component::translatable).map(Component.class::cast).orElse(super.getName(stack));
     }
 
@@ -51,19 +52,16 @@ public class SecretManualItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(level != null) {
             getSecretManualPair(level, stack).ifPresent(res -> {
-                for (int i = 0; i < res.getSecond().textLine(); i++) {
-                    components.add(Component.translatable(lang(res.getFirst().location(), i + 1)));
+                if(! res.getSecond().getContentInfo().isEmpty()){
+                    components.add(TipUtil.tooltip(this, "contents"));
+                    components.addAll(res.getSecond().getContentInfo());
+                }
+                if(! res.getSecond().getRequirementInfo().isEmpty()){
+                    components.add(TipUtil.tooltip(this, "requirements"));
+                    components.addAll(res.getSecond().getRequirementInfo());
                 }
             });
         }
-    }
-
-    private static String lang(ResourceLocation key, int line){
-        return lang(key) + "_" + line;
-    }
-
-    private static String lang(ResourceLocation key){
-        return StringHelper.langKey("secret_manual", key.getNamespace(), key.getPath());
     }
 
     public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {

@@ -204,11 +204,27 @@
   "misc.imm.false": "假",
   "misc.imm.percent": "%d%%",
 
+  "misc.imm.level1": "第一层",
+  "misc.imm.level2": "第二层",
+  "misc.imm.level3": "第三层",
+  "misc.imm.level4": "第四层",
+  "misc.imm.level5": "第五层",
+  "misc.imm.level6": "第六层",
+  "misc.imm.level7": "第七层",
+  "misc.imm.level8": "第八层",
+  "misc.imm.level9": "第九层",
+  "misc.imm.level10": "第十层",
+
   "misc.imm.num1": "一",
   "misc.imm.num2": "双",
   "misc.imm.num3": "三",
   "misc.imm.num4": "四",
   "misc.imm.num5": "五",
+
+  "misc.imm.requirement.and": "并且",
+  "misc.imm.requirement.or": "或者",
+  "misc.imm.requirement.not": "不满足",
+  "misc.imm.requirement.spell": "已学法术：",
 
   "misc.imm.spiritual_root": "灵根",
   "misc.imm.no_spiritual_root": "没有灵根",

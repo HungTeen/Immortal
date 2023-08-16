@@ -6,8 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -37,6 +40,18 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
     @Override
     public void consume(Level level, Player player) {
 
+    }
+
+    @Override
+    public MutableComponent getRequirementInfo() {
+        MutableComponent component = TipUtil.misc("requirement.spell");
+        for(int i = 0; i < spells().size(); i++) {
+            component.append(SpellManager.spellName(spells().get(i).getFirst(), spells().get(i).getSecond()));
+            if(i < spells().size() - 1) {
+                component.append(", ");
+            }
+        }
+        return component;
     }
 
     @Override
