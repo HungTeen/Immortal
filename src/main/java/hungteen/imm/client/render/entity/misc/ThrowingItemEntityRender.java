@@ -32,7 +32,7 @@ public class ThrowingItemEntityRender extends EntityRenderer<ThrowingItemEntity>
     @Override
     public void render(ThrowingItemEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
                        MultiBufferSource bufferIn, int packedLightIn) {
-        final ItemStack stack = entityIn.getItemStack();
+        final ItemStack stack = entityIn.getItem();
         final boolean isBlock = stack.getItem() instanceof BlockItem;
         matrixStackIn.pushPose();
         BakedModel bakedmodel = this.itemRenderer.getModel(stack, entityIn.level(), (LivingEntity) null, entityIn.getId());

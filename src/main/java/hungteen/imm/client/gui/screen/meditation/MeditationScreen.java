@@ -3,9 +3,11 @@ package hungteen.imm.client.gui.screen.meditation;
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
+import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ScreenButtonPacket;
@@ -16,8 +18,8 @@ import hungteen.imm.util.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.function.Supplier;
@@ -158,7 +160,7 @@ public abstract class MeditationScreen extends HTScreen {
 
         CULTIVATION(() -> new ItemStack(IMMItems.FIVE_FLOWERS_ELIXIR.get())),
 
-        RESTING(() -> new ItemStack(Blocks.RED_BED)),
+        RESTING(() -> new ItemStack(BlockHelper.get().get(WoolCushionBlock.getWoolCushionLocation(DyeColor.RED)).get())),
 
         SPELL(() -> new ItemStack(IMMItems.SECRET_MANUAL.get())),
 

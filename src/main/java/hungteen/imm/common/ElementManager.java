@@ -4,6 +4,8 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
@@ -105,6 +107,10 @@ public class ElementManager {
 
     public static boolean canSeeElements(Player player, Entity entity, double distanceSqr){
         return distanceSqr < 1000;
+    }
+
+    public static MutableComponent name(Elements element){
+        return TipUtil.misc("element." + element.name().toLowerCase());
     }
 
 }

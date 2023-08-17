@@ -1,0 +1,15 @@
+{
+  "content": "imm:pickup_block_2",
+  "requirements": [
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:pickup_block"
+        }
+      ]
+    },
+    "imm:spiritual_level_2_lowest"
+  ]
+}

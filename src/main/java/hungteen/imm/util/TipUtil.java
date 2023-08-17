@@ -42,6 +42,10 @@ public class TipUtil {
         return Component.translatable("spell." + spell.getModID() + "." + spell.getName() + "_" + level, objects);
     }
 
+    public static MutableComponent spell(String name, Object... objects){
+        return Component.translatable("spell." + Util.id() + "." + name, objects);
+    }
+
     public static MutableComponent misc(String name, Object... objects){
         return Component.translatable("misc." + Util.id() + "." + name, objects);
     }
@@ -52,7 +56,7 @@ public class TipUtil {
 
     public static MutableComponent tooltip(Item item, String name, Object... objects){
         final ResourceLocation location = ItemHelper.get().getKey(item);
-        return Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath() + "." + name, objects);
+        return Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath() + (name.isEmpty() ? "" : "." + name), objects);
     }
 
 }

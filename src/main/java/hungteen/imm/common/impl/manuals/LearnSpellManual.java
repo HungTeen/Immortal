@@ -2,15 +2,17 @@ package hungteen.imm.common.impl.manuals;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.IManualType;
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
-import net.minecraft.network.chat.Component;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.List;
+import net.minecraft.world.level.Level;
 
 /**
  * @author PangTeen
@@ -23,16 +25,29 @@ public record LearnSpellManual(ISpellType spellType, int level) implements IManu
             SpellTypes.registry().byNameCodec().fieldOf("spell").forGetter(LearnSpellManual::spellType),
             Codec.intRange(0, Integer.MAX_VALUE).fieldOf("level").forGetter(LearnSpellManual::level)
     ).apply(instance, LearnSpellManual::new)).codec();
-    
-    
+
+    @Override
+    public boolean canLearn(Level level, Player player) {
+        if(PlayerUtil.hasLearnedSpell(player, spellType(), level())){
+            PlayerHelper.sendTipTo(player, TipUtil.info("already_learned_spell"));
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void learn(Player player) {
         PlayerUtil.learnSpell(player, spellType(), level());
     }
 
     @Override
-    public List<Component> getInfo() {
-        return List.of(spellType().getSpellDesc(level()));
+    public MutableComponent getManualTitle() {
+        return SpellManager.spellName(spellType(), level());
+    }
+
+    @Override
+    public MutableComponent getInfo() {
+        return spellType().getSpellDesc(level());
     }
 
     @Override

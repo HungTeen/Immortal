@@ -1,12 +1,15 @@
 package hungteen.imm.api.enums;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
+
 /**
  * 五行元素 & 业元素。
  * @author PangTeen
  * @program Immortal
  * @data 2023/2/25 10:30
  */
-public enum Elements {
+public enum Elements implements StringRepresentable {
 
     /**
      * 金元素。
@@ -38,6 +41,7 @@ public enum Elements {
      */
     SPIRIT(false, 0.1F, 0.1F);
 
+    public static final Codec<Elements> CODEC = StringRepresentable.fromEnum(Elements::values);
     private final boolean isPhysical;
     private final float attachChance;
     private final float decaySpeed;
@@ -58,5 +62,10 @@ public enum Elements {
 
     public float getDecaySpeed() {
         return decaySpeed;
+    }
+
+    @Override
+    public String getSerializedName() {
+        return name().toLowerCase();
     }
 }

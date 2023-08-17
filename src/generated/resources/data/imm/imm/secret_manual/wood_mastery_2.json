@@ -1,0 +1,19 @@
+{
+  "content": "imm:wood_mastery_2",
+  "requirements": [
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:wood_mastery"
+        }
+      ]
+    },
+    "imm:spiritual_level_3_lowest",
+    {
+      "type": "imm:emp",
+      "level": 2
+    }
+  ]
+}

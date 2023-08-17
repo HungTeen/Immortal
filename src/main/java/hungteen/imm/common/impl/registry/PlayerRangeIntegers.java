@@ -31,6 +31,10 @@ public class PlayerRangeIntegers {
 //
 //    public static final IRangeNumber<Integer> PERSONALITY = register(new PlayerData("personality", 0, 0, Integer.MAX_VALUE));
 
+    /**
+     * 元素精通点。
+     */
+    public static final IRangeNumber<Integer> ELEMENTAL_MASTERY_POINTS = register(new PlayerData("elemental_mastery_points", 0, 0, Integer.MAX_VALUE));
 
     /**
      * 打坐冥想tick。

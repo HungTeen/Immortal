@@ -1,0 +1,19 @@
+{
+  "content": "imm:water_mastery_2",
+  "requirements": [
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:water_mastery"
+        }
+      ]
+    },
+    "imm:spiritual_level_3_lowest",
+    {
+      "type": "imm:emp",
+      "level": 2
+    }
+  ]
+}

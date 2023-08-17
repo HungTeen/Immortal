@@ -3,6 +3,7 @@ package hungteen.imm.common.spell;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.spell.spells.*;
 import hungteen.imm.util.Util;
@@ -21,6 +22,12 @@ public class SpellTypes {
     public static final ISpellType STEAL_ITEM = register(new StealItemSpell());
     public static final ISpellType PICKUP_BLOCK = register(new PickupBlockSpell());
     public static final ISpellType FLY_WITH_ITEM = register(new FlyWithItemSpell());
+    public static final ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
+    public static final ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
+    public static final ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));
+    public static final ISpellType FIRE_MASTERY = register(new ElementalMasterySpell(Elements.FIRE));
+    public static final ISpellType EARTH_MASTERY = register(new ElementalMasterySpell(Elements.EARTH));
+    public static final ISpellType SPIRIT_MASTERY = register(new ElementalMasterySpell(Elements.SPIRIT));
 
     //    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
 //            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()

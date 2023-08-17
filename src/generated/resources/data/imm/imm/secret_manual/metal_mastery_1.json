@@ -1,0 +1,10 @@
+{
+  "content": "imm:metal_mastery_1",
+  "requirements": [
+    "imm:spiritual_level_2_lowest",
+    {
+      "type": "imm:emp",
+      "level": 1
+    }
+  ]
+}

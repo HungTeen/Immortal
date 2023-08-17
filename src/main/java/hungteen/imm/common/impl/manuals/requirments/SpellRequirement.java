@@ -43,7 +43,7 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
     }
 
     @Override
-    public MutableComponent getRequirementInfo() {
+    public MutableComponent getRequirementInfo(Player player) {
         MutableComponent component = TipUtil.misc("requirement.spell");
         for(int i = 0; i < spells().size(); i++) {
             component.append(SpellManager.spellName(spells().get(i).getFirst(), spells().get(i).getSecond()));

@@ -87,11 +87,9 @@ public class SpellOverlay {
                     renderSpellSlot(graphics, spell, x, y, true);
 
                     if (isSelected) {
-                        MutableComponent text = spell.getComponent().append("-").append(SpellManager.getCostComponent(spell.getConsumeMana()));
-//                        if (progress > 0) {
-//                            text = text.append("-").append(SpellManager.getCDComponent((int) (spell.getCooldown() * progress)));
-//                        }
-                        RenderUtil.renderCenterScaledText(graphics.pose(), text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, 1F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
+                        final int level = PlayerUtil.getSpellLevel(ClientUtil.player(), spell);
+                        MutableComponent text = SpellManager.spellName(spell, level).append(" - ").append(SpellManager.getCostComponent(spell.getConsumeMana()));
+                        RenderUtil.renderCenterScaledText(graphics.pose(), text, width >> 1, (height + CIRCLE_LEN + 10) >> 1, 1F, ColorHelper.GREEN.rgb(), ColorHelper.BLACK.rgb());
                     }
                 }
             }

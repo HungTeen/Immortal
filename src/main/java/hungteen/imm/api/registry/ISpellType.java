@@ -21,7 +21,9 @@ public interface ISpellType extends ISimpleEntry {
      * @param level spell level.
      * @return activate successfully.
      */
-    boolean checkActivate(LivingEntity owner, HTHitResult result, int level);
+    default boolean checkActivate(LivingEntity owner, HTHitResult result, int level){
+        return false;
+    }
 
     /**
      * 此法术有多少层。

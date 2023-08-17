@@ -15,7 +15,7 @@ public interface ILearnRequirement {
 
     void consume(Level level, Player player);
 
-    MutableComponent getRequirementInfo();
+    MutableComponent getRequirementInfo(Player player);
 
     IRequirementType<?> getType();
 

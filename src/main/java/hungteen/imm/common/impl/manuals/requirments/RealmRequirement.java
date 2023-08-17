@@ -36,8 +36,8 @@ public record RealmRequirement(IRealmType realmType, boolean lowest) implements 
     }
 
     @Override
-    public MutableComponent getRequirementInfo() {
-        return TipUtil.misc("requirement." + (lowest() ? "lowest" : "highest"), realmType().getComponent().toString());
+    public MutableComponent getRequirementInfo(Player player) {
+        return TipUtil.misc("requirement." + (lowest() ? "lowest" : "highest"), realmType().getComponent().getString());
     }
 
     @Override

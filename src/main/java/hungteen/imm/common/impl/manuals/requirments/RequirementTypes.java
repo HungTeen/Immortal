@@ -22,6 +22,9 @@ public class RequirementTypes {
     public static final IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
     public static final IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
     public static final IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
+    public static final IRequirementType<SpiritualRootRequirement> SPIRITUAL_ROOT = register(new RequirementType<>("spiritual_root", SpiritualRootRequirement.CODEC));
+    public static final IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
+    public static final IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
 
     public static IHTSimpleRegistry<IRequirementType<?>> registry(){
         return TYPES;

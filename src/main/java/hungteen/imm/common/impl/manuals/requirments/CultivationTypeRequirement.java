@@ -33,7 +33,7 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
     }
 
     @Override
-    public MutableComponent getRequirementInfo() {
+    public MutableComponent getRequirementInfo(Player player) {
         return cultivationType.getComponent();
     }
 

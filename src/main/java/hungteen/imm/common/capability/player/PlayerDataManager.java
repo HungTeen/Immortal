@@ -302,6 +302,10 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spiritualRoots.size();
     }
 
+    public boolean hasRoot(ISpiritualType root){
+        return this.spiritualRoots.contains(root);
+    }
+
     public List<ISpiritualType> getSpiritualRoots() {
         return this.spiritualRoots.stream().toList();
     }

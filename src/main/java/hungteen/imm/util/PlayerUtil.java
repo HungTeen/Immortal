@@ -349,6 +349,10 @@ public class PlayerUtil {
 
     /* Misc Operations */
 
+    public static boolean hasRoot(Player player, ISpiritualType root){
+        return getManagerResult(player, l -> l.hasRoot(root), false);
+    }
+
     public static List<ISpiritualType> getSpiritualRoots(Player player){
         return getManagerResult(player, PlayerDataManager::getSpiritualRoots, List.of());
     }

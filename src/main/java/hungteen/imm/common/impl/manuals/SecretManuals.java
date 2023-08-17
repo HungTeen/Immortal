@@ -4,14 +4,17 @@ import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.impl.manuals.requirments.EMPRequirement;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.ElementalMasterySpell;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -21,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -38,6 +42,7 @@ public class SecretManuals {
         final Holder<ILearnRequirement> spiritual = requirements.getOrThrow(LearnRequirements.cultivation(CultivationTypes.SPIRITUAL));
         final Holder<ILearnRequirement> spiritual_level_1 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_1, true));
         final Holder<ILearnRequirement> spiritual_level_2 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_2, true));
+        final Holder<ILearnRequirement> spiritual_level_3 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_3, true));
         register(context, contents, SpellTypes.MEDITATE, 1, builder -> {
             builder.require(spiritual);
         });
@@ -53,6 +58,15 @@ public class SecretManuals {
         register(context, contents, SpellTypes.PICKUP_BLOCK, 2, builder -> {
             builder.require(spiritual_level_2);
         });
+        for (Elements element : Elements.values()) {
+            final ISpellType spell = ElementalMasterySpell.getSpell(element);
+            register(context, contents, spell, 1, builder -> {
+                builder.require(spiritual_level_2).require(Holder.direct(new EMPRequirement(1)));
+            });
+            register(context, contents, spell, 2, builder -> {
+                builder.require(spiritual_level_3).require(Holder.direct(new EMPRequirement(2)));
+            });
+        }
 //        context.register(SPIRITUAL_BEGINNER_GUIDE, builder().entry(
 //                new SecretManual.ManualEntry(
 //                        requirements.getOrThrow(LearnRequirements.NO_REQUIREMENT),
@@ -119,7 +133,7 @@ public class SecretManuals {
         }
 
         public SecretManual build() {
-            return new SecretManual(requirements, content, model);
+            return new SecretManual(requirements, content, model, Optional.empty());
         }
     }
 }

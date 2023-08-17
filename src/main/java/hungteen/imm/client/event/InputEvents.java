@@ -5,7 +5,6 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.*;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.Constants;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,7 +62,7 @@ public class InputEvents {
         if(! ClientHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
             // Scroll to switch select position.
             if(delta != 0.0 && ClientUtil.player() != null && ClientDatas.ShowSpellCircle) {
-                ClientDatas.lastSelectedPosition = Mth.clamp(ClientDatas.lastSelectedPosition + delta < 0 ? 1 : -1, 0, Constants.SPELL_CIRCLE_SIZE);
+                ClientDatas.lastSelectedPosition = (ClientDatas.lastSelectedPosition + (delta < 0 ? 1 : -1) + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE;
                 event.setCanceled(true);
             }
         }

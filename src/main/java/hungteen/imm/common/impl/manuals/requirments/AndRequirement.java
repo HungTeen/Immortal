@@ -35,11 +35,11 @@ public record AndRequirement(List<Holder<ILearnRequirement>> requirements) imple
     }
 
     @Override
-    public MutableComponent getRequirementInfo() {
+    public MutableComponent getRequirementInfo(Player player) {
         MutableComponent component = Component.literal("");
         final List<ILearnRequirement> rs = requirements.stream().map(Holder::get).toList();
         for(int i = 0; i < rs.size(); ++ i){
-            component.append("{").append(rs.get(i).getRequirementInfo()).append("}");
+            component.append("{").append(rs.get(i).getRequirementInfo(player)).append("}");
             if(i < rs.size() - 1) component.append(TipUtil.misc("requirement.and"));
         }
         return component;

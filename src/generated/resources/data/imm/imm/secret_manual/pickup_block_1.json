@@ -1,0 +1,6 @@
+{
+  "content": "imm:pickup_block_1",
+  "requirements": [
+    "imm:spiritual_level_1_lowest"
+  ]
+}
