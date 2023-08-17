@@ -20,6 +20,7 @@ public class RequirementTypes {
     public static final IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
     public static final IRequirementType<NotRequirement> NOT = register(new RequirementType<>("not", NotRequirement.CODEC));
     public static final IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
+    public static final IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
     public static final IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
 
     public static IHTSimpleRegistry<IRequirementType<?>> registry(){

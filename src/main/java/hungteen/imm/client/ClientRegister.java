@@ -23,7 +23,7 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.client.particle.SpiritParticle;
 import hungteen.imm.client.particle.SpiritualManaParticle;
 import hungteen.imm.client.render.LevelRenderStages;
-import hungteen.imm.client.render.entity.FlyingItemEntityRender;
+import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
@@ -31,6 +31,7 @@ import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
 import hungteen.imm.client.render.entity.human.CommonVillagerRender;
 import hungteen.imm.client.render.entity.human.CultivatorRender;
+import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
@@ -73,6 +74,7 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.TELEPORT_FORMATION.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
+        event.registerEntityRenderer(IMMEntities.THROWING_ITEM.get(), ThrowingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 
         /* human */

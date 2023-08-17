@@ -4,11 +4,9 @@ import com.mojang.serialization.Codec;
 import hungteen.htlib.api.interfaces.IHTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.ILearnRequirement;
-import hungteen.imm.api.registry.IRequirementType;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.registry.*;
 import hungteen.imm.common.impl.registry.CultivationTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -27,11 +25,9 @@ public class LearnRequirements {
         CultivationTypes.registry().getValues().forEach(type -> {
             context.register(cultivation(type), new CultivationTypeRequirement(type));
         });
-//        SpellTypes.registry().getValues().forEach(spell -> {
-//            for(int i = 1; i <= spell.getMaxLevel(); ++ i){
-//                context.register(spell(spell, i), new SpellRequirement(spell, i));
-//            }
-//        });
+        RealmTypes.registry().getValues().forEach(type -> {
+            context.register(realm(type, true), new RealmRequirement(type, true));
+        });
     }
 
     public static Codec<ILearnRequirement> getDirectCodec(){
@@ -52,6 +48,10 @@ public class LearnRequirements {
 
     public static ResourceKey<ILearnRequirement> cultivation(ICultivationType type){
         return registry().createKey(type.getLocation());
+    }
+
+    public static ResourceKey<ILearnRequirement> realm(IRealmType type, boolean lowest){
+        return registry().createKey(StringHelper.suffix(type.getLocation(), lowest ? "lowest" : "highest"));
     }
 
     public static ResourceKey<ILearnRequirement> create(String name) {

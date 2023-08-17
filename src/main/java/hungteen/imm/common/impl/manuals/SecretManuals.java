@@ -8,7 +8,9 @@ import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
+import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
 import hungteen.imm.common.impl.registry.CultivationTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
@@ -34,8 +36,22 @@ public class SecretManuals {
         final HolderGetter<ILearnRequirement> requirements = context.lookup(LearnRequirements.registry().getRegistryKey());
         final HolderGetter<IManualContent> contents = context.lookup(ManualContents.registry().getRegistryKey());
         final Holder<ILearnRequirement> spiritual = requirements.getOrThrow(LearnRequirements.cultivation(CultivationTypes.SPIRITUAL));
+        final Holder<ILearnRequirement> spiritual_level_1 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_1, true));
+        final Holder<ILearnRequirement> spiritual_level_2 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_2, true));
         register(context, contents, SpellTypes.MEDITATE, 1, builder -> {
             builder.require(spiritual);
+        });
+        register(context, contents, SpellTypes.PICKUP_ITEM, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, contents, SpellTypes.PICKUP_ITEM, 2, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, contents, SpellTypes.PICKUP_BLOCK, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, contents, SpellTypes.PICKUP_BLOCK, 2, builder -> {
+            builder.require(spiritual_level_2);
         });
 //        context.register(SPIRITUAL_BEGINNER_GUIDE, builder().entry(
 //                new SecretManual.ManualEntry(
@@ -47,6 +63,9 @@ public class SecretManuals {
 
     public static void register(BootstapContext<SecretManual> context, HolderGetter<IManualContent> contents, ISpellType spell, int level, Consumer<Builder> consumer){
         final Builder builder = builder(contents, spell, level);
+        if(level > 1){
+            builder.require(Holder.direct(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1)))));
+        }
         consumer.accept(builder);
         context.register(spellManual(spell, level), builder.build());
     }

@@ -1,8 +1,8 @@
-package hungteen.imm.client.render.entity;
+package hungteen.imm.client.render.entity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import hungteen.imm.common.entity.misc.FlyingItemEntity;
+import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -20,17 +20,17 @@ import net.minecraft.world.item.ItemStack;
  * @author: HungTeen
  * @create: 2022-10-02 14:45
  **/
-public class FlyingItemEntityRender extends EntityRenderer<FlyingItemEntity> {
+public class ThrowingItemEntityRender extends EntityRenderer<ThrowingItemEntity> {
 
     private final ItemRenderer itemRenderer;
 
-    public FlyingItemEntityRender(EntityRendererProvider.Context context) {
+    public ThrowingItemEntityRender(EntityRendererProvider.Context context) {
         super(context);
         this.itemRenderer = context.getItemRenderer();
     }
 
     @Override
-    public void render(FlyingItemEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+    public void render(ThrowingItemEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
                        MultiBufferSource bufferIn, int packedLightIn) {
         final ItemStack stack = entityIn.getItemStack();
         final boolean isBlock = stack.getItem() instanceof BlockItem;
@@ -53,7 +53,7 @@ public class FlyingItemEntityRender extends EntityRenderer<FlyingItemEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FlyingItemEntity p_114482_) {
+    public ResourceLocation getTextureLocation(ThrowingItemEntity p_114482_) {
         return null;
     }
 
