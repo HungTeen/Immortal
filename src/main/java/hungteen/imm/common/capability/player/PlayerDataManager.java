@@ -38,7 +38,6 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class); // 修为。
     private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // 其他整数数据。
     private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // 其他小数数据。
-    private ICultivationType cultivationType = CultivationTypes.MORTAL; // 修为类型。
     private IRealmType realmType = RealmTypes.MORTALITY; // 当前境界。
     private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
     private ISpellType preparingSpell = null; // 当前选好的法术。
@@ -142,7 +141,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         {
             final CompoundTag nbt = new CompoundTag();
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
-            nbt.putString("PlayerCultivationType", this.cultivationType.getRegistryName());
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
             if(this.preparingSpell != null){
@@ -226,9 +224,6 @@ public class PlayerDataManager implements IPlayerDataManager {
             if(nbt.contains("NextRefreshTick")){
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }
-            if(nbt.contains("PlayerCultivationType")){
-                CultivationTypes.registry().getValue(nbt.getString("PlayerCultivationType")).ifPresent(r -> this.cultivationType = r);
-            }
             if (nbt.contains("PlayerRealmType")) {
                 RealmTypes.registry().getValue(nbt.getString("PlayerRealmType")).ifPresent(r -> this.realmType = r);
             }
@@ -270,7 +265,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.integerMap.forEach(this::sendIntegerDataPacket);
         this.floatMap.forEach(this::sendFloatDataPacket);
         Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
-        this.setCultivationType(this.cultivationType);
         this.setRealmType(this.realmType);
         if(this.preparingSpell != null) {
             this.setPreparingSpell(this.preparingSpell);
@@ -506,12 +500,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public ICultivationType getCultivationType() {
-        return cultivationType;
-    }
-
-    public void setCultivationType(ICultivationType cultivationType){
-        this.cultivationType = cultivationType;
-        this.sendMiscDataPacket(MiscDataPacket.Types.CULTIVATION, cultivationType.getRegistryName());
+        return this.realmType.getCultivationType();
     }
 
     @Nullable

@@ -18,18 +18,20 @@ public abstract class SpellType implements ISpellType {
     private final int consumeMana;
     private final int cooldown;
     private final boolean canTrigger;
+    private final boolean playerOnly;
     private final ResourceLocation resourceLocation;
 
     public SpellType(String name, SpellProperties properties) {
-        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger);
+        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger, properties.playerOnly);
     }
 
-    public SpellType(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger) {
+    public SpellType(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, boolean playerOnly) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.consumeMana = consumeMana;
         this.cooldown = cooldown;
         this.canTrigger = canTrigger;
+        this.playerOnly = playerOnly;
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
 
@@ -51,6 +53,11 @@ public abstract class SpellType implements ISpellType {
     @Override
     public boolean canTrigger() {
         return canTrigger;
+    }
+
+    @Override
+    public boolean playerOnly() {
+        return playerOnly;
     }
 
     @Override
@@ -88,6 +95,7 @@ public abstract class SpellType implements ISpellType {
         private int consumeMana = 0;
         private int cooldown = 0;
         private boolean canTrigger = true;
+        private boolean playerOnly = false;
 
         public SpellProperties maxLevel(int maxLevel){
             this.maxLevel = maxLevel;
@@ -106,6 +114,11 @@ public abstract class SpellType implements ISpellType {
 
         public SpellProperties notTrigger(){
             this.canTrigger = false;
+            return this;
+        }
+
+        public SpellProperties onlyPlayer(){
+            this.playerOnly = true;
             return this;
         }
 

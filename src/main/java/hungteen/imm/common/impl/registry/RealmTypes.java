@@ -30,17 +30,17 @@ public class RealmTypes {
 
     /* 灵修 */
 
-    public static final IRealmType SPIRITUAL_LEVEL_1 = register(new RealmType("spiritual_level_1", 50, 100, 10, 100, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_1 = register(new RealmType("spiritual_level_1", 50, 100, 100, 100, CultivationTypes.SPIRITUAL));
 
-    public static final IRealmType SPIRITUAL_LEVEL_2 = register(new RealmType("spiritual_level_2", 100, 200, 30, 120, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_2 = register(new RealmType("spiritual_level_2", 100, 200, 125, 120, CultivationTypes.SPIRITUAL));
 
-    public static final IRealmType SPIRITUAL_LEVEL_3 = register(new RealmType("spiritual_level_3", 200, 300, 50, 150, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_3 = register(new RealmType("spiritual_level_3", 200, 300, 160, 150, CultivationTypes.SPIRITUAL));
 
     /* 妖修 */
 
-    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 100, 25, 25, 100, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 100, 25, 80, 100, CultivationTypes.MONSTER));
 
-    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 300, 80, 60, 125, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 300, 80, 120, 125, CultivationTypes.MONSTER));
 
 //    public static final IRealmType MONSTER_LEVEL_3 = new RealmType("monster_level_3", 300, 80, 50, 110, false, CultivationTypes.MONSTER);
 

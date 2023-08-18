@@ -49,6 +49,12 @@ public interface ISpellType extends ISimpleEntry {
      */
     boolean canTrigger();
 
+    /**
+     * 此法术是否为玩家专属，其他生物不需要学。
+     * @return Whether can the spell be learned by non-player entities.
+     */
+    boolean playerOnly();
+
     MutableComponent getSpellDesc(int level);
 
     /**

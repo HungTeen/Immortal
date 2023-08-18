@@ -13,12 +13,12 @@ import net.minecraft.world.phys.Vec3;
  * @author: HungTeen
  * @create: 2023-08-01 17:25
  **/
-public class IMMPositionComponents {
+public interface IMMPositionComponents {
 
-    public static ResourceKey<IPositionComponent> AROUND_20_BLOCKS = create("around_20_blocks");
-    public static ResourceKey<IPositionComponent> AROUND_15_BLOCKS = create("around_15_blocks");
+    ResourceKey<IPositionComponent> AROUND_20_BLOCKS = create("around_20_blocks");
+    ResourceKey<IPositionComponent> AROUND_15_BLOCKS = create("around_15_blocks");
 
-    public static void register(BootstapContext<IPositionComponent> context){
+    static void register(BootstapContext<IPositionComponent> context){
         context.register(AROUND_20_BLOCKS, new CenterAreaPosition(
                 Vec3.ZERO,
                 20,
@@ -37,7 +37,7 @@ public class IMMPositionComponents {
         ));
     }
 
-    public static ResourceKey<IPositionComponent> create(String name){
+    static ResourceKey<IPositionComponent> create(String name){
         return HTPositionComponents.registry().createKey(Util.prefix(name));
     }
 }

@@ -18,16 +18,17 @@ public class SpellTypes {
     private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.createSimple(Util.prefix("spell_type"));
 
     public static final ISpellType MEDITATE = register(new MeditateSpell());
+    public static final ISpellType DISPERSAL = register(new DispersalSpell());
+    public static final ISpellType RELEASING = register(new ReleasingSpell());
+    public static final ISpellType INTIMIDATE = register(new IntimidateSpell());
+    public static final ISpellType SPIRIT_EYES = register(new SpiritEyeSpell());
     public static final ISpellType PICKUP_ITEM = register(new PickupItemSpell());
     public static final ISpellType THROW_ITEM = register(new ThrowItemSpell());
     public static final ISpellType PICKUP_BLOCK = register(new PickupBlockSpell());
     public static final ISpellType FLY_WITH_ITEM = register(new FlyWithItemSpell());
-    public static final ISpellType RELEASING = register(new ReleasingSpell());
-    public static final ISpellType INTIMIDATE = register(new IntimidateSpell());
     public static final ISpellType WATER_BREATHE = register(new WaterBreatheSpell());
     public static final ISpellType LAVA_BREATHE = register(new LavaBreatheSpell());
     public static final ISpellType SPROUT = register(new SproutSpell());
-    public static final ISpellType SPIRIT_EYES = register(new SpiritEyeSpell());
     public static final ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
     public static final ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
     public static final ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));

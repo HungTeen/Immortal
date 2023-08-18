@@ -11,7 +11,7 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
  * @program Immortal
  * @data 2023/6/14 10:06
  */
-public class IMMNoiseParamLists {
+public interface IMMNoiseParamLists {
 
 //    public static final ResourceKey<MultiNoiseBiomeSourceParameterList> EAST_WORLD = create("east_world");
 //
@@ -27,12 +27,12 @@ public class IMMNoiseParamLists {
 //            }
 //    );
 
-    public static void register(BootstapContext<MultiNoiseBiomeSourceParameterList> context) {
+    static void register(BootstapContext<MultiNoiseBiomeSourceParameterList> context) {
 //        final HolderGetter<Biome> holdergetter = context.lookup(Registries.BIOME);
 //        context.register(EAST_WORLD, new MultiNoiseBiomeSourceParameterList(EAST_WORLD_PRESET, holdergetter));
     }
 
-    private static ResourceKey<MultiNoiseBiomeSourceParameterList> create(String name) {
+    static ResourceKey<MultiNoiseBiomeSourceParameterList> create(String name) {
         return ResourceKey.create(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST, Util.prefix(name));
     }
 }

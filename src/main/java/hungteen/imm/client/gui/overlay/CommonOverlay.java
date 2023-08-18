@@ -51,7 +51,7 @@ public class CommonOverlay {
     }
 
     public static boolean canRenderManaBar() {
-        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMana(ClientUtil.player()) > 0 || ClientDatas.ShowSpellCircle);
+        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMaxMana(ClientUtil.player()) > 0 || ClientDatas.ShowSpellCircle);
     }
 
 }

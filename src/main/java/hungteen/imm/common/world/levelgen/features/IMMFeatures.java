@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author: HungTeen
  * @create: 2022-11-12 12:38
  **/
-public class IMMFeatures {
+public interface IMMFeatures {
 
 //    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
 //            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -32,22 +32,22 @@ public class IMMFeatures {
 //            ).build())
 //    );
 
-    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Util.id());
+    DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Util.id());
 
-    public static final RegistryObject<WoodStakeFeature> WOOD_STAKE = FEATURES.register("wood_stake", () -> new WoodStakeFeature(WoodStakeConfiguration.CODEC));
-    public static final RegistryObject<HorizontalStakeFeature> HORIZONTAL_STAKE = FEATURES.register("horizontal_stake", () -> new HorizontalStakeFeature(HorizontalStakeConfiguration.CODEC));
+    RegistryObject<WoodStakeFeature> WOOD_STAKE = FEATURES.register("wood_stake", () -> new WoodStakeFeature(WoodStakeConfiguration.CODEC));
+    RegistryObject<HorizontalStakeFeature> HORIZONTAL_STAKE = FEATURES.register("horizontal_stake", () -> new HorizontalStakeFeature(HorizontalStakeConfiguration.CODEC));
 
-    public static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
         IMMOreFeatures.register(context);
         IMMVegetationFeatures.register(context);
         IMMTreeFeatures.register(context);
     }
 
-    public static void register(IEventBus modBus){
+    static void register(IEventBus modBus){
         FEATURES.register(modBus);
     }
 
-    public static ResourceKey<ConfiguredFeature<?, ?>> create(String name){
+    static ResourceKey<ConfiguredFeature<?, ?>> create(String name){
         return FeatureUtils.createKey(Util.prefixName(name));
     }
 

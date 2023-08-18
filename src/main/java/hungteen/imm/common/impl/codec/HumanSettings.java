@@ -31,14 +31,14 @@ import java.util.Optional;
  * @program Immortal
  * @data 2023/2/24 15:09
  */
-public class HumanSettings {
+public interface HumanSettings {
 
-    private static final HTCodecRegistry<HumanSetting> SETTING = HTRegistryManager.create(Util.prefix("human_setting"), () -> HumanSetting.CODEC, () -> HumanSetting.CODEC);
+     HTCodecRegistry<HumanSetting> SETTING = HTRegistryManager.create(Util.prefix("human_setting"), () -> HumanSetting.CODEC, () -> HumanSetting.CODEC);
 
-    public static final ResourceKey<HumanSetting> DEFAULT = create("default");
-    public static final ResourceKey<HumanSetting> POOR_VANILLA = create("poor_vanilla");
+    ResourceKey<HumanSetting> DEFAULT = create("default");
+    ResourceKey<HumanSetting> POOR_VANILLA = create("poor_vanilla");
 
-    public static void register(BootstapContext<HumanSetting> context){
+    static void register(BootstapContext<HumanSetting> context){
         context.register(DEFAULT, new HumanSetting(
                 InventoryLootTypes.VANILLA,
                 0,
@@ -341,27 +341,27 @@ public class HumanSettings {
 //            )
 //    );
 
-    public static Optional<HumanSetting> getRandomSetting(Level level, IInventoryLootType type, RandomSource random) {
+    static Optional<HumanSetting> getRandomSetting(Level level, IInventoryLootType type, RandomSource random) {
         return WeightedList.create(SETTING.getValues(level).stream().filter(l -> l.type() == type).toList()).getRandomItem(random);
     }
 
-    public static List<HumanSetting> getInventoryLoots(Level level, IInventoryLootType type) {
+    static List<HumanSetting> getInventoryLoots(Level level, IInventoryLootType type) {
         return SETTING.getValues(level).stream().filter(l -> l.type() == type).toList();
     }
 
-    public static LootSetting singleLoot(ItemEntry entry) {
+    static LootSetting singleLoot(ItemEntry entry) {
         return new LootSetting(SimpleWeightedList.single(entry));
     }
 
-    public static LootSetting pairLoot(ItemEntry entry1, ItemEntry entry2) {
+    static LootSetting pairLoot(ItemEntry entry1, ItemEntry entry2) {
         return new LootSetting(SimpleWeightedList.pair(entry1, entry2));
     }
 
-    public static IHTCodecRegistry<HumanSetting> registry(){
+    static IHTCodecRegistry<HumanSetting> registry(){
         return SETTING;
     }
 
-    public static ResourceKey<HumanSetting> create(String name){
+    static ResourceKey<HumanSetting> create(String name){
         return registry().createKey(Util.prefix(name));
     }
 

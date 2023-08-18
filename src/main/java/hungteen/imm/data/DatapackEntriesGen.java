@@ -11,6 +11,7 @@ import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.raid.*;
+import hungteen.imm.common.misc.damage.IMMDamageTypes;
 import hungteen.imm.common.world.levelgen.*;
 import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
 import hungteen.imm.common.world.levelgen.features.IMMFeatures;
@@ -41,6 +42,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
 
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             // Vanilla.
+            .add(Registries.DAMAGE_TYPE, IMMDamageTypes::register)
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
             .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)

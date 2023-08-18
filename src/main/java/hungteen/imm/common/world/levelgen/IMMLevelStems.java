@@ -12,15 +12,15 @@ import net.minecraft.world.level.dimension.LevelStem;
  * @author: HungTeen
  * @create: 2022-10-17 10:55
  **/
-public class IMMLevelStems {
+public interface IMMLevelStems {
 
-    public static final ResourceKey<LevelStem> EAST_WORLD = create("east_world");
+    ResourceKey<LevelStem> EAST_WORLD = create("east_world");
 
-    public static void register(BootstapContext<LevelStem> context){
+    static void register(BootstapContext<LevelStem> context){
         EastWorldDimension.initLevelStem(context);
     }
 
-    private static ResourceKey<LevelStem> create(String name) {
+    static ResourceKey<LevelStem> create(String name) {
         return LevelHelper.stem().createKey(Util.prefix(name));
     }
 

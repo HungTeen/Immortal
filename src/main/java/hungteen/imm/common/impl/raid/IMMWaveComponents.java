@@ -20,13 +20,13 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2023-08-01 17:25
  **/
-public class IMMWaveComponents {
+public interface IMMWaveComponents {
 
-    public static final ResourceKey<IWaveComponent> MORTALITY_WAVE_1 = create("mortality_wave_1");
-    public static final ResourceKey<IWaveComponent> MORTALITY_WAVE_2 = create("mortality_wave_2");
-    public static final ResourceKey<IWaveComponent> MORTALITY_WAVE_3 = create("mortality_wave_3");
+    ResourceKey<IWaveComponent> MORTALITY_WAVE_1 = create("mortality_wave_1");
+    ResourceKey<IWaveComponent> MORTALITY_WAVE_2 = create("mortality_wave_2");
+    ResourceKey<IWaveComponent> MORTALITY_WAVE_3 = create("mortality_wave_3");
 
-    public static void register(BootstapContext<IWaveComponent> context) {
+    static void register(BootstapContext<IWaveComponent> context) {
         final HolderGetter<ISpawnComponent> spawns = context.lookup(HTSpawnComponents.registry().getRegistryKey());
         final Holder<ISpawnComponent> once3Zombies = spawns.getOrThrow(IMMSpawnComponents.ONCE_3_ZOMBIES);
         final Holder<ISpawnComponent> duration10Zombies = spawns.getOrThrow(IMMSpawnComponents.DURATION_10_ZOMBIES);
@@ -52,14 +52,14 @@ public class IMMWaveComponents {
         ));
     }
 
-    public static HTWaveComponents.WaveSettingBuilder trial(int duration) {
+    static HTWaveComponents.WaveSettingBuilder trial(int duration) {
         return HTWaveComponents.builder()
                 .skip(true)
                 .wave(duration)
                 ;
     }
 
-    public static ResourceKey<IWaveComponent> create(String name) {
+    static ResourceKey<IWaveComponent> create(String name) {
         return HTWaveComponents.registry().createKey(Util.prefix(name));
     }
 }

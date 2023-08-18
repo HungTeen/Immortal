@@ -12,7 +12,7 @@ import net.minecraft.world.level.dimension.DimensionType;
  * @program Immortal
  * @data 2023/3/29 15:05
  */
-public class IMMDimensionTypes {
+public interface IMMDimensionTypes {
 
     public static final ResourceKey<DimensionType> EAST_WORLD = create("east_world");
 

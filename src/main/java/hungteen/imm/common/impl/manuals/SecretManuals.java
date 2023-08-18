@@ -32,11 +32,11 @@ import java.util.function.Consumer;
  * @program Immortal
  * @data 2023/2/24 15:09
  */
-public class SecretManuals {
+public interface SecretManuals {
 
-    private static final HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.create(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
+    HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.create(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
 
-    public static void register(BootstapContext<SecretManual> context){
+    static void register(BootstapContext<SecretManual> context){
         final HolderGetter<ILearnRequirement> requirements = context.lookup(LearnRequirements.registry().getRegistryKey());
         final HolderGetter<IManualContent> contents = context.lookup(ManualContents.registry().getRegistryKey());
         final Holder<ILearnRequirement> spiritual = requirements.getOrThrow(LearnRequirements.cultivation(CultivationTypes.SPIRITUAL));
@@ -45,6 +45,21 @@ public class SecretManuals {
         final Holder<ILearnRequirement> spiritual_level_3 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_3, true));
         register(context, SpellTypes.MEDITATE, 1, builder -> {
             builder.require(spiritual);
+        });
+        register(context, SpellTypes.DISPERSAL, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, SpellTypes.RELEASING, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, SpellTypes.INTIMIDATE, 1, builder -> {
+            builder.require(spiritual_level_2);
+        });
+        register(context, SpellTypes.SPIRIT_EYES, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, SpellTypes.SPIRIT_EYES, 2, builder -> {
+            builder.require(spiritual_level_2);
         });
         register(context, SpellTypes.PICKUP_ITEM, 1, builder -> {
             builder.require(spiritual_level_1);
@@ -79,12 +94,6 @@ public class SecretManuals {
         register(context, SpellTypes.SPROUT, 1, builder -> {
             builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.WOOD_MASTERY, 2)));
         });
-        register(context, SpellTypes.SPIRIT_EYES, 1, builder -> {
-            builder.require(spiritual_level_1);
-        });
-        register(context, SpellTypes.SPIRIT_EYES, 2, builder -> {
-            builder.require(spiritual_level_2);
-        });
         for (Elements element : Elements.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
@@ -96,7 +105,7 @@ public class SecretManuals {
         }
     }
 
-    public static void register(BootstapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
+    static void register(BootstapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
         final Builder builder = builder(spell, level);
         if(level > 1){
             builder.require(Holder.direct(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1)))));
@@ -105,35 +114,35 @@ public class SecretManuals {
         context.register(spellManual(spell, level), builder.build());
     }
 
-    public static IHTCodecRegistry<SecretManual> registry(){
+    static IHTCodecRegistry<SecretManual> registry(){
         return TUTORIALS;
     }
 
-    public static Builder builder(ISpellType spell){
+    static Builder builder(ISpellType spell){
         return builder(spell, 1);
     }
 
-    public static Builder builder(ISpellType spell, int level){
+    static Builder builder(ISpellType spell, int level){
         return builder(Holder.direct(new LearnSpellManual(spell, level)));
     }
 
-    public static Builder builder(Holder<IManualContent> content){
+    static Builder builder(Holder<IManualContent> content){
         return new Builder(content);
     }
 
-    public static ResourceKey<SecretManual> spellManual(ISpellType spell) {
+    static ResourceKey<SecretManual> spellManual(ISpellType spell) {
         return spellManual(spell, 1);
     }
 
-    public static ResourceKey<SecretManual> spellManual(ISpellType spell, int level) {
+    static ResourceKey<SecretManual> spellManual(ISpellType spell, int level) {
         return registry().createKey(StringHelper.suffix(spell.getLocation(), String.valueOf(level)));
     }
 
-    public static ResourceKey<SecretManual> create(String name) {
+    static ResourceKey<SecretManual> create(String name) {
         return registry().createKey(Util.prefix(name));
     }
 
-    public static class Builder {
+    class Builder {
 
         private final Holder<IManualContent> content;
         private final List<Holder<ILearnRequirement>> requirements = new ArrayList<>();

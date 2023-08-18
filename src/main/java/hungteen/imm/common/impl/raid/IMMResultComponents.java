@@ -11,13 +11,13 @@ import net.minecraft.resources.ResourceKey;
  * @author: HungTeen
  * @create: 2023-08-01 17:25
  **/
-public class IMMResultComponents {
+public interface IMMResultComponents {
 
-    public static void register(BootstapContext<IResultComponent> context){
+    static void register(BootstapContext<IResultComponent> context){
 
     }
 
-    public static ResourceKey<IResultComponent> create(String name){
+    static ResourceKey<IResultComponent> create(String name){
         return HTResultComponents.registry().createKey(Util.prefix(name));
     }
 }

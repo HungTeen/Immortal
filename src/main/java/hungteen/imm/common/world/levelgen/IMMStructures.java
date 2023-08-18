@@ -19,13 +19,13 @@ import java.util.Map;
  * @author: HungTeen
  * @create: 2022-11-20 09:39
  **/
-public class IMMStructures {
+public interface IMMStructures {
 
-    public static final ResourceKey<Structure> TELEPORT_RUIN = create("teleport_ruin");
-    public static final ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = create("spiritual_plains_village");
-    public static final ResourceKey<Structure> OVERWORLD_TRADING_MARKET = create("overworld_trading_market");
+    ResourceKey<Structure> TELEPORT_RUIN = create("teleport_ruin");
+    ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = create("spiritual_plains_village");
+    ResourceKey<Structure> OVERWORLD_TRADING_MARKET = create("overworld_trading_market");
 
-    public static void register(BootstapContext<Structure> context) {
+    static void register(BootstapContext<Structure> context) {
 //        OverworldTradingMarket.initStructures(context);
 //        SpiritualPlainsVillage.initStructures(context);
         final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
@@ -39,7 +39,7 @@ public class IMMStructures {
         );
     }
 
-    private static ResourceKey<Structure> create(String name) {
+    static ResourceKey<Structure> create(String name) {
         return ResourceKey.create(Registries.STRUCTURE, Util.prefix(name));
     }
 

@@ -20,11 +20,11 @@ import java.util.List;
  * @program Immortal
  * @data 2023/6/2 14:23
  */
-public class IMMBiomeModifiers {
+public interface IMMBiomeModifiers {
 
-    public static final ResourceKey<BiomeModifier> SPAWN_CULTIVATOR = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Util.prefix("spawn_cultivator"));
+    ResourceKey<BiomeModifier> SPAWN_CULTIVATOR = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Util.prefix("spawn_cultivator"));
 
-    public static void register(BootstapContext<BiomeModifier> context){
+    static void register(BootstapContext<BiomeModifier> context){
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         context.register(SPAWN_CULTIVATOR, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),

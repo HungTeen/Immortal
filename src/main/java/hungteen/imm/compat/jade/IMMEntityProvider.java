@@ -18,6 +18,7 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.ui.IElement;
 import snownee.jade.api.ui.IElementHelper;
 
 import java.util.List;
@@ -38,13 +39,15 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
             if(PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1)){
                 List<ISpiritualType> roots = EntityUtil.getSpiritualRoots(entityAccessor.getEntity());
                 final IElementHelper elements = iTooltip.getElementHelper();
-                elements.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots)));
+                final IElement element = elements.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots)));
+                iTooltip.add(element);
             }
             if(PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)){
                 final IRealmType realm = RealmManager.getEntityRealm(entityAccessor.getEntity());
                 final RealmStages stage = RealmManager.getRealmStage(entityAccessor.getEntity());
                 final IElementHelper elements = iTooltip.getElementHelper();
-                elements.text(RealmTypes.getCategory().append(": ").append(RealmManager.getRealmInfo(realm, stage)));
+                final IElement element = elements.text(RealmTypes.getCategory().append(": ").append(RealmManager.getRealmInfo(realm, stage)));
+                iTooltip.add(element);
             }
         });
     }

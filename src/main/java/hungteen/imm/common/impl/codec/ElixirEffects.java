@@ -16,23 +16,23 @@ import java.util.List;
  * @program Immortal
  * @data 2023/7/18 14:56
  */
-public class ElixirEffects {
+public interface ElixirEffects {
 
-    private static final HTCodecRegistry<ElixirEffect> SETTING = HTRegistryManager.create(Util.prefix("elixir_effect"), () -> ElixirEffect.CODEC, () -> ElixirEffect.CODEC);
+    HTCodecRegistry<ElixirEffect> SETTING = HTRegistryManager.create(Util.prefix("elixir_effect"), () -> ElixirEffect.CODEC, () -> ElixirEffect.CODEC);
 
-    public static final ResourceKey<ElixirEffect> SPEED_UP = create("speed_up");
-    public static final ResourceKey<ElixirEffect> SLOW_DOWN = create("slow_down");
+    ResourceKey<ElixirEffect> SPEED_UP = create("speed_up");
+    ResourceKey<ElixirEffect> SLOW_DOWN = create("slow_down");
 
-    public static void register(BootstapContext<ElixirEffect> context){
+    static void register(BootstapContext<ElixirEffect> context) {
         context.register(SPEED_UP, new ElixirEffect(MobEffects.MOVEMENT_SPEED, List.of(1)));
         context.register(SLOW_DOWN, new ElixirEffect(MobEffects.MOVEMENT_SLOWDOWN, List.of(2)));
     }
 
-    public static IHTCodecRegistry<ElixirEffect> registry(){
+    static IHTCodecRegistry<ElixirEffect> registry() {
         return SETTING;
     }
 
-    public static ResourceKey<ElixirEffect> create(String name){
+    static ResourceKey<ElixirEffect> create(String name) {
         return registry().createKey(Util.prefix(name));
     }
 }

@@ -17,11 +17,11 @@ import net.minecraft.resources.ResourceKey;
  * @program Immortal
  * @data 2023/7/17 15:48
  */
-public class LearnRequirements {
+public interface LearnRequirements {
 
-    private static final IHTCodecRegistry<ILearnRequirement> TYPES = HTRegistryManager.create(Util.prefix("learn_requirement"), LearnRequirements::getDirectCodec, LearnRequirements::getDirectCodec);
+    IHTCodecRegistry<ILearnRequirement> TYPES = HTRegistryManager.create(Util.prefix("learn_requirement"), LearnRequirements::getDirectCodec, LearnRequirements::getDirectCodec);
 
-    public static void register(BootstapContext<ILearnRequirement> context){
+    static void register(BootstapContext<ILearnRequirement> context){
         CultivationTypes.registry().getValues().forEach(type -> {
             context.register(cultivation(type), new CultivationTypeRequirement(type));
         });
@@ -30,31 +30,31 @@ public class LearnRequirements {
         });
     }
 
-    public static Codec<ILearnRequirement> getDirectCodec(){
+    static Codec<ILearnRequirement> getDirectCodec(){
         return RequirementTypes.registry().byNameCodec().dispatch(ILearnRequirement::getType, IRequirementType::codec);
     }
 
-    public static Codec<Holder<ILearnRequirement>> getCodec(){
+    static Codec<Holder<ILearnRequirement>> getCodec(){
         return registry().getHolderCodec(getDirectCodec());
     }
 
-    public static IHTCodecRegistry<ILearnRequirement> registry(){
+    static IHTCodecRegistry<ILearnRequirement> registry(){
         return TYPES;
     }
 
-    public static ResourceKey<ILearnRequirement> spell(ISpellType spell, int level){
+    static ResourceKey<ILearnRequirement> spell(ISpellType spell, int level){
         return registry().createKey(StringHelper.suffix(spell.getLocation(), String.valueOf(level)));
     }
 
-    public static ResourceKey<ILearnRequirement> cultivation(ICultivationType type){
+    static ResourceKey<ILearnRequirement> cultivation(ICultivationType type){
         return registry().createKey(type.getLocation());
     }
 
-    public static ResourceKey<ILearnRequirement> realm(IRealmType type, boolean lowest){
+    static ResourceKey<ILearnRequirement> realm(IRealmType type, boolean lowest){
         return registry().createKey(StringHelper.suffix(type.getLocation(), lowest ? "lowest" : "highest"));
     }
 
-    public static ResourceKey<ILearnRequirement> create(String name) {
+    static ResourceKey<ILearnRequirement> create(String name) {
         return registry().createKey(Util.prefix(name));
     }
 }

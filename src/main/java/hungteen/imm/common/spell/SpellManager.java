@@ -33,7 +33,6 @@ public class SpellManager {
 
     private static final MutableComponent FORGOT_SPELL = TipUtil.info("spell.forgot");
     private static final MutableComponent SPELL_ON_CD = TipUtil.info("spell.on_cooldown");
-    private static final MutableComponent NO_ENOUGH_MANA = TipUtil.info("spell.no_enough_mana");
     private static final int FAIL_CD = 20;
 
     public static void pressToActivateSpell(Player player){
@@ -93,7 +92,7 @@ public class SpellManager {
                             }
                         }
                     } else {
-                        PlayerHelper.sendTipTo(player, NO_ENOUGH_MANA);
+                        PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()));
                     }
                 } else {
                     PlayerHelper.sendTipTo(player, SPELL_ON_CD);

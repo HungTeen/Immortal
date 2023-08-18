@@ -17,11 +17,11 @@ import net.minecraft.resources.ResourceKey;
  * @program Immortal
  * @data 2023/7/17 15:29
  */
-public class ManualContents {
+public interface ManualContents {
 
-    private static final IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
+    IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
 
-    public static void register(BootstapContext<IManualContent> context){
+    static void register(BootstapContext<IManualContent> context) {
 //        SpellTypes.registry().getValues().forEach(spell -> {
 //            for(int i = 1; i <= spell.getMaxLevel(); ++ i){
 //                context.register(spellContent(spell, i), new LearnSpellManual(spell, i));
@@ -29,23 +29,23 @@ public class ManualContents {
 //        });
     }
 
-    public static Codec<IManualContent> getDirectCodec(){
+    static Codec<IManualContent> getDirectCodec() {
         return ManualTypes.registry().byNameCodec().dispatch(IManualContent::getType, IManualType::codec);
     }
 
-    public static Codec<Holder<IManualContent>> getCodec(){
+    static Codec<Holder<IManualContent>> getCodec() {
         return registry().getHolderCodec(getDirectCodec());
     }
 
-    public static IHTCodecRegistry<IManualContent> registry(){
+    static IHTCodecRegistry<IManualContent> registry() {
         return TYPES;
     }
 
-    public static ResourceKey<IManualContent> spellContent(ISpellType spell, int level){
+    static ResourceKey<IManualContent> spellContent(ISpellType spell, int level) {
         return registry().createKey(StringHelper.suffix(spell.getLocation(), String.valueOf(level)));
     }
 
-    public static ResourceKey<IManualContent> create(String name) {
+    static ResourceKey<IManualContent> create(String name) {
         return registry().createKey(Util.prefix(name));
     }
 

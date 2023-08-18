@@ -30,11 +30,11 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2023-08-01 17:25
  **/
-public class IMMRaidComponents {
+public interface IMMRaidComponents {
 
-    public static ResourceKey<IRaidComponent> MORTALITY_TO_SPIRITUAL_1 = create("mortality_to_spiritual_1");
+    ResourceKey<IRaidComponent> MORTALITY_TO_SPIRITUAL_1 = create("mortality_to_spiritual_1");
 
-    public static void register(BootstapContext<IRaidComponent> context){
+    static void register(BootstapContext<IRaidComponent> context){
         final HolderGetter<SoundEvent> sounds = SoundHelper.get().lookup(context);
         final HolderGetter<IWaveComponent> waves = context.lookup(HTWaveComponents.registry().getRegistryKey());
         final HolderGetter<IPositionComponent> placements = context.lookup(HTPositionComponents.registry().getRegistryKey());
@@ -47,11 +47,11 @@ public class IMMRaidComponents {
         ));
     }
 
-    public static BreakThroughRaid raid(HTRaidComponents.RaidSettingBuilder builder, List<Holder<IWaveComponent>> waves, IRealmType realm, RealmStages stage){
+    static BreakThroughRaid raid(HTRaidComponents.RaidSettingBuilder builder, List<Holder<IWaveComponent>> waves, IRealmType realm, RealmStages stage){
         return new BreakThroughRaid(builder.build(), waves, realm, stage, 100, 0, 100);
     }
 
-    public static HTRaidComponents.RaidSettingBuilder trialBuilder(HolderGetter<SoundEvent> sounds){
+    static HTRaidComponents.RaidSettingBuilder trialBuilder(HolderGetter<SoundEvent> sounds){
         return HTRaidComponents.builder()
                 .blockInside(true)
                 .blockOutside(true)
@@ -66,7 +66,7 @@ public class IMMRaidComponents {
                 ;
     }
 
-    public static ResourceKey<IRaidComponent> create(String name){
+    static ResourceKey<IRaidComponent> create(String name){
         return HTRaidComponents.registry().createKey(Util.prefix(name));
     }
 }

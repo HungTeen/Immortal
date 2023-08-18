@@ -3,7 +3,6 @@ package hungteen.imm.common.network;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
@@ -56,7 +55,6 @@ public class MiscDataPacket {
                         case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
                         case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
                         case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
-                        case CULTIVATION -> CultivationTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setCultivationType(player, l));
                         case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.checkAndSetRealm(player, realm));
                         case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
                         case PREPARING_SPELL -> SpellTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setPreparingSpell(player, l));
@@ -74,7 +72,6 @@ public class MiscDataPacket {
         REMOVE_ROOT,
         CLEAR_ROOT,
         EXPERIENCE,
-        CULTIVATION,
         REALM,
         REALM_STAGE,
         PREPARING_SPELL,

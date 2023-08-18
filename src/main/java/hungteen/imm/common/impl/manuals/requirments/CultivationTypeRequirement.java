@@ -24,7 +24,7 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
 
     @Override
     public boolean check(Level level, Player player) {
-        return PlayerUtil.getCultivationType(player).equals(cultivationType);
+        return PlayerUtil.getCultivationType(player).equals(cultivationType());
     }
 
     @Override
@@ -34,7 +34,7 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return cultivationType.getComponent();
+        return cultivationType().getComponent();
     }
 
     @Override

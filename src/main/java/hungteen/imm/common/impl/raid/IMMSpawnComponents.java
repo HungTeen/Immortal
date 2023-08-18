@@ -14,14 +14,14 @@ import net.minecraft.world.entity.EntityType;
  * @author: HungTeen
  * @create: 2023-08-01 17:25
  **/
-public class IMMSpawnComponents {
+public interface IMMSpawnComponents {
 
-    public static final ResourceKey<ISpawnComponent> ONCE_3_ZOMBIES = create("once_3_zombies");
-    public static final ResourceKey<ISpawnComponent> DURATION_10_ZOMBIES = create("duration_10_zombies");
-    public static final ResourceKey<ISpawnComponent> ONCE_1_SKELETON = create("once_1_skeleton");
-    public static final ResourceKey<ISpawnComponent> DURATION_5_SKELETONS = create("duration_5_skeletons");
+    ResourceKey<ISpawnComponent> ONCE_3_ZOMBIES = create("once_3_zombies");
+    ResourceKey<ISpawnComponent> DURATION_10_ZOMBIES = create("duration_10_zombies");
+    ResourceKey<ISpawnComponent> ONCE_1_SKELETON = create("once_1_skeleton");
+    ResourceKey<ISpawnComponent> DURATION_5_SKELETONS = create("duration_5_skeletons");
 
-    public static void register(BootstapContext<ISpawnComponent> context){
+    static void register(BootstapContext<ISpawnComponent> context){
         context.register(ONCE_3_ZOMBIES, new OnceSpawn(
                 builder(EntityType.ZOMBIE).build(), 3
         ));
@@ -36,11 +36,11 @@ public class IMMSpawnComponents {
         ));
     }
 
-    public static HTSpawnComponents.SpawnSettingBuilder builder(EntityType<?> type){
+    static HTSpawnComponents.SpawnSettingBuilder builder(EntityType<?> type){
         return HTSpawnComponents.builder().entityType(type).enableDefaultSpawn(false);
     }
 
-    public static ResourceKey<ISpawnComponent> create(String name){
+    static ResourceKey<ISpawnComponent> create(String name){
         return HTSpawnComponents.registry().createKey(Util.prefix(name));
     }
 

@@ -15,13 +15,13 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
  * @program Immortal
  * @data 2023/3/28 20:17
  */
-public class IMMStructureSets {
+public interface IMMStructureSets {
 
-    public static final ResourceKey<StructureSet> TELEPORT_RUINS = create("teleport_ruins");
-    public static final ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = create("spiritual_plains_villages");
-    public static final ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = create("overworld_trading_markets");
+    ResourceKey<StructureSet> TELEPORT_RUINS = create("teleport_ruins");
+    ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = create("spiritual_plains_villages");
+    ResourceKey<StructureSet> OVERWORLD_TRADING_MARKET_SET = create("overworld_trading_markets");
 
-    public static void register(BootstapContext<StructureSet> context) {
+    static void register(BootstapContext<StructureSet> context) {
 //        OverworldTradingMarket.initStructureSets(context);
         final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
         context.register(TELEPORT_RUINS, new StructureSet(
@@ -30,7 +30,7 @@ public class IMMStructureSets {
         );
     }
 
-    private static ResourceKey<StructureSet> create(String name) {
+    static ResourceKey<StructureSet> create(String name) {
         return ResourceKey.create(Registries.STRUCTURE_SET, Util.prefix(name));
     }
 

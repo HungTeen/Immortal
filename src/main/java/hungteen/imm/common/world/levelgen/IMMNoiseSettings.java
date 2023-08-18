@@ -12,15 +12,15 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
  * @author: HungTeen
  * @create: 2022-11-12 19:38
  **/
-public class IMMNoiseSettings {
+public interface IMMNoiseSettings {
 
-    public static final ResourceKey<NoiseGeneratorSettings> EAST_WORLD = create("east_world");
+    ResourceKey<NoiseGeneratorSettings> EAST_WORLD = create("east_world");
 
-    public static void register(BootstapContext<NoiseGeneratorSettings> context){
+    static void register(BootstapContext<NoiseGeneratorSettings> context){
         EastWorldDimension.initNoiseSettings(context);
     }
 
-    private static ResourceKey<NoiseGeneratorSettings> create(String name) {
+    static ResourceKey<NoiseGeneratorSettings> create(String name) {
         return LevelHelper.noise().createKey(Util.prefix(name));
     }
 }

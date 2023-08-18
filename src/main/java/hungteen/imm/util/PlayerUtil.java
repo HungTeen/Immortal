@@ -431,10 +431,6 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getCultivationType, CultivationTypes.MORTAL);
     }
 
-    public static void setCultivationType(Player player, ICultivationType type){
-        getOptManager(player).ifPresent(m -> m.setCultivationType(type));
-    }
-
     @Nullable
     public static ISpellType getPreparingSpell(Player player){
         return getManagerResult(player, PlayerDataManager::getPreparingSpell, null);
