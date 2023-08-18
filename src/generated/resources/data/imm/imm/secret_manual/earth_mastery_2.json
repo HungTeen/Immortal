@@ -1,5 +1,9 @@
 {
-  "content": "imm:earth_mastery_2",
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 2,
+    "spell": "imm:earth_mastery"
+  },
   "requirements": [
     {
       "type": "imm:spell",

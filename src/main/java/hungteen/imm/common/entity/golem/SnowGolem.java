@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -99,7 +98,7 @@ public class SnowGolem extends GolemEntity {
     }
 
     @Override
-    public Collection<ISpiritualType> getSpiritualTypes() {
+    public List<ISpiritualType> getSpiritualTypes() {
         return List.of(SpiritualTypes.WATER);
     }
 

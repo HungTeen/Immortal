@@ -1,5 +1,9 @@
 {
-  "content": "imm:pickup_item_2",
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 2,
+    "spell": "imm:pickup_item"
+  },
   "requirements": [
     {
       "type": "imm:spell",

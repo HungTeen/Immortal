@@ -8,7 +8,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class CopperGolem extends GolemEntity{
     }
 
     @Override
-    public Collection<ISpiritualType> getSpiritualTypes() {
+    public List<ISpiritualType> getSpiritualTypes() {
         return List.of(SpiritualTypes.METAL);
     }
 

@@ -1,5 +1,9 @@
 {
-  "content": "imm:pickup_block_1",
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 1,
+    "spell": "imm:pickup_block"
+  },
   "requirements": [
     "imm:spiritual_level_1_lowest"
   ]

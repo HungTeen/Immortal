@@ -6,14 +6,16 @@ import hungteen.imm.common.entity.IMMCreature;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public abstract class UndeadEntity extends IMMCreature implements IUndead {
     }
 
     @Override
-    public Collection<ISpiritualType> getSpiritualTypes() {
+    public List<ISpiritualType> getSpiritualTypes() {
         return List.of(SpiritualTypes.SPIRIT);
     }
 }

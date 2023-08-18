@@ -19,7 +19,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -153,7 +152,7 @@ public class CreeperGolem extends GolemEntity {
     }
 
     @Override
-    public Collection<ISpiritualType> getSpiritualTypes() {
+    public List<ISpiritualType> getSpiritualTypes() {
         return List.of(SpiritualTypes.FIRE);
     }
 

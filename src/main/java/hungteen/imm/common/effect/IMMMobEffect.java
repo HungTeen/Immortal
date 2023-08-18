@@ -11,9 +11,9 @@ import org.jetbrains.annotations.Nullable;
  * @author: HungTeen
  * @create: 2022-10-20 14:57
  **/
-public abstract class ImmortalMobEffect extends MobEffect {
+public abstract class IMMMobEffect extends MobEffect {
 
-    public ImmortalMobEffect(MobEffectCategory category, int color) {
+    public IMMMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 

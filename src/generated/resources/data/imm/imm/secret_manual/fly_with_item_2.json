@@ -2,7 +2,7 @@
   "content": {
     "type": "imm:learn_spell",
     "level": 2,
-    "spell": "imm:spirit_mastery"
+    "spell": "imm:fly_with_item"
   },
   "requirements": [
     {
@@ -10,14 +10,10 @@
       "require_spells": [
         {
           "level": 1,
-          "spell": "imm:spirit_mastery"
+          "spell": "imm:fly_with_item"
         }
       ]
     },
-    "imm:spiritual_level_3_lowest",
-    {
-      "type": "imm:emp",
-      "level": 2
-    }
+    "imm:spiritual_level_2_lowest"
   ]
 }

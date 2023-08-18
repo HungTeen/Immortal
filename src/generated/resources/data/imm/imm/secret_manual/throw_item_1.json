@@ -1,23 +1,19 @@
 {
   "content": {
     "type": "imm:learn_spell",
-    "level": 2,
-    "spell": "imm:spirit_mastery"
+    "level": 1,
+    "spell": "imm:throw_item"
   },
   "requirements": [
+    "imm:spiritual_level_2_lowest",
     {
       "type": "imm:spell",
       "require_spells": [
         {
           "level": 1,
-          "spell": "imm:spirit_mastery"
+          "spell": "imm:pickup_item"
         }
       ]
-    },
-    "imm:spiritual_level_3_lowest",
-    {
-      "type": "imm:emp",
-      "level": 2
     }
   ]
 }

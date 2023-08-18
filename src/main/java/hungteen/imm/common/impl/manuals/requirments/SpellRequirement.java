@@ -30,6 +30,10 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
             ).codec().listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
     ).apply(instance, SpellRequirement::new)).codec();
 
+    public static SpellRequirement single(ISpellType spell, int level) {
+        return new SpellRequirement(List.of(Pair.of(spell, level)));
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         return spells().stream().allMatch(p -> {

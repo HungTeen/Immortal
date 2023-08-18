@@ -7,7 +7,6 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.IManualType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -23,11 +22,11 @@ public class ManualContents {
     private static final IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
 
     public static void register(BootstapContext<IManualContent> context){
-        SpellTypes.registry().getValues().forEach(spell -> {
-            for(int i = 1; i <= spell.getMaxLevel(); ++ i){
-                context.register(spellContent(spell, i), new LearnSpellManual(spell, i));
-            }
-        });
+//        SpellTypes.registry().getValues().forEach(spell -> {
+//            for(int i = 1; i <= spell.getMaxLevel(); ++ i){
+//                context.register(spellContent(spell, i), new LearnSpellManual(spell, i));
+//            }
+//        });
     }
 
     public static Codec<IManualContent> getDirectCodec(){

@@ -1,19 +1,19 @@
 {
   "content": {
     "type": "imm:learn_spell",
-    "level": 2,
-    "spell": "imm:pickup_block"
+    "level": 1,
+    "spell": "imm:sprout"
   },
   "requirements": [
+    "imm:spiritual_level_3_lowest",
     {
       "type": "imm:spell",
       "require_spells": [
         {
-          "level": 1,
-          "spell": "imm:pickup_block"
+          "level": 2,
+          "spell": "imm:wood_mastery"
         }
       ]
-    },
-    "imm:spiritual_level_2_lowest"
+    }
   ]
 }

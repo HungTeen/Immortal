@@ -1,5 +1,9 @@
 {
-  "content": "imm:wood_mastery_1",
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 1,
+    "spell": "imm:wood_mastery"
+  },
   "requirements": [
     "imm:spiritual_level_2_lowest",
     {

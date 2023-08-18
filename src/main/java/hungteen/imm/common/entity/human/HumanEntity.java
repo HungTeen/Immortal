@@ -73,7 +73,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -537,7 +536,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     }
 
     @Override
-    public Collection<ISpiritualType> getSpiritualTypes() {
+    public List<ISpiritualType> getSpiritualTypes() {
         if (this.rootsCache == null && IMMAPI.get().spiritualRegistry().isPresent()) {
             this.rootsCache = new ArrayList<>();
             IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {

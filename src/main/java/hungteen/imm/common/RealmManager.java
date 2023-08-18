@@ -145,6 +145,19 @@ public class RealmManager {
         return PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS);
     }
 
+    public static int getConsciousness(Entity entity){
+        final IRealmType realm = RealmManager.getEntityRealm(entity);
+        if(entity instanceof Player player){
+            final int consciousness = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.CONSCIOUSNESS);
+            return (realm.getBaseConsciousness() + consciousness);
+        }
+        return realm.getBaseConsciousness();
+    }
+
+    public static double getSpiritRange(Entity entity){
+        return getConsciousness(entity) / 10D;
+    }
+
     /**
      * Get Realm Stage of the specific entity.
      */
@@ -155,6 +168,21 @@ public class RealmManager {
             return realmEntity.getRealmStage();
         }
         return RealmStages.PRELIMINARY;
+    }
+
+    public static int getRealmGap(IRealmType realm1, IRealmType realm2) {
+        return realm1.getRealmValue() / 100 - realm2.getRealmValue() / 100;
+    }
+
+    /**
+     * 有大境界差距。
+     */
+    public static boolean hasRealmGap(IRealmType realm1, IRealmType realm2) {
+        return getRealmGap(realm1, realm2) != 0;
+    }
+
+    public static boolean compare(IRealmType realm1, IRealmType realm2) {
+        return realm1.getRealmValue() > realm2.getRealmValue();
     }
 
     public static IRealmType getEntityRealm(Entity entity) {
@@ -251,6 +279,11 @@ public class RealmManager {
         private RealmNode(@NotNull IRealmType realm, @Nullable RealmNode prevRealm) {
             this.realm = realm;
             this.prevRealm = prevRealm;
+        }
+
+        @Nullable
+        public RealmNode next(){
+            return next(realm.getCultivationType());
         }
 
         @Nullable

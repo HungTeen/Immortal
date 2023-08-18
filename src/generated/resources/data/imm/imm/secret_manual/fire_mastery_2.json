@@ -1,5 +1,9 @@
 {
-  "content": "imm:fire_mastery_2",
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 2,
+    "spell": "imm:fire_mastery"
+  },
   "requirements": [
     {
       "type": "imm:spell",

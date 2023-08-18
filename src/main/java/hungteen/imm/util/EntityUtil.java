@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -35,6 +35,10 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
+        return predicate.test(living.getMainHandItem()) ? living.getMainHandItem() : predicate.test(living.getOffhandItem()) ? living.getOffhandItem() : ItemStack.EMPTY;
+    }
 
     @Nullable
     public static IMMEntityCapability getEntityCapability(Entity entity) {
@@ -49,11 +53,11 @@ public class EntityUtil {
         return getOptCapability(entity).map(function).orElse(defaultValue);
     }
 
-    public static boolean notConsume(Entity entity){
+    public static boolean notConsume(Entity entity) {
         return entity instanceof Player player && PlayerUtil.notConsume(player);
     }
 
-    public static void playSound(Level level, Entity entity, SoundEvent soundEvent){
+    public static void playSound(Level level, Entity entity, SoundEvent soundEvent) {
         level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundEvent, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
@@ -65,11 +69,11 @@ public class EntityUtil {
         return predicate.test(entity.getOffhandItem());
     }
 
-    public static void multiblockSpawn(Level level, BlockPos blockPos, BlockPattern blockPattern, EntityType<?> entityType){
-        if(! level.isClientSide){
+    public static void multiblockSpawn(Level level, BlockPos blockPos, BlockPattern blockPattern, EntityType<?> entityType) {
+        if (!level.isClientSide) {
             BlockPattern.BlockPatternMatch match = blockPattern.find(level, blockPos);
             if (match != null) {
-                for(int i = 0; i < blockPattern.getHeight(); ++i) {
+                for (int i = 0; i < blockPattern.getHeight(); ++i) {
                     BlockInWorld blockinworld = match.getBlock(0, i, 0);
                     level.setBlock(blockinworld.getPos(), Blocks.AIR.defaultBlockState(), 2);
                     level.levelEvent(2001, blockinworld.getPos(), Block.getId(blockinworld.getState()));
@@ -77,14 +81,14 @@ public class EntityUtil {
 
                 Entity entity = entityType.create(level);
                 BlockPos pos = match.getBlock(0, 2, 0).getPos();
-                entity.moveTo((double)pos.getX() + 0.5D, (double)pos.getY() + 0.05D, (double)pos.getZ() + 0.5D, 0.0F, 0.0F);
+                entity.moveTo((double) pos.getX() + 0.5D, (double) pos.getY() + 0.05D, (double) pos.getZ() + 0.5D, 0.0F, 0.0F);
                 level.addFreshEntity(entity);
 
-                for(ServerPlayer serverplayer : level.getEntitiesOfClass(ServerPlayer.class, entity.getBoundingBox().inflate(5.0D))) {
+                for (ServerPlayer serverplayer : level.getEntitiesOfClass(ServerPlayer.class, entity.getBoundingBox().inflate(5.0D))) {
                     CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayer, entity);
                 }
 
-                for(int l = 0; l < blockPattern.getHeight(); ++l) {
+                for (int l = 0; l < blockPattern.getHeight(); ++l) {
                     BlockInWorld world = match.getBlock(0, l, 0);
                     level.blockUpdated(world.getPos(), Blocks.AIR);
                 }
@@ -92,17 +96,16 @@ public class EntityUtil {
         }
     }
 
-    public static Triple<Float, Float, Float> getRGBForSpiritual(Entity entity){
-        Collection<ISpiritualType> roots = new ArrayList<>();
-        if(entity instanceof Player){
-            roots = PlayerUtil.getSpiritualRoots((Player) entity);
-        } else if(entity instanceof IHasRoot){
-            roots = ((IHasRoot) entity).getSpiritualTypes();
-        }
-        return getRGBForSpiritual(roots);
+    public static List<ISpiritualType> getSpiritualRoots(Entity entity) {
+        return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
+                : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
     }
 
-    public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<ISpiritualType> roots){
+    public static Triple<Float, Float, Float> getRGBForSpiritual(Entity entity) {
+        return getRGBForSpiritual(getSpiritualRoots(entity));
+    }
+
+    public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<ISpiritualType> roots) {
         int r = 0;
         int g = 0;
         int b = 0;

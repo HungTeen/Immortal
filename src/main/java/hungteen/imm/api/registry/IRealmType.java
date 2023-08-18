@@ -28,6 +28,8 @@ public interface IRealmType extends ISimpleEntry {
      */
     int getSpiritualValue();
 
+    int getBaseConsciousness();
+
     /**
      * 修炼的类型。
      * @return Which way does living go.

@@ -21,32 +21,36 @@ public class RealmTypes {
     /**
      * 无境界。
      */
-    public static final IRealmType NOT_IN_REALM = register(new RealmType("not_in_realm", 0, 0, 0, CultivationTypes.MORTAL));
+    public static final IRealmType NOT_IN_REALM = register(new RealmType("not_in_realm", 0, 0, 0, 0, CultivationTypes.MORTAL));
 
     /**
      * Default Player Realm.
      */
-    public static final IRealmType MORTALITY = register(new RealmType("mortality", 0, 0, 0, CultivationTypes.MORTAL));
+    public static final IRealmType MORTALITY = register(new RealmType("mortality", 0, 0, 0, 10, CultivationTypes.MORTAL));
 
     /* 灵修 */
 
-    public static final IRealmType SPIRITUAL_LEVEL_1 = register(new RealmType("spiritual_level_1", 50, 15, 10, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_1 = register(new RealmType("spiritual_level_1", 50, 100, 10, 100, CultivationTypes.SPIRITUAL));
 
-    public static final IRealmType SPIRITUAL_LEVEL_2 = register(new RealmType("spiritual_level_2", 100, 40, 30, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_2 = register(new RealmType("spiritual_level_2", 100, 200, 30, 120, CultivationTypes.SPIRITUAL));
 
-    public static final IRealmType SPIRITUAL_LEVEL_3 = register(new RealmType("spiritual_level_3", 200, 75, 50, CultivationTypes.SPIRITUAL));
+    public static final IRealmType SPIRITUAL_LEVEL_3 = register(new RealmType("spiritual_level_3", 200, 300, 50, 150, CultivationTypes.SPIRITUAL));
 
     /* 妖修 */
 
-    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 100, 25, 25, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 100, 25, 25, 100, CultivationTypes.MONSTER));
 
-    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 300, 80, 60, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 300, 80, 60, 125, CultivationTypes.MONSTER));
 
 //    public static final IRealmType MONSTER_LEVEL_3 = new RealmType("monster_level_3", 300, 80, 50, 110, false, CultivationTypes.MONSTER);
 
 //    /* 亡灵 */
 //    public static final IRealmType UNDEAD_LEVEL1 = new RealmType("undead_level1", 80, 4, 25, false);
 //    public static final IRealmType UNDEAD_LEVEL2 = new RealmType("undead_level2", 200, 8, 50, false);
+
+    public static MutableComponent getCategory(){
+        return TipUtil.misc("realm");
+    }
 
     public static IHTSimpleRegistry<IRealmType> registry() {
         return TYPES;
@@ -56,11 +60,16 @@ public class RealmTypes {
         return registry().register(type);
     }
 
-    public record RealmType(String name, int maxCultivation, int realmValue, int spiritualValue, ICultivationType cultivationType) implements IRealmType {
+    public record RealmType(String name, int maxCultivation, int realmValue, int spiritualValue, int baseConsciousness, ICultivationType cultivationType) implements IRealmType {
 
         @Override
         public int getSpiritualValue() {
             return spiritualValue();
+        }
+
+        @Override
+        public int getBaseConsciousness() {
+            return baseConsciousness();
         }
 
         @Override

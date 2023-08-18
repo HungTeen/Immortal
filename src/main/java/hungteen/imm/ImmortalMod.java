@@ -8,6 +8,7 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.command.CommandHandler;
+import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
@@ -109,6 +110,7 @@ public class ImmortalMod {
         IMMEntities.register(modBus);
         IMMCreativeTabs.register(modBus);
         IMMBlockEntities.register(modBus);
+        IMMEffects.register(modBus);
         IMMSchedules.register(modBus);
         IMMRecipes.register(modBus);
         IMMRecipeSerializers.register(modBus);

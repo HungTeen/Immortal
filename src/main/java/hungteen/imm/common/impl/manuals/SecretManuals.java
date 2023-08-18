@@ -43,40 +43,61 @@ public class SecretManuals {
         final Holder<ILearnRequirement> spiritual_level_1 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_1, true));
         final Holder<ILearnRequirement> spiritual_level_2 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_2, true));
         final Holder<ILearnRequirement> spiritual_level_3 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_3, true));
-        register(context, contents, SpellTypes.MEDITATE, 1, builder -> {
+        register(context, SpellTypes.MEDITATE, 1, builder -> {
             builder.require(spiritual);
         });
-        register(context, contents, SpellTypes.PICKUP_ITEM, 1, builder -> {
+        register(context, SpellTypes.PICKUP_ITEM, 1, builder -> {
             builder.require(spiritual_level_1);
         });
-        register(context, contents, SpellTypes.PICKUP_ITEM, 2, builder -> {
+        register(context, SpellTypes.PICKUP_ITEM, 2, builder -> {
             builder.require(spiritual_level_1);
         });
-        register(context, contents, SpellTypes.PICKUP_BLOCK, 1, builder -> {
+        register(context, SpellTypes.THROW_ITEM, 1, builder -> {
+            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
+        });
+        register(context, SpellTypes.PICKUP_BLOCK, 1, builder -> {
             builder.require(spiritual_level_1);
         });
-        register(context, contents, SpellTypes.PICKUP_BLOCK, 2, builder -> {
+        register(context, SpellTypes.PICKUP_BLOCK, 2, builder -> {
+            builder.require(spiritual_level_2);
+        });
+        register(context, SpellTypes.FLY_WITH_ITEM, 1, builder -> {
+            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
+        });
+        register(context, SpellTypes.FLY_WITH_ITEM, 2, builder -> {
+            builder.require(spiritual_level_2);
+        });
+        register(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
+            builder.require(spiritual_level_3);
+        });
+        register(context, SpellTypes.WATER_BREATHE, 1, builder -> {
+            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.WATER_MASTERY, 1)));
+        });
+        register(context, SpellTypes.LAVA_BREATHE, 1, builder -> {
+            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 1)));
+        });
+        register(context, SpellTypes.SPROUT, 1, builder -> {
+            builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.WOOD_MASTERY, 2)));
+        });
+        register(context, SpellTypes.SPIRIT_EYES, 1, builder -> {
+            builder.require(spiritual_level_1);
+        });
+        register(context, SpellTypes.SPIRIT_EYES, 2, builder -> {
             builder.require(spiritual_level_2);
         });
         for (Elements element : Elements.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
-            register(context, contents, spell, 1, builder -> {
+            register(context, spell, 1, builder -> {
                 builder.require(spiritual_level_2).require(Holder.direct(new EMPRequirement(1)));
             });
-            register(context, contents, spell, 2, builder -> {
+            register(context, spell, 2, builder -> {
                 builder.require(spiritual_level_3).require(Holder.direct(new EMPRequirement(2)));
             });
         }
-//        context.register(SPIRITUAL_BEGINNER_GUIDE, builder().entry(
-//                new SecretManual.ManualEntry(
-//                        requirements.getOrThrow(LearnRequirements.NO_REQUIREMENT),
-//                        contents.getOrThrow(ManualContents.LEARN_RESTING)
-//                )).build()
-//        );
     }
 
-    public static void register(BootstapContext<SecretManual> context, HolderGetter<IManualContent> contents, ISpellType spell, int level, Consumer<Builder> consumer){
-        final Builder builder = builder(contents, spell, level);
+    public static void register(BootstapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
+        final Builder builder = builder(spell, level);
         if(level > 1){
             builder.require(Holder.direct(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1)))));
         }
@@ -88,12 +109,12 @@ public class SecretManuals {
         return TUTORIALS;
     }
 
-    public static Builder builder(HolderGetter<IManualContent> contents, ISpellType spell){
-        return builder(contents, spell, 1);
+    public static Builder builder(ISpellType spell){
+        return builder(spell, 1);
     }
 
-    public static Builder builder(HolderGetter<IManualContent> contents, ISpellType spell, int level){
-        return builder(contents.getOrThrow(ManualContents.spellContent(spell, level)));
+    public static Builder builder(ISpellType spell, int level){
+        return builder(Holder.direct(new LearnSpellManual(spell, level)));
     }
 
     public static Builder builder(Holder<IManualContent> content){

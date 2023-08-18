@@ -41,7 +41,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -268,11 +267,7 @@ public class IMMCommand {
     private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread) {
         PlayerUtil.getOptManager(player).ifPresent(l -> {
             final MutableComponent component = TipUtil.command("spiritual_root", player.getName().getString());
-            final List<ISpiritualType> list = l.getSpiritualRoots();
-            for (int i = 0; i < list.size(); ++i) {
-                if (i > 0) component.append(Component.literal(","));
-                component.append(list.get(i).getComponent());
-            }
+            component.append(SpiritualTypes.getSpiritualRoots(l.getSpiritualRoots()));
             if (spread) PlayerHelper.sendMsgTo(player, component);
             source.sendSuccess(() -> component, true);
         });

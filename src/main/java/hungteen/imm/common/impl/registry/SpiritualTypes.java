@@ -8,6 +8,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -91,6 +93,22 @@ public class SpiritualTypes {
             5,
             ChatFormatting.YELLOW
     ));
+
+    public static MutableComponent getCategory(){
+        return TipUtil.misc("spiritual_root");
+    }
+
+    public static MutableComponent getSpiritualRoots(List<ISpiritualType> roots){
+        if(!roots.isEmpty()){
+            final MutableComponent component = roots.get(0).getComponent();
+            for (int i = 1; i < roots.size(); ++i) {
+                component.append(Component.literal(", "));
+                component.append(roots.get(i).getComponent());
+            }
+            return component;
+        }
+        return TipUtil.misc("no_spiritual_root");
+    }
 
     public static ISpiritualType register(ISpiritualType type) {
         return registry().register(type);

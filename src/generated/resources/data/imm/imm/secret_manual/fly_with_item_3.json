@@ -1,19 +1,19 @@
 {
   "content": {
     "type": "imm:learn_spell",
-    "level": 2,
-    "spell": "imm:pickup_block"
+    "level": 3,
+    "spell": "imm:fly_with_item"
   },
   "requirements": [
     {
       "type": "imm:spell",
       "require_spells": [
         {
-          "level": 1,
-          "spell": "imm:pickup_block"
+          "level": 2,
+          "spell": "imm:fly_with_item"
         }
       ]
     },
-    "imm:spiritual_level_2_lowest"
+    "imm:spiritual_level_3_lowest"
   ]
 }
