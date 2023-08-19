@@ -46,7 +46,7 @@ public class CommonOverlay {
             graphics.blit(OVERLAY, x + 1, y, 1, 5, backManaLen, MANA_BAR_HEIGHT);
         }
         final float scale = 1;
-        final Component text = Component.literal(currentMana + " / " + maxMana);
+        final Component text = Component.literal(String.format("%.1f/%.1f", currentMana, maxMana));
         RenderUtil.renderCenterScaledText(graphics.pose(), text, (screenWidth >> 1), y - 6, scale, Colors.SPIRITUAL_MANA, ColorHelper.BLACK.rgb());
     }
 

@@ -29,20 +29,13 @@ public class SpellTypes {
     public static final ISpellType WATER_BREATHE = register(new WaterBreatheSpell());
     public static final ISpellType LAVA_BREATHE = register(new LavaBreatheSpell());
     public static final ISpellType SPROUT = register(new SproutSpell());
+    public static final ISpellType IGNITE = register(new IgniteSpell());
     public static final ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
     public static final ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
     public static final ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));
     public static final ISpellType FIRE_MASTERY = register(new ElementalMasterySpell(Elements.FIRE));
     public static final ISpellType EARTH_MASTERY = register(new ElementalMasterySpell(Elements.EARTH));
     public static final ISpellType SPIRIT_MASTERY = register(new ElementalMasterySpell(Elements.SPIRIT));
-
-    //    public static final ISpellType IGNITE = new SpellType("ignite", 1, 20, 200,
-//            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(), List.of()
-//    );
-//
-//    public static final ISpellType WATER_BREATHING = new SpellType("water_breathing", 1, 200, 3600,
-//            lvl -> RealmTypes.MEDITATION_STAGE3, List.of(SpiritualTypes.WATER), List.of()
-//    );
 
     //    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
 //            lvl -> {

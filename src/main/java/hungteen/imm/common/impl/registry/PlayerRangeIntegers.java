@@ -56,6 +56,11 @@ public class PlayerRangeIntegers {
      */
     public static final IRangeNumber<Integer> KNOW_SPIRITUAL_ROOTS = register(new PlayerData("know_spiritual_roots", 0, 0, 1));
 
+    /**
+     * 是否知道第六元素的存在。
+     */
+    public static final IRangeNumber<Integer> KNOW_SPIRIT_ELEMENT = register(new PlayerData("know_spirit_element", 0, 0, 1));
+
     public static IHTSimpleRegistry<IRangeNumber<Integer>> registry() {
         return NUMBERS;
     }

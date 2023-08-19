@@ -5,7 +5,6 @@ import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.capability.chunk.ChunkCapability;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.LevelManager;
@@ -84,7 +83,7 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public float getSpiritualRate(Level level, BlockPos pos) {
-        return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
+        return LevelUtil.getSpiritualRate(level, pos);
     }
 
 }

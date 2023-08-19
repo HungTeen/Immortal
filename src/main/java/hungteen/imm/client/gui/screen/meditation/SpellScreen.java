@@ -6,21 +6,28 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientProxy;
+import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.gui.GuiUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
+import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -156,17 +163,21 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
                         setSpellAt(i, spellType);
                         this.selectPos = 0; // reset.
                     }
+                    GuiUtil.playDownSound();
                     return true;
                 }
             }
+            return super.mouseClicked(mouseX, mouseY, key);
         }
-        return super.mouseClicked(mouseX, mouseY, key);
+        return true;
     }
 
     @Override
     public List<ISpellType> getItems() {
         return SpellTypes.registry().getValues().stream()
-                .filter(type -> PlayerUtil.hasLearnedSpell(getMinecraft().player, type)).toList();
+                .filter(type -> PlayerUtil.hasLearnedSpell(getMinecraft().player, type))
+                .filter(ISpellType::canTrigger)
+                .toList();
     }
 
     @Override
@@ -176,8 +187,15 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     @Override
     public void renderTooltip(Level level, GuiGraphics graphics, ISpellType item, int id, int x, int y) {
-        graphics.renderTooltip(font, item.getComponent(), x, y);
-        //TODO 显示法术详细信息。
+        final List<Component> components = new ArrayList<>();
+        final int lvl = PlayerUtil.getSpellLevel(ClientUtil.player(), item);
+        components.add(item.getComponent().append("(" + lvl + "/" + item.getMaxLevel() + ")").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
+        for(int i = 1; i <= lvl; ++ i){
+            components.add(item.getSpellDesc(lvl).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
+        }
+        components.add(SpellManager.getCostComponent(item.getConsumeMana()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
+        components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
+        graphics.renderTooltip(font, components, Optional.empty(), x, y);
     }
 
     public void setSpellAt(int pos, ISpellType spell){

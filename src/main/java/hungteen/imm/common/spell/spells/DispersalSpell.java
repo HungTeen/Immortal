@@ -18,7 +18,7 @@ public class DispersalSpell extends SpellType {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(owner instanceof Player player){
-            ElementalMasterySpell.randomAddElement(player, 10);
+            ElementalMasterySpell.getElementEntry(player, true).ifPresent(e -> e.addElement(player, 10));
             return true;
         }
         return false;

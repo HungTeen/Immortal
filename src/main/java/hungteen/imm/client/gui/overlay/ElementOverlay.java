@@ -6,6 +6,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,13 +46,14 @@ public class ElementOverlay implements IGuiOverlay {
             }
             final Entity entity = PlayerHelper.getClientPlayer().get();
             final Map<Elements, Float> elements = ElementManager.getElements(entity);
+            final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), Arrays.stream(Elements.values()).toList());
             final int cnt = elements.size();
             final int barWidth = cnt * ELEMENT_LEN + (cnt - 1) * ELEMENT_GUI_INTERVAL;
             int startX = (width - barWidth) >> 1;
             if (!elements.isEmpty()) {
                 RenderHelper.push(graphics);
                 RenderSystem.enableBlend();
-                for (Elements element : Elements.values()) {
+                for (Elements element : list) {
                     if (!elements.containsKey(element)) continue;
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);

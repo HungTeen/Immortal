@@ -5,8 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.Elements;
+import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -18,6 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +42,7 @@ public class RenderEventHandler {
         if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
             final Map<Elements, Float> elements = ElementManager.getElements(entity);
+            final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), Arrays.stream(Elements.values()).toList());
             final int cnt = elements.size();
             final float barWidth = cnt + (cnt - 1) * ELEMENT_INTERVAL;
             stack.pushPose();
@@ -47,7 +52,7 @@ public class RenderEventHandler {
             RenderSystem.enableBlend();
             if(! elements.isEmpty()){
                 int tmp = 0;
-                for (Elements element : Elements.values()) {
+                for (Elements element : list) {
                     if(! elements.containsKey(element)) continue;
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);

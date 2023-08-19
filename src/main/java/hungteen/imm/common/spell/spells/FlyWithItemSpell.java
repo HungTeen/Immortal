@@ -3,8 +3,10 @@ package hungteen.imm.common.spell.spells;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 public class FlyWithItemSpell extends SpellType {
 
     public FlyWithItemSpell() {
-        super("fly_with_item", properties().maxLevel(3).mana(40).cd(1000));
+        super("fly_with_item", properties().maxLevel(3).mana(20).cd(1000));
     }
 
     @Override
@@ -38,6 +40,10 @@ public class FlyWithItemSpell extends SpellType {
             }
         }
         return false;
+    }
+
+    public static float getFlyingCost(Entity entity){
+        return EntityUtil.hasLearnedSpell(entity, SpellTypes.FLY_WITH_ITEM, 2) ? 1F : 2F;
     }
 
 }

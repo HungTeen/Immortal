@@ -12,7 +12,7 @@ import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
-import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -86,19 +86,19 @@ public class SpellManager {
                             if(success){
                                 PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
                                 costMana(player, spell.getConsumeMana());
-                                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, success));
+                                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, true));
                             } else {
                                 PlayerUtil.cooldownSpell(player, spell, FAIL_CD);
                             }
                         }
                     } else {
-                        PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()));
+                        PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()).withStyle(ChatFormatting.RED));
                     }
                 } else {
-                    PlayerHelper.sendTipTo(player, SPELL_ON_CD);
+                    PlayerHelper.sendTipTo(player, SPELL_ON_CD.withStyle(ChatFormatting.RED));
                 }
             } else {
-                PlayerHelper.sendTipTo(player, FORGOT_SPELL);
+                PlayerHelper.sendTipTo(player, FORGOT_SPELL.withStyle(ChatFormatting.RED));
             }
         }
     }
@@ -168,19 +168,20 @@ public class SpellManager {
         return true;
     }
 
-    public static Component getCostComponent(int cost){
+    public static MutableComponent getCostComponent(int cost){
         return TipUtil.SPELL_COST.apply(cost);
     }
 
     /**
      * cd is tick, change it to seconds.
      */
-    public static Component getCDComponent(int cd){
+    public static MutableComponent getCDComponent(int cd){
         return TipUtil.SPELL_CD.apply(Mth.ceil(cd * 1.0F / 20));
     }
 
     public static MutableComponent spellName(ISpellType spell, int level){
-        return spell.getComponent().append(TipUtil.misc("level" + level));
+        if(spell.getMaxLevel() == 1) return spell.getComponent();
+        return spell.getComponent().append("(").append(TipUtil.misc("level" + level)).append(")");
     }
 
 }

@@ -28,7 +28,7 @@ public class IntimidateSpell extends SpellType {
         EntityHelper.getPredicateEntities(owner, aabb, LivingEntity.class, entity -> {
             final IRealmType targetRealm = RealmManager.getEntityRealm(entity);
             return RealmManager.hasRealmGap(realm, targetRealm) && RealmManager.compare(realm, targetRealm);
-        }).forEach(target -> {
+        }).forEach(target -> { //TODO 防止误伤队友。
             final IRealmType targetRealm = RealmManager.getEntityRealm(target);
             final int gap = RealmManager.getRealmGap(realm, targetRealm);
             target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.get(), 600, gap));

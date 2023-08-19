@@ -189,7 +189,6 @@ public class RealmManager {
         if(entity instanceof Player){
             PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
-        //TODO 境界
         return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
     }
 

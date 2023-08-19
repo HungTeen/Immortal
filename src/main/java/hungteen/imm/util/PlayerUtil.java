@@ -9,6 +9,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
@@ -347,7 +348,25 @@ public class PlayerUtil {
         return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1, false);
     }
 
+    public static boolean knowSpiritElement(Player player){
+        return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRIT_ELEMENT) == 1, false);
+    }
+
     /* Misc Operations */
+
+    public static List<ISpiritualType> filterSpiritRoots(Player player, List<ISpiritualType> roots){
+        return roots.stream().filter(root -> {
+            if(root == SpiritualTypes.SPIRIT) return knowSpiritElement(player);
+            return true;
+        }).toList();
+    }
+
+    public static List<Elements> filterElements(Player player, List<Elements> elements){
+        return elements.stream().filter(element -> {
+            if(element == Elements.SPIRIT) return knowSpiritElement(player);
+            return true;
+        }).toList();
+    }
 
     public static boolean hasRoot(Player player, ISpiritualType root){
         return getManagerResult(player, l -> l.hasRoot(root), false);

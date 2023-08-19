@@ -94,13 +94,16 @@ public interface SecretManuals {
         register(context, SpellTypes.SPROUT, 1, builder -> {
             builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.WOOD_MASTERY, 2)));
         });
+        register(context, SpellTypes.IGNITE, 1, builder -> {
+            builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 2)));
+        });
         for (Elements element : Elements.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
-                builder.require(spiritual_level_2).require(Holder.direct(new EMPRequirement(1)));
+                builder.require(spiritual_level_2).require(Holder.direct(new EMPRequirement(1))).require(Holder.direct(SpellRequirement.single(SpellTypes.DISPERSAL, 1)));
             });
             register(context, spell, 2, builder -> {
-                builder.require(spiritual_level_3).require(Holder.direct(new EMPRequirement(2)));
+                builder.require(spiritual_level_3).require(Holder.direct(new EMPRequirement(2))).require(Holder.direct(SpellRequirement.single(SpellTypes.RELEASING, 1)));
             });
         }
     }

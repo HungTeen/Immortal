@@ -12,6 +12,8 @@ import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.network.*;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -61,24 +63,15 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public void tick() {
         if (EntityHelper.isServer(player)) {
-            //TODO 灵气自然恢复
-//            if(player.level.getGameTime() % Constants.SPIRITUAL_ABSORB_TIME == 0){
-//                final int value = getIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA);
-//                final int fullValue = getFullManaValue();
-//                final int limitValue = getLimitManaValue();
-//                // can natural increasing.
-//                if(value < fullValue){
-//                    final int incValue = Math.min(fullValue - value, ImmortalAPI.get().getSpiritualValue(player.level, player.blockPosition()));
-//                    this.addIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, incValue);
-//                } else if(value > fullValue){
-//                    if(value > limitValue){
-//                        // TODO 爆体而亡 ？
-//                    } else {
-//                        final int decValue = Math.min(Math.max(1, (value - fullValue) / 10), value - fullValue);
-//                        this.addIntegerData(PlayerRangeNumbers.SPIRITUAL_MANA, - decValue);
-//                    }
-//                }
-//            }
+            if(EntityUtil.canManaIncrease(player)){
+                final float value = getFloatData(PlayerRangeFloats.SPIRITUAL_MANA);
+                final float fullValue = getFullManaValue();
+                // can natural increasing.
+                if(value < fullValue){
+                    final float incValue = Math.min(fullValue - value, LevelUtil.getSpiritualRate(player.level(), player.blockPosition()));
+                    this.addFloatData(PlayerRangeFloats.SPIRITUAL_MANA, incValue);
+                }
+            }
             //TODO 随时间更新Sect
         }
     }
@@ -428,7 +421,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setFloatData(IRangeNumber<Float> rangeData, float value) {
-        value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        if(rangeData == PlayerRangeFloats.SPIRITUAL_MANA){
+            value = Mth.clamp(value, rangeData.getMinData(), getFullManaValue());
+        } else {
+            value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+        }
         floatMap.put(rangeData, value);
         sendFloatDataPacket(rangeData, value);
     }

@@ -18,6 +18,15 @@
     {
       "type": "imm:emp",
       "level": 2
+    },
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:releasing"
+        }
+      ]
     }
   ]
 }

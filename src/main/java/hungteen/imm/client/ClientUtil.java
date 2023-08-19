@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
@@ -36,6 +37,10 @@ public class ClientUtil {
 
     public static ClientLevel level(){
         return ClientProxy.mc().level;
+    }
+
+    public static SoundManager soundManager(){
+        return ClientProxy.mc().getSoundManager();
     }
 
     public static void push(String name, Runnable runnable) {

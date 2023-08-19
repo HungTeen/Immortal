@@ -1,10 +1,15 @@
 package hungteen.imm.util;
 
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
+import hungteen.imm.api.interfaces.IHasSpell;
+import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
+import hungteen.imm.common.entity.misc.FlyingItemEntity;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +40,34 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static boolean canManaIncrease(Entity entity){
+        return ! (entity.getVehicle() instanceof FlyingItemEntity) && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0;
+    }
+
+    public static int getSpellLevel(Entity entity, ISpellType spell){
+        return entity instanceof Player player ? PlayerUtil.getSpellLevel(player, spell) : entity instanceof IHasSpell e ? e.getSpellLevel(spell) : 0;
+    }
+
+    public static boolean hasLearnedSpell(Entity entity, ISpellType spell, int level){
+        return entity instanceof Player player ? PlayerUtil.hasLearnedSpell(player, spell, level) : entity instanceof IHasSpell e && e.hasLearnedSpell(spell, level);
+    }
+
+    public static boolean hasLearnedSpell(Entity entity, ISpellType spell){
+        return hasLearnedSpell(entity, spell, 1);
+    }
+
+    public static float getMana(Entity entity) {
+        return entity instanceof Player player ? PlayerUtil.getMana(player) : entity instanceof IHasMana manaEntity ? manaEntity.getMana() : 0;
+    }
+
+    public static void addMana(Entity entity, float amount) {
+        if(entity instanceof Player player){
+            PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, amount);
+        } else if(entity instanceof IHasMana manaEntity){
+            manaEntity.addMana(amount);
+        }
+    }
 
     public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
         return predicate.test(living.getMainHandItem()) ? living.getMainHandItem() : predicate.test(living.getOffhandItem()) ? living.getOffhandItem() : ItemStack.EMPTY;

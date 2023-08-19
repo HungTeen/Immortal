@@ -2,10 +2,16 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.common.spell.spells.FlyWithItemSpell;
+import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,16 +27,21 @@ import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-02 13:47
  **/
-public class FlyingItemEntity extends HTEntity {
+public class FlyingItemEntity extends HTEntity implements TraceableEntity {
 
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(FlyingItemEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final int MAX_PASSENGER_SIZE = 1;
+    private int flyingTick = 0;
+    private boolean canWork = false;
+    @Nullable
+    private UUID thrower;
     private int lerpSteps;
     private double lerpX;
     private double lerpY;
@@ -57,22 +68,28 @@ public class FlyingItemEntity extends HTEntity {
         if(EntityHelper.isServer(this)){
             if(this.getControllingPassenger() != null){
                 this.updateMotion(this.getControllingPassenger());
-
             } else{
                 this.setDeltaMovement(Vec3.ZERO);
+                this.canWork = false;
+            }
+            if(this.isNoGravity() ^ this.canWork){
+                this.setNoGravity(this.canWork);
+            }
+            if(! this.canWork){
+                if(this.flyingTick > 0) this.flyingTick = 0;
+                if(-- this.flyingTick <= - 60){
+                    this.goBackToInventory();
+                }
             }
         }
 
         this.checkInsideBlocks();
 
         this.move(MoverType.SELF, this.getDeltaMovement());
-//        if(this.getTrailParticle() != null){
-//            this.level.addParticle(this.getTrailParticle(), d2, d0 + 0.5D, d1, 0.0D, 0.0D, 0.0D);
-//        }
 
         if (EntityHelper.isServer(this)) {// hasRecipe collide or passenger
             for (Entity entity : this.level().getEntities(this,
-                    this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F),
+                    this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F),
                     EntitySelector.pushableBy(this))) {
                 if (!entity.isPassenger()) {
                     this.push(entity);
@@ -101,10 +118,38 @@ public class FlyingItemEntity extends HTEntity {
         }
     }
 
-    public void updateMotion(@NotNull Entity player){
-        final double speed = 1;
-        final Vec3 lookVec = player.getLookAngle();
-        this.setDeltaMovement(lookVec.normalize().scale(speed));
+    public void updateMotion(@NotNull Entity entity){
+        final float cost = FlyWithItemSpell.getFlyingCost(entity);
+        final boolean enough = EntityUtil.getMana(entity) >= cost;
+        if(this.canWork || enough){
+            // 检查灵力是否足够。
+            if(this.flyingTick % 20 == 0 || ! this.canWork){
+                if(enough){
+                    this.canWork = true;
+                    EntityUtil.addMana(entity, - cost);
+                    ParticleHelper.spawnParticle(entity.level(), IMMParticles.SPIRITUAL_MANA.get(), position());
+                } else {
+                    this.canWork = false;
+                    return;
+                }
+            }
+            if(this.flyingTick < 0) this.flyingTick = 0;
+            ++ this.flyingTick;
+            final double speed = 1;
+            final Vec3 lookVec = entity.getLookAngle();
+            this.setDeltaMovement(lookVec.normalize().scale(speed));
+        }
+    }
+
+    public void goBackToInventory(){
+        if(EntityHelper.isEntityValid(this.getOwner())){
+            if(this.getOwner() instanceof Player player){
+                PlayerUtil.addItem(player, this.getItemStack().copy());
+            }
+        } else {
+            spawnAtLocation(this.getItemStack().copy());
+        }
+        this.discard();
     }
 
     /**
@@ -116,11 +161,12 @@ public class FlyingItemEntity extends HTEntity {
         this.lerpX = x;
         this.lerpY = y;
         this.lerpZ = z;
-        this.lerpYaw = (double) yaw;
-        this.lerpPitch = (double) pitch;
+        this.lerpYaw = yaw;
+        this.lerpPitch = pitch;
         this.lerpSteps = 10;
     }
 
+    @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         if (player.isSecondaryUseActive()) {
             if(player.getMainHandItem().isEmpty()) {
@@ -140,10 +186,11 @@ public class FlyingItemEntity extends HTEntity {
 
     @Override
     protected boolean canAddPassenger(Entity entity) {
-        return this.getPassengers().size() < MAX_PASSENGER_SIZE;
+        return this.getPassengers().size() < MAX_PASSENGER_SIZE && entity == this.getOwner();
     }
 
     @Nullable
+    @Override
     public LivingEntity getControllingPassenger() {
         return ! this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity entity ? entity : null;
     }
@@ -153,11 +200,33 @@ public class FlyingItemEntity extends HTEntity {
         return player.getVehicle() != null && player.getVehicle() == this;
     }
 
+    @Nullable
+    @Override
+    public Entity getOwner() {
+        if (this.thrower != null) {
+            Level level = this.level();
+            if (level instanceof ServerLevel serverlevel) {
+                return serverlevel.getEntity(this.thrower);
+            }
+        }
+
+        return null;
+    }
+
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("FlyingItemStack")){
             this.setItemStack(ItemStack.of(tag.getCompound("FlyingItemStack")));
+        }
+        if (tag.hasUUID("Thrower")) {
+            this.thrower = tag.getUUID("Thrower");
+        }
+        if(tag.contains("FlyingTick")){
+            this.flyingTick = tag.getInt("FlyingTick");
+        }
+        if(tag.contains("CanWork")){
+            this.canWork = tag.getBoolean("CanWork");
         }
     }
 
@@ -165,11 +234,25 @@ public class FlyingItemEntity extends HTEntity {
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("FlyingItemStack", this.getItemStack().save(new CompoundTag()));
+        if (this.thrower != null) {
+            tag.putUUID("Thrower", this.thrower);
+        }
+        tag.putInt("FlyingTick", this.flyingTick);
+        tag.putBoolean("CanWork", this.canWork);
     }
+
 
     public void setItemStack(ItemStack itemStack) {
         entityData.set(ITEM_STACK, itemStack);
         refreshDimensions();
+    }
+
+    public void setThrower(@NotNull Entity thrower) {
+        this.setThrower(thrower.getUUID());
+    }
+
+    public void setThrower(@Nullable UUID uuid) {
+        this.thrower = uuid;
     }
 
     public ItemStack getItemStack() {
@@ -177,7 +260,7 @@ public class FlyingItemEntity extends HTEntity {
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose p_19975_) {
+    public EntityDimensions getDimensions(Pose pose) {
         return this.getItemStack().getItem() instanceof BlockItem ? EntityDimensions.scalable(1F, 1F) : EntityDimensions.scalable(0.9F, 0.2F);
     }
 
@@ -189,6 +272,12 @@ public class FlyingItemEntity extends HTEntity {
     @Override
     public double getPassengersRidingOffset() {
         return this.getItemStack().getItem() instanceof BlockItem ? 1.3 : 0.5;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public ItemStack getPickResult() {
+        return this.getItemStack().copy();
     }
 
     /**

@@ -1,6 +1,7 @@
 package hungteen.imm.client.gui.component;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.imm.client.gui.GuiUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -81,6 +82,7 @@ public class ScrollComponent<T> {
                         final int pos = this.getPos(i, j) + this.slotIdOffset;
                         if(pos >= 0 && pos < items.size()){
                             if(this.onClick(mc, screen, items.get(pos), pos)){
+                                GuiUtil.playDownSound();
                                 return true;
                             }
                         }
@@ -136,8 +138,7 @@ public class ScrollComponent<T> {
                         final List<T> items = this.screen.getItems();
                         final int pos = this.getPos(i, j);
                         if(pos >= 0 && pos < items.size()){
-                            final Pair<Integer, Integer> xy = getXY(i, j);
-                            this.screen.renderTooltip(mc.level, graphics, items.get(pos), pos, xy.getFirst(), xy.getSecond());
+                            this.screen.renderTooltip(mc.level, graphics, items.get(pos), pos, mouseX, mouseY);
                         }
                     }
                 }

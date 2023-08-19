@@ -3,8 +3,8 @@ package hungteen.imm.common.spell.spells;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.enums.Elements;
-import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -22,11 +23,12 @@ import java.util.*;
  **/
 public class ElementalMasterySpell extends SpellType{
 
+    private static final int ELEMENTAL_MASTERY_MAX_LEVEL = 5;
     private static final Map<Elements, ElementalMasterySpell> MASTERY_MAP = new EnumMap<>(Elements.class);
     private final Elements element;
 
     public ElementalMasterySpell(Elements element) {
-        super(element.name().toLowerCase() + "_mastery", properties().maxLevel(5).notTrigger());
+        super(element.name().toLowerCase() + "_mastery", properties().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).notTrigger());
         this.element = element;
         MASTERY_MAP.put(element, this);
     }
@@ -45,14 +47,6 @@ public class ElementalMasterySpell extends SpellType{
         return element;
     }
 
-    public static void randomAddElement(Player player, float amount){
-        getElementEntry(player, true).ifPresent(e -> e.addElement(player, amount));
-    }
-
-    public static void randomAddElement(Player player, Entity target, float amount){
-        getElementEntry(player, false).ifPresent(e -> e.addElement(target, amount));
-    }
-
     public static List<Pair<ElementalMasterySpell, Integer>> getMasteryElements(Player player){
         return Arrays.stream(Elements.values())
                 .map(ElementalMasterySpell::getSpell)
@@ -60,28 +54,53 @@ public class ElementalMasterySpell extends SpellType{
                 .filter(p -> p.getSecond() > 0).toList();
     }
 
-    public static Optional<ElementEntry> getElementEntry(Player player, boolean self){
+    /**
+     * 未指定元素，则完全随机。
+     */
+    public static Optional<ElementEntry> getElementEntry(Entity entity, boolean self){
+        return getElementEntry(entity, Arrays.stream(Elements.values()).toList(), self);
+    }
+
+    public static Optional<ElementEntry> getElementEntry(Entity entity, Elements element, boolean self){
+        return getElementEntry(entity, List.of(element), self);
+    }
+
+    /**
+     * 获取此次效果的附着结果。
+     * @param entity 发起者。
+     * @param elements 指定附着的元素有哪些。
+     * @param self 对自身附着，还是对目标。
+     * @return 随机结果。
+     */
+    public static Optional<ElementEntry> getElementEntry(Entity entity, List<Elements> elements, boolean self){
         final WeightedList.Builder<ElementEntry> builder = new WeightedList.Builder<>();
-        for (Pair<ElementalMasterySpell, Integer> pair : getMasteryElements(player)) {
-            if(self){
-                if(pair.getSecond() >= 1){
-                    builder.add(new ElementEntry(pair.getFirst().getElement(), false, 8));
+        elements.forEach(element -> {
+            final ElementalMasterySpell spell = getSpell(element);
+            applyElementEntry(element, EntityUtil.getSpellLevel(entity, spell), self).accept(builder);
+        });
+        return builder.weight(100).build().getRandomItem(entity.level().getRandom());
+    }
+
+    private static Consumer<WeightedList.Builder<ElementEntry>> applyElementEntry(Elements element, int level, boolean self){
+        return builder -> {
+            if (self) {
+                if (level >= 1) {
+                    builder.add(new ElementEntry(element, false, 8));
                 }
-                if(pair.getSecond() >= 3){
-                    builder.add(new ElementEntry(pair.getFirst().getElement(), true, 4));
+                if (level >= 3) {
+                    builder.add(new ElementEntry(element, true, 4));
                 }
             } else {
-                if(pair.getSecond() >= 4){
-                    builder.add(new ElementEntry(pair.getFirst().getElement(), false, 10));
-                } else if(pair.getSecond() >= 2){
-                    builder.add(new ElementEntry(pair.getFirst().getElement(), false, 5));
+                if (level >= 4) {
+                    builder.add(new ElementEntry(element, false, 10));
+                } else if (level >= 2) {
+                    builder.add(new ElementEntry(element, false, 5));
                 }
-                if(pair.getSecond() >= 5){
-                    builder.add(new ElementEntry(pair.getFirst().getElement(), true, 5));
+                if (level >= 5) {
+                    builder.add(new ElementEntry(element, true, 5));
                 }
             }
-        }
-        return builder.weight(100).build().getRandomItem(player.getRandom());
+        };
     }
 
     public static ElementalMasterySpell getSpell(Elements element){
@@ -89,10 +108,36 @@ public class ElementalMasterySpell extends SpellType{
     }
 
     public static int requireEMP(Player player, int level){
-        final int cnt = (int) MASTERY_MAP.entrySet().stream().filter(entry -> {
+        return requireEMP(level, (int) MASTERY_MAP.entrySet().stream().filter(entry -> {
             return PlayerUtil.hasLearnedSpell(player, entry.getValue(), level);
-        }).count();
+        }).count());
+    }
+
+    /**
+     * 计算当前需要多少元素精通点。
+     * @param level 对应精通等级。
+     * @param cnt 已经精通了多少同级元素。
+     * @return EMP。
+     */
+    private static int requireEMP(int level, int cnt){
         return cnt == 0 ? (1 << level - 1) : cnt * getLevelStart(level);
+    }
+
+    /**
+     * 玩家已经使用了多少EMP，根据精通反推。
+     */
+    public static int calculateUsedEMP(Player player){
+        int emp = 0;
+        List<Pair<ElementalMasterySpell, Integer>> spells = getMasteryElements(player);
+        for(int i = 1; i <= ELEMENTAL_MASTERY_MAX_LEVEL; ++ i){
+            int now = 0;
+            for (Pair<ElementalMasterySpell, Integer> pair : spells) {
+                if(pair.getSecond() >= i){
+                    emp += requireEMP(i, now ++);
+                }
+            }
+        }
+        return emp;
     }
 
     private static int getLevelStart(int level){

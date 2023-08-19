@@ -238,6 +238,7 @@
   "rune.imm.behavior.stop_attack_if_target_invalid": "攻击目标无效时停止攻击",
   "rune.imm.behavior.set_walk_from_attack_target": "把攻击目标作为移动目的地",
   "_comment100": "--------------------------------------------杂项-------------------------------------------",
+  "misc.imm.unknown": "未知",
   "misc.imm.true": "真",
   "misc.imm.false": "假",
   "misc.imm.percent": "%d%%",
@@ -289,7 +290,14 @@
   "misc.imm.root.drug": "毒",
   "misc.imm.root.ice": "冰",
 
+  "misc.imm.cultivation_type.empty": "无",
+  "misc.imm.cultivation_type.mortal": "凡人",
   "misc.imm.cultivation_type.spiritual": "灵修",
+  "misc.imm.cultivation_type.monster": "妖修",
+  "misc.imm.cultivation_type.undead": "亡灵",
+  "misc.imm.cultivation_type.wizard": "魔法师",
+  "misc.imm.cultivation_type.ghost": "鬼修",
+  "misc.imm.cultivation_type.blood": "血修",
 
   "misc.imm.realm": "境界",
   "misc.imm.realm.not_in_realm": "不在体系中",
@@ -299,6 +307,10 @@
   "misc.imm.realm.spiritual_level_3": "三级灵修",
   "misc.imm.realm.monster_level_1": "一阶妖兽",
   "misc.imm.realm.monster_level_2": "二阶妖兽",
+  "misc.imm.realm.monster_level_3": "三阶妖兽",
+  "misc.imm.realm.undead_level_1": "初阶亡灵",
+  "misc.imm.realm.undead_level_2": "中阶亡灵",
+  "misc.imm.realm.undead_level_3": "高阶亡灵",
 
   "misc.imm.realm_stage": "境界阶段",
   "misc.imm.realm_stage.preliminary": "前期",

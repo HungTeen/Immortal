@@ -91,7 +91,7 @@ public class SpiritualTypes {
             5,
             ColorHelper.EARTH_ROOT,
             5,
-            ChatFormatting.YELLOW
+            ChatFormatting.DARK_PURPLE
     ));
 
     public static MutableComponent getCategory(){

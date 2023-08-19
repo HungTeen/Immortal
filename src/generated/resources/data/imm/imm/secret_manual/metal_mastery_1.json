@@ -9,6 +9,15 @@
     {
       "type": "imm:emp",
       "level": 1
+    },
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:dispersal"
+        }
+      ]
     }
   ]
 }

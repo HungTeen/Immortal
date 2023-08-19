@@ -2,9 +2,11 @@ package hungteen.imm.common.item;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.common.event.events.PlayerLearnManualEvent;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -65,6 +67,7 @@ public class SecretManualItem extends Item {
         final Optional<SecretManual> manual = getSecretManual(level, stack);
         if(! level.isClientSide() && manual.isPresent() && living instanceof Player player){
             manual.get().learn(level, player);
+            EventUtil.post(new PlayerLearnManualEvent(player, stack, manual.get()));
             if(! PlayerUtil.notConsume(player)){
                 stack.shrink(1);
             }

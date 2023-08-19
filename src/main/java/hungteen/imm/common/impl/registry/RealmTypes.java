@@ -38,15 +38,16 @@ public class RealmTypes {
 
     /* 妖修 */
 
-    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 100, 25, 80, 100, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_1 = register(new RealmType("monster_level_1", 50, 100, 60, 75, CultivationTypes.MONSTER));
 
-    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 300, 80, 120, 125, CultivationTypes.MONSTER));
+    public static final IRealmType MONSTER_LEVEL_2 = register(new RealmType("monster_level_2", 120, 210, 80, 100, CultivationTypes.MONSTER));
 
-//    public static final IRealmType MONSTER_LEVEL_3 = new RealmType("monster_level_3", 300, 80, 50, 110, false, CultivationTypes.MONSTER);
+    public static final IRealmType MONSTER_LEVEL_3 = register(new RealmType("monster_level_3", 240, 320, 100, 125, CultivationTypes.MONSTER));
 
-//    /* 亡灵 */
-//    public static final IRealmType UNDEAD_LEVEL1 = new RealmType("undead_level1", 80, 4, 25, false);
-//    public static final IRealmType UNDEAD_LEVEL2 = new RealmType("undead_level2", 200, 8, 50, false);
+    /* 亡灵 */
+    public static final IRealmType UNDEAD_LEVEL_1 = register(new RealmType("undead_level_1", 80, 160, 50, 140, CultivationTypes.UNDEAD));
+    public static final IRealmType UNDEAD_LEVEL_2 = register(new RealmType("undead_level_2", 200, 325, 75, 180, CultivationTypes.UNDEAD));
+    public static final IRealmType UNDEAD_LEVEL_3 = register(new RealmType("undead_level_3", 400, 550, 175, 250, CultivationTypes.UNDEAD));
 
     public static MutableComponent getCategory(){
         return TipUtil.misc("realm");

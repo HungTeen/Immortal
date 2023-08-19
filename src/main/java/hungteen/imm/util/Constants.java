@@ -14,7 +14,7 @@ public class Constants {
     public static final int MAX_FLAME_LEVEL = 9;
     public static final int MAX_ARTIFACT_LEVEL = MAX_FLAME_LEVEL;
 
-    public static final int SPIRITUAL_ABSORB_TIME = 20;
+    public static final int SPIRITUAL_ABSORB_TIME = 2;
 
     public static final int DEFAULT_BIOME_SPIRITUAL_VALUE = 10;
     public static final float DEFAULT_LEVEL_SPIRITUAL_RATIO = 0.25F;

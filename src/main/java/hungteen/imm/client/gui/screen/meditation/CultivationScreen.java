@@ -13,12 +13,14 @@ import hungteen.imm.common.KarmaManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
+import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.spell.spells.ElementalMasterySpell;
+import hungteen.imm.common.spell.spells.SpiritEyeSpell;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -93,8 +95,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     }
 
     private void renderSpiritualRoots(GuiGraphics graphics, int posX, int posY) {
-        if (PlayerUtil.knowSpiritualRoots(ClientUtil.player())) {
-            final List<ISpiritualType> roots = PlayerUtil.getSpiritualRoots(ClientUtil.player());
+        if (SpiritEyeSpell.knowOwnSpiritRoots(ClientUtil.player())) {
+            final List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getSpiritualRoots(ClientUtil.player()));
             final int len = roots.size();
             if(len == 0){
                 RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.misc("no_spiritual_root"), posX + 32, posY + 1, 1F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
@@ -108,7 +110,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 }
             }
         } else {
-            RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.SPIRITUAL_ROOT.append(" : ").append(Component.literal("? ? ?")), posX + 32, posY + 1, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+            RenderUtil.renderCenterScaledText(graphics.pose(), SpiritualTypes.getCategory().append(" : ").append(TipUtil.UNKNOWN), posX + 32, posY + 1, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
         }
     }
 
@@ -160,12 +162,18 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
             case BREAK_THROUGH_PROGRESS -> {
                 this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS), false);
             }
+            case EMP -> {
+                final int emp = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS);
+                this.renderProgressWithText(graphics, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS.getComponent(), x, y, emp, emp + ElementalMasterySpell.calculateUsedEMP(player), false);
+            }
         }
     }
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float value, float maxValue, boolean karma) {
-        this.renderProgress(graphics, x, y, value, maxValue, karma);
-        RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        if(maxValue > 0){
+            this.renderProgress(graphics, x, y, value, maxValue, karma);
+            RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        }
     }
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float percent, boolean karma) {
@@ -203,6 +211,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         SPIRITUAL_MANA,
 
         BREAK_THROUGH_PROGRESS,
+
+        EMP
 
         ;
 

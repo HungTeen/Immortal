@@ -15,6 +15,10 @@ import java.util.Optional;
  **/
 public class LevelUtil {
 
+    public static float getSpiritualRate(Level level, BlockPos pos) {
+        return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
+    }
+
     public static Optional<ChunkCapability> getChunkCapOpt(Level level, BlockPos pos){
         return Optional.ofNullable(getChunkCapability(level, pos));
     }

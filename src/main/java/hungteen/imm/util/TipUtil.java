@@ -19,8 +19,8 @@ public class TipUtil {
     public static final Function<Integer, MutableComponent> SPELL_COST = cost -> info("spell_cost", cost);
     public static final Function<Integer, MutableComponent> SPELL_CD = cd -> info("spell_cd", cd);
     public static final Function<Float, MutableComponent> PERCENT = v -> misc("percent", (int)(v * 100));
-    public static final MutableComponent SPIRITUAL_ROOT = misc("spiritual_root");
     public static final MutableComponent CULTIVATION = misc("cultivation");
+    public static final MutableComponent UNKNOWN = misc("unknown");
 
     public static MutableComponent gui(String name, Object... objects){
         return Component.translatable("gui." + Util.id() + "." + name, objects);

@@ -20,10 +20,10 @@ public class ThrowItemSpell extends SpellType {
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (! owner.getMainHandItem().isEmpty() || ! owner.getOffhandItem().isEmpty()) {
             final ItemStack throwItem = (owner.getMainHandItem().isEmpty() ? owner.getOffhandItem() : owner.getMainHandItem()).copy();
-            ThrowingItemEntity snowball = new ThrowingItemEntity(owner, owner.level());
-            snowball.setItem(throwItem);
-            snowball.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, 1.5F, 1.0F);
-            owner.level().addFreshEntity(snowball);
+            ThrowingItemEntity projectile = new ThrowingItemEntity(owner, owner.level());
+            projectile.setItem(throwItem);
+            projectile.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, 3F, 1.0F);
+            owner.level().addFreshEntity(projectile);
         }
         return false;
     }

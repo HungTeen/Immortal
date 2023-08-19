@@ -34,6 +34,10 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
         return new SpellRequirement(List.of(Pair.of(spell, level)));
     }
 
+    public static SpellRequirement pair(ISpellType spell1, int level1, ISpellType spell2, int level2) {
+        return new SpellRequirement(List.of(Pair.of(spell1, level1), Pair.of(spell2, level2)));
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         return spells().stream().allMatch(p -> {

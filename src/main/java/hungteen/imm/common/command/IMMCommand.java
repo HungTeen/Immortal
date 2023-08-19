@@ -120,7 +120,7 @@ public class IMMCommand {
 
         // Command about cultivation.
         for (ExperienceTypes experienceType : ExperienceTypes.values()) {
-            builder.then(Commands.literal("cultivation")
+            builder.then(Commands.literal("experience")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(experienceType.toString().toLowerCase())
