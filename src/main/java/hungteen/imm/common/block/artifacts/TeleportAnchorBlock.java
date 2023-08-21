@@ -75,7 +75,7 @@ public class TeleportAnchorBlock extends Block {
             final double x = pos.getX() + 0.5D + (0.5D - randomSource.nextDouble());
             final double y = pos.getY() + 1.1D;
             final double z = pos.getZ() + 0.5D + (0.5D - randomSource.nextDouble());
-            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRIT.get(), new Vec3(x, y, z),0.06F, 0.05F);
+            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRITUAL.get(), new Vec3(x, y, z),0.06F, 0.05F);
         }
     }
 

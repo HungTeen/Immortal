@@ -98,7 +98,7 @@ public class TeleportFormation extends FormationEntity {
             }
             for(int i = 0; i < 5; ++ i){
                 final Vec3 pos = position().add(RandomHelper.doubleRange(this.random, TELEPORT_WIDTH), RandomHelper.doubleRange(this.random, TELEPORT_HEIGHT), RandomHelper.doubleRange(this.random, TELEPORT_WIDTH));
-                ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
+                ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRITUAL.get(), pos, 0.2F, 0.1F);
             }
         }
     }
@@ -107,7 +107,7 @@ public class TeleportFormation extends FormationEntity {
         final int cnt = ticks / 8 + 1;
         for(int i = 0; i < cnt; ++i) {
             final Vec3 pos = new Vec3(entity.getRandomX(0.5D), entity.getRandomY() - 0.25D, entity.getRandomZ(0.5D));
-            ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRIT.get(), pos, 0.2F, 0.1F);
+            ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRITUAL.get(), pos, 0.2F, 0.1F);
         }
     }
 

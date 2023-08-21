@@ -140,7 +140,7 @@ public class ClientRegister {
     public static void registerFactories(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new);
         event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.SPIRIT.get(), SpiritParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.SPIRITUAL.get(), SpiritParticle.Factory::new);
     }
 
     @SubscribeEvent

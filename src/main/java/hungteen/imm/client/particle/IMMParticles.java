@@ -25,7 +25,7 @@ public class IMMParticles {
 
     public static final RegistryObject<SimpleParticleType> IMMORTAL_FLAME = PARTICLE_TYPES.register("immortal_flame", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPIRITUAL_MANA = PARTICLE_TYPES.register("spiritual_mana", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPIRIT = PARTICLE_TYPES.register("spirit", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SPIRITUAL = PARTICLE_TYPES.register("spiritual", () -> new SimpleParticleType(false));
 
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}

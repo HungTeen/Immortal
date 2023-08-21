@@ -21,7 +21,7 @@ public class IgniteSpell extends SpellType {
         if(result.hasEntity() && result.getEntity() != null){
             ElementalMasterySpell.getElementEntry(owner, Elements.FIRE, false).ifPresent(e -> e.addElement(result.getEntity(), 15F));
             result.getEntity().setSecondsOnFire(10);
-            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRIT.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
         }
         return false;

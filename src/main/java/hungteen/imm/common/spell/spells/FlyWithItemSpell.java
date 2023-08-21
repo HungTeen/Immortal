@@ -34,6 +34,8 @@ public class FlyWithItemSpell extends SpellType {
             if(flyingEntity != null){
                 flyingEntity.setPos(owner.position().add(owner.getLookAngle().normalize().scale(1)));
                 flyingEntity.setItemStack(flyingItem);
+                flyingEntity.setThrower(owner);
+                owner.startRiding(flyingEntity);
                 owner.level().addFreshEntity(flyingEntity);
                 stack.shrink(1);
                 return true;

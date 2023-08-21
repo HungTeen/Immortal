@@ -8,7 +8,6 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -34,7 +33,7 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         double damage = 1F;
         for (AttributeModifier modifier : this.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
             if (modifier.getId() == Item.BASE_ATTACK_DAMAGE_UUID) {
-                damage += EnchantmentHelper.getDamageBonus(this.getItem(), MobType.UNDEFINED);
+                damage += modifier.getAmount();
                 break;
             }
         }

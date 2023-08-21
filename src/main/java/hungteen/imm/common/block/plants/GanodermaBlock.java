@@ -33,7 +33,7 @@ public class GanodermaBlock extends SpiritualPlantBlock {
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource source) {
         if (source.nextInt(5) == 0) {
             final Vec3 offset = RandomUtil.vec3Range(source, 0.2, 0.4);
-            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRIT.get(), MathHelper.toVec3(pos).add(offset),0.05F);
+            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRITUAL.get(), MathHelper.toVec3(pos).add(offset),0.05F);
         }
     }
 

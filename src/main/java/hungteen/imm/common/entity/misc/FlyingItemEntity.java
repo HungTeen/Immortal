@@ -39,7 +39,6 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(FlyingItemEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final int MAX_PASSENGER_SIZE = 1;
     private int flyingTick = 0;
-    private boolean canWork = false;
     @Nullable
     private UUID thrower;
     private int lerpSteps;
@@ -70,16 +69,9 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
                 this.updateMotion(this.getControllingPassenger());
             } else{
                 this.setDeltaMovement(Vec3.ZERO);
-                this.canWork = false;
             }
-            if(this.isNoGravity() ^ this.canWork){
-                this.setNoGravity(this.canWork);
-            }
-            if(! this.canWork){
-                if(this.flyingTick > 0) this.flyingTick = 0;
-                if(-- this.flyingTick <= - 60){
-                    this.goBackToInventory();
-                }
+            if(this.getControllingPassenger() == null){
+                this.goBackToInventory();
             }
         }
 
@@ -121,24 +113,20 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     public void updateMotion(@NotNull Entity entity){
         final float cost = FlyWithItemSpell.getFlyingCost(entity);
         final boolean enough = EntityUtil.getMana(entity) >= cost;
-        if(this.canWork || enough){
-            // 检查灵力是否足够。
-            if(this.flyingTick % 20 == 0 || ! this.canWork){
-                if(enough){
-                    this.canWork = true;
-                    EntityUtil.addMana(entity, - cost);
-                    ParticleHelper.spawnParticle(entity.level(), IMMParticles.SPIRITUAL_MANA.get(), position());
-                } else {
-                    this.canWork = false;
-                    return;
-                }
+        if(++ this.flyingTick % 20 == 0){
+            if(enough){
+                EntityUtil.addMana(entity, - cost);
+            } else {
+                entity.stopRiding();
+                return;
             }
-            if(this.flyingTick < 0) this.flyingTick = 0;
-            ++ this.flyingTick;
-            final double speed = 1;
-            final Vec3 lookVec = entity.getLookAngle();
-            this.setDeltaMovement(lookVec.normalize().scale(speed));
         }
+        if(this.flyingTick % 5 == 0){
+            ParticleHelper.spawnParticle(entity.level(), IMMParticles.SPIRITUAL.get(), position());
+        }
+        final double speed = 1;
+        final Vec3 lookVec = entity.getLookAngle();
+        this.setDeltaMovement(lookVec.normalize().scale(speed));
     }
 
     public void goBackToInventory(){
@@ -225,9 +213,6 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
         if(tag.contains("FlyingTick")){
             this.flyingTick = tag.getInt("FlyingTick");
         }
-        if(tag.contains("CanWork")){
-            this.canWork = tag.getBoolean("CanWork");
-        }
     }
 
     @Override
@@ -238,7 +223,6 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
             tag.putUUID("Thrower", this.thrower);
         }
         tag.putInt("FlyingTick", this.flyingTick);
-        tag.putBoolean("CanWork", this.canWork);
     }
 
 
