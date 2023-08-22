@@ -1,6 +1,7 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,12 +20,16 @@ import java.util.Objects;
 public class PickupBlockSpell extends SpellType {
 
     public PickupBlockSpell() {
-        super("pickup_block", properties().maxLevel(2).mana(10).cd(100));
+        super("pickup_block", properties().maxLevel(2).mana(10).cd(100).onlyPlayer());
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (result.hasBlock() && owner instanceof Player player) {
+            if(! EntityUtil.hasEmptyHand(owner)){
+                this.sendTip(owner, "no_empty_hand");
+                return false;
+            }
             final BlockState state = result.getBlockState(player.level());
             // ban bedrock like blocks.
             if (state != null && state.getDestroySpeed(player.level(), Objects.requireNonNull(result.getBlockPos())) >= 0) {

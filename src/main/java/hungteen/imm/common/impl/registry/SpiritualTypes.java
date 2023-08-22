@@ -27,7 +27,6 @@ import java.util.function.Supplier;
  **/
 public class SpiritualTypes {
 
-    public static final int TEX_WIDTH = 9;
     private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.createSimple(Util.prefix("spiritual_root"));
 
     public static IHTSimpleRegistry<ISpiritualType> registry() {
@@ -87,9 +86,9 @@ public class SpiritualTypes {
     public static final ISpiritualType SPIRIT = register(new SpiritualType(
             "spirit",
             Set.of(Elements.SPIRIT),
-            IMMConfigs::getEarthWeight,
-            5,
-            ColorHelper.EARTH_ROOT,
+            IMMConfigs::getSpiritWeight,
+            6,
+            ColorHelper.PURPLE.rgb(),
             5,
             ChatFormatting.DARK_PURPLE
     ));

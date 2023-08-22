@@ -1,10 +1,14 @@
 package hungteen.imm.common.spell.spells;
 
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * @author PangTeen
@@ -35,6 +39,12 @@ public abstract class SpellType implements ISpellType {
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
 
+    public void sendTip(LivingEntity owner, String msg){
+        if(owner instanceof Player player){
+            PlayerHelper.sendTipTo(player, TipUtil.info("spell." + msg).withStyle(ChatFormatting.RED));
+        }
+    }
+
     @Override
     public int getMaxLevel() {
         return this.maxLevel;
@@ -48,6 +58,11 @@ public abstract class SpellType implements ISpellType {
     @Override
     public int getCooldown() {
         return cooldown;
+    }
+
+    @Override
+    public float getLearnPoint(int level) {
+        return 1;
     }
 
     @Override

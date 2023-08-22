@@ -17,6 +17,11 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
+ * Lvl 1: Attach target weakly.
+ * Lvl 2: Attach self weakly.
+ * Lvl 3: Attach target weakly with more amount.
+ * Lvl 4: Attach self strongly.
+ * Lvl 5: Attach target strongly.
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-08-17 22:12
@@ -78,26 +83,26 @@ public class ElementalMasterySpell extends SpellType{
             final ElementalMasterySpell spell = getSpell(element);
             applyElementEntry(element, EntityUtil.getSpellLevel(entity, spell), self).accept(builder);
         });
-        return builder.weight(100).build().getRandomItem(entity.level().getRandom());
+        return builder.weight(1000).build().getRandomItem(entity.level().getRandom());
     }
 
     private static Consumer<WeightedList.Builder<ElementEntry>> applyElementEntry(Elements element, int level, boolean self){
         return builder -> {
             if (self) {
                 if (level >= 1) {
-                    builder.add(new ElementEntry(element, false, 8));
+                    builder.add(new ElementEntry(element, false, (int) (80 * element.getAttachMultiple())));
                 }
                 if (level >= 3) {
-                    builder.add(new ElementEntry(element, true, 4));
+                    builder.add(new ElementEntry(element, true, (int) (40 * element.getAttachMultiple())));
                 }
             } else {
                 if (level >= 4) {
-                    builder.add(new ElementEntry(element, false, 10));
+                    builder.add(new ElementEntry(element, false, (int) (100 * element.getAttachMultiple())));
                 } else if (level >= 2) {
-                    builder.add(new ElementEntry(element, false, 5));
+                    builder.add(new ElementEntry(element, false, (int) (50 * element.getAttachMultiple())));
                 }
                 if (level >= 5) {
-                    builder.add(new ElementEntry(element, true, 5));
+                    builder.add(new ElementEntry(element, true, (int) (50 * element.getAttachMultiple())));
                 }
             }
         };

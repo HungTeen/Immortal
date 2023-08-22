@@ -28,6 +28,10 @@ public class IMMEffects {
             .addAttributeModifier(Attributes.FLYING_SPEED, "2f9401f7-e4d2-4b27-bd23-b97f938f17d0", -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL)
     );
 
+    public static final RegistryObject<MobEffect> AGGLOMERATION = EFFECTS.register("agglomeration", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DYE_BROWN.rgb())
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, "98509b83-d422-4b4e-9633-bb2a9e57af6a", -1F, AttributeModifier.Operation.MULTIPLY_TOTAL)
+    );
+
 //    public static final RegistryObject<MobEffect> CORPSE_POISON_EFFECT = EFFECTS.register("corpse_poison", () -> {
 //        return new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_GREEN.rgb());
 //    });

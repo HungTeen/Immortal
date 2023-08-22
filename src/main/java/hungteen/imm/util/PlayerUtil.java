@@ -2,7 +2,6 @@ package hungteen.imm.util;
 
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.common.capability.PlayerCapabilityManager;
-import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
@@ -19,6 +18,7 @@ import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.spell.SpellTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -65,10 +65,9 @@ public class PlayerUtil {
             });
             if(list.isEmpty()){
                 setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
-                SeatEntity.seatAt(player.level(), player, pos, yOffset, player.getYRot(), 120F, relyOnBlock);
-                return true;
+                return EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock);
             } else {
-                PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround"));
+                PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround").withStyle(ChatFormatting.RED));
             }
         }
         return false;

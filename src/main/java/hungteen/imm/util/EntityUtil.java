@@ -1,6 +1,8 @@
 package hungteen.imm.util;
 
+import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
@@ -10,14 +12,17 @@ import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -40,6 +45,43 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static boolean addItem(Entity entity, ItemStack stack){
+        if(entity instanceof Player player){
+            PlayerUtil.addItem(player, stack);
+            return true;
+        } else if(entity instanceof InventoryCarrier carrier){
+            carrier.getInventory().addItem(stack);
+            return true;
+        } else if(entity instanceof LivingEntity living){
+            if(living.getMainHandItem().isEmpty()){
+                living.setItemInHand(InteractionHand.MAIN_HAND, stack);
+                return true;
+            } else if(living.getOffhandItem().isEmpty()) {
+                living.setItemInHand(InteractionHand.OFF_HAND, stack);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean sitToMeditate(LivingEntity living, BlockPos pos, float yOffset, boolean relyOnBlock){
+        if(EntityUtil.hasItemInHand(living)){
+            if(living instanceof Player player){
+                PlayerHelper.sendTipTo(player, TipUtil.info("spell.has_item_in_hand").withStyle(ChatFormatting.RED));
+            }
+            return false;
+        }
+        return SeatEntity.seatAt(living.level(), living, pos, yOffset, living.getYRot(), 120F, relyOnBlock);
+    }
+
+    public static boolean hasEmptyHand(LivingEntity living){
+        return living.getMainHandItem().isEmpty() || living.getOffhandItem().isEmpty();
+    }
+
+    public static boolean hasItemInHand(LivingEntity living){
+        return ! living.getMainHandItem().isEmpty() || ! living.getOffhandItem().isEmpty();
+    }
 
     public static boolean canManaIncrease(Entity entity){
         return ! (entity.getVehicle() instanceof FlyingItemEntity) && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0;

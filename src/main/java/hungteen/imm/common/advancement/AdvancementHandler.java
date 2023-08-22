@@ -8,4 +8,5 @@ package hungteen.imm.common.advancement;
  * @data 2023/2/25 10:49
  */
 public class AdvancementHandler {
+
 }

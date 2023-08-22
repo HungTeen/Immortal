@@ -9,6 +9,7 @@ import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.RegistryObject;
@@ -25,6 +26,19 @@ public class ItemUtil {
 
     private static final String SUFFIX = "large_held";
     private static final List<RegistryObject<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
+
+    public static double getItemBonusDamage(ItemStack stack, EquipmentSlot ... slots){
+        double damage = 0F;
+        for (EquipmentSlot slot : slots) {
+            for (AttributeModifier modifier : stack.getAttributeModifiers(slot).get(Attributes.ATTACK_DAMAGE)) {
+                if (modifier.getId() == Item.BASE_ATTACK_DAMAGE_UUID) {
+                    damage += modifier.getAmount();
+                    break;
+                }
+            }
+        }
+        return damage;
+    }
 
     public static boolean isFood(ItemStack stack) {
         return stack.isEdible();

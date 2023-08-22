@@ -1,6 +1,7 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,12 +17,16 @@ import net.minecraft.world.item.ItemStack;
 public class PickupItemSpell extends SpellType {
 
     public PickupItemSpell() {
-        super("pickup_item", properties().maxLevel(2).mana(5).cd(20));
+        super("pickup_item", properties().maxLevel(2).mana(5).cd(20).onlyPlayer());
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if (result.hasEntity() && owner instanceof Player player) {
+            if(! EntityUtil.hasEmptyHand(owner)){
+                this.sendTip(owner, "no_empty_hand");
+                return false;
+            }
             if (result.getEntity() instanceof ItemEntity item) {
                 item.setPos(owner.position());
                 item.setPickUpDelay(0);

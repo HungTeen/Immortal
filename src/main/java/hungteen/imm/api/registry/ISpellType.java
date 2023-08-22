@@ -44,6 +44,13 @@ public interface ISpellType extends ISimpleEntry {
     int getCooldown();
 
     /**
+     * 学习此法术可以获得多少修为。
+     * @param level 法术对应的等级
+     * @return 增长的修为值。
+     */
+    float getLearnPoint(int level);
+
+    /**
      * 法术是否能被触发，能则会被放置在法术轮盘上。
      * @return Whether can the spell be triggered.
      */

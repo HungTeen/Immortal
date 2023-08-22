@@ -14,41 +14,41 @@ public enum Elements implements StringRepresentable {
     /**
      * 金元素。
      */
-    METAL(true, 0.05F, 0.25F),
+    METAL(true, 0.5F, 0.25F),
 
     /**
      * 木元素。
      */
-    WOOD(true, 0.06F, 0.15F),
+    WOOD(true, 0.6F, 0.15F),
 
     /**
      * 水元素。
      */
-    WATER(true, 0.15F, 0.04F),
+    WATER(true, 0.25F, 0.04F),
 
     /**
      * 火元素。
      */
-    FIRE(true, 0.2F, 0.05F),
+    FIRE(true, 1.5F, 0.05F),
 
     /**
      * 土元素。
      */
-    EARTH(true, 0.1F, 0.1F),
+    EARTH(true, 1F, 0.1F),
 
     /**
      * 业元素。
      */
-    SPIRIT(false, 0.1F, 0.1F);
+    SPIRIT(false, 1F, 0.1F);
 
     public static final Codec<Elements> CODEC = StringRepresentable.fromEnum(Elements::values);
     private final boolean isPhysical;
-    private final float attachChance;
+    private final float attachMultiple;
     private final float decaySpeed;
 
     Elements(boolean isPhysical, float attachChance, float decaySpeed) {
         this.isPhysical = isPhysical;
-        this.attachChance = attachChance;
+        this.attachMultiple = attachChance;
         this.decaySpeed = decaySpeed;
     }
 
@@ -56,8 +56,8 @@ public enum Elements implements StringRepresentable {
         return isPhysical;
     }
 
-    public float getAttachChance() {
-        return attachChance;
+    public float getAttachMultiple() {
+        return attachMultiple;
     }
 
     public float getDecaySpeed() {
