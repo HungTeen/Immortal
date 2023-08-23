@@ -11,6 +11,10 @@ import net.minecraft.world.phys.Vec3;
  **/
 public class MathUtil {
 
+    public static double log2(double x){
+        return Math.log(x) / Math.log(2);
+    }
+
     public static float unwrapDegree(float degree){
         return degree * ((float)Math.PI / 180F);
     }

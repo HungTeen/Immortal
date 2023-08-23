@@ -19,11 +19,12 @@ import java.util.*;
  **/
 public class IMMEntityCapability implements IIMMEntityCapability {
 
-    private static final Comparator<IElementReaction> COMPARATOR = (reaction1, reaction2) -> -(reaction1.priority() - reaction2.priority());
+    private static final Comparator<IElementReaction> COMPARATOR = (reaction1, reaction2) -> - (reaction1.priority() - reaction2.priority());
     private Entity entity;
     private final ElementData robustElementData = new ElementData();
     private final ElementData weakElementData = new ElementData();
     private final Set<IElementReaction> possibleReactions = new TreeSet<>(COMPARATOR);
+    private final Map<IElementReaction, Float> activeReactions = new HashMap<>();
     private Entity lastAttachedEntity = null;
     private boolean dirty = false;
 
@@ -41,6 +42,13 @@ public class IMMEntityCapability implements IIMMEntityCapability {
                 nbt.putBoolean(l.getRegistryName(), true);
             });
             tag.put("PossibleReactions", nbt);
+        }
+        {
+            CompoundTag nbt = new CompoundTag();
+            activeReactions.forEach((l, r) -> {
+                nbt.putFloat(l.getRegistryName(), r);
+            });
+            tag.put("ActiveReactions", nbt);
         }
         tag.putBoolean("ElementDirty", this.dirty);
         if(this.lastAttachedEntity != null){
@@ -65,6 +73,15 @@ public class IMMEntityCapability implements IIMMEntityCapability {
                 }
             });
         }
+        if (tag.contains("ActiveReactions")) {
+            activeReactions.clear();
+            CompoundTag nbt = tag.getCompound("ActiveReactions");
+            ElementReactions.registry().getValues().forEach(l -> {
+                if (nbt.contains(l.getRegistryName())) {
+                    activeReactions.put(l, nbt.getFloat(l.getRegistryName()));
+                }
+            });
+        }
         if (tag.contains("ElementDirty")) {
             this.dirty = tag.getBoolean("ElementDirty");
         }
@@ -73,20 +90,36 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         }
     }
 
-    public void updatePossibleReactions() {
+    /**
+     * 更新下一步可能发生的元素反应。
+     */
+    public void update() {
         if (this.dirty) {
             this.possibleReactions.clear();
-            this.possibleReactions.addAll(ElementReactions.registry().getValues().stream().filter(l -> l.match(this.entity)).toList());
+            this.possibleReactions.addAll(ElementReactions.registry().getValues().stream().filter(l -> l.match(this.entity) > 0).toList());
             this.dirty = false;
         }
+        this.clearActiveReactions();
     }
 
     public Set<IElementReaction> getPossibleReactions() {
         return possibleReactions;
     }
 
-    public boolean hasReaction(IElementReaction reaction) {
-        return possibleReactions.contains(reaction);
+    public boolean isActiveReaction(IElementReaction reaction) {
+        return getActiveScale(reaction) > 0;
+    }
+
+    public float getActiveScale(IElementReaction reaction) {
+        return activeReactions.getOrDefault(reaction, 0F);
+    }
+
+    public void setActiveScale(IElementReaction reaction, float scale) {
+        activeReactions.put(reaction, scale);
+    }
+
+    public void clearActiveReactions() {
+        activeReactions.clear();
     }
 
     public void clearElements() {

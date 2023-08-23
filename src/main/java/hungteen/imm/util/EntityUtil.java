@@ -8,9 +8,11 @@ import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
+import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -84,7 +86,9 @@ public class EntityUtil {
     }
 
     public static boolean canManaIncrease(Entity entity){
-        return ! (entity.getVehicle() instanceof FlyingItemEntity) && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0;
+        return ! (entity.getVehicle() instanceof FlyingItemEntity)
+                && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0
+                && ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
     }
 
     public static int getSpellLevel(Entity entity, ISpellType spell){
@@ -109,6 +113,10 @@ public class EntityUtil {
         } else if(entity instanceof IHasMana manaEntity){
             manaEntity.addMana(amount);
         }
+    }
+
+    public static boolean hasMana(Entity entity) {
+        return getMana(entity) > 0;
     }
 
     public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
