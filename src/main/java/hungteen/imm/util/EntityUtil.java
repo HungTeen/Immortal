@@ -88,7 +88,7 @@ public class EntityUtil {
     public static boolean canManaIncrease(Entity entity){
         return ! (entity.getVehicle() instanceof FlyingItemEntity)
                 && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0
-                && ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
+                && ! ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
     }
 
     public static int getSpellLevel(Entity entity, ISpellType spell){

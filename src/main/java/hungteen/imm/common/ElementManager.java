@@ -3,6 +3,8 @@ package hungteen.imm.common;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
+import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.network.ReactionPacket;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.TipUtil;
@@ -45,6 +47,7 @@ public class ElementManager {
                     if(! reaction.once()){
                         cap.setActiveScale(reaction, scale);
                     }
+                    NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 60, new ReactionPacket(entity.getId(), reaction));
                 } else {
                     iterator.remove();
                 }

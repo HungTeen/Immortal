@@ -280,6 +280,13 @@
   "misc.imm.element.earth": "Earth",
   "misc.imm.element.spirit": "Spirit",
 
+  "misc.imm.reaction.ashing": "Ashing",
+  "misc.imm.reaction.agglomeration": "Agglomeration",
+  "misc.imm.reaction.vaporization": "Vaporization",
+  "misc.imm.reaction.melting": "Melting",
+  "misc.imm.reaction.cutting": "Cutting",
+  "misc.imm.reaction.parasitism": "Parasitism",
+
   "misc.imm.spiritual_root": "Spiritual Root",
   "misc.imm.no_spiritual_root": "No Spiritual Root",
   "misc.imm.root.special": "Special",

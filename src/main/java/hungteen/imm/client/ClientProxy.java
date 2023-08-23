@@ -1,11 +1,14 @@
 package hungteen.imm.client;
 
 import hungteen.imm.CommonProxy;
+import hungteen.imm.api.registry.IElementReaction;
+import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Objects;
@@ -32,6 +35,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onSmithing(BlockPos blockPos, boolean isMainHand) {
         NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientDatas.SmithingProgress, isMainHand));
+    }
+
+    @Override
+    public void addReaction(Entity entity, IElementReaction reaction) {
+        ReactionRenderer.addReaction(entity, reaction);
     }
 
     @Override

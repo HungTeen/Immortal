@@ -1,7 +1,6 @@
 package hungteen.imm.common.entity.misc.formation;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,29 +49,29 @@ public class TeleportFormation extends FormationEntity {
     @Override
     public void tick() {
         super.tick();
-        if(EntityHelper.isServer(this) && level() instanceof ServerLevel serverLevel){
-            if(-- this.remainExistTick < 0){
+        if (EntityHelper.isServer(this) && level() instanceof ServerLevel serverLevel) {
+            if (--this.remainExistTick < 0) {
                 this.discard();
             } else {
-                final AABB aabb = new AABB(this.position().add(- TELEPORT_WIDTH, - TELEPORT_HEIGHT, - TELEPORT_WIDTH), this.position().add(TELEPORT_WIDTH, TELEPORT_HEIGHT, TELEPORT_WIDTH));
+                final AABB aabb = new AABB(this.position().add(-TELEPORT_WIDTH, -TELEPORT_HEIGHT, -TELEPORT_WIDTH), this.position().add(TELEPORT_WIDTH, TELEPORT_HEIGHT, TELEPORT_WIDTH));
                 // Update ticks.
                 Iterator<Map.Entry<Integer, Integer>> iterator = entityInsideTicks.entrySet().iterator();
-                while(iterator.hasNext()){
+                while (iterator.hasNext()) {
                     final Map.Entry<Integer, Integer> pair = iterator.next();
                     final int id = pair.getKey();
                     final int tick = pair.getValue();
                     final Entity entity = this.level().getEntity(id);
                     // Not in same dimension.
-                    if(! EntityHelper.isEntityValid(entity) || ! this.level().dimension().equals(entity.level().dimension())){
+                    if (!EntityHelper.isEntityValid(entity) || !this.level().dimension().equals(entity.level().dimension())) {
                         iterator.remove();
                     } else {
                         // Still inside.
                         final int ticks = tick + (aabb.intersects(entity.getBoundingBox()) ? 1 : -2);
-                        if(ticks > TELEPORT_CD){
+                        if (ticks > TELEPORT_CD) {
                             final MinecraftServer server = serverLevel.getServer();
                             final ResourceKey<Level> dst = EntityHelper.inDimension(this, IMMLevels.EAST_WORLD) ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
                             final ServerLevel dstLevel = server.getLevel(dst);
-                            if(dstLevel != null){
+                            if (dstLevel != null) {
                                 entity.setPortalCooldown();
                                 entity.changeDimension(dstLevel, IMMTeleporter.INSTANCE);
                             }
@@ -84,9 +82,9 @@ public class TeleportFormation extends FormationEntity {
                     }
                 }
                 // Find new inside entities.
-                if(this.random.nextFloat() < 0.1F){
+                if (this.random.nextFloat() < 0.1F) {
                     EntityHelper.getPredicateEntities(this, aabb, Entity.class, Entity::canChangeDimensions).forEach(entity -> {
-                        if(! entityInsideTicks.containsKey(entity.getId())){
+                        if (!entityInsideTicks.containsKey(entity.getId())) {
                             entityInsideTicks.put(entity.getId(), 0);
                         }
                     });
@@ -96,25 +94,19 @@ public class TeleportFormation extends FormationEntity {
             if (random.nextInt(150) == 0) {
                 level().playLocalSound(getX(), getY(), getZ(), SoundEvents.PORTAL_AMBIENT, SoundSource.AMBIENT, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
             }
-            for(int i = 0; i < 5; ++ i){
-                final Vec3 pos = position().add(RandomHelper.doubleRange(this.random, TELEPORT_WIDTH), RandomHelper.doubleRange(this.random, TELEPORT_HEIGHT), RandomHelper.doubleRange(this.random, TELEPORT_WIDTH));
-                ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRITUAL.get(), pos, 0.2F, 0.1F);
-            }
+            ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL.get(), getX(), getY(), getZ(), 5, TELEPORT_WIDTH, TELEPORT_HEIGHT, 0.2F, 0.1F);
         }
     }
 
-    private void spawnTeleportParticles(Entity entity, int ticks){
+    private void spawnTeleportParticles(Entity entity, int ticks) {
         final int cnt = ticks / 8 + 1;
-        for(int i = 0; i < cnt; ++i) {
-            final Vec3 pos = new Vec3(entity.getRandomX(0.5D), entity.getRandomY() - 0.25D, entity.getRandomZ(0.5D));
-            ParticleHelper.spawnRandomSpeedParticle(this.level(), IMMParticles.SPIRITUAL.get(), pos, 0.2F, 0.1F);
-        }
+        ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL.get(), getX(), getY(), getZ(), cnt, 0.5, 0.25, 0.2F, 0.1F);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(tag.contains("RemainExistTick")){
+        if (tag.contains("RemainExistTick")) {
             this.remainExistTick = tag.getInt("RemainExistTick");
         }
     }

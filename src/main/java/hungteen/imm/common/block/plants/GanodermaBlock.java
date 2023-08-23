@@ -3,7 +3,6 @@ package hungteen.imm.common.block.plants;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.util.RandomUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -32,8 +30,7 @@ public class GanodermaBlock extends SpiritualPlantBlock {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource source) {
         if (source.nextInt(5) == 0) {
-            final Vec3 offset = RandomUtil.vec3Range(source, 0.2, 0.4);
-            ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRITUAL.get(), MathHelper.toVec3(pos).add(offset),0.05F);
+            ParticleHelper.spawnParticles(level, IMMParticles.SPIRITUAL.get(), MathHelper.toVec3(pos), 1, 0.2, 0.4,0.05F);
         }
     }
 

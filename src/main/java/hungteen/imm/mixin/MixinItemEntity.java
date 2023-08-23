@@ -32,9 +32,7 @@ public abstract class MixinItemEntity {
         final Level level = ((ItemEntity)(Object)this).level();
         final Vec3 pos = ((ItemEntity)(Object)this).position().add(0, 0.5, 0);
         if(level.isClientSide && this.getItem().is(IMMItemTags.SPIRITUAL_STONES) && level.getRandom().nextFloat() < 0.1F){
-            for(int i = 0; i < 2; ++ i){
-                ParticleHelper.spawnRandomSpeedParticle(level, IMMParticles.SPIRITUAL.get(), pos,0.06F);
-            }
+            ParticleHelper.spawnParticles(level, IMMParticles.SPIRITUAL.get(), pos,1, 0, 0.06F);
         }
     }
 

@@ -22,7 +22,7 @@ import hungteen.imm.client.particle.IMMFlameParticle;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.client.particle.SpiritParticle;
 import hungteen.imm.client.particle.SpiritualManaParticle;
-import hungteen.imm.client.render.LevelRenderStages;
+import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;

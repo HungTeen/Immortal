@@ -1,6 +1,7 @@
 package hungteen.imm.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -41,6 +42,10 @@ public class ClientUtil {
 
     public static SoundManager soundManager(){
         return ClientProxy.mc().getSoundManager();
+    }
+
+    public static Camera camera(){
+        return ClientProxy.mc().gameRenderer.getMainCamera();
     }
 
     public static void push(String name, Runnable runnable) {

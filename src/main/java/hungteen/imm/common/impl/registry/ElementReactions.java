@@ -8,7 +8,9 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -115,7 +117,6 @@ public class ElementReactions {
         private final int priority;
         protected final List<ElementEntry> elements;
 
-
         private ElementReaction(String name, boolean once, int priority, List<ElementEntry> elements) {
             this.name = name;
             this.once = once;
@@ -156,6 +157,11 @@ public class ElementReactions {
         @Override
         public String getModID() {
             return Util.id();
+        }
+
+        @Override
+        public MutableComponent getComponent() {
+            return TipUtil.misc("reaction." + getName());
         }
     }
 

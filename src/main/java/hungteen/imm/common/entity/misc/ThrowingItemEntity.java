@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.misc;
 
+import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.util.EntityUtil;
-import hungteen.imm.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -71,7 +71,7 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        double damage = 1F + ItemUtil.getItemBonusDamage(this.getItem(), EquipmentSlot.MAINHAND);
+        double damage = 1F + ItemHelper.getItemBonusDamage(this.getItem(), EquipmentSlot.MAINHAND);
         result.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), (float) damage);
     }
 

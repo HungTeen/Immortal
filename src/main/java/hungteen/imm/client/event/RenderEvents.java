@@ -1,8 +1,9 @@
 package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.client.event.handler.RenderEventHandler;
+import hungteen.imm.client.render.level.ElementRenderer;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.client.render.level.ReactionRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -37,7 +38,7 @@ public class RenderEvents {
 
     @SubscribeEvent
     public static void renderNameTag(RenderNameTagEvent ev) {
-        RenderEventHandler.renderEntityElements(ev.getEntity(), ev.getEntityRenderer(), ev.getPoseStack(), ev.getMultiBufferSource(), ev.getPackedLight());
+        ElementRenderer.renderEntityElements(ev.getEntity(), ev.getEntityRenderer(), ev.getPoseStack(), ev.getMultiBufferSource(), ev.getPackedLight());
     }
 
     @SubscribeEvent
@@ -49,7 +50,10 @@ public class RenderEvents {
     }
 
     @SubscribeEvent
-    public static void gatherComponents(RenderLevelStageEvent event){
+    public static void renderLevel(RenderLevelStageEvent event){
+        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES){
+            ReactionRenderer.renderParticles(event.getPoseStack(), event.getCamera());
+        }
     }
 
 }

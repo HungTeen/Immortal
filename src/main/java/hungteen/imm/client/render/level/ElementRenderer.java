@@ -1,4 +1,4 @@
-package hungteen.imm.client.event.handler;
+package hungteen.imm.client.render.level;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author: HungTeen
  * @create: 2022-10-10 10:13
  **/
-public class RenderEventHandler {
+public class ElementRenderer {
 
     private static final ResourceLocation ELEMENTS = ElementOverlay.ELEMENTS;
     private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;

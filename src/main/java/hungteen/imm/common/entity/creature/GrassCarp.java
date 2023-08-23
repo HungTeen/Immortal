@@ -1,12 +1,10 @@
 package hungteen.imm.common.entity.creature;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -113,9 +111,9 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
                         for (int h = 0; h <= 2; ++h) {
                             final BlockPos pos = this.blockPosition().offset(i, h, j);
                             if (checkBlock(pos)) {
-                                for (int k = -range; k < range; ++k) {
-                                    ParticleHelper.spawnParticles(this.level(), ParticleTypes.COMPOSTER, MathHelper.toVec3(pos.above()));
-                                }
+//                                for (int k = -range; k < range; ++k) {
+//                                    ParticleHelper.spawnParticles(this.level(), ParticleTypes.COMPOSTER, MathHelper.toVec3(pos.above()));
+//                                }
                             }
                         }
                     }

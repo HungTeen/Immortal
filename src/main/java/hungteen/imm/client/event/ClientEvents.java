@@ -3,6 +3,7 @@ package hungteen.imm.client.event;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
+import hungteen.imm.client.render.level.ReactionRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +23,7 @@ public class ClientEvents {
             ClientHandler.onSmithing();
             ClientHandler.tickSpellCircle();
             MeditationScreen.tickMeditation();
+            ReactionRenderer.tick();
         }
     }
 

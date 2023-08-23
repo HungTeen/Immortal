@@ -293,6 +293,13 @@
   "misc.imm.root.drug": "毒",
   "misc.imm.root.ice": "冰",
 
+  "misc.imm.reaction.ashing": "化灰",
+  "misc.imm.reaction.agglomeration": "结块",
+  "misc.imm.reaction.vaporization": "升腾",
+  "misc.imm.reaction.melting": "熔融",
+  "misc.imm.reaction.cutting": "切裂",
+  "misc.imm.reaction.parasitism": "寄生",
+
   "misc.imm.cultivation_type.empty": "无",
   "misc.imm.cultivation_type.mortal": "凡人",
   "misc.imm.cultivation_type.spiritual": "灵修",
