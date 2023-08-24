@@ -335,6 +335,12 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getFullManaValue, 0F);
     }
 
+    public static boolean isManaFull(Player player){
+        return getManagerResult(player, l -> {
+            return l.getFloatData(PlayerRangeFloats.SPIRITUAL_MANA) >= l.getFullManaValue();
+        }, true);
+    }
+
     public static boolean requireSyncCircle(Player player){
         return getManagerResult(player, PlayerDataManager::requireSyncCircle, false);
     }

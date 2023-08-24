@@ -83,10 +83,10 @@ public class ClientHandler {
     }
 
     public static void startSmithing(ItemStack stack, SmithingArtifactBlockEntity blockEntity){
-        ClientDatas.StartSmithing = true;
-        ClientDatas.SmithingDirection = true;
-        ClientDatas.SmithingProgress = 0;
-        ClientDatas.BestPointDisplayTick = 0;
+        ClientData.StartSmithing = true;
+        ClientData.SmithingDirection = true;
+        ClientData.SmithingProgress = 0;
+        ClientData.BestPointDisplayTick = 0;
 //        ClientDatas.SmithingSpeedMultiple = blockEntity.getSmithingSpeedMultiple();
     }
 
@@ -114,17 +114,17 @@ public class ClientHandler {
      */
     public static void tickSpellCircle(){
         // 不能使用轮盘时，强制关闭。
-        if(ClientDatas.ShowSpellCircle){
+        if(ClientData.ShowSpellCircle){
             if(! SpellManager.canUseCircle(ClientUtil.player())){
-                ClientDatas.ShowSpellCircle = false;
+                ClientData.ShowSpellCircle = false;
             }
         }
         // update change.
         if(useDefaultCircle()){
-            if(ClientDatas.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()){
+            if(ClientData.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()){
                 // Close spell circle and activate spell.
-                if(ClientDatas.ShowSpellCircle){
-                    SpellManager.selectSpellOnCircle(ClientDatas.lastSelectedPosition);
+                if(ClientData.ShowSpellCircle){
+                    SpellManager.selectSpellOnCircle(ClientData.lastSelectedPosition);
                 }
                 switchSpellCircle();
             }
@@ -137,30 +137,30 @@ public class ClientHandler {
      */
     public static void chooseByVector(double x, double y){
         final double scale = 0.65D; // 灵敏度。
-        ClientDatas.SpellMousePositionX += x * scale;
-        ClientDatas.SpellMousePositionY -= y * scale;
-        if(ClientDatas.SpellMousePositionX != 0 && ClientDatas.SpellMousePositionY != 0) {
-            final double delta = Math.atan2(ClientDatas.SpellMousePositionY, ClientDatas.SpellMousePositionX);
-            final double radius = Math.sqrt(ClientDatas.SpellMousePositionX * ClientDatas.SpellMousePositionX + ClientDatas.SpellMousePositionY * ClientDatas.SpellMousePositionY);
+        ClientData.SpellMousePositionX += x * scale;
+        ClientData.SpellMousePositionY -= y * scale;
+        if(ClientData.SpellMousePositionX != 0 && ClientData.SpellMousePositionY != 0) {
+            final double delta = Math.atan2(ClientData.SpellMousePositionY, ClientData.SpellMousePositionX);
+            final double radius = Math.sqrt(ClientData.SpellMousePositionX * ClientData.SpellMousePositionX + ClientData.SpellMousePositionY * ClientData.SpellMousePositionY);
             final double maxRadius = 500;
             if (radius > maxRadius) {
-                ClientDatas.SpellMousePositionX = maxRadius * Math.cos(delta);
-                ClientDatas.SpellMousePositionY = maxRadius * Math.sin(delta);
+                ClientData.SpellMousePositionX = maxRadius * Math.cos(delta);
+                ClientData.SpellMousePositionY = maxRadius * Math.sin(delta);
             }
             if (radius > 200) {
-                ClientDatas.lastSelectedPosition = Mth.clamp((int) ((-delta * 4 / Math.PI + 2 + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE), 0, Constants.SPELL_CIRCLE_SIZE - 1);
+                ClientData.lastSelectedPosition = Mth.clamp((int) ((-delta * 4 / Math.PI + 2 + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE), 0, Constants.SPELL_CIRCLE_SIZE - 1);
             } else { // not effected.
-                ClientDatas.lastSelectedPosition = -1;
+                ClientData.lastSelectedPosition = -1;
             }
         }
     }
 
     public static void quitSmithing(){
-        ClientDatas.StartSmithing = false;
-        ClientDatas.SmithingDirection = true;
-        ClientDatas.SmithingProgress = 0;
-        ClientDatas.BestPointDisplayTick = 0;
-        ClientDatas.SmithingSpeedMultiple = 1F;
+        ClientData.StartSmithing = false;
+        ClientData.SmithingDirection = true;
+        ClientData.SmithingProgress = 0;
+        ClientData.BestPointDisplayTick = 0;
+        ClientData.SmithingSpeedMultiple = 1F;
     }
 
     /**
@@ -174,18 +174,18 @@ public class ClientHandler {
     }
 
     public static void switchSpellCircle(){
-        ClientDatas.ShowSpellCircle = ! ClientDatas.ShowSpellCircle;
+        ClientData.ShowSpellCircle = ! ClientData.ShowSpellCircle;
         // Open the spell circle.
-        if(ClientDatas.ShowSpellCircle){
+        if(ClientData.ShowSpellCircle){
             // check whether there need sync config file or not.
             PlayerHelper.getClientPlayer().ifPresent(player -> {
                 if(PlayerUtil.requireSyncCircle(player)){
-                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT_ON_CIRCLE, ClientDatas.lastSelectedPosition));
+                    NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT_ON_CIRCLE, ClientData.lastSelectedPosition));
                 }
             });
-            ClientDatas.SpellMousePositionX = 0;
-            ClientDatas.SpellMousePositionY = 0;
-            ClientDatas.lastSelectedPosition = useDefaultCircle() ? -1 : 0;
+            ClientData.SpellMousePositionX = 0;
+            ClientData.SpellMousePositionY = 0;
+            ClientData.lastSelectedPosition = useDefaultCircle() ? -1 : 0;
         }
     }
 }

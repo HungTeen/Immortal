@@ -17,9 +17,11 @@ import net.minecraft.world.damagesource.DeathMessageType;
 public interface IMMDamageTypes {
 
     ResourceKey<DamageType> SPIRITUAL_MANA = create("spiritual_mana");
+    ResourceKey<DamageType> ELEMENT_REACTION = create("element_reaction");
 
     static void register(BootstapContext<DamageType> context) {
         register(context, SPIRITUAL_MANA, 0.05F);
+        register(context, ELEMENT_REACTION, 0F);
     }
 
     static void register(BootstapContext<DamageType> context, ResourceKey<DamageType> key, float exhaustion){

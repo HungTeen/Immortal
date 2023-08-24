@@ -34,7 +34,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void onSmithing(BlockPos blockPos, boolean isMainHand) {
-        NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientDatas.SmithingProgress, isMainHand));
+        NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientData.SmithingProgress, isMainHand));
     }
 
     @Override

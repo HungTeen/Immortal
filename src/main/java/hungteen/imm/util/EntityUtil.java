@@ -119,6 +119,15 @@ public class EntityUtil {
         return getMana(entity) > 0;
     }
 
+    public static boolean isManaFull(Entity entity) {
+        if(entity instanceof Player player){
+            return PlayerUtil.isManaFull(player);
+        } else if(entity instanceof IHasMana manaEntity){
+            return manaEntity.isManaFull();
+        }
+        return true;
+    }
+
     public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
         return predicate.test(living.getMainHandItem()) ? living.getMainHandItem() : predicate.test(living.getOffhandItem()) ? living.getOffhandItem() : ItemStack.EMPTY;
     }

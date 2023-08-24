@@ -3,20 +3,22 @@ package hungteen.imm.common.event;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.ElementReactions;
+import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.ParticleUtil;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -43,31 +45,42 @@ public class IMMLivingEvents {
             }
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, scale -> {
                 if(EntityUtil.hasMana(event.getEntity())){
-                    EntityUtil.addMana(event.getEntity(), - scale * 5);
+                    EntityUtil.addMana(event.getEntity(), - scale * 2.5F);
                 } else {
+                    if(event.getEntity().getRandom().nextFloat() < 0.2F){
+                        event.getEntity().hurt(IMMDamageSources.elementReaction(null), scale * 2F);
+                    }
                 }
             });
         }
     }
 
-    @SubscribeEvent
-    public static void tick(LivingEvent.LivingJumpEvent event) {
-        if(event.getEntity().hasEffect(IMMEffects.AGGLOMERATION.get())){
-            final Vec3 speed = event.getEntity().getDeltaMovement();
-            event.getEntity().setDeltaMovement(speed.x(), Math.min(speed.y(), 0), speed.z());
-        }
-    }
+//    @SubscribeEvent
+//    public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
+//        if(event.getEntity().hasEffect(IMMEffects.SOLIDIFICATION.get())){
+//            final Vec3 speed = event.getEntity().getDeltaMovement();
+//            event.getEntity().setDeltaMovement(speed.x(), Math.min(speed.y(), 0), speed.z());
+//        }
+//    }
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event){
-        if(event.getEntity().level() instanceof ServerLevel level && event.getEntity().hasEffect(IMMEffects.AGGLOMERATION.get())){
-            if(event.getAmount() >= event.getEntity().getMaxHealth() * 0.1F){
-                event.getEntity().removeEffect(IMMEffects.AGGLOMERATION.get());
-                event.setAmount(event.getAmount() * 1.1F);
-                ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 20, 0, 0.15);
-                event.getEntity().playSound(SoundEvents.GRAVEL_BREAK);
-            } else {
-                ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 10, 0, 0.15);
+        if(event.getEntity().level() instanceof ServerLevel level) {
+            if (event.getEntity().hasEffect(IMMEffects.SOLIDIFICATION.get())) {
+                if (event.getAmount() >= event.getEntity().getMaxHealth() * 0.1F) {
+                    event.getEntity().removeEffect(IMMEffects.SOLIDIFICATION.get());
+                    event.setAmount(event.getAmount() * 1.1F);
+                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 20, 0, 0.15);
+                    event.getEntity().playSound(SoundEvents.GRAVEL_BREAK);
+                } else {
+                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 10, 0, 0.15);
+                }
+            }
+            if(event.getSource().getEntity() != null){
+                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.CONDENSATION, scale -> {
+                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 4);
+                    ParticleHelper.spawnParticles(level, ParticleTypes.FALLING_WATER, event.getEntity().getEyePosition(), 10, 0.3, 0.1);
+                });
             }
         }
     }

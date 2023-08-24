@@ -5,6 +5,9 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.*;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,6 +33,10 @@ public class InputEvents {
                     ClientHandler.switchSpellCircle();
                 }
             }
+            if(event.getKey() == InputConstants.KEY_H && Screen.hasAltDown()){
+                ClientData.displayReactionInfo = ! ClientData.displayReactionInfo;
+                ClientUtil.player().sendSystemMessage(TipUtil.info("display_reaction." + (ClientData.displayReactionInfo ? "open" : "close")).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD));
+            }
         }
     }
 
@@ -47,8 +54,8 @@ public class InputEvents {
                 }
 
                 // Right click to activate spell.
-                if(ClientDatas.ShowSpellCircle && event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
-                    SpellManager.selectSpellOnCircle(ClientDatas.lastSelectedPosition);
+                if(ClientData.ShowSpellCircle && event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT){
+                    SpellManager.selectSpellOnCircle(ClientData.lastSelectedPosition);
                     ClientHandler.switchSpellCircle();
                     event.setCanceled(true);
                 }
@@ -61,8 +68,8 @@ public class InputEvents {
 		double delta = event.getScrollDelta();
         if(! ClientHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
             // Scroll to switch select position.
-            if(delta != 0.0 && ClientUtil.player() != null && ClientDatas.ShowSpellCircle) {
-                ClientDatas.lastSelectedPosition = (ClientDatas.lastSelectedPosition + (delta < 0 ? 1 : -1) + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE;
+            if(delta != 0.0 && ClientUtil.player() != null && ClientData.ShowSpellCircle) {
+                ClientData.lastSelectedPosition = (ClientData.lastSelectedPosition + (delta < 0 ? 1 : -1) + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE;
                 event.setCanceled(true);
             }
         }

@@ -3,17 +3,24 @@ package hungteen.imm.common.impl.registry;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.registry.EffectHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,25 +39,75 @@ public class ElementReactions {
 
     /* 相生 */
 
-    public static final IElementReaction ASHING = register(new GenerationReaction(
-            "ashing", true, Elements.FIRE, 10, Elements.EARTH, 10, 5) {
+    public static final IElementReaction CRYSTALLIZATION = register(new GenerationReaction(
+            "crystallization", true, Elements.EARTH, 10, Elements.METAL, 4) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
             if (entity instanceof LivingEntity living) {
-                living.heal(2F * scale);
+                living.addEffect(EffectHelper.viewEffect(MobEffects.ABSORPTION, 1200, (int) (scale * 2)));
+            }
+        }
+    });
+
+    public static final IElementReaction CONDENSATION = register(new GenerationReaction(
+            "condensation", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+        }
+    });
+
+    public static final IElementReaction GROWING = register(new GenerationReaction(
+            "growing", false, Elements.WATER, 0.5F, Elements.WOOD, 0.2F) {
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+            if(entity instanceof LivingEntity living){
+                living.heal(0.25F * scale);
+            }
+        }
+    });
+
+    public static final IElementReaction FLAMING = register(new GenerationReaction(
+            "flaming", false, Elements.WOOD, 0.5F, Elements.FIRE, 0.25F) {
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+            if(entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F){
+                ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
+            }
+            EntityHelper.getPredicateEntities(entity, EntityHelper.getEntityAABB(entity, 4, 3), Entity.class, JavaHelper::alwaysTrue).forEach(target -> {
+                if(target.level().getRandom().nextFloat() < 0.1F){
+                    ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5);
+                }
+            });
+        }
+    });
+
+    public static final IElementReaction ASHING = register(new GenerationReaction(
+            "ashing", true, Elements.FIRE, 10, Elements.EARTH, 4) {
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+            if(! EntityUtil.isManaFull(entity)){
+                EntityUtil.addMana(entity, scale * 20);
+            } else {
+                if (entity instanceof LivingEntity living) {
+                    living.heal(4F * scale);
+                }
             }
         }
     });
 
     /* 相克 */
 
-    public static final IElementReaction AGGLOMERATION = register(new InhibitionReaction(
-            "agglomeration", true, Elements.EARTH, 5, Elements.WATER, 8) {
+    public static final IElementReaction SOLIDIFICATION = register(new InhibitionReaction(
+            "solidification", true, Elements.EARTH, 5, Elements.WATER, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
             if (entity instanceof LivingEntity living) {
-                living.addEffect(EffectHelper.viewEffect(IMMEffects.AGGLOMERATION.get(), (int) (100 * scale), Mth.ceil(scale)));
+                living.addEffect(EffectHelper.viewEffect(IMMEffects.SOLIDIFICATION.get(), (int) (100 * scale), Mth.ceil(scale)));
             }
         }
     });
@@ -89,18 +146,22 @@ public class ElementReactions {
     });
 
     public static final IElementReaction CUTTING = register(new InhibitionReaction(
-            "cutting", false, Elements.METAL, 3, Elements.WOOD, 8) {
+            "cutting", false, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
         }
     });
 
     public static final IElementReaction PARASITISM = register(new InhibitionReaction(
-            "parasitism", true, Elements.WOOD, 4, Elements.EARTH, 8) {
+            "parasitism", true, Elements.WOOD, 0.2F, Elements.EARTH, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
         }
     });
+
+    public static MutableComponent getCategory(){
+        return TipUtil.misc("element_reaction");
+    }
 
     public static IHTSimpleRegistry<IElementReaction> registry() {
         return REACTIONS;
@@ -127,6 +188,10 @@ public class ElementReactions {
         @Override
         public float match(Entity entity) {
             final float ratio = elements.stream().map(entry -> {
+                //相生反应后一元素的特判。
+                if(entry.amount() == 0){
+                    return ElementManager.hasElement(entity, entry.element(), entry.mustRobust()) ? 10000000F : 0F;
+                }
                 return ElementManager.getAmount(entity, entry.element(), entry.mustRobust()) / entry.amount();
             }).min(Float::compareTo).orElse(0F);
             return once() ? ratio : Math.min(1F, ratio);
@@ -174,8 +239,8 @@ public class ElementReactions {
         private final Elements production;
         private final float productionAmount;
 
-        private GenerationReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float offAmount, float productionAmount) {
-            super(name, once, 100, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, offAmount)));
+        private GenerationReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float productionAmount) {
+            super(name, once, 100, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, 0F)));
             this.production = off;
             this.productionAmount = productionAmount;
         }

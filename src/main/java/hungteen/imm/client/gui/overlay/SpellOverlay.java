@@ -5,7 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.client.ClientDatas;
+import hungteen.imm.client.ClientData;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
@@ -62,11 +62,11 @@ public class SpellOverlay {
     }
     
     public static void renderSpellCircle(ForgeGui gui, GuiGraphics graphics, float partialTick, int width, int height) {
-        if(ClientUtil.canRenderOverlay() && ClientDatas.ShowSpellCircle){
+        if(ClientUtil.canRenderOverlay() && ClientData.ShowSpellCircle){
             ClientUtil.push("renderSpellCircle");
             final int leftPos = (width - CIRCLE_LEN) >> 1;
             final int topPos = (height - CIRCLE_LEN) >> 1;
-            final int selectPos = ClientDatas.lastSelectedPosition;
+            final int selectPos = ClientData.lastSelectedPosition;
             RenderHelper.push(graphics);
             RenderSystem.enableBlend();
             graphics.blit(TEXTURE, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);
