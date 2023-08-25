@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  */
 public interface SecretManuals {
 
-    HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.create(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
+    HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.create(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.NETWORK_CODEC);
 
     static void register(BootstapContext<SecretManual> context){
         final HolderGetter<ILearnRequirement> requirements = context.lookup(LearnRequirements.registry().getRegistryKey());
@@ -166,7 +166,7 @@ public interface SecretManuals {
         }
 
         public SecretManual build() {
-            return new SecretManual(requirements, content, model, Optional.empty());
+            return new SecretManual(requirements, Optional.of(content), model, Optional.empty());
         }
     }
 }

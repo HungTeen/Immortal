@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceKey;
  */
 public interface ManualContents {
 
-    IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec, ManualContents::getDirectCodec);
+    IHTCodecRegistry<IManualContent> TYPES = HTRegistryManager.create(Util.prefix("manual_content"), ManualContents::getDirectCodec);
 
     static void register(BootstapContext<IManualContent> context) {
 //        SpellTypes.registry().getValues().forEach(spell -> {

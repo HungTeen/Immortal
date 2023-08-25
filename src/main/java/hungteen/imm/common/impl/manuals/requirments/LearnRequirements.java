@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceKey;
  */
 public interface LearnRequirements {
 
-    IHTCodecRegistry<ILearnRequirement> TYPES = HTRegistryManager.create(Util.prefix("learn_requirement"), LearnRequirements::getDirectCodec, LearnRequirements::getDirectCodec);
+    IHTCodecRegistry<ILearnRequirement> TYPES = HTRegistryManager.create(Util.prefix("learn_requirement"), LearnRequirements::getDirectCodec);
 
     static void register(BootstapContext<ILearnRequirement> context){
         CultivationTypes.registry().getValues().forEach(type -> {
