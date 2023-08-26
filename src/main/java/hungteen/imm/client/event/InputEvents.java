@@ -33,9 +33,9 @@ public class InputEvents {
                     ClientHandler.switchSpellCircle();
                 }
             }
-            if(event.getKey() == InputConstants.KEY_H && Screen.hasAltDown()){
-                ClientData.displayReactionInfo = ! ClientData.displayReactionInfo;
-                ClientUtil.player().sendSystemMessage(TipUtil.info("display_reaction." + (ClientData.displayReactionInfo ? "open" : "close")).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD));
+            if(event.getAction() == InputConstants.PRESS && event.getKey() == InputConstants.KEY_H && Screen.hasAltDown()){
+                ClientData.isDebugMode = ! ClientData.isDebugMode;
+                ClientUtil.player().sendSystemMessage(TipUtil.info("debug." + (ClientData.isDebugMode ? "open" : "close")).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD));
             }
         }
     }

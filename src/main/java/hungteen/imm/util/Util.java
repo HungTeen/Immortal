@@ -75,6 +75,10 @@ public class Util {
         return resourceKey.registry() + ":" + resourceKey.location();
     }
 
+    public static boolean isDebugMode(){
+        return getProxy().isDebugMode();
+    }
+
     public static CommonProxy getProxy(){
         return ImmortalMod.PROXY;
     }

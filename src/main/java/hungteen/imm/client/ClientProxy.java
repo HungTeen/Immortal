@@ -28,11 +28,6 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void openRestingScreen() {
-
-    }
-
-    @Override
     public void onSmithing(BlockPos blockPos, boolean isMainHand) {
         NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientData.SmithingProgress, isMainHand));
     }
@@ -40,6 +35,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void addReaction(Entity entity, IElementReaction reaction) {
         ReactionRenderer.addReaction(entity, reaction);
+    }
+
+    @Override
+    public boolean isDebugMode() {
+        return ClientData.isDebugMode;
     }
 
     @Override

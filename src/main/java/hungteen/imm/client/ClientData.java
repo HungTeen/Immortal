@@ -16,7 +16,7 @@ public class ClientData {
 
     /* 杂项 */
 
-    public static boolean displayReactionInfo = false; // 文字显示元素反应。
+    public static boolean isDebugMode = false; // 是否开启Debug模式。
 
     public static boolean StartSmithing = false;
     public static float SmithingProgress = 0;

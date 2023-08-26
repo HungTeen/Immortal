@@ -34,13 +34,13 @@ public class ReactionRenderer {
     }
 
     public static void addReaction(Entity entity, IElementReaction reaction){
-        if(ClientData.displayReactionInfo){
+        if(ClientData.isDebugMode){
             PARTICLES.add(new ReactionParticle(entity, reaction));
         }
     }
 
     public static void renderParticles(PoseStack stack, Camera camera) {
-        if(ClientData.displayReactionInfo) {
+        if(ClientData.isDebugMode) {
             PARTICLES.forEach(p -> renderParticle(stack, camera, p));
         }
     }
@@ -104,7 +104,7 @@ public class ReactionRenderer {
         }
 
         public boolean expired(){
-            return ! ClientData.displayReactionInfo || age > 20;
+            return ! ClientData.isDebugMode || age > 20;
         }
 
     }

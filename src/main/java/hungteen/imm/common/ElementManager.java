@@ -169,4 +169,8 @@ public class ElementManager {
         return TipUtil.misc("element." + element.name().toLowerCase());
     }
 
+    public static MutableComponent getName(Elements element, boolean robust){
+        return name(element).append("(").append(TipUtil.misc("element." + (robust ? "robust" : "weak"))).append(")");
+    }
+
 }

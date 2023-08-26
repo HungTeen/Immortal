@@ -14,15 +14,16 @@ import java.util.Optional;
  **/
 public class CommonProxy {
 
-    public void openRestingScreen(){
-    }
-
     public void onSmithing(BlockPos blockPos, boolean isMainHand){
 
     }
 
     public void addReaction(Entity entity, IElementReaction reaction){
 
+    }
+
+    public boolean isDebugMode(){
+        return false;
     }
 
     public Optional<RecipeManager> getRecipeManager(){

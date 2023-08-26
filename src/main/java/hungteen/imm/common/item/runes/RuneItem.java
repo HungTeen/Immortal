@@ -28,7 +28,7 @@ public abstract class RuneItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(stack, level, components, flag);
-        if(PlayerHelper.getClientPlayer() != null){
+        if(PlayerHelper.getClientPlayer().isPresent()){
             this.addDisplayComponents(stack, components);
             if(this.hasHideInfo(stack)){
                 if(Util.getProxy().isShiftKeyDown()){
