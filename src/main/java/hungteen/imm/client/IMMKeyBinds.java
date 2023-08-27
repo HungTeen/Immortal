@@ -33,7 +33,7 @@ public class IMMKeyBinds {
     }
 
     public static boolean keyDown(KeyMapping key){
-        return ClientHelper.isKeyInput(key) && key.consumeClick();
+        return ClientHelper.isKeyInput(key) && key.isDown();
     }
 
     public static boolean displayingSpellCircle(){

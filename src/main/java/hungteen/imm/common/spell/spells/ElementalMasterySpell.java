@@ -62,12 +62,55 @@ public class ElementalMasterySpell extends SpellType{
     /**
      * 未指定元素，则完全随机。
      */
-    public static Optional<ElementEntry> getElementEntry(Entity entity, boolean self){
-        return getElementEntry(entity, Arrays.stream(Elements.values()).toList(), self);
+    public static void addWeakElement(Entity entity, boolean self, boolean must, float amount){
+        addWeakElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
     }
 
-    public static Optional<ElementEntry> getElementEntry(Entity entity, Elements element, boolean self){
-        return getElementEntry(entity, List.of(element), self);
+    /**
+     * 指定一个元素。
+     */
+    public static void addWeakElement(Entity entity, Elements element, boolean self, boolean must, float amount){
+        addWeakElement(entity, List.of(element), self, must, amount);
+    }
+
+    public static void addWeakElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(entity, elements, self, must, false, true).ifPresent(e -> e.addElement(entity, amount));
+    }
+
+    /**
+     * 未指定元素，则完全随机。
+     */
+    public static void addRobustElement(Entity entity, boolean self, boolean must, float amount){
+        addRobustElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
+    }
+
+    /**
+     * 指定一个元素。
+     */
+    public static void addRobustElement(Entity entity, Elements element, boolean self, boolean must, float amount){
+        addRobustElement(entity, List.of(element), self, must, amount);
+    }
+
+    public static void addRobustElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(entity, elements, self, must, true, false).ifPresent(e -> e.addElement(entity, amount));
+    }
+
+    /**
+     * 未指定元素，则完全随机。
+     */
+    public static void addElement(Entity entity, boolean self, boolean must, float amount){
+        addElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
+    }
+
+    /**
+     * 指定一个元素。
+     */
+    public static void addElement(Entity entity, Elements element, boolean self, boolean must, float amount){
+        addElement(entity, List.of(element), self, must, amount);
+    }
+
+    public static void addElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(entity, elements, self, must, true, true).ifPresent(e -> e.addElement(entity, amount));
     }
 
     /**
@@ -75,34 +118,37 @@ public class ElementalMasterySpell extends SpellType{
      * @param entity 发起者。
      * @param elements 指定附着的元素有哪些。
      * @param self 对自身附着，还是对目标。
+     * @param must 一定会选中。
+     * @param robust 有强元素。
+     * @param weak 有弱元素。
      * @return 随机结果。
      */
-    public static Optional<ElementEntry> getElementEntry(Entity entity, List<Elements> elements, boolean self){
+    public static Optional<ElementEntry> getElementEntry(Entity entity, List<Elements> elements, boolean self, boolean must, boolean robust, boolean weak){
         final WeightedList.Builder<ElementEntry> builder = new WeightedList.Builder<>();
         elements.forEach(element -> {
-            final ElementalMasterySpell spell = getSpell(element);
-            applyElementEntry(element, EntityUtil.getSpellLevel(entity, spell), self).accept(builder);
+            applyElementEntry(element, EntityUtil.getSpellLevel(entity, getSpell(element)), self, robust, weak).accept(builder);
         });
-        return builder.weight(1000).build().getRandomItem(entity.level().getRandom());
+        if(! must){
+            builder.weight(1000);
+        }
+        return builder.build().getRandomItem(entity.level().getRandom());
     }
 
-    private static Consumer<WeightedList.Builder<ElementEntry>> applyElementEntry(Elements element, int level, boolean self){
+    private static Consumer<WeightedList.Builder<ElementEntry>> applyElementEntry(Elements element, int level, boolean self, boolean robust, boolean weak){
         return builder -> {
             if (self) {
-                if (level >= 1) {
-                    builder.add(new ElementEntry(element, false, (int) (80 * element.getAttachMultiple())));
+                if (level >= 2) {
+                    builder.add(new ElementEntry(element, false, (int) (50 * element.getAttachFactor())));
                 }
-                if (level >= 3) {
-                    builder.add(new ElementEntry(element, true, (int) (40 * element.getAttachMultiple())));
+                if (robust && level >= 3) {
+                    builder.add(new ElementEntry(element, true, (int) ((level >= 4 ? 25 : 5) * element.getAttachFactor())));
                 }
             } else {
-                if (level >= 4) {
-                    builder.add(new ElementEntry(element, false, (int) (100 * element.getAttachMultiple())));
-                } else if (level >= 2) {
-                    builder.add(new ElementEntry(element, false, (int) (50 * element.getAttachMultiple())));
+                if(weak && level >= 1){
+                    builder.add(new ElementEntry(element, false, (int) (50 * element.getAttachFactor())));
                 }
-                if (level >= 5) {
-                    builder.add(new ElementEntry(element, true, (int) (50 * element.getAttachMultiple())));
+                if (robust && level >= 3) {
+                    builder.add(new ElementEntry(element, true, (int) ((level >= 5 ? 15 : 3) * element.getAttachFactor())));
                 }
             }
         };

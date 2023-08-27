@@ -17,6 +17,7 @@ import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;
@@ -74,8 +75,10 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                     for (Elements element : list) {
                         if (!elements.containsKey(element)) continue;
                         final float amount = elements.get(element);
-                        final boolean robust = (elements.get(element) > 0);
-                        debugComponents.add(helper.text(ElementManager.getName(element, robust).append(String.format(": %.1f", Math.abs(amount))).withStyle(ChatFormatting.WHITE)));
+                        final boolean robust = (amount > 0);
+                        final int ticks = ElementManager.getLeftTick(entityAccessor.getEntity(), element, robust);
+                        final Component time = ticks < 0 ? TipUtil.UNKNOWN : TipUtil.info("left_second", String.format("%.1f", ticks / 20F));
+                        debugComponents.add(helper.text(ElementManager.getName(element, robust).append(String.format(": %.1f", Math.abs(amount))).append("(").append(time).append(")").withStyle(ChatFormatting.WHITE)));
                     }
                 }
                 if(! debugComponents.isEmpty()){

@@ -1,7 +1,7 @@
 {
   "content": {
     "type": "imm:learn_spell",
-    "level": 2,
+    "level": 3,
     "spell": "imm:earth_mastery"
   },
   "requirements": [
@@ -9,24 +9,15 @@
       "type": "imm:spell",
       "require_spells": [
         {
-          "level": 1,
+          "level": 2,
           "spell": "imm:earth_mastery"
         }
       ]
     },
-    "imm:spiritual_level_2_lowest",
+    "imm:spiritual_level_3_lowest",
     {
       "type": "imm:emp",
-      "level": 2
-    },
-    {
-      "type": "imm:spell",
-      "require_spells": [
-        {
-          "level": 1,
-          "spell": "imm:dispersal"
-        }
-      ]
+      "level": 3
     }
   ]
 }

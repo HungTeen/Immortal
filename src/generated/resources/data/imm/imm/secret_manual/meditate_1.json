@@ -5,6 +5,6 @@
     "spell": "imm:meditate"
   },
   "requirements": [
-    "imm:spiritual"
+    "imm:spiritual_level_1_lowest"
   ]
 }

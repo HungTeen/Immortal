@@ -7,13 +7,8 @@
   "requirements": [
     "imm:spiritual_level_2_lowest",
     {
-      "type": "imm:spell",
-      "require_spells": [
-        {
-          "level": 1,
-          "spell": "imm:fire_mastery"
-        }
-      ]
+      "type": "imm:element",
+      "element": "fire"
     }
   ]
 }

@@ -55,15 +55,9 @@ public class PlayerSpellEvent extends PlayerEvent {
          */
         public static final class Post extends ActivateSpellEvent {
 
-            private final boolean result;
 
-            public Post(Player player, ISpellType spell, int level, boolean result) {
+            public Post(Player player, ISpellType spell, int level) {
                 super(player, spell, level);
-                this.result = result;
-            }
-
-            public boolean isSuccessful(){
-                return result;
             }
 
         }

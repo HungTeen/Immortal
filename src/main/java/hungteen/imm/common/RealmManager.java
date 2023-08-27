@@ -260,6 +260,9 @@ public class RealmManager {
         return TipUtil.misc("realm_stage." + stage.name().toLowerCase());
     }
 
+    public static MutableComponent getCultivation(){
+        return TipUtil.misc("cultivation");
+    }
 
     /**
      * A tree node.

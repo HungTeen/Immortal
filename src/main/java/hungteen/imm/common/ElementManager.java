@@ -3,6 +3,7 @@ package hungteen.imm.common;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
+import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ReactionPacket;
 import hungteen.imm.util.EntityUtil;
@@ -10,6 +11,7 @@ import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Iterator;
@@ -28,6 +30,8 @@ public class ElementManager {
     public static final int DISAPPEAR_WARN_AMOUNT = 5;
     public static final int DISAPPEAR_CD = 5;
     public static final int DISPLAY_ROBUST_CD = 10;
+    private static final float DECAY_SPEED = 0.03F;
+    private static final float DECAY_VALUE = 0.1F;
 
     /**
      * 在世界更新末尾更新，仅服务端。
@@ -65,8 +69,45 @@ public class ElementManager {
         });
     }
 
+    public static float getDecayFactor(Entity entity){
+        if(entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.get())){
+            return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
+        }
+        return 1F;
+    }
+
     public static float getDecayAmount(Entity entity, Elements element, boolean robust) {
-        return element.getDecaySpeed();
+        return getDecayAmount(getElementAmount(entity, element, robust), getDecayFactor(entity));
+    }
+
+    public static float getDecayAmount(float amount, float factor) {
+        return factor * (amount * DECAY_SPEED + DECAY_VALUE);
+    }
+
+    public static float getDecayAmount(int tick, float amount, float factor) {
+        final float an = (float) Math.pow(1 - factor * DECAY_SPEED, tick);
+        return an * amount - (1 - an) * DECAY_VALUE / DECAY_SPEED;
+    }
+
+    public static int getLeftTick(Entity entity, Elements element, boolean robust) {
+        return getLeftTick(getElementAmount(entity, element, robust), getDecayFactor(entity));
+    }
+
+    /**
+     * 二分法计算元素剩余附着时间。
+     * @return -1 if it can not calculate.
+     */
+    public static int getLeftTick(float amount, float factor) {
+        int l = 0, r = 1000000;
+        int res = -1;
+        while(l <= r){
+            int mid = l + r >> 1;
+            if(getDecayAmount(mid, amount, factor) <= 0){
+                res = mid;
+                r = mid - 1;
+            } else l = mid + 1;
+        }
+        return res;
     }
 
     /**
@@ -118,6 +159,15 @@ public class ElementManager {
     /**
      * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
      */
+    public static boolean hasElement(Entity entity, Elements element, boolean mustRobust) {
+        return EntityUtil.getCapabilityResult(entity, cap -> {
+            return cap.hasElement(element, true) || (! mustRobust && cap.hasElement(element, false));
+        }, false);
+    }
+
+    /**
+     * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
+     */
     public static void consumeAmount(Entity entity, Elements element, boolean mustRobust, float amount) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
             final float robustAmount = cap.getElementAmount(element, true);
@@ -128,10 +178,6 @@ public class ElementManager {
                 cap.addElementAmount(element, false, robustAmount - amount);
             }
         });
-    }
-
-    public static boolean hasElement(Entity entity, Elements element, boolean robust) {
-        return EntityUtil.getCapabilityResult(entity, cap -> cap.hasElement(element, robust), false);
     }
 
     public static void clearElements(Entity entity) {

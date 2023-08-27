@@ -141,7 +141,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case CULTIVATION -> {
-                this.renderProgressWithText(graphics, TipUtil.CULTIVATION, x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, RealmManager.getCultivation(), x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
             }
             case KARMA -> {
                 final float value = KarmaManager.calculateKarma(ClientUtil.player());

@@ -18,10 +18,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -37,10 +38,9 @@ public class SpellManager {
 
     public static void pressToActivateSpell(Player player){
         if(EntityHelper.isServer(player)){
-            final HitResult hitResult = PlayerUtil.getHitResult(player);
             // 使用法术的判断。
             if(EntityHelper.isEntityValid(player) && SpellManager.hasSpellSelected(player)){
-                SpellManager.activateSpell(player, HTHitResult.create(hitResult));
+                SpellManager.activateSpell(player, HTHitResult.create(player));
             }
         } else {
             NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
@@ -52,9 +52,7 @@ public class SpellManager {
      * @param position determines which spell will be selected.
      */
     public static void selectSpellOnCircle(int position){
-        if(position >= 0 && position < Constants.SPELL_CIRCLE_SIZE){
-            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.SELECT_ON_CIRCLE, position));
-        }
+        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.SELECT_SPELL, position));
     }
 
     /**
@@ -62,7 +60,11 @@ public class SpellManager {
      * {@link SpellPacket.Handler#onMessage(SpellPacket, Supplier)}
      */
     public static void selectSpellOnCircle(Player player, int position){
-        selectSpellOnCircle(player, PlayerUtil.getSpellAt(player, position));
+        if(isValidSpellPos(position)){
+            selectSpellOnCircle(player, PlayerUtil.getSpellAt(player, position));
+        } else {
+            selectSpellOnCircle(player, null);
+        }
     }
 
     /**
@@ -72,35 +74,73 @@ public class SpellManager {
         PlayerUtil.setPreparingSpell(player, spell);
     }
 
-    public static void activateSpell(Player player, HTHitResult result){
+    /**
+     * 有些被选择的法术可以被动释放法术，此处进行通用检查。
+     */
+    public static void activateSpell(Player player, @NotNull ISpellType spell, ISpellTrigger trigger){
+        final HTHitResult result = HTHitResult.create(player);
+        final Optional<SpellInstance> instance = canActivateSpell(player, result, spell, false);
+        if(instance.isPresent()){
+            if(trigger.checkActivate(player, result, instance.get().spell(), instance.get().level())){
+                postActivateSpell(player, instance.get());
+            } else {
+                PlayerUtil.cooldownSpell(player, instance.get().spell(), FAIL_CD);
+            }
+        }
+    }
+
+    /**
+     * 主动通过按键释放法术。
+     */
+    public static void activateSpell(Player player, @NotNull HTHitResult result){
+        final Optional<SpellInstance> instance = canActivateSpell(player, result, null, true);
+        if(instance.isPresent()){
+            final boolean success = instance.get().spell().checkActivate(player, result, instance.get().level());
+            if(success){
+                postActivateSpell(player, instance.get());
+            } else {
+                PlayerUtil.cooldownSpell(player, instance.get().spell(), FAIL_CD);
+            }
+        }
+    }
+
+    /**
+     * 是否能够触发法术。
+     * @param player 释放法术的玩家。
+     * @param result 射线检测结果。
+     * @param targetSpell 当前要求触发的法术（检查与选择的法术是否匹配）。
+     * @param sendTip 是否给予不能触发的反馈。
+     * @return empty 表示不能触发。
+     */
+    public static Optional<SpellInstance> canActivateSpell(Player player, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip){
         final ISpellType spell = PlayerUtil.getPreparingSpell(player);
-        if(spell != null){
+        if(spell != null && (targetSpell == null || spell == targetSpell)) {
             final int level = PlayerUtil.getSpellLevel(player, spell);
-            if(level > 0){
+            if (level > 0) {
                 // 冷却结束。
-                if(! PlayerUtil.isSpellOnCooldown(player, spell)){
+                if (!PlayerUtil.isSpellOnCooldown(player, spell)) {
                     // 灵力足够。
-                    if(PlayerUtil.getMana(player) >= spell.getConsumeMana()){
-                        if(result != null && !MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))){
-                            final boolean success = spell.checkActivate(player, result, level);
-                            if(success){
-                                PlayerUtil.cooldownSpell(player, spell, getSpellCDTime(player, spell));
-                                costMana(player, spell.getConsumeMana());
-                                MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, spell, level, true));
-                            } else {
-                                PlayerUtil.cooldownSpell(player, spell, FAIL_CD);
-                            }
+                    if (PlayerUtil.getMana(player) >= spell.getConsumeMana()) {
+                        if (!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
+                            return Optional.of(new SpellInstance(spell, level));
                         }
-                    } else {
+                    } else if(sendTip){
                         PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()).withStyle(ChatFormatting.RED));
                     }
-                } else {
+                } else if(sendTip){
                     PlayerHelper.sendTipTo(player, SPELL_ON_CD.withStyle(ChatFormatting.RED));
                 }
-            } else {
+            } else if(sendTip){
                 PlayerHelper.sendTipTo(player, FORGOT_SPELL.withStyle(ChatFormatting.RED));
             }
         }
+        return Optional.empty();
+    }
+
+    public static void postActivateSpell(Player player, SpellInstance instance){
+        PlayerUtil.cooldownSpell(player, instance.spell(), getSpellCDTime(player, instance.spell()));
+        costMana(player, instance.spell().getConsumeMana());
+        MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, instance.spell(), instance.level()));
     }
 
     /**
@@ -168,6 +208,14 @@ public class SpellManager {
         return true;
     }
 
+    public static int changeCircleMode(int mode){
+        return mode == 1 ? 2 : 1;
+    }
+
+    public static boolean isValidSpellPos(int position){
+        return position >= 0 && position < Constants.SPELL_CIRCLE_SIZE;
+    }
+
     public static MutableComponent getCostComponent(int cost){
         return TipUtil.SPELL_COST.apply(cost);
     }
@@ -182,6 +230,17 @@ public class SpellManager {
     public static MutableComponent spellName(ISpellType spell, int level){
         if(spell.getMaxLevel() == 1) return spell.getComponent();
         return spell.getComponent().append("(").append(TipUtil.misc("level" + level)).append(")");
+    }
+
+    record SpellInstance(ISpellType spell, int level){
+
+    }
+
+    @FunctionalInterface
+    public interface ISpellTrigger {
+
+        boolean checkActivate(Player owner, HTHitResult result, ISpellType spell, int level);
+
     }
 
 }

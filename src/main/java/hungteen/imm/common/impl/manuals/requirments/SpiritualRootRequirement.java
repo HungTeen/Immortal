@@ -25,6 +25,10 @@ public record SpiritualRootRequirement(List<ISpiritualType> roots) implements IL
             SpiritualTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(SpiritualRootRequirement::roots)
     ).apply(instance, SpiritualRootRequirement::new)).codec();
 
+    public static SpiritualRootRequirement single(ISpiritualType root){
+        return new SpiritualRootRequirement(List.of(root));
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         return roots().stream().allMatch(r -> {

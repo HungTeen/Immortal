@@ -7,19 +7,26 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.event.handler.SpellCircleHandler;
 import hungteen.imm.client.gui.GuiUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
+import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.util.Colors;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -40,7 +47,10 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     private static final int MENU_HEIGHT = 129;
     private static final int CIRCLE_LEN = SpellOverlay.CIRCLE_LEN;
     private static final int SPELL_SLOT_LEN = SpellOverlay.SPELL_SLOT_LEN;
+    private static final int BUTTON_WIDTH = 38;
+    private static final int BUTTON_HEIGHT = 28;
     private final ScrollComponent<ISpellType> scrollComponent;
+    private ModeButton modeButton;
     private int selectPos = 0; // 0 means no selection, negative means selected on spell circle, or circle list.
 
     public SpellScreen() {
@@ -68,6 +78,18 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         super.init();
         this.scrollComponent.setOffset(this.leftPos + 15, this.topPos + 13);
         this.scrollComponent.setInterval(2);
+        this.modeButton = new ModeButton(Button.builder(TipUtil.gui("meditation.mode"), (button) -> {
+            if(SpellCircleHandler.useDefaultCircle()){
+                button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_move_mode")));
+            } else {
+                button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
+            }
+            SpellCircleHandler.changeCircleMode();
+            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
+        }).pos(this.leftPos - BUTTON_WIDTH, this.topPos).tooltip(Tooltip.create(
+                TipUtil.gui("meditation." + (SpellCircleHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
+        )));
+        this.addRenderableWidget(this.modeButton);
     }
 
     @Override
@@ -214,4 +236,20 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         return this.selectPos >= - Constants.SPELL_CIRCLE_SIZE && this.selectPos < 0;
     }
 
+    static class ModeButton extends HTButton {
+
+        protected ModeButton(Builder builder) {
+            super(builder.size(38, 18), RenderUtil.WIDGETS);
+        }
+
+        @Override
+        protected int getColor(boolean active) {
+            return active ? Colors.WORD : super.getColor(false);
+        }
+
+        @Override
+        protected int getTextureY() {
+            return ! this.isActive() ? 0 : this.isHovered() ? 20 : 40;
+        }
+    }
 }

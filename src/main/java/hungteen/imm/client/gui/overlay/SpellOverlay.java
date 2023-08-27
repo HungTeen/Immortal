@@ -66,7 +66,7 @@ public class SpellOverlay {
             ClientUtil.push("renderSpellCircle");
             final int leftPos = (width - CIRCLE_LEN) >> 1;
             final int topPos = (height - CIRCLE_LEN) >> 1;
-            final int selectPos = ClientData.lastSelectedPosition;
+            final int selectPos = ClientData.LastSelectedPosition;
             RenderHelper.push(graphics);
             RenderSystem.enableBlend();
             graphics.blit(TEXTURE, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);

@@ -2,13 +2,13 @@
   "content": {
     "type": "imm:learn_spell",
     "level": 1,
-    "spell": "imm:water_breathe"
+    "spell": "imm:burning"
   },
   "requirements": [
-    "imm:spiritual_level_2_lowest",
+    "imm:spiritual_level_1_lowest",
     {
       "type": "imm:element",
-      "element": "water"
+      "element": "fire"
     }
   ]
 }

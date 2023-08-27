@@ -64,8 +64,10 @@ public class PlayerUtil {
                 return entity.isPreventingPlayerRest(player);
             });
             if(list.isEmpty()){
-                setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
-                return EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock);
+                if(EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock)){
+                    setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+                    return true;
+                }
             } else {
                 PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround").withStyle(ChatFormatting.RED));
             }
@@ -341,12 +343,12 @@ public class PlayerUtil {
         }, true);
     }
 
-    public static boolean requireSyncCircle(Player player){
-        return getManagerResult(player, PlayerDataManager::requireSyncCircle, false);
+    public static int getSpellCircleMode(Player player){
+        return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE), 0);
     }
 
-    public static boolean useDefaultCircle(Player player){
-        return getManagerResult(player, PlayerDataManager::useDefaultCircle, true);
+    public static void setSpellCircleMode(Player player, int mode){
+        getOptManager(player).ifPresent(l -> l.setIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE, mode));
     }
 
     public static boolean knowSpiritualRoots(Player player){

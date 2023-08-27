@@ -99,7 +99,9 @@ public class IMMCreativeTabs {
         if (event.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {
 
         } else if (event.getTabKey().equals(CreativeModeTabs.COLORED_BLOCKS)) {
-
+            BlockUtil.getWoolCushions().forEach(pair -> {
+                event.accept(new ItemStack(pair.getSecond()));
+            });
         } else if (event.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
             BlockUtil.getGourds().forEach(pair -> {
                 event.accept(new ItemStack(pair.getSecond()));

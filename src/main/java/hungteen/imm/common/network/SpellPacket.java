@@ -71,8 +71,9 @@ public class SpellPacket {
                     });
                 } else {// C -> S.
                     switch (message.option) {
-                        case SELECT_ON_CIRCLE -> SpellManager.selectSpellOnCircle(ctx.get().getSender(), (int) message.num);
+                        case SELECT_SPELL -> SpellManager.selectSpellOnCircle(ctx.get().getSender(), (int) message.num);
                         case SYNC_CIRCLE_OP -> PlayerUtil.setIntegerData(ctx.get().getSender(), PlayerRangeIntegers.SPELL_CIRCLE_MODE, IMMConfigs.defaultSpellCircle() ? 1 : 2);
+                        case CHANGE_CIRCLE_MODE -> PlayerUtil.setSpellCircleMode(ctx.get().getSender(), (int) message.num);
                         case SET_SPELL_ON_CIRCLE -> {
                             SpellTypes.registry().getValue(message.type).ifPresent(spell -> {
                                 PlayerUtil.setSpellAt(ctx.get().getSender(), (int) message.num, spell);
@@ -111,14 +112,19 @@ public class SpellPacket {
         COOL_DOWN,
 
         /**
-         * 客户端按键触发后， 发送给服务端。
+         * 选择轮盘上的法术，客户端按键触发后，发送给服务端。
          */
-        SELECT_ON_CIRCLE,
+        SELECT_SPELL,
 
         /**
          * 更新法术操作方式在客户端的配置文件。
          */
         SYNC_CIRCLE_OP,
+
+        /**
+         * 改变轮盘操作方式。
+         */
+        CHANGE_CIRCLE_MODE,
 
         /**
          * 客户端触发法术。

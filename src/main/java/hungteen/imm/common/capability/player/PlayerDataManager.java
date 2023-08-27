@@ -8,7 +8,10 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.*;
+import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
+import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.network.*;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
@@ -44,6 +47,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
     private ISpellType preparingSpell = null; // 当前选好的法术。
     private long nextRefreshTick;
+    private boolean initialized = false;
 
     /* Caches */
     private RealmManager.RealmNode realmNode;
@@ -56,8 +60,14 @@ public class PlayerDataManager implements IPlayerDataManager {
         PlayerRangeFloats.registry().getValues().forEach(data -> {
             floatMap.put(data, data.defaultData());
         });
-        // 初始化玩家的灵根
-        PlayerUtil.resetSpiritualRoots(player);
+    }
+
+    public void initialize(){
+        if(! this.initialized){
+            // 初始化玩家的灵根
+            PlayerUtil.resetSpiritualRoots(player);
+            this.initialized = true;
+        }
     }
 
     @Override
@@ -133,6 +143,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             final CompoundTag nbt = new CompoundTag();
+            nbt.putBoolean("Initialized", this.initialized);
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
@@ -214,6 +225,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
+            if(nbt.contains("Initialized")){
+                this.initialized = nbt.getBoolean("Initialized");
+            }
             if(nbt.contains("NextRefreshTick")){
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }

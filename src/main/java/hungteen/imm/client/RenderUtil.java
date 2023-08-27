@@ -6,11 +6,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.client.util.ClientHelper;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.client.util.TextRenderType;
+import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Matrix4f;
@@ -24,6 +26,8 @@ import javax.annotation.Nullable;
  * @data 2023/7/10 15:47
  */
 public class RenderUtil {
+
+    public static final ResourceLocation WIDGETS = Util.get().guiTexture("widgets");
 
     public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);

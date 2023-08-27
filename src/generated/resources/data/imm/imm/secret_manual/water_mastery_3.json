@@ -1,19 +1,23 @@
 {
   "content": {
     "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:ignite"
+    "level": 3,
+    "spell": "imm:water_mastery"
   },
   "requirements": [
-    "imm:spiritual_level_3_lowest",
     {
       "type": "imm:spell",
       "require_spells": [
         {
           "level": 2,
-          "spell": "imm:fire_mastery"
+          "spell": "imm:water_mastery"
         }
       ]
+    },
+    "imm:spiritual_level_3_lowest",
+    {
+      "type": "imm:emp",
+      "level": 3
     }
   ]
 }

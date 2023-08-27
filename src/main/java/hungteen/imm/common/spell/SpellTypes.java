@@ -26,10 +26,11 @@ public class SpellTypes {
     public static final ISpellType THROW_ITEM = register(new ThrowItemSpell());
     public static final ISpellType PICKUP_BLOCK = register(new PickupBlockSpell());
     public static final ISpellType FLY_WITH_ITEM = register(new FlyWithItemSpell());
-    public static final ISpellType WATER_BREATHE = register(new WaterBreatheSpell());
-    public static final ISpellType LAVA_BREATHE = register(new LavaBreatheSpell());
     public static final ISpellType SPROUT = register(new SproutSpell());
-    public static final ISpellType IGNITE = register(new IgniteSpell());
+    public static final ISpellType WATER_BREATHE = register(new WaterBreatheSpell());
+    public static final ISpellType BURNING = register(new BurningSpell());
+    public static final ISpellType LAVA_BREATHE = register(new LavaBreatheSpell());
+    public static final ISpellType IGNITION = register(new IgnitionSpell());
     public static final ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
     public static final ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
     public static final ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));

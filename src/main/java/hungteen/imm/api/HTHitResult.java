@@ -1,13 +1,16 @@
 package hungteen.imm.api;
 
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -19,9 +22,9 @@ import javax.annotation.Nullable;
 public class HTHitResult {
 
     private static final HTHitResult MISS = new HTHitResult(null);
-    private Entity entity;
-    private BlockPos pos;
-    private Direction direction;
+    private final Entity entity;
+    private final BlockPos pos;
+    private final Direction direction;
 
     public HTHitResult(Entity entity) {
         this(entity, null, null);
@@ -37,13 +40,17 @@ public class HTHitResult {
         this.direction = direction;
     }
 
-    public static HTHitResult create(HitResult hitResult) {
+    public static @NotNull HTHitResult create(Player player) {
+        return create(PlayerUtil.getHitResult(player));
+    }
+
+    public static @NotNull HTHitResult create(HitResult hitResult) {
         if(hitResult instanceof EntityHitResult result){
             return new HTHitResult(result.getEntity());
         } else if(hitResult instanceof BlockHitResult result){
             return new HTHitResult(result.getBlockPos(), result.getDirection());
         }
-        return null;
+        return HTHitResult.miss();
     }
 
     public static HTHitResult miss() {

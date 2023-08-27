@@ -2,6 +2,8 @@ package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.client.ClientHandler;
+import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.event.handler.SpellCircleHandler;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,9 +21,9 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event){
-        if(event.phase == TickEvent.Phase.END){
+        if(event.phase == TickEvent.Phase.END && ClientUtil.player() != null){
             ClientHandler.onSmithing();
-            ClientHandler.tickSpellCircle();
+            SpellCircleHandler.tickSpellCircle();
             MeditationScreen.tickMeditation();
             ReactionRenderer.tick();
         }

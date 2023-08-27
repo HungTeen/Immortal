@@ -8,11 +8,10 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.manuals.requirments.EMPRequirement;
-import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
-import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
+import hungteen.imm.common.impl.manuals.requirments.*;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.ElementalMasterySpell;
 import hungteen.imm.util.Util;
@@ -44,7 +43,7 @@ public interface SecretManuals {
         final Holder<ILearnRequirement> spiritual_level_2 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_2, true));
         final Holder<ILearnRequirement> spiritual_level_3 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_3, true));
         register(context, SpellTypes.MEDITATE, 1, builder -> {
-            builder.require(spiritual);
+            builder.require(spiritual_level_1);
         });
         register(context, SpellTypes.DISPERSAL, 1, builder -> {
             builder.require(spiritual_level_1);
@@ -68,7 +67,8 @@ public interface SecretManuals {
             builder.require(spiritual_level_1);
         });
         register(context, SpellTypes.THROW_ITEM, 1, builder -> {
-            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
         });
         register(context, SpellTypes.PICKUP_BLOCK, 1, builder -> {
             builder.require(spiritual_level_1);
@@ -77,44 +77,70 @@ public interface SecretManuals {
             builder.require(spiritual_level_2);
         });
         register(context, SpellTypes.FLY_WITH_ITEM, 1, builder -> {
-            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.PICKUP_ITEM, 1)));
         });
         register(context, SpellTypes.FLY_WITH_ITEM, 2, builder -> {
-            builder.require(spiritual_level_2);
-        });
-        register(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
             builder.require(spiritual_level_3);
         });
+//        register(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
+//            builder.require(spiritual_level_3);
+//        });
+        register(context, SpellTypes.SPROUT, 1, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(SpiritualRootRequirement.single(SpiritualTypes.WOOD)))
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.RELEASING, 1)));
+        });
         register(context, SpellTypes.WATER_BREATHE, 1, builder -> {
-            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.WATER_MASTERY, 1)));
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(ElementRequirement.create(Elements.WATER)));
+        });
+        register(context, SpellTypes.BURNING, 1, builder -> {
+            builder.require(spiritual_level_1)
+                    .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
+        });
+        register(context, SpellTypes.BURNING, 2, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
         });
         register(context, SpellTypes.LAVA_BREATHE, 1, builder -> {
-            builder.require(spiritual_level_2).require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 1)));
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
         });
-        register(context, SpellTypes.SPROUT, 1, builder -> {
-            builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.WOOD_MASTERY, 2)));
-        });
-        register(context, SpellTypes.IGNITE, 1, builder -> {
-            builder.require(spiritual_level_3).require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 2)));
+        register(context, SpellTypes.IGNITION, 1, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 1)));
         });
         for (Elements element : Elements.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
-                builder.require(spiritual_level_2).require(Holder.direct(new EMPRequirement(1))).require(Holder.direct(SpellRequirement.single(SpellTypes.DISPERSAL, 1)));
+                builder.require(spiritual_level_2)
+                        .require(Holder.direct(new EMPRequirement(1)))
+                        .require(Holder.direct(SpellRequirement.single(SpellTypes.RELEASING, 1)));
             });
             register(context, spell, 2, builder -> {
-                builder.require(spiritual_level_3).require(Holder.direct(new EMPRequirement(2))).require(Holder.direct(SpellRequirement.single(SpellTypes.RELEASING, 1)));
+                builder.require(spiritual_level_2)
+                        .require(Holder.direct(new EMPRequirement(2)))
+                        .require(Holder.direct(SpellRequirement.single(SpellTypes.DISPERSAL, 1)));
+            });
+            register(context, spell, 3, builder -> {
+                builder.require(spiritual_level_3)
+                        .require(Holder.direct(new EMPRequirement(3)));
             });
         }
     }
 
     static void register(BootstapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
-        final Builder builder = builder(spell, level);
-        if(level > 1){
-            builder.require(Holder.direct(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1)))));
+        if(level > 0 && level <= spell.getMaxLevel()){
+            final Builder builder = builder(spell, level);
+            if(level > 1){
+                builder.require(Holder.direct(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1)))));
+            }
+            consumer.accept(builder);
+            context.register(spellManual(spell, level), builder.build());
+        } else {
+            Util.warn("Secret Manuals Warn : Invalid spell level !");
         }
-        consumer.accept(builder);
-        context.register(spellManual(spell, level), builder.build());
     }
 
     static IHTCodecRegistry<SecretManual> registry(){

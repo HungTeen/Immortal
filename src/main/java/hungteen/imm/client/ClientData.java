@@ -12,7 +12,7 @@ public class ClientData {
     public static boolean ShowSpellCircle = false; // 缓存上一次是否显示，用来记录当前是否变化。
     public static double SpellMousePositionX = 0D; // 模拟鼠标的X值。
     public static double SpellMousePositionY = 0D; // 模拟鼠标的Y值。
-    public static int lastSelectedPosition = - 1; // 保存上一次法术轮盘选择的位置，-1表示啥也没选。
+    public static int LastSelectedPosition = - 1; // 保存上一次法术轮盘选择的位置，-1表示啥也没选。
 
     /* 杂项 */
 

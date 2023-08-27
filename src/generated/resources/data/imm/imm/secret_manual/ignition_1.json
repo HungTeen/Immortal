@@ -2,20 +2,16 @@
   "content": {
     "type": "imm:learn_spell",
     "level": 1,
-    "spell": "imm:spirit_mastery"
+    "spell": "imm:ignition"
   },
   "requirements": [
     "imm:spiritual_level_2_lowest",
-    {
-      "type": "imm:emp",
-      "level": 1
-    },
     {
       "type": "imm:spell",
       "require_spells": [
         {
           "level": 1,
-          "spell": "imm:releasing"
+          "spell": "imm:fire_mastery"
         }
       ]
     }

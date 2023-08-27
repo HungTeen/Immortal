@@ -17,14 +17,13 @@ public class CultivationTypes {
 
     private static final IHTSimpleRegistry<ICultivationType> TYPES = HTRegistryManager.createSimple(Util.prefix("cultivation_type"));
 
-    public static final ICultivationType EMPTY = register(new CultivationType("empty"));
     public static final ICultivationType MORTAL = register(new CultivationType("mortal"));
     public static final ICultivationType SPIRITUAL = register(new CultivationType("spiritual"));
     public static final ICultivationType MONSTER = register(new CultivationType("monster"));
     public static final ICultivationType UNDEAD = register(new CultivationType("undead"));
     public static final ICultivationType WIZARD = register(new CultivationType("wizard"));
-    public static final ICultivationType GHOST = register(new CultivationType("ghost"));
-    public static final ICultivationType BLOOD = register(new CultivationType("blood"));
+//    public static final ICultivationType GHOST = register(new CultivationType("ghost"));
+//    public static final ICultivationType BLOOD = register(new CultivationType("blood"));
 
     public static IHTSimpleRegistry<ICultivationType> registry(){
         return TYPES;

@@ -1,7 +1,7 @@
 package hungteen.imm.mixin;
 
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.ClientHandler;
+import hungteen.imm.client.event.handler.SpellCircleHandler;
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,8 +26,8 @@ public class MixinMouseHandler {
             cancellable = true
     )
     private void onTurnPlayer(CallbackInfo result, double d0, double d1, double d4, double d5, double d6, double d2, double d3) {
-        if(ClientHandler.useDefaultCircle() && ClientData.ShowSpellCircle){
-            ClientHandler.chooseByVector(d2, d3);
+        if(SpellCircleHandler.useDefaultCircle() && ClientData.ShowSpellCircle){
+            SpellCircleHandler.chooseByVector(d2, d3);
             result.cancel();
         }
     }

@@ -103,7 +103,7 @@ public class EmptyCultivator extends Cultivator {
 
     @Override
     public ICultivationType getCultivationType() {
-        return CultivationTypes.EMPTY;
+        return CultivationTypes.MORTAL;
     }
 
     @Override

@@ -39,6 +39,7 @@ public class IMMPlayerEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
+            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::initialize);
             PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }

@@ -23,6 +23,10 @@ public record ElementRequirement(Elements element) implements ILearnRequirement 
             Elements.CODEC.fieldOf("element").forGetter(ElementRequirement::element)
     ).apply(instance, ElementRequirement::new)).codec();
 
+    public static ElementRequirement create(Elements element){
+        return new ElementRequirement(element);
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         return PlayerUtil.getSpiritualRoots(player).stream().anyMatch(root -> root.getElements().contains(element()));
