@@ -120,8 +120,8 @@ public class SpellOverlay {
             final float progress = PlayerUtil.getSpellCDValue(ClientProxy.MC.player, spell);
             if (progress > 0) {
                 final int CDBarLen = MathUtil.getBarLen(progress, SPELL_SLOT_LEN);
+//                graphics.blit(TEXTURE, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
                 graphics.fill(RenderType.guiOverlay(), x, y + SPELL_SLOT_LEN - CDBarLen, x + SPELL_SLOT_LEN, y + SPELL_SLOT_LEN, Integer.MAX_VALUE);
-                graphics.blit(TEXTURE, x, y + SPELL_SLOT_LEN - CDBarLen, 150, 130, SPELL_SLOT_LEN, CDBarLen);
             }
         }
     }

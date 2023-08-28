@@ -3,6 +3,7 @@ package hungteen.imm.client.gui.screen.meditation;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientProxy;
@@ -51,22 +52,28 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     private static final int BUTTON_HEIGHT = 28;
     private final ScrollComponent<ISpellType> scrollComponent;
     private ModeButton modeButton;
+    private Component displayText;
     private int selectPos = 0; // 0 means no selection, negative means selected on spell circle, or circle list.
+    private int displayTick = 0;
 
     public SpellScreen() {
         super(MeditationTypes.SPELL);
-        this.scrollComponent = new ScrollComponent<>(this, 16, 6, 5){
+        this.scrollComponent = new ScrollComponent<>(this, 16, 6, 5) {
             @Override
             protected boolean onClick(Minecraft mc, Screen screen, ISpellType spell, int slotId) {
-                if(SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()){
-                    SpellScreen.this.selectPos = slotId + 1; // select this.
-                } else if(SpellScreen.this.selectOnCircle()){
-                    // Set current spell on circle.
-                    final int circlePos = - SpellScreen.this.selectPos;
-                    setSpellAt(circlePos, spell);
-                    SpellScreen.this.selectPos = 0; // reset.
+                if (spell.canTrigger()) {
+                    if (SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()) {
+                        SpellScreen.this.selectPos = slotId + 1; // select this.
+                    } else if (SpellScreen.this.selectOnCircle()) {
+                        // Set current spell on circle.
+                        final int circlePos = -SpellScreen.this.selectPos;
+                        setSpellAt(circlePos, spell);
+                        SpellScreen.this.selectPos = 0; // reset.
+                    }
+                    return true;
                 }
-                return true;
+                SpellScreen.this.warn(TipUtil.gui("meditation.can_not_select"), 100);
+                return false;
             }
         };
         this.imageWidth = CIRCLE_LEN << 1;
@@ -79,7 +86,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         this.scrollComponent.setOffset(this.leftPos + 15, this.topPos + 13);
         this.scrollComponent.setInterval(2);
         this.modeButton = new ModeButton(Button.builder(TipUtil.gui("meditation.mode"), (button) -> {
-            if(SpellCircleHandler.useDefaultCircle()){
+            if (SpellCircleHandler.useDefaultCircle()) {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_move_mode")));
             } else {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
@@ -98,11 +105,19 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if(this.displayTick > 0){
+            -- this.displayTick;
+        }
+    }
+
+    @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
         // Render Scroll Bar.
         if (this.scrollComponent.canScroll()) {
-            final int len = (int)((106 - 19) * this.scrollComponent.getScrollPercent());
+            final int len = (int) ((106 - 19) * this.scrollComponent.getScrollPercent());
             graphics.blit(SPELL_CIRCLE, this.leftPos + 107, this.topPos + 13 + len, 48, 128, 6, 19);
         } else {
             graphics.blit(SPELL_CIRCLE, this.leftPos + 107, topPos + 13, 40, 128, 6, 19);
@@ -110,15 +125,18 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         // Render Spell List.
         this.scrollComponent.renderItems(getMinecraft(), graphics);
         // Render Selected Spell.
-        if(this.selectOnList() && this.scrollComponent.inPage(this.selectPos - 1)){
+        if (this.selectOnList() && this.scrollComponent.inPage(this.selectPos - 1)) {
             final Pair<Integer, Integer> xy = this.scrollComponent.getXY(this.selectPos - 1);
             graphics.blit(SPELL_CIRCLE, xy.getFirst() - 3, xy.getSecond() - 3, 128, 136, 22, 22);
+        }
+        if (this.displayTick > 0 && this.displayText != null) {
+            graphics.drawCenteredString(font, this.displayText, this.width >> 1, this.topPos + this.imageHeight + 10, ColorHelper.RED.rgb());
         }
         // Render Circle Spell Tooltip.
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
             final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
-           final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
+            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
             if (spell != null && MathHelper.isInArea(mouseX, mouseY, x, y, SPELL_SLOT_LEN, SPELL_SLOT_LEN)) {
                 graphics.renderTooltip(font, spell.getComponent(), mouseX, mouseY);
             }
@@ -134,7 +152,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         this.renderSpellCircle(graphics);
     }
 
-    public void renderSpellCircle(GuiGraphics graphics){
+    public void renderSpellCircle(GuiGraphics graphics) {
         RenderSystem.enableBlend();
         graphics.blit(SPELL_CIRCLE, leftPos + CIRCLE_LEN, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);
         // Render Spell Slots.
@@ -150,7 +168,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
                 graphics.blit(spell.getSpellTexture(), x + 2, y + 2, 0, 0, 16, 16, 16, 16);
             }
             // Render Selected.
-            if(isSelected){
+            if (isSelected) {
                 graphics.blit(SPELL_CIRCLE, x - 1, y - 1, 128, 136, 22, 22);
             }
         }
@@ -164,18 +182,18 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int key) {
-        if(! this.scrollComponent.mouseClicked(getMinecraft(), this, mouseX, mouseY, key)){
+        if (!this.scrollComponent.mouseClicked(getMinecraft(), this, mouseX, mouseY, key)) {
             for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
                 final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
                 final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
                 // mouse in range.
-                if(mouseX >= x && mouseX <= x + SPELL_SLOT_LEN && mouseY >= y && mouseY <= y + SPELL_SLOT_LEN){
-                    final int lastSlotId = - this.selectPos - 1;
+                if (mouseX >= x && mouseX <= x + SPELL_SLOT_LEN && mouseY >= y && mouseY <= y + SPELL_SLOT_LEN) {
+                    final int lastSlotId = -this.selectPos - 1;
                     final ISpellType oldSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, lastSlotId);
                     final ISpellType curSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
-                    if(this.noSelection()){
-                        this.selectPos = - i - 1; // selected this.
-                    } else if(this.selectOnCircle()){
+                    if (this.noSelection()) {
+                        this.selectPos = -i - 1; // selected this.
+                    } else if (this.selectOnCircle()) {
                         // swap two spells.
                         setSpellAt(i, oldSpell);
                         setSpellAt(lastSlotId, curSpell);
@@ -198,7 +216,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     public List<ISpellType> getItems() {
         return SpellTypes.registry().getValues().stream()
                 .filter(type -> PlayerUtil.hasLearnedSpell(getMinecraft().player, type))
-                .filter(ISpellType::canTrigger)
+//                .filter(ISpellType::canTrigger)
                 .toList();
     }
 
@@ -212,28 +230,38 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         final List<Component> components = new ArrayList<>();
         final int lvl = PlayerUtil.getSpellLevel(ClientUtil.player(), item);
         components.add(item.getComponent().append("(" + lvl + "/" + item.getMaxLevel() + ")").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
-        for(int i = 1; i <= lvl; ++ i){
+        for (int i = 1; i <= lvl; ++i) {
             components.add(item.getSpellDesc(lvl).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
         }
         components.add(SpellManager.getCostComponent(item.getConsumeMana()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
         components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
+        if (!item.canTrigger()) {
+            components.add(TipUtil.tooltip("can_not_select").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+        }
         graphics.renderTooltip(font, components, Optional.empty(), x, y);
     }
 
-    public void setSpellAt(int pos, ISpellType spell){
-        NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
+    public void setSpellAt(int pos, ISpellType spell) {
+        if (spell.canTrigger()) {
+            NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
+        }
     }
 
-    private boolean noSelection(){
+    private void warn(Component component, int time) {
+        this.displayText = component;
+        this.displayTick = time;
+    }
+
+    private boolean noSelection() {
         return this.selectPos == 0;
     }
 
-    private boolean selectOnList(){
+    private boolean selectOnList() {
         return this.selectPos > 0 && this.selectPos <= this.getItems().size();
     }
 
-    private boolean selectOnCircle(){
-        return this.selectPos >= - Constants.SPELL_CIRCLE_SIZE && this.selectPos < 0;
+    private boolean selectOnCircle() {
+        return this.selectPos >= -Constants.SPELL_CIRCLE_SIZE && this.selectPos < 0;
     }
 
     static class ModeButton extends HTButton {
@@ -249,7 +277,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
         @Override
         protected int getTextureY() {
-            return ! this.isActive() ? 0 : this.isHovered() ? 20 : 40;
+            return !this.isActive() ? 0 : this.isHovered() ? 20 : 40;
         }
     }
 }

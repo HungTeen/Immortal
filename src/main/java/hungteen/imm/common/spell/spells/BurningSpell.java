@@ -41,6 +41,7 @@ public class BurningSpell extends SpellType {
                 return true;
             }
         }
+        this.sendTip(owner, "can_not_burn");
         return false;
     }
 

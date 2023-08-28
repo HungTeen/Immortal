@@ -10,15 +10,15 @@ import net.minecraft.world.entity.LivingEntity;
  * @program Immortal
  * @data 2023/8/18 16:20
  */
-public class LavaBreatheSpell extends SpellType {
+public class LavaBreathingSpell extends SpellType {
 
-    public LavaBreatheSpell() {
-        super("lava_breathe", properties().maxLevel(1).mana(40).cd(3600));
+    public LavaBreathingSpell() {
+        super("lava_breathing", properties().maxLevel(1).mana(80).cd(400));
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.FIRE_RESISTANCE, 3000, 2));
+        owner.addEffect(EffectHelper.viewEffect(MobEffects.FIRE_RESISTANCE, 600, 2));
         return true;
     }
 

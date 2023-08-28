@@ -3,7 +3,7 @@ package hungteen.imm.common.item.runes.filter;
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.common.rune.ICraftableRune;
-import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +25,7 @@ public class EntityFilterRune extends FilterRuneItem<EntityType<?>> {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if(! level.isClientSide() && player.getItemInHand(hand).getItem() instanceof EntityFilterRune rune){
-            final HitResult hitResult = PlayerUtil.getHitResult(player, player.getEntityReach());
+            final HitResult hitResult = EntityUtil.getHitResult(player, player.getEntityReach());
             if(hitResult instanceof EntityHitResult result){
                 rune.bind(player, player.getItemInHand(hand), result.getEntity().getType());
             }

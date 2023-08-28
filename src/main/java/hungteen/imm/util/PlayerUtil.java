@@ -26,13 +26,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -109,26 +107,6 @@ public class PlayerUtil {
 
     public static boolean isInCD(Player player, Item item){
         return player.getCooldowns().isOnCooldown(item);
-    }
-
-    public static HitResult getHitResult(Player player) {
-        final double range = 20; //TODO 神识决定距离。
-        return getHitResult(player, range);
-    }
-
-    public static HitResult getHitResult(Player player, double distance) {
-        final Vec3 startVec = player.getEyePosition(1.0F);
-        final Vec3 lookVec = player.getViewVector(1.0F);
-        Vec3 endVec = startVec.add(lookVec.scale(distance));
-        BlockHitResult blockHitResult = player.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
-        if(blockHitResult.getType() != HitResult.Type.MISS){
-            endVec = blockHitResult.getLocation();
-        }
-        final AABB aabb = player.getBoundingBox().inflate(distance);
-        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(player.level(), player, startVec, endVec, aabb, (entity) -> {
-            return !entity.isSpectator();
-        });
-        return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
     /**

@@ -16,8 +16,6 @@ import java.util.function.Function;
  **/
 public class TipUtil {
 
-    public static final Function<Integer, MutableComponent> SPELL_COST = cost -> info("spell_cost", cost);
-    public static final Function<Integer, MutableComponent> SPELL_CD = cd -> info("spell_cd", cd);
     public static final Function<Float, MutableComponent> PERCENT = v -> misc("percent", (int)(v * 100));
     public static final MutableComponent UNKNOWN = misc("unknown");
 
@@ -47,6 +45,10 @@ public class TipUtil {
 
     public static MutableComponent misc(String name, Object... objects){
         return Component.translatable("misc." + Util.id() + "." + name, objects);
+    }
+
+    public static MutableComponent tooltip(String name, Object... objects){
+        return Component.translatable("tooltip." + Util.id() + "." + name, objects);
     }
 
     public static MutableComponent tooltip(Item item, Object... objects){

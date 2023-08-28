@@ -1,0 +1,14 @@
+{
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 1,
+    "spell": "imm:earth_evading"
+  },
+  "requirements": [
+    "imm:spiritual_level_2_lowest",
+    {
+      "type": "imm:element",
+      "element": "earth"
+    }
+  ]
+}

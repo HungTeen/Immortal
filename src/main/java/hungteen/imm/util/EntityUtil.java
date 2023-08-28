@@ -26,12 +26,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import net.minecraft.world.phys.*;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
@@ -47,6 +50,15 @@ import java.util.function.Predicate;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static AABB getEntityAABB(Entity entity, Vec3 offset){
+        return getEntityAABB(entity).move(offset);
+    }
+
+    public static AABB getEntityAABB(Entity entity){
+        final float offset = entity.getBbWidth() / 2.0F;
+        return new AABB(entity.getX() - offset, entity.getY(), entity.getZ() - offset, entity.getX() + offset, entity.getY() + entity.getBbHeight(), entity.getZ() + offset);
+    }
 
     public static boolean addItem(Entity entity, ItemStack stack){
         if(entity instanceof Player player){
@@ -75,6 +87,26 @@ public class EntityUtil {
             return false;
         }
         return SeatEntity.seatAt(living.level(), living, pos, yOffset, living.getYRot(), 120F, relyOnBlock);
+    }
+
+    public static HitResult getHitResult(Entity entity) {
+        final double range = 20; //TODO 神识决定距离。
+        return getHitResult(entity, range);
+    }
+
+    public static HitResult getHitResult(Entity entity, double distance) {
+        final Vec3 startVec = entity.getEyePosition(1.0F);
+        final Vec3 lookVec = entity.getViewVector(1.0F);
+        Vec3 endVec = startVec.add(lookVec.scale(distance));
+        final BlockHitResult blockHitResult = entity.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+        if(blockHitResult.getType() != HitResult.Type.MISS){
+            endVec = blockHitResult.getLocation();
+        }
+        final AABB aabb = entity.getBoundingBox().inflate(distance);
+        final EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level(), entity, startVec, endVec, aabb, (target) -> {
+            return !target.isSpectator();
+        });
+        return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
     public static boolean hasEmptyHand(LivingEntity living){

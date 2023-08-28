@@ -12,10 +12,10 @@ import net.minecraft.world.entity.player.Player;
  * @program Immortal
  * @data 2023/3/6 19:11
  */
-public class MeditateSpell extends SpellType {
+public class MeditationSpell extends SpellType {
 
-    public MeditateSpell() {
-        super("meditate", properties().maxLevel(1).mana(0).cd(600));
+    public MeditationSpell() {
+        super("meditation", properties().maxLevel(1).mana(0).cd(600));
     }
 
     @Override

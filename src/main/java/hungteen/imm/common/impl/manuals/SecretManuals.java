@@ -8,10 +8,12 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.manuals.requirments.*;
+import hungteen.imm.common.impl.manuals.requirments.EMPRequirement;
+import hungteen.imm.common.impl.manuals.requirments.ElementRequirement;
+import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
+import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.ElementalMasterySpell;
 import hungteen.imm.util.Util;
@@ -42,7 +44,9 @@ public interface SecretManuals {
         final Holder<ILearnRequirement> spiritual_level_1 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_1, true));
         final Holder<ILearnRequirement> spiritual_level_2 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_2, true));
         final Holder<ILearnRequirement> spiritual_level_3 = requirements.getOrThrow(LearnRequirements.realm(RealmTypes.SPIRITUAL_LEVEL_3, true));
-        register(context, SpellTypes.MEDITATE, 1, builder -> {
+
+        /* 基本法术 */
+        register(context, SpellTypes.MEDITATION, 1, builder -> {
             builder.require(spiritual_level_1);
         });
         register(context, SpellTypes.DISPERSAL, 1, builder -> {
@@ -54,12 +58,16 @@ public interface SecretManuals {
         register(context, SpellTypes.INTIMIDATE, 1, builder -> {
             builder.require(spiritual_level_2);
         });
+
+        /* 神识 */
         register(context, SpellTypes.SPIRIT_EYES, 1, builder -> {
             builder.require(spiritual_level_1);
         });
         register(context, SpellTypes.SPIRIT_EYES, 2, builder -> {
             builder.require(spiritual_level_2);
         });
+
+        /* 御物术 */
         register(context, SpellTypes.PICKUP_ITEM, 1, builder -> {
             builder.require(spiritual_level_1);
         });
@@ -86,15 +94,39 @@ public interface SecretManuals {
 //        register(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
 //            builder.require(spiritual_level_3);
 //        });
+
+        /* 金系法术 */
+        register(context, SpellTypes.METAL_MENDING, 1, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(ElementRequirement.create(Elements.METAL)));
+        });
+        register(context, SpellTypes.SHARPNESS, 1, builder -> {
+            builder.require(spiritual_level_3)
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.METAL_MASTERY, 3)));
+        });
+
+        /* 木系法术 */
+        register(context, SpellTypes.LEVITATION, 1, builder -> {
+            builder.require(spiritual_level_1)
+                    .require(Holder.direct(ElementRequirement.create(Elements.WOOD)));
+        });
         register(context, SpellTypes.SPROUT, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(Holder.direct(SpiritualRootRequirement.single(SpiritualTypes.WOOD)))
+                    .require(Holder.direct(ElementRequirement.create(Elements.WOOD)))
                     .require(Holder.direct(SpellRequirement.single(SpellTypes.RELEASING, 1)));
         });
-        register(context, SpellTypes.WATER_BREATHE, 1, builder -> {
+        register(context, SpellTypes.WOOD_HEALING, 1, builder -> {
+            builder.require(spiritual_level_3)
+                    .require(Holder.direct(SpellRequirement.single(SpellTypes.WOOD_MASTERY, 3)));
+        });
+
+        /* 水系法术 */
+        register(context, SpellTypes.WATER_BREATHING, 1, builder -> {
             builder.require(spiritual_level_2)
                     .require(Holder.direct(ElementRequirement.create(Elements.WATER)));
         });
+
+        /* 火系法术 */
         register(context, SpellTypes.BURNING, 1, builder -> {
             builder.require(spiritual_level_1)
                     .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
@@ -103,7 +135,7 @@ public interface SecretManuals {
             builder.require(spiritual_level_2)
                     .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
         });
-        register(context, SpellTypes.LAVA_BREATHE, 1, builder -> {
+        register(context, SpellTypes.LAVA_BREATHING, 1, builder -> {
             builder.require(spiritual_level_2)
                     .require(Holder.direct(ElementRequirement.create(Elements.FIRE)));
         });
@@ -111,6 +143,14 @@ public interface SecretManuals {
             builder.require(spiritual_level_2)
                     .require(Holder.direct(SpellRequirement.single(SpellTypes.FIRE_MASTERY, 1)));
         });
+
+        /* 土系法术 */
+        register(context, SpellTypes.EARTH_EVADING, 1, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(Holder.direct(ElementRequirement.create(Elements.EARTH)));
+        });
+
+        /* 元素精通 */
         for (Elements element : Elements.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {

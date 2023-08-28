@@ -10,6 +10,7 @@ import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.common.spell.spells.SharpnessSpell;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
@@ -66,6 +67,19 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
+            SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
+            if(event.getSource().getEntity() != null){
+                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.CONDENSATION, scale -> {
+                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 4);
+                    ParticleUtil.spawnParticles(level, ParticleTypes.FALLING_WATER, event.getEntity().getEyePosition(), 10, 0.3, 0.1);
+                });
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void postLivingHurt(LivingHurtEvent event){
+        if(event.getEntity().level() instanceof ServerLevel level) {
             if (event.getEntity().hasEffect(IMMEffects.SOLIDIFICATION.get())) {
                 if (event.getAmount() >= event.getEntity().getMaxHealth() * 0.1F) {
                     event.getEntity().removeEffect(IMMEffects.SOLIDIFICATION.get());
@@ -75,12 +89,6 @@ public class IMMLivingEvents {
                 } else {
                     ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 10, 0, 0.15);
                 }
-            }
-            if(event.getSource().getEntity() != null){
-                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.CONDENSATION, scale -> {
-                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 4);
-                    ParticleHelper.spawnParticles(level, ParticleTypes.FALLING_WATER, event.getEntity().getEyePosition(), 10, 0.3, 0.1);
-                });
             }
         }
     }

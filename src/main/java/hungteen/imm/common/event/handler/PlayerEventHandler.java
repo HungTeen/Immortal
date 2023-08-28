@@ -3,8 +3,7 @@ package hungteen.imm.common.event.handler;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifacts.FlameGourd;
-import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,7 +23,6 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
-        SpellManager.checkSpellAction(player, result);
         /* 火葫芦 收 灵火 */
         if(result.getEntity() instanceof SpiritualFlame && player.getMainHandItem().getItem() instanceof FlameGourd){
             FlameGourd.rightClickFlame(player, player.getMainHandItem());
@@ -32,7 +30,6 @@ public class PlayerEventHandler {
     }
 
     public static void onTraceBlock(Player player, BlockHitResult result) {
-        SpellManager.checkSpellAction(player, result);
     }
 
     /**
@@ -43,7 +40,7 @@ public class PlayerEventHandler {
      * {@link IMMPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
      */
     public static void rayTrace(Player player) {
-        final HitResult hitResult = PlayerUtil.getHitResult(player);
+        final HitResult hitResult = EntityUtil.getHitResult(player);
         switch (hitResult.getType()){
             case BLOCK -> {
                 onTraceBlock(player, (BlockHitResult) hitResult);

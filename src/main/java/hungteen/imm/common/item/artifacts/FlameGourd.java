@@ -6,7 +6,7 @@ import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
-import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.EntityUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
@@ -50,7 +50,7 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
         if(stack.getItem() instanceof FlameGourd && player instanceof Player){
-            final HitResult hitResult = PlayerUtil.getHitResult((Player) player);
+            final HitResult hitResult = EntityUtil.getHitResult((Player) player);
             final FlameGourd flameGourd = (FlameGourd) stack.getItem();
             if(hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hitResult).getEntity() instanceof SpiritualFlame){
                 final SpiritualFlame flame = (SpiritualFlame) ((EntityHitResult) hitResult).getEntity();

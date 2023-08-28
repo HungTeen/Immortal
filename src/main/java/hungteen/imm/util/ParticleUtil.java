@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,6 +40,14 @@ public class ParticleUtil {
 //            }
 //        }
 //    }
+
+    public static void spawnParticles(ServerLevel level, ParticleOptions particle, Vec3 vec, int amount, double dst, double speed) {
+        ParticleHelper.spawnParticles(level, particle, vec.x(), vec.y(), vec.z(), amount, dst, dst, dst, speed);
+    }
+
+    public static void spawnParticles(ServerLevel level, ParticleOptions particle, double x, double y, double z, int amount, double dst, double speed) {
+        ParticleHelper.spawnParticles(level, particle, x, y, z, amount, dst, dst, dst, speed);
+    }
 
     public static void spawnParticlesOnBlockFaces(Level level, BlockPos blockPos, ParticleOptions particleOptions, IntProvider cntProvider) {
         for(Direction direction : Direction.values()) {

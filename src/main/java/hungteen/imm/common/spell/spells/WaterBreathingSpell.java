@@ -10,15 +10,15 @@ import net.minecraft.world.entity.LivingEntity;
  * @program Immortal
  * @data 2023/8/18 16:20
  */
-public class WaterBreatheSpell extends SpellType {
+public class WaterBreathingSpell extends SpellType {
 
-    public WaterBreatheSpell() {
-        super("water_breathe", properties().maxLevel(1).mana(20).cd(3000));
+    public WaterBreathingSpell() {
+        super("water_breathing", properties().maxLevel(1).mana(60).cd(300));
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, 2400, 2));
+        owner.addEffect(EffectHelper.viewEffect(MobEffects.WATER_BREATHING, 400, 2));
         return true;
     }
 

@@ -17,20 +17,51 @@ public class SpellTypes {
 
     private static final HTSimpleRegistry<ISpellType> SPELL_TYPES = HTRegistryManager.createSimple(Util.prefix("spell_type"));
 
-    public static final ISpellType MEDITATE = register(new MeditateSpell());
+    /* 基本法术 - Basic Spell */
+
+    public static final ISpellType MEDITATION = register(new MeditationSpell());
     public static final ISpellType DISPERSAL = register(new DispersalSpell());
     public static final ISpellType RELEASING = register(new ReleasingSpell());
     public static final ISpellType INTIMIDATE = register(new IntimidateSpell());
+
+    /* 神识 - Consciousness */
+
     public static final ISpellType SPIRIT_EYES = register(new SpiritEyeSpell());
+
+    /* 御物术 - Object Controlling */
+
     public static final ISpellType PICKUP_ITEM = register(new PickupItemSpell());
     public static final ISpellType THROW_ITEM = register(new ThrowItemSpell());
     public static final ISpellType PICKUP_BLOCK = register(new PickupBlockSpell());
     public static final ISpellType FLY_WITH_ITEM = register(new FlyWithItemSpell());
+
+    /* 金系法术 - Metal Spell */
+
+    public static final ISpellType METAL_MENDING = register(new MetalMendingSpell());
+    public static final ISpellType SHARPNESS = register(new SharpnessSpell());
+
+    /* 木系法术 - Wood Spell */
+
+    public static final ISpellType LEVITATION = register(new LevitationSpell());
     public static final ISpellType SPROUT = register(new SproutSpell());
-    public static final ISpellType WATER_BREATHE = register(new WaterBreatheSpell());
+    public static final ISpellType WOOD_HEALING = register(new WoodHealingSpell());
+
+    /* 水系法术 - Water Spell */
+
+    public static final ISpellType WATER_BREATHING = register(new WaterBreathingSpell());
+
+    /* 火系法术 - Fire Spell */
+
     public static final ISpellType BURNING = register(new BurningSpell());
-    public static final ISpellType LAVA_BREATHE = register(new LavaBreatheSpell());
+    public static final ISpellType LAVA_BREATHING = register(new LavaBreathingSpell());
     public static final ISpellType IGNITION = register(new IgnitionSpell());
+
+    /* 火系法术 - Earth Spell */
+
+    public static final ISpellType EARTH_EVADING = register(new EarthEvadingSpell());
+
+    /* 元素精通 - Element Mastery */
+
     public static final ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
     public static final ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
     public static final ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));

@@ -2,7 +2,7 @@
   "content": {
     "type": "imm:learn_spell",
     "level": 1,
-    "spell": "imm:lava_breathe"
+    "spell": "imm:lava_breathing"
   },
   "requirements": [
     "imm:spiritual_level_2_lowest",
