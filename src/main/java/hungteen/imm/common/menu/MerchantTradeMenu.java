@@ -1,15 +1,15 @@
 package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.client.ClientTrader;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.menu.container.TradeContainer;
 import hungteen.imm.common.menu.slot.TradeResultSlot;
-import net.minecraft.network.FriendlyByteBuf;
+import hungteen.imm.util.interfaces.Trader;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /**
+ * {@link net.minecraft.world.inventory.MerchantMenu}
  * @author PangTeen
  * @program Immortal
  * @data 2023/3/18 14:01
@@ -28,24 +29,22 @@ public class MerchantTradeMenu extends HTContainerMenu {
     public static final int RESULT_SIZE = 1;
     private static final int OUT_SLOT_SIZE = COST_SIZE + RESULT_SIZE;
     private final Player player;
-    private final HumanEntity merchant;
+    private final Trader trader;
     private final TradeContainer tradeContainer;
 
-    public MerchantTradeMenu(int id, Inventory playerInv, FriendlyByteBuf extraData){
-        this(id, playerInv, extraData.readInt());
+    public MerchantTradeMenu(int id, Inventory playerInv){
+        this(id, playerInv, new ClientTrader(playerInv.player));
     }
 
-    public MerchantTradeMenu(int id, Inventory playerInv, int entityId) {
+    public MerchantTradeMenu(int id, Inventory playerInv, Trader trader) {
         super(id, IMMMenus.CULTIVATOR_TRADE.get());
         this.player = playerInv.player;
-        if(this.player.level().getEntity(entityId) instanceof HumanEntity humanEntity){
-            this.merchant = humanEntity;
-        } else throw new RuntimeException("No merchant found !");
-        this.tradeContainer = new TradeContainer(this, this.merchant, COST_SIZE, RESULT_SIZE);
+        this.trader = trader;
+        this.tradeContainer = new TradeContainer(this, this.trader, COST_SIZE, RESULT_SIZE);
 
         this.addSlot(new Slot(this.tradeContainer, 0, 146, 37));
         this.addSlot(new Slot(this.tradeContainer, 1, 172, 37));
-        this.addSlot(new TradeResultSlot(this.tradeContainer, playerInv.player, this.merchant, 2, 230, 37));
+        this.addSlot(new TradeResultSlot(this.tradeContainer, playerInv.player, this.trader, 2, 230, 37));
 
         this.addInventoryAndHotBar(playerInv, 118, 84);
     }
@@ -69,8 +68,8 @@ public class MerchantTradeMenu extends HTContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        this.merchant.setTradingPlayer(null);
-        if (EntityHelper.isServer(this.merchant)) {
+        this.trader.setTradingPlayer(null);
+        if (! this.trader.isClientSide()) {
             if (! player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
                 for(int i = 0; i < this.tradeContainer.getContainerSize(); ++ i){
                     if(this.tradeContainer.isCostSlot(i)){
@@ -188,10 +187,9 @@ public class MerchantTradeMenu extends HTContainerMenu {
     }
 
     private void playTradeSound() {
-        if (EntityHelper.isServer(this.merchant)) {
-            merchant.level().playLocalSound(merchant.getX(), merchant.getY(), merchant.getZ(), merchant.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+        if (! this.trader.isClientSide() && this.trader instanceof Entity entity) {
+            entity.level().playLocalSound(entity.getX(), entity.getY(), entity.getZ(), this.trader.getNotifyTradeSound(), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
         }
-
     }
 
     public void setSelectionHint(int pos) {
@@ -208,11 +206,15 @@ public class MerchantTradeMenu extends HTContainerMenu {
     }
 
     public TradeOffers getTrades() {
-        return this.merchant.getTradeOffers();
+        return this.trader.getTradeOffers();
+    }
+
+    public Trader getTrader() {
+        return trader;
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return this.merchant.getTradingPlayer() == player;
+        return this.trader.getTradingPlayer() == player;
     }
 }

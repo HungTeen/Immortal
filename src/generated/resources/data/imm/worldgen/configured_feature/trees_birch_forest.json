@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "imm:tall_birch_with_bees_checked",
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": "imm:tall_birch_checked"
+      }
+    ]
+  }
+}

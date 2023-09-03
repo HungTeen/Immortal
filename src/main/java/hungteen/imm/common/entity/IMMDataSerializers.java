@@ -12,7 +12,6 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,7 +19,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -28,48 +26,28 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author: HungTeen
  * @create: 2022-11-17 12:06
  **/
-public class IMMDataSerializers {
+public interface IMMDataSerializers {
 
-    private static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
+    DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
-    public static final RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
+    RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
 
-    public static final RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
-    public static final RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
+    RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
+    RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
 
-    public static final RegistryObject<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new EntityDataSerializer.ForValueType<>() {
-        @Override
-        public void write(FriendlyByteBuf byteBuf, HumanSetting humanSetting) {
-            CompoundTag tag = new CompoundTag();
-            HumanSetting.CODEC.encodeStart(NbtOps.INSTANCE, humanSetting)
-                    .result().ifPresent(l -> tag.put("HumanSetting", l));
-            byteBuf.writeNbt(tag);
-        }
-
-        @Override
-        public HumanSetting read(FriendlyByteBuf byteBuf) {
-            CompoundTag tag = byteBuf.readNbt();
-            AtomicReference<HumanSetting> humanSetting = new AtomicReference<>();
-            if(Objects.requireNonNull(tag).contains("HumanSetting")){
-                HumanSetting.CODEC.parse(NbtOps.INSTANCE, tag.get("HumanSetting"))
-                        .result().ifPresent(humanSetting::set);
-            }
-            return humanSetting.get();
-        }
-
-    });
+    RegistryObject<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new CodecEntityDataSerializer<>("HumanSetting", HumanSetting.CODEC));
 
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
      */
-    public static void register(IEventBus event){
+    static void register(IEventBus event){
         DATA_SERIALIZERS.register(event);
     }
 
     /**
      * TODO HTLIB
      */
-    public static class CodecEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<T> {
+    class CodecEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<T> {
 
         private final String name;
         private final Codec<T> codec;
@@ -105,7 +83,7 @@ public class IMMDataSerializers {
         }
     }
 
-    public static class SimpleEntityDataSerializer<T extends ISimpleEntry> extends CodecEntityDataSerializer<T> {
+    class SimpleEntityDataSerializer<T extends ISimpleEntry> extends CodecEntityDataSerializer<T> {
 
         public SimpleEntityDataSerializer(IHTSimpleRegistry<T> registry) {
             super(registry.getRegistryName().toString(), registry.byNameCodec());

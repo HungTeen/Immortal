@@ -1,11 +1,15 @@
 package hungteen.imm.common.world.levelgen;
 
 import hungteen.htlib.util.helper.registry.LevelHelper;
-import hungteen.imm.common.world.levelgen.dimension.EastWorldDimension;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
+
+import java.util.OptionalLong;
 
 /**
  * @author PangTeen
@@ -14,10 +18,26 @@ import net.minecraft.world.level.dimension.DimensionType;
  */
 public interface IMMDimensionTypes {
 
-    public static final ResourceKey<DimensionType> EAST_WORLD = create("east_world");
+    ResourceKey<DimensionType> EAST_WORLD = create("east_world");
 
-    public static void register(BootstapContext<DimensionType> context){
-        EastWorldDimension.initDimensionType(context);
+    static void register(BootstapContext<DimensionType> context){
+        context.register(EAST_WORLD, new DimensionType(
+                OptionalLong.empty(),
+                true,
+                false,
+                false,
+                true,
+                1.0D,
+                true,
+                false,
+                -64,
+                384,
+                384,
+                BlockTags.INFINIBURN_OVERWORLD,
+                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
+                0.0F,
+                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
+        ));
     }
 
     private static ResourceKey<DimensionType> create(String name) {

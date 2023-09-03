@@ -1,8 +1,8 @@
 package hungteen.imm.common.menu.slot;
 
-import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.menu.container.TradeContainer;
+import hungteen.imm.util.interfaces.Trader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -16,13 +16,13 @@ public class TradeResultSlot extends Slot {
 
     private final TradeContainer tradeContainer;
     private final Player player;
-    private final HumanEntity merchant;
+    private final Trader trader;
     private int removeCount;
 
-    public TradeResultSlot(TradeContainer tradeContainer, Player player, HumanEntity human, int slotId, int x, int y) {
+    public TradeResultSlot(TradeContainer tradeContainer, Player player, Trader trader, int slotId, int x, int y) {
         super(tradeContainer, slotId, x, y);
         this.player = player;
-        this.merchant = human;
+        this.trader = trader;
         this.tradeContainer = tradeContainer;
     }
 
@@ -58,7 +58,7 @@ public class TradeResultSlot extends Slot {
         TradeOffer activeOffer = this.tradeContainer.getActiveOffer();
         if (activeOffer != null) {
             if (activeOffer.take(tradeContainer.getCostStacks())) {
-                this.merchant.notifyTrade(activeOffer);
+                this.trader.notifyTrade(activeOffer);
 //                player.awardStat(Stats.TRADED_WITH_VILLAGER);
 //                this.tradeContainer.setItem(0, itemstack);
 //                this.tradeContainer.setItem(1, itemstack1);

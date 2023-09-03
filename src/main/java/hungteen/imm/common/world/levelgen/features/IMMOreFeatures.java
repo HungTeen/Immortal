@@ -18,11 +18,11 @@ import java.util.List;
  * @program Immortal
  * @data 2023/6/2 9:25
  */
-public class IMMOreFeatures {
+public interface IMMOreFeatures {
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_CINNABAR = IMMFeatures.create("ore_cinnabar");
+    ResourceKey<ConfiguredFeature<?, ?>> ORE_CINNABAR = IMMFeatures.create("ore_cinnabar");
 
-    public static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
         final RuleTest matchStone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         final List<OreConfiguration.TargetBlockState> cinnabarTargetList = List.of(OreConfiguration.target(matchStone, IMMBlocks.CINNABAR_ORE.get().defaultBlockState()));
         FeatureUtils.register(context, ORE_CINNABAR, Feature.ORE, new OreConfiguration(cinnabarTargetList, 9));

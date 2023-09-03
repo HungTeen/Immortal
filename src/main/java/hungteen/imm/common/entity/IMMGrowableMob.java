@@ -17,13 +17,13 @@ import net.minecraft.world.level.Level;
  * @author: HungTeen
  * @create: 2022-10-21 18:43
  **/
-public abstract class IMMGrowableCreature extends IMMCreature {
+public abstract class IMMGrowableMob extends IMMMob {
 
-    private static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(IMMGrowableCreature.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(IMMGrowableMob.class, EntityDataSerializers.INT);
     protected int growTick = 0;
     protected int forcedAgeTimer;
 
-    public IMMGrowableCreature(EntityType<? extends IMMGrowableCreature> type, Level level) {
+    public IMMGrowableMob(EntityType<? extends IMMGrowableMob> type, Level level) {
         super(type, level);
     }
 

@@ -20,7 +20,7 @@ public class IMMMenus {
     private static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Util.id());
 
     public static final RegistryObject<MenuType<MerchantTradeMenu>> CULTIVATOR_TRADE = CONTAINER_TYPES.register("cultivator_trade", () -> {
-        return IForgeMenuType.create(MerchantTradeMenu::new);
+        return IForgeMenuType.create(((windowId, inv, data) -> new MerchantTradeMenu(windowId, inv)));
     });
 
     public static final RegistryObject<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {

@@ -17,11 +17,18 @@ public interface IHasRealm {
      */
     IRealmType getRealm();
 
+    /**
+     * 获取生物当前阶段。
+     * @return Stage of entity.
+     */
     RealmStages getRealmStage();
 
     /**
-     * 获取生物的修行方式
-     * @return Cultivate type of entity
+     * 获取生物的修行方式。
+     * @return Cultivate type of entity.
      */
-    ICultivationType getCultivationType();
+    default ICultivationType getCultivationType(){
+        return getRealm().getCultivationType();
+    }
+
 }

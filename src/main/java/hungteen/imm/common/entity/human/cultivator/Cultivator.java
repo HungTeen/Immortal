@@ -70,16 +70,12 @@ public abstract class Cultivator extends HumanEntity {
         if(tag.contains("CultivatorType")){
             this.setCultivatorType(CultivatorTypes.values()[tag.getInt("CultivatorType")]);
         }
-        if(tag.contains("CultivatorRoots")){
-            setRootTag(tag.getCompound("CultivatorRoots"));
-        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("CultivatorType", this.getCultivatorType().ordinal());
-        tag.put("CultivatorRoots", this.getRootTag());
     }
 
     public void setCultivatorType(CultivatorTypes skin){

@@ -1,22 +1,23 @@
 package hungteen.imm.common.entity.undead;
 
-import hungteen.imm.api.registry.ICultivationType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
+ * Modify from {@link net.minecraft.world.entity.monster.Zombie}.
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-19 23:04
- *
- * Look at {@link net.minecraft.world.entity.monster.Zombie}
  **/
 public class SpiritualZombie extends UndeadEntity {
 
@@ -50,9 +51,4 @@ public class SpiritualZombie extends UndeadEntity {
                 .add(Attributes.ARMOR, 2.0D);
     }
 
-
-    @Override
-    public ICultivationType getCultivationType() {
-        return null;
-    }
 }

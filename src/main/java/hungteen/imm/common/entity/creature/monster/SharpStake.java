@@ -3,7 +3,7 @@ package hungteen.imm.common.entity.creature.monster;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.entity.IMMCreature;
+import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -33,10 +33,10 @@ import java.util.List;
  * @program Immortal
  * @data 2023/7/6 14:19
  */
-public class SharpStake extends IMMCreature {
+public class SharpStake extends IMMMob {
 
     private static final EntityDataAccessor<BlockState> STAKE = SynchedEntityData.defineId(SharpStake.class, EntityDataSerializers.BLOCK_STATE);
-    public SharpStake(EntityType<? extends IMMCreature> type, Level level) {
+    public SharpStake(EntityType<? extends IMMMob> type, Level level) {
         super(type, level);
     }
 

@@ -654,7 +654,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               0.03,
@@ -681,7 +681,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               0.03,
@@ -708,7 +708,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               0.03,
@@ -735,7 +735,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               0.03,
@@ -5298,7 +5298,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -5325,7 +5325,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -5406,7 +5406,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -5433,7 +5433,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -5460,7 +5460,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -5487,7 +5487,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -10968,7 +10968,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -10995,7 +10995,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -11076,7 +11076,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -11103,7 +11103,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -11130,7 +11130,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -11157,7 +11157,7 @@
           }
         },
         {
-          "biome": "imm:cut_birch_forest",
+          "biome": "imm:birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -16198,1356 +16198,6 @@
             "temperature": [
               -0.15,
               0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -0.1,
-              0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:birch_forest",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              0.1,
-              0.3
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:plains",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              0.3,
-              1.0
-            ],
-            "offset": 0.0,
-            "temperature": [
-              -0.15,
-              0.2
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -1.0,
-              -0.35
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.11,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:meadow",
-          "parameters": {
-            "continentalness": [
-              0.3,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.375,
-              -0.2225
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 0.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              0.03
-            ],
-            "depth": 1.0,
-            "erosion": [
-              -0.2225,
-              0.05
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              1.0
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.05,
-              0.45
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 0.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
-            ],
-            "weirdness": [
-              0.2666,
-              0.4
-            ]
-          }
-        },
-        {
-          "biome": "imm:savanna",
-          "parameters": {
-            "continentalness": [
-              -0.19,
-              -0.11
-            ],
-            "depth": 1.0,
-            "erosion": [
-              0.55,
-              1.0
-            ],
-            "humidity": [
-              -0.35,
-              -0.1
-            ],
-            "offset": 0.0,
-            "temperature": [
-              0.2,
-              0.55
             ],
             "weirdness": [
               0.2666,
@@ -17573,6 +16223,1356 @@
             ],
             "offset": 0.0,
             "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              0.1,
+              0.3
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:plains",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -0.15,
+              0.2
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              -0.35
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:meadow",
+          "parameters": {
+            "continentalness": [
+              0.3,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              0.03
+            ],
+            "depth": 1.0,
+            "erosion": [
+              -0.2225,
+              0.05
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              1.0
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.05,
+              0.45
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:savanna",
+          "parameters": {
+            "continentalness": [
+              -0.19,
+              -0.11
+            ],
+            "depth": 1.0,
+            "erosion": [
+              0.55,
+              1.0
+            ],
+            "humidity": [
+              -0.35,
+              -0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.2,
+              0.55
+            ],
+            "weirdness": [
+              0.2666,
+              0.4
+            ]
+          }
+        },
+        {
+          "biome": "imm:cut_birch_forest",
+          "parameters": {
+            "continentalness": [
+              -0.11,
+              0.03
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -0.375,
+              -0.2225
+            ],
+            "humidity": [
+              -0.1,
+              0.1
+            ],
+            "offset": 0.0,
+            "temperature": [
               0.2,
               0.55
             ],
@@ -23226,7 +23226,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -23253,7 +23253,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -23334,7 +23334,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23361,7 +23361,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23388,7 +23388,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23415,7 +23415,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23442,7 +23442,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23469,7 +23469,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23496,7 +23496,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -23523,7 +23523,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.11,
@@ -23604,7 +23604,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23631,7 +23631,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23658,7 +23658,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23685,7 +23685,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23712,7 +23712,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,
@@ -23739,7 +23739,7 @@
           }
         },
         {
-          "biome": "imm:birch_forest",
+          "biome": "imm:cut_birch_forest",
           "parameters": {
             "continentalness": [
               -0.19,

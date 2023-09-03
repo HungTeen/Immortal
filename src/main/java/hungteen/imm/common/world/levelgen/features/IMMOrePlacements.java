@@ -18,13 +18,13 @@ import java.util.List;
  * @program Immortal
  * @data 2023/6/2 9:23
  */
-public class IMMOrePlacements {
+public interface IMMOrePlacements {
 
-    public static final ResourceKey<PlacedFeature> ORE_EMERALD = IMMPlacements.create("ore_emerald");
-    public static final ResourceKey<PlacedFeature> ORE_EMERALD_SMALL = IMMPlacements.create("ore_emerald_small");
-    public static final ResourceKey<PlacedFeature> ORE_CINNABAR = IMMPlacements.create("ore_cinnabar");
+    ResourceKey<PlacedFeature> ORE_EMERALD = IMMPlacements.create("ore_emerald");
+    ResourceKey<PlacedFeature> ORE_EMERALD_SMALL = IMMPlacements.create("ore_emerald_small");
+    ResourceKey<PlacedFeature> ORE_CINNABAR = IMMPlacements.create("ore_cinnabar");
 
-    public static void register(BootstapContext<PlacedFeature> context) {
+    static void register(BootstapContext<PlacedFeature> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
         final Holder<ConfiguredFeature<?, ?>> emeraldOre = features.getOrThrow(OreFeatures.ORE_EMERALD);
         final Holder<ConfiguredFeature<?, ?>> cinnabarOre = features.getOrThrow(IMMOreFeatures.ORE_CINNABAR);

@@ -6,13 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMDataSerializers;
-import hungteen.imm.common.entity.IMMGrowableCreature;
+import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
@@ -28,11 +27,7 @@ import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -73,6 +68,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -84,12 +80,10 @@ import java.util.function.Predicate;
  * @author: HungTeen
  * @create: 2022-10-21 18:23
  **/
-public abstract class HumanEntity extends IMMGrowableCreature implements IHuman {
+public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
-    private static final EntityDataAccessor<CompoundTag> ROOTS = SynchedEntityData.defineId(HumanEntity.class, EntityDataSerializers.COMPOUND_TAG);
     private static final EntityDataAccessor<HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
     private static final EntityDataAccessor<HumanSectData> SECT_DATA = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SECT_DATA.get());
-    private List<ISpiritualType> rootsCache;
     private TradeOffers tradeOffers = new TradeOffers();
     @javax.annotation.Nullable
     private Player tradingPlayer;
@@ -108,31 +102,36 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(ROOTS, new CompoundTag());
         entityData.define(HUMAN_SETTING, HumanSettings.registry().getValue(level(), HumanSettings.DEFAULT));
         entityData.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
     }
 
-    @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
-        if (this.tradeOffers != null) {
-            this.tradeOffers.writeToStream(buffer);
-        }
-    }
-
-    @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
-        this.tradeOffers = TradeOffers.createFromStream(additionalData);
-    }
+//    @Override
+//    public void writeSpawnData(FriendlyByteBuf buffer) {
+//        super.writeSpawnData(buffer);
+//        if (this.tradeOffers != null) {
+//            this.tradeOffers.writeToStream(buffer);
+//        }
+//    }
+//
+//    @Override
+//    public void readSpawnData(FriendlyByteBuf additionalData) {
+//        super.readSpawnData(additionalData);
+//        this.tradeOffers = TradeOffers.createFromStream(additionalData);
+//    }
 
     @org.jetbrains.annotations.Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable SpawnGroupData groupData, @org.jetbrains.annotations.Nullable CompoundTag compoundTag) {
         if (!accessor.isClientSide()) {
-            PlayerUtil.getSpiritualRoots(accessor.getRandom()).forEach(this::addSpiritualRoots);
             this.updateHumanSetting();
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
+    }
+
+    @Override
+    protected Collection<ISpiritualType> createSpiritualRoots(ServerLevelAccessor accessor) {
+        return PlayerUtil.getSpiritualRoots(accessor.getRandom());
     }
 
     @Override
@@ -174,7 +173,6 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     /**
      * Refresh brain.
-     *
      * @param level is the server side level.
      */
     public void refreshBrain(ServerLevel level) {
@@ -183,7 +181,6 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     /**
      * Used for update brain.
-     *
      * @param level is the server side level.
      */
     public abstract void updateBrain(ServerLevel level);
@@ -383,15 +380,17 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 NetworkHooks.openScreen(serverPlayer, new ImmortalMenuProvider() {
                     @Override
                     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                        return new MerchantTradeMenu(id, inventory, HumanEntity.this.getId());
+                        return new MerchantTradeMenu(id, inventory, HumanEntity.this);
                     }
-                }, buf -> buf.writeInt(this.getId()));
+                });
+                this.updateTradeOffers();
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
 
+    @Override
     public void notifyTrade(TradeOffer offer) {
         offer.consume();
         this.ambientSoundTime = -this.getAmbientSoundInterval();
@@ -409,13 +408,32 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return this.isAlive() && !this.isTrading() && !this.isBaby() && BehaviorUtil.isIdle(this);
     }
 
+    @Override
     public void setTradingPlayer(@javax.annotation.Nullable Player player) {
         this.tradingPlayer = player;
     }
 
+    @Override
     @Nullable
     public Player getTradingPlayer() {
         return this.tradingPlayer;
+    }
+
+    @Override
+    public TradeOffers getTradeOffers() {
+        return this.tradeOffers;
+    }
+
+    @Override
+    public void setTradeOffers(TradeOffers tradeOffers) {
+        this.tradeOffers = tradeOffers;
+        this.updateTradeOffers();
+    }
+
+    public void updateTradeOffers(){
+        if(getTradingPlayer() instanceof ServerPlayer player && player.containerMenu instanceof MerchantTradeMenu){
+            NetworkHandler.sendToClient(player, new TradeOffersPacket(player.containerMenu.containerId, this.tradeOffers));
+        }
     }
 
     public boolean isTrading() {
@@ -479,6 +497,7 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
 
     public abstract IInventoryLootType getInventoryLootType();
 
+    @Override
     public SoundEvent getNotifyTradeSound() {
         return SoundEvents.VILLAGER_TRADE;
     }
@@ -486,9 +505,6 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("CultivatorRoots")) {
-            setRootTag(tag.getCompound("CultivatorRoots"));
-        }
         if (tag.contains("Inventory")) {
             this.inventory.fromTag(tag.getList("Inventory", 10));
         }
@@ -514,7 +530,6 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("CultivatorRoots", this.getRootTag());
         tag.put("Inventory", this.inventory.createTag());
         if (this.tradeOffers != null) {
             this.tradeOffers.addToTag(tag);
@@ -523,29 +538,6 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
                 .result().ifPresent(l -> tag.put("HumanSetting", l));
         CodecHelper.encodeNbt(HumanSectData.CODEC, this.getSectData())
                 .result().ifPresent(l -> tag.put("HumanSectData", l));
-    }
-
-    public void addSpiritualRoots(ISpiritualType spiritualRoot) {
-        final CompoundTag tag = getRootTag();
-        tag.putBoolean(spiritualRoot.getRegistryName(), true);
-        if (this.rootsCache == null) {
-            this.rootsCache = new ArrayList<>();
-        }
-        this.rootsCache.add(spiritualRoot);
-        setRootTag(tag);
-    }
-
-    @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        if (this.rootsCache == null && IMMAPI.get().spiritualRegistry().isPresent()) {
-            this.rootsCache = new ArrayList<>();
-            IMMAPI.get().spiritualRegistry().get().getValues().forEach(root -> {
-                if (getRootTag().contains(root.getRegistryName()) && getRootTag().getBoolean(root.getRegistryName())) {
-                    this.rootsCache.add(root);
-                }
-            });
-        }
-        return this.rootsCache;
     }
 
     @Override
@@ -558,31 +550,12 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
         return this.getSectData().innerSect();
     }
 
-    public CompoundTag getRootTag() {
-        return entityData.get(ROOTS);
-    }
-
-    public void setRootTag(CompoundTag rootTag) {
-        entityData.set(ROOTS, rootTag);
-    }
-
     public HumanSetting getHumanSetting() {
         return entityData.get(HUMAN_SETTING);
     }
 
     public void setHumanSetting(HumanSetting humanSetting) {
         entityData.set(HUMAN_SETTING, humanSetting);
-    }
-
-    public TradeOffers getTradeOffers() {
-        return this.tradeOffers;
-    }
-
-    public void setTradeOffers(TradeOffers tradeOffers) {
-        this.tradeOffers = tradeOffers;
-        if (EntityHelper.isServer(this)) {
-            NetworkHandler.sendToClientEntity(this, new TradeOffersPacket(this.getId(), this.tradeOffers));
-        }
     }
 
     public void setSectData(HumanSectData data) {
@@ -594,8 +567,8 @@ public abstract class HumanEntity extends IMMGrowableCreature implements IHuman 
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public boolean isClientSide() {
+        return this.level().isClientSide();
     }
 
     public record HumanSectData(Optional<ISectType> outerSect, Optional<ISectType> innerSect) {

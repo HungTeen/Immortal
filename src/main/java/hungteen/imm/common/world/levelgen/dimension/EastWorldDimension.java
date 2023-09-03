@@ -1,27 +1,14 @@
 package hungteen.imm.common.world.levelgen.dimension;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.world.levelgen.*;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import hungteen.imm.common.world.levelgen.IMMBiomes;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseRouterData;
-import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 
 import java.util.List;
-import java.util.OptionalLong;
 import java.util.function.Consumer;
 
 /**
@@ -78,7 +65,7 @@ public class EastWorldDimension {
             {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
             {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
             {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.BIRCH_FOREST, IMMBiomes.BIRCH_FOREST, IMMBiomes.PLAINS},
-            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.BAMBOO_JUNGLE, IMMBiomes.BAMBOO_JUNGLE},
+            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.BIRCH_FOREST, IMMBiomes.BAMBOO_JUNGLE, IMMBiomes.BAMBOO_JUNGLE},
             {IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT}
     };
     private final ResourceKey<Biome>[][] DEFAULT_MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
@@ -91,8 +78,8 @@ public class EastWorldDimension {
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
             {null, null, null, null, null},
             {null, null, null, null, null},
-            {null, null, null, null, null},
-            {null, null, null, null, null},
+            {null, null, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.CUT_BIRCH_FOREST, null},
+            {null, null, IMMBiomes.CUT_BIRCH_FOREST, null, null},
             {null, null, null, null, null}
     };
     private static final ResourceKey<Biome>[][] DEFAULT_PLATEAU_BIOMES = new ResourceKey[][]{
@@ -134,40 +121,40 @@ public class EastWorldDimension {
     }
 
     private static void addOffCoastBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187196_) {
-//        this.addSurfaceBiome(p_187196_, this.FULL_RANGE, this.FULL_RANGE, this.mushroomFieldsContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, Biomes.MUSHROOM_FIELDS);
+//        addSurfaceBiome(p_187196_, FULL_RANGE, FULL_RANGE, mushroomFieldsContinentalness, FULL_RANGE, FULL_RANGE, 0.0F, Biomes.MUSHROOM_FIELDS);
 //
-//        for(int i = 0; i < this.temperatures.length; ++i) {
-//            Climate.Parameter climate$parameter = this.temperatures[i];
-//            this.addSurfaceBiome(p_187196_, climate$parameter, this.FULL_RANGE, this.deepOceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, this.OCEANS[0][i]);
-//            this.addSurfaceBiome(p_187196_, climate$parameter, this.FULL_RANGE, this.oceanContinentalness, this.FULL_RANGE, this.FULL_RANGE, 0.0F, this.OCEANS[1][i]);
+//        for(int i = 0; i < temperatures.length; ++i) {
+//            Climate.Parameter climate$parameter = temperatures[i];
+//            addSurfaceBiome(p_187196_, climate$parameter, FULL_RANGE, deepOceanContinentalness, FULL_RANGE, FULL_RANGE, 0.0F, OCEANS[0][i]);
+//            addSurfaceBiome(p_187196_, climate$parameter, FULL_RANGE, oceanContinentalness, FULL_RANGE, FULL_RANGE, 0.0F, OCEANS[1][i]);
 //        }
     }
 
     private static void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
         addValleys(consumer, Climate.Parameter.span(-0.05F, 0.05F));
-        
+
+//        addLowSlice(consumer, Climate.Parameter.span(-0.26666668F, -0.05F));
+//        addLowSlice(consumer, Climate.Parameter.span(0.05F, 0.26666668F));
+
         addMidSlice(consumer, Climate.Parameter.span(-1.0F, -0.93333334F));
         addMidSlice(consumer, Climate.Parameter.span(-0.4F, -0.26666668F));
         addMidSlice(consumer, Climate.Parameter.span(0.26666668F, 0.4F));
         addMidSlice(consumer, Climate.Parameter.span(0.93333334F, 1.0F));
 
-//        this.addHighSlice(consumer, Climate.Parameter.span(-0.93333334F, -0.7666667F));
-//        this.addHighSlice(consumer, Climate.Parameter.span(-0.56666666F, -0.4F));
-//        this.addHighSlice(consumer, Climate.Parameter.span(0.4F, 0.56666666F));
-//        this.addHighSlice(consumer, Climate.Parameter.span(0.7666667F, 0.93333334F));
+//        addHighSlice(consumer, Climate.Parameter.span(-0.93333334F, -0.7666667F));
+//        addHighSlice(consumer, Climate.Parameter.span(-0.56666666F, -0.4F));
+//        addHighSlice(consumer, Climate.Parameter.span(0.4F, 0.56666666F));
+//        addHighSlice(consumer, Climate.Parameter.span(0.7666667F, 0.93333334F));
 
-
-//        this.addLowSlice(consumer, Climate.Parameter.span(-0.26666668F, -0.05F));
-//        this.addLowSlice(consumer, Climate.Parameter.span(0.05F, 0.26666668F));
 //
-//        this.addPeaks(consumer, Climate.Parameter.span(-0.7666667F, -0.56666666F));
-//        this.addPeaks(consumer, Climate.Parameter.span(0.56666666F, 0.7666667F));
+//        addPeaks(consumer, Climate.Parameter.span(-0.7666667F, -0.56666666F));
+//        addPeaks(consumer, Climate.Parameter.span(0.56666666F, 0.7666667F));
 
     }
 
     private static void addValleys(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter weirdness) {
         /* Add Valley Rivers */
-        //       addSurfaceBiome(consumer, MIDDLE_BIOMES, FULL_RANGE, Climate.Parameter.span(this.inlandContinentalness, this.farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.FROZEN_RIVER);
+        //       addSurfaceBiome(consumer, MIDDLE_BIOMES, FULL_RANGE, Climate.Parameter.span(inlandContinentalness, farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.FROZEN_RIVER);
         /* Add Middle Biomes */
         for (int i = 0; i < TEMPERATURES.length; ++i) {
             final Climate.Parameter temperature = TEMPERATURES[i];
@@ -179,38 +166,71 @@ public class EastWorldDimension {
         }
     }
 
-    private static void addMidSlice(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter weirdness) {
-//        addSurfaceBiome(consumer, FULL_RANGE, FULL_RANGE, coastContinentalness, Climate.Parameter.span(EROSIONS[0], EROSIONS[2]), weirdness, 0.0F, Biomes.STONY_SHORE);
-//        addSurfaceBiome(consumer, Climate.Parameter.span(temperatures[1], this.temperatures[2]), this.FULL_RANGE, Climate.Parameter.span(this.nearInlandContinentalness, this.farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.SWAMP);
-//        addSurfaceBiome(consumer, Climate.Parameter.span(temperatures[3], this.temperatures[4]), this.FULL_RANGE, Climate.Parameter.span(this.nearInlandContinentalness, this.farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.MANGROVE_SWAMP);
+    private static void addLowSlice(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter weirdness) {
+//        addSurfaceBiome(consumer, FULL_RANGE, FULL_RANGE, COAST_CONTINENTALNESS, Climate.Parameter.span(EROSIONS[0], EROSIONS[2]), weirdness, 0.0F, Biomes.STONY_SHORE);
+//        addSurfaceBiome(consumer, temperature(1, 2), FULL_RANGE, nearToFar(), EROSIONS[6], weirdness, 0.0F, Biomes.SWAMP);
+//        addSurfaceBiome(consumer, temperature(3, 4), FULL_RANGE, nearToFar(), EROSIONS[6], weirdness, 0.0F, Biomes.MANGROVE_SWAMP);
 
         for(int i = 0; i < TEMPERATURES.length; ++i) {
-            Climate.Parameter temperature = TEMPERATURES[i];
+            final Climate.Parameter temperature = TEMPERATURES[i];
+            for(int j = 0; j < HUMIDITIES.length; ++j) {
+                final Climate.Parameter humidity = HUMIDITIES[j];
+                ResourceKey<Biome> resourcekey = pickMiddleBiome(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey1 = pickMiddleBiomeOrBadlandsIfHot(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey2 = pickMiddleBiomeOrBadlandsIfHotOrSlopeIfCold(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey3 = pickBeachBiome(i, j);
+//                ResourceKey<Biome> resourcekey4 = maybePickWindsweptSavannaBiome(i, j, weirdness, resourcekey);
+//                ResourceKey<Biome> resourcekey5 = pickShatteredCoastBiome(i, j, weirdness);
+//                addSurfaceBiome(consumer, temperature, humidity, nearInlandContinentalness, Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, resourcekey1);
+//                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(midInlandContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[0], erosions[1]), weirdness, 0.0F, resourcekey2);
+//                addSurfaceBiome(consumer, temperature, humidity, nearInlandContinentalness, Climate.Parameter.span(erosions[2], erosions[3]), weirdness, 0.0F, resourcekey);
+//                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(midInlandContinentalness, farInlandContinentalness), Climate.Parameter.span(erosions[2], erosions[3]), weirdness, 0.0F, resourcekey1);
+//                addSurfaceBiome(consumer, temperature, humidity, coastContinentalness, Climate.Parameter.span(erosions[3], erosions[4]), weirdness, 0.0F, resourcekey3);
+                addSurfaceBiome(consumer, temperature, humidity, nearToFar(), erosion(4), weirdness, 0.0F, resourcekey);
+//                addSurfaceBiome(consumer, temperature, humidity, coastContinentalness, erosions[5], weirdness, 0.0F, resourcekey5);
+//                addSurfaceBiome(consumer, temperature, humidity, nearInlandContinentalness, erosions[5], weirdness, 0.0F, resourcekey4);
+                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(MID_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), erosion(5), weirdness, 0.0F, resourcekey);
+//                addSurfaceBiome(consumer, temperature, humidity, coastContinentalness, erosions[6], weirdness, 0.0F, resourcekey3);
+                if (i == 0) {
+                    addSurfaceBiome(consumer, temperature, humidity, nearToFar(), erosion(6), weirdness, 0.0F, resourcekey);
+                }
+            }
+        }
+
+    }
+
+    private static void addMidSlice(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter weirdness) {
+//        addSurfaceBiome(consumer, FULL_RANGE, FULL_RANGE, coastContinentalness, Climate.Parameter.span(EROSIONS[0], EROSIONS[2]), weirdness, 0.0F, Biomes.STONY_SHORE);
+//        addSurfaceBiome(consumer, Climate.Parameter.span(temperatures[1], temperatures[2]), FULL_RANGE, Climate.Parameter.span(nearInlandContinentalness, farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.SWAMP);
+//        addSurfaceBiome(consumer, Climate.Parameter.span(temperatures[3], temperatures[4]), FULL_RANGE, Climate.Parameter.span(nearInlandContinentalness, farInlandContinentalness), EROSIONS[6], weirdness, 0.0F, Biomes.MANGROVE_SWAMP);
+
+        for(int i = 0; i < TEMPERATURES.length; ++i) {
+            final Climate.Parameter temperature = TEMPERATURES[i];
 
             for(int j = 0; j < HUMIDITIES.length; ++j) {
-                Climate.Parameter humidity = HUMIDITIES[j];
-                ResourceKey<Biome> resourcekey = pickMiddleBiome(i, j, weirdness);
-//                ResourceKey<Biome> resourcekey1 = this.pickMiddleBiomeOrBadlandsIfHot(i, j, weirdness);
-//                ResourceKey<Biome> resourcekey2 = this.pickMiddleBiomeOrBadlandsIfHotOrSlopeIfCold(i, j, weirdness);
-//                ResourceKey<Biome> resourcekey3 = this.pickShatteredBiome(i, j, weirdness);
-                ResourceKey<Biome> resourcekey4 = pickPlateauBiome(i, j, weirdness);
-//                ResourceKey<Biome> resourcekey5 = this.pickBeachBiome(i, j);
-//                ResourceKey<Biome> resourcekey6 = this.maybePickWindsweptSavannaBiome(i, j, weirdness, resourcekey);
-//                ResourceKey<Biome> resourcekey7 = this.pickShatteredCoastBiome(i, j, weirdness);
-//                ResourceKey<Biome> resourcekey8 = this.pickSlopeBiome(i, j, weirdness);
+                final Climate.Parameter humidity = HUMIDITIES[j];
+                final ResourceKey<Biome> resourcekey = pickMiddleBiome(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey1 = pickMiddleBiomeOrBadlandsIfHot(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey2 = pickMiddleBiomeOrBadlandsIfHotOrSlopeIfCold(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey3 = pickShatteredBiome(i, j, weirdness);
+                final ResourceKey<Biome> resourcekey4 = pickPlateauBiome(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey5 = pickBeachBiome(i, j);
+//                ResourceKey<Biome> resourcekey6 = maybePickWindsweptSavannaBiome(i, j, weirdness, resourcekey);
+//                ResourceKey<Biome> resourcekey7 = pickShatteredCoastBiome(i, j, weirdness);
+//                ResourceKey<Biome> resourcekey8 = pickSlopeBiome(i, j, weirdness);
 //                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(NEAR_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), EROSIONS[0], weirdness, 0.0F, resourcekey8);
 //                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(NEAR_INLAND_CONTINENTALNESS, MID_INLAND_CONTINENTALNESS), EROSIONS[1], weirdness, 0.0F, resourcekey2);
 //                addSurfaceBiome(consumer, temperature, humidity, FAR_INLAND_CONTINENTALNESS, EROSIONS[1], weirdness, 0.0F, i == 0 ? resourcekey8 : resourcekey4);
-                addSurfaceBiome(consumer, temperature, humidity, NEAR_INLAND_CONTINENTALNESS, EROSIONS[2], weirdness, 0.0F, resourcekey);
+                addSurfaceBiome(consumer, temperature, humidity, NEAR_INLAND_CONTINENTALNESS, erosion(2), weirdness, 0.0F, resourcekey);
 //                addSurfaceBiome(consumer, temperature, humidity, MID_INLAND_CONTINENTALNESS, EROSIONS[2], weirdness, 0.0F, resourcekey1);
-                addSurfaceBiome(consumer, temperature, humidity, FAR_INLAND_CONTINENTALNESS, EROSIONS[2], weirdness, 0.0F, resourcekey4);
-                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(COAST_CONTINENTALNESS, NEAR_INLAND_CONTINENTALNESS), EROSIONS[3], weirdness, 0.0F, resourcekey);
+                addSurfaceBiome(consumer, temperature, humidity, FAR_INLAND_CONTINENTALNESS, erosion(2), weirdness, 0.0F, resourcekey4);
+                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(COAST_CONTINENTALNESS, NEAR_INLAND_CONTINENTALNESS), erosion(3), weirdness, 0.0F, resourcekey);
 //                addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(MID_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), EROSIONS[3], weirdness, 0.0F, resourcekey1);
                 if (weirdness.max() < 0L) {
 //                    addSurfaceBiome(consumer, temperature, humidity, COAST_CONTINENTALNESS, EROSIONS[4], weirdness, 0.0F, resourcekey5);
-                    addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(NEAR_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), EROSIONS[4], weirdness, 0.0F, resourcekey);
+                    addSurfaceBiome(consumer, temperature, humidity, nearToFar(), erosion(4), weirdness, 0.0F, resourcekey);
                 } else {
-                    addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(COAST_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), EROSIONS[4], weirdness, 0.0F, resourcekey);
+                    addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(COAST_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), erosion(4), weirdness, 0.0F, resourcekey);
                 }
 
 //                addSurfaceBiome(consumer, temperature, humidity, COAST_CONTINENTALNESS, EROSIONS[5], weirdness, 0.0F, resourcekey7);
@@ -219,11 +239,11 @@ public class EastWorldDimension {
                 if (weirdness.max() < 0L) {
 //                    addSurfaceBiome(consumer, temperature, humidity, COAST_CONTINENTALNESS, EROSIONS[6], weirdness, 0.0F, resourcekey5);
                 } else {
-                    addSurfaceBiome(consumer, temperature, humidity, COAST_CONTINENTALNESS, EROSIONS[6], weirdness, 0.0F, resourcekey);
+                    addSurfaceBiome(consumer, temperature, humidity, COAST_CONTINENTALNESS, erosion(6), weirdness, 0.0F, resourcekey);
                 }
 
                 if (i == 0) {
-                    addSurfaceBiome(consumer, temperature, humidity, Climate.Parameter.span(NEAR_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS), EROSIONS[6], weirdness, 0.0F, resourcekey);
+                    addSurfaceBiome(consumer, temperature, humidity, nearToFar(), erosion(6), weirdness, 0.0F, resourcekey);
                 }
             }
         }
@@ -236,8 +256,8 @@ public class EastWorldDimension {
     }
 
     private static void addUndergroundBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
-//        addUndergroundBiome(consumer, this.FULL_RANGE, this.FULL_RANGE, Climate.Parameter.span(0.8F, 1.0F), this.FULL_RANGE, this.FULL_RANGE, 0.0F, Biomes.DRIPSTONE_CAVES);
-//        addUndergroundBiome(consumer, this.FULL_RANGE, Climate.Parameter.span(0.7F, 1.0F), this.FULL_RANGE, this.FULL_RANGE, this.FULL_RANGE, 0.0F, Biomes.LUSH_CAVES);
+//        addUndergroundBiome(consumer, FULL_RANGE, FULL_RANGE, Climate.Parameter.span(0.8F, 1.0F), FULL_RANGE, FULL_RANGE, 0.0F, Biomes.DRIPSTONE_CAVES);
+//        addUndergroundBiome(consumer, FULL_RANGE, Climate.Parameter.span(0.7F, 1.0F), FULL_RANGE, FULL_RANGE, FULL_RANGE, 0.0F, Biomes.LUSH_CAVES);
     }
 
     private static ResourceKey<Biome> pickMiddleBiome(int temperatureId, int humidityId, Climate.Parameter weirdness) {
@@ -254,60 +274,27 @@ public class EastWorldDimension {
         return weirdness.max() >= 0L && resourcekey != null ? resourcekey : PLATEAU_BIOMES[temperatureId][humidityId];
     }
 
-    public static void initDimensionType(BootstapContext<DimensionType> context) {
-        context.register(IMMDimensionTypes.EAST_WORLD, new DimensionType(
-                OptionalLong.empty(),
-                true,
-                false,
-                false,
-                true,
-                1.0D,
-                true,
-                false,
-                -64,
-                384,
-                384,
-                BlockTags.INFINIBURN_OVERWORLD,
-                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
-                0.0F,
-                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
-        ));
+    private static Climate.Parameter nearToFar(){
+        return Climate.Parameter.span(NEAR_INLAND_CONTINENTALNESS, FAR_INLAND_CONTINENTALNESS);
     }
 
-    public static void initNoiseSettings(BootstapContext<NoiseGeneratorSettings> context) {
-        context.register(IMMNoiseSettings.EAST_WORLD, new NoiseGeneratorSettings(
-                NoiseSettings.create(-64, 384, 1, 2),
-                Blocks.STONE.defaultBlockState(),
-                Blocks.WATER.defaultBlockState(),
-                NoiseRouterData.overworld(
-                        context.lookup(Registries.DENSITY_FUNCTION),
-                        context.lookup(Registries.NOISE),
-                        false,
-                        false),
-                IMMSurfaceRules.overworldLike(false, true),
-                spawnTarget(),
-                63,
-                false,
-                true,
-                true,
-                false
-        ));
+    private static Climate.Parameter erosion(int from, int to){
+        return Climate.Parameter.span(EROSIONS[from], EROSIONS[to]);
     }
 
-    public static void initLevelStem(BootstapContext<LevelStem> context){
-        final HolderGetter<MultiNoiseBiomeSourceParameterList> holderGetter = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
-        final ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> builder = ImmutableList.builder();
-        EastWorldDimension.addBiomes(resourceKeyPair -> builder.add(resourceKeyPair.mapSecond(res -> context.lookup(Registries.BIOME).getOrThrow(res))));
-        context.register(IMMLevelStems.EAST_WORLD, new LevelStem(
-                context.lookup(Registries.DIMENSION_TYPE).getOrThrow(IMMDimensionTypes.EAST_WORLD),
-                new NoiseBasedChunkGenerator(
-                        MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(builder.build())),
-                        context.lookup(Registries.NOISE_SETTINGS).getOrThrow(IMMNoiseSettings.EAST_WORLD)
-                )
-        ));
+    private static Climate.Parameter erosion(int pos){
+        return EROSIONS[pos];
     }
 
-    private static List<Climate.ParameterPoint> spawnTarget() {
+    private static Climate.Parameter temperature(int from, int to){
+        return Climate.Parameter.span(TEMPERATURES[from], TEMPERATURES[to]);
+    }
+
+    private static Climate.Parameter temperature(int pos){
+        return TEMPERATURES[pos];
+    }
+
+    public static List<Climate.ParameterPoint> spawnTarget() {
         Climate.Parameter zero = Climate.Parameter.point(0.0F);
         return List.of(new Climate.ParameterPoint(
                         FULL_RANGE,

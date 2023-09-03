@@ -104,6 +104,7 @@ public class ImmortalMod {
         RequirementTypes.registry().register(modBus);
         LearnRequirements.registry().register(modBus);
         SecretManuals.registry().register(modBus);
+        SpiritualTypes.registry().register(modBus);
 
         /* Deferred Registers */
         IMMItems.register(modBus);
@@ -152,7 +153,6 @@ public class ImmortalMod {
         IMMRaidHandler.init();
 
         TradeTypes.TradeType.register();
-        SpiritualTypes.registry();
         PlayerRangeFloats.registry();
         PlayerRangeIntegers.registry();
         ElementReactions.registry();

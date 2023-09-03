@@ -25,15 +25,11 @@ import java.util.function.Supplier;
  * @author: HungTeen
  * @create: 2022-09-24 16:05
  **/
-public class SpiritualTypes {
+public interface SpiritualTypes {
 
-    private static final HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.createSimple(Util.prefix("spiritual_root"));
+    HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.createSimple(Util.prefix("spiritual_root"));
 
-    public static IHTSimpleRegistry<ISpiritualType> registry() {
-        return SPIRITUAL_TYPES;
-    }
-
-    public static final ISpiritualType METAL = register(new SpiritualType(
+    ISpiritualType METAL = register(new SpiritualType(
             "metal",
             Set.of(Elements.METAL),
             IMMConfigs::getMetalWeight,
@@ -43,7 +39,7 @@ public class SpiritualTypes {
             ChatFormatting.GOLD
     ));
 
-    public static final ISpiritualType WOOD = register(new SpiritualType(
+    ISpiritualType WOOD = register(new SpiritualType(
             "wood",
             Set.of(Elements.WOOD),
             IMMConfigs::getWoodWeight,
@@ -53,7 +49,7 @@ public class SpiritualTypes {
             ChatFormatting.GREEN
     ));
 
-    public static final ISpiritualType WATER = register(new SpiritualType(
+    ISpiritualType WATER = register(new SpiritualType(
             "water",
             Set.of(Elements.WATER),
             IMMConfigs::getWaterWeight,
@@ -63,7 +59,7 @@ public class SpiritualTypes {
             ChatFormatting.DARK_BLUE
     ));
 
-    public static final ISpiritualType FIRE = register(new SpiritualType(
+    ISpiritualType FIRE = register(new SpiritualType(
             "fire",
             Set.of(Elements.FIRE),
             IMMConfigs::getFireWeight,
@@ -73,7 +69,7 @@ public class SpiritualTypes {
             ChatFormatting.RED
     ));
 
-    public static final ISpiritualType EARTH = register(new SpiritualType(
+    ISpiritualType EARTH = register(new SpiritualType(
             "earth",
             Set.of(Elements.EARTH),
             IMMConfigs::getEarthWeight,
@@ -83,7 +79,7 @@ public class SpiritualTypes {
             ChatFormatting.YELLOW
     ));
 
-    public static final ISpiritualType SPIRIT = register(new SpiritualType(
+    ISpiritualType SPIRIT = register(new SpiritualType(
             "spirit",
             Set.of(Elements.SPIRIT),
             IMMConfigs::getSpiritWeight,
@@ -93,12 +89,12 @@ public class SpiritualTypes {
             ChatFormatting.DARK_PURPLE
     ));
 
-    public static MutableComponent getCategory(){
+    static MutableComponent getCategory() {
         return TipUtil.misc("spiritual_root");
     }
 
-    public static MutableComponent getSpiritualRoots(List<ISpiritualType> roots){
-        if(!roots.isEmpty()){
+    static MutableComponent getSpiritualRoots(List<ISpiritualType> roots) {
+        if (!roots.isEmpty()) {
             final MutableComponent component = roots.get(0).getComponent();
             for (int i = 1; i < roots.size(); ++i) {
                 component.append(Component.literal(", "));
@@ -109,12 +105,16 @@ public class SpiritualTypes {
         return TipUtil.misc("no_spiritual_root");
     }
 
-    public static ISpiritualType register(ISpiritualType type) {
+    static ISpiritualType register(ISpiritualType type) {
         return registry().register(type);
     }
 
-    public record SpiritualType(String name, Set<Elements> elements, Supplier<Integer> weightSupplier, int priority,
-                                int spiritualColor, int id, ChatFormatting textColor) implements ISpiritualType {
+    static IHTSimpleRegistry<ISpiritualType> registry() {
+        return SPIRITUAL_TYPES;
+    }
+
+    record SpiritualType(String name, Set<Elements> elements, Supplier<Integer> weightSupplier, int priority,
+                         int spiritualColor, int id, ChatFormatting textColor) implements ISpiritualType {
 
         @Override
         public String getName() {

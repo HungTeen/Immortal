@@ -1,9 +1,9 @@
 package hungteen.imm.common.menu.container;
 
-import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.menu.MerchantTradeMenu;
+import hungteen.imm.util.interfaces.Trader;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -21,16 +21,16 @@ import java.util.List;
 public class TradeContainer implements Container {
 
     private final MerchantTradeMenu menu;
-    private final HumanEntity merchant;
+    private final Trader trader;
     private final NonNullList<ItemStack> costStacks;
     private final NonNullList<ItemStack> resultStacks;
     @Nullable
     private TradeOffer activeOffer;
     private int selectionHint;
 
-    public TradeContainer(MerchantTradeMenu menu, HumanEntity trader, int costSize, int resultSize) {
+    public TradeContainer(MerchantTradeMenu menu, Trader trader, int costSize, int resultSize) {
         this.menu = menu;
-        this.merchant = trader;
+        this.trader = trader;
         this.costStacks = NonNullList.withSize(costSize, ItemStack.EMPTY);
         this.resultStacks = NonNullList.withSize(resultSize, ItemStack.EMPTY);
     }
@@ -96,7 +96,7 @@ public class TradeContainer implements Container {
 
     @Override
     public boolean stillValid(Player player) {
-        return this.merchant.getTradingPlayer() == player;
+        return this.trader.getTradingPlayer() == player;
     }
 
     @Override

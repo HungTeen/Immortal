@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.common.entity.IMMCreature;
+import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
@@ -43,7 +43,7 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-10-24 09:58
  **/
-public abstract class GolemEntity extends IMMCreature implements ContainerListener {
+public abstract class GolemEntity extends IMMMob implements ContainerListener {
 
     public static final String GOLEM_ID = "GolemId";
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.OPTIONAL_UUID);

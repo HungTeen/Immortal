@@ -1,5 +1,5 @@
 {
-  "feature": "imm:oak_stake",
+  "feature": "imm:trees_birch_forest",
   "placement": [
     {
       "type": "minecraft:count",
@@ -8,7 +8,7 @@
         "distribution": [
           {
             "data": 0,
-            "weight": 19
+            "weight": 9
           },
           {
             "data": 1,
@@ -26,7 +26,7 @@
     },
     {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "minecraft:biome"

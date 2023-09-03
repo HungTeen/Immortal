@@ -34,6 +34,10 @@ public class BlockUtil {
         return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
     }
 
+    public static boolean canDestroy(Level level, BlockPos pos){
+        return level.getBlockState(pos).getDestroySpeed(level, pos) >= 0;
+    }
+
     /**
      * 麻将害我debug一晚上！！！
      */

@@ -38,8 +38,8 @@ public class EastWorldBiomes {
         context.register(IMMBiomes.DESERT, desert(features, carvers));
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
         context.register(IMMBiomes.MEADOW, meadow(features, carvers));
-        context.register(IMMBiomes.BIRCH_FOREST, forest(features, carvers, false, false));
-        context.register(IMMBiomes.CUT_BIRCH_FOREST, forest(features, carvers, true, true));
+        context.register(IMMBiomes.BIRCH_FOREST, birchForest(features, carvers, false));
+        context.register(IMMBiomes.CUT_BIRCH_FOREST, birchForest(features, carvers, true));
     }
 
     /**
@@ -167,44 +167,34 @@ public class EastWorldBiomes {
     }
 
     /**
-     *
+     * {@link net.minecraft.data.worldgen.biome.OverworldBiomes#forest(HolderGetter, HolderGetter, boolean, boolean, boolean)}
      */
-    public static Biome forest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean cut, boolean hasFlower) {
+    public static Biome birchForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean cut) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-        if (hasFlower) {
-            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-        } else {
-            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 5, 4, 4));
-        }
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
-        if (hasFlower) {
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FOREST_FLOWERS);
-        } else {
-            BiomeDefaultFeatures.addForestFlowers(genBuilder);
-        }
-        BiomeDefaultFeatures.addDefaultOres(genBuilder);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FOREST_FLOWERS);
+        EastWorldFeatures.addOres(genBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
-        if (hasFlower) {
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_FLOWER_FOREST);
+        if (! cut) {
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH_FOREST);
             genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FLOWER_FOREST);
             BiomeDefaultFeatures.addDefaultGrass(genBuilder);
         } else {
-            BiomeDefaultFeatures.addBirchTrees(genBuilder);
             BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
             BiomeDefaultFeatures.addForestGrass(genBuilder);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH_SPARSE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_STAKE);
+            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_HORIZONTAL_STAKE);
         }
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
-        if (cut) {
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.OAK_STAKE);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.OAK_HORIZONTAL_STAKE);
-        }
 
-        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE);
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_FLOWER_FOREST);
         return biome(true, 0.6F, 0.6F, spawnBuilder, genBuilder, music);
     }
 
