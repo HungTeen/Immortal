@@ -20,7 +20,7 @@ import java.util.Objects;
 public class PickupBlockSpell extends SpellType {
 
     public PickupBlockSpell() {
-        super("pickup_block", properties().maxLevel(2).mana(10).cd(100).onlyPlayer());
+        super("pickup_block", properties().maxLevel(2).mana(10).cd(100));
     }
 
     @Override

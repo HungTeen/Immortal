@@ -6,10 +6,12 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
+import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,7 +21,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -31,6 +35,8 @@ public interface IMMDataSerializers {
     DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
     RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
+    RegistryObject<EntityDataSerializer<ISpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
+    RegistryObject<EntityDataSerializer<Optional<ISpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
 
     RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
     RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
@@ -42,6 +48,33 @@ public interface IMMDataSerializers {
      */
     static void register(IEventBus event){
         DATA_SERIALIZERS.register(event);
+    }
+
+    class OptionalEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<Optional<T>> {
+
+        private final Supplier<EntityDataSerializer<T>> serializer;
+
+        public OptionalEntityDataSerializer(Supplier<EntityDataSerializer<T>> serializer) {
+            this.serializer = serializer;
+        }
+
+        @Override
+        public void write(FriendlyByteBuf buf, Optional<T> opt) {
+            if(opt.isPresent()){
+                buf.writeBoolean(true);
+                serializer.get().write(buf, opt.get());
+            } else {
+                buf.writeBoolean(false);
+            }
+        }
+
+        @Override
+        public Optional<T> read(FriendlyByteBuf buf) {
+            if(buf.readBoolean()){
+                return Optional.of(serializer.get().read(buf));
+            }
+            return Optional.empty();
+        }
     }
 
     /**

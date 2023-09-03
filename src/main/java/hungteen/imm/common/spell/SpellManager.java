@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
+import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.network.NetworkHandler;
@@ -78,7 +79,7 @@ public class SpellManager {
      */
     public static void activateSpell(LivingEntity entity, @NotNull ISpellType spell, ISpellTrigger trigger) {
         final HTHitResult result = HTHitResult.create(entity);
-        final Optional<SpellInstance> instance = canActivateSpell(entity, result, spell, false);
+        final Optional<Spell> instance = canActivateSpell(entity, result, spell, false);
         if (instance.isPresent()) {
             if (trigger.checkActivate(entity, result, instance.get().spell(), instance.get().level())) {
                 postActivateSpell(entity, instance.get());
@@ -92,7 +93,7 @@ public class SpellManager {
      * 主动通过按键释放法术。
      */
     public static void activateSpell(Player player, @NotNull HTHitResult result) {
-        final Optional<SpellInstance> instance = canActivateSpell(player, result, null, true);
+        final Optional<Spell> instance = canActivateSpell(player, result, null, true);
         if (instance.isPresent()) {
             final boolean success = instance.get().spell().checkActivate(player, result, instance.get().level());
             if (success) {
@@ -103,7 +104,7 @@ public class SpellManager {
         }
     }
 
-    public static Optional<SpellInstance> canActivateSpell(LivingEntity entity, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
+    public static Optional<Spell> canActivateSpell(LivingEntity entity, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
         if (entity instanceof Player player) {
             return canActivateSpell(player, result, targetSpell, sendTip);
         }
@@ -119,7 +120,7 @@ public class SpellManager {
      * @param sendTip     是否给予不能触发的反馈。
      * @return empty 表示不能触发。
      */
-    public static Optional<SpellInstance> canActivateSpell(Player player, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
+    public static Optional<Spell> canActivateSpell(Player player, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
         final ISpellType spell = PlayerUtil.getPreparingSpell(player);
         if (spell != null && (targetSpell == null || spell == targetSpell)) {
             final int level = PlayerUtil.getSpellLevel(player, spell);
@@ -129,7 +130,7 @@ public class SpellManager {
                     // 灵力足够。
                     if (PlayerUtil.getMana(player) >= spell.getConsumeMana()) {
                         if (!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
-                            return Optional.of(new SpellInstance(spell, level));
+                            return Optional.of(new Spell(spell, level));
                         }
                     } else if (sendTip) {
                         PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()).withStyle(ChatFormatting.RED));
@@ -144,7 +145,7 @@ public class SpellManager {
         return Optional.empty();
     }
 
-    public static void postActivateSpell(LivingEntity entity, SpellInstance instance) {
+    public static void postActivateSpell(LivingEntity entity, Spell instance) {
         if (entity instanceof Player player) {
             PlayerUtil.cooldownSpell(player, instance.spell(), getSpellCDTime(player, instance.spell()));
             costMana(player, instance.spell().getConsumeMana());
@@ -196,10 +197,6 @@ public class SpellManager {
     public static MutableComponent spellName(ISpellType spell, int level) {
         if (spell.getMaxLevel() == 1) return spell.getComponent();
         return spell.getComponent().append("(").append(TipUtil.misc("level" + level)).append(")");
-    }
-
-    record SpellInstance(ISpellType spell, int level) {
-
     }
 
     @FunctionalInterface

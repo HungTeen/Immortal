@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 public class RenderUtil {
 
     public static final ResourceLocation WIDGETS = Util.get().guiTexture("widgets");
+    public static final ResourceLocation EMPTY_ENTITY_TEXTURE = Util.get().entityTexture("empty");
 
     public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);

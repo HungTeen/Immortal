@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 public class ReleasingSpell extends SpellType {
 
     public ReleasingSpell() {
-        super("releasing", properties().maxLevel(1).mana(20).cd(160).onlyPlayer());
+        super("releasing", properties().maxLevel(1).mana(20).cd(160));
     }
 
     @Override

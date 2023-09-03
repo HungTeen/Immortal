@@ -122,7 +122,7 @@ public class ClientRegister {
         event.registerLayerDefinition(ModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
 
         /* Monster */
-        event.registerLayerDefinition(ModelLayers.SHARP_STAKE, EmptyModel::createBodyLayer);
+        event.registerLayerDefinition(ModelLayers.SHARP_STAKE, CubeModel::createBodyLayer);
 
         /* zombie entity */
         event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);

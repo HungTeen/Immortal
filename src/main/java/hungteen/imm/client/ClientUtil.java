@@ -2,6 +2,7 @@ package hungteen.imm.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,6 +20,10 @@ import java.util.Optional;
  * @data 2023/7/10 15:51
  */
 public class ClientUtil {
+
+    public static Optional<Minecraft> mc(){
+        return Optional.ofNullable(ClientProxy.mc());
+    }
 
     public static Optional<MultiPlayerGameMode> mode(){
         return Optional.ofNullable(ClientProxy.mc().gameMode);

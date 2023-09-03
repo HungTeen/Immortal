@@ -1,45 +1,38 @@
 package hungteen.imm.client.render.entity.creature.monster;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.imm.client.model.entity.EmptyModel;
-import hungteen.imm.client.render.entity.IMMMobRender;
+import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.entity.CubeModel;
+import hungteen.imm.client.render.entity.layer.WoodStakeLayer;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/7/6 15:14
  */
-public class SharpStakeRender extends IMMMobRender<SharpStake> {
+public class SharpStakeRender extends MobRenderer<SharpStake, CubeModel<SharpStake>> {
 
-    private final BlockRenderDispatcher blockRender;
+    private static final ResourceLocation EYES = Util.get().entityTexture("wood_eyes");
 
     public SharpStakeRender(EntityRendererProvider.Context context) {
-        super(context, new EmptyModel<>(), 0.5F);
-        this.blockRender = context.getBlockRenderDispatcher();
+        super(context, new CubeModel<>(context.bakeLayer(ModelLayers.SHARP_STAKE)), 0.5F);
+        this.addLayer(new WoodStakeLayer(context, this));
     }
 
-    public void render(SharpStake stake, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferSource, int packedLightIn) {
-        super.render(stake, entityYaw, partialTicks, stack, bufferSource, packedLightIn);
-        final BlockState state = stake.getStakeState();
-        if(! state.isAir()){
-            stack.pushPose();
-            stack.translate(-0.5D, 0.0D, -0.5D);
-            this.blockRender.renderSingleBlock(state, stack, bufferSource, packedLightIn, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
-            stack.popPose();
-        }
+    @Override
+    protected void setupRotations(SharpStake stake, PoseStack stack, float blob, float yRot, float partialTicks) {
+        super.setupRotations(stake, stack, blob, Direction.fromYRot(yRot).toYRot(), partialTicks);
     }
 
     @Override
     public ResourceLocation getTextureLocation(SharpStake stake) {
-        return null;
+        return EYES;
     }
 
 }

@@ -3,6 +3,7 @@ package hungteen.imm.common.spell.spells;
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.AABB;
 public class IntimidateSpell extends SpellType {
 
     public IntimidateSpell() {
-        super("intimidate", properties().maxLevel(1).cd(200).mana(20));
+        super("intimidate", properties(SpellCategories.CUSTOM).maxLevel(1).cd(200).mana(20));
     }
 
     @Override

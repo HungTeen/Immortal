@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 public class PickupItemSpell extends SpellType {
 
     public PickupItemSpell() {
-        super("pickup_item", properties().maxLevel(2).mana(5).cd(20).onlyPlayer());
+        super("pickup_item", properties().maxLevel(2).mana(5).cd(20));
     }
 
     @Override

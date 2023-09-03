@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 public class DispersalSpell extends SpellType {
 
     public DispersalSpell() {
-        super("dispersal", properties().maxLevel(1).mana(30).cd(200).onlyPlayer());
+        super("dispersal", properties().maxLevel(1).mana(30).cd(200));
     }
 
     @Override

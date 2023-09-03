@@ -9,7 +9,7 @@ public interface IHasMana {
 
     float getMana();
 
-    float addMana(float amount);
+    void addMana(float amount);
 
     boolean isManaFull();
 
