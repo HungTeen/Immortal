@@ -15,12 +15,12 @@ public enum SpellCategories {
     /**
      * 攻击敌人。
      */
-    ATTACK_TARGET,
+    ATTACK_TARGET(true),
 
     /**
      * 给敌人加debuff。
      */
-    DEBUFF_TARGET,
+    DEBUFF_TARGET(true),
 
     /**
      * 给自己加buff。
@@ -32,4 +32,18 @@ public enum SpellCategories {
      */
     CUSTOM,
     ;
+
+    private final boolean requireEntityTarget;
+
+    SpellCategories(){
+        this(false);
+    }
+
+    SpellCategories(boolean requireEntityTarget){
+        this.requireEntityTarget = requireEntityTarget;
+    }
+
+    public boolean requireEntityTarget() {
+        return requireEntityTarget;
+    }
 }

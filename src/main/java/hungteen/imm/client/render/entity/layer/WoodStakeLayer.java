@@ -39,7 +39,7 @@ public class WoodStakeLayer extends RenderLayer<SharpStake, CubeModel<SharpStake
             stack.pushPose();
             final float size = 0.95F;
             stack.scale(size, size, size);
-            stack.translate(-0.5D, 0.5D, -0.5D);
+            stack.translate(-0.5D, 0.6D, -0.5D);
             this.blockRenderer.renderSingleBlock(state, stack, bufferSource, packedLightIn, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
             stack.popPose();
 

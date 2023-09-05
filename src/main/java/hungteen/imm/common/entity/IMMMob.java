@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.RealmStages;
+import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.interfaces.IHasRoot;
@@ -117,12 +118,19 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
+    public boolean canUseSpell(ISpellType spell) {
+        if(spell.getCategory() == SpellCategories.PLAYER_ONLY) return false;
+        if(spell.getCategory().requireEntityTarget()) return EntityHelper.isEntityValid(this.getTarget());
+        return true;
+    }
+
+    @Override
     public void trigger(@Nullable Spell spell) {
         if(spell == null){
             this.spellCooldown = 20;
         } else {
             this.setUsingSpell(spell.spell());
-            this.addMana(spell.spell().getConsumeMana());
+            this.addMana(- spell.spell().getConsumeMana());
             this.spellCooldown = spell.spell().getCooldown();
         }
     }

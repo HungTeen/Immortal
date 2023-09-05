@@ -1,6 +1,8 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -44,25 +46,35 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     @Override
     public void tick() {
         super.tick();
-        if(! this.level().isClientSide()){
-            if(this.workFinished()){
-                if(! this.noPhysics) this.noPhysics = true;
-                Optional.ofNullable(this.getOwner()).ifPresentOrElse(entity -> {
-                    this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1F));
-                    if(entity.distanceTo(this) < 2){
-                        EntityUtil.addItem(entity, this.getItem());
-                        this.discard();
-                    }
-                }, () -> {
+        if (this.level().isClientSide()) {
+            if (this.random.nextFloat() < 0.1F) {
+                ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL.get(), this.position(), 1, 0, 0.08);
+            }
+        }
+        if (this.workFinished()) {
+            if (!this.noPhysics) this.noPhysics = true;
+            Optional.ofNullable(this.getOwner()).ifPresentOrElse(entity -> {
+                this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1F));
+                if (!this.level().isClientSide() && entity.distanceTo(this) < 2) {
+                    EntityUtil.addItem(entity, this.getItem());
+                    this.discard();
+                }
+            }, () -> {
+                if(!this.level().isClientSide()){
                     this.spawnAtLocation(this.getItem());
-                });
+                    this.discard();
+                }
+            });
+        } else {
+            if(this.tickCount > 100){
+                this.setWorkFinished(true);
             }
         }
     }
 
     @Override
     protected void onHit(HitResult result) {
-        if(! this.workFinished()){
+        if (!this.workFinished()) {
             this.setWorkFinished(true);
             super.onHit(result);
         }
@@ -73,12 +85,17 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         super.onHitEntity(result);
         double damage = 1F + ItemHelper.getItemBonusDamage(this.getItem(), EquipmentSlot.MAINHAND);
         result.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), (float) damage);
+        if(EntityUtil.ownerOrSelf(this) instanceof LivingEntity living){
+            this.getItem().hurtAndBreak(3, living, (e) -> {
+                this.discard();
+            });
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(tag.contains("WorkFinished")){
+        if (tag.contains("WorkFinished")) {
             this.setWorkFinished(tag.getBoolean("WorkFinished"));
         }
     }
@@ -91,7 +108,7 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return this.getItem().getItem() instanceof BlockItem ? EntityDimensions.scalable(1F, 1F) : EntityDimensions.scalable(0.9F, 0.2F);
+        return this.getItem().getItem() instanceof BlockItem ? EntityDimensions.scalable(1F, 1F) : EntityDimensions.scalable(0.5F, 0.5F);
     }
 
     @Override
@@ -99,11 +116,11 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         return Items.SNOWBALL;
     }
 
-    public boolean workFinished(){
+    public boolean workFinished() {
         return entityData.get(WORK_FINISHED);
     }
 
-    public void setWorkFinished(boolean finished){
+    public void setWorkFinished(boolean finished) {
         entityData.set(WORK_FINISHED, finished);
     }
 }

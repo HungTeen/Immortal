@@ -21,11 +21,11 @@ import net.minecraft.world.phys.Vec3;
  **/
 public class ParticleUtil {
 
-    public static BlockParticleOption block(BlockState state){
+    public static BlockParticleOption block(BlockState state) {
         return new BlockParticleOption(ParticleTypes.BLOCK, state);
     }
 
-    public static BlockParticleOption block(BlockState state, BlockPos pos){
+    public static BlockParticleOption block(BlockState state, BlockPos pos) {
         return block(state).setPos(pos);
     }
 
@@ -50,7 +50,11 @@ public class ParticleUtil {
     }
 
     public static void spawnParticlesOnBlockFaces(Level level, BlockPos blockPos, ParticleOptions particleOptions, IntProvider cntProvider) {
-        for(Direction direction : Direction.values()) {
+        spawnParticlesOnBlockFaces(level, blockPos, particleOptions, cntProvider, Direction.values());
+    }
+
+    public static void spawnParticlesOnBlockFaces(Level level, BlockPos blockPos, ParticleOptions particleOptions, IntProvider cntProvider, Direction... dirs) {
+        for (Direction direction : dirs) {
             spawnParticlesOnBlockFace(level, blockPos, particleOptions, cntProvider, direction, RandomHelper.vec3Range(level.random, 0.05D), 0.55D);
         }
     }
@@ -60,6 +64,9 @@ public class ParticleUtil {
         spawnParticleOnFace(level, pos, dir, options, count, speed, offset);
     }
 
+    /**
+     * {@link net.minecraft.util.ParticleUtils#spawnParticleOnFace(Level, BlockPos, Direction, ParticleOptions, Vec3, double)}
+     */
     public static void spawnParticleOnFace(Level level, BlockPos blockPos, Direction dir, ParticleOptions particle, int amount, Vec3 speed, double offset) {
         final Vec3 pos = MathHelper.toVec3(blockPos);
         final int i = dir.getStepX();

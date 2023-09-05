@@ -21,11 +21,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -51,27 +50,47 @@ import java.util.function.Predicate;
  **/
 public class EntityUtil {
 
-    public static AABB getEntityAABB(Entity entity, Vec3 offset){
+    public static Entity ownerOrSelf(Entity entity) {
+        if (entity instanceof TraceableEntity traceableEntity && traceableEntity.getOwner() != null)
+            return traceableEntity.getOwner();
+        if (entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null)
+            return ownableEntity.getOwner();
+        return entity;
+    }
+
+    /**
+     * 发射子弹。
+     *
+     * @param projectile 子弹。
+     * @param vec        子弹发射方向。
+     * @param speed      子弹速度。
+     * @param variance   子弹精确度，越高越打不准。
+     */
+    public static void shootProjectile(Projectile projectile, Vec3 vec, float speed, float variance) {
+        projectile.shoot(vec.x(), vec.y() + MathUtil.horizontalLength(vec) * 0.2F, vec.z(), speed, variance);
+    }
+
+    public static AABB getEntityAABB(Entity entity, Vec3 offset) {
         return getEntityAABB(entity).move(offset);
     }
 
-    public static AABB getEntityAABB(Entity entity){
+    public static AABB getEntityAABB(Entity entity) {
         final float offset = entity.getBbWidth() / 2.0F;
         return new AABB(entity.getX() - offset, entity.getY(), entity.getZ() - offset, entity.getX() + offset, entity.getY() + entity.getBbHeight(), entity.getZ() + offset);
     }
 
-    public static boolean addItem(Entity entity, ItemStack stack){
-        if(entity instanceof Player player){
+    public static boolean addItem(Entity entity, ItemStack stack) {
+        if (entity instanceof Player player) {
             PlayerUtil.addItem(player, stack);
             return true;
-        } else if(entity instanceof InventoryCarrier carrier){
+        } else if (entity instanceof InventoryCarrier carrier) {
             carrier.getInventory().addItem(stack);
             return true;
-        } else if(entity instanceof LivingEntity living){
-            if(living.getMainHandItem().isEmpty()){
+        } else if (entity instanceof LivingEntity living) {
+            if (living.getMainHandItem().isEmpty()) {
                 living.setItemInHand(InteractionHand.MAIN_HAND, stack);
                 return true;
-            } else if(living.getOffhandItem().isEmpty()) {
+            } else if (living.getOffhandItem().isEmpty()) {
                 living.setItemInHand(InteractionHand.OFF_HAND, stack);
                 return true;
             }
@@ -79,9 +98,9 @@ public class EntityUtil {
         return false;
     }
 
-    public static boolean sitToMeditate(LivingEntity living, BlockPos pos, float yOffset, boolean relyOnBlock){
-        if(EntityUtil.hasItemInHand(living)){
-            if(living instanceof Player player){
+    public static boolean sitToMeditate(LivingEntity living, BlockPos pos, float yOffset, boolean relyOnBlock) {
+        if (EntityUtil.hasItemInHand(living)) {
+            if (living instanceof Player player) {
                 PlayerHelper.sendTipTo(player, TipUtil.info("spell.has_item_in_hand").withStyle(ChatFormatting.RED));
             }
             return false;
@@ -99,7 +118,7 @@ public class EntityUtil {
         final Vec3 lookVec = entity.getViewVector(1.0F);
         Vec3 endVec = startVec.add(lookVec.scale(distance));
         final BlockHitResult blockHitResult = entity.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
-        if(blockHitResult.getType() != HitResult.Type.MISS){
+        if (blockHitResult.getType() != HitResult.Type.MISS) {
             endVec = blockHitResult.getLocation();
         }
         final AABB aabb = entity.getBoundingBox().inflate(distance);
@@ -109,29 +128,29 @@ public class EntityUtil {
         return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
-    public static boolean hasEmptyHand(LivingEntity living){
+    public static boolean hasEmptyHand(LivingEntity living) {
         return living.getMainHandItem().isEmpty() || living.getOffhandItem().isEmpty();
     }
 
-    public static boolean hasItemInHand(LivingEntity living){
-        return ! living.getMainHandItem().isEmpty() || ! living.getOffhandItem().isEmpty();
+    public static boolean hasItemInHand(LivingEntity living) {
+        return !living.getMainHandItem().isEmpty() || !living.getOffhandItem().isEmpty();
     }
 
-    public static boolean canManaIncrease(Entity entity){
-        return ! (entity.getVehicle() instanceof FlyingItemEntity)
+    public static boolean canManaIncrease(Entity entity) {
+        return !(entity.getVehicle() instanceof FlyingItemEntity)
                 && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0
-                && ! ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
+                && !ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
     }
 
-    public static int getSpellLevel(Entity entity, ISpellType spell){
+    public static int getSpellLevel(Entity entity, ISpellType spell) {
         return entity instanceof Player player ? PlayerUtil.getSpellLevel(player, spell) : entity instanceof IHasSpell e ? e.getSpellLevel(spell) : 0;
     }
 
-    public static boolean hasLearnedSpell(Entity entity, ISpellType spell, int level){
+    public static boolean hasLearnedSpell(Entity entity, ISpellType spell, int level) {
         return entity instanceof Player player ? PlayerUtil.hasLearnedSpell(player, spell, level) : entity instanceof IHasSpell e && e.hasLearnedSpell(spell, level);
     }
 
-    public static boolean hasLearnedSpell(Entity entity, ISpellType spell){
+    public static boolean hasLearnedSpell(Entity entity, ISpellType spell) {
         return hasLearnedSpell(entity, spell, 1);
     }
 
@@ -140,9 +159,9 @@ public class EntityUtil {
     }
 
     public static void addMana(Entity entity, float amount) {
-        if(entity instanceof Player player){
+        if (entity instanceof Player player) {
             PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, amount);
-        } else if(entity instanceof IHasMana manaEntity){
+        } else if (entity instanceof IHasMana manaEntity) {
             manaEntity.addMana(amount);
         }
     }
@@ -152,9 +171,9 @@ public class EntityUtil {
     }
 
     public static boolean isManaFull(Entity entity) {
-        if(entity instanceof Player player){
+        if (entity instanceof Player player) {
             return PlayerUtil.isManaFull(player);
-        } else if(entity instanceof IHasMana manaEntity){
+        } else if (entity instanceof IHasMana manaEntity) {
             return manaEntity.isManaFull();
         }
         return true;

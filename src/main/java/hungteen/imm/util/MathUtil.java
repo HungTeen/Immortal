@@ -1,5 +1,6 @@
 package hungteen.imm.util;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -10,6 +11,14 @@ import net.minecraft.world.phys.Vec3;
  * @create: 2023-06-04 22:10
  **/
 public class MathUtil {
+
+    public static Direction[] getHorizontalDirections(){
+        return Direction.stream().filter(dir -> dir.getAxis().isHorizontal()).toArray(Direction[]::new);
+    }
+
+    public static double horizontalLength(Vec3 vec){
+        return Math.sqrt(vec.x() * vec.x() + vec.z() * vec.z());
+    }
 
     public static double log2(double x){
         return Math.log(x) / Math.log(2);

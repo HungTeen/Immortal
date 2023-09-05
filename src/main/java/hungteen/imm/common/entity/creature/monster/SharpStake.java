@@ -1,17 +1,22 @@
 package hungteen.imm.common.entity.creature.monster;
 
+import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.JavaHelper;
-import hungteen.htlib.util.helper.registry.BiomeHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMMob;
+import hungteen.imm.common.entity.ai.goal.LookAtTargetGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.util.MathUtil;
+import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,13 +24,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -39,6 +42,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +56,7 @@ import java.util.function.Supplier;
 public class SharpStake extends IMMMob {
 
     private static final Map<ResourceKey<Biome>, Supplier<BlockState>> STAKE_MAP = new HashMap<>();
+    private static final List<Pair<Supplier<ItemStack>, Integer>> AXES = new ArrayList<>();
     private static final EntityDataAccessor<BlockState> STAKE = SynchedEntityData.defineId(SharpStake.class, EntityDataSerializers.BLOCK_STATE);
 
     static {
@@ -59,10 +64,21 @@ public class SharpStake extends IMMMob {
                 IMMBiomes.BIRCH_FOREST, Blocks.BIRCH_LOG::defaultBlockState,
                 IMMBiomes.CUT_BIRCH_FOREST, Blocks.BIRCH_LOG::defaultBlockState
         ));
+        AXES.addAll(List.of(
+                Pair.of(() -> new ItemStack(Items.WOODEN_AXE), 10),
+                Pair.of(() -> new ItemStack(Items.STONE_AXE), 10),
+                Pair.of(() -> new ItemStack(Items.IRON_AXE), 15),
+                Pair.of(() -> new ItemStack(Items.DIAMOND_AXE), 8),
+                Pair.of(() -> new ItemStack(Items.IRON_SWORD), 10)
+        ));
     }
 
     public static void updateStakeMap(ResourceKey<Biome> biome, Supplier<BlockState> state) {
         STAKE_MAP.put(biome, state);
+    }
+
+    public static void addAxe(Supplier<ItemStack> axe, int weight) {
+        AXES.add(Pair.of(axe, weight));
     }
 
     public SharpStake(EntityType<? extends IMMMob> type, Level level) {
@@ -85,6 +101,7 @@ public class SharpStake extends IMMMob {
     @Override
     protected void registerGoals() {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new LookAtTargetGoal(this));
         this.goalSelector.addGoal(2, new UseSpellGoal(this));
     }
 
@@ -92,10 +109,14 @@ public class SharpStake extends IMMMob {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         if(! accessor.isClientSide()){
-            BiomeHelper.get().getResourceKey(accessor.getBiome(blockPosition()).get()).flatMap(key -> JavaHelper.getOpt(STAKE_MAP, key)).ifPresent(sup -> {
+            // Choose skin.
+            accessor.getBiome(blockPosition()).unwrapKey().flatMap(key -> JavaHelper.getOpt(STAKE_MAP, key)).ifPresent(sup -> {
                 this.setStakeState(sup.get());
             });
-            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE));
+            // Roll axe.
+            final SimpleWeightedList.Builder<ItemStack> axes = SimpleWeightedList.builder();
+            AXES.forEach(pair -> axes.add(pair.getFirst().get(), pair.getSecond()));
+            this.setItemInHand(InteractionHand.MAIN_HAND, axes.build().getItem(accessor.getRandom()).orElse(new ItemStack(Items.GOLDEN_AXE)));
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data, tag);
     }
@@ -103,6 +124,42 @@ public class SharpStake extends IMMMob {
     @Override
     protected List<Spell> createLearnSpells() {
         return List.of(new Spell(SpellTypes.THROW_ITEM));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(EntityHelper.isServer(this)){
+            if(this.getPose() == Pose.CROUCHING){
+                this.setPose(Pose.STANDING);
+            }
+            if(notInCenter(this.getX() - this.blockPosition().getX()) || notInCenter(this.getZ() - this.blockPosition().getZ())){
+                this.setPos(this.blockPosition().getX() + 0.5D, this.getY(), this.blockPosition().getZ() + 0.5D);
+            }
+        }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if(accessor.equals(DATA_POSE)){
+            if(this.getPose() == Pose.CROUCHING){
+                ParticleUtil.spawnParticlesOnBlockFaces(this.level(), this.blockPosition(), ParticleUtil.block(this.getStakeState()), UniformInt.of(3, 5), MathUtil.getHorizontalDirections());
+            }
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float damage) {
+        if(super.hurt(source, damage)){
+            this.setPose(Pose.CROUCHING);
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean notInCenter(double delta){
+        return Math.abs(delta) < 0.49 || Math.abs(delta) > 0.51;
     }
 
     @Override
@@ -147,13 +204,12 @@ public class SharpStake extends IMMMob {
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.WOOD_BREAK;
+        return SoundEvents.WOOD_HIT;
     }
 
     @Nullable
     @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.WOOD_STEP;
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.WOOD_BREAK;
     }
-
 }
