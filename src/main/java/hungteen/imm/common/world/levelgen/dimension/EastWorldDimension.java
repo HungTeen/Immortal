@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.levelgen.dimension;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.biome.IMMBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;

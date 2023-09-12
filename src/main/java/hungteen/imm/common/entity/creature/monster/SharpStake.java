@@ -14,7 +14,7 @@ import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;

@@ -3,7 +3,7 @@ package hungteen.imm.data.tag;
 import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.registry.BiomeHelper;
 import hungteen.imm.common.tag.IMMBiomeTags;
-import hungteen.imm.common.world.levelgen.IMMBiomes;
+import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -32,8 +32,9 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
-                .addTags(BiomeTags.IS_MOUNTAIN, Tags.Biomes.IS_PLAINS, Tags.Biomes.IS_PLATEAU)
-                .add(Biomes.DRIPSTONE_CAVES);
+                .add(Biomes.PLAINS, Biomes.SAVANNA_PLATEAU);
+        this.tag(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET)
+                .add(IMMBiomes.PLAINS);
         bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
         bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
         bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
@@ -41,10 +42,8 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
     }
 
     @SafeVarargs
-    private void bind(ResourceKey<Biome> biome, TagKey<Biome>... tags)
-    {
-        for(TagKey<Biome> key : tags)
-        {
+    private void bind(ResourceKey<Biome> biome, TagKey<Biome>... tags) {
+        for (TagKey<Biome> key : tags) {
             tag(key).add(biome);
         }
     }

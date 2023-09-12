@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.levelgen;
 
 import com.google.common.collect.ImmutableList;
+import hungteen.imm.common.world.biome.IMMBiomes;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

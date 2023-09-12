@@ -13,7 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 public interface IMMBiomeTags {
 
     TagKey<Biome> HAS_TELEPORT_RUIN = tag("has_structure/teleport_ruin");
-    TagKey<Biome> HAS_TRADING_MARKET = tag("has_structure/overworld_trading_market");
+    TagKey<Biome> HAS_PLAINS_TRADING_MARKET = tag("has_structure/plains_trading_market");
 
     private static TagKey<Biome> tag(String name){
         return BiomeHelper.get().tag(Util.prefix(name));

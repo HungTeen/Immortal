@@ -13,9 +13,14 @@ import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.raid.*;
 import hungteen.imm.common.misc.damage.IMMDamageTypes;
 import hungteen.imm.common.world.levelgen.*;
-import hungteen.imm.common.world.levelgen.biome.modifiers.IMMBiomeModifiers;
-import hungteen.imm.common.world.levelgen.features.IMMFeatures;
-import hungteen.imm.common.world.levelgen.features.IMMPlacements;
+import hungteen.imm.common.world.biome.IMMBiomes;
+import hungteen.imm.common.world.biome.IMMBiomeModifiers;
+import hungteen.imm.common.world.feature.IMMFeatures;
+import hungteen.imm.common.world.feature.IMMPlacements;
+import hungteen.imm.common.world.structure.IMMProcessorLists;
+import hungteen.imm.common.world.structure.IMMStructureSets;
+import hungteen.imm.common.world.structure.IMMStructures;
+import hungteen.imm.common.world.structure.IMMTemplatePools;
 import hungteen.imm.data.tag.BiomeTagGen;
 import hungteen.imm.data.tag.StructureTagGen;
 import hungteen.imm.util.Util;
@@ -46,6 +51,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
             .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
+            .add(Registries.TEMPLATE_POOL, IMMTemplatePools::register)
             .add(Registries.CONFIGURED_FEATURE, IMMFeatures::register)
             .add(Registries.PLACED_FEATURE, IMMPlacements::register)
             .add(Registries.STRUCTURE, IMMStructures::register)

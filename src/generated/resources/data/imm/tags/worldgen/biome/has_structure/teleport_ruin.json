@@ -1,8 +1,6 @@
 {
   "values": [
-    "#minecraft:is_mountain",
-    "#forge:is_plains",
-    "#forge:is_plateau",
-    "minecraft:dripstone_caves"
+    "minecraft:plains",
+    "minecraft:savanna_plateau"
   ]
 }

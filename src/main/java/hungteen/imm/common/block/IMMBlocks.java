@@ -11,7 +11,7 @@ import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.*;
 import hungteen.imm.common.impl.ArtifactTypes;
-import hungteen.imm.common.world.levelgen.features.tree.MulberryTreeGrower;
+import hungteen.imm.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.world.item.BlockItem;

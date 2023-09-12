@@ -1,0 +1,113 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/straight_01",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/straight_02",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/straight_03",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/straight_04",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/crossroad_01",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/crossroad_02",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/crossroad_03",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/crossroad_04",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/crossroad_05",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/corner_01",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/corner_02",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "imm:trading_market/plains/streets/corner_03",
+        "processors": "imm:plains_trading_market_street_rot",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

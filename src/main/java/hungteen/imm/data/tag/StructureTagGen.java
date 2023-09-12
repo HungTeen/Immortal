@@ -3,7 +3,7 @@ package hungteen.imm.data.tag;
 import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.registry.StructureHelper;
 import hungteen.imm.common.tag.IMMStructureTags;
-import hungteen.imm.common.world.levelgen.IMMStructures;
+import hungteen.imm.common.world.structure.IMMStructures;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

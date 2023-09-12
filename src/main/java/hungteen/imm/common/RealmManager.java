@@ -47,20 +47,27 @@ import java.util.function.Consumer;
 public class RealmManager {
 
     public static final int MAX_VALID_KILL_COUNT = 5;
-    private static final float DEFAULT_KILL_XP = 1;
-    private static final Map<EntityType<?>, Float> killXpMap = new HashMap<>();
+    private static final float DEFAULT_KILL_XP = 0.2F;
+    private static final Map<EntityType<?>, IRealmType> DEFAULT_REALM_MAP = new HashMap<>();
+    private static final Map<EntityType<?>, Float> KILL_XP_MAP = new HashMap<>();
     private static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
 
     /**
      * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
      */
     public static void init(){
-        fillXpMap();
+        fillEntityMap();
         updateRealmTree();
     }
 
-    private static void fillXpMap(){
-        addKillXp(IMMEntities.EMPTY_CULTIVATOR.get(), 10);
+    private static void fillEntityMap(){
+        addKillXp(IMMEntities.EMPTY_CULTIVATOR.get(), 1);
+
+        put(EntityType.ENDERMAN, RealmTypes.SPIRITUAL_LEVEL_1, 0.4F);
+        put(EntityType.PIGLIN, RealmTypes.MONSTER_LEVEL_1, 0.5F);
+        put(EntityType.BLAZE, RealmTypes.MONSTER_LEVEL_1, 0.5F);
+        put(EntityType.HOGLIN, RealmTypes.MONSTER_LEVEL_2, 0.7F);
+        put(EntityType.RAVAGER, RealmTypes.MONSTER_LEVEL_3, 1F);
     }
 
     private static void updateRealmTree() {
@@ -129,12 +136,25 @@ public class RealmManager {
         }
     }
 
+    public static void put(EntityType<?> type, IRealmType realm, float xp){
+        addDefaultRealm(type, realm);
+        addKillXp(type, xp);
+    }
+
+    public static void addDefaultRealm(EntityType<?> type, IRealmType realm){
+        DEFAULT_REALM_MAP.put(type, realm);
+    }
+
+    public static IRealmType getDefaultRealm(EntityType<?> type){
+        return DEFAULT_REALM_MAP.getOrDefault(type, RealmTypes.MORTALITY);
+    }
+
     public static void addKillXp(EntityType<?> type, float value){
-        killXpMap.put(type, value);
+        KILL_XP_MAP.put(type, value);
     }
 
     public static float getKillXp(EntityType<?> type){
-        return killXpMap.getOrDefault(type, DEFAULT_KILL_XP);
+        return KILL_XP_MAP.getOrDefault(type, DEFAULT_KILL_XP);
     }
 
     public static boolean canBreakThrough(Player player){
@@ -189,7 +209,7 @@ public class RealmManager {
         if(entity instanceof Player){
             PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
-        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : RealmTypes.MORTALITY;
+        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : getDefaultRealm(entity.getType());
     }
 
     public static float getStageRequiredCultivation(IRealmType realm, RealmStages stage){
