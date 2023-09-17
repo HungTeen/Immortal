@@ -18,10 +18,7 @@ import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
-import hungteen.imm.client.particle.IMMFlameParticle;
-import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.client.particle.SpiritParticle;
-import hungteen.imm.client.particle.SpiritualManaParticle;
+import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
@@ -138,9 +135,14 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(IMMParticles.IMMORTAL_FLAME.get(), IMMFlameParticle.Factory::new);
         event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.SPIRITUAL.get(), SpiritParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
     }
 
     @SubscribeEvent

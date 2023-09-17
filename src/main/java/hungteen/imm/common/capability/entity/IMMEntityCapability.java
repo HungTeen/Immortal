@@ -26,6 +26,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     private final Set<IElementReaction> possibleReactions = new TreeSet<>(COMPARATOR);
     private final Map<IElementReaction, Float> activeReactions = new HashMap<>();
     private Entity lastAttachedEntity = null;
+    private float quenchBladeDamage = 0;
     private boolean dirty = false;
 
     public void init(Entity entity) {
@@ -54,6 +55,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         if(this.lastAttachedEntity != null){
             tag.putInt("LastAttachedEntity", this.lastAttachedEntity.getId());
         }
+        tag.putFloat("QuenchBladeDamage", this.quenchBladeDamage);
         return tag;
     }
 
@@ -87,6 +89,9 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         }
         if(tag.contains("LastAttachedEntity")){
             this.lastAttachedEntity = this.entity.level().getEntity(tag.getInt("LastAttachedEntity"));
+        }
+        if(tag.contains("QuenchBladeDamage")){
+            this.quenchBladeDamage = tag.getFloat("QuenchBladeDamage");
         }
     }
 
@@ -204,6 +209,14 @@ public class IMMEntityCapability implements IIMMEntityCapability {
 
     public Entity getLastAttachedEntity() {
         return lastAttachedEntity;
+    }
+
+    public void setQuenchBladeDamage(float quenchBladeDamage) {
+        this.quenchBladeDamage = quenchBladeDamage;
+    }
+
+    public float getQuenchBladeDamage() {
+        return quenchBladeDamage;
     }
 
     public void checkValid(Elements element, boolean robust) {

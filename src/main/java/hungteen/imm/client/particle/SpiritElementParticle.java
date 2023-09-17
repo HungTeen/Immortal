@@ -15,12 +15,12 @@ import net.minecraft.util.RandomSource;
  * @program Immortal
  * @data 2023/6/19 16:10
  */
-public class SpiritParticle extends HTTextureParticle {
+public class SpiritElementParticle extends HTTextureParticle {
 
     private static final RandomSource RANDOM = RandomSource.create();
     private final SpriteSet sprites;
 
-    public SpiritParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+    public SpiritElementParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         this.friction = 0.96F;
@@ -49,7 +49,7 @@ public class SpiritParticle extends HTTextureParticle {
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
-            SpiritParticle particle = new SpiritParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
+            SpiritElementParticle particle = new SpiritElementParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
             return particle;
         }
     }

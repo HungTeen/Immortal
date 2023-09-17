@@ -40,7 +40,7 @@ public class IgnitionSpell extends SpellType {
         if(result.hasEntity() && result.getEntity() != null){
             ElementManager.addElementAmount(result.getEntity(), Elements.FIRE, false, 10);
             result.getEntity().setSecondsOnFire(3);
-            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRIT.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
         }
         return false;

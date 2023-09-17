@@ -15,15 +15,12 @@ import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.ParticleUtil;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -65,13 +62,26 @@ public class IMMLivingEvents {
 //    }
 
     @SubscribeEvent
+    public static void onLivingAttackedBy(LivingAttackEvent event){
+        if(event.getEntity().level() instanceof ServerLevel level) {
+            // 发生淬刃的被攻击者，会记录最大的受伤害值。
+            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.QUENCH_BLADE, scale -> {
+                ElementManager.setQuenchBladeDamage(event.getEntity(), event.getAmount(), true);
+            }, () -> {
+                ElementManager.setQuenchBladeDamage(event.getEntity(), 0, true);
+            });
+        }
+    }
+
+    @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
             SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
-            if(event.getSource().getEntity() != null){
-                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.CONDENSATION, scale -> {
-                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 4);
-                    ParticleUtil.spawnParticles(level, ParticleTypes.FALLING_WATER, event.getEntity().getEyePosition(), 10, 0.3, 0.1);
+            if(event.getSource().is(DamageTypes.MOB_ATTACK) || event.getSource().is(DamageTypes.PLAYER_ATTACK)){
+                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, scale -> {
+                    final float damage = event.getAmount() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
+                    event.setAmount(damage);
+                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 5);
                 });
             }
         }

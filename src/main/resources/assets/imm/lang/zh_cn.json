@@ -324,7 +324,7 @@
 
   "misc.imm.element_reaction": "元素反应",
   "misc.imm.reaction.crystallization": "结晶",
-  "misc.imm.reaction.condensation": "凝露",
+  "misc.imm.reaction.quench_blade": "淬刃",
   "misc.imm.reaction.growing": "生长",
   "misc.imm.reaction.flaming": "燃烧",
   "misc.imm.reaction.ashing": "化灰",

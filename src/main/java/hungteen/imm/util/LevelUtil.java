@@ -18,7 +18,7 @@ import java.util.Optional;
  **/
 public class LevelUtil {
 
-    public static void playSound(Level level, SoundEvent sound, SoundSource source, Vec3 pos, float volume, float pitch){
+    public static void playSound(Level level, SoundEvent sound, SoundSource source, Vec3 pos, float volume, float pitch) {
         level.playSound(null, pos.x(), pos.y(), pos.z(), sound, source, volume, pitch / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
@@ -26,12 +26,12 @@ public class LevelUtil {
         return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
     }
 
-    public static Optional<ChunkCapability> getChunkCapOpt(Level level, BlockPos pos){
+    public static Optional<ChunkCapability> getChunkCapOpt(Level level, BlockPos pos) {
         return Optional.ofNullable(getChunkCapability(level, pos));
     }
 
     @Nullable
-    public static ChunkCapability getChunkCapability(Level level, BlockPos pos){
+    public static ChunkCapability getChunkCapability(Level level, BlockPos pos) {
         return level.getChunkAt(pos).getCapability(CapabilityHandler.CHUNK_CAP).resolve().orElse(null);
     }
 

@@ -30,7 +30,7 @@ public class GanodermaBlock extends SpiritualPlantBlock {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource source) {
         if (source.nextInt(5) == 0) {
-            ParticleHelper.spawnParticles(level, IMMParticles.SPIRITUAL.get(), MathHelper.toVec3(pos), 1, 0.2, 0.4,0.05F);
+            ParticleHelper.spawnParticles(level, IMMParticles.SPIRIT.get(), MathHelper.toVec3(pos), 1, 0.2, 0.4,0.05F);
         }
     }
 

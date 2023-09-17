@@ -20,12 +20,17 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMParticles {
 
-    //don't forget register particle factory in client register.
+    // Don't forget register particle factory in client register.
     private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =  DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Util.id());
 
-    public static final RegistryObject<SimpleParticleType> IMMORTAL_FLAME = PARTICLE_TYPES.register("immortal_flame", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPIRITUAL_MANA = PARTICLE_TYPES.register("spiritual_mana", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPIRITUAL = PARTICLE_TYPES.register("spiritual", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> METAL_ELEMENT = PARTICLE_TYPES.register("metal_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> WOOD_ELEMENT = PARTICLE_TYPES.register("wood_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> WATER_ELEMENT = PARTICLE_TYPES.register("water_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> FIRE_ELEMENT = PARTICLE_TYPES.register("fire_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> EARTH_ELEMENT = PARTICLE_TYPES.register("earth_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SPIRIT_ELEMENT = PARTICLE_TYPES.register("spirit_element", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SPIRITUAL_FLAME = PARTICLE_TYPES.register("spiritual_flame", () -> new SimpleParticleType(false));
 
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}

@@ -50,8 +50,8 @@ public class ElementReactions {
         }
     });
 
-    public static final IElementReaction CONDENSATION = register(new GenerationReaction(
-            "condensation", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
+    public static final IElementReaction QUENCH_BLADE = register(new GenerationReaction(
+            "quench_blade", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -141,7 +141,7 @@ public class ElementReactions {
         @Override
         public void doReaction(Entity entity, float scale) {
             entity.setSecondsOnFire((int) (4 * scale));
-            entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), 3 * scale, Level.ExplosionInteraction.MOB);
+            entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), 1.5F * scale, Level.ExplosionInteraction.NONE);
         }
     });
 
@@ -201,6 +201,12 @@ public class ElementReactions {
         public void consume(Entity entity, float scale) {
             elements.forEach(entry -> {
                 ElementManager.consumeAmount(entity, entry.element(), entry.mustRobust(), entry.amount() * scale);
+            });
+        }
+
+        public boolean allRobust(Entity entity) {
+            return elements.stream().allMatch(entry -> {
+                return ElementManager.hasElement(entity, entry.element(), entry.mustRobust());
             });
         }
 

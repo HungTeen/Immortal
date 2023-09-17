@@ -324,7 +324,7 @@
 
   "misc.imm.element_reaction": "Element Reaction",
   "misc.imm.reaction.crystallization": "Crystallization",
-  "misc.imm.reaction.condensation": "Condensation",
+  "misc.imm.reaction.quench_blade": "Quench Blade",
   "misc.imm.reaction.growing": "Growing",
   "misc.imm.reaction.flaming": "Flaming",
   "misc.imm.reaction.ashing": "Ashing",

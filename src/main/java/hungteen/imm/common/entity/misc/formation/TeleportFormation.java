@@ -94,13 +94,13 @@ public class TeleportFormation extends FormationEntity {
             if (random.nextInt(150) == 0) {
                 level().playLocalSound(getX(), getY(), getZ(), SoundEvents.PORTAL_AMBIENT, SoundSource.AMBIENT, 0.5F, random.nextFloat() * 0.4F + 0.8F, false);
             }
-            ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL.get(), getX(), getY(), getZ(), 5, TELEPORT_WIDTH, TELEPORT_HEIGHT, 0.2F, 0.1F);
+            ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRIT.get(), getX(), getY(), getZ(), 5, TELEPORT_WIDTH, TELEPORT_HEIGHT, 0.2F, 0.1F);
         }
     }
 
     private void spawnTeleportParticles(Entity entity, int ticks) {
         final int cnt = ticks / 8 + 1;
-        ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL.get(), getX(), getY(), getZ(), cnt, 0.5, 0.25, 0.2F, 0.1F);
+        ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRIT.get(), getX(), getY(), getZ(), cnt, 0.5, 0.25, 0.2F, 0.1F);
     }
 
     @Override
