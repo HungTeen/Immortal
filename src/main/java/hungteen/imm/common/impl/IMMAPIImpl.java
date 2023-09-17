@@ -57,11 +57,6 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
     }
 
     @Override
-    public Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry() {
-        return Optional.of(InventoryLootTypes.registry());
-    }
-
-    @Override
     public IRealmType getEntityRealm(Entity entity) {
         return RealmManager.getEntityRealm(entity);
     }

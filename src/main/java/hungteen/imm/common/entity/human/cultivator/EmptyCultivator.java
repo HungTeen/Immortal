@@ -2,13 +2,11 @@ package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import hungteen.imm.common.tag.IMMStructureTags;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.core.BlockPos;
@@ -104,11 +102,6 @@ public class EmptyCultivator extends Cultivator {
     @Override
     public ICultivationType getCultivationType() {
         return CultivationTypes.MORTAL;
-    }
-
-    @Override
-    public IInventoryLootType getInventoryLootType() {
-        return InventoryLootTypes.VANILLA;
     }
 
 }

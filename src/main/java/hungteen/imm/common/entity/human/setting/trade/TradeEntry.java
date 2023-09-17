@@ -16,13 +16,19 @@ import java.util.List;
  * @param costItems 此交易需要花费的物品，请不要让costItem之间有相同物品，判断容易出bug！
  * @param resultItems 此交易购买得到的物品。
  * @param tradeCount 此交易可以进行多少次。
+ * @param xp 交易后给予多少修行经验。
  **/
-public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount) {
+public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount, float xp) {
     public static final Codec<TradeEntry> CODEC = RecordCodecBuilder.<TradeEntry>mapCodec(instance -> instance.group(
             ItemStack.CODEC.listOf().fieldOf("cost_items").forGetter(TradeEntry::costItems),
             ItemStack.CODEC.listOf().fieldOf("result_items").forGetter(TradeEntry::resultItems),
-            IntProvider.NON_NEGATIVE_CODEC.fieldOf("trade_count").forGetter(TradeEntry::tradeCount)
+            IntProvider.NON_NEGATIVE_CODEC.fieldOf("trade_count").forGetter(TradeEntry::tradeCount),
+            Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("xp", 0F).forGetter(TradeEntry::xp)
     ).apply(instance, TradeEntry::new)).codec();
+
+    public TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount){
+        this(costItems, resultItems, tradeCount, 0F);
+    }
 
     /**
      * 随机获取最大交易次数。

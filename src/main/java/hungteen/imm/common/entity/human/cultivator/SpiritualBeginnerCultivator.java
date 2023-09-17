@@ -2,10 +2,8 @@ package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.InventoryLootTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
@@ -17,9 +15,9 @@ import net.minecraft.world.level.Level;
  * @author: HungTeen
  * @create: 2022-10-22 22:16
  **/
-public class SpiritualCultivator extends Cultivator {
+public class SpiritualBeginnerCultivator extends Cultivator {
 
-    public SpiritualCultivator(EntityType<? extends HumanEntity> type, Level level) {
+    public SpiritualBeginnerCultivator(EntityType<? extends HumanEntity> type, Level level) {
         super(type, level);
     }
 
@@ -35,8 +33,8 @@ public class SpiritualCultivator extends Cultivator {
     }
 
     @Override
-    public Brain<SpiritualCultivator> getBrain() {
-        return (Brain<SpiritualCultivator>)super.getBrain();
+    public Brain<SpiritualBeginnerCultivator> getBrain() {
+        return (Brain<SpiritualBeginnerCultivator>)super.getBrain();
     }
 
     @Override
@@ -45,7 +43,7 @@ public class SpiritualCultivator extends Cultivator {
     }
 
     @Override
-    protected Brain.Provider<SpiritualCultivator> brainProvider() {
+    protected Brain.Provider<SpiritualBeginnerCultivator> brainProvider() {
         return Brain.provider(getMemoryModules(), getSensorModules());
     }
 
@@ -54,8 +52,4 @@ public class SpiritualCultivator extends Cultivator {
         return CultivationTypes.SPIRITUAL;
     }
 
-    @Override
-    public IInventoryLootType getInventoryLootType() {
-        return InventoryLootTypes.SPIRITUAL;
-    }
 }

@@ -1,5 +1,7 @@
 package hungteen.imm.common.world.structure;
 
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.IMMMobCategories;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.common.world.structure.structures.TeleportRuinStructure;
 import hungteen.imm.util.Util;
@@ -7,16 +9,20 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,7 +52,20 @@ public interface IMMStructures {
         context.register(PLAINS_TRADING_MARKET, new JigsawStructure(
                 new Structure.StructureSettings(
                         biomes.getOrThrow(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET),
-                        Map.of(),
+                        Map.of(
+                                IMMMobCategories.HUMAN, new StructureSpawnOverride(
+                                        StructureSpawnOverride.BoundingBoxType.STRUCTURE,
+                                        WeightedRandomList.create(List.of(
+                                                        new MobSpawnSettings.SpawnerData(
+                                                                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), 25, 1, 1
+                                                        ),
+                                                        new MobSpawnSettings.SpawnerData(
+                                                                IMMEntities.EMPTY_CULTIVATOR.get(), 10, 1, 1
+                                                        )
+                                                )
+                                        )
+                                )
+                        ),
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BEARD_THIN
                 ),

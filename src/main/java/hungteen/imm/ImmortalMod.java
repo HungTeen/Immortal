@@ -13,13 +13,14 @@ import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
+import hungteen.imm.common.entity.human.setting.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
-import hungteen.imm.common.impl.codec.HumanSettings;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.ManualTypes;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
+import hungteen.imm.common.impl.raid.IMMRaidHandler;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
@@ -32,10 +33,9 @@ import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.entity.IMMDummyEntities;
-import hungteen.imm.common.impl.raid.IMMRaidHandler;
+import hungteen.imm.common.world.feature.IMMFeatures;
 import hungteen.imm.common.world.structure.IMMStructurePieces;
 import hungteen.imm.common.world.structure.IMMStructureTypes;
-import hungteen.imm.common.world.feature.IMMFeatures;
 import hungteen.imm.data.DataGenHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -70,6 +70,7 @@ public class ImmortalMod {
         modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
         modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
+        modBus.addListener(EventPriority.NORMAL, IMMEntities::registerPlacements);
         modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::fillCreativeTabs);
         defferRegister(modBus);
 
@@ -93,7 +94,6 @@ public class ImmortalMod {
      */
     public static void defferRegister(IEventBus modBus) {
         /* HungTeen Registers */
-        InventoryLootTypes.registry().register(modBus);
         CultivationTypes.registry().register(modBus);
         RealmTypes.registry().register(modBus);
         SpellTypes.registry().register(modBus);
@@ -126,6 +126,7 @@ public class ImmortalMod {
         IMMActivities.register(modBus);
         IMMPoiTypes.register(modBus);
         IMMProfessions.register(modBus);
+//        IMMPoolTypes.register(modBus);
         IMMStructureTypes.register(modBus);
         IMMStructurePieces.register(modBus);
         IMMFeatures.register(modBus);

@@ -11,11 +11,11 @@ import net.minecraft.world.entity.MobCategory;
 public class IMMMobCategories {
 
     public static final MobCategory HUMAN = MobCategory.create(
-            "HUMAN", Util.prefixName("human"), 20, true, false, 128
+            "HUMAN", Util.prefixName("human"), 5, true, false, 128
     );
 
-    public static final MobCategory GOLEM = MobCategory.create(
-            "GOLEM", Util.prefixName("golem"), 10, true, false, 128
-    );
+//    public static final MobCategory GOLEM = MobCategory.create(
+//            "GOLEM", Util.prefixName("golem"), 10, true, false, 128
+//    );
 
 }

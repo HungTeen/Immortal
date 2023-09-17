@@ -53,11 +53,6 @@ public class DummyAPI implements IMMAPI.IImmortalAPI {
     }
 
     @Override
-    public Optional<IHTSimpleRegistry<IInventoryLootType>> inventoryLootRegistry() {
-        return Optional.empty();
-    }
-
-    @Override
     public IRealmType getEntityRealm(Entity entity) {
         return RealmTypes.MORTALITY;
     }

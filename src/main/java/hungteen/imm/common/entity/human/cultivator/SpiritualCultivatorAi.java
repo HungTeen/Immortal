@@ -14,14 +14,14 @@ import java.util.Optional;
  **/
 public class SpiritualCultivatorAi {
 
-    protected static Brain<?> makeBrain(Brain<SpiritualCultivator> brain) {
+    protected static Brain<?> makeBrain(Brain<SpiritualBeginnerCultivator> brain) {
         return brain;
     }
 
     /**
      * (Fighting -> Idle): if there is no enemy.
      */
-    protected static void updateActivity(SpiritualCultivator cultivator) {
+    protected static void updateActivity(SpiritualBeginnerCultivator cultivator) {
 
     }
 

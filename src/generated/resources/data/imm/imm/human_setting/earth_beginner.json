@@ -1,0 +1,252 @@
+{
+  "type": "imm:spiritual_beginner_cultivator",
+  "cultivation_setting": {
+    "realm": "imm:spiritual_level_3",
+    "roots": [
+      "imm:earth"
+    ]
+  },
+  "loot_settings": [
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:shield",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:stone_sword",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:leather_helmet",
+              "tag": {
+                "Damage": 0,
+                "display": {
+                  "color": 4673362
+                }
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:diamond_helmet",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:leather_chestplate",
+              "tag": {
+                "Damage": 0,
+                "display": {
+                  "color": 4673362
+                }
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:iron_chestplate",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:leather_leggings",
+              "tag": {
+                "Damage": 0,
+                "display": {
+                  "color": 4673362
+                }
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:iron_leggings",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:leather_boots",
+              "tag": {
+                "Damage": 0,
+                "display": {
+                  "color": 4673362
+                }
+              }
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "item": {
+              "Count": 1,
+              "id": "minecraft:diamond_boots",
+              "tag": {
+                "Damage": 0
+              }
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "trade_setting": {
+    "entry_count": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 6,
+        "min_inclusive": 4
+      }
+    },
+    "trade_entries": [
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 8,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:earth_mastery_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 16,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:earth_mastery_2"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 6
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 32,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:earth_mastery_3"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 3
+      }
+    ]
+  },
+  "weight": 20
+}

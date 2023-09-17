@@ -8,7 +8,7 @@ import hungteen.imm.common.entity.golem.IronGolem;
 import hungteen.imm.common.entity.golem.SnowGolem;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.cultivator.EmptyCultivator;
-import hungteen.imm.common.entity.human.cultivator.SpiritualCultivator;
+import hungteen.imm.common.entity.human.cultivator.SpiritualBeginnerCultivator;
 import hungteen.imm.common.entity.human.villager.CommonVillager;
 import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
@@ -17,10 +17,10 @@ import hungteen.imm.common.entity.misc.SpiritualPearl;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
 import hungteen.imm.util.Util;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -52,7 +52,7 @@ public class IMMEntities {
     /* Human */
 
     public static final RegistryObject<EntityType<EmptyCultivator>> EMPTY_CULTIVATOR = registerEntityType(EmptyCultivator::new, "empty_cultivator", IMMMobCategories.HUMAN);
-    public static final RegistryObject<EntityType<SpiritualCultivator>> SPIRITUAL_CULTIVATOR = registerEntityType(SpiritualCultivator::new, "spiritual_cultivator", IMMMobCategories.HUMAN);
+    public static final RegistryObject<EntityType<SpiritualBeginnerCultivator>> SPIRITUAL_BEGINNER_CULTIVATOR = registerEntityType(SpiritualBeginnerCultivator::new, "spiritual_beginner_cultivator", IMMMobCategories.HUMAN);
     public static final RegistryObject<EntityType<CommonVillager>> COMMON_VILLAGER = registerEntityType(CommonVillager::new, "common_villager", IMMMobCategories.HUMAN);
 
 //    /* Creature */
@@ -69,15 +69,15 @@ public class IMMEntities {
 
     /* Golem */
 
-    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", IMMMobCategories.GOLEM, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", IMMMobCategories.GOLEM, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
-    public static final RegistryObject<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", IMMMobCategories.GOLEM, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
-    public static final RegistryObject<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", IMMMobCategories.GOLEM, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", MobCategory.CREATURE, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", MobCategory.CREATURE, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", MobCategory.CREATURE, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* human */
         ev.put(EMPTY_CULTIVATOR.get(), HumanEntity.createAttributes().build());
-        ev.put(SPIRITUAL_CULTIVATOR.get(), HumanEntity.createAttributes().build());
+        ev.put(SPIRITUAL_BEGINNER_CULTIVATOR.get(), HumanEntity.createAttributes().build());
         ev.put(COMMON_VILLAGER.get(), IMMVillager.createAttributes().build());
 
         /* creature */
@@ -94,6 +94,21 @@ public class IMMEntities {
         ev.put(SNOW_GOLEM.get(), SnowGolem.createAttributes());
         ev.put(CREEPER_GOLEM.get(), CreeperGolem.createAttributes());
         ev.put(COPPER_GOLEM.get(), CopperGolem.createAttributes());
+    }
+
+    public static void registerPlacements(SpawnPlacementRegisterEvent ev) {
+        /* human */
+        ev.register(EMPTY_CULTIVATOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        ev.register(SPIRITUAL_BEGINNER_CULTIVATOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        ev.register(COMMON_VILLAGER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+
+        /* creature */
+
+        /* Monster */
+
+        /* undead */
+
+        /* golem */
     }
 
     /**

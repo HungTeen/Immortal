@@ -7,7 +7,6 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.interfaces.IHuman;
-import hungteen.imm.api.registry.IInventoryLootType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.entity.IMMDataSerializers;
@@ -17,7 +16,7 @@ import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.entity.human.setting.HumanSettings;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
@@ -164,7 +163,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
      * 填充背包 & 交易列表。
      */
     public void updateHumanSetting() {
-        HumanSettings.getRandomSetting(level(), getInventoryLootType(), this.getRandom()).ifPresent(l -> {
+        HumanSettings.getRandomSetting(level(), getType(), this.getRandom()).ifPresent(l -> {
             this.setHumanSetting(l);
             l.fillInventory(this.getInventory(), this.getRandom());
             l.fillTrade(this, this.getRandom());
@@ -494,8 +493,6 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     public boolean canBeLeashed(Player player) {
         return false;
     }
-
-    public abstract IInventoryLootType getInventoryLootType();
 
     @Override
     public SoundEvent getNotifyTradeSound() {

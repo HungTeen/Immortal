@@ -1,5 +1,5 @@
 {
-  "type": "imm:vanilla",
+  "type": "imm:empty_cultivator",
   "loot_settings": [
     {
       "items": [
@@ -510,5 +510,5 @@
       }
     ]
   },
-  "weight": 200
+  "weight": 100
 }

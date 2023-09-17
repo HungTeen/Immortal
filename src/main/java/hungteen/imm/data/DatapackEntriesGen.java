@@ -6,7 +6,7 @@ import hungteen.htlib.common.impl.result.HTResultComponents;
 import hungteen.htlib.common.impl.spawn.HTSpawnComponents;
 import hungteen.htlib.common.impl.wave.HTWaveComponents;
 import hungteen.imm.common.impl.codec.ElixirEffects;
-import hungteen.imm.common.impl.codec.HumanSettings;
+import hungteen.imm.common.entity.human.setting.HumanSettings;
 import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;

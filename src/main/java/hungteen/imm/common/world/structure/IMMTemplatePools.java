@@ -21,11 +21,16 @@ public interface IMMTemplatePools {
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_DECOR = create("trading_market/plains/decor");
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_CULTIVATORS = create("trading_market/plains/cultivators");
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_TREES = create("trading_market/plains/trees");
+    ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_ANIMALS = create("trading_market/plains/animals");
 
     static void register(BootstapContext<StructureTemplatePool> context){
         PlainsTradingMarket.initPools(context);
 //        SpiritualPlainsVillage.initPools(context);
     }
+
+//    static SpawnEntityPoolElement entity(EntityType<?> type, StructureTemplatePool.Projection projection){
+//        return new SpawnEntityPoolElement(type, projection);
+//    }
 
     private static ResourceKey<StructureTemplatePool> create(String name) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, Util.prefix(name));

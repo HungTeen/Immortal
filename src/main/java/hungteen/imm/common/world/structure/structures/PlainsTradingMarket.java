@@ -11,7 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.data.worldgen.ProcessorLists;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.data.worldgen.placement.VillagePlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -60,6 +60,9 @@ public class PlainsTradingMarket {
         ));
     }
 
+    /**
+     * {@link net.minecraft.data.worldgen.PlainVillagePools}
+     */
     public static void initPools(BootstapContext<StructureTemplatePool> context) {
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         final HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
@@ -69,7 +72,6 @@ public class PlainsTradingMarket {
         final Holder<StructureProcessorList> moss = processors.getOrThrow(ProcessorLists.MOSSIFY_20_PERCENT);
         final Holder<StructureProcessorList> none = processors.getOrThrow(IMMProcessorLists.EMPTY);
         final Holder<StructureProcessorList> streetRot = processors.getOrThrow(IMMProcessorLists.PLAINS_TRADING_MARKET_STREET_ROT);
-        final Holder<PlacedFeature> flowers = features.getOrThrow(VegetationPlacements.FLOWER_DEFAULT);
 
         context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_START, new StructureTemplatePool(
                 empty,
@@ -106,10 +108,47 @@ public class PlainsTradingMarket {
                 empty,
                 List.of(
                         Pair.of(
-                                StructurePoolElement.feature(flowers).apply(StructureTemplatePool.Projection.RIGID), 2
+                                StructurePoolElement.feature(features.getOrThrow(VillagePlacements.FLOWER_PLAIN_VILLAGE))
+                                        .apply(StructureTemplatePool.Projection.RIGID), 2
                         ),
                         Pair.of(
-                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 2
+                                StructurePoolElement.feature(features.getOrThrow(VillagePlacements.PILE_HAY_VILLAGE))
+                                        .apply(StructureTemplatePool.Projection.RIGID), 1
+                        ),
+                        Pair.of(
+                                StructurePoolElement.feature(features.getOrThrow(VillagePlacements.OAK_VILLAGE))
+                                        .apply(StructureTemplatePool.Projection.RIGID), 1
+                        ),
+                        Pair.of(
+                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 3
+                        )
+                )
+        ));
+
+        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_TREES, new StructureTemplatePool(
+                empty,
+                List.of(
+                        Pair.of(
+                                StructurePoolElement.feature(features.getOrThrow(VillagePlacements.OAK_VILLAGE))
+                                        .apply(StructureTemplatePool.Projection.RIGID), 1
+                        )
+                )
+        ));
+
+        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_CULTIVATORS, new StructureTemplatePool(
+                empty,
+                List.of(
+                        Pair.of(
+                                StructurePoolElement.legacy("village/plains/villagers/nitwit").apply(StructureTemplatePool.Projection.RIGID), 2
+                        )
+                )
+        ));
+
+        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_ANIMALS, new StructureTemplatePool(
+                empty,
+                List.of(
+                        Pair.of(
+                                StructurePoolElement.legacy("village/common/animals/sheep_1").apply(StructureTemplatePool.Projection.RIGID), 2
                         )
                 )
         ));

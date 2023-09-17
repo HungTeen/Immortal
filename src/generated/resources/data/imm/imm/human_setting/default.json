@@ -1,4 +1,5 @@
 {
-  "type": "imm:vanilla",
-  "loot_settings": []
+  "type": "imm:empty_cultivator",
+  "loot_settings": [],
+  "weight": 0
 }

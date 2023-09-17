@@ -103,7 +103,7 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeInt(this.spiritualRoots.size());
         this.spiritualRoots.forEach(type -> {
-            buffer.writeRegistryId(SpiritualTypes.registry().getRegistry(), type);
+            buffer.writeRegistryIdUnsafe(SpiritualTypes.registry().getRegistry(), type);
         });
     }
 

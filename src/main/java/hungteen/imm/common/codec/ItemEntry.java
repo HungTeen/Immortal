@@ -20,6 +20,14 @@ public record ItemEntry(ItemStack itemStack, IntProvider count, IntProvider ench
             IntProvider.codec(0, Integer.MAX_VALUE).optionalFieldOf("enchant_point", ConstantInt.of(0)).forGetter(ItemEntry::enchantPoint)
     ).apply(instance, ItemEntry::new)).codec();
 
+    public ItemEntry(ItemStack itemStack){
+        this(itemStack, ConstantInt.of(1), ConstantInt.of(0));
+    }
+
+    public ItemEntry(ItemStack itemStack, IntProvider count){
+        this(itemStack, count, ConstantInt.of(0));
+    }
+
     public ItemStack getItem(RandomSource random){
         ItemStack stack = itemStack().copy();
         stack.setCount(count().sample(random));

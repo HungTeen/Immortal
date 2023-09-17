@@ -65,9 +65,7 @@ public class IMMCreativeTabs {
                     .displayItems((parameters, output) -> {
                         HolderLookup.RegistryLookup<SecretManual> secretManuals = parameters.holders().lookupOrThrow(SecretManuals.registry().getRegistryKey());
                         secretManuals.listElementIds().forEach(r -> {
-                            final ItemStack stack = new ItemStack(IMMItems.SECRET_MANUAL.get());
-                            SecretManualItem.setSpellBook(stack, r.location());
-                            output.accept(stack);
+                            output.accept(SecretManualItem.create(r));
                         });
                     })
     );

@@ -26,6 +26,10 @@ public class ItemUtil {
     private static final String SUFFIX = "large_held";
     private static final List<RegistryObject<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
 
+    public static ItemStack dyeArmor(Item item, List<DyeColor> colors){
+        return DyeableLeatherItem.dyeArmor(new ItemStack(item), colors.stream().map(DyeItem::byColor).toList());
+    }
+
     public static boolean isFood(ItemStack stack) {
         return stack.isEdible();
     }

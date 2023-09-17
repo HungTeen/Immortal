@@ -80,7 +80,7 @@ public class ClientRegister {
         /* human */
         event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
         event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
-        event.registerEntityRenderer(IMMEntities.SPIRITUAL_CULTIVATOR.get(), CultivatorRender::new);
+        event.registerEntityRenderer(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), CultivatorRender::new);
 
         /* creature */
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
