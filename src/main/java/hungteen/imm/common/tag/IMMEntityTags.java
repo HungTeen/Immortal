@@ -18,6 +18,7 @@ public interface IMMEntityTags {
     TagKey<EntityType<?>> PILLAGERS = forgeTag("pillagers");
 
     /* immortal */
+    TagKey<EntityType<?>> NO_ELEMENT_REACTIONS = tag("no_element_reactions");
     TagKey<EntityType<?>> CULTIVATORS = tag("cultivators");
     TagKey<EntityType<?>> HUMAN_BEINGS = tag("human_beings");
 

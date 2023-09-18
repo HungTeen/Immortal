@@ -1,6 +1,6 @@
 package hungteen.imm.client.render.entity.creature;
 
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.SilkWormModel;
 import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.common.entity.creature.SilkWorm;
@@ -18,7 +18,7 @@ public class SilkWormRender extends IMMMobRender<SilkWorm> {
     private static final ResourceLocation TEXTURE = Util.prefix("textures/entity/creature/silk_worm.png");
 
     public SilkWormRender(EntityRendererProvider.Context rendererManager) {
-        super(rendererManager, new SilkWormModel<>(rendererManager.bakeLayer(ModelLayers.SILK_WORM)), 0.6F);
+        super(rendererManager, new SilkWormModel<>(rendererManager.bakeLayer(IMMModelLayers.SILK_WORM)), 0.6F);
     }
 
     @Override

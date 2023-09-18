@@ -3,7 +3,7 @@ package hungteen.imm.client.render.entity.human;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.imm.client.ClientProxy;
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.CultivatorModel;
 import hungteen.imm.client.render.entity.layer.CultivatorArmorLayer;
 import hungteen.imm.common.entity.human.cultivator.Cultivator;
@@ -28,22 +28,22 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
     protected CultivatorModel<Cultivator> slimModel = null;
 
     public CultivatorRender(EntityRendererProvider.Context context) {
-        super(context, new CultivatorModel<>(context.bakeLayer(ModelLayers.CULTIVATOR), false), 0.5F);
+        super(context, new CultivatorModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR), false), 0.5F);
         this.defaultModel = this.model;
-        this.slimModel = new CultivatorModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM), true);
+        this.slimModel = new CultivatorModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR_SLIM), true);
         this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
         this.addLayer(new CultivatorArmorLayer<>(
                         this,
-                        new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_INNER_ARMOR)),
-                        new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_OUTER_ARMOR)),
+                        new HumanoidModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR_INNER_ARMOR)),
+                        new HumanoidModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR_OUTER_ARMOR)),
                         context.getModelManager(),
                         false
                 )
         );
         this.addLayer(new CultivatorArmorLayer<>(
                         this,
-                        new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM_INNER_ARMOR)),
-                        new HumanoidModel<>(context.bakeLayer(ModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR)),
+                        new HumanoidModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR_SLIM_INNER_ARMOR)),
+                        new HumanoidModel<>(context.bakeLayer(IMMModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR)),
                         context.getModelManager(),
                         true
                 )

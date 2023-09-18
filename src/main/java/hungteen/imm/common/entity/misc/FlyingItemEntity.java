@@ -122,7 +122,7 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
             }
         }
         if(this.flyingTick % 5 == 0){
-            ParticleHelper.spawnParticles(entity.level(), IMMParticles.SPIRIT.get(), position(), 1, 0, 0);
+            ParticleHelper.spawnParticles(entity.level(), IMMParticles.SPIRITUAL_MANA.get(), position(), 1, 0, 0);
         }
         final double speed = 1;
         final Vec3 lookVec = entity.getLookAngle();

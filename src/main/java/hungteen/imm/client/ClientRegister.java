@@ -11,7 +11,7 @@ import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
 import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
 import hungteen.imm.client.model.entity.*;
 import hungteen.imm.client.model.entity.golem.CopperGolemModel;
@@ -19,6 +19,7 @@ import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.particle.*;
+import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
@@ -68,6 +69,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* misc entity */
+        event.registerEntityRenderer(IMMEntities.ELEMENT_AMETHYST.get(), ElementAmethystRender::new);
         event.registerEntityRenderer(IMMEntities.TELEPORT_FORMATION.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
@@ -104,33 +106,36 @@ public class ClientRegister {
         LayerDefinition INNER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
+        /* Misc */
+        event.registerLayerDefinition(IMMModelLayers.ELEMENT_AMETHYST, ElementAmethystModel::createBodyLayer);
+
         /* human */
-        event.registerLayerDefinition(ModelLayers.VILLAGER, VillagerModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.PILLAGER, PillagerModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, true));
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(ModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR, () -> OUTER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.VILLAGER, VillagerModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.PILLAGER, PillagerModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, true));
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* creature */
-        event.registerLayerDefinition(ModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
 
         /* Monster */
-        event.registerLayerDefinition(ModelLayers.SHARP_STAKE, CubeModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.SHARP_STAKE, CubeModel::createBodyLayer);
 
         /* zombie entity */
-        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(ModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* golem */
-        event.registerLayerDefinition(ModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.COPPER_GOLEM, CopperGolemModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.COPPER_GOLEM, CopperGolemModel::createBodyLayer);
     }
 
     @SubscribeEvent

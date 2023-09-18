@@ -1,8 +1,8 @@
 {
   "textures": [
-    "minecraft:fire_0",
-    "minecraft:fire_1",
-    "minecraft:fire_2",
-    "minecraft:fire_3"
+    "imm:fire_0",
+    "imm:fire_1",
+    "imm:fire_2",
+    "imm:fire_3"
   ]
 }

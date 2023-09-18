@@ -1,6 +1,6 @@
 package hungteen.imm.client.render.entity.golem;
 
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.common.entity.golem.SnowGolem;
@@ -17,7 +17,7 @@ public class SnowGolemRender extends IMMMobRender<SnowGolem> {
     private static final ResourceLocation GOLEM_LOCATION = new ResourceLocation("textures/entity/snow_golem.png");
 
     public SnowGolemRender(EntityRendererProvider.Context rendererManager) {
-        super(rendererManager, new SnowGolemModel<>(rendererManager.bakeLayer(ModelLayers.SNOW_GOLEM)), 0.5F);
+        super(rendererManager, new SnowGolemModel<>(rendererManager.bakeLayer(IMMModelLayers.SNOW_GOLEM)), 0.5F);
     }
 
     @Override

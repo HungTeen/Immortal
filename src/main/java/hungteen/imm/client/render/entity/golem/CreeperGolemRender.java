@@ -1,7 +1,7 @@
 package hungteen.imm.client.render.entity.golem;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.common.entity.golem.CreeperGolem;
@@ -19,7 +19,7 @@ public class CreeperGolemRender extends IMMMobRender<CreeperGolem> {
     private static final ResourceLocation LOCATION = new ResourceLocation("textures/entity/creeper/creeper.png");
 
     public CreeperGolemRender(EntityRendererProvider.Context context) {
-        super(context, new CreeperGolemModel(context.bakeLayer(ModelLayers.CREEPER_GOLEM)), 0.5F);
+        super(context, new CreeperGolemModel(context.bakeLayer(IMMModelLayers.CREEPER_GOLEM)), 0.5F);
     }
 
     @Override

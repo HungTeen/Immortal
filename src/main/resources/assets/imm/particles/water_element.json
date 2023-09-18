@@ -1,8 +1,8 @@
 {
   "textures": [
-    "minecraft:water_0",
-    "minecraft:water_1",
-    "minecraft:water_2",
-    "minecraft:water_3"
+    "imm:water_0",
+    "imm:water_1",
+    "imm:water_2",
+    "imm:water_3"
   ]
 }

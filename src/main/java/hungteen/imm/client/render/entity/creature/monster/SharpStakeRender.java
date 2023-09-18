@@ -1,7 +1,7 @@
 package hungteen.imm.client.render.entity.creature.monster;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.CubeModel;
 import hungteen.imm.client.render.entity.layer.WoodStakeLayer;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
@@ -21,7 +21,7 @@ public class SharpStakeRender extends MobRenderer<SharpStake, CubeModel<SharpSta
     private static final ResourceLocation EYES = Util.get().entityTexture("wood_eyes");
 
     public SharpStakeRender(EntityRendererProvider.Context context) {
-        super(context, new CubeModel<>(context.bakeLayer(ModelLayers.SHARP_STAKE)), 0.5F);
+        super(context, new CubeModel<>(context.bakeLayer(IMMModelLayers.SHARP_STAKE)), 0.5F);
         this.addLayer(new WoodStakeLayer(context, this));
     }
 

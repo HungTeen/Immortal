@@ -8,7 +8,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
  * @author: HungTeen
  * @create: 2022-10-20 21:58
  **/
-public class ModelLayers {
+public class IMMModelLayers {
+
+    /* Misc */
+    public static final ModelLayerLocation ELEMENT_AMETHYST = register("element_amethyst");
 
     /* Humans */
     public static final ModelLayerLocation CULTIVATOR = register("cultivator");

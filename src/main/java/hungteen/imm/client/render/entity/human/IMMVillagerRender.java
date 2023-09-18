@@ -1,6 +1,6 @@
 package hungteen.imm.client.render.entity.human;
 
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.VillagerModel;
 import hungteen.imm.common.entity.human.villager.IMMVillager;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 public abstract class IMMVillagerRender<T extends IMMVillager> extends VillagerLikeRender<T, VillagerModel<T>> {
 
     public IMMVillagerRender(EntityRendererProvider.Context context) {
-        super(context, new VillagerModel<>(context.bakeLayer(ModelLayers.VILLAGER)));
+        super(context, new VillagerModel<>(context.bakeLayer(IMMModelLayers.VILLAGER)));
     }
 
 }

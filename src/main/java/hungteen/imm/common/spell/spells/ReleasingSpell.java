@@ -28,7 +28,7 @@ public class ReleasingSpell extends SpellType {
             }
             ElementalMasterySpell.addElement(player, false, false, 10F);
             result.getEntity().hurt(IMMDamageSources.spiritualMana(owner), 3F);
-            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRIT.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL_MANA.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
         }
         return false;

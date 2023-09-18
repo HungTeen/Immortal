@@ -29,7 +29,7 @@ public class MixinBlock {
     )
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand, CallbackInfo result) {
         if (state.is(IMMBlockTags.SPIRITUAL_ORES)) {
-            ParticleUtil.spawnParticlesOnBlockFaces(level, pos, IMMParticles.SPIRIT.get(), ConstantInt.of(1));
+            ParticleUtil.spawnParticlesOnBlockFaces(level, pos, IMMParticles.SPIRITUAL_MANA.get(), ConstantInt.of(1));
         }
     }
 

@@ -75,7 +75,7 @@ public class TeleportAnchorBlock extends Block {
             final double speedX = randomSource.nextGaussian() * 0.06;
             final double speedY = randomSource.nextFloat() * 0.05;
             final double speedZ = randomSource.nextGaussian() * 0.06;
-            ParticleUtil.spawnParticleOnFace(level, pos, Direction.UP, IMMParticles.SPIRIT.get(), 1, new Vec3(speedX, speedY, speedZ), 0);
+            ParticleUtil.spawnParticleOnFace(level, pos, Direction.UP, IMMParticles.SPIRITUAL_MANA.get(), 1, new Vec3(speedX, speedY, speedZ), 0);
         }
     }
 

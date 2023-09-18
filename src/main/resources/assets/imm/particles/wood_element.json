@@ -1,7 +1,7 @@
 {
   "textures": [
-    "minecraft:wood_0",
-    "minecraft:wood_1",
-    "minecraft:wood_2"
+    "imm:wood_0",
+    "imm:wood_1",
+    "imm:wood_2"
   ]
 }

@@ -51,7 +51,7 @@ public class SproutSpell extends SpellType {
                 }
             }
             if(success){
-                ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRIT.get(), owner.getEyePosition(), MathHelper.toVec3(blockpos), 1, 0.1, 0.1);
+                ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL_MANA.get(), owner.getEyePosition(), MathHelper.toVec3(blockpos), 1, 0.1, 0.1);
             }
         }
         return success;

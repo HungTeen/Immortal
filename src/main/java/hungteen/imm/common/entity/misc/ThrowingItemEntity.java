@@ -48,7 +48,7 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         super.tick();
         if (this.level().isClientSide()) {
             if (this.random.nextFloat() < 0.1F) {
-                ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRIT.get(), this.position(), 1, 0, 0.08);
+                ParticleHelper.spawnParticles(this.level(), IMMParticles.SPIRITUAL_MANA.get(), this.position(), 1, 0, 0.08);
             }
         }
         if (this.workFinished()) {

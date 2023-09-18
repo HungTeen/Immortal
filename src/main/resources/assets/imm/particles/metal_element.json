@@ -1,7 +1,7 @@
 {
   "textures": [
-    "minecraft:metal_0",
-    "minecraft:metal_1",
-    "minecraft:metal_2"
+    "imm:metal_0",
+    "imm:metal_1",
+    "imm:metal_2"
   ]
 }

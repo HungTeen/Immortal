@@ -1,6 +1,8 @@
 package hungteen.imm.common;
 
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.records.HTColor;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
@@ -8,6 +10,8 @@ import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ReactionPacket;
+import hungteen.imm.common.tag.IMMEntityTags;
+import hungteen.imm.util.Colors;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.TipUtil;
@@ -41,6 +45,7 @@ public class ElementManager {
     private static final float DECAY_SPEED = 0.03F;
     private static final float DECAY_VALUE = 0.1F;
     private static final Map<Elements, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Elements.class);
+    private static final Map<Elements, HTColor> ELEMENT_COLOR_MAP = new EnumMap<>(Elements.class);
 
     static {
         ELEMENT_PARTICLE_MAP.putAll(Map.of(
@@ -51,28 +56,38 @@ public class ElementManager {
                 Elements.EARTH, IMMParticles.EARTH_ELEMENT,
                 Elements.SPIRIT, IMMParticles.SPIRIT_ELEMENT
         ));
+        ELEMENT_COLOR_MAP.putAll(Map.of(
+                Elements.METAL, ColorHelper.LITTLE_YELLOW1,
+                Elements.WOOD, ColorHelper.GREEN,
+                Elements.WATER, ColorHelper.DARK_BLUE,
+                Elements.FIRE, ColorHelper.RED,
+                Elements.EARTH, ColorHelper.GRAY,
+                Elements.SPIRIT, ColorHelper.PURPLE
+        ));
     }
     /**
      * 在世界更新末尾更新，仅服务端。
      */
     public static void tickElements(Entity entity) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
-            // Update Misc.
-            cap.update();
-            // Element Reactions.
-            final Iterator<IElementReaction> iterator = cap.getPossibleReactions().iterator();
-            while (iterator.hasNext()) {
-                final IElementReaction reaction = iterator.next();
-                final float scale = reaction.match(entity);
-                if (scale > 0) {
-                    reaction.doReaction(entity, (float) (MathUtil.log2(scale + 1)));
-                    reaction.consume(entity, scale);
-                    if (!reaction.once()) {
-                        cap.setActiveScale(reaction, scale);
+            if(canReactionOn(entity)){
+                // Update Misc.
+                cap.update();
+                // Element Reactions.
+                final Iterator<IElementReaction> iterator = cap.getPossibleReactions().iterator();
+                while (iterator.hasNext()) {
+                    final IElementReaction reaction = iterator.next();
+                    final float scale = reaction.match(entity);
+                    if (scale > 0) {
+                        reaction.doReaction(entity, (float) (MathUtil.log2(scale + 1)));
+                        reaction.consume(entity, scale);
+                        if (!reaction.once()) {
+                            cap.setActiveScale(reaction, scale);
+                        }
+                        NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 60, new ReactionPacket(entity.getId(), reaction));
+                    } else {
+                        iterator.remove();
                     }
-                    NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 60, new ReactionPacket(entity.getId(), reaction));
-                } else {
-                    iterator.remove();
                 }
             }
             // Decay Elements.
@@ -206,6 +221,16 @@ public class ElementManager {
         }, false);
     }
 
+    public static HTColor getElementColor(Entity entity, boolean mustRobust) {
+        final Colors.ColorMixer mixer = Colors.mixer();
+        for (Elements element : Elements.values()) {
+            if(hasElement(entity, element, mustRobust)){
+                mixer.add(getElementColor(element));
+            }
+        }
+        return mixer.mix();
+    }
+
     /**
      * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
      */
@@ -247,8 +272,16 @@ public class ElementManager {
         return ELEMENT_PARTICLE_MAP.getOrDefault(element, IMMParticles.SPIRITUAL_MANA).get();
     }
 
+    public static HTColor getElementColor(Elements element) {
+        return ELEMENT_COLOR_MAP.getOrDefault(element, ColorHelper.WHITE);
+    }
+
     public static void clearActiveReactions(Entity entity) {
         EntityUtil.getOptCapability(entity).ifPresent(IMMEntityCapability::clearElements);
+    }
+
+    public static boolean canReactionOn(Entity entity){
+        return ! entity.getType().is(IMMEntityTags.NO_ELEMENT_REACTIONS);
     }
 
     public static boolean displayRobust(Entity entity) {

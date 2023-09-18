@@ -4,6 +4,7 @@ import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.htlib.util.helper.JavaHelper;
+import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
@@ -11,6 +12,8 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -106,6 +110,7 @@ public class ElementReactions {
             "solidification", true, Elements.EARTH, 5, Elements.WATER, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
             if (entity instanceof LivingEntity living) {
                 living.addEffect(EffectHelper.viewEffect(IMMEffects.SOLIDIFICATION.get(), (int) (100 * scale), Mth.ceil(scale)));
             }
@@ -116,6 +121,7 @@ public class ElementReactions {
             "vaporization", true, Elements.WATER, 3, Elements.FIRE, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
             if (entity instanceof LivingEntity living) {
                 List<MobEffectInstance> effects = living.getActiveEffects().stream().filter(instance -> instance.getEffect().getCategory() == MobEffectCategory.HARMFUL).toList();
                 if (!effects.isEmpty()) {
@@ -140,6 +146,7 @@ public class ElementReactions {
             "melting", true, Elements.FIRE, 4, Elements.METAL, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
             entity.setSecondsOnFire((int) (4 * scale));
             entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), 1.5F * scale, Level.ExplosionInteraction.NONE);
         }
@@ -149,6 +156,7 @@ public class ElementReactions {
             "cutting", false, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
         }
     });
 
@@ -156,6 +164,7 @@ public class ElementReactions {
             "parasitism", true, Elements.WOOD, 0.2F, Elements.EARTH, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
         }
     });
 
@@ -204,10 +213,26 @@ public class ElementReactions {
             });
         }
 
-        public boolean allRobust(Entity entity) {
+        protected boolean canSpawnAmethyst(Entity entity){
+            return allRobust(entity) && (this.once() || (entity.level().getRandom().nextFloat() < 0.75F && entity.tickCount % 10 == 5));
+        }
+
+        private boolean allRobust(Entity entity) {
             return elements.stream().allMatch(entry -> {
                 return ElementManager.hasElement(entity, entry.element(), entry.mustRobust());
             });
+        }
+
+        protected Optional<ElementAmethyst> spawnAmethyst(Entity entity){
+            final ElementAmethyst amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
+            if(amethyst != null){
+                amethyst.setPos(entity.position());
+                final double dx = RandomHelper.doubleRange(entity.level().getRandom(), 0.1F);
+                final double dy = entity.level().getRandom().nextDouble() * 0.1F;
+                final double dz = RandomHelper.doubleRange(entity.level().getRandom(), 0.1F);
+                amethyst.setDeltaMovement(dx, dy, dz);
+            }
+            return Optional.ofNullable(amethyst);
         }
 
         @Override
@@ -242,17 +267,31 @@ public class ElementReactions {
      */
     private static abstract class GenerationReaction extends ElementReaction {
 
+        private final Elements ingredient;
         private final Elements production;
+        private final float ingredientAmount;
         private final float productionAmount;
+        private final boolean spawnAmethyst;
 
         private GenerationReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float productionAmount) {
             super(name, once, 100, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, 0F)));
+            this.ingredient = main;
             this.production = off;
+            this.ingredientAmount = mainAmount;
             this.productionAmount = productionAmount;
+            this.spawnAmethyst = (main == Elements.EARTH || off == Elements.EARTH);
         }
 
         @Override
         public void doReaction(Entity entity, float scale) {
+            if(this.spawnAmethyst && canSpawnAmethyst(entity)){
+                this.spawnAmethyst(entity).ifPresent(elementAmethyst -> {
+                    final float multiplier = scale * (this.once() ? 1 : 20);
+                    ElementManager.addElementAmount(elementAmethyst, this.ingredient, true, this.ingredientAmount * multiplier);
+                    ElementManager.addElementAmount(elementAmethyst, this.production, true, this.productionAmount * multiplier);
+                    entity.level().addFreshEntity(elementAmethyst);
+                });
+            }
             ElementManager.addElementAmount(entity, this.production, false, this.productionAmount * scale);
         }
 
@@ -263,10 +302,32 @@ public class ElementReactions {
      */
     private static abstract class InhibitionReaction extends ElementReaction {
 
+        private final Elements ingredient;
+        private final Elements production;
+        private final float mainAmount;
+        private final float offAmount;
+        private final boolean spawnAmethyst;
+
         private InhibitionReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float offAmount) {
             super(name, once, 80, List.of(new ElementEntry(main, false, mainAmount), new ElementEntry(off, false, offAmount)));
+            this.ingredient = main;
+            this.production = off;
+            this.mainAmount = mainAmount;
+            this.offAmount = offAmount;
+            this.spawnAmethyst = (main == Elements.EARTH || off == Elements.EARTH);
         }
 
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            if(this.spawnAmethyst && canSpawnAmethyst(entity)){
+                this.spawnAmethyst(entity).ifPresent(elementAmethyst -> {
+                    final float multiplier = scale * (this.once() ? 1 : 20);
+                    ElementManager.addElementAmount(elementAmethyst, this.ingredient, true, this.mainAmount * multiplier);
+                    ElementManager.addElementAmount(elementAmethyst, this.production, true, this.offAmount * multiplier);
+                    entity.level().addFreshEntity(elementAmethyst);
+                });
+            }
+        }
     }
 
     record ElementEntry(Elements element, boolean mustRobust, float amount){

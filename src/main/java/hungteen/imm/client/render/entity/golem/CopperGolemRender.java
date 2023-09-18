@@ -1,6 +1,6 @@
 package hungteen.imm.client.render.entity.golem;
 
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.render.entity.IMMMobRender;
 import hungteen.imm.common.entity.golem.CopperGolem;
@@ -18,7 +18,7 @@ public class CopperGolemRender extends IMMMobRender<CopperGolem> {
     private static final ResourceLocation LOCATION = Util.get().entityTexture("golem/copper_golem");
 
     public CopperGolemRender(EntityRendererProvider.Context rendererManager) {
-        super(rendererManager, new CopperGolemModel<>(rendererManager.bakeLayer(ModelLayers.COPPER_GOLEM)), 0.4F);
+        super(rendererManager, new CopperGolemModel<>(rendererManager.bakeLayer(IMMModelLayers.COPPER_GOLEM)), 0.4F);
     }
 
     @Override

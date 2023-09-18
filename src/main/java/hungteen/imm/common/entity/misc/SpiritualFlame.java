@@ -74,7 +74,7 @@ public class SpiritualFlame extends HTEntity {
     public static ParticleOptions getFlameParticleType(int level) {
         return level <= 3 ? ParticleTypes.FLAME :
                 level <= 6 ? ParticleTypes.SOUL_FIRE_FLAME :
-                        IMMParticles.IMMORTAL_FLAME.get();
+                        IMMParticles.SPIRITUAL_FLAME.get();
     }
 
     public Vec3 getFlameCenter(){

@@ -1,6 +1,6 @@
 package hungteen.imm.client.render.entity;
 
-import hungteen.imm.client.model.ModelLayers;
+import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.SpiritualZombieModel;
 import hungteen.imm.common.entity.undead.SpiritualZombie;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -18,11 +18,11 @@ public class SpiritualZombieRender extends HumanoidMobRenderer<SpiritualZombie, 
     private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation("textures/entity/zombie/zombie.png");
 
     public SpiritualZombieRender(EntityRendererProvider.Context context) {
-        super(context, new SpiritualZombieModel<>(context.bakeLayer(ModelLayers.SPIRITUAL_ZOMBIE)), 0.5F);
+        super(context, new SpiritualZombieModel<>(context.bakeLayer(IMMModelLayers.SPIRITUAL_ZOMBIE)), 0.5F);
         this.addLayer(new HumanoidArmorLayer<>(
                         this,
-                        new SpiritualZombieModel<>(context.bakeLayer(ModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR)),
-                        new SpiritualZombieModel<>(context.bakeLayer(ModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR)),
+                        new SpiritualZombieModel<>(context.bakeLayer(IMMModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR)),
+                        new SpiritualZombieModel<>(context.bakeLayer(IMMModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR)),
                         context.getModelManager()
                 )
         );
