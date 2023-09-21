@@ -6,6 +6,7 @@ import hungteen.imm.api.enums.SpellCategories;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ClipContext;
 
 /**
  * 法术。
@@ -56,6 +57,14 @@ public interface ISpellType extends ISimpleEntry {
      * @return Whether can the spell be triggered.
      */
     boolean canTrigger();
+
+    default ClipContext.Block getBlockClipMode(int level){
+        return ClipContext.Block.COLLIDER;
+    }
+
+    default ClipContext.Fluid getFluidClipMode(int level){
+        return ClipContext.Fluid.NONE;
+    }
 
     /**
      * 此法术是否为玩家专属，其他生物不需要学。

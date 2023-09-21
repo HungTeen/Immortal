@@ -17,11 +17,12 @@ public class CultivationTypes {
 
     private static final IHTSimpleRegistry<ICultivationType> TYPES = HTRegistryManager.createSimple(Util.prefix("cultivation_type"));
 
-    public static final ICultivationType MORTAL = register(new CultivationType("mortal"));
-    public static final ICultivationType SPIRITUAL = register(new CultivationType("spiritual"));
-    public static final ICultivationType MONSTER = register(new CultivationType("monster"));
-    public static final ICultivationType UNDEAD = register(new CultivationType("undead"));
-    public static final ICultivationType WIZARD = register(new CultivationType("wizard"));
+    public static final ICultivationType UNKNOWN = register(new CultivationType("unknown", true, false));
+    public static final ICultivationType MORTAL = register(new CultivationType("mortal", true, false));
+    public static final ICultivationType SPIRITUAL = register(new CultivationType("spiritual", false, true));
+    public static final ICultivationType MONSTER = register(new CultivationType("monster", false, true));
+    public static final ICultivationType UNDEAD = register(new CultivationType("undead", true, true));
+    public static final ICultivationType WIZARD = register(new CultivationType("wizard", true, false));
 //    public static final ICultivationType GHOST = register(new CultivationType("ghost"));
 //    public static final ICultivationType BLOOD = register(new CultivationType("blood"));
 
@@ -33,7 +34,7 @@ public class CultivationTypes {
         return registry().register(type);
     }
 
-    public record CultivationType(String name) implements ICultivationType {
+    public record CultivationType(String name, boolean canEnchant, boolean isSpiritual) implements ICultivationType {
 
         @Override
         public MutableComponent getComponent() {

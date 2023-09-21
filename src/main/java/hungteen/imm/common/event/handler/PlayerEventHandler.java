@@ -6,6 +6,7 @@ import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -40,7 +41,7 @@ public class PlayerEventHandler {
      * {@link IMMPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
      */
     public static void rayTrace(Player player) {
-        final HitResult hitResult = EntityUtil.getHitResult(player);
+        final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
         switch (hitResult.getType()){
             case BLOCK -> {
                 onTraceBlock(player, (BlockHitResult) hitResult);

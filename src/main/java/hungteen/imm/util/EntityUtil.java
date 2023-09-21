@@ -60,7 +60,6 @@ public class EntityUtil {
 
     /**
      * 发射子弹。
-     *
      * @param projectile 子弹。
      * @param vec        子弹发射方向。
      * @param speed      子弹速度。
@@ -81,10 +80,13 @@ public class EntityUtil {
 
     public static boolean addItem(Entity entity, ItemStack stack) {
         if (entity instanceof Player player) {
-            PlayerUtil.addItem(player, stack);
-            return true;
+            return PlayerUtil.addItem(player, stack);
         } else if (entity instanceof InventoryCarrier carrier) {
-            carrier.getInventory().addItem(stack);
+            final ItemStack result = carrier.getInventory().addItem(stack);
+            if(! result.isEmpty()){
+                entity.spawnAtLocation(result);
+                return false;
+            }
             return true;
         } else if (entity instanceof LivingEntity living) {
             if (living.getMainHandItem().isEmpty()) {
@@ -108,12 +110,12 @@ public class EntityUtil {
         return SeatEntity.seatAt(living.level(), living, pos, yOffset, living.getYRot(), 120F, relyOnBlock);
     }
 
-    public static HitResult getHitResult(Entity entity) {
+    public static HitResult getHitResult(Entity entity, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
         final double range = 20; //TODO 神识决定距离。
-        return getHitResult(entity, range);
+        return getHitResult(entity, blockMode, fluidMode, range);
     }
 
-    public static HitResult getHitResult(Entity entity, double distance) {
+    public static HitResult getHitResult(Entity entity, ClipContext.Block blockMode, ClipContext.Fluid fluidMode, double distance) {
         final Vec3 startVec = entity.getEyePosition(1.0F);
         final Vec3 lookVec = entity.getViewVector(1.0F);
         Vec3 endVec = startVec.add(lookVec.scale(distance));

@@ -18,7 +18,7 @@ public class MetalElementParticle extends HTMultiTextureParticle {
         this.gravity = 0F;
         this.setParticleSpeed(0, 0, 0);
         this.quadSize *= 0.75F;
-        this.lifetime = (int)(10D / (Math.random() * 0.8D + 0.2D));
+        this.lifetime = (int)(6D / (Math.random() * 0.8D + 0.2D));
         this.hasPhysics = false;
         final float rotation = clientLevel.getRandom().nextFloat() * 360;
         this.oRoll = this.roll = rotation;

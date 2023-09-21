@@ -37,7 +37,7 @@ public interface IMMItemTags {
     }
 
     private static TagKey<Item> forgeTag(String name){
-        return ItemTags.create(Util.forgePrefix(name));
+        return ItemTags.create(Util.forge().prefix(name));
     }
 
 }

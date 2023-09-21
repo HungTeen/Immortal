@@ -3,6 +3,7 @@ package hungteen.imm.client.render.entity.misc;
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.records.HTColor;
+import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.ElementAmethystModel;
 import hungteen.imm.common.ElementManager;
@@ -25,11 +26,13 @@ public class ElementAmethystRender extends EntityRenderer<ElementAmethyst> {
     private static final ResourceLocation TEXTURE = Util.get().entityTexture("element_amethyst");
     private static final RenderType CUTOUT = RenderType.entityCutoutNoCull(TEXTURE);
     private static final RenderType LIGHT = RenderType.eyes(TEXTURE);
-    private final ElementAmethystModel model;
+    private final ElementAmethystModel solidModel;
+    private final ElementAmethystModel lightModel;
 
     public ElementAmethystRender(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new ElementAmethystModel(context.bakeLayer(IMMModelLayers.ELEMENT_AMETHYST));
+        this.solidModel = new ElementAmethystModel(context.bakeLayer(IMMModelLayers.ELEMENT_AMETHYST), true);
+        this.lightModel = new ElementAmethystModel(context.bakeLayer(IMMModelLayers.ELEMENT_AMETHYST), false);
     }
 
     @Override
@@ -39,13 +42,11 @@ public class ElementAmethystRender extends EntityRenderer<ElementAmethyst> {
         final float red = ColorHelper.to(color.red());
         final float green = ColorHelper.to(color.green());
         final float blue = ColorHelper.to(color.blue());
-        stack.scale(-1.0F, -1.0F, 1.0F);
-        final float f = 1F;
-        stack.scale(f, f, f);
-        stack.translate(0.0, -1.501, 0.0);
-//        this.model.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.5F);
-        this.model.renderCube(stack, bufferIn.getBuffer(CUTOUT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1F);
-        this.model.renderLight(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.5F);
+        stack.pushPose();
+        RenderUtil.commonTranslate(stack, 1F);
+        this.solidModel.renderToBuffer(stack, bufferIn.getBuffer(CUTOUT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1F);
+        this.lightModel.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.5F);
+        stack.popPose();
         super.render(entityIn, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }
 

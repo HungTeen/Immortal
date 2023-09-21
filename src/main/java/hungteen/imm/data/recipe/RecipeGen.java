@@ -38,10 +38,10 @@ public class RecipeGen extends RecipeProvider {
     protected void buildShapedRecipes(Consumer<FinishedRecipe> consumer) {
         for (DyeColor color : DyeColor.values()) {
             ItemHelper.get().get(WoolCushionBlock.getWoolCushionLocation(color)).ifPresent(cushion -> {
-                ItemHelper.get().get(Util.mcPrefix(color.getName() + "_wool")).ifPresent(wool -> {
+                ItemHelper.get().get(Util.mc().prefix(color.getName() + "_wool")).ifPresent(wool -> {
                     woolCushion(consumer, cushion, wool);
                 });
-                ItemHelper.get().get(Util.mcPrefix(color.getName() + "_dye")).ifPresent(dye -> {
+                ItemHelper.get().get(Util.mc().prefix(color.getName() + "_dye")).ifPresent(dye -> {
                     woolCushionFromDye(consumer, cushion, dye);
                 });
             });

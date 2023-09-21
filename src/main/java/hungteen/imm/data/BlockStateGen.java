@@ -111,7 +111,7 @@ public class BlockStateGen extends HTBlockStateGen {
                         final Direction dir = state.getValue(WoolCushionBlock.FACING);
                         return ConfiguredModel.builder()
                                 .modelFile(models().withExistingParent(name(block), Util.prefix("block/wool_cushion"))
-                                        .texture("color", Util.mcPrefix("entity/bed/" + block.getDyeColor().getName()))
+                                        .texture("color", Util.mc().prefix("entity/bed/" + block.getDyeColor().getName()))
                                         .renderType(cutout())
                                 )
                                 .rotationY(((int) dir.toYRot() + 180) % 360).build();

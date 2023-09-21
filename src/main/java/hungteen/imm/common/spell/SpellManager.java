@@ -39,7 +39,7 @@ public class SpellManager {
         if (EntityHelper.isServer(player)) {
             // 使用法术的判断。
             if (EntityHelper.isEntityValid(player) && SpellManager.hasSpellSelected(player)) {
-                SpellManager.activateSpell(player, HTHitResult.create(player));
+                SpellManager.activateSpell(player);
             }
         } else {
             NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
@@ -78,9 +78,9 @@ public class SpellManager {
      * 有些被选择的法术可以被动释放法术，此处进行通用检查。
      */
     public static void activateSpell(LivingEntity entity, @NotNull ISpellType spell, ISpellTrigger trigger) {
-        final HTHitResult result = HTHitResult.create(entity);
-        final Optional<Spell> instance = canActivateSpell(entity, result, spell, false);
+        final Optional<Spell> instance = canActivateSpell(entity, spell, false);
         if (instance.isPresent()) {
+            final HTHitResult result = createHitResult(entity, instance.get());
             if (trigger.checkActivate(entity, result, instance.get().spell(), instance.get().level())) {
                 postActivateSpell(entity, instance.get());
             } else if(entity instanceof Player player){
@@ -92,9 +92,10 @@ public class SpellManager {
     /**
      * 主动通过按键释放法术。
      */
-    public static void activateSpell(Player player, @NotNull HTHitResult result) {
-        final Optional<Spell> instance = canActivateSpell(player, result, null, true);
+    public static void activateSpell(Player player) {
+        final Optional<Spell> instance = canActivateSpell(player, null, true);
         if (instance.isPresent()) {
+            final HTHitResult result = createHitResult(player, instance.get());
             final boolean success = instance.get().spell().checkActivate(player, result, instance.get().level());
             if (success) {
                 postActivateSpell(player, instance.get());
@@ -104,9 +105,9 @@ public class SpellManager {
         }
     }
 
-    public static Optional<Spell> canActivateSpell(LivingEntity entity, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
+    public static Optional<Spell> canActivateSpell(LivingEntity entity, @Nullable ISpellType targetSpell, boolean sendTip) {
         if (entity instanceof Player player) {
-            return canActivateSpell(player, result, targetSpell, sendTip);
+            return canActivateSpell(player, targetSpell, sendTip);
         }
         return Optional.empty();
     }
@@ -115,12 +116,11 @@ public class SpellManager {
      * 是否能够触发法术。
      *
      * @param player      释放法术的玩家。
-     * @param result      射线检测结果。
      * @param targetSpell 当前要求触发的法术（检查与选择的法术是否匹配）。
      * @param sendTip     是否给予不能触发的反馈。
      * @return empty 表示不能触发。
      */
-    public static Optional<Spell> canActivateSpell(Player player, @NotNull HTHitResult result, @Nullable ISpellType targetSpell, boolean sendTip) {
+    public static Optional<Spell> canActivateSpell(Player player, @Nullable ISpellType targetSpell, boolean sendTip) {
         final ISpellType spell = PlayerUtil.getPreparingSpell(player);
         if (spell != null && (targetSpell == null || spell == targetSpell)) {
             final int level = PlayerUtil.getSpellLevel(player, spell);
@@ -151,6 +151,10 @@ public class SpellManager {
             costMana(player, instance.spell().getConsumeMana());
             MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, instance.spell(), instance.level()));
         }
+    }
+
+    public static HTHitResult createHitResult(LivingEntity entity, @NotNull Spell spell){
+        return HTHitResult.create(entity, spell.spell().getBlockClipMode(spell.level()), spell.spell().getFluidClipMode(spell.level()));
     }
 
     public static long getSpellCDTime(Player player, ISpellType spell) {

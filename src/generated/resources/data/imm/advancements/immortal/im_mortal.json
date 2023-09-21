@@ -1,0 +1,30 @@
+{
+  "criteria": {
+    "mortal": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/block/copper_block.png",
+    "description": {
+      "translate": "advancements.imm.im_mortal.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "imm:gourd_seeds"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.im_mortal.title"
+    }
+  },
+  "requirements": [
+    [
+      "mortal"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

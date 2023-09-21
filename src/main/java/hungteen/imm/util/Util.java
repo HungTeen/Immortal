@@ -30,30 +30,16 @@ public class Util {
         return HELPER;
     }
 
+    public static IModIDHelper mc(){
+        return VanillaHelper.get();
+    }
+
+    public static IModIDHelper forge(){
+        return ForgeHelper.get();
+    }
+
     public static String id(){
-        return ImmortalMod.MOD_ID;
-    }
-
-    public static String mc(){
-        return VanillaHelper.get().getModID();
-    }
-
-    public static String forge(){
-        return ForgeHelper.get().getModID();
-    }
-
-    /**
-     * get resource with mc prefix.
-     */
-    public static ResourceLocation mcPrefix(String name) {
-        return VanillaHelper.get().prefix(name);
-    }
-
-    /**
-     * get resource with forge prefix.
-     */
-    public static ResourceLocation forgePrefix(String name) {
-        return ForgeHelper.get().prefix(name);
+        return get().getModID();
     }
 
     /**

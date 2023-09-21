@@ -4,6 +4,7 @@ import hungteen.htlib.HTLib;
 import hungteen.htlib.common.impl.raid.HTRaidComponents;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.WeightedList;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
@@ -18,8 +19,10 @@ import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
+import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,8 +32,10 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
@@ -116,6 +121,25 @@ public class RealmManager {
                 DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
                 PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
             });
+        }
+    }
+
+    /**
+     * 不能使用附魔的修行者，强制弹出附魔物品。
+     */
+    public static void limitEnchantments(LivingEntity living){
+        if((living.tickCount & 1) == 0 && ! RealmManager.getCultivationType(living).canEnchant()){
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                final ItemStack slotItem = living.getItemBySlot(slot);
+                if(ItemUtil.hasEnchantment(slotItem)){
+                    final ItemStack copyItem = slotItem.copy();
+                    living.setItemSlot(slot, ItemStack.EMPTY);
+                    living.spawnAtLocation(copyItem);
+                    if(living instanceof Player player){
+                        PlayerHelper.sendTipTo(player, TipUtil.info("spiritual_conflict_with_enchant").withStyle(ChatFormatting.RED));
+                    }
+                }
+            }
         }
     }
 
@@ -210,6 +234,10 @@ public class RealmManager {
             PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
         return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : getDefaultRealm(entity.getType());
+    }
+
+    public static ICultivationType getCultivationType(Entity entity) {
+        return getEntityRealm(entity).getCultivationType();
     }
 
     public static float getStageRequiredCultivation(IRealmType realm, RealmStages stage){

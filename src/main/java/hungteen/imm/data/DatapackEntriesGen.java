@@ -76,7 +76,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             ;
 
     public DatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, BUILDER, Set.of(Util.mc(), Util.id()));
+        super(output, provider, BUILDER, Set.of(Util.mc().getModID(), Util.id()));
     }
 
     public static void addProviders(boolean isServer, DataGenerator generator, PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {

@@ -22,7 +22,7 @@ public class FireElementParticle extends HTMultiTextureParticle {
         this.y += (this.random.nextFloat() - this.random.nextFloat()) * 0.05F;
         this.z += (this.random.nextFloat() - this.random.nextFloat()) * 0.05F;
         this.quadSize *= 0.75F;
-        this.lifetime = (int)(10D / (Math.random() * 0.8D + 0.2D));
+        this.lifetime = (int)(8D / (Math.random() * 0.8D + 0.2D));
         this.hasPhysics = false;
         this.setSpriteFromAge(this.sprites);
     }

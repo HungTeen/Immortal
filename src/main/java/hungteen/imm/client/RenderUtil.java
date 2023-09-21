@@ -33,7 +33,6 @@ public class RenderUtil {
     public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
-
     public static void renderCenterScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderCenterScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
@@ -89,5 +88,11 @@ public class RenderUtil {
         entityrenderdispatcher.setRenderShadow(true);
         graphics.pose().popPose();
         Lighting.setupFor3DItems();
+    }
+
+    public static void commonTranslate(PoseStack stack, float scale){
+        stack.scale(-1.0F, -1.0F, 1.0F);
+        stack.scale(scale, scale, scale);
+        stack.translate(0.0, -1.501, 0.0);
     }
 }

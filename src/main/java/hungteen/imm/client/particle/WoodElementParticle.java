@@ -30,7 +30,7 @@ public class WoodElementParticle extends HTMultiTextureParticle {
         this.rotSpeed = (float)Math.toRadians(this.random.nextBoolean() ? -30.0D : 30.0D);
         this.particleRandom = this.random.nextFloat();
         this.spinAcceleration = (float)Math.toRadians(this.random.nextBoolean() ? -5.0D : 5.0D);
-        this.lifetime = 300;
+        this.lifetime = (int)(10.0D / (Math.random() * 0.8D + 0.2D));
         this.gravity = 7.5E-4F;
         float f = this.random.nextBoolean() ? 0.05F : 0.075F;
         this.quadSize = f;

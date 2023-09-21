@@ -129,6 +129,7 @@
 
   "info.imm.already_learned_spell": "已学习此法术 ！",
   "info.imm.requirement_not_fit": "此条件不满足：",
+  "info.imm.spiritual_conflict_with_enchant": "灵气与附魔冲突！",
   "info.imm.spell.on_cooldown": "法术冷却中",
   "info.imm.spell.no_enough_mana": "灵力不足，此法术需要%d灵力",
   "info.imm.spell.no_empty_hand": "没有空闲的手",

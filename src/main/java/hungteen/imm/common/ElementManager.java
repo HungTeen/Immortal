@@ -8,6 +8,7 @@ import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.IMMAttributes;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ReactionPacket;
 import hungteen.imm.common.tag.IMMEntityTags;
@@ -118,6 +119,9 @@ public class ElementManager {
     public static float getDecayFactor(Entity entity) {
         if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.get())) {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
+        }
+        if(entity instanceof ElementAmethyst){
+            return 0.5F;
         }
         return 1F;
     }

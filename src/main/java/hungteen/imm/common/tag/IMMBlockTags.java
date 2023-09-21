@@ -30,6 +30,6 @@ public interface IMMBlockTags {
     }
 
     private static TagKey<Block> forgeTag(String name){
-        return BlockTags.create(Util.forgePrefix(name));
+        return BlockTags.create(Util.forge().prefix(name));
     }
 }

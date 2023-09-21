@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class ClientArtifactToolTip  implements ClientTooltipComponent {
 
-    public static final ResourceLocation TEXTURE_LOCATION = Util.mcPrefix("textures/gui/container/bundle.png");
+    public static final ResourceLocation TEXTURE_LOCATION = Util.mc().containerTexture("bundle");
     private final ArtifactToolTip artifactToolTip;
 
     public ClientArtifactToolTip(ArtifactToolTip artifactToolTip) {

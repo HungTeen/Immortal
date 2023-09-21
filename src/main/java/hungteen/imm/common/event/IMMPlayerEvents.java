@@ -2,6 +2,7 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
@@ -33,6 +34,7 @@ public class IMMPlayerEvents {
             if(PlayerUtil.isSitInMeditation(event.player)){
                 PlayerUtil.addIntegerData(event.player, PlayerRangeIntegers.MEDITATE_TICK, 1);
             }
+            RealmManager.limitEnchantments(event.player);
         }
     }
 

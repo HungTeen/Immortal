@@ -36,11 +36,13 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void tick(LivingEvent.LivingTickEvent event) {
         if(EntityHelper.isServer(event.getEntity())){
+            // 灵气自然增长。
             if(event.getEntity() instanceof IHasMana entity && EntityUtil.canManaIncrease(event.getEntity())) {
                 if(! entity.isManaFull()){
                     entity.addMana(LevelUtil.getSpiritualRate(event.getEntity().level(), event.getEntity().blockPosition()));
                 }
             }
+            // 元素反应：寄生。
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, scale -> {
                 if(EntityUtil.hasMana(event.getEntity())){
                     EntityUtil.addMana(event.getEntity(), - scale * 2.5F);
@@ -50,6 +52,7 @@ public class IMMLivingEvents {
                     }
                 }
             });
+            RealmManager.limitEnchantments(event.getEntity());
         }
     }
 

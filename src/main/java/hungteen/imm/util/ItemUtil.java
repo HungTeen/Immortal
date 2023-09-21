@@ -26,6 +26,12 @@ public class ItemUtil {
     private static final String SUFFIX = "large_held";
     private static final List<RegistryObject<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
 
+    /**
+     * {@link net.minecraft.world.item.enchantment.EnchantmentHelper#getEnchantments(ItemStack)}.
+     */
+    public static boolean hasEnchantment(ItemStack stack){
+        return ! (stack.is(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTags()).isEmpty();
+    }
     public static ItemStack dyeArmor(Item item, List<DyeColor> colors){
         return DyeableLeatherItem.dyeArmor(new ItemStack(item), colors.stream().map(DyeItem::byColor).toList());
     }

@@ -1,7 +1,6 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.authlib.GameProfile;
-import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -57,7 +56,7 @@ public enum CultivatorTypes implements WeightedEntry {
      * @param skinLocation 本地贴图。
      */
     CultivatorTypes(Component displayName, String skinLocation, boolean isSlim, int weight, boolean common) {
-        this(displayName, null, null, StringHelper.entityTexture(Util.mc(), skinLocation), isSlim, weight, common);
+        this(displayName, null, null, Util.mc().entityTexture(skinLocation), isSlim, weight, common);
     }
 
     /**

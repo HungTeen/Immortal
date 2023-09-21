@@ -87,7 +87,7 @@ public class ItemModelGen extends HTItemModelGen {
                 IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN, IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
         ).forEach(item -> {
             this.addedItems.add(item.get());
-            this.genNormal(item.getId().getPath(), Util.mcPrefix("item/flower_banner_pattern"));
+            this.genNormal(item.getId().getPath(), Util.mc().prefix("item/flower_banner_pattern"));
         });
 
         /* Runes */

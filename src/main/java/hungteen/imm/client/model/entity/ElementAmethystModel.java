@@ -18,11 +18,17 @@ public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
 	private final ModelPart cube;
 	private final ModelPart coat;
 
-	public ElementAmethystModel(ModelPart root) {
+	public ElementAmethystModel(ModelPart root, boolean isSolid) {
 		this.total = root.getChild("total");
 		this.light = this.total.getChild("light");
 		this.cube = this.total.getChild("cube");
 		this.coat = this.total.getChild("coat");
+		if(isSolid){
+			this.light.visible = false;
+			this.coat.visible = false;
+		} else {
+			this.cube.visible = false;
+		}
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -49,16 +55,6 @@ public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-
-	public void renderCube(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.cube.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
-
-	public void renderLight(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.cube.visible = false;
-		this.total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		this.cube.visible = true;
 	}
 
 }

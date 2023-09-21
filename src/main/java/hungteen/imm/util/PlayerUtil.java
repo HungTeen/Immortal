@@ -91,6 +91,10 @@ public class PlayerUtil {
         return levelAccess.evaluate((level, blockPos) -> level.getBlockState(blockPos).is(block) && player.distanceToSqr(MathHelper.toVec3(blockPos)) <= distance, true);
     }
 
+    /**
+     * 往背包添加物品，如果失败则掉落。
+     * @return True if not add into inventory.
+     */
     public static boolean addItem(Player player, ItemStack stack){
         if (player.addItem(stack)) {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);

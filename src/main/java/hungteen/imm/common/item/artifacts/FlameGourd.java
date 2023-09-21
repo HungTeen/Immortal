@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -50,7 +51,7 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
         if(stack.getItem() instanceof FlameGourd && player instanceof Player){
-            final HitResult hitResult = EntityUtil.getHitResult((Player) player);
+            final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
             final FlameGourd flameGourd = (FlameGourd) stack.getItem();
             if(hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hitResult).getEntity() instanceof SpiritualFlame){
                 final SpiritualFlame flame = (SpiritualFlame) ((EntityHitResult) hitResult).getEntity();

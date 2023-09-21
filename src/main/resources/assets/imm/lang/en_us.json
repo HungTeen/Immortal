@@ -129,6 +129,7 @@
 
   "info.imm.already_learned_spell": "Already learned the spell !",
   "info.imm.requirement_not_fit": "The requirement is not fit: ",
+  "info.imm.spiritual_conflict_with_enchant": "Spiritual conflict with enchantments",
   "info.imm.spell.on_cooldown": "Spell is on cooldown",
   "info.imm.spell.no_enough_mana": "Mana is not enough, requires %d mana",
   "info.imm.spell.no_empty_hand": "No empty hand",

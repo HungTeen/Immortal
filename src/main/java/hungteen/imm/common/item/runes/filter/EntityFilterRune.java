@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -25,7 +26,7 @@ public class EntityFilterRune extends FilterRuneItem<EntityType<?>> {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if(! level.isClientSide() && player.getItemInHand(hand).getItem() instanceof EntityFilterRune rune){
-            final HitResult hitResult = EntityUtil.getHitResult(player, player.getEntityReach());
+            final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player.getEntityReach());
             if(hitResult instanceof EntityHitResult result){
                 rune.bind(player, player.getItemInHand(hand), result.getEntity().getType());
             }

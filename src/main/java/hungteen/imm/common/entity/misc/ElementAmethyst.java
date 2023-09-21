@@ -21,11 +21,17 @@ public class ElementAmethyst extends HTEntity {
     @Override
     public void tick() {
         super.tick();
+        this.tickMove();
         if(EntityHelper.isServer(this) && (this.tickCount & 1) == 0){
             if(! ElementManager.hasElement(this, Elements.EARTH, true)){
                 this.discard();
             }
         }
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return true;
     }
 
     @Override

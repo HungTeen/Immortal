@@ -1,0 +1,38 @@
+{
+  "parent": "imm:immortal/im_mortal",
+  "criteria": {
+    "get_spiritual_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:emerald"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.spiritual_stone.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.spiritual_stone.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_spiritual_stone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

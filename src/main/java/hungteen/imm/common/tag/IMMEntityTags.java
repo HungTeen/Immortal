@@ -28,11 +28,11 @@ public interface IMMEntityTags {
     }
 
     private static TagKey<EntityType<?>> forgeTag(String name){
-        return create(Util.forgePrefix(name));
+        return create(Util.forge().prefix(name));
     }
 
     private static TagKey<EntityType<?>> mcTag(String name){
-        return create(Util.mcPrefix(name));
+        return create(Util.mc().prefix(name));
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation location) {
