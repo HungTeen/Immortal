@@ -130,7 +130,7 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
     }
 
     public IArtifactType getArtifactType() {
-        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.EMPTY;
+        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.UNKNOWN;
     }
 
 }

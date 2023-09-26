@@ -1,7 +1,6 @@
 package hungteen.imm.api.interfaces;
 
 import hungteen.imm.api.registry.IArtifactType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -10,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author: HungTeen
  * @create: 2022-10-08 09:35
  **/
-public interface IArtifactBlock {
+public interface IArtifactBlock extends IArtifactItem{
 
     /**
      * 获取法器类型。

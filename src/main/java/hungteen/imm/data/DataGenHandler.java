@@ -1,6 +1,5 @@
 package hungteen.imm.data;
 
-import hungteen.imm.data.advancement.AdvancementGen;
 import hungteen.imm.data.recipe.RecipeGen;
 import hungteen.imm.data.tag.*;
 import net.minecraft.core.HolderLookup;
@@ -26,8 +25,8 @@ public class DataGenHandler {
 
         /* Tags */
         final BlockTagGen generator = new BlockTagGen(output, provider, fileHelper);
-        generators.addProvider(event.includeServer(), new BlockTagGen(output, provider, fileHelper));
-        generators.addProvider(event.includeServer(), new ItemTagGen(output, generator, provider, fileHelper));
+        generators.addProvider(event.includeServer(), generator);
+        generators.addProvider(event.includeServer(), new ItemTagGen(output, provider, generator.contentsGetter(), fileHelper));
         generators.addProvider(event.includeServer(), new EntityTagGen(output, provider, fileHelper));
         generators.addProvider(event.includeServer(), new BannerPatternTagGen(output, provider, fileHelper));
 

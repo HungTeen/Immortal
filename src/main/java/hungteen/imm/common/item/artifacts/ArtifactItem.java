@@ -2,11 +2,13 @@ package hungteen.imm.common.item.artifacts;
 
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,17 +38,11 @@ public abstract class ArtifactItem extends Item implements IArtifactItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(getArtifactType(itemStack).getComponent());
+        components.add(this.getDesc(itemStack));
     }
 
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false; // Not allowed to enchant.
-    }
-
-    @Override
-    public int getEnchantmentValue(ItemStack stack) {
-        return 0; // Not allowed to enchant.
+    protected MutableComponent getDesc(ItemStack stack){
+        return TipUtil.desc(this).withStyle(ChatFormatting.GREEN);
     }
 
     @Override

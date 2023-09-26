@@ -14,9 +14,9 @@ import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
+import hungteen.imm.common.entity.human.setting.HumanSettings;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import hungteen.imm.common.entity.human.setting.HumanSettings;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
@@ -404,7 +404,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     }
 
     public boolean canTradeWith(Player player) {
-        return this.isAlive() && !this.isTrading() && !this.isBaby() && BehaviorUtil.isIdle(this);
+        return this.isAlive() && !this.isTrading() && !this.isBaby() && BehaviorUtil.isIdle(this) && !player.isSecondaryUseActive();
     }
 
     @Override

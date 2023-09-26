@@ -31,7 +31,7 @@ public class EntityTagGen extends HTHolderTagsProvider<EntityType<?>> {
         this.tag(IMMEntityTags.PILLAGERS).add(EntityType.PILLAGER, EntityType.WITCH, EntityType.ILLUSIONER, EntityType.VINDICATOR, EntityType.EVOKER);
 
         /* Immortal */
-        this.tag(IMMEntityTags.NO_ELEMENT_REACTIONS).add(IMMEntities.ELEMENT_AMETHYST.get());
+        this.tag(IMMEntityTags.NO_ELEMENT_REACTIONS).add(IMMEntities.SPIRITUAL_PEARL.get(), IMMEntities.ELEMENT_AMETHYST.get());
         this.tag(IMMEntityTags.CULTIVATORS).add(EntityType.PLAYER, IMMEntities.EMPTY_CULTIVATOR.get(), IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get());
         this.tag(IMMEntityTags.HUMAN_BEINGS).addTags(IMMEntityTags.CULTIVATORS, IMMEntityTags.VILLAGERS, IMMEntityTags.PILLAGERS);
 

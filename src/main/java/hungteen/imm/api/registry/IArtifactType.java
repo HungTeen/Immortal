@@ -10,6 +10,6 @@ import hungteen.htlib.api.interfaces.IEnumEntry;
  */
 public interface IArtifactType extends IEnumEntry {
 
-    int getLevel();
+    int getRealmValue();
 
 }

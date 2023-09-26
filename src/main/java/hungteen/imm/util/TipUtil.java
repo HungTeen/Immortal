@@ -1,11 +1,14 @@
 package hungteen.imm.util;
 
+import hungteen.htlib.util.helper.StringHelper;
+import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Function;
 
@@ -58,6 +61,18 @@ public class TipUtil {
     public static MutableComponent tooltip(Item item, String name, Object... objects){
         final ResourceLocation location = ItemHelper.get().getKey(item);
         return Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath() + (name.isEmpty() ? "" : "." + name), objects);
+    }
+
+    public static MutableComponent desc(Item item, Object... objects){
+        return desc("item", ItemHelper.get().getKey(item), objects);
+    }
+
+    public static MutableComponent desc(Block block, Object... objects){
+        return desc("block", BlockHelper.get().getKey(block), objects);
+    }
+
+    public static MutableComponent desc(String category, ResourceLocation location, Object... objects){
+        return StringHelper.lang(category, location.getNamespace(), location.getPath() + ".desc", objects);
     }
 
 }

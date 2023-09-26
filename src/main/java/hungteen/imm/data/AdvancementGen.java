@@ -1,7 +1,9 @@
-package hungteen.imm.data.advancement;
+package hungteen.imm.data;
 
 import hungteen.htlib.data.HTAdvancementGen;
+import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.Util;
@@ -33,7 +35,7 @@ public class AdvancementGen extends HTAdvancementGen {
 
     private static final class ImmortalBuilder extends HTAdvancementBuilder {
 
-        protected ImmortalBuilder(String modId) {
+        private ImmortalBuilder(String modId) {
             super(modId);
         }
 
@@ -48,6 +50,9 @@ public class AdvancementGen extends HTAdvancementGen {
             task(imMortal, IMMBlocks.TELEPORT_ANCHOR.get(), "east_world")
                     .addCriterion("reach_east_world", ChangeDimensionTrigger.TriggerInstance.changedDimensionTo(IMMLevels.EAST_WORLD))
                     .save(saver, loc("east_world"));
+            task(imMortal, IMMItems.SPIRITUAL_PEARL.get(), "stuck_in_mortal")
+                    .addCriterion("reach_east_world", SpiritualPearlTrigger.TriggerInstance.test(IMMEntities.EMPTY_CULTIVATOR.get(), 0))
+                    .save(saver, loc("stuck_in_mortal"));
 //            task(imMortal, Items.CHAINMAIL_HELMET, "never_be_alone")
 //                    .addCriterion("interact_with_cultivator", PlayerInteractTrigger.TriggerInstance.itemUsedOnEntity())
 //                    .save(saver, loc("never_be_alone"));

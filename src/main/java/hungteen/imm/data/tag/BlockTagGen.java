@@ -29,6 +29,15 @@ public class BlockTagGen extends HTBlockTagGen {
     protected void addTags(HolderLookup.Provider provider) {
         this.addMCTags();
 
+        /* Forge */
+        this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
+        this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
+
+        this.tag(IMMBlockTags.COMMON_ARTIFACTS).add(Blocks.CRAFTING_TABLE, Blocks.ENDER_CHEST, Blocks.RESPAWN_ANCHOR);
+        this.tag(IMMBlockTags.MODERATE_ARTIFACTS).add(Blocks.ANVIL, Blocks.BREWING_STAND, Blocks.CONDUIT);
+        this.tag(IMMBlockTags.ADVANCED_ARTIFACTS).add(Blocks.ENCHANTING_TABLE, Blocks.BEACON);
+
+        /* IMM */
         this.tag(IMMBlockTags.COPPER_BLOCKS)
                 .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
                 .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);
@@ -42,10 +51,6 @@ public class BlockTagGen extends HTBlockTagGen {
     }
 
     private void addMCTags(){
-        /* Ores */
-        this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
-        this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
-
         /* Woods */
 //        this.woodIntegration(ImmortalWoods.MULBERRY);
 

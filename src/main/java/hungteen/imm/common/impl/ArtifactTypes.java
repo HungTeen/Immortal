@@ -1,10 +1,12 @@
 package hungteen.imm.common.impl;
 
+import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 
 import java.util.Locale;
 
@@ -18,45 +20,45 @@ public enum ArtifactTypes implements IArtifactType{
     /**
      * 体系之外，不予评价。
      */
-    EMPTY(0, ChatFormatting.WHITE),
+    UNKNOWN(0, StringHelper.colorStyle(ColorHelper.WHITE)),
 
     /**
      * 凡物。
      */
-    COMMON_ITEM(1, ChatFormatting.WHITE),
+    COMMON_ITEM(40, StringHelper.colorStyle(ColorHelper.WHITE)),
 
     /**
      * 普通法器。
      */
-    COMMON_ARTIFACT(1, ChatFormatting.GREEN),
+    COMMON_ARTIFACT(120, StringHelper.colorStyle(ColorHelper.GREEN)),
 
     /**
      * 中等法器。
      */
-    MODERATE_ARTIFACT(1, ChatFormatting.GREEN),
+    MODERATE_ARTIFACT(225, StringHelper.colorStyle(ColorHelper.GREEN)),
 
     /**
      * 高级法器。
      */
-    ADVANCED_ARTIFACT(1, ChatFormatting.BLUE),
+    ADVANCED_ARTIFACT(325, StringHelper.colorStyle(ColorHelper.BLUE)),
     ;
 
     private int value;
-    private final ChatFormatting formatting;
+    private final Style style;
 
-    ArtifactTypes(int value, ChatFormatting formatting) {
+    ArtifactTypes(int value, Style style) {
         this.value = value;
-        this.formatting = formatting;
+        this.style = style;
     }
 
     @Override
-    public int getLevel() {
+    public int getRealmValue() {
         return value;
     }
 
     @Override
     public MutableComponent getComponent() {
-        return Component.translatable("misc." + getModID() + ".artifact_type." + getName()).withStyle(this.formatting);
+        return TipUtil.misc("artifact_type." + getName()).withStyle(this.style);
     }
 
     @Override

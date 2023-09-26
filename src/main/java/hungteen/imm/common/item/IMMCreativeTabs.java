@@ -2,10 +2,8 @@ package hungteen.imm.common.item;
 
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.common.ArtifactManager;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
@@ -25,6 +23,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -74,12 +73,11 @@ public class IMMCreativeTabs {
             builder.icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
                     .withTabsBefore(SECRET_MANUALS.getKey())
                     .displayItems((parameters, output) -> {
-                        ItemHelper.get().filterValues(IArtifactItem.class::isInstance).forEach(item -> {
-                            output.accept(new ItemStack(item));
-                        });
-                        BlockHelper.get().filterValues(IArtifactBlock.class::isInstance).forEach(block -> {
-                            output.accept(new ItemStack(block));
-                        });
+                        ItemHelper.get().filterValues(item -> {
+                            return ArtifactManager.notCommon(ArtifactManager.getArtifactType(new ItemStack(item)));
+                        }).stream().map(ItemStack::new)
+                                .sorted(Comparator.comparingInt(ArtifactManager::getRealmValue))
+                                .forEach(output::accept);
                     })
     );
 

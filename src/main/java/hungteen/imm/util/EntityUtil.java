@@ -3,6 +3,7 @@ package hungteen.imm.util;
 import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @program: Immortal
@@ -242,8 +244,31 @@ public class EntityUtil {
     }
 
     public static List<ISpiritualType> getSpiritualRoots(Entity entity) {
-        return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
-                : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
+        return getSpiritualRoots(entity, null);
+    }
+
+    /**
+     * 是否有玩家视角，限制部分灵根的显示。
+     * @param viewPlayer 玩家的视角。
+     */
+    public static List<ISpiritualType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
+        if(viewPlayer == null){
+            return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
+                    : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
+        }
+        return PlayerUtil.filterSpiritRoots(viewPlayer, getSpiritualRoots(entity));
+    }
+
+    public static List<Elements> getElements(Entity entity){
+        return getElements(entity, null);
+    }
+
+    /**
+     * 是否有玩家视角，限制部分元素的显示。
+     * @param viewPlayer 玩家的视角。
+     */
+    public static List<Elements> getElements(Entity entity, @Nullable Player viewPlayer) {
+        return viewPlayer == null ? getSpiritualRoots(entity).stream().flatMap(l -> l.getElements().stream()).collect(Collectors.toList()) : PlayerUtil.filterElements(viewPlayer, getElements(entity));
     }
 
     public static Triple<Float, Float, Float> getRGBForSpiritual(Entity entity) {

@@ -17,6 +17,10 @@ public interface IMMBlockTags {
     TagKey<Block> SPIRITUAL_ORES = forgeTag("spiritual_ores");
     TagKey<Block> CINNABAR_ORES = forgeTag("ores/cinnabar");
 
+    TagKey<Block> COMMON_ARTIFACTS = forgeTag("artifacts/common");
+    TagKey<Block> MODERATE_ARTIFACTS = forgeTag("artifacts/moderate");
+    TagKey<Block> ADVANCED_ARTIFACTS = forgeTag("artifacts/advanced");
+
     /* IMM */
 
     TagKey<Block> COPPER_BLOCKS = tag("copper_blocks");

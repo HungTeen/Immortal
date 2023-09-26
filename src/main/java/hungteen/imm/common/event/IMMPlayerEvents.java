@@ -67,7 +67,7 @@ public class IMMPlayerEvents {
 
 //    @SubscribeEvent
 //    public static void onPlayerActivateSpell(PlayerSpellEvent.ActivateSpellEvent.Post event) {
-//        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getLevel());
+//        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getRealmValue());
 //    }
 
     @SubscribeEvent
@@ -81,7 +81,7 @@ public class IMMPlayerEvents {
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
         if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.rayTrace(event.getEntity());
-//            if(event.getLevel() instanceof ServerLevel serverLevel){
+//            if(event.getRealmValue() instanceof ServerLevel serverLevel){
 //                System.out.println(ElixirManager.getElixirValue(serverLevel, event.getItemStack().getItem()));
 //            }
         }

@@ -36,6 +36,7 @@ public class WoodElementParticle extends HTMultiTextureParticle {
         this.quadSize = f;
         this.setSize(f, f);
         this.friction = 1.0F;
+        this.setSpriteFromAge(this.sprites);
     }
 
     @Override

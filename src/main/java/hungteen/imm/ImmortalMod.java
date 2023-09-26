@@ -4,6 +4,7 @@ import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.CommonRegister;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.CapabilityHandler;
@@ -82,8 +83,9 @@ public class ImmortalMod {
 //        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
 
-        /* Config Setup */
+        /* Misc Initialization */
         IMMConfigs.init();
+        AdvancementHandler.init();
 
         /* Custom Registry */
         coreRegister();

@@ -225,6 +225,15 @@ public class ElementManager {
         }, false);
     }
 
+    public static boolean hasElement(Entity entity, boolean mustRobust) {
+        for (Elements element : Elements.values()) {
+            if(ElementManager.hasElement(entity, element, mustRobust)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static HTColor getElementColor(Entity entity, boolean mustRobust) {
         final Colors.ColorMixer mixer = Colors.mixer();
         for (Elements element : Elements.values()) {

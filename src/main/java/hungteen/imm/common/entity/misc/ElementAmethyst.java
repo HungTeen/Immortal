@@ -21,7 +21,7 @@ public class ElementAmethyst extends HTEntity {
     @Override
     public void tick() {
         super.tick();
-        this.tickMove();
+        this.tickMove(0.95F, 0.8F);
         if(EntityHelper.isServer(this) && (this.tickCount & 1) == 0){
             if(! ElementManager.hasElement(this, Elements.EARTH, true)){
                 this.discard();

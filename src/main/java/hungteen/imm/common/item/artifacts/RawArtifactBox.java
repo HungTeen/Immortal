@@ -29,7 +29,7 @@ public class RawArtifactBox extends ArtifactItem {
     private static final String SPIRITUAL_VALUE_REQUIRED = "SpiritualValueRequired";
 
     public RawArtifactBox() {
-        super(ArtifactTypes.EMPTY);
+        super(ArtifactTypes.UNKNOWN);
     }
 
 //    @Override
