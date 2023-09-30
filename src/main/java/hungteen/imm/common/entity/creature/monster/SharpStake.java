@@ -14,6 +14,7 @@ import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -24,6 +25,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -38,8 +41,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -55,14 +60,18 @@ import java.util.function.Supplier;
  */
 public class SharpStake extends IMMMob {
 
-    private static final Map<ResourceKey<Biome>, Supplier<BlockState>> STAKE_MAP = new HashMap<>();
+    private static final Map<TagKey<Biome>, Supplier<BlockState>> STAKE_MAP = new HashMap<>();
     private static final List<Pair<Supplier<ItemStack>, Integer>> AXES = new ArrayList<>();
     private static final EntityDataAccessor<BlockState> STAKE = SynchedEntityData.defineId(SharpStake.class, EntityDataSerializers.BLOCK_STATE);
 
     static {
         STAKE_MAP.putAll(Map.of(
-                IMMBiomes.BIRCH_FOREST, Blocks.BIRCH_LOG::defaultBlockState,
-                IMMBiomes.CUT_BIRCH_FOREST, Blocks.BIRCH_LOG::defaultBlockState
+                IMMBiomeTags.HAS_BIRCH_TREE, Blocks.BIRCH_LOG::defaultBlockState,
+                IMMBiomeTags.HAS_DARK_OAK_TREE, Blocks.DARK_OAK_LOG::defaultBlockState,
+                IMMBiomeTags.HAS_JUNGLE_TREE, Blocks.JUNGLE_LOG::defaultBlockState,
+                IMMBiomeTags.HAS_ACACIA_TREE, Blocks.ACACIA_LOG::defaultBlockState,
+                IMMBiomeTags.HAS_SPRUCE_TREE, Blocks.SPRUCE_LOG::defaultBlockState,
+                IMMBiomeTags.HAS_CHERRY_TREE, Blocks.CHERRY_LOG::defaultBlockState
         ));
         AXES.addAll(List.of(
                 Pair.of(() -> new ItemStack(Items.WOODEN_AXE), 10),
@@ -73,8 +82,8 @@ public class SharpStake extends IMMMob {
         ));
     }
 
-    public static void updateStakeMap(ResourceKey<Biome> biome, Supplier<BlockState> state) {
-        STAKE_MAP.put(biome, state);
+    public static void updateStakeMap(TagKey<Biome> biomeTag, Supplier<BlockState> state) {
+        STAKE_MAP.put(biomeTag, state);
     }
 
     public static void addAxe(Supplier<ItemStack> axe, int weight) {
@@ -110,8 +119,10 @@ public class SharpStake extends IMMMob {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         if(! accessor.isClientSide()){
             // Choose skin.
-            accessor.getBiome(blockPosition()).unwrapKey().flatMap(key -> JavaHelper.getOpt(STAKE_MAP, key)).ifPresent(sup -> {
-                this.setStakeState(sup.get());
+            STAKE_MAP.forEach((biomeTag, state) -> {
+                if(accessor.getBiome(blockPosition()).is(biomeTag)){
+                    this.setStakeState(state.get());
+                }
             });
             // Roll axe.
             final SimpleWeightedList.Builder<ItemStack> axes = SimpleWeightedList.builder();

@@ -19,6 +19,7 @@ import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.particle.*;
+import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
@@ -30,6 +31,7 @@ import hungteen.imm.client.render.entity.golem.SnowGolemRender;
 import hungteen.imm.client.render.entity.human.CommonVillagerRender;
 import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
+import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
@@ -96,6 +98,9 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.SNOW_GOLEM.get(), SnowGolemRender::new);
         event.registerEntityRenderer(IMMEntities.CREEPER_GOLEM.get(), CreeperGolemRender::new);
         event.registerEntityRenderer(IMMEntities.COPPER_GOLEM.get(), CopperGolemRender::new);
+
+        /* block entity */
+        event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);
     }
 
     /**

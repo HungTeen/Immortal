@@ -1,5 +1,6 @@
 package hungteen.imm.util;
 
+import hungteen.htlib.util.helper.MathHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -48,6 +49,14 @@ public class MathUtil {
         } else {
             return 0;
         }
+    }
+
+    public static AABB getUpperAABB(Vec3 pos, float width, float height){
+        return new AABB(pos.x() - width, pos.y(), pos.z() - width, pos.x() + width, pos.y() + height, pos.z() + width);
+    }
+
+    public static AABB getAABB(Vec3 pos, double horizontalRange, double verticalRange) {
+        return new AABB(pos.x() - horizontalRange, pos.y() - verticalRange, pos.z() - horizontalRange, pos.x() + horizontalRange, pos.y() + verticalRange, pos.z() + horizontalRange);
     }
 
     public static boolean inAABB(Vec3 pos, AABB aabb){

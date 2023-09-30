@@ -92,6 +92,6 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
 
     @Override
     protected float getGravityVelocity() {
-        return 0.0003F;
+        return 0.00025F;
     }
 }

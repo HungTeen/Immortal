@@ -7,13 +7,13 @@ package hungteen.imm.util;
  **/
 public class Constants {
 
+    /* 轮盘相关 */
+
     public static final int SPELL_CIRCLE_SIZE = 8;
 
-    public static final int MEDITATE_CD = 100;
+    /* 灵火相关 */
 
-    public static final int MAX_FLAME_LEVEL = 9;
-    public static final int MAX_ARTIFACT_LEVEL = MAX_FLAME_LEVEL;
-
+    public static final int MAX_SPIRITUAL_FLAME_AMOUNT = 1000;
     public static final int SPIRITUAL_ABSORB_TIME = 2;
 
     public static final int DEFAULT_BIOME_SPIRITUAL_VALUE = 10;

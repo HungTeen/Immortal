@@ -55,7 +55,7 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
     }
 
     public static BlockPattern.BlockPatternMatch getMatch(Level level, BlockPos blockPos){
-        final BlockPattern.BlockPatternMatch match = BlockUtil.match(level, IMMBlockPatterns.getFurnacePattern(), blockPos);
+        final BlockPattern.BlockPatternMatch match = BlockUtil.match(level, IMMBlockPatterns.getFurnacePattern().blockPattern(), blockPos);
         if (match != null) {
             final BlockInWorld blockInWorld = getFurnace(match);
             // Furnace must face to outside.
@@ -111,7 +111,7 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
     }
 
     public static boolean persist(Level level, BlockPattern.BlockPatternMatch matched){
-        return IMMBlockPatterns.getFurnacePattern().matches(level, matched.getFrontTopLeft(), matched.getForwards(), matched.getUp()) != null;
+        return IMMBlockPatterns.getFurnacePattern().blockPattern().matches(level, matched.getFrontTopLeft(), matched.getForwards(), matched.getUp()) != null;
     }
 
     @Nullable

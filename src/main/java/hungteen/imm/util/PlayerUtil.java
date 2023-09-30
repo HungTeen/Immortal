@@ -51,6 +51,10 @@ public class PlayerUtil {
         return player.getAbilities().instabuild;
     }
 
+    public static boolean isCreativeOrSpectator(Player player){
+        return player.isCreative() || player.isSpectator();
+    }
+
     public static void setCoolDown(Player player, Item item, int coolDown){
         player.getCooldowns().addCooldown(item, coolDown);
     }

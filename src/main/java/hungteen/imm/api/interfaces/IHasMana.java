@@ -9,8 +9,12 @@ public interface IHasMana {
 
     float getMana();
 
+    float getMaxMana();
+
     void addMana(float amount);
 
-    boolean isManaFull();
+    default boolean isManaFull(){
+        return getMana() >= getMaxMana();
+    }
 
 }

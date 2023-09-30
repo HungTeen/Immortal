@@ -39,8 +39,8 @@ public class ItemTagGen extends HTItemTagGen {
         this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
         this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
 
-        this.tag(IMMItemTags.COMMON_ARTIFACTS).add(Items.ENDER_PEARL, Items.SHIELD, Items.ENDER_EYE);
-        this.tag(IMMItemTags.MODERATE_ARTIFACTS).add(Items.TRIDENT);
+        this.tag(IMMItemTags.COMMON_ARTIFACTS).add(Items.ENDER_PEARL, Items.ENDER_EYE);
+//        this.tag(IMMItemTags.MODERATE_ARTIFACTS).add(Items.TRIDENT);
         this.tag(IMMItemTags.ADVANCED_ARTIFACTS).add(Items.TOTEM_OF_UNDYING, Items.ELYTRA);
         this.copy(IMMBlockTags.COMMON_ARTIFACTS, IMMItemTags.COMMON_ARTIFACTS);
         this.copy(IMMBlockTags.MODERATE_ARTIFACTS, IMMItemTags.MODERATE_ARTIFACTS);

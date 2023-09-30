@@ -1,50 +1,70 @@
 package hungteen.imm.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import org.lwjgl.opengl.GL14;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-07-02 20:37
  **/
-public class IMMRenderTypes {
+public class IMMRenderTypes extends RenderType{
 
-    protected static final RenderStateShard.ShaderStateShard ENTITY_TRANSLUCENT_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityTranslucentShader);
+    private static final TransparencyStateShard DUMMY_TRANSPARENCY = new TransparencyStateShard("ghost_transparency",
+            () -> {
+                RenderSystem.enableBlend();
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.CONSTANT_ALPHA, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
+                GL14.glBlendColor(1.0F, 1.0F, 1.0F, 0.3F);
+            },
+            () -> {
+                GL14.glBlendColor(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.disableBlend();
+                RenderSystem.defaultBlendFunc();
+            });
 
-//    private static final BiFunction<ResourceLocation, Boolean, RenderType> ENTITY_CUTOUT_NO_CULL = Util.memoize((p_269667_, p_269668_) -> {
-//        RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder()
-//        .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
-//        .setTextureState(new RenderStateShard.TextureStateShard(p_269667_, false, false))
-//        .setTransparencyState(NO_TRANSPARENCY)
-//        .setCullState(NO_CULL)
-//        .setLightmapState(LIGHTMAP)
-//        .setOverlayState(OVERLAY)
-//        .createCompositeState(p_269668_);
-//        return create("entity_cutout_no_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, rendertype$compositestate);
-//    });
+    public static final RenderType DUMMY_BLOCK = RenderType.create(
+            Util.prefixName("dummy_block"),
+            DefaultVertexFormat.BLOCK,
+            VertexFormat.Mode.QUADS,
+            2097152,
+            true,
+            false,
+            RenderType.CompositeState.builder()
+                    .setLightmapState(LIGHTMAP)
+                    .setShaderState(RENDERTYPE_SOLID_SHADER)
+                    .setTextureState(BLOCK_SHEET)
+                    .setTransparencyState(DUMMY_TRANSPARENCY)
+                    .createCompositeState(false)
+    );
 
-//    private static final Function<ResourceLocation, RenderType> EYES = Util.memoize((p_269683_) -> {
-//        RenderStateShard.TextureStateShard renderstateshard$texturestateshard =
-//        new RenderStateShard.TextureStateShard(p_269683_, false, false);
-//        return create("eyes", DefaultVertexFormat.NEW_ENTITY,
-//        VertexFormat.Mode.QUADS, 256, false, true,
-//        RenderType.CompositeState.builder()
-//        .setShaderState(RENDERTYPE_EYES_SHADER)
-//        .setTextureState(renderstateshard$texturestateshard)
-//        .setTransparencyState(ADDITIVE_TRANSPARENCY)
-//        .setWriteMaskState(COLOR_WRITE)
-//        .createCompositeState(false));
-//    });
+    private IMMRenderTypes(String p_173178_, VertexFormat p_173179_, VertexFormat.Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_) {
+        super(p_173178_, p_173179_, p_173180_, p_173181_, p_173182_, p_173183_, p_173184_, p_173185_);
+    }
 
-//    private static final Function<ResourceLocation, RenderType> ELEMENTS = Util.memoize((location) -> {
-//        final RenderStateShard.TextureStateShard stateShard = new RenderStateShard.TextureStateShard(location, false, false);
-//        final RenderType.CompositeState state = RenderType.CompositeState.builder()
-//                .setShaderState(ENTITY_TRANSLUCENT_SHADER)
-//                .setTextureState(stateShard)
-//                .setTransparencyState(ADDITIVE_TRANSPARENCY)
-//                .setOverlayState(RenderType.OVERLAY)
-//                .createCompositeState(false);
-//        return RenderType.create("eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, state);
-//    });
+//    public static final RenderType DUMMY_BLOCK = new RenderType(
+//            Util.prefixName("dummy_block"),
+//            DefaultVertexFormat.NEW_ENTITY,
+//            VertexFormat.Mode.QUADS,
+//            256,
+//            true,
+//            true,
+//            () -> {
+//                Sheets.translucentCullBlockSheet().setupRenderState();
+//                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.4F);
+//            },
+//            () -> {
+//                Sheets.translucentCullBlockSheet().clearRenderState();
+//                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//            }
+//    ) {
+//    };
+
 }

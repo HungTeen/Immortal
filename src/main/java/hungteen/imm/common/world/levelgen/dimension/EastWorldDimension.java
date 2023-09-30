@@ -64,8 +64,8 @@ public class EastWorldDimension {
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES = new ResourceKey[][]{
             {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
             {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.PLAINS},
-            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.BIRCH_FOREST, IMMBiomes.BIRCH_FOREST, IMMBiomes.PLAINS},
-            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.BIRCH_FOREST, IMMBiomes.BAMBOO_JUNGLE, IMMBiomes.BAMBOO_JUNGLE},
+            {IMMBiomes.PLAINS, IMMBiomes.PLAINS, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.PLAINS},
+            {IMMBiomes.SAVANNA, IMMBiomes.SAVANNA, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.BAMBOO_JUNGLE, IMMBiomes.BAMBOO_JUNGLE},
             {IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT, IMMBiomes.DESERT}
     };
     private final ResourceKey<Biome>[][] DEFAULT_MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{

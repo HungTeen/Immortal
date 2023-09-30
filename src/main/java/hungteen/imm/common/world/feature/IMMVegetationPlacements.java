@@ -21,8 +21,7 @@ public interface IMMVegetationPlacements {
     ResourceKey<PlacedFeature> OAK_HORIZONTAL_STAKE = IMMPlacements.create("oak_horizontal_stake");
     ResourceKey<PlacedFeature> BIRCH_STAKE = IMMPlacements.create("birch_stake");
     ResourceKey<PlacedFeature> BIRCH_HORIZONTAL_STAKE = IMMPlacements.create("birch_horizontal_stake");
-    ResourceKey<PlacedFeature> TREES_BIRCH_SPARSE = IMMPlacements.create("trees_birch_sparse");
-    ResourceKey<PlacedFeature> TREES_BIRCH_FOREST = IMMPlacements.create("trees_birch_forest");
+    ResourceKey<PlacedFeature> TREES_BIRCH = IMMPlacements.create("trees_birch_sparse");
     ResourceKey<PlacedFeature> GANODERMA_DARK_FOREST = IMMPlacements.create("ganoderma_dark_forest");
 
     /**
@@ -65,8 +64,7 @@ public interface IMMVegetationPlacements {
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                 BiomeFilter.biome()
         );
-        PlacementUtils.register(context, TREES_BIRCH_SPARSE, treesBirchForest, VegetationPlacements.treePlacement(PlacementUtils.countExtra(0, 0.1F, 1)));
-        PlacementUtils.register(context, TREES_BIRCH_FOREST, treesBirchForest, VegetationPlacements.treePlacement(PlacementUtils.countExtra(3, 0.1F, 1)));
+        PlacementUtils.register(context, TREES_BIRCH, treesBirchForest, VegetationPlacements.treePlacement(PlacementUtils.countExtra(2, 0.1F, 1)));
         PlacementUtils.register(context, GANODERMA_DARK_FOREST, ganoderma,
                 CountPlacement.of(2),
                 RarityFilter.onAverageOnceEvery(8),

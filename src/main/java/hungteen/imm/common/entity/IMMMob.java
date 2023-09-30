@@ -231,9 +231,13 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         entityData.set(REALM_STAGE, stage.ordinal());
     }
 
-    @Override
     public RealmStages getRealmStage() {
         return RealmStages.values()[entityData.get(REALM_STAGE)];
+    }
+
+    @Override
+    public Optional<RealmStages> getRealmStageOpt() {
+        return Optional.ofNullable(getRealmStage());
     }
 
     public void setAnimation(int id, boolean flag) {

@@ -39,7 +39,7 @@ public class PlayerRangeIntegers {
     /**
      * 打坐冥想tick。
      */
-    public static final IRangeNumber<Integer> MEDITATE_TICK = register(new PlayerData("meditate_tick", 0, 0, Constants.MEDITATE_CD));
+    public static final IRangeNumber<Integer> MEDITATE_TICK = register(new PlayerData("meditate_tick", 0, 0, 100));
 
     /**
      * 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮

@@ -205,13 +205,13 @@ public class RealmManager {
     /**
      * Get Realm Stage of the specific entity.
      */
-    public static RealmStages getRealmStage(Entity entity){
+    public static Optional<RealmStages> getRealmStage(Entity entity){
         if(entity instanceof Player player){
-            return PlayerUtil.getPlayerRealmStage(player);
+            return Optional.ofNullable(PlayerUtil.getPlayerRealmStage(player));
         } else if(entity instanceof IHasRealm realmEntity){
-            return realmEntity.getRealmStage();
+            return realmEntity.getRealmStageOpt();
         }
-        return RealmStages.PRELIMINARY;
+        return Optional.empty();
     }
 
     public static int getRealmGap(IRealmType realm1, IRealmType realm2) {
@@ -287,9 +287,16 @@ public class RealmManager {
         return null;
     }
 
-    public static MutableComponent getRealmInfo(IRealmType realm, RealmStages stage){
-        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY) return realm.getComponent();
+    public static MutableComponent getRealmInfo(IRealmType realm, @Nullable RealmStages stage){
+        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY || stage == null) return realm.getComponent();
         return realm.getComponent().append("-").append(getStageComponent(stage));
+    }
+
+    /**
+     * 是否可能有灵根，不可能有灵根就不显示。
+     */
+    public static boolean mayHaveRoots(Entity entity){
+        return entity instanceof LivingEntity;
     }
 
     public static MutableComponent getExperienceComponent(){

@@ -31,14 +31,24 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
-                .add(Biomes.PLAINS, Biomes.SAVANNA_PLATEAU);
-        this.tag(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET)
-                .add(IMMBiomes.PLAINS);
+        /* Forge */
+        this.tag(IMMBiomeTags.HAS_BIRCH_TREE).add(Biomes.BIRCH_FOREST, Biomes.OLD_GROWTH_BIRCH_FOREST);
+        this.tag(IMMBiomeTags.HAS_JUNGLE_TREE).add(Biomes.JUNGLE, Biomes.BAMBOO_JUNGLE, Biomes.SPARSE_JUNGLE);
+        this.tag(IMMBiomeTags.HAS_DARK_OAK_TREE).add(Biomes.DARK_FOREST);
+        this.tag(IMMBiomeTags.HAS_ACACIA_TREE).add(Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.WINDSWEPT_SAVANNA);
+        this.tag(IMMBiomeTags.HAS_SPRUCE_TREE).add(Biomes.SNOWY_TAIGA, Biomes.TAIGA);
+        this.tag(IMMBiomeTags.HAS_CHERRY_TREE).add(Biomes.CHERRY_GROVE);
+
         bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
         bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
         bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
         bind(IMMBiomes.BAMBOO_JUNGLE, BiomeTags.IS_JUNGLE, Tags.Biomes.IS_HOT, Tags.Biomes.IS_WET);
+
+        /* IMM */
+        this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
+                .add(Biomes.PLAINS, Biomes.SAVANNA_PLATEAU);
+        this.tag(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET)
+                .add(IMMBiomes.PLAINS);
     }
 
     @SafeVarargs

@@ -18,6 +18,10 @@ import java.util.Optional;
  **/
 public class LevelUtil {
 
+    public static void playSound(Level level, SoundEvent sound, SoundSource source, Vec3 pos) {
+        playSound(level, sound, source, pos, 1F, 1F);
+    }
+
     public static void playSound(Level level, SoundEvent sound, SoundSource source, Vec3 pos, float volume, float pitch) {
         level.playSound(null, pos.x(), pos.y(), pos.z(), sound, source, volume, pitch / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }

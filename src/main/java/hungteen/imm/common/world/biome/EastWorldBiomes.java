@@ -1,5 +1,6 @@
 package hungteen.imm.common.world.biome;
 
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.world.feature.IMMVegetationPlacements;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -37,8 +38,7 @@ public class EastWorldBiomes {
         context.register(IMMBiomes.DESERT, desert(features, carvers));
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
         context.register(IMMBiomes.MEADOW, meadow(features, carvers));
-        context.register(IMMBiomes.BIRCH_FOREST, birchForest(features, carvers, false));
-        context.register(IMMBiomes.CUT_BIRCH_FOREST, birchForest(features, carvers, true));
+        context.register(IMMBiomes.CUT_BIRCH_FOREST, birchForest(features, carvers));
     }
 
     /**
@@ -168,28 +168,23 @@ public class EastWorldBiomes {
     /**
      * {@link net.minecraft.data.worldgen.biome.OverworldBiomes#forest(HolderGetter, HolderGetter, boolean, boolean, boolean)}
      */
-    public static Biome birchForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean cut) {
+    public static Biome birchForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.SHARP_STAKE.get(), 50, 1, 2));
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FOREST_FLOWERS);
         EastWorldFeatures.addOres(genBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
-        if (! cut) {
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH_FOREST);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FLOWER_FOREST);
-            BiomeDefaultFeatures.addDefaultGrass(genBuilder);
-        } else {
-            BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
-            BiomeDefaultFeatures.addForestGrass(genBuilder);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH_SPARSE);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_STAKE);
-            genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_HORIZONTAL_STAKE);
-        }
+        BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+        BiomeDefaultFeatures.addForestGrass(genBuilder);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_STAKE);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_HORIZONTAL_STAKE);
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
 
@@ -249,7 +244,8 @@ public class EastWorldBiomes {
     }
 
     private static Biome biome(boolean precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {
-        return biome(precipitation, temperature, downfall, builder -> {}, spawnBuilder, generationBuilder, music);
+        return biome(precipitation, temperature, downfall, builder -> {
+        }, spawnBuilder, generationBuilder, music);
     }
 
     private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, Consumer<BiomeSpecialEffects.Builder> consumer, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder genBuilder, @Nullable Music backgroundMusic) {

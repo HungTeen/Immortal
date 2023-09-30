@@ -1,6 +1,5 @@
 package hungteen.imm.common.event.handler;
 
-import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.util.EntityUtil;
@@ -20,14 +19,10 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 public class PlayerEventHandler {
 
     public static void onTossItem(Player player, ItemEntity itemEntity) {
-//        SpellManager.checkPassiveSpell(player, SpellTypes.FLY_WITH_ITEM, new EntityBlockResult(player.level(), itemEntity));
     }
 
     public static void onTraceEntity(Player player, EntityHitResult result) {
-        /* 火葫芦 收 灵火 */
-        if(result.getEntity() instanceof SpiritualFlame && player.getMainHandItem().getItem() instanceof FlameGourd){
-            FlameGourd.rightClickFlame(player, player.getMainHandItem());
-        }
+        FlameGourd.collectSpiritualFlame(player, player.getMainHandItem(), result.getEntity());
     }
 
     public static void onTraceBlock(Player player, BlockHitResult result) {

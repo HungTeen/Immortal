@@ -33,8 +33,8 @@ public class BlockTagGen extends HTBlockTagGen {
         this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
         this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
 
-        this.tag(IMMBlockTags.COMMON_ARTIFACTS).add(Blocks.CRAFTING_TABLE, Blocks.ENDER_CHEST, Blocks.RESPAWN_ANCHOR);
-        this.tag(IMMBlockTags.MODERATE_ARTIFACTS).add(Blocks.ANVIL, Blocks.BREWING_STAND, Blocks.CONDUIT);
+        this.tag(IMMBlockTags.COMMON_ARTIFACTS).add(Blocks.ENDER_CHEST, Blocks.RESPAWN_ANCHOR);
+        this.tag(IMMBlockTags.MODERATE_ARTIFACTS).add(Blocks.CONDUIT);
         this.tag(IMMBlockTags.ADVANCED_ARTIFACTS).add(Blocks.ENCHANTING_TABLE, Blocks.BEACON);
 
         /* IMM */

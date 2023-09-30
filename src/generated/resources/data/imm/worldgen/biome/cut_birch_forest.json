@@ -124,6 +124,12 @@
         "maxCount": 3,
         "minCount": 2,
         "weight": 4
+      },
+      {
+        "type": "imm:sharp_stake",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 50
       }
     ],
     "imm:human": [],

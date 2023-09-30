@@ -18,7 +18,6 @@ public interface IMMBiomes {
     ResourceKey<Biome> DESERT = create("desert");
     ResourceKey<Biome> BAMBOO_JUNGLE = create("bamboo_jungle");
     ResourceKey<Biome> MEADOW = create("meadow");
-    ResourceKey<Biome> BIRCH_FOREST = create("birch_forest");
     ResourceKey<Biome> CUT_BIRCH_FOREST = create("cut_birch_forest");
 
     /**

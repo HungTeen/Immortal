@@ -1,17 +1,24 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.registry.LevelHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.LevelUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,32 +47,30 @@ public class FlameGourd extends ArtifactItem {
     }
 
     /**
+     * 火葫芦收集灵火。
      * {@link PlayerEventHandler#onTraceEntity(Player, EntityHitResult)}
      */
-    public static void rightClickFlame(Player player, ItemStack stack){
-        if(! isFlameFull(stack)){
-            player.startUsingItem(InteractionHand.MAIN_HAND);
+    public static void collectSpiritualFlame(Player player, ItemStack stack, Entity target){
+        if(target instanceof SpiritualFlame flame && player.getMainHandItem().getItem() instanceof FlameGourd gourd){
+            if(canStoreFlame(stack, gourd, flame)){
+                if(! isFlameFull(stack)){
+                    player.startUsingItem(InteractionHand.MAIN_HAND);
+                } else {
+                    PlayerHelper.sendTipTo(player, TipUtil.info("gourd_is_full"));
+                }
+            } else {
+                PlayerHelper.sendTipTo(player, TipUtil.info("gourd_level"));
+            }
         }
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
-        if(stack.getItem() instanceof FlameGourd && player instanceof Player){
+        if(stack.getItem() instanceof FlameGourd gourd){
             final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
-            final FlameGourd flameGourd = (FlameGourd) stack.getItem();
-            if(hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hitResult).getEntity() instanceof SpiritualFlame){
-                final SpiritualFlame flame = (SpiritualFlame) ((EntityHitResult) hitResult).getEntity();
-                // 等级不匹配 爆炸。
-                if(flame.getFlameLevel() > flameGourd.getMaxFlameLevel()){
-                    // TODO 更专业的爆炸
-//                    if(! player.level.isClientSide){
-//                        player.level.explode(flame, player.getX(), player.getY(), player.getZ(), 10, true, Explosion.BlockInteraction.DESTROY);
-//                    }
-                    ((Player) player).awardStat(Stats.ITEM_BROKEN.get(stack.getItem()));
-                    stack.shrink(1);
-//                    player.level.explode();
-                } else{
-                    absorbFlame(player, flame, stack, flameGourd);
+            if(hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hitResult).getEntity() instanceof SpiritualFlame flame){
+                if(canStoreFlame(stack, gourd, flame)){
+                    absorbFlame(player, flame, stack, gourd);
                 }
             }
         }
@@ -73,20 +78,11 @@ public class FlameGourd extends ArtifactItem {
 
     public static void absorbFlame(LivingEntity livingEntity, SpiritualFlame flame, ItemStack stack, FlameGourd flameGourd){
         if(EntityHelper.isServer(livingEntity)){
-            final int speed = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) * 2 + 1;
-            addFlameAmount(stack, flame.getFlameLevel(), speed);
-        } else{
-            final int num = (flameGourd.getMaxFlameLevel() - flame.getFlameLevel()) / 2 + 1;
-            ParticleHelper.spawnLineMovingParticle(livingEntity.level(), SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getFlameCenter(), livingEntity.getEyePosition(), num, 0.1 * num, 0.1);
-//            final double distance = livingEntity.distanceTo(flame);
-//            final int particleNum = Mth.ceil(distance);
-//            for(int i = 0; i < particleNum; ++ i){
-//                for(int j = 0; j < num; ++ j){
-//                    final Vec3 pos = flame.getFlameCenter().add(livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(Math.max(1, distance - 2) / particleNum * (i + 1))).add(MathUtil.getRandomVec3(livingEntity.getRandom(), 0.1 * num));
-//                    final Vec3 speed = livingEntity.getEyePosition().subtract(flame.getFlameCenter()).normalize().scale(0.1);
-//                    ParticleUtil.spawnParticles(livingEntity.level, SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), pos, speed.x, speed.y, speed.z);
-//                }
-//            }
+            addFlameAmount(stack, flame.getFlameLevel(), 5);
+            flame.addMana(-5);
+            LevelUtil.playSound(livingEntity.level(), SoundEvents.LAVA_POP, SoundSource.AMBIENT, livingEntity.position());
+        } else {
+            ParticleHelper.spawnLineMovingParticle(livingEntity.level(), SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getEyePosition(), livingEntity.getEyePosition(), 2, 0.1, 0.1);
         }
     }
 
@@ -99,15 +95,24 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public static void addFlameAmount(ItemStack stack, int level, int amount){
-        if(getFlameLevel(stack) > level){
-            // 无效。
-        } else if(getFlameLevel(stack) > level){
-            // 清空低级火。
+        // 清空之前不同等级的火。
+        if(getFlameLevel(stack) != level){
             setFlameLevel(stack, level);
-            setFlameAmount(stack, 0);
+            setFlameAmount(stack, amount);
         } else{
-            setFlameAmount(stack, Mth.clamp(getFlameAmount(stack) + amount, 0, MAX_FLAME_AMOUNT));
+            setFlameAmount(stack, getFlameAmount(stack) + amount);
         }
+    }
+
+    /**
+     * 火葫芦的等级不能低于灵火等级。
+     */
+    public static boolean canStoreFlame(ItemStack stack, FlameGourd gourd, SpiritualFlame flame){
+        return canStoreFlame(gourd.getArtifactType(stack), flame.getRealm());
+    }
+
+    public static boolean canStoreFlame(IArtifactType artifactType, IRealmType realmType){
+        return artifactType.getRealmValue() >= realmType.getRealmValue();
     }
 
     public static boolean isFlameFull(ItemStack stack){
@@ -115,7 +120,7 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public static void setFlameAmount(ItemStack stack, int amount){
-        stack.getOrCreateTag().putInt(COLLECTED_FLAME_AMOUNT, amount);
+        stack.getOrCreateTag().putInt(COLLECTED_FLAME_AMOUNT, Mth.clamp(amount, 0, MAX_FLAME_AMOUNT));
     }
 
     public static void setFlameLevel(ItemStack stack, int level){
@@ -128,17 +133,6 @@ public class FlameGourd extends ArtifactItem {
         components.add(Component.translatable("tooltip.imm.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
         components.add(Component.translatable("tooltip.imm.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
-
-//    @Override
-//    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> itemStacks) {
-//        if(this.allowedIn(tab)){
-//            ItemStack empty = new ItemStack(this);
-//            itemStacks.add(empty);
-//            ItemStack full = empty.copy();
-//            setFlameAmount(full, MAX_FLAME_AMOUNT);
-//            itemStacks.add(full);
-//        }
-//    }
 
     @Override
     public int getUseDuration(ItemStack stack) {
@@ -158,14 +152,6 @@ public class FlameGourd extends ArtifactItem {
     @Override
     public int getBarColor(ItemStack stack) {
         return ColorHelper.RED.rgb();
-    }
-
-    public int getMaxFlameLevel(){
-        return 1;
-        //TODO 灵火对应收集等级
-//        return getArtifactType() <= 3 ? 3 :
-//                        getArtifactType() <= 6 ? 6 :
-//                                Constants.MAX_FLAME_LEVEL;
     }
 
 }

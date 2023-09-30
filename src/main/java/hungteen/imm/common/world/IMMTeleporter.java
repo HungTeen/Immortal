@@ -36,7 +36,7 @@ public class IMMTeleporter implements ITeleporter {
         Vec3 destination = entity.position();
         if((srcLevel.equals(Level.OVERWORLD) && destLevel.equals(IMMLevels.EAST_WORLD)) ||
                 (srcLevel.equals(IMMLevels.EAST_WORLD) && destLevel.equals(Level.OVERWORLD))){
-            final BlockPattern.BlockPatternMatch match = IMMBlockPatterns.getTeleportPattern().find(destWorld, entity.blockPosition());
+            final BlockPattern.BlockPatternMatch match = IMMBlockPatterns.getTeleportPattern().blockPattern().find(destWorld, entity.blockPosition());
             if(match == null){
                 buildTeleportAnchor(destWorld, entity.blockPosition());
             } else {

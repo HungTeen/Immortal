@@ -43,9 +43,9 @@ public class IMMEntities {
     public static final RegistryObject<EntityType<ElementAmethyst>> ELEMENT_AMETHYST = registerEntityType(ElementAmethyst::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
     public static final RegistryObject<EntityType<TeleportFormation>> TELEPORT_FORMATION = registerEntityType(TeleportFormation::new, "teleport_formation", MobCategory.MISC, builder -> builder.sized(0F, 0F));
     public static final RegistryObject<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC, builder -> builder.sized(0.4F, 0.4F));
+    public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC, builder -> builder.sized(0.9F, 1.8F));
     public static final RegistryObject<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<ThrowingItemEntity>> THROWING_ITEM = registerEntityType(ThrowingItemEntity::new, "throwing_item", MobCategory.MISC, builder -> builder.clientTrackingRange(3).updateInterval(10));
-    public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC);
 
     /* Human */
 
@@ -103,6 +103,7 @@ public class IMMEntities {
         /* creature */
 
         /* Monster */
+        ev.register(SHARP_STAKE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
         /* undead */
 

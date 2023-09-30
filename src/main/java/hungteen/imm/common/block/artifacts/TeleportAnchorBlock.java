@@ -83,7 +83,7 @@ public class TeleportAnchorBlock extends Block {
         level.setBlock(pos, state.setValue(CHARGE, state.getValue(CHARGE) + 1), 3);
         BlockUtil.playSound(level, pos, SoundEvents.RESPAWN_ANCHOR_CHARGE);
         if(! level.isClientSide){
-            BlockPattern.BlockPatternMatch match = IMMBlockPatterns.getTeleportPattern().find(level, pos);
+            BlockPattern.BlockPatternMatch match = IMMBlockPatterns.getTeleportPattern().blockPattern().find(level, pos);
             if(match != null){
                 final BlockPos center = match.getBlock(2, 1, 2).getPos();
                 TeleportFormation formation = new TeleportFormation(level, center, 400);

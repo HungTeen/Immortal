@@ -25,7 +25,7 @@ public class IMMBlockEvents {
     public static void placeBlock(BlockEvent.EntityPlaceEvent event){
         if(! event.getLevel().isClientSide() && event.getLevel() instanceof Level level){
             if(IMMBlockPatterns.PUMPKINS_PREDICATE.test(event.getPlacedBlock())){
-                EntityUtil.multiblockSpawn(level, event.getPos(), IMMBlockPatterns.getCreeperPattern(), EntityType.CREEPER);
+                EntityUtil.multiblockSpawn(level, event.getPos(), IMMBlockPatterns.getCreeperPattern().blockPattern(), EntityType.CREEPER);
             }
             if(event.getPlacedBlock().is(IMMBlockTags.FURNACE_BLOCKS)){
 

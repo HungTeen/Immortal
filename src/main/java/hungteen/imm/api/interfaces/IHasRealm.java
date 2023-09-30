@@ -4,6 +4,8 @@ import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 
+import java.util.Optional;
+
 /**
  * @program: Immortal
  * @author: HungTeen
@@ -21,7 +23,7 @@ public interface IHasRealm {
      * 获取生物当前阶段。
      * @return Stage of entity.
      */
-    RealmStages getRealmStage();
+    Optional<RealmStages> getRealmStageOpt();
 
     /**
      * 获取生物的修行方式。
