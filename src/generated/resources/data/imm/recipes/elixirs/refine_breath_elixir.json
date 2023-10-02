@@ -1,0 +1,28 @@
+{
+  "type": "imm:elixir_serializer",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:cinnabar"
+    },
+    {
+      "item": "imm:cinnabar"
+    }
+  ],
+  "require_level": 1,
+  "result": {
+    "item": "imm:refine_breath_elixir"
+  },
+  "smelting_cd": 500
+}

@@ -1,0 +1,42 @@
+{
+  "parent": "imm:immortal/east_world",
+  "criteria": {
+    "reach_market": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "imm:plains_trading_market"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.trading_market.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:white_terracotta"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.trading_market.title"
+    }
+  },
+  "requirements": [
+    [
+      "reach_market"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

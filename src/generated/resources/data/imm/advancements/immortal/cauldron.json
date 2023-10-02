@@ -1,0 +1,37 @@
+{
+  "parent": "imm:immortal/im_mortal",
+  "criteria": {
+    "place_furnace": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:copper_furnace",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.cauldron.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "imm:copper_furnace"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.cauldron.title"
+    }
+  },
+  "requirements": [
+    [
+      "place_furnace"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

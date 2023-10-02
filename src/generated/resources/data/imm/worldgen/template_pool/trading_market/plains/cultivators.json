@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "minecraft:village/plains/villagers/nitwit",
+        "location": "imm:entities/spiritual_beginner_cultivator",
         "processors": {
           "processors": []
         },

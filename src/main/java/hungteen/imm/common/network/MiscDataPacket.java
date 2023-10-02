@@ -55,7 +55,7 @@ public class MiscDataPacket {
                         case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
                         case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
                         case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
-                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.checkAndSetRealm(player, realm));
+                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.clientSetRealm(player, realm));
                         case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
                         case PREPARING_SPELL -> SpellTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setPreparingSpell(player, l));
                         case CLEAR_PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, null);

@@ -34,6 +34,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -43,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @program: Immortal
@@ -117,9 +119,11 @@ public class RealmManager {
             final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
             WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
                 return raid.match(nextRealm, nextStage, difficulty);
-            }).toList()).getRandomItem(player.getRandom()).ifPresent(raid -> {
+            }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
                 DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
                 PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
+            }, () -> {
+                breakThrough(player, nextRealm, nextStage);
             });
         }
     }
@@ -134,7 +138,10 @@ public class RealmManager {
                 if(ItemUtil.hasEnchantment(slotItem)){
                     final ItemStack copyItem = slotItem.copy();
                     living.setItemSlot(slot, ItemStack.EMPTY);
-                    living.spawnAtLocation(copyItem);
+                    ItemEntity itemEntity = living.spawnAtLocation(copyItem);
+                    if(itemEntity != null){
+                        itemEntity.setPickUpDelay(50);
+                    }
                     if(living instanceof Player player){
                         PlayerHelper.sendTipTo(player, TipUtil.info("spiritual_conflict_with_enchant").withStyle(ChatFormatting.RED));
                     }
@@ -230,8 +237,8 @@ public class RealmManager {
     }
 
     public static IRealmType getEntityRealm(Entity entity) {
-        if(entity instanceof Player){
-            PlayerUtil.getManagerResult((Player) entity, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
+        if(entity instanceof Player player){
+            return PlayerUtil.getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
         }
         return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : getDefaultRealm(entity.getType());
     }

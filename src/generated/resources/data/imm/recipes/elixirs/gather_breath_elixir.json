@@ -1,0 +1,22 @@
+{
+  "type": "imm:elixir_serializer",
+  "ingredients": [
+    {
+      "item": "minecraft:pitcher_pod"
+    },
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:spiritual_stick"
+    },
+    {
+      "item": "imm:spiritual_stick"
+    }
+  ],
+  "require_level": 1,
+  "result": {
+    "item": "imm:gather_breath_elixir"
+  },
+  "smelting_cd": 300
+}

@@ -12,7 +12,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * TODO 快速回复灵力的状态。
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-20 14:39
@@ -20,6 +19,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class IMMEffects {
 
     private static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Util.id());
+
+    public static final RegistryObject<MobEffect> BREAK_THROUGH = EFFECTS.register("break_through", () -> new NoCureMobEffect(MobEffectCategory.BENEFICIAL, ColorHelper.AQUA.rgb()));
 
     public static final RegistryObject<MobEffect> OPPRESSION = EFFECTS.register("oppression", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb())
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "96c795e1-dbde-4512-a0a7-13489da62f7e", -0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)

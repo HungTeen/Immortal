@@ -12,6 +12,9 @@ import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -66,6 +69,8 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     private int currentFlameValue = 0;
     private int maxFlameValue = 0;
     private boolean triggered = false;
+    private boolean displayBlockPattern = false;
+    private long lastInteractTime = 0;
     private BlockPattern.BlockPatternMatch lastMatch;
     protected FunctionalFurnaceBlockEntity functionalBlockEntity;
 
@@ -162,6 +167,18 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     }
 
     @Override
+    public @org.jetbrains.annotations.Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putBoolean("DisplayBlockPattern", this.displayBlockPattern);
+        return tag;
+    }
+
+    @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         if(tag.contains("HasTriggered")){
@@ -173,6 +190,9 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         if(tag.contains("MaxFlameValue")){
             this.maxFlameValue = tag.getInt("MaxFlameValue");
         }
+        if(tag.contains("DisplayBlockPattern")){
+            this.displayBlockPattern = tag.getBoolean("DisplayBlockPattern");
+        }
     }
 
     @Override
@@ -181,8 +201,10 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         tag.putBoolean("HasTriggered", this.triggered);
         tag.putInt("CurrentFlameValue", this.currentFlameValue);
         tag.putInt("MaxFlameValue", this.maxFlameValue);
+        tag.putBoolean("DisplayBlockPattern", this.displayBlockPattern);
     }
 
+    @Nullable
     public BlockPattern.BlockPatternMatch getLastMatch(){
         if(this.lastMatch == null){
             this.lastMatch = SpiritualFurnaceBlock.getMatch(this.level, this.getBlockPos());
@@ -201,6 +223,25 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
             }
         }
         return this.functionalBlockEntity;
+    }
+
+    public boolean displayBlockPattern() {
+        return isDisplayBlockPattern() && getLastMatch() == null;
+    }
+
+    public boolean canInteractWith(){
+        return this.getLevel() != null && this.getLevel().getGameTime() > this.lastInteractTime + 10;
+    }
+
+    public boolean isDisplayBlockPattern() {
+        return displayBlockPattern;
+    }
+
+    public void setDisplayBlockPattern(Level level, boolean displayBlockPattern) {
+        this.displayBlockPattern = displayBlockPattern;
+        this.lastInteractTime = level.getGameTime();
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        this.setChanged();
     }
 
     @Override

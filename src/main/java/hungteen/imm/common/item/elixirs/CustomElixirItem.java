@@ -18,21 +18,21 @@ import java.util.Optional;
  * @program Immortal
  * @data 2023/7/18 15:31
  */
-public class CustomElixirItem extends ElixirItem{
+public class CustomElixirItem extends ElixirItem {
 
     private static final String EFFECTS = "ElixirEffects";
 
     public CustomElixirItem() {
-        super(Rarity.COMMON, ColorHelper.BLACK.rgb());
+        super(ColorHelper.BLACK.rgb());
     }
 
     @Override
-    protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
+    protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         getEffects(stack).forEach(livingEntity::addEffect);
     }
 
     @Override
-    protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
+    public Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
         return Optional.of(true);
     }
 
@@ -53,5 +53,10 @@ public class CustomElixirItem extends ElixirItem{
 
     private static ListTag getEffectList(ItemStack stack){
         return stack.getOrCreateTag().contains(EFFECTS) ? stack.getOrCreateTag().getList(EFFECTS, Tag.TAG_COMPOUND) : new ListTag();
+    }
+
+    @Override
+    public Rarity getElixirRarity() {
+        return Rarity.UNCOMMON;
     }
 }

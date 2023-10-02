@@ -1,5 +1,8 @@
 {
   "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "imm:item/talisman"
+  },
   "overrides": [
     {
       "model": "imm:item/talisman_activated",

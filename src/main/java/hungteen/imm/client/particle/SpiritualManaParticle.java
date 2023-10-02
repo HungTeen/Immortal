@@ -53,7 +53,7 @@ public class SpiritualManaParticle extends HTTextureParticle {
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
             SpiritualManaParticle particle = new SpiritualManaParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
-            particle.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
+//            particle.setColor((float) xSpeed, (float) ySpeed, (float) zSpeed);
             return particle;
         }
     }

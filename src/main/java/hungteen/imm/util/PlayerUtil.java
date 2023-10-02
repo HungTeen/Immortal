@@ -31,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -377,15 +378,18 @@ public class PlayerUtil {
         return getManagerResult(player, PlayerDataManager::getRealmStage, RealmStages.PRELIMINARY);
     }
 
-    public static boolean checkAndSetRealm(Player player, IRealmType realm){
-        return checkAndSetRealm(player, realm, RealmStages.PRELIMINARY);
+    /**
+     * Only used on client side.
+     */
+    public static void clientSetRealm(Player player, IRealmType realm){
+        checkAndSetRealm(player, realm, RealmStages.PRELIMINARY);
     }
 
     /**
      * 尝试直接改变境界。
      * @return 是否改变成功。
      */
-    public static boolean checkAndSetRealm(Player player, IRealmType realm, RealmStages stage){
+    public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage){
         final AtomicBoolean success = new AtomicBoolean(true);
         getOptManager(player).ifPresent(m -> {
             if(EntityHelper.isServer(player)){
@@ -415,6 +419,7 @@ public class PlayerUtil {
                 if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(m.getRealmType(), stage)) {
                     m.setRealmStage(stage);
                 } else {
+                    m.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
                     success.set(false);
                 }
             } else {
@@ -440,7 +445,9 @@ public class PlayerUtil {
     }
 
     public static ICultivationType getCultivationType(Player player){
-        return getManagerResult(player, PlayerDataManager::getCultivationType, CultivationTypes.MORTAL);
+        return getManagerResult(player, l -> {
+            return l.getRealmType().getCultivationType();
+        }, CultivationTypes.MORTAL);
     }
 
     @Nullable

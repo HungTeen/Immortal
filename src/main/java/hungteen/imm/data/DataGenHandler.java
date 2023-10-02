@@ -1,5 +1,6 @@
 package hungteen.imm.data;
 
+import hungteen.imm.data.loot.LootTableGen;
 import hungteen.imm.data.recipe.RecipeGen;
 import hungteen.imm.data.tag.*;
 import net.minecraft.core.HolderLookup;
@@ -34,7 +35,7 @@ public class DataGenHandler {
         generators.addProvider(event.includeServer(), new RecipeGen(output));
 
         /* Loot Tables */
-//        ev.getGenerator().addProvider(new LootTableGen(ev.getGenerator()));
+        generators.addProvider(event.includeServer(), new LootTableGen(output));
 
         /* Advancements */
         generators.addProvider(event.includeServer(), new AdvancementGen(output, provider, fileHelper));

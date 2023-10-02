@@ -1,0 +1,32 @@
+{
+  "parent": "imm:immortal/spiritual_2",
+  "criteria": {
+    "reach_target_realm": {
+      "conditions": {
+        "realm": "imm:spiritual_level_3"
+      },
+      "trigger": "imm:player_realm_change"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.spiritual_3.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "imm:refine_breath_elixir"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.spiritual_3.title"
+    }
+  },
+  "requirements": [
+    [
+      "reach_target_realm"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

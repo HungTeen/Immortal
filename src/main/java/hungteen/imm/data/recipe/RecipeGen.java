@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -97,8 +98,14 @@ public class RecipeGen extends RecipeProvider {
      * Recipes for Elixir Furnace.
      */
     protected void buildElixirRecipes(Consumer<FinishedRecipe> consumer) {
-        genElixir(consumer, IMMItems.FIVE_FLOWERS_ELIXIR.get(), 600, 1, Arrays.asList(
-                Items.SUNFLOWER, Items.LILAC, Items.ROSE_BUSH, Items.PEONY, Items.SPORE_BLOSSOM
+        genElixir(consumer, IMMItems.SPIRITUAL_INSPIRATION_ELIXIR.get(), 200, 1, Arrays.asList(
+                IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get()
+        ));
+        genElixir(consumer, IMMItems.GATHER_BREATH_ELIXIR.get(), 300, 1, Arrays.asList(
+                Items.PITCHER_POD, IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_STICK.get(), IMMItems.SPIRITUAL_STICK.get()
+        ));
+        genElixir(consumer, IMMItems.REFINE_BREATH_ELIXIR.get(), 500, 1, Arrays.asList(
+                Items.DIAMOND, Items.DIAMOND, IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMItems.CINNABAR.get(), IMMItems.CINNABAR.get()
         ));
     }
 
@@ -114,7 +121,7 @@ public class RecipeGen extends RecipeProvider {
         final ElixirRecipeBuilder builder = new ElixirRecipeBuilder(result, 1, smeltCD, requireFlameLevel);
         builder.unlockedBy("has_elixir_furnace", has(IMMBlocks.COPPER_ELIXIR_ROOM.get()));
         ingredients.forEach(builder::requires);
-        builder.save(consumer, Util.prefix("elixirs/" + ItemHelper.get().getKey(result.asItem()).getPath()));
+        builder.save(consumer, ElixirManager.elixirRecipe(result.asItem()));
     }
 
     protected static void woolCushion(Consumer<FinishedRecipe> consumer, ItemLike cushion, ItemLike wool) {

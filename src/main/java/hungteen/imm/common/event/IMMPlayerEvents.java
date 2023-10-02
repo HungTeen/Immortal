@@ -12,6 +12,7 @@ import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
+import net.minecraft.world.InteractionResult;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -89,13 +90,18 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (EntityHelper.isServer(event.getEntity())) {
-            if(event.getLevel().getBlockState(event.getPos()).is(IMMBlockTags.FURNACE_BLOCKS)){
-                SpiritualFurnaceBlock.use(event.getLevel(), event.getEntity(), event.getLevel().getBlockState(event.getPos()), event.getPos());
-            }
-            PlayerEventHandler.rayTrace(event.getEntity());
+        InteractionResult result = InteractionResult.PASS;
+        if(event.getLevel().getBlockState(event.getPos()).is(IMMBlockTags.FURNACE_BLOCKS)){
+            result = SpiritualFurnaceBlock.use(event.getLevel(), event.getEntity(), event.getLevel().getBlockState(event.getPos()), event.getPos());
         }
-        HammerItem.smithing(event.getEntity(), event.getHand(), event.getFace(), event.getPos());
+        if (! result.consumesAction()) {
+            result = PlayerEventHandler.rayTrace(event.getEntity());
+        }
+        if(result.consumesAction()){
+            event.setCanceled(true);
+        }
+        event.setCancellationResult(result);
+//        HammerItem.smithing(event.getEntity(), event.getHand(), event.getFace(), event.getPos());
     }
 
     /**

@@ -1,6 +1,6 @@
 {
-  "parent": "imm:item/talisman",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "imm:item/talisman_activated"
+    "layer0": "imm:item/talisman"
   }
 }

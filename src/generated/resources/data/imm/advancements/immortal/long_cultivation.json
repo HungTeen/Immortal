@@ -1,0 +1,217 @@
+{
+  "parent": "imm:immortal/im_mortal",
+  "criteria": {
+    "placed_black_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:black_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_blue_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:blue_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_brown_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:brown_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_cyan_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:cyan_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_gray_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:gray_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_green_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:green_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_light_blue_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:light_blue_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_light_gray_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:light_gray_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_lime_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:lime_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_magenta_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:magenta_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_orange_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:orange_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_pink_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:pink_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_purple_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:purple_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_red_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:red_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_white_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:white_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    },
+    "placed_yellow_wool_cushion": {
+      "conditions": {
+        "location": [
+          {
+            "block": "imm:yellow_wool_cushion",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.long_cultivation.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "imm:red_wool_cushion"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.long_cultivation.title"
+    }
+  },
+  "requirements": [
+    [
+      "placed_black_wool_cushion",
+      "placed_blue_wool_cushion",
+      "placed_brown_wool_cushion",
+      "placed_cyan_wool_cushion",
+      "placed_gray_wool_cushion",
+      "placed_green_wool_cushion",
+      "placed_light_blue_wool_cushion",
+      "placed_light_gray_wool_cushion",
+      "placed_lime_wool_cushion",
+      "placed_magenta_wool_cushion",
+      "placed_orange_wool_cushion",
+      "placed_pink_wool_cushion",
+      "placed_purple_wool_cushion",
+      "placed_red_wool_cushion",
+      "placed_white_wool_cushion",
+      "placed_yellow_wool_cushion"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -2,12 +2,15 @@ package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.api.interfaces.IPlayerDataManager;
 import hungteen.htlib.api.interfaces.IRangeNumber;
+import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
+import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
@@ -22,6 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,8 +66,8 @@ public class PlayerDataManager implements IPlayerDataManager {
         });
     }
 
-    public void initialize(){
-        if(! this.initialized){
+    public void initialize() {
+        if (!this.initialized) {
             // 初始化玩家的灵根
             PlayerUtil.resetSpiritualRoots(player);
             this.initialized = true;
@@ -73,14 +77,19 @@ public class PlayerDataManager implements IPlayerDataManager {
     @Override
     public void tick() {
         if (EntityHelper.isServer(player)) {
-            if(EntityUtil.canManaIncrease(player)){
+            // 灵气自然增长。
+            if (EntityUtil.canManaIncrease(player)) {
                 final float value = getFloatData(PlayerRangeFloats.SPIRITUAL_MANA);
                 final float fullValue = getFullManaValue();
-                // can natural increasing.
-                if(value < fullValue){
+                if (value < fullValue) {
                     final float incValue = Math.min(fullValue - value, LevelUtil.getSpiritualRate(player.level(), player.blockPosition()));
                     this.addFloatData(PlayerRangeFloats.SPIRITUAL_MANA, incValue);
                 }
+            }
+            // 突破检测。
+            if (this.getFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS) >= 1) {
+                if ((player.tickCount & 1) == 0)
+                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.get(), 200, 0));
             }
             //TODO 随时间更新Sect
         }
@@ -110,7 +119,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i ++) {
+            for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
                 if (spellList[i] != null) {
                     nbt.putString("active_" + i, spellList[i].getRegistryName());
                 }
@@ -147,7 +156,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
-            if(this.preparingSpell != null){
+            if (this.preparingSpell != null) {
                 nbt.putString("PreparingSpell", this.preparingSpell.getRegistryName());
             }
             tag.put("MiscData", nbt);
@@ -183,8 +192,8 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("SpellList")) {
             final CompoundTag nbt = tag.getCompound("SpellList");
-            for(int i = 0; i < this.spellList.length; ++ i){
-                if(nbt.contains("active_" + i)){
+            for (int i = 0; i < this.spellList.length; ++i) {
+                if (nbt.contains("active_" + i)) {
                     final int pos = i;
                     SpellTypes.registry().getValue(nbt.getString("active_" + i)).ifPresent(type -> {
                         this.spellList[pos] = type;
@@ -192,18 +201,18 @@ public class PlayerDataManager implements IPlayerDataManager {
                 }
             }
         }
-        if (tag.contains("SectRelations")){
+        if (tag.contains("SectRelations")) {
             final CompoundTag nbt = tag.getCompound("SectRelations");
             SectTypes.registry().getValues().forEach(type -> {
-                if(nbt.contains(type.getRegistryName())){
+                if (nbt.contains(type.getRegistryName())) {
                     this.sectRelations.put(type, nbt.getFloat(type.getRegistryName()));
                 }
             });
         }
-        if(tag.contains("ExperienceMap")){
+        if (tag.contains("ExperienceMap")) {
             final CompoundTag nbt = tag.getCompound("ExperienceMap");
             for (ExperienceTypes type : ExperienceTypes.values()) {
-                if(nbt.contains(type.toString())){
+                if (nbt.contains(type.toString())) {
                     this.experienceMap.put(type, nbt.getFloat(type.toString()));
                 }
             }
@@ -225,19 +234,19 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
-            if(nbt.contains("Initialized")){
+            if (nbt.contains("Initialized")) {
                 this.initialized = nbt.getBoolean("Initialized");
             }
-            if(nbt.contains("NextRefreshTick")){
+            if (nbt.contains("NextRefreshTick")) {
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }
             if (nbt.contains("PlayerRealmType")) {
                 RealmTypes.registry().getValue(nbt.getString("PlayerRealmType")).ifPresent(r -> this.realmType = r);
             }
-            if(nbt.contains("PlayerRealmStage")){
+            if (nbt.contains("PlayerRealmStage")) {
                 this.realmStage = RealmStages.values()[nbt.getInt("PlayerRealmStage")];
             }
-            if(nbt.contains("PreparingSpell")){
+            if (nbt.contains("PreparingSpell")) {
                 SpellTypes.registry().getValue(nbt.getString("PreparingSpell")).ifPresent(l -> this.preparingSpell = l);
             }
         }
@@ -273,7 +282,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.floatMap.forEach(this::sendFloatDataPacket);
         Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
         this.setRealmType(this.realmType);
-        if(this.preparingSpell != null) {
+        if (this.preparingSpell != null) {
             this.setPreparingSpell(this.preparingSpell);
         }
     }
@@ -303,7 +312,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spiritualRoots.size();
     }
 
-    public boolean hasRoot(ISpiritualType root){
+    public boolean hasRoot(ISpiritualType root) {
         return this.spiritualRoots.contains(root);
     }
 
@@ -370,16 +379,16 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /* Sect Related Methods */
 
-    public float getSectRelation(ISectType sectType){
+    public float getSectRelation(ISectType sectType) {
         return this.sectRelations.getOrDefault(sectType, 0F);
     }
 
-    public void setSectRelation(ISectType sectType, float value){
+    public void setSectRelation(ISectType sectType, float value) {
         this.sectRelations.put(sectType, value);
         this.sendSectPacket(sectType, value);
     }
 
-    public void addSectRelation(ISectType sectType, float value){
+    public void addSectRelation(ISectType sectType, float value) {
         this.setSectRelation(sectType, this.getSectRelation(sectType) + value);
     }
 
@@ -393,12 +402,12 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void setExperience(ExperienceTypes type, float value) {
         this.experienceMap.put(type, value);
-        if(EntityHelper.isServer(getPlayer())){
+        if (EntityHelper.isServer(getPlayer())) {
             final RealmStages currentStage = this.getRealmStage();
             // 没有门槛时，自动进到下一个阶段。
-            if(! currentStage.hasThreshold() && currentStage.hasNextStage()){
+            if (!currentStage.hasThreshold() && currentStage.hasNextStage()) {
                 final RealmStages nextStage = RealmStages.next(currentStage);
-                if(this.getCultivation() >= RealmManager.getStageRequiredCultivation(this.getRealmType(), nextStage)){
+                if (this.getCultivation() >= RealmManager.getStageRequiredCultivation(this.getRealmType(), nextStage)) {
                     this.setRealmStage(nextStage);
                 }
             }
@@ -410,11 +419,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         this.setExperience(type, this.getExperience(type) + value);
     }
 
-    public float getExperience(ExperienceTypes type){
+    public float getExperience(ExperienceTypes type) {
         return this.experienceMap.getOrDefault(type, 0F);
     }
 
-    public float getCultivation(){
+    public float getCultivation() {
         return Arrays.stream(ExperienceTypes.values()).map(xp -> Math.min(RealmManager.getEachCultivation(this.realmType), getExperience(xp))).reduce(0F, Float::sum);
     }
 
@@ -435,7 +444,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setFloatData(IRangeNumber<Float> rangeData, float value) {
-        if(rangeData == PlayerRangeFloats.SPIRITUAL_MANA){
+        if (rangeData == PlayerRangeFloats.SPIRITUAL_MANA) {
             value = Mth.clamp(value, rangeData.getMinData(), getFullManaValue());
         } else {
             value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
@@ -454,6 +463,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /**
      * 灵力条的极限。
+     *
      * @return Natural increasing point.
      */
     public float getFullManaValue() {
@@ -463,11 +473,11 @@ public class PlayerDataManager implements IPlayerDataManager {
     /**
      * 待客户端配置文件更新该值。
      */
-    public boolean requireSyncCircle(){
+    public boolean requireSyncCircle() {
         return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 0;
     }
 
-    public boolean useDefaultCircle(){
+    public boolean useDefaultCircle() {
         return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 1;
     }
 
@@ -490,28 +500,25 @@ public class PlayerDataManager implements IPlayerDataManager {
     }
 
     public void setRealmType(IRealmType realmType) {
+        if(player instanceof ServerPlayer serverPlayer && this.realmType != realmType){
+            PlayerRealmChangeTrigger.INSTANCE.trigger(serverPlayer, realmType);
+        }
         this.realmType = realmType;
         this.getRealmNode(true); // Update realm node manually.
         this.sendMiscDataPacket(MiscDataPacket.Types.REALM, realmType.getRegistryName());
     }
 
-    public RealmStages getRealmStage(){
+    public RealmStages getRealmStage() {
         return this.realmStage;
     }
 
-    public void setRealmStage(RealmStages stage){
-        if(this.realmStage != stage){
-            this.realmStage = stage;
-            // 突破次数重设。
-            this.setIntegerData(PlayerRangeIntegers.BREAK_THROUGH_TRIES, 0);
-            // 突破进度重设。
-            this.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
-            this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
-        }
-    }
-
-    public ICultivationType getCultivationType() {
-        return this.realmType.getCultivationType();
+    public void setRealmStage(RealmStages stage) {
+        this.realmStage = stage;
+        // 突破次数重设。
+        this.setIntegerData(PlayerRangeIntegers.BREAK_THROUGH_TRIES, 0);
+        // 突破进度重设。
+        this.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
+        this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
     }
 
     @Nullable
@@ -519,9 +526,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         return preparingSpell;
     }
 
-    public void setPreparingSpell(@Nullable ISpellType spell){
+    public void setPreparingSpell(@Nullable ISpellType spell) {
         this.preparingSpell = spell;
-        if(spell != null){
+        if (spell != null) {
             this.sendMiscDataPacket(MiscDataPacket.Types.PREPARING_SPELL, spell.getRegistryName());
         } else {
             this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_PREPARING_SPELL);
@@ -558,7 +565,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.player;
     }
 
-    public boolean isClientSide(){
+    public boolean isClientSide() {
         return getPlayer().level().isClientSide();
     }
 

@@ -221,7 +221,7 @@ public class ClientRegister {
     public static void registerItemProperties(){
         ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(talisman -> {
             ItemProperties.register(talisman, TalismanItem.ACTIVATE_PROPERTY, (stack, level, entity, val) -> {
-                return TalismanItem.isActivated(stack) ? 0F : 1F;
+                return TalismanItem.isActivated(stack) ? 1F : 0F;
             });
         });
     }

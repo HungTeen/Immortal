@@ -80,7 +80,7 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
     }
 
     public void start(){
-        this.blockEntity.onStart(this.player.level());
+        this.blockEntity.onStart(this.player.level(), this.player);
     }
 
     public boolean started(){

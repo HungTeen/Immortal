@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +47,6 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    private static final Component NO_FURNACE_AROUND = TipUtil.info("no_furnace_around").withStyle(ChatFormatting.RED);
 
     public SpiritualFurnaceBlock(BlockBehaviour.Properties properties, IArtifactType artifactType) {
         super(properties.requiresCorrectToolForDrops().lightLevel(state -> {
@@ -54,63 +55,74 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.FALSE).setValue(FACING, Direction.NORTH));
     }
 
-    public static BlockPattern.BlockPatternMatch getMatch(Level level, BlockPos blockPos){
+    public static BlockPattern.BlockPatternMatch getMatch(Level level, BlockPos blockPos) {
         final BlockPattern.BlockPatternMatch match = BlockUtil.match(level, IMMBlockPatterns.getFurnacePattern().blockPattern(), blockPos);
         if (match != null) {
             final BlockInWorld blockInWorld = getFurnace(match);
             // Furnace must face to outside.
-            if(match.getForwards().equals(blockInWorld.getState().getValue(FACING))){
+            if (match.getForwards().equals(blockInWorld.getState().getValue(FACING))) {
                 return match;
             }
         }
         return null;
     }
 
-    public static boolean makeNewFurnace(Level level, BlockPos blockPos){
+    public static boolean makeNewFurnace(Level level, BlockPos blockPos) {
         return false;
     }
 
-    public static void use(Level level, Player player, BlockState blockState, BlockPos blockPos){
-        if (player instanceof ServerPlayer serverPlayer && ! serverPlayer.hasContainerOpen()) {
-            final BlockPattern.BlockPatternMatch match = getMatch(level, blockPos);
+    /**
+     * {@link hungteen.imm.common.event.IMMPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}.
+     */
+    public static InteractionResult use(Level level, Player player, BlockState blockState, BlockPos blockPos) {
+        final BlockPattern.BlockPatternMatch match = getMatch(level, blockPos);
+        if(! player.isSecondaryUseActive()){
             if (match != null) {
                 final BlockInWorld blockInWorld = getFurnace(match);
                 final BlockPos keypoint = blockInWorld.getPos();
-                if(blockInWorld.getState().getBlock() instanceof SpiritualFurnaceBlock furnaceBlock){
+                if (blockInWorld.getState().getBlock() instanceof SpiritualFurnaceBlock furnaceBlock && player instanceof ServerPlayer serverPlayer && ! serverPlayer.hasContainerOpen()) {
                     NetworkHooks.openScreen(serverPlayer, furnaceBlock.getMenuProvider(blockState, level, keypoint), buf -> {
                         buf.writeBlockPos(keypoint);
                     });
                 }
-            } else {
-                if(blockState.getBlock() instanceof SpiritualFurnaceBlock){
-                    PlayerHelper.sendTipTo(player, NO_FURNACE_AROUND);
+                return InteractionResult.SUCCESS;
+            } else if (level.getBlockEntity(blockPos) instanceof SpiritualFurnaceBlockEntity furnaceBlockEntity) {
+                if (! level.isClientSide() && furnaceBlockEntity.canInteractWith()) {
+                    furnaceBlockEntity.setDisplayBlockPattern(level, !furnaceBlockEntity.isDisplayBlockPattern());
+                    if (furnaceBlockEntity.isDisplayBlockPattern()) {
+                        PlayerHelper.sendTipTo(player, TipUtil.info("start_display_furnace").withStyle(ChatFormatting.GREEN));
+                    } else {
+                        PlayerHelper.sendTipTo(player, TipUtil.info("stop_display_furnace"));
+                    }
                 }
+                return InteractionResult.SUCCESS;
             }
         }
+        return InteractionResult.PASS;
     }
 
-    public static BlockInWorld getFurnace(@NotNull BlockPattern.BlockPatternMatch match){
+    public static BlockInWorld getFurnace(@NotNull BlockPattern.BlockPatternMatch match) {
         return match.getBlock(3, 2, 3);
     }
 
     @Nullable
-    public static SpiritualFurnaceBlockEntity getFurnaceBlockEntity(@NotNull BlockPattern.BlockPatternMatch match){
-       if(getFurnace(match).getEntity() instanceof SpiritualFurnaceBlockEntity blockEntity) return blockEntity;
-       return null;
+    public static SpiritualFurnaceBlockEntity getFurnaceBlockEntity(@NotNull BlockPattern.BlockPatternMatch match) {
+        if (getFurnace(match).getEntity() instanceof SpiritualFurnaceBlockEntity blockEntity) return blockEntity;
+        return null;
     }
 
-    public static BlockInWorld getFunctional(@NotNull BlockPattern.BlockPatternMatch match){
+    public static BlockInWorld getFunctional(@NotNull BlockPattern.BlockPatternMatch match) {
         return match.getBlock(3, 0, 2);
     }
 
     @Nullable
-    public static FunctionalFurnaceBlockEntity getFunctionalBlockEntity(@NotNull BlockPattern.BlockPatternMatch match){
+    public static FunctionalFurnaceBlockEntity getFunctionalBlockEntity(@NotNull BlockPattern.BlockPatternMatch match) {
         final BlockInWorld blockInWorld = getFunctional(match);
-        if(getFunctional(match).getEntity() instanceof FunctionalFurnaceBlockEntity blockEntity) return blockEntity;
+        if (getFunctional(match).getEntity() instanceof FunctionalFurnaceBlockEntity blockEntity) return blockEntity;
         return null;
     }
 
-    public static boolean persist(Level level, BlockPattern.BlockPatternMatch matched){
+    public static boolean persist(Level level, BlockPattern.BlockPatternMatch matched) {
         return IMMBlockPatterns.getFurnacePattern().blockPattern().matches(level, matched.getFrontTopLeft(), matched.getForwards(), matched.getUp()) != null;
     }
 

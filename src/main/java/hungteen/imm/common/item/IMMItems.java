@@ -1,5 +1,6 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.common.item.HTItem;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.ImmortalMod;
@@ -38,13 +39,14 @@ public class IMMItems {
 
     /* Material Tab Items */
 
+    public static final RegistryObject<Item> SPIRITUAL_STICK = ITEMS.register("spiritual_stick", HTItem::new);
     public static final RegistryObject<Item> RICE_SEEDS = ITEMS.register("rice_seeds", () -> new ItemNameBlockItem(IMMBlocks.RICE.get(), new Item.Properties()));
     public static final RegistryObject<Item> RICE_STRAW = ITEMS.register("rice_straw", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> JUTE_SEEDS = ITEMS.register("jute_seeds", () -> new ItemNameBlockItem(IMMBlocks.JUTE.get(), new Item.Properties()));
-    public static final RegistryObject<Item> JUTE = ITEMS.register("jute", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> JUTE = ITEMS.register("jute", HTItem::new);
     public static final RegistryObject<Item> GOURD_SEEDS = ITEMS.register("gourd_seeds", () -> new ItemNameBlockItem(IMMBlocks.GOURD_STEM.get(), new Item.Properties()));
-    public static final RegistryObject<Item> JOSS_PAPER = ITEMS.register("joss_paper", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> CINNABAR = ITEMS.register("cinnabar", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> JOSS_PAPER = ITEMS.register("joss_paper", HTItem::new);
+    public static final RegistryObject<Item> CINNABAR = ITEMS.register("cinnabar", HTItem::new);
 
     /* Rune Tab Items */
 
@@ -57,11 +59,13 @@ public class IMMItems {
     /* Elixir Tab Items */
 
     public static final RegistryObject<Item> FIVE_FLOWERS_ELIXIR = ITEMS.register("five_flowers_elixir", FiveFlowersElixir::new);
-    public static final RegistryObject<Item> ANTIDOTE_ELIXIR = ITEMS.register("antidote_elixir", AntidoteElixir::new);
-    public static final RegistryObject<Item> SPIRIT_RECOVERY_ELIXIR = ITEMS.register("spirit_recovery_elixir", SpiritualElixir.SpiritRecoveryElixir::new);
-    public static final RegistryObject<Item> ABSTINENCE_ELIXIR = ITEMS.register("abstinence_elixir", AbstinenceElixir::new);
-    public static final RegistryObject<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", CultivationElixir.GatherBreathElixir::new);
-    public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
+    public static final RegistryObject<Item> SPIRITUAL_INSPIRATION_ELIXIR = ITEMS.register("spiritual_inspiration_elixir", SpiritualInspirationElixir::new);
+    public static final RegistryObject<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", GatherBreathElixir::new);
+    public static final RegistryObject<Item> REFINE_BREATH_ELIXIR = ITEMS.register("refine_breath_elixir", RefineBreathElixir::new);
+    //    public static final RegistryObject<Item> ANTIDOTE_ELIXIR = ITEMS.register("antidote_elixir", AntidoteElixir::new);
+//    public static final RegistryObject<Item> SPIRIT_RECOVERY_ELIXIR = ITEMS.register("spirit_recovery_elixir", SpiritualElixir.SpiritRecoveryElixir::new);
+//    public static final RegistryObject<Item> ABSTINENCE_ELIXIR = ITEMS.register("abstinence_elixir", AbstinenceElixir::new);
+//    public static final RegistryObject<Item> FOUNDATION_ELIXIR = ITEMS.register("foundation_elixir", FoundationElixir::new);
     public static final RegistryObject<Item> CUSTOM_ELIXIR = ITEMS.register("custom_elixir", CustomElixirItem::new);
 
     /* Artifact Tab Items */

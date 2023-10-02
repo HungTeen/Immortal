@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "imm:item/elixir",
-    "layer1": "imm:item/elixir_human_layer"
-  }
-}

@@ -26,5 +26,11 @@
       "mortal"
     ]
   ],
+  "rewards": {
+    "recipes": [
+      "imm:elixirs/five_flowers_elixir",
+      "imm:elixirs/spiritual_inspiration_elixir"
+    ]
+  },
   "sends_telemetry_event": true
 }

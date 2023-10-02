@@ -1,6 +1,7 @@
 package hungteen.imm.common.world;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.impl.codec.ElixirEffects;
@@ -85,13 +86,21 @@ public class ElixirManager extends SavedData {
         return Math.max(0, ans - 1);
     }
 
+    public static ResourceLocation elixirRecipe(Item elixir){
+        return elixirRecipe(ItemHelper.get().getKey(elixir));
+    }
+
+    public static ResourceLocation elixirRecipe(ResourceLocation location){
+        return location.withPrefix("elixirs/");
+    }
+
     /**
      * used in item model gen.
      */
     public static ResourceLocation getOuterLayer(Rarity rarity){
-        return rarity == Rarity.RARE ? Util.prefix("item/elixir_heaven_layer") :
+        return rarity == Rarity.COMMON ? Util.prefix("item/elixir_human_layer") :
                 rarity == Rarity.UNCOMMON ? Util.prefix("item/elixir_earth_layer") :
-                        Util.prefix("item/elixir_human_layer");
+                        Util.prefix("item/elixir_heaven_layer");
     }
 
     public static BitSet getElixirValue(ServerLevel level, Item item) {

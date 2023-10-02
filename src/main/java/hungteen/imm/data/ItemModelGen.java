@@ -3,7 +3,7 @@ package hungteen.imm.data;
 import hungteen.htlib.data.HTItemModelGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.api.interfaces.IElixirItem;
+import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.registry.IMMWoods;
@@ -109,10 +109,10 @@ public class ItemModelGen extends HTItemModelGen {
                 // for spawn eggs.
                 addedItems.add(item);
                 getBuilder(name(item)).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
-            } else if(item instanceof IElixirItem){
+            } else if(item instanceof ElixirItem elixirItem){
                 // for elixir items.
                 addedItems.add(item);
-                genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(((IElixirItem) item).getElixirRarity()));
+                genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(elixirItem.getElixirRarity()));
             } else if(item instanceof MeleeAttackItem){
                 addedItems.add(item);
                 genHeld(name(item), ItemHelper.itemTexture(item));

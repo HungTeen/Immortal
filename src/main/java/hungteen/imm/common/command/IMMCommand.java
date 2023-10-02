@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.api.interfaces.IRangeNumber;
 import hungteen.htlib.api.interfaces.ISimpleEntry;
@@ -32,15 +33,18 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.commands.RecipeCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.server.command.EnumArgument;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -145,8 +149,14 @@ public class IMMCommand {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(realm.getRegistryName())
-                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm))
-                                    ))
+                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, null))
+                                            .then(Commands.argument("stage", StringArgumentType.string())
+                                                    .suggests(IMMSuggestions.ALL_REALM_STAGES)
+                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage")))
+                                            )))
+                            .then(Commands.literal("show")
+                                    .executes(command -> showRealm(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                            )
                     ));
         });
 
@@ -195,7 +205,7 @@ public class IMMCommand {
             builder.then(Commands.literal("element")
                     .then(Commands.literal("add")
                             .then(Commands.argument("targets", EntityArgument.entities())
-                                    .then(Commands.literal(element.name())
+                                    .then(Commands.literal(element.name().toLowerCase())
                                             .then(Commands.argument("robust", BoolArgumentType.bool())
                                                     .then(Commands.argument("value", FloatArgumentType.floatArg())
                                                             .executes(command -> addElementAmount(command.getSource(), EntityArgument.getEntities(command, "targets"), element, BoolArgumentType.getBool(command, "robust"), FloatArgumentType.getFloat(command, "value")))
@@ -296,11 +306,11 @@ public class IMMCommand {
     private static int selectSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, @Nullable ISpellType spell) {
         for (ServerPlayer player : targets) {
             SpellManager.selectSpellOnCircle(player, spell);
-            if(spell != null) {
+            if (spell != null) {
                 PlayerHelper.sendMsgTo(player, spell.getComponent());
             }
         }
-        if(spell != null) {
+        if (spell != null) {
             source.sendSuccess(spell::getComponent, true);
         }
         return targets.size();
@@ -364,22 +374,22 @@ public class IMMCommand {
 
     /* Realm */
 
-    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm) {
+    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm, @Nullable String stageString) {
+        RealmStages stage = Optional.ofNullable(stageString).map(String::toUpperCase).map(RealmStages::valueOf).orElse(RealmStages.PRELIMINARY);
         for (ServerPlayer player : targets) {
-            final boolean result = PlayerUtil.checkAndSetRealm(player, realm);
-            final Component info = result ? realm.getComponent() : COMMAND_CULTIVATION_NOT_ENOUGH;
+            final boolean result = PlayerUtil.checkAndSetRealm(player, realm, stage);
+            final Component info = result ? RealmManager.getRealmInfo(realm, stage) : COMMAND_CULTIVATION_NOT_ENOUGH;
             PlayerHelper.sendMsgTo(player, info);
             source.sendSuccess(() -> getPlayerInfo(player, info), true);
         }
         return targets.size();
     }
 
-    private static int setRealmStage(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RealmStages stage) {
+    private static int showRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            final boolean result = PlayerUtil.checkAndSetRealmStage(player, stage);
-            final Component info = result ? getRealmStageComponent(stage) : COMMAND_CULTIVATION_NOT_ENOUGH;
-            PlayerHelper.sendMsgTo(player, info);
-            source.sendSuccess(() -> getPlayerInfo(player, info), true);
+            final IRealmType realm = PlayerUtil.getPlayerRealm(player);
+            final RealmStages stage = PlayerUtil.getPlayerRealmStage(player);
+            source.sendSuccess(() -> getPlayerInfo(player, RealmManager.getRealmInfo(realm, stage)), true);
         }
         return targets.size();
     }

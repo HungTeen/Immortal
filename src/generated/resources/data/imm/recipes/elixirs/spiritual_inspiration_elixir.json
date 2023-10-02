@@ -1,0 +1,19 @@
+{
+  "type": "imm:elixir_serializer",
+  "ingredients": [
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:ganoderma"
+    }
+  ],
+  "require_level": 1,
+  "result": {
+    "item": "imm:spiritual_inspiration_elixir"
+  },
+  "smelting_cd": 200
+}

@@ -8,6 +8,7 @@ import hungteen.imm.common.impl.ArtifactTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -46,7 +47,7 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
     /**
      * Click white flame to start.
      */
-    public void onStart(Level level){
+    public void onStart(Level level, Player player){
         this.getFurnaceOpt().ifPresent(furnace -> {
             this.start = true;
             furnace.start();

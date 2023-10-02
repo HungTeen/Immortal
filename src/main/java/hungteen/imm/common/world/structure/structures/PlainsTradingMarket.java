@@ -139,7 +139,7 @@ public class PlainsTradingMarket {
                 empty,
                 List.of(
                         Pair.of(
-                                StructurePoolElement.legacy("village/plains/villagers/nitwit").apply(StructureTemplatePool.Projection.RIGID), 2
+                                StructurePoolElement.legacy(Util.prefixName("entities/spiritual_beginner_cultivator")).apply(StructureTemplatePool.Projection.RIGID), 2
                         )
                 )
         ));

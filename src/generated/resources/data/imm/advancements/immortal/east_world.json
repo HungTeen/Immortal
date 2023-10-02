@@ -13,7 +13,7 @@
     "description": {
       "translate": "advancements.imm.east_world.desc"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "imm:teleport_anchor"

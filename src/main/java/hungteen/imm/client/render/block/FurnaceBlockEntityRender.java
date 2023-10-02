@@ -25,22 +25,28 @@ public class FurnaceBlockEntityRender extends HTBlockEntityRender<SpiritualFurna
     @Override
     public void render(SpiritualFurnaceBlockEntity furnace, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         super.render(furnace, partialTicks, stack, bufferIn, combinedLightIn, combinedOverlayIn);
-        BlockPos pos = furnace.getBlockPos();
-        VertexConsumer builder = bufferIn.getBuffer(IMMRenderTypes.DUMMY_BLOCK);
+        if(furnace.displayBlockPattern()){
+            BlockPos pos = furnace.getBlockPos();
+            VertexConsumer builder = bufferIn.getBuffer(IMMRenderTypes.DUMMY_BLOCK);
 
-        stack.pushPose();
-        stack.translate(-pos.getX(), -pos.getY(), -pos.getZ());
+            stack.pushPose();
+            stack.translate(-pos.getX(), -pos.getY(), -pos.getZ());
 
-        IMMBlockPatterns.getFurnacePattern().getBlockStates(pos.mutable(), 3, 4, 2).forEach(pair -> {
-            if (furnace.getLevel() != null && furnace.getLevel().isEmptyBlock(pair.getFirst())) {
-                stack.pushPose();
-                stack.translate(pair.getFirst().getX(), pair.getFirst().getY(), pair.getFirst().getZ());
-                this.dispatcher.renderBatched(pair.getSecond(), pair.getFirst(), furnace.getLevel(), stack, builder, false, furnace.getRandom(), ModelData.EMPTY, null);
-                stack.popPose();
-            }
-        });
+            IMMBlockPatterns.getFurnacePattern().getBlockStates(pos.mutable(), 3, 4, 2).forEach(pair -> {
+                if (furnace.getLevel() != null && furnace.getLevel().isEmptyBlock(pair.getFirst())) {
+                    stack.pushPose();
+                    stack.translate(pair.getFirst().getX(), pair.getFirst().getY(), pair.getFirst().getZ());
+                    this.dispatcher.renderBatched(pair.getSecond(), pair.getFirst(), furnace.getLevel(), stack, builder, false, furnace.getRandom(), ModelData.EMPTY, null);
+                    stack.popPose();
+                }
+            });
 
-        stack.popPose();
+            stack.popPose();
+        }
     }
 
+    @Override
+    public boolean shouldRenderOffScreen(SpiritualFurnaceBlockEntity blockEntity) {
+        return blockEntity.displayBlockPattern();
+    }
 }

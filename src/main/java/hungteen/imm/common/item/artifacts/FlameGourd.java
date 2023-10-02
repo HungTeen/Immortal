@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +51,7 @@ public class FlameGourd extends ArtifactItem {
      * 火葫芦收集灵火。
      * {@link PlayerEventHandler#onTraceEntity(Player, EntityHitResult)}
      */
-    public static void collectSpiritualFlame(Player player, ItemStack stack, Entity target){
+    public static InteractionResult collectSpiritualFlame(Player player, ItemStack stack, Entity target){
         if(target instanceof SpiritualFlame flame && player.getMainHandItem().getItem() instanceof FlameGourd gourd){
             if(canStoreFlame(stack, gourd, flame)){
                 if(! isFlameFull(stack)){
@@ -58,10 +59,12 @@ public class FlameGourd extends ArtifactItem {
                 } else {
                     PlayerHelper.sendTipTo(player, TipUtil.info("gourd_is_full"));
                 }
+                return InteractionResult.SUCCESS;
             } else {
                 PlayerHelper.sendTipTo(player, TipUtil.info("gourd_level"));
             }
         }
+        return InteractionResult.PASS;
     }
 
     @Override

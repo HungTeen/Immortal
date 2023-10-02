@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -91,11 +92,11 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
      * Click white flame to start.
      */
     @Override
-    public void onStart(Level level) {
-        super.onStart(level);
+    public void onStart(Level level, Player player) {
+        super.onStart(level, player);
         this.getFurnaceOpt().ifPresent(furnace -> {
             this.smeltingTick = 0;
-            this.updateResult();
+            this.updateResult(player);
             for(int i = 0 ; i < this.itemHandler.getSlots() ; ++ i){
                 this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
             }
@@ -112,8 +113,8 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
         this.update();
     }
 
-    public void updateResult(){
-        if(level instanceof ServerLevel serverLevel){
+    public void updateResult(Player player){
+        if(level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer){
             final SimpleContainer container = new SimpleContainer(9);
             for(int i = 0; i < this.itemHandler.getSlots(); ++ i){
                 container.setItem(i, this.itemHandler.getStackInSlot(i));
@@ -123,6 +124,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
                 // Locked recipe.
                 this.result = recipe.get().assemble(container, level.registryAccess());
                 this.smeltingCD = recipe.get().getSmeltingCD();
+                serverPlayer.awardRecipes(List.of(recipe.get()));
             } else {
                 // Custom recipe.
                 ElixirManager.getElixirResult(serverLevel, container).ifPresentOrElse(stack -> {

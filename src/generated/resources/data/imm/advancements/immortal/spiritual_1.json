@@ -1,0 +1,37 @@
+{
+  "parent": "imm:immortal/long_cultivation",
+  "criteria": {
+    "reach_target_realm": {
+      "conditions": {
+        "realm": "imm:spiritual_level_1"
+      },
+      "trigger": "imm:player_realm_change"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.spiritual_1.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "imm:spiritual_inspiration_elixir"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.spiritual_1.title"
+    }
+  },
+  "requirements": [
+    [
+      "reach_target_realm"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "imm:elixirs/gather_breath_elixir"
+    ]
+  },
+  "sends_telemetry_event": true
+}
