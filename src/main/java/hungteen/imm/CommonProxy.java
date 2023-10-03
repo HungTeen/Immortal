@@ -2,6 +2,7 @@ package hungteen.imm;
 
 import hungteen.imm.api.registry.IElementReaction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.RecipeManager;
 
@@ -27,6 +28,10 @@ public class CommonProxy {
     }
 
     public Optional<RecipeManager> getRecipeManager(){
+        return Optional.empty();
+    }
+
+    public Optional<RegistryAccess> registryAccess(){
         return Optional.empty();
     }
 

@@ -47,21 +47,9 @@ public class IMMTeleporter implements ITeleporter {
     }
 
     private static void buildTeleportAnchor(ServerLevel level, BlockPos pos){
-        final BlockState anchor = IMMBlocks.TELEPORT_ANCHOR.get().defaultBlockState();
-        final BlockState base = Blocks.DEEPSLATE_TILES.defaultBlockState();
-        final BlockState air = Blocks.AIR.defaultBlockState();
-        for(int dx = -2; dx <= 2; ++ dx){
-            for(int dz = -2; dz <= 2; ++ dz){
-                for(int dy = 0; dy <= 2; ++ dy){
-                    final BlockPos blockPos = pos.offset(dx, dy, dz);
-                    if(Math.abs(dx) == 2 && Math.abs(dz) == 2 && dy >= 1){
-                        level.setBlock(blockPos, dy == 1 ? base : anchor, 3);
-                    } else {
-                        level.setBlock(blockPos, air, 3);
-                    }
-                }
-            }
-        }
+        IMMBlockPatterns.getTeleportPattern().getBlockStates(pos, 2, 1, 2, true).forEach(pair -> {
+            level.setBlock(pair.getFirst(), pair.getSecond(), 3);
+        });
     }
 
     @Override

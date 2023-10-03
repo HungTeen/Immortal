@@ -41,10 +41,14 @@ public class IMMCreativeTabs {
             builder.icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .displayItems((parameters, output) -> {
+                        BlockUtil.getGourds().forEach(pair -> {
+                            output.accept(new ItemStack(pair.getSecond()));
+                        });
                         output.acceptAll(Stream.of(
                                 IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
                                 IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
-                                IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get()
+                                IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get(),
+                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
                         ).map(ItemStack::new).toList());
                     })
     );

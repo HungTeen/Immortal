@@ -31,15 +31,15 @@ public class ChestLootGen implements LootTableSubProvider {
         consumer.accept(IMMLoots.PLAINS_TRADING_MARKET_COMMON, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(UniformGenerator.between(3.0F, 8.0F))
-                        .add(LootItem.lootTableItem(IMMItems.GOURD_SEEDS.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.GOURD_SEEDS.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.JUTE_SEEDS.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.JUTE_SEEDS.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).setWeight(2)
+                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
@@ -47,7 +47,7 @@ public class ChestLootGen implements LootTableSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(2.0F, 4.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.BAKED_POTATO).setWeight(10)
+                        .add(LootItem.lootTableItem(Items.BAKED_POTATO).setWeight(7)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
@@ -55,10 +55,10 @@ public class ChestLootGen implements LootTableSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 4.0F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.FLOWING_CLOUD_PATTERN.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.FLOWING_CLOUD_PATTERN.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.CONTINUOUS_MOUNTAIN_PATTERN.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.CONTINUOUS_MOUNTAIN_PATTERN.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
                                 )))
                         .add(LootItem.lootTableItem(Items.ENDER_PEARL).setWeight(4)
@@ -71,24 +71,24 @@ public class ChestLootGen implements LootTableSubProvider {
                 ));
         consumer.accept(IMMLoots.PLAINS_TRADING_MARKET_RARE, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .setRolls(UniformGenerator.between(3.0F, 7.0F))
-                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(1)
+                        .setRolls(UniformGenerator.between(4.0F, 8.0F))
+                        .add(LootItem.lootTableItem(Items.AMETHYST_SHARD).setWeight(2)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 2.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).setWeight(2)
+                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.BREAD).setWeight(8)
+                        .add(LootItem.lootTableItem(Items.BREAD).setWeight(7)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(2.0F, 4.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.BAKED_POTATO).setWeight(8)
+                        .add(LootItem.lootTableItem(Items.BAKED_POTATO).setWeight(7)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
-                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(2)
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 4.0F)
                                 )))
@@ -96,13 +96,23 @@ public class ChestLootGen implements LootTableSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 2.0F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.RHOMBUS_PATTERN.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.RHOMBUS_PATTERN.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.FOLDED_THUNDER_PATTERN.get()).setWeight(2)
+                        .add(LootItem.lootTableItem(IMMItems.FOLDED_THUNDER_PATTERN.get()).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
                                 )))
                         .add(LootItem.lootTableItem(IMMItems.SPIRITUAL_PEARL.get()).setWeight(1)
+                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
+                                )))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(2)
+                                .apply(SetItemCountFunction.setCount(
+                                        UniformGenerator.between(1.0F, 2.0F)
+                                )))
+                        .add(LootItem.lootTableItem(Items.DIAMOND_HELMET).setWeight(1)
+                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
+                                )))
+                        .add(LootItem.lootTableItem(Items.DIAMOND_LEGGINGS).setWeight(1)
                                 .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1F)
                                 )))
                 ));

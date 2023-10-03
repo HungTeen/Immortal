@@ -1,5 +1,8 @@
 package hungteen.imm.common.block.artifacts;
 
+import hungteen.imm.api.interfaces.IArtifactBlock;
+import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -10,6 +13,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -25,9 +29,9 @@ import javax.annotation.Nullable;
  * @author: HungTeen
  * @create: 2023-04-09 22:55
  **/
-public class RuneWorkBench extends Block {
+public class RuneWorkBench extends SimpleArtifactBlock {
     public RuneWorkBench() {
-        super(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE));
+        super(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE), ArtifactTypes.MODERATE_ARTIFACT);
     }
 
     @Override
@@ -48,4 +52,5 @@ public class RuneWorkBench extends Block {
             return new RuneCraftingMenu(id, inventory, ContainerLevelAccess.create(level, pos));
         }, Component.empty());
     }
+
 }

@@ -40,6 +40,6 @@ public class FireballTalismanItem extends DurationTalismanItem{
 
     @Override
     public IArtifactType getArtifactType(ItemStack stack) {
-        return ArtifactTypes.COMMON_ARTIFACT;
+        return ArtifactTypes.MODERATE_ARTIFACT;
     }
 }

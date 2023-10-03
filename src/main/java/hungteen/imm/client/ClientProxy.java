@@ -8,6 +8,7 @@ import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.RecipeManager;
 
@@ -45,6 +46,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Optional<RecipeManager> getRecipeManager() {
         return Optional.of(Objects.requireNonNull(MC.level).getRecipeManager());
+    }
+
+    @Override
+    public Optional<RegistryAccess> registryAccess() {
+        return Optional.of(ClientUtil.level().registryAccess());
     }
 
     @Override

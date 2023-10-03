@@ -1,11 +1,20 @@
 package hungteen.imm.common.item.talismans;
 
 import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * @author PangTeen
@@ -19,6 +28,15 @@ public abstract class TalismanItem extends Item implements IArtifactItem {
 
     public TalismanItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+        components.add(this.getDesc(itemStack));
+    }
+
+    protected MutableComponent getDesc(ItemStack stack){
+        return TipUtil.desc(this).withStyle(ChatFormatting.GREEN);
     }
 
     public boolean canUse(ItemStack stack, Entity entity){

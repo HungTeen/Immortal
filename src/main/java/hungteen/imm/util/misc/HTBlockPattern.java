@@ -66,14 +66,30 @@ public class HTBlockPattern {
         return defaultStateMap.getOrDefault(key, null);
     }
 
-    public List<Pair<BlockPos, BlockState>> getBlockStates(BlockPos pos, int x, int y, int z) {
+    public List<Pair<BlockPos, BlockState>> getBlockStates(BlockPos pos, int x, int y, int z){
+        return getBlockStates(pos, x, y, z, false);
+    }
+
+    /**
+     * 根据输入的字符串Pattern，构建需要的多方块结构。
+     * @param pos 中心点在世界中的真实位置。
+     * @param x 中心点在字符串Pattern中的x坐标。
+     * @param y 中心点在字符串Pattern中的y坐标。
+     * @param z 中心点在字符串Pattern中的z坐标。
+     * @param fillAir 其他地方是否强制填充为空气。
+     * @return 一系列构成结构的方块。
+     */
+    public List<Pair<BlockPos, BlockState>> getBlockStates(BlockPos pos, int x, int y, int z, boolean fillAir) {
         final List<Pair<BlockPos, BlockState>> states = new ArrayList<>();
         for(int i = 0; i < getWidth(); i++) {
             for(int j = 0; j < getHeight(); ++ j){
                 for(int k = 0; k < getDepth(); ++ k){
                     final BlockState state = get(i, j, k);
+                    final BlockPos curPos = new BlockPos(pos.getX() + i - x, pos.getY() + y - j, pos.getZ() + k - z).immutable();
                     if(state != null) {
-                        states.add(Pair.of(new BlockPos(pos.getX() + i - x, pos.getY() + y - j, pos.getZ() + k - z).immutable(), state));
+                        states.add(Pair.of(curPos, state));
+                    } else if(fillAir){
+                        states.add(Pair.of(curPos, Blocks.AIR.defaultBlockState()));
                     }
                 }
             }

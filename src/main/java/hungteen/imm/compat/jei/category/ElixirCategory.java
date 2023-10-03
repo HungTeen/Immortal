@@ -1,19 +1,33 @@
 package hungteen.imm.compat.jei.category;
 
+import hungteen.htlib.util.helper.StringHelper;
+import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
+import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.recipe.ElixirRecipe;
+import hungteen.imm.compat.jei.IMMJEIPlugin;
+import hungteen.imm.compat.jei.IMMJEIUtil;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import mezz.jei.api.constants.ModIds;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,51 +39,29 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
 
     public static final RecipeType<ElixirRecipe> ELIXIR_RECIPE_TYPE = RecipeType.create(Util.id(), "elixir", ElixirRecipe.class);
 
-    private final IDrawable slotDraw;
+    private final Component title;
+    private final ICraftingGridHelper craftingGridHelper;
     private final IDrawable background;
-//    private final IDrawable iconDraw;
-//    private final IDrawable arrowDraw;
+    private final IDrawable icon;
 
     public ElixirCategory(IGuiHelper helper) {
-        this.slotDraw = helper.getSlotDrawable();
-        this.background = helper.createBlankDrawable(120, 60);
-//        this.arrowDraw = helper.drawableBuilder(RenderHelper.WIDGETS, 44, 64, 22, 15).build();
-//        this.iconDraw = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()));
+        this.title = ElixirRoomBlockEntity.TITLE;
+        this.craftingGridHelper = helper.createCraftingGridHelper();
+        this.background = helper.createDrawable(IMMJEIUtil.VANILLA_GUI, 0, 60, 116, 54);
+        this.icon = helper.createDrawableItemStack(new ItemStack(IMMBlocks.COPPER_ELIXIR_ROOM.get()));
     }
-
-    @Override
-    public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-
-    }
-
-//    @Override
-//    public void draw(ElixirRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-//        stack.pushPose();
-////        this.arrowDraw.draw(stack, 50, 23);
-//        stack.popPose();
-//    }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ElixirRecipe recipe, IFocusGroup focuses) {
-        List<Ingredient> ingredients = recipe.getIngredients();
-        for(int i = 0; i < 3; ++ i){
-            for(int j = 0; j < 3; ++ j){
-                final int id = i * 3 + j;
-                if(id < ingredients.size()){
-                    builder.addSlot(RecipeIngredientRole.INPUT, i * 18 + 5, j * 18 + 5)
-                            .addIngredients(ingredients.get(id));
-                }
-            }
-        }
-
-//        builder.addSlot(RecipeIngredientRole.OUTPUT, 90, 23)
-//                        .addItemStack(recipe.getResultItem());
+        this.craftingGridHelper.createAndSetInputs(builder,  recipe.getIngredients().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList(), 3, 3);
+        Util.getProxy().registryAccess().ifPresent(access -> {
+            this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(access)));
+        });
     }
 
     @Override
     public Component getTitle() {
-        return Component.empty();
-//        return ElixirRoomBlockEntity.TITLE;
+        return title;
     }
 
     @Override
@@ -79,8 +71,7 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
 
     @Override
     public IDrawable getIcon() {
-        return null;
-//        return iconDraw;
+        return icon;
     }
 
     @Override

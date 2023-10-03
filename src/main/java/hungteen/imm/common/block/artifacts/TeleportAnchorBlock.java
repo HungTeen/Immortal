@@ -1,10 +1,13 @@
 package hungteen.imm.common.block.artifacts;
 
+import hungteen.imm.api.interfaces.IArtifactBlock;
+import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMStateProperties;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
+import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -37,15 +40,19 @@ import java.util.stream.Stream;
  * @author: HungTeen
  * @create: 2023-03-30 20:17
  **/
-public class TeleportAnchorBlock extends Block {
+public class TeleportAnchorBlock extends SimpleArtifactBlock {
 
     public static final Predicate<BlockState> ANCHOR_PREDICATE = (state) -> {
         return state != null && state.is(IMMBlocks.TELEPORT_ANCHOR.get()) && isFullCharged(state);
     };
     public static final IntegerProperty CHARGE = IMMStateProperties.TELEPORT_ANCHOR_CHARGES;
 
+    public static BlockState fullCharged(){
+        return IMMBlocks.TELEPORT_ANCHOR.get().defaultBlockState().setValue(CHARGE, 4);
+    }
+
     public TeleportAnchorBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE));
+        super(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE), ArtifactTypes.ADVANCED_ARTIFACT);
         this.registerDefaultState(this.stateDefinition.any().setValue(CHARGE, 0));
     }
 
@@ -123,4 +130,5 @@ public class TeleportAnchorBlock extends Block {
     public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
         return false;
     }
+
 }

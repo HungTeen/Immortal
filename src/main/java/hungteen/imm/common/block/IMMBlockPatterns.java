@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
+import net.minecraftforge.event.level.ExplosionEvent;
 
 import java.util.function.Predicate;
 
@@ -45,8 +46,8 @@ public class IMMBlockPatterns {
                     .aisle("     ", "     ")
                     .aisle("     ", "     ")
                     .aisle("^   ^", "#   #")
-                    .where('^', BlockInWorld.hasState(TeleportAnchorBlock.ANCHOR_PREDICATE))
-                    .where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.POLISHED_DEEPSLATE)))
+                    .key('^', BlockInWorld.hasState(TeleportAnchorBlock.ANCHOR_PREDICATE), IMMBlocks.TELEPORT_ANCHOR.get().defaultBlockState())
+                    .key('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(Blocks.POLISHED_DEEPSLATE)), Blocks.POLISHED_DEEPSLATE.defaultBlockState())
                     .build();
         }
         return TeleportPattern;
