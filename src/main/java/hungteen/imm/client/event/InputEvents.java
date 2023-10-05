@@ -26,7 +26,7 @@ public class InputEvents {
 
     @SubscribeEvent
     public static void onKeyDown(InputEvent.Key event) {
-        if(ClientProxy.MC.isWindowActive() && ClientUtil.player() != null && event.getAction() == InputConstants.PRESS) {
+        if(ClientProxy.MC.isWindowActive() && ClientUtil.screen() == null && ClientUtil.player() != null && event.getAction() == InputConstants.PRESS) {
             if(event.getKey() == IMMKeyBinds.getKeyValue(IMMKeyBinds.ACTIVATE_SPELL)){
                 SpellManager.pressToActivateSpell(ClientUtil.player());
             }
@@ -40,7 +40,7 @@ public class InputEvents {
 
     @SubscribeEvent
     public static void onMouseDown(InputEvent.MouseButton.Pre event) {
-        if(ClientProxy.MC.isWindowActive() && ClientUtil.player() != null && event.getAction() == InputConstants.PRESS) {
+        if(ClientProxy.MC.isWindowActive() && ClientUtil.screen() == null && ClientUtil.player() != null && event.getAction() == InputConstants.PRESS) {
             // 检查触发法术。
             if(event.getButton() == IMMKeyBinds.getKeyValue(IMMKeyBinds.ACTIVATE_SPELL)){
                 SpellManager.pressToActivateSpell(ClientUtil.player());
@@ -54,9 +54,11 @@ public class InputEvents {
 
     @SubscribeEvent
     public static void onMouseScroll(InputEvent.MouseScrollingEvent event) {
-		double delta = event.getScrollDelta();
-        if(SpellCircleHandler.selectOnSpellCircle(delta)){
-            event.setCanceled(true);
+        if(ClientProxy.MC.isWindowActive() && ClientUtil.screen() == null && ClientUtil.player() != null) {
+            double delta = event.getScrollDelta();
+            if (SpellCircleHandler.selectOnSpellCircle(delta)) {
+                event.setCanceled(true);
+            }
         }
     }
 

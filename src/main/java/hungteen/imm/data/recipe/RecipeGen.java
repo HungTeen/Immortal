@@ -3,6 +3,7 @@ package hungteen.imm.data.recipe;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.util.Util;
@@ -12,6 +13,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.Tags;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,10 +49,38 @@ public class RecipeGen extends RecipeProvider {
                 });
             });
         }
-//        ShapedRecipeBuilder.shaped(ImmortalItems.FLAME_GOURD.get(), 1)
-//                .define('A', GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())
-//                .define('B', Items.BLAZE_ROD)
-//                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IMMItems.SPIRITUAL_PEARL.get())
+                .pattern(" B ")
+                .pattern("BAB")
+                .pattern(" B ")
+                .define('A', Items.EMERALD)
+                .define('B', Items.AMETHYST_SHARD)
+                .unlockedBy("has", has(Items.EMERALD))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IMMItems.FLAME_GOURD.get())
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("BBB")
+                .define('A', GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())
+                .define('B', Items.BLAZE_POWDER)
+                .unlockedBy("has", has(Items.BLAZE_POWDER))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IMMBlocks.COPPER_FURNACE.get())
+                .pattern("BBB")
+                .pattern("BAB")
+                .pattern("BBB")
+                .define('A', Items.EMERALD)
+                .define('B', Tags.Items.INGOTS_COPPER)
+                .unlockedBy("has", has(Items.EMERALD))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IMMBlocks.COPPER_ELIXIR_ROOM.get())
+                .pattern("   ")
+                .pattern("BAB")
+                .pattern("BBB")
+                .define('A', Items.EMERALD)
+                .define('B', Tags.Items.INGOTS_COPPER)
+                .unlockedBy("has", has(Items.EMERALD))
+                .save(consumer);
     }
 
     protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {

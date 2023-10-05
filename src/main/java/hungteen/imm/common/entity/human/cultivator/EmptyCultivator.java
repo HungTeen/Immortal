@@ -52,7 +52,7 @@ public class EmptyCultivator extends Cultivator {
                 ItemStack itemstack = MapItem.create(serverLevel, dst.getX(), dst.getZ(), (byte)2, true, true);
                 MapItem.renderBiomePreviewMap(serverLevel, itemstack);
                 MapItemSavedData.addTargetDecoration(itemstack, dst, "+", MapDecoration.Type.MANSION);
-                itemstack.setHoverName(TipUtil.info("teleport_ruin_map"));
+                itemstack.setHoverName(TipUtil.tooltip("teleport_ruin_map"));
                 offers.add(new TradeOffer(new TradeEntry(
                         List.of(
                                 new ItemStack(Items.EMERALD, 8),

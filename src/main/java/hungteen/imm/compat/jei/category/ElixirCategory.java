@@ -1,31 +1,19 @@
 package hungteen.imm.compat.jei.category;
 
-import hungteen.htlib.util.helper.StringHelper;
-import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.recipe.ElixirRecipe;
-import hungteen.imm.compat.jei.IMMJEIPlugin;
 import hungteen.imm.compat.jei.IMMJEIUtil;
-import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import mezz.jei.api.constants.ModIds;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +35,7 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
     public ElixirCategory(IGuiHelper helper) {
         this.title = ElixirRoomBlockEntity.TITLE;
         this.craftingGridHelper = helper.createCraftingGridHelper();
-        this.background = helper.createDrawable(IMMJEIUtil.VANILLA_GUI, 0, 60, 116, 54);
+        this.background = helper.createDrawable(IMMJEIUtil.CRAFTING_TABLE, 29, 16, 116, 54);
         this.icon = helper.createDrawableItemStack(new ItemStack(IMMBlocks.COPPER_ELIXIR_ROOM.get()));
     }
 

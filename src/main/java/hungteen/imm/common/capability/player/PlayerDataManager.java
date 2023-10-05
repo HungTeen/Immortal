@@ -9,6 +9,8 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
@@ -325,6 +327,10 @@ public class PlayerDataManager implements IPlayerDataManager {
     public void learnSpell(ISpellType spell, int level) {
         final int lvl = Mth.clamp(level, 0, spell.getMaxLevel());
         this.learnSpells.put(spell, lvl);
+        if(player instanceof ServerPlayer serverPlayer){
+            PlayerLearnSpellTrigger.INSTANCE.trigger(serverPlayer, spell, level);
+            PlayerLearnSpellsTrigger.INSTANCE.trigger(serverPlayer, (int) this.learnSpells.values().stream().filter(l -> l > 0).count());
+        }
         this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, lvl);
     }
 

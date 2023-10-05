@@ -19,6 +19,7 @@ public interface IMMBiomes {
     ResourceKey<Biome> BAMBOO_JUNGLE = create("bamboo_jungle");
     ResourceKey<Biome> MEADOW = create("meadow");
     ResourceKey<Biome> CUT_BIRCH_FOREST = create("cut_birch_forest");
+    ResourceKey<Biome> CUT_DARK_FOREST = create("cut_dark_forest");
 
     /**
      * Look at {@link net.minecraft.world.level.biome.Biomes}.

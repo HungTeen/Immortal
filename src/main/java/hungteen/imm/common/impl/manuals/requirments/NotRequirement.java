@@ -15,15 +15,15 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @data 2023/7/17 15:50
  */
-public record NotRequirement(Holder<ILearnRequirement> requirement) implements ILearnRequirement{
+public record NotRequirement(ILearnRequirement requirement) implements ILearnRequirement{
 
     public static final Codec<NotRequirement> CODEC = RecordCodecBuilder.<NotRequirement>mapCodec(instance -> instance.group(
-            LearnRequirements.getCodec().fieldOf("requirement").forGetter(NotRequirement::requirement)
+            RequirementTypes.getCodec().fieldOf("requirement").forGetter(NotRequirement::requirement)
     ).apply(instance, NotRequirement::new)).codec();
 
     @Override
     public boolean check(Level level, Player player) {
-        return ! requirement().get().check(level, player);
+        return ! requirement().check(level, player);
     }
 
     @Override
@@ -32,7 +32,7 @@ public record NotRequirement(Holder<ILearnRequirement> requirement) implements I
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return TipUtil.misc("requirement.not").append("{").append(requirement().get().getRequirementInfo(player)).append("}");
+        return TipUtil.misc("requirement.not").append("{").append(requirement().getRequirementInfo(player)).append("}");
     }
 
     @Override

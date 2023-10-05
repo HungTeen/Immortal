@@ -70,7 +70,7 @@
       "minecraft:flower_forest_flowers",
       "minecraft:flower_default",
       "minecraft:patch_grass_forest",
-      "imm:trees_birch_sparse",
+      "imm:trees_birch_forest",
       "imm:birch_stake",
       "imm:birch_horizontal_stake",
       "minecraft:brown_mushroom_normal",
@@ -124,12 +124,6 @@
         "maxCount": 3,
         "minCount": 2,
         "weight": 4
-      },
-      {
-        "type": "imm:sharp_stake",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 50
       }
     ],
     "imm:human": [],
@@ -182,6 +176,12 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
+      },
+      {
+        "type": "imm:sharp_stake",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 50
       }
     ],
     "underground_water_creature": [

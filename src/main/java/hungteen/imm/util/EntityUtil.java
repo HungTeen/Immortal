@@ -28,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -51,6 +52,23 @@ import java.util.stream.Collectors;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static void disableShield(Level level, Entity entity){
+        disableShield(level, entity, 100);
+    }
+
+    /**
+     * 破盾。{@link Mob#doHurtTarget(Entity)}.
+     * @param entity 持盾的实体。
+     * @param time 破盾作用时间。
+     */
+    public static void disableShield(Level level, Entity entity, int time){
+        if(entity instanceof Player player && ItemUtil.isShield(player.getUseItem())){
+            player.getCooldowns().addCooldown(player.getUseItem().getItem(), time);
+            player.stopUsingItem();
+            level.broadcastEntityEvent(entity, (byte)30);
+        }
+    }
 
     public static Entity ownerOrSelf(Entity entity) {
         if (entity instanceof TraceableEntity traceableEntity && traceableEntity.getOwner() != null)
@@ -189,7 +207,10 @@ public class EntityUtil {
 
     @Nullable
     public static IMMEntityCapability getEntityCapability(Entity entity) {
-        return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
+        if(entity != null) {
+            return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
+        }
+        return null;
     }
 
     public static Optional<IMMEntityCapability> getOptCapability(Entity entity) {

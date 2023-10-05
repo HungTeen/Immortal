@@ -5,6 +5,9 @@
     "spell": "imm:dispersal"
   },
   "requirements": [
-    "imm:spiritual_level_1_lowest"
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_1"
+    }
   ]
 }

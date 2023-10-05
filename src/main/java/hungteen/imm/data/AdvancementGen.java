@@ -2,6 +2,8 @@ package hungteen.imm.data;
 
 import hungteen.htlib.data.HTAdvancementGen;
 import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
 import hungteen.imm.common.block.CushionBlock;
@@ -11,6 +13,7 @@ import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.spell.spells.ElementalMasterySpell;
 import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.structure.IMMStructures;
@@ -85,6 +88,22 @@ public class AdvancementGen extends HTAdvancementGen {
                 calabashBuilder.addCriterion("collect_" + gourd.name().toLowerCase(), InventoryChangeTrigger.TriggerInstance.hasItems(gourd.getGourdGrownBlock()));
             }
             calabashBuilder.save(saver, loc("calabash_brothers"));
+
+            // Spells.
+            Advancement spells = task(imMortal, IMMItems.SECRET_MANUAL.get(), "spells")
+                    .addCriterion("learn_spells", PlayerLearnSpellsTrigger.TriggerInstance.test(1))
+                    .save(saver, loc("spells"));
+            Advancement.Builder elementMasteryBuilder = task(spells, IMMItems.SECRET_MANUAL.get(), "element_mastery_beginner");
+            ElementalMasterySpell.getSpells().forEach(spell -> {
+                elementMasteryBuilder.addCriterion("learn_" + spell.getName(), PlayerLearnSpellTrigger.TriggerInstance.test(spell, 1));
+            });
+            elementMasteryBuilder.requirements(RequirementsStrategy.OR)
+                    .save(saver, loc("element_mastery_beginner"));
+            Advancement spellMaster = task(spells, IMMItems.SECRET_MANUAL.get(), "spell_master")
+                    .addCriterion("learn_spells", PlayerLearnSpellsTrigger.TriggerInstance.test(10))
+                    .save(saver, loc("spell_master"));
+
+            // Realms.
             Advancement spiritual_1 = goal(longCultivation, IMMItems.SPIRITUAL_INSPIRATION_ELIXIR.get(), "spiritual_1")
                     .addCriterion("reach_target_realm", PlayerRealmChangeTrigger.TriggerInstance.test(RealmTypes.SPIRITUAL_LEVEL_1))
                     .rewards(AdvancementRewards.Builder.recipe(ElixirManager.elixirRecipe(IMMItems.GATHER_BREATH_ELIXIR.get())))

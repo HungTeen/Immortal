@@ -9,11 +9,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.CombatTracker;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -31,10 +34,12 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
 
     public ThrowingItemEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
         super(type, level);
+        this.refreshDimensions();
     }
 
     public ThrowingItemEntity(LivingEntity thrower, Level level) {
         super(IMMEntities.THROWING_ITEM.get(), thrower, level);
+        this.refreshDimensions();
     }
 
     @Override

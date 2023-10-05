@@ -72,16 +72,15 @@ public class ScrollComponent<T> {
     }
 
     public boolean mouseClicked(Minecraft mc, Screen screen, double mouseX, double mouseY, int key) {
-        final double dx = mouseX - (this.leftPos + 82);
-        final double dy = mouseY - (this.topPos + 108);
         if(mc != null && mc.level != null && mc.player != null && mc.gameMode != null){
+            final List<T> items = this.screen.getItems();
             for(int i = 0; i < this.rows; ++ i){
                 for(int j = 0; j < this.columns; ++ j){
                     if(this.hovered(i, j, mouseX, mouseY)){
-                        final List<T> items = this.screen.getItems();
-                        final int pos = this.getPos(i, j) + this.slotIdOffset;
+                        final int pos = this.getPos(i, j);
                         if(pos >= 0 && pos < items.size()){
-                            if(this.onClick(mc, screen, items.get(pos), pos)){
+                            // 对id进行偏移，预防冲突。
+                            if(this.onClick(mc, screen, items.get(pos), pos + this.slotIdOffset)){
                                 GuiUtil.playDownSound();
                                 return true;
                             }
@@ -93,6 +92,9 @@ public class ScrollComponent<T> {
         return false;
     }
 
+    /**
+     * 点击每个槽位触发事件，发包到服务端。
+     */
     protected boolean onClick(Minecraft mc, Screen screen, T item, int slotId){
         if(screen instanceof ContainerScreen containerScreen){
             if(containerScreen.getMenu().clickMenuButton(mc.player, slotId)){
@@ -104,6 +106,9 @@ public class ScrollComponent<T> {
         return false;
     }
 
+    /**
+     * 根据鼠标输入更新页面数据。
+     */
     public boolean mouseScrolled(double delta) {
         if (this.canScroll()) {
             final int rows = this.getHiddenRows();
@@ -114,6 +119,9 @@ public class ScrollComponent<T> {
         return true;
     }
 
+    /**
+     * 渲染每个槽位的Item。
+     */
     public void renderItems(Minecraft mc, GuiGraphics graphics){
         final List<T> items = this.screen.getItems();
         // Render Recipes.
@@ -130,6 +138,9 @@ public class ScrollComponent<T> {
         }
     }
 
+    /**
+     * 渲染每个槽位的Item的详细文本信息。
+     */
     public void renderTooltip(Minecraft mc, GuiGraphics graphics, int mouseX, int mouseY) {
         if(mc != null && mc.level != null){
             for(int i = 0; i < this.rows; ++ i){
@@ -146,6 +157,9 @@ public class ScrollComponent<T> {
         }
     }
 
+    /**
+     * 滚轮能否滑动。
+     */
     public boolean canScroll() {
         return this.getHiddenRows() > 0;
     }
@@ -159,6 +173,9 @@ public class ScrollComponent<T> {
         return pair.getFirst() <= mouseX && pair.getFirst() + this.width >= mouseX && pair.getSecond() <= mouseY && pair.getSecond() + this.height >= mouseY;
     }
 
+    /**
+     * 当前行和列对应的槽位在Items列表中的索引。
+     */
     public int getPos(int r, int c){
         return this.startIndex + r * this.columns + c;
     }
@@ -183,10 +200,16 @@ public class ScrollComponent<T> {
         return (float) scrollPercent;
     }
 
+    /**
+     * 往下滑动了几行。
+     */
     public int getStartIndex() {
         return startIndex;
     }
 
+    /**
+     * ID是否在当前页面。
+     */
     public boolean inPage(int slotId){
         return slotId >= getStartIndex() && slotId < getStartIndex() + getRows() * getColumns();
     }

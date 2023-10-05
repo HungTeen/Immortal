@@ -19,10 +19,7 @@ import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.util.Colors;
-import hungteen.imm.util.Constants;
-import hungteen.imm.util.PlayerUtil;
-import hungteen.imm.util.TipUtil;
+import hungteen.imm.util.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,6 +30,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,10 +61,10 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
             protected boolean onClick(Minecraft mc, Screen screen, ISpellType spell, int slotId) {
                 if (spell.canTrigger()) {
                     if (SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()) {
-                        SpellScreen.this.selectPos = slotId + 1; // select this.
+                        SpellScreen.this.selectPos = slotId + 1; // 选择当前法术。
                     } else if (SpellScreen.this.selectOnCircle()) {
-                        // Set current spell on circle.
-                        final int circlePos = -SpellScreen.this.selectPos;
+                        // 将选择的法术放在轮盘上。
+                        final int circlePos = - SpellScreen.this.selectPos - 1;
                         setSpellAt(circlePos, spell);
                         SpellScreen.this.selectPos = 0; // reset.
                     }
@@ -186,15 +184,14 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
             for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
                 final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
                 final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
-                // mouse in range.
-                if (mouseX >= x && mouseX <= x + SPELL_SLOT_LEN && mouseY >= y && mouseY <= y + SPELL_SLOT_LEN) {
-                    final int lastSlotId = -this.selectPos - 1;
-                    final ISpellType oldSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, lastSlotId);
+                if (MathUtil.inSlotArea(mouseX, mouseY, x, y, SPELL_SLOT_LEN, SPELL_SLOT_LEN)) {
                     final ISpellType curSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
                     if (this.noSelection()) {
-                        this.selectPos = -i - 1; // selected this.
+                        this.selectPos = - i - 1; // selected this.
                     } else if (this.selectOnCircle()) {
-                        // swap two spells.
+                        // 交换轮盘上法术的位置
+                        final int lastSlotId = - this.selectPos - 1;
+                        final ISpellType oldSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, lastSlotId);
                         setSpellAt(i, oldSpell);
                         setSpellAt(lastSlotId, curSpell);
                         this.selectPos = 0; // reset.
@@ -241,9 +238,11 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         graphics.renderTooltip(font, components, Optional.empty(), x, y);
     }
 
-    public void setSpellAt(int pos, ISpellType spell) {
-        if (spell.canTrigger()) {
+    public void setSpellAt(int pos, @Nullable ISpellType spell) {
+        if (spell != null && spell.canTrigger()) {
             NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
+        } else if(spell == null){
+            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, pos));
         }
     }
 

@@ -1,9 +1,12 @@
 package hungteen.imm.common.world.biome;
 
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.world.feature.IMMOrePlacements;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 /**
@@ -35,6 +38,10 @@ public class EastWorldFeatures {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, largeCopper ? OrePlacements.ORE_COPPER_LARGE : OrePlacements.ORE_COPPER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, largeEmerald ? IMMOrePlacements.ORE_EMERALD : IMMOrePlacements.ORE_EMERALD_SMALL);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, IMMOrePlacements.ORE_CINNABAR);
+    }
+
+    public static void addSharpStake(MobSpawnSettings.Builder builder){
+        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(IMMEntities.SHARP_STAKE.get(), 50, 1, 2));
     }
 
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:emerald"
+    },
+    "B": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "   ",
+    "BAB",
+    "BBB"
+  ],
+  "result": {
+    "item": "imm:copper_elixir_room"
+  },
+  "show_notification": true
+}

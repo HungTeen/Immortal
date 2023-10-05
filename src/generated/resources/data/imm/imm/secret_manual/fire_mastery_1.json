@@ -5,7 +5,10 @@
     "spell": "imm:fire_mastery"
   },
   "requirements": [
-    "imm:spiritual_level_2_lowest",
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_2"
+    },
     {
       "type": "imm:emp",
       "level": 1

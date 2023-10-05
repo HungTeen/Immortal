@@ -1,7 +1,6 @@
 package hungteen.imm.compat.jei;
 
-import hungteen.htlib.util.helper.StringHelper;
-import mezz.jei.api.constants.ModIds;
+import hungteen.htlib.util.helper.VanillaHelper;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -11,6 +10,6 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class IMMJEIUtil {
 
-    public static final ResourceLocation VANILLA_GUI = StringHelper.guiTexture(ModIds.JEI_ID, "gui_vanilla");
+    public static final ResourceLocation CRAFTING_TABLE = VanillaHelper.get().containerTexture("crafting_table");
 
 }

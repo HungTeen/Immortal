@@ -1,0 +1,32 @@
+{
+  "parent": "imm:immortal/spells",
+  "criteria": {
+    "learn_spells": {
+      "conditions": {
+        "count": 10
+      },
+      "trigger": "imm:player_learn_spells"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.spell_master.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "imm:secret_manual"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.spell_master.title"
+    }
+  },
+  "requirements": [
+    [
+      "learn_spells"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

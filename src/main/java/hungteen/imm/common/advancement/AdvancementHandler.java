@@ -1,5 +1,7 @@
 package hungteen.imm.common.advancement;
 
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
+import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -14,6 +16,8 @@ public class AdvancementHandler {
     public static void init() {
         CriteriaTriggers.register(SpiritualPearlTrigger.INSTANCE);
         CriteriaTriggers.register(PlayerRealmChangeTrigger.INSTANCE);
+        CriteriaTriggers.register(PlayerLearnSpellTrigger.INSTANCE);
+        CriteriaTriggers.register(PlayerLearnSpellsTrigger.INSTANCE);
     }
 
 }

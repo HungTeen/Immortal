@@ -5,7 +5,10 @@
     "spell": "imm:fly_with_item"
   },
   "requirements": [
-    "imm:spiritual_level_2_lowest",
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_2"
+    },
     {
       "type": "imm:spell",
       "require_spells": [

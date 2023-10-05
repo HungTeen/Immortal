@@ -5,7 +5,10 @@
     "spell": "imm:sharpness"
   },
   "requirements": [
-    "imm:spiritual_level_3_lowest",
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_3"
+    },
     {
       "type": "imm:spell",
       "require_spells": [

@@ -22,6 +22,10 @@ public record CultivationTypeRequirement(ICultivationType cultivationType) imple
             CultivationTypes.registry().byNameCodec().fieldOf("cultivation_type").forGetter(CultivationTypeRequirement::cultivationType)
     ).apply(instance, CultivationTypeRequirement::new)).codec();
 
+    public static ILearnRequirement create(ICultivationType type){
+        return new CultivationTypeRequirement(type);
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         return PlayerUtil.getCultivationType(player).equals(cultivationType());

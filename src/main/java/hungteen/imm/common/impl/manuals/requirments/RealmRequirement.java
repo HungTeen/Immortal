@@ -24,6 +24,10 @@ public record RealmRequirement(IRealmType realmType, boolean lowest) implements 
             Codec.BOOL.optionalFieldOf("lowest", true).forGetter(RealmRequirement::lowest)
     ).apply(instance, RealmRequirement::new)).codec();
 
+    public static ILearnRequirement create(IRealmType type, boolean lowest){
+        return new RealmRequirement(type, lowest);
+    }
+
     @Override
     public boolean check(Level level, Player player) {
         final int realm = PlayerUtil.getPlayerRealm(player).getRealmValue();

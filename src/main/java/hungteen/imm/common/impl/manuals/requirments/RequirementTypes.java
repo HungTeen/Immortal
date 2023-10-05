@@ -12,26 +12,30 @@ import hungteen.imm.util.Util;
  * @program Immortal
  * @data 2023/7/17 15:19
  */
-public class RequirementTypes {
+public interface RequirementTypes {
 
-    private static final IHTSimpleRegistry<IRequirementType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("requirement_type"));
+    IHTSimpleRegistry<IRequirementType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("requirement_type"));
 
-    public static final IRequirementType<AndRequirement> AND = register(new RequirementType<>("and", AndRequirement.CODEC));
-    public static final IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
-    public static final IRequirementType<NotRequirement> NOT = register(new RequirementType<>("not", NotRequirement.CODEC));
-    public static final IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
-    public static final IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
-    public static final IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
-    public static final IRequirementType<SpiritualRootRequirement> SPIRITUAL_ROOT = register(new RequirementType<>("spiritual_root", SpiritualRootRequirement.CODEC));
-    public static final IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
-    public static final IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
+    IRequirementType<AndRequirement> AND = register(new RequirementType<>("and", AndRequirement.CODEC));
+    IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
+    IRequirementType<NotRequirement> NOT = register(new RequirementType<>("not", NotRequirement.CODEC));
+    IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
+    IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
+    IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
+    IRequirementType<SpiritualRootRequirement> SPIRITUAL_ROOT = register(new RequirementType<>("spiritual_root", SpiritualRootRequirement.CODEC));
+    IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
+    IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
 
-    public static IHTSimpleRegistry<IRequirementType<?>> registry(){
+    static IHTSimpleRegistry<IRequirementType<?>> registry() {
         return TYPES;
     }
 
-    public static <T extends ILearnRequirement> IRequirementType<T> register(IRequirementType<T> type){
+    static <T extends ILearnRequirement> IRequirementType<T> register(IRequirementType<T> type) {
         return registry().register(type);
+    }
+
+    static Codec<ILearnRequirement> getCodec() {
+        return RequirementTypes.registry().byNameCodec().dispatch(ILearnRequirement::getType, IRequirementType::codec);
     }
 
     record RequirementType<P extends ILearnRequirement>(String name, Codec<P> codec) implements IRequirementType<P> {

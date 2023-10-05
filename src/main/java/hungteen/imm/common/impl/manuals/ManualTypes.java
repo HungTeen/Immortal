@@ -26,6 +26,10 @@ public class ManualTypes {
         return registry().register(type);
     }
 
+    static Codec<IManualContent> getManualCodec() {
+        return ManualTypes.registry().byNameCodec().dispatch(IManualContent::getType, IManualType::codec);
+    }
+
     record ManualType<P extends IManualContent>(String name, Codec<P> codec) implements IManualType<P> {
 
         @Override

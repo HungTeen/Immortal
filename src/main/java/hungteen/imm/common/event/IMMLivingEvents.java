@@ -8,6 +8,7 @@ import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.common.spell.spells.SharpnessSpell;
@@ -19,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -112,6 +114,20 @@ public class IMMLivingEvents {
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, scale -> {
                 event.setAmount(event.getAmount() + scale * 0.8F);
             });
+        }
+    }
+
+    /**
+     * 优先级最低，确保此时没有事件取消格挡（也就是盾一定会格挡）。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onShieldBlock(ShieldBlockEvent event){
+        if(EntityHelper.isServer(event.getEntity())){
+            if(event.getDamageSource().getDirectEntity() instanceof ThrowingItemEntity throwingItem && throwingItem.getOwner() instanceof LivingEntity attacker){
+                if(throwingItem.getItem().canDisableShield(event.getEntity().getUseItem(), event.getEntity(), attacker)){
+                    EntityUtil.disableShield(throwingItem.level(), event.getEntity());
+                }
+            }
         }
     }
 

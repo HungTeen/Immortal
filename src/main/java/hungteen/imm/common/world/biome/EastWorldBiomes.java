@@ -1,6 +1,5 @@
 package hungteen.imm.common.world.biome;
 
-import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.world.feature.IMMVegetationPlacements;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -39,6 +38,7 @@ public class EastWorldBiomes {
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
         context.register(IMMBiomes.MEADOW, meadow(features, carvers));
         context.register(IMMBiomes.CUT_BIRCH_FOREST, birchForest(features, carvers));
+        context.register(IMMBiomes.CUT_DARK_FOREST, darkForest(features, carvers));
     }
 
     /**
@@ -173,7 +173,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.SHARP_STAKE.get(), 50, 1, 2));
+        EastWorldFeatures.addSharpStake(spawnBuilder);
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -182,7 +182,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
         BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
         BiomeDefaultFeatures.addForestGrass(genBuilder);
-        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_BIRCH_FOREST);
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_STAKE);
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.BIRCH_HORIZONTAL_STAKE);
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
@@ -190,6 +190,39 @@ public class EastWorldBiomes {
 
         final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_FLOWER_FOREST);
         return biome(true, 0.6F, 0.6F, spawnBuilder, genBuilder, music);
+    }
+
+    /**
+     * Tree House above leaves.
+     * Tall Dark Oak Tree.
+     * Poison Spider.
+     * Ganoderma.
+     * Hunter.
+     */
+    public static Biome darkForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
+        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
+        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
+        EastWorldFeatures.addSharpStake(spawnBuilder);
+
+        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
+        EastWorldFeatures.globalGeneration(genBuilder);
+        EastWorldFeatures.addOres(genBuilder, true, false);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.TREES_DARK_FOREST);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.DARK_OAK_STAKE);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.DARK_OAK_HORIZONTAL_STAKE);
+        BiomeDefaultFeatures.addForestFlowers(genBuilder);
+        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
+        BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
+        BiomeDefaultFeatures.addForestGrass(genBuilder);
+        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
+        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, IMMVegetationPlacements.GANODERMA_DARK_FOREST);
+
+        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_FOREST);
+        return biome(true, 0.7F, 0.8F, builder -> {
+            builder.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST);
+        }, spawnBuilder, genBuilder, music);
     }
 
     private static Biome bambooJungle(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
@@ -212,35 +245,6 @@ public class EastWorldBiomes {
 
         final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE);
         return biome(true, 0.95F, 0.9F, spawnBuilder, genBuilder, music);
-    }
-
-    /**
-     * Tree House above leaves.
-     * Tall Dark Oak Tree.
-     * Poison Spider.
-     * Ganoderma.
-     * Hunter.
-     */
-    public static Biome darkForest(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
-        final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-
-        final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
-        EastWorldFeatures.globalGeneration(genBuilder);
-        EastWorldFeatures.addOres(genBuilder, true, false);
-        genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.DARK_FOREST_VEGETATION);
-        BiomeDefaultFeatures.addForestFlowers(genBuilder);
-        BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
-        BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
-        BiomeDefaultFeatures.addForestGrass(genBuilder);
-        BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
-        BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
-
-        final Music music = Musics.createGameMusic(SoundEvents.MUSIC_BIOME_FOREST);
-        return biome(true, 0.7F, 0.8F, builder -> {
-            builder.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST);
-        }, spawnBuilder, genBuilder, music);
     }
 
     private static Biome biome(boolean precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder generationBuilder, @Nullable Music music) {

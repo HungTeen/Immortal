@@ -18,15 +18,15 @@ import java.util.List;
  * @program Immortal
  * @data 2023/7/17 15:50
  */
-public record OrRequirement(List<Holder<ILearnRequirement>> requirements) implements ILearnRequirement{
+public record OrRequirement(List<ILearnRequirement> requirements) implements ILearnRequirement{
 
     public static final Codec<OrRequirement> CODEC = RecordCodecBuilder.<OrRequirement>mapCodec(instance -> instance.group(
-            LearnRequirements.getCodec().listOf().fieldOf("requirements").forGetter(OrRequirement::requirements)
+            RequirementTypes.getCodec().listOf().fieldOf("requirements").forGetter(OrRequirement::requirements)
     ).apply(instance, OrRequirement::new)).codec();
 
     @Override
     public boolean check(Level level, Player player) {
-        return requirements().stream().anyMatch(r -> r.get().check(level, player));
+        return requirements().stream().anyMatch(r -> r.check(level, player));
     }
 
     @Override
@@ -36,10 +36,9 @@ public record OrRequirement(List<Holder<ILearnRequirement>> requirements) implem
     @Override
     public MutableComponent getRequirementInfo(Player player) {
         MutableComponent component = Component.literal("");
-        final List<ILearnRequirement> rs = requirements.stream().map(Holder::get).toList();
-        for(int i = 0; i < rs.size(); ++ i){
-            component.append("{").append(rs.get(i).getRequirementInfo(player)).append("}");
-            if(i < rs.size() - 1) component.append(TipUtil.misc("requirement.or"));
+        for(int i = 0; i < requirements().size(); ++ i){
+            component.append("{").append(requirements().get(i).getRequirementInfo(player)).append("}");
+            if(i < requirements().size() - 1) component.append(TipUtil.misc("requirement.or"));
         }
         return component;
     }

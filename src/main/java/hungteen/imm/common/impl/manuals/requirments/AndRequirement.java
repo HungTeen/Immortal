@@ -18,29 +18,28 @@ import java.util.List;
  * @program Immortal
  * @data 2023/7/17 15:50
  */
-public record AndRequirement(List<Holder<ILearnRequirement>> requirements) implements ILearnRequirement{
+public record AndRequirement(List<ILearnRequirement> requirements) implements ILearnRequirement{
 
     public static final Codec<AndRequirement> CODEC = RecordCodecBuilder.<AndRequirement>mapCodec(instance -> instance.group(
-            LearnRequirements.getCodec().listOf().fieldOf("requirements").forGetter(AndRequirement::requirements)
+            RequirementTypes.getCodec().listOf().fieldOf("requirements").forGetter(AndRequirement::requirements)
     ).apply(instance, AndRequirement::new)).codec();
 
     @Override
     public boolean check(Level level, Player player) {
-        return requirements().stream().allMatch(r -> r.get().check(level, player));
+        return requirements().stream().allMatch(r -> r.check(level, player));
     }
 
     @Override
     public void consume(Level level, Player player) {
-        requirements().forEach(r -> r.get().consume(level, player));
+        requirements().forEach(r -> r.consume(level, player));
     }
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
         MutableComponent component = Component.literal("");
-        final List<ILearnRequirement> rs = requirements.stream().map(Holder::get).toList();
-        for(int i = 0; i < rs.size(); ++ i){
-            component.append("{").append(rs.get(i).getRequirementInfo(player)).append("}");
-            if(i < rs.size() - 1) component.append(TipUtil.misc("requirement.and"));
+        for(int i = 0; i < requirements().size(); ++ i){
+            component.append("{").append(requirements().get(i).getRequirementInfo(player)).append("}");
+            if(i < requirements().size() - 1) component.append(TipUtil.misc("requirement.and"));
         }
         return component;
     }

@@ -32,7 +32,7 @@ public class ThrowItemSpell extends SpellType {
             if(owner instanceof Player || result.getEntity() == null){
                 projectile.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, 3F, 1.0F);
             } else {
-                EntityUtil.shootProjectile(projectile, result.getEntity().getEyePosition().subtract(owner.getEyePosition()), 1.6F, 8F);
+                EntityUtil.shootProjectile(projectile, result.getEntity().position().subtract(owner.getEyePosition()), 1.2F, 2F);
             }
             owner.level().addFreshEntity(projectile);
             if(! EntityUtil.notConsume(owner)){

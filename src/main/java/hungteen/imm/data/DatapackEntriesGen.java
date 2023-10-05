@@ -7,9 +7,7 @@ import hungteen.htlib.common.impl.spawn.HTSpawnComponents;
 import hungteen.htlib.common.impl.wave.HTWaveComponents;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.entity.human.setting.HumanSettings;
-import hungteen.imm.common.impl.manuals.ManualContents;
 import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.impl.manuals.requirments.LearnRequirements;
 import hungteen.imm.common.impl.raid.*;
 import hungteen.imm.common.misc.damage.IMMDamageTypes;
 import hungteen.imm.common.world.levelgen.*;
@@ -70,8 +68,6 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             // Immortal.
             .add(HumanSettings.registry().getRegistryKey(), HumanSettings::register)
             .add(ElixirEffects.registry().getRegistryKey(), ElixirEffects::register)
-            .add(ManualContents.registry().getRegistryKey(), ManualContents::register)
-            .add(LearnRequirements.registry().getRegistryKey(), LearnRequirements::register)
             .add(SecretManuals.registry().getRegistryKey(), SecretManuals::register)
             ;
 

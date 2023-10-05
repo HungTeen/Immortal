@@ -3,6 +3,7 @@ package hungteen.imm.common.spell.spells;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -156,6 +157,10 @@ public class ElementalMasterySpell extends SpellType{
 
     public static ElementalMasterySpell getSpell(Elements element){
         return MASTERY_MAP.get(element);
+    }
+
+    public static List<ElementalMasterySpell> getSpells(){
+        return MASTERY_MAP.values().stream().toList();
     }
 
     public static int requireEMP(Player player, int level){

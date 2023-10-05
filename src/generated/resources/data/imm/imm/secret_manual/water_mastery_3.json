@@ -14,7 +14,10 @@
         }
       ]
     },
-    "imm:spiritual_level_3_lowest",
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_3"
+    },
     {
       "type": "imm:emp",
       "level": 3

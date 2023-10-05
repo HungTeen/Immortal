@@ -13,6 +13,9 @@ import net.minecraft.world.phys.Vec3;
  **/
 public class MathUtil {
 
+    public static boolean inSlotArea(double x, double y, int posX, int posY, int lenX, int lenY){
+        return x >= posX && x <= posX + lenX && y >= posY && y <= posY + lenY;
+    }
     public static Direction[] getHorizontalDirections(){
         return Direction.stream().filter(dir -> dir.getAxis().isHorizontal()).toArray(Direction[]::new);
     }
