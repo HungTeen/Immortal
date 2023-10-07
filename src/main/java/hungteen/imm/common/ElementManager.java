@@ -19,7 +19,11 @@ import hungteen.imm.util.TipUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.commands.WeatherCommand;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -112,6 +116,28 @@ public class ElementManager {
                 if(particleCount > 0){
                     ParticleHelper.spawnParticles(level, getParticle(element), entity.position().add(0, entity.getBbHeight() / 2, 0), particleCount, entity.getBbWidth(), entity.getBbHeight() / 2, 0);
                 }
+            }
+        }
+    }
+
+    /**
+     * Tick附着元素。
+     */
+    public static void attachElement(LivingEntity entity){
+        if(entity.isInWater() && entity.getRandom().nextFloat() < 0.1F && entity.tickCount % 5 == 0){
+            addElementAmount(entity, Elements.WATER, false, 1F);
+        }
+    }
+
+    /**
+     * 受到伤害之前，附着元素。
+     */
+    public static void attachDamageElement(ServerLevel level, LivingEntity entity, DamageSource source){
+        if(entity.getRandom().nextFloat() < 0.2F){
+            if(source.is(DamageTypes.IN_FIRE)){ // 篝火。
+                addElementAmount(entity, Elements.FIRE, false, 1F);
+            } else if(source.is(DamageTypes.LAVA)){ // 岩浆。
+                addElementAmount(entity, Elements.FIRE, false, 2F);
             }
         }
     }

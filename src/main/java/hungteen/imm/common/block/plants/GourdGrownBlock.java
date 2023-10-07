@@ -55,13 +55,41 @@ public class GourdGrownBlock extends HTStemGrownBlock {
     }
 
     public enum GourdTypes implements WeightedEntry {
+
+        /**
+         * 土。
+         */
         RED(10),
-        ORANGE(5),
+
+        /**
+         * 木。
+         */
+        ORANGE(10),
+
+        /**
+         * 金。
+         */
         YELLOW(10),
-        GREEN(8),
-        AQUA(15),
-        BLUE(5),
-        PURPLE(3);
+
+        /**
+         * 火。
+         */
+        GREEN(10),
+
+        /**
+         * 水。
+         */
+        AQUA(10),
+
+        /**
+         * 阴。
+         */
+        BLUE(1),
+
+        /**
+         * 阳。
+         */
+        PURPLE(1);
 
         private GourdGrownBlock gourdGrownBlock;
         private final int weight;

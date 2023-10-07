@@ -18,6 +18,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.world.item.BannerPatternItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,7 +40,7 @@ public class IMMItems {
 
     /* Material Tab Items */
 
-    public static final RegistryObject<Item> SPIRITUAL_STICK = ITEMS.register("spiritual_stick", HTItem::new);
+    public static final RegistryObject<Item> SPIRITUAL_WOOD = ITEMS.register("spiritual_wood", HTItem::new);
     public static final RegistryObject<Item> RICE_SEEDS = ITEMS.register("rice_seeds", () -> new ItemNameBlockItem(IMMBlocks.RICE.get(), new Item.Properties()));
     public static final RegistryObject<Item> RICE_STRAW = ITEMS.register("rice_straw", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> JUTE_SEEDS = ITEMS.register("jute_seeds", () -> new ItemNameBlockItem(IMMBlocks.JUTE.get(), new Item.Properties()));
@@ -96,6 +97,9 @@ public class IMMItems {
     public static final RegistryObject<Item> FLOWING_CLOUD_PATTERN = ITEMS.register("flowing_cloud_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.FLOWING_CLOUD, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FOLDED_THUNDER_PATTERN = ITEMS.register("folded_thunder_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.FOLDED_THUNDER, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RHOMBUS_PATTERN = ITEMS.register("rhombus_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.RHOMBUS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> TALISMAN_PATTERN = ITEMS.register("talisman_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.TALISMAN, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> COILED_LOONG_PATTERN = ITEMS.register("coiled_loong_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.COILED_LOONG, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> HOVERING_PHOENIX_PATTERN = ITEMS.register("hovering_phoenix_pattern", () -> new BannerPatternItem(IMMBannerPatternTags.HOVERING_PHOENIX, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 
 
     /* Food Tab Items */

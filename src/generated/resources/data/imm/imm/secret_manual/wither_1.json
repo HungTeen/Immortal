@@ -1,0 +1,26 @@
+{
+  "content": {
+    "type": "imm:learn_spell",
+    "level": 1,
+    "spell": "imm:wither"
+  },
+  "requirements": [
+    {
+      "type": "imm:realm",
+      "realm_type": "imm:spiritual_level_2"
+    },
+    {
+      "type": "imm:element",
+      "element": "wood"
+    },
+    {
+      "type": "imm:spell",
+      "require_spells": [
+        {
+          "level": 1,
+          "spell": "imm:releasing"
+        }
+      ]
+    }
+  ]
+}

@@ -44,6 +44,8 @@ public class IMMLivingEvents {
                     entity.addMana(LevelUtil.getSpiritualRate(event.getEntity().level(), event.getEntity().blockPosition()));
                 }
             }
+            // 附加元素。
+            ElementManager.attachElement(event.getEntity());
             // 元素反应：寄生。
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, scale -> {
                 if(EntityUtil.hasMana(event.getEntity())){
@@ -69,6 +71,7 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void onLivingAttackedBy(LivingAttackEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
+            ElementManager.attachDamageElement(level, event.getEntity(), event.getSource());
             // 发生淬刃的被攻击者，会记录最大的受伤害值。
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.QUENCH_BLADE, scale -> {
                 ElementManager.setQuenchBladeDamage(event.getEntity(), event.getAmount(), true);

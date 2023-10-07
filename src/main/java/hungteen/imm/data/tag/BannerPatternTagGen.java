@@ -30,6 +30,9 @@ public class BannerPatternTagGen extends HTHolderTagsProvider<BannerPattern> {
         this.tag(IMMBannerPatternTags.FLOWING_CLOUD).add(IMMBannerPatterns.FLOWING_CLOUD.get());
         this.tag(IMMBannerPatternTags.FOLDED_THUNDER).add(IMMBannerPatterns.FOLDED_THUNDER.get());
         this.tag(IMMBannerPatternTags.RHOMBUS).add(IMMBannerPatterns.RHOMBUS.get());
+        this.tag(IMMBannerPatternTags.TALISMAN).add(IMMBannerPatterns.TALISMAN.get());
+        this.tag(IMMBannerPatternTags.COILED_LOONG).add(IMMBannerPatterns.COILED_LOONG.get());
+        this.tag(IMMBannerPatternTags.HOVERING_PHOENIX).add(IMMBannerPatterns.HOVERING_PHOENIX.get());
     }
 
 }

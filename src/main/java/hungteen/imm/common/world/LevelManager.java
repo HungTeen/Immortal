@@ -66,7 +66,7 @@ public class LevelManager {
 
     public record BiomeRealmSetting(float minChange, float maxChange){
 
-        public static final BiomeRealmSetting DEFAULT = new BiomeRealmSetting(0.08F, 0.12F);
+        public static final BiomeRealmSetting DEFAULT = new BiomeRealmSetting(0.1F, 0.25F);
 
         public float getChangeRate(RandomSource source){
             return Mth.clamp(Mth.normal(source, (minChange() + maxChange()) / 2, (maxChange() - minChange()) / 6), minChange(), maxChange());

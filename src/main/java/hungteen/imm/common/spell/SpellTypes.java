@@ -37,6 +37,7 @@ public class SpellTypes {
 
     /* 金系法术 - Metal Spell */
 
+    public static final ISpellType CRITICAL_HIT = register(new CriticalHitSpell());
     public static final ISpellType METAL_MENDING = register(new MetalMendingSpell());
     public static final ISpellType SHARPNESS = register(new SharpnessSpell());
 
@@ -44,6 +45,7 @@ public class SpellTypes {
 
     public static final ISpellType LEVITATION = register(new LevitationSpell());
     public static final ISpellType SPROUT = register(new SproutSpell());
+    public static final ISpellType WITHER = register(new WitherSpell());
     public static final ISpellType WOOD_HEALING = register(new WoodHealingSpell());
 
     /* 水系法术 - Water Spell */

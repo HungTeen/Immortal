@@ -7,14 +7,15 @@ import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.item.artifacts.HammerItem;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.spell.spells.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -74,18 +75,18 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerEventHandler.rayTrace(event.getEntity());
+            PlayerEventHandler.rayTrace(event.getEntity(), event.getHand());
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (EntityHelper.isServer(event.getEntity())) {
-            PlayerEventHandler.rayTrace(event.getEntity());
-//            if(event.getRealmValue() instanceof ServerLevel serverLevel){
-//                System.out.println(ElixirManager.getElixirValue(serverLevel, event.getItemStack().getItem()));
-//            }
+        InteractionResult result = InteractionResult.PASS;
+        result = PlayerEventHandler.rayTrace(event.getEntity(), event.getHand());
+        if(result.consumesAction()){
+            event.setCanceled(true);
         }
+        event.setCancellationResult(result);
     }
 
     @SubscribeEvent
@@ -95,7 +96,7 @@ public class IMMPlayerEvents {
             result = SpiritualFurnaceBlock.use(event.getLevel(), event.getEntity(), event.getLevel().getBlockState(event.getPos()), event.getPos());
         }
         if (! result.consumesAction()) {
-            result = PlayerEventHandler.rayTrace(event.getEntity());
+            result = PlayerEventHandler.rayTrace(event.getEntity(), event.getHand());
         }
         if(result.consumesAction()){
             event.setCanceled(true);
@@ -109,13 +110,20 @@ public class IMMPlayerEvents {
      */
     @SubscribeEvent
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
-        NetworkHandler.sendToServer(new EmptyClickPacket());
+        NetworkHandler.sendToServer(new EmptyClickPacket(event.getHand()));
     }
 
     @SubscribeEvent
     public static void onPlayerTossItem(ItemTossEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
             PlayerEventHandler.onTossItem(event.getPlayer(), event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCriticalHit(CriticalHitEvent event) {
+        if (EntityHelper.isServer(event.getEntity())) {
+            CriticalHitSpell.checkCriticalHit(event.getEntity(), event);
         }
     }
 

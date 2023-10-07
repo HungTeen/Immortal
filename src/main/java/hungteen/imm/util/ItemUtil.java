@@ -7,6 +7,7 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,6 +16,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @program: Immortal
@@ -68,6 +71,10 @@ public class ItemUtil {
         return ItemHelper.get().filterValues(RuneItem.class::isInstance)
                 .stream().map(RuneItem.class::cast)
                 .map(item -> Pair.of(item.getRune(), new ItemStack(item))).toList();
+    }
+
+    public static Set<Map.Entry<ResourceKey<Item>, Item>> getBannerPatterns(){
+        return Util.get().filterEntries(ItemHelper.get(), BannerPatternItem.class::isInstance);
     }
 
     /**

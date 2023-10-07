@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 public class SharpnessSpell extends SpellType {
 
     public SharpnessSpell() {
-        super("sharpness", properties().mana(15).cd(20).maxLevel(1));
+        super("sharpness", properties().mana(25).cd(50).maxLevel(1));
     }
 
     public static void checkSharpening(@Nullable Entity owner, LivingHurtEvent event){

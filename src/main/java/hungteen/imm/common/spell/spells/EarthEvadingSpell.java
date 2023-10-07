@@ -18,7 +18,8 @@ import net.minecraft.world.phys.Vec3;
  * @author: HungTeen
  * @create: 2023-08-28 21:11
  **/
-public class EarthEvadingSpell extends SpellType{
+public class EarthEvadingSpell extends SpellType {
+
     public EarthEvadingSpell() {
         super("earth_evading", properties().maxLevel(1).mana(75).cd(300));
     }

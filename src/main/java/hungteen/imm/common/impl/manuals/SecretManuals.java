@@ -91,6 +91,10 @@ public interface SecretManuals {
 //        });
 
         /* 金系法术 */
+        register(context, SpellTypes.CRITICAL_HIT, 1, builder -> {
+            builder.require(spiritual_level_1)
+                    .require(ElementRequirement.create(Elements.METAL));
+        });
         register(context, SpellTypes.METAL_MENDING, 1, builder -> {
             builder.require(spiritual_level_2)
                     .require(ElementRequirement.create(Elements.METAL));
@@ -106,6 +110,11 @@ public interface SecretManuals {
                     .require(ElementRequirement.create(Elements.WOOD));
         });
         register(context, SpellTypes.SPROUT, 1, builder -> {
+            builder.require(spiritual_level_2)
+                    .require(ElementRequirement.create(Elements.WOOD))
+                    .require(SpellRequirement.single(SpellTypes.RELEASING, 1));
+        });
+        register(context, SpellTypes.WITHER, 1, builder -> {
             builder.require(spiritual_level_2)
                     .require(ElementRequirement.create(Elements.WOOD))
                     .require(SpellRequirement.single(SpellTypes.RELEASING, 1));

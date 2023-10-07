@@ -25,4 +25,5 @@ public class WoodHealingSpell extends SpellType {
         ElementManager.addElementAmount(owner, Elements.WOOD, true, 15);
         return true;
     }
+
 }

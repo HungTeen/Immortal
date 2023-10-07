@@ -83,11 +83,9 @@ public class ItemModelGen extends HTItemModelGen {
         ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(this::talisman);
 
         /* Banner patterns */
-        Arrays.asList(
-                IMMItems.CONTINUOUS_MOUNTAIN_PATTERN, IMMItems.FLOWING_CLOUD_PATTERN, IMMItems.FOLDED_THUNDER_PATTERN, IMMItems.RHOMBUS_PATTERN
-        ).forEach(item -> {
-            this.addedItems.add(item.get());
-            this.genNormal(item.getId().getPath(), Util.mc().prefix("item/flower_banner_pattern"));
+        ItemUtil.getBannerPatterns().forEach(entry -> {
+            this.addedItems.add(entry.getValue());
+            this.genNormal(entry.getKey().location().getPath(), Util.mc().prefix("item/flower_banner_pattern"));
         });
 
         /* Runes */

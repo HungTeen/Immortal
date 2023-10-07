@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "imm:item/spiritual_stick"
+    "layer0": "imm:item/spiritual_wood"
   }
 }

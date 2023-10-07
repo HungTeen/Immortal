@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Look at {@link OverworldBiomeBuilder}
+ * Look at {@link OverworldBiomeBuilder}.
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-18 12:49
@@ -78,8 +78,8 @@ public class EastWorldDimension {
     private static final ResourceKey<Biome>[][] MIDDLE_BIOMES_VARIANT = new ResourceKey[][]{
             {null, null, null, null, null},
             {null, null, null, null, null},
-            {null, null, IMMBiomes.CUT_BIRCH_FOREST, IMMBiomes.CUT_BIRCH_FOREST, null},
-            {null, null, IMMBiomes.CUT_BIRCH_FOREST, null, null},
+            {null, null, null, null, null},
+            {null, null, null, null, null},
             {null, null, null, null, null}
     };
     private static final ResourceKey<Biome>[][] DEFAULT_PLATEAU_BIOMES = new ResourceKey[][]{
@@ -92,7 +92,7 @@ public class EastWorldDimension {
     private static final ResourceKey<Biome>[][] PLATEAU_BIOMES = new ResourceKey[][]{
             {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW},
             {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW},
-            {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW},
+            {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.CUT_DARK_FOREST},
             {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW},
             {IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW, IMMBiomes.MEADOW}
     };

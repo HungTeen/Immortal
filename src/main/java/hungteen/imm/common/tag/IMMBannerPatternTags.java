@@ -17,7 +17,10 @@ public interface IMMBannerPatternTags {
     TagKey<BannerPattern> FLOWING_CLOUD = tag("flowing_cloud");
     TagKey<BannerPattern> FOLDED_THUNDER = tag("folded_thunder");
     TagKey<BannerPattern> RHOMBUS = tag("rhombus");
-    
+    TagKey<BannerPattern> TALISMAN = tag("talisman");
+    TagKey<BannerPattern> COILED_LOONG = tag("coiled_loong");
+    TagKey<BannerPattern> HOVERING_PHOENIX = tag("hovering_phoenix");
+
     private static TagKey<BannerPattern> tag(String name){
         return create(Util.prefix(name));
     }

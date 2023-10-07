@@ -15,8 +15,10 @@ import net.minecraftforge.common.Tags;
  **/
 public class MetalMendingSpell extends SpellType {
 
+    private static final int MEND_VALUE = 10;
+
     public MetalMendingSpell() {
-        super("metal_mending", properties().mana(80).cd(3600).maxLevel(1));
+        super("metal_mending", properties().mana(80).cd(200).maxLevel(1));
     }
 
     @Override
@@ -27,7 +29,7 @@ public class MetalMendingSpell extends SpellType {
             });
         });
         if(! stack.isEmpty()){
-            final int toRepair = Math.min(stack.getDamageValue(), stack.getMaxDamage() / 4);
+            final int toRepair = Math.min(stack.getDamageValue(), MEND_VALUE);
             if(toRepair > 0){
                 stack.setDamageValue(stack.getDamageValue() - toRepair);
                 owner.playSound(SoundEvents.ANVIL_USE);

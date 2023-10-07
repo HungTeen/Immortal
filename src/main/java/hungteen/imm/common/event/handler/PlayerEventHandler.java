@@ -3,6 +3,7 @@ package hungteen.imm.common.event.handler;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.util.EntityUtil;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,13 +23,13 @@ public class PlayerEventHandler {
     public static void onTossItem(Player player, ItemEntity itemEntity) {
     }
 
-    public static InteractionResult onTraceEntity(Player player, EntityHitResult hitResult) {
+    public static InteractionResult onTraceEntity(Player player, InteractionHand hand, EntityHitResult hitResult) {
         InteractionResult result = InteractionResult.PASS;
-        result = FlameGourd.collectSpiritualFlame(player, player.getMainHandItem(), hitResult.getEntity());
+        result = FlameGourd.collectSpiritualFlame(player, hand, hitResult.getEntity());
         return result;
     }
 
-    public static InteractionResult onTraceBlock(Player player, BlockHitResult result) {
+    public static InteractionResult onTraceBlock(Player player, InteractionHand hand, BlockHitResult result) {
         return InteractionResult.PASS;
     }
 
@@ -38,15 +39,15 @@ public class PlayerEventHandler {
      * {@link IMMPlayerEvents#onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock)}
      * {@link IMMPlayerEvents#onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty)}
      */
-    public static InteractionResult rayTrace(Player player) {
+    public static InteractionResult rayTrace(Player player, InteractionHand hand) {
         final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
         InteractionResult result = InteractionResult.PASS;
         switch (hitResult.getType()){
             case BLOCK -> {
-                result = onTraceBlock(player, (BlockHitResult) hitResult);
+                result = onTraceBlock(player, hand, (BlockHitResult) hitResult);
             }
             case ENTITY -> {
-                result = onTraceEntity(player, (EntityHitResult) hitResult);
+                result = onTraceEntity(player, hand, (EntityHitResult) hitResult);
             }
         }
         return result;

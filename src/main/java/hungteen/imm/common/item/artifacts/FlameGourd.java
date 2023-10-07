@@ -49,13 +49,14 @@ public class FlameGourd extends ArtifactItem {
 
     /**
      * 火葫芦收集灵火。
-     * {@link PlayerEventHandler#onTraceEntity(Player, EntityHitResult)}
+     * {@link PlayerEventHandler#onTraceEntity(Player, InteractionHand, EntityHitResult)}
      */
-    public static InteractionResult collectSpiritualFlame(Player player, ItemStack stack, Entity target){
-        if(target instanceof SpiritualFlame flame && player.getMainHandItem().getItem() instanceof FlameGourd gourd){
+    public static InteractionResult collectSpiritualFlame(Player player, InteractionHand hand, Entity target){
+        final ItemStack stack = player.getItemInHand(hand);
+        if(target instanceof SpiritualFlame flame && stack.getItem() instanceof FlameGourd gourd){
             if(canStoreFlame(stack, gourd, flame)){
                 if(! isFlameFull(stack)){
-                    player.startUsingItem(InteractionHand.MAIN_HAND);
+                    player.startUsingItem(hand);
                 } else {
                     PlayerHelper.sendTipTo(player, TipUtil.info("gourd_is_full"));
                 }
@@ -73,7 +74,13 @@ public class FlameGourd extends ArtifactItem {
             final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY);
             if(hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult) hitResult).getEntity() instanceof SpiritualFlame flame){
                 if(canStoreFlame(stack, gourd, flame)){
-                    absorbFlame(player, flame, stack, gourd);
+                    if(! isFlameFull(stack)) {
+                        absorbFlame(player, flame, stack, gourd);
+                    } else {
+                        player.stopUsingItem();
+                    }
+                } else {
+                    player.stopUsingItem();
                 }
             }
         }

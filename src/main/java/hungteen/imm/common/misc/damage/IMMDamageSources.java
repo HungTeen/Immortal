@@ -11,6 +11,10 @@ import net.minecraft.world.entity.Entity;
  **/
 public class IMMDamageSources {
 
+    public static DamageSource spiritualFlame(Entity causingEntity){
+        return DamageHelper.source(causingEntity, IMMDamageTypes.SPIRITUAL_FLAME, causingEntity);
+    }
+
     public static DamageSource spiritualMana(Entity causingEntity){
         return DamageHelper.source(causingEntity, IMMDamageTypes.SPIRITUAL_MANA, causingEntity);
     }
