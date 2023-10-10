@@ -1,6 +1,7 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.fire;
 
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;

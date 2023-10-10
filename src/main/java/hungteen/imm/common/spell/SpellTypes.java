@@ -5,7 +5,26 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.spell.spells.*;
+import hungteen.imm.common.spell.spells.basic.*;
+import hungteen.imm.common.spell.spells.common.FlyWithItemSpell;
+import hungteen.imm.common.spell.spells.common.PickupBlockSpell;
+import hungteen.imm.common.spell.spells.common.PickupItemSpell;
+import hungteen.imm.common.spell.spells.common.ThrowItemSpell;
+import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
+import hungteen.imm.common.spell.spells.earth.AmethystExplosionSpell;
+import hungteen.imm.common.spell.spells.earth.AmethystHeartSpell;
+import hungteen.imm.common.spell.spells.earth.EarthEvadingSpell;
+import hungteen.imm.common.spell.spells.fire.BurningSpell;
+import hungteen.imm.common.spell.spells.fire.IgnitionSpell;
+import hungteen.imm.common.spell.spells.fire.LavaBreathingSpell;
+import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
+import hungteen.imm.common.spell.spells.metal.MetalMendingSpell;
+import hungteen.imm.common.spell.spells.metal.SharpnessSpell;
+import hungteen.imm.common.spell.spells.water.WaterBreathingSpell;
+import hungteen.imm.common.spell.spells.wood.LevitationSpell;
+import hungteen.imm.common.spell.spells.wood.SproutSpell;
+import hungteen.imm.common.spell.spells.wood.WitherSpell;
+import hungteen.imm.common.spell.spells.wood.WoodHealingSpell;
 import hungteen.imm.util.Util;
 
 /**
@@ -58,9 +77,11 @@ public class SpellTypes {
     public static final ISpellType LAVA_BREATHING = register(new LavaBreathingSpell());
     public static final ISpellType IGNITION = register(new IgnitionSpell());
 
-    /* 火系法术 - Earth Spell */
+    /* 土系法术 - Earth Spell */
 
     public static final ISpellType EARTH_EVADING = register(new EarthEvadingSpell());
+    public static final ISpellType AMETHYST_EXPLOSION = register(new AmethystExplosionSpell());
+    public static final ISpellType AMETHYST_HEART = register(new AmethystHeartSpell());
 
     /* 元素精通 - Element Mastery */
 

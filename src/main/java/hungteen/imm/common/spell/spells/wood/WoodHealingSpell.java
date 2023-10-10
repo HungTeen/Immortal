@@ -1,10 +1,11 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.wood;
 
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 

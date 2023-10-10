@@ -11,7 +11,7 @@ import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
-import hungteen.imm.common.spell.spells.SharpnessSpell;
+import hungteen.imm.common.spell.spells.metal.SharpnessSpell;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;

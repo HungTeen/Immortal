@@ -58,6 +58,10 @@ public class HTHitResult {
         return MISS;
     }
 
+    public boolean isMiss(){
+        return this == MISS;
+    }
+
     public boolean hasEntity(){
         return this.getEntity() != null;
     }

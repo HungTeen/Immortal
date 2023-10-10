@@ -12,10 +12,8 @@ import hungteen.imm.common.impl.manuals.requirments.*;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.spell.spells.ElementalMasterySpell;
+import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.Util;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -152,6 +150,14 @@ public interface SecretManuals {
         register(context, SpellTypes.EARTH_EVADING, 1, builder -> {
             builder.require(spiritual_level_2)
                     .require(ElementRequirement.create(Elements.EARTH));
+        });
+        register(context, SpellTypes.AMETHYST_EXPLOSION, 1, builder -> {
+            builder.require(spiritual_level_3)
+                    .require(SpellRequirement.single(SpellTypes.EARTH_MASTERY, 3));
+        });
+        register(context, SpellTypes.AMETHYST_HEART, 1, builder -> {
+            builder.require(spiritual_level_3)
+                    .require(SpellRequirement.single(SpellTypes.EARTH_MASTERY, 3));
         });
 
         /* 元素精通 */

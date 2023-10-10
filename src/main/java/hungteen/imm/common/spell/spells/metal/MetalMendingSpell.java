@@ -1,7 +1,8 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.metal;
 
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;

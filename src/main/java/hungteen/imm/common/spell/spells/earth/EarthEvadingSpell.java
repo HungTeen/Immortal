@@ -1,7 +1,8 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.earth;
 
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -14,10 +15,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 /**
+ * 钻入脚下的洞里（不可绕过无法破坏的方块，比如基岩）
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-08-28 21:11
  **/
+@Deprecated
 public class EarthEvadingSpell extends SpellType {
 
     public EarthEvadingSpell() {

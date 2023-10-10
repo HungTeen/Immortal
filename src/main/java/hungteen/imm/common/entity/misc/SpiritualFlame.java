@@ -88,17 +88,17 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
         super.tick();
         if(EntityHelper.isServer(this)){
             if(this.tickCount % 10 == 0){
-                final float width = getCoverWidth() * 2.5F;
+                final float width = getCoverWidth() * 2F;
                 final float height = getCoverHeight() * 1.5F;
                 final AABB aabb = MathUtil.getUpperAABB(position(), width, height);
                 // 烧伤附近的生物。
                 EntityHelper.getPredicateEntities(this, aabb, LivingEntity.class, target -> {
                     return true;
                 }).forEach(target -> {
-                    this.flameTarget(target, Math.max(0, 1 - distanceTo(target) / width));
+                    this.flameTarget(target, (float) Math.max(0, 1 - distanceToSqr(target) / (width * width)));
                 });
                 // 与周围的方块交互。
-                if(this.random.nextFloat() < 0.15F){
+                if(this.random.nextFloat() < 0.3F){
                     final int w = Mth.ceil(getCoverWidth());
                     final int h = Mth.ceil(getCoverHeight());
                     for(int i = -w; i <= w; ++ i){
@@ -135,7 +135,7 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
     }
 
     public void flameTarget(LivingEntity target, float percent){
-        target.setSecondsOnFire((int) (10 * percent));
+        target.setSecondsOnFire(Math.max(2, Mth.ceil (10 * percent)));
         if(percent > 0.75F){
             ElementManager.addElementAmount(target, Elements.FIRE, true, this.flamePercent() * 15 * percent);
         } else if(percent > 0.25F){
@@ -163,7 +163,7 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
     }
 
     public float getCoverWidth(){
-        return (getFlameLevel() + getFlameAmount() / MAX_AMOUNT * 0.5F) * 0.5F;
+        return (getFlameLevel() + getFlameAmount() / MAX_AMOUNT * 0.5F);
     }
 
     public float getCoverHeight(){

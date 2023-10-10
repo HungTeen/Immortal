@@ -9,7 +9,7 @@ import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
-import hungteen.imm.common.spell.spells.CriticalHitSpell;
+import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;

@@ -1,9 +1,10 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.common;
 
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import net.minecraft.sounds.SoundEvents;

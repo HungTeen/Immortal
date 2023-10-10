@@ -1,9 +1,10 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.metal;
 
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;

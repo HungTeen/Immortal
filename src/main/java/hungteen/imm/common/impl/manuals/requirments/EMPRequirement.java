@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.spell.spells.ElementalMasterySpell;
+import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;

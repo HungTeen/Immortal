@@ -1,7 +1,8 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.metal;
 
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.FireBlock;

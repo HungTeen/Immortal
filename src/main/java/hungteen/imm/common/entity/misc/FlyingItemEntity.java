@@ -4,7 +4,7 @@ import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.common.spell.spells.FlyWithItemSpell;
+import hungteen.imm.common.spell.spells.common.FlyWithItemSpell;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;

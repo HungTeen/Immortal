@@ -33,8 +33,10 @@ public class ClientEvents {
                 ReactionRenderer.tick();
             }
             Optional.ofNullable(ClientUtil.level()).ifPresent(clientLevel -> {
-                for (Entity entity : clientLevel.entitiesForRendering()) {
-                    ElementManager.clientTickElements(clientLevel, entity);
+                if(ClientUtil.mc().isPresent() && ! ClientUtil.mc().get().isPaused()){
+                    for (Entity entity : clientLevel.entitiesForRendering()) {
+                        ElementManager.clientTickElements(clientLevel, entity);
+                    }
                 }
             });
         }

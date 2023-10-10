@@ -1,9 +1,11 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.basic;
 
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.common.spell.spells.SpellType;
+import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

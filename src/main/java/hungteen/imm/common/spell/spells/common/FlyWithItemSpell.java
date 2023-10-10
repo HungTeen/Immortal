@@ -1,9 +1,10 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.common;
 
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;

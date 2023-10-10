@@ -1,9 +1,10 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.wood;
 
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;

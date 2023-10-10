@@ -1,6 +1,7 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.conscious;
 
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.player.Player;
 

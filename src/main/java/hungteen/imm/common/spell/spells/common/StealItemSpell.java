@@ -1,6 +1,7 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.common;
 
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

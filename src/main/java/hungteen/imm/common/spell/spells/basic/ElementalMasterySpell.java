@@ -1,17 +1,22 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.basic;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.WeightedList;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
@@ -27,16 +32,32 @@ import java.util.function.Consumer;
  * @author: HungTeen
  * @create: 2023-08-17 22:12
  **/
-public class ElementalMasterySpell extends SpellType{
+public class ElementalMasterySpell extends SpellType {
 
     private static final int ELEMENTAL_MASTERY_MAX_LEVEL = 5;
     private static final Map<Elements, ElementalMasterySpell> MASTERY_MAP = new EnumMap<>(Elements.class);
     private final Elements element;
 
     public ElementalMasterySpell(Elements element) {
-        super(element.name().toLowerCase() + "_mastery", properties().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).notTrigger());
+        super(element.name().toLowerCase() + "_mastery", properties().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).cd(200).mana(25));
         this.element = element;
         MASTERY_MAP.put(element, this);
+    }
+
+    @Override
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
+        if(result.getEntity() != null){
+            addElement(owner, result.getEntity(), element, false, true, 10);
+            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL_MANA.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+            return true;
+        } else {
+            if(level >= 2 && owner.level() instanceof ServerLevel serverLevel){
+                addElement(owner, owner, element, true, true, 10);
+                ParticleHelper.spawnParticles(serverLevel, IMMParticles.SPIRITUAL_MANA.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -63,60 +84,61 @@ public class ElementalMasterySpell extends SpellType{
     /**
      * 未指定元素，则完全随机。
      */
-    public static void addWeakElement(Entity entity, boolean self, boolean must, float amount){
-        addWeakElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
+    public static void addWeakElement(Entity attacker, Entity entity, boolean self, boolean must, float amount){
+        addWeakElement(attacker, entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
     }
 
     /**
      * 指定一个元素。
      */
-    public static void addWeakElement(Entity entity, Elements element, boolean self, boolean must, float amount){
-        addWeakElement(entity, List.of(element), self, must, amount);
+    public static void addWeakElement(Entity attacker, Entity entity, Elements element, boolean self, boolean must, float amount){
+        addWeakElement(attacker, entity, List.of(element), self, must, amount);
     }
 
-    public static void addWeakElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
-        getElementEntry(entity, elements, self, must, false, true).ifPresent(e -> e.addElement(entity, amount));
+    public static void addWeakElement(Entity attacker, Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(attacker, entity, elements, self, must, false, true).ifPresent(e -> e.addElement(entity, amount));
     }
 
     /**
      * 未指定元素，则完全随机。
      */
-    public static void addRobustElement(Entity entity, boolean self, boolean must, float amount){
-        addRobustElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
+    public static void addRobustElement(Entity attacker, Entity entity, boolean self, boolean must, float amount){
+        addRobustElement(attacker, entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
     }
 
     /**
      * 指定一个元素。
      */
-    public static void addRobustElement(Entity entity, Elements element, boolean self, boolean must, float amount){
-        addRobustElement(entity, List.of(element), self, must, amount);
+    public static void addRobustElement(Entity attacker, Entity entity, Elements element, boolean self, boolean must, float amount){
+        addRobustElement(attacker, entity, List.of(element), self, must, amount);
     }
 
-    public static void addRobustElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
-        getElementEntry(entity, elements, self, must, true, false).ifPresent(e -> e.addElement(entity, amount));
+    public static void addRobustElement(Entity attacker, Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(attacker, entity, elements, self, must, true, false).ifPresent(e -> e.addElement(entity, amount));
     }
 
     /**
      * 未指定元素，则完全随机。
      */
-    public static void addElement(Entity entity, boolean self, boolean must, float amount){
-        addElement(entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
+    public static void addElement(Entity attacker, Entity entity, boolean self, boolean must, float amount){
+        addElement(attacker, entity, Arrays.stream(Elements.values()).toList(), self, must, amount);
     }
 
     /**
      * 指定一个元素。
      */
-    public static void addElement(Entity entity, Elements element, boolean self, boolean must, float amount){
-        addElement(entity, List.of(element), self, must, amount);
+    public static void addElement(Entity attacker, Entity entity, Elements element, boolean self, boolean must, float amount){
+        addElement(attacker, entity, List.of(element), self, must, amount);
     }
 
-    public static void addElement(Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
-        getElementEntry(entity, elements, self, must, true, true).ifPresent(e -> e.addElement(entity, amount));
+    public static void addElement(Entity attacker, Entity entity, List<Elements> elements, boolean self, boolean must, float amount){
+        getElementEntry(attacker, entity, elements, self, must, true, true).ifPresent(e -> e.addElement(entity, amount));
     }
 
     /**
      * 获取此次效果的附着结果。
-     * @param entity 发起者。
+     * @param attacker 发起者。
+     * @param entity 被附着者。
      * @param elements 指定附着的元素有哪些。
      * @param self 对自身附着，还是对目标。
      * @param must 一定会选中。
@@ -124,10 +146,10 @@ public class ElementalMasterySpell extends SpellType{
      * @param weak 有弱元素。
      * @return 随机结果。
      */
-    public static Optional<ElementEntry> getElementEntry(Entity entity, List<Elements> elements, boolean self, boolean must, boolean robust, boolean weak){
+    public static Optional<ElementEntry> getElementEntry(Entity attacker, Entity entity, List<Elements> elements, boolean self, boolean must, boolean robust, boolean weak){
         final WeightedList.Builder<ElementEntry> builder = new WeightedList.Builder<>();
         elements.forEach(element -> {
-            applyElementEntry(element, EntityUtil.getSpellLevel(entity, getSpell(element)), self, robust, weak).accept(builder);
+            applyElementEntry(element, EntityUtil.getSpellLevel(attacker, getSpell(element)), self, robust, weak).accept(builder);
         });
         if(! must){
             builder.weight(1000);

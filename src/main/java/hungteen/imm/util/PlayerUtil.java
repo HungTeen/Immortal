@@ -342,8 +342,11 @@ public class PlayerUtil {
         return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1, false);
     }
 
+    /**
+     * 学习了业元素精通=知道了业元素的存在。
+     */
     public static boolean knowSpiritElement(Player player){
-        return getManagerResult(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRIT_ELEMENT) == 1, false);
+        return getManagerResult(player, l -> l.hasLearnedSpell(SpellTypes.SPIRIT_MASTERY, 1), false);
     }
 
     /* Misc Operations */

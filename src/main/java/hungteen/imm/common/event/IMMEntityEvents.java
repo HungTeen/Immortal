@@ -2,7 +2,7 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.common.spell.spells.IgnitionSpell;
+import hungteen.imm.common.spell.spells.fire.IgnitionSpell;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.raid.Raider;

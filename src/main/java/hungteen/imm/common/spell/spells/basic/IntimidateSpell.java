@@ -1,4 +1,4 @@
-package hungteen.imm.common.spell.spells;
+package hungteen.imm.common.spell.spells.basic;
 
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
@@ -7,6 +7,7 @@ import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 
