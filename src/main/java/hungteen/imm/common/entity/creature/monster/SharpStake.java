@@ -34,7 +34,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,7 +60,7 @@ import java.util.function.Supplier;
  * @program Immortal
  * @data 2023/7/6 14:19
  */
-public class SharpStake extends IMMMob {
+public class SharpStake extends IMMMob implements Enemy {
 
     private static final Map<TagKey<Biome>, Supplier<BlockState>> STAKE_MAP = new HashMap<>();
     private static final List<Pair<Supplier<ItemStack>, Integer>> AXES = new ArrayList<>();
@@ -110,31 +112,30 @@ public class SharpStake extends IMMMob {
     @Override
     protected void registerGoals() {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new LookAtTargetGoal(this));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers());
+        this.goalSelector.addGoal(2, new LookAtTargetGoal(this));
         this.goalSelector.addGoal(2, new UseSpellGoal(this));
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-        if(! accessor.isClientSide()){
-            // Choose skin.
-            STAKE_MAP.forEach((biomeTag, state) -> {
-                if(accessor.getBiome(blockPosition()).is(biomeTag)){
-                    this.setStakeState(state.get());
-                }
-            });
-            // Roll axe.
-            final SimpleWeightedList.Builder<ItemStack> axes = SimpleWeightedList.builder();
-            AXES.forEach(pair -> axes.add(pair.getFirst().get(), pair.getSecond()));
-            this.setItemInHand(InteractionHand.MAIN_HAND, axes.build().getItem(accessor.getRandom()).orElse(new ItemStack(Items.GOLDEN_AXE)));
-        }
-        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data, tag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+        // Choose skin.
+        STAKE_MAP.forEach((biomeTag, state) -> {
+            if(accessor.getBiome(blockPosition()).is(biomeTag)){
+                this.setStakeState(state.get());
+            }
+        });
+        // Roll axe.
+        final SimpleWeightedList.Builder<ItemStack> axes = SimpleWeightedList.builder();
+        AXES.forEach(pair -> axes.add(pair.getFirst().get(), pair.getSecond()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, axes.build().getItem(accessor.getRandom()).orElse(new ItemStack(Items.GOLDEN_AXE)));
+
     }
 
     @Override
     protected List<Spell> createLearnSpells() {
-        return List.of(new Spell(SpellTypes.THROW_ITEM));
+        return List.of(Spell.create(SpellTypes.THROW_ITEM));
     }
 
     @Override
@@ -198,7 +199,7 @@ public class SharpStake extends IMMMob {
     }
 
     @Override
-    protected IRealmType getDefaultRealm() {
+    public IRealmType getDefaultRealm() {
         return RealmTypes.MONSTER_LEVEL_1;
     }
 

@@ -82,8 +82,9 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                 }
                 // 必须是创造模式或旁观模式 ！
                 if(PlayerUtil.isCreativeOrSpectator(player)){
-                    if(entityAccessor.getEntity() instanceof IHasMana manaEntity){
-                        debugComponents.add(helper.text(TipUtil.tooltip("mana", String.format("%.1f", manaEntity.getMana()), String.format("%.1f", manaEntity.getMaxMana()))));
+                    final CompoundTag nbt = entityAccessor.getServerData();
+                    if(nbt.contains("Mana") && nbt.contains("MaxMana")){
+                        debugComponents.add(helper.text(TipUtil.tooltip("mana", String.format("%.1f", nbt.getFloat("Mana")), String.format("%.1f", nbt.getFloat("MaxMana")))));
                     }
                 }
                 if(! debugComponents.isEmpty()){
@@ -96,7 +97,11 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
 
     @Override
     public void appendServerData(CompoundTag compoundTag, EntityAccessor entityAccessor) {
-
+        // 除了玩家外的实体并没有同步mana到客户端。
+        if(entityAccessor.getEntity() instanceof IHasMana manaEntity){
+            compoundTag.putFloat("Mana", manaEntity.getMana());
+            compoundTag.putFloat("MaxMana", manaEntity.getMaxMana());
+        }
     }
 
     @Override

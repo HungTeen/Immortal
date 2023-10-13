@@ -61,7 +61,6 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:trees_savanna",
       "minecraft:flower_warm",
       "minecraft:patch_grass_savanna",
       "minecraft:patch_tall_grass",
@@ -115,12 +114,6 @@
     "imm:human": [],
     "misc": [],
     "monster": [
-      {
-        "type": "minecraft:ravager",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      },
       {
         "type": "minecraft:spider",
         "maxCount": 4,

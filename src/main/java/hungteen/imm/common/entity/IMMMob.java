@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity;
 
+import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.IMMAPI;
@@ -45,10 +46,12 @@ import java.util.*;
  **/
 public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasRealm, IEntityAdditionalSpawnData, IHasMana, IHasSpell {
 
+    protected static final int MELEE_ATTACK_ID = 4;
     private static final EntityDataAccessor<IRealmType> REALM = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.REALM.get());
     private static final EntityDataAccessor<Integer> REALM_STAGE = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<ISpellType>> USING_SPELL = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.OPT_SPELL.get());
-    private static final EntityDataAccessor<Integer> ANIMATIONS = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> CURRENT_ANIMATION = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Long> ANIMATION_START_TICK = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.LONG);
     private final Map<ISpellType, Integer> learnedSpells = new HashMap<>();
     private final Set<ISpiritualType> spiritualRoots = new HashSet<>();
     protected float spiritualMana;
@@ -63,9 +66,10 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(REALM, getDefaultRealm());
-        entityData.define(REALM_STAGE, 0);
+        entityData.define(REALM_STAGE, getDefaultStage().ordinal());
         entityData.define(USING_SPELL, Optional.empty());
-        entityData.define(ANIMATIONS, 0);
+        entityData.define(CURRENT_ANIMATION, AnimationTypes.IDLING.ordinal());
+        entityData.define(ANIMATION_START_TICK, 0L);
     }
 
     @Nullable
@@ -73,10 +77,17 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         if (!accessor.isClientSide()) {
             Optional.ofNullable(this.getSpawnSound()).ifPresent(l -> this.playSound(l, this.getSoundVolume(), this.getVoicePitch()));
-            this.spiritualRoots.addAll(this.createSpiritualRoots(accessor));
-            createLearnSpells().forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
+            this.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data, tag);
+    }
+
+    /**
+     * 加入世界前的最后处理。
+     */
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
+        this.spiritualRoots.addAll(this.createSpiritualRoots(accessor));
+        createLearnSpells().forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
     }
 
     /**
@@ -132,12 +143,21 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
             this.setUsingSpell(spell.spell());
             this.addMana(- spell.spell().getConsumeMana());
             this.spellCooldown = spell.spell().getCooldown();
+            this.usedSpell(spell);
         }
+    }
+
+    protected void usedSpell(@Nullable Spell spell){
+
     }
 
     @Override
     public HTHitResult createHitResult() {
         return new HTHitResult(this.getTarget());
+    }
+
+    public void serverChange(int id){
+        this.level().broadcastEntityEvent(this, (byte) id);
     }
 
     @Override
@@ -179,8 +199,11 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         if(tag.contains("SpellCooldown")){
             this.spellCooldown = tag.getInt("SpellCooldown");
         }
-        if (tag.contains("AnimationFlags")) {
-            this.setAnimations(tag.getInt("AnimationFlags"));
+        if (tag.contains("CurrentAnimation")) {
+            this.setCurrentAnimation(tag.getInt("CurrentAnimation"));
+        }
+        if(tag.contains("AnimationStartTick")){
+            this.setAnimationStartTick(tag.getLong("AnimationStartTick"));
         }
     }
 
@@ -215,7 +238,8 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         }
         tag.putFloat("SpiritualMana", this.spiritualMana);
         tag.putInt("SpellCooldown", this.spellCooldown);
-        tag.putInt("AnimationFlags", this.getAnimations());
+        tag.putInt("CurrentAnimation", this.getAnimationIndex());
+        tag.putLong("AnimationStartTick", this.getAnimationStartTick());
     }
 
     public void setRealm(IRealmType realm) {
@@ -240,24 +264,41 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         return Optional.ofNullable(getRealmStage());
     }
 
-    public void setAnimation(int id, boolean flag) {
-        if (flag) {
-            this.setAnimations(this.getAnimations() | (1 << id));
-        } else {
-            this.setAnimations(this.getAnimations() ^ (1 << id));
-        }
+    public boolean inAnimationRange(int from, int to){
+        return getAnimationStartTick() + from <= this.level().getGameTime() && getAnimationStartTick() + to >= this.level().getGameTime();
     }
 
-    public boolean hasAnimation(int id) {
-        return ((this.getAnimations() >> id) & 1) == 1;
+    public boolean atAnimationTick(int tick){
+        return getAnimationStartTick() + tick == this.level().getGameTime();
     }
 
-    protected void setAnimations(int animations) {
-        entityData.set(ANIMATIONS, animations);
+    public AnimationTypes getCurrentAnimation() {
+        return AnimationTypes.values()[Math.min(getAnimationIndex(), AnimationTypes.values().length - 1)];
     }
 
-    protected int getAnimations() {
-        return entityData.get(ANIMATIONS);
+    private int getAnimationIndex() {
+        return entityData.get(CURRENT_ANIMATION);
+    }
+
+    public void setCurrentAnimation(AnimationTypes animation) {
+        setCurrentAnimation(animation.ordinal());
+        this.setAnimationStartTick(this.level().getGameTime());
+    }
+
+    private void setCurrentAnimation(int animation) {
+        entityData.set(CURRENT_ANIMATION, animation);
+    }
+
+    public long getAnimationStartTick() {
+        return entityData.get(ANIMATION_START_TICK);
+    }
+
+    public void setAnimationStartTick(long tick) {
+        entityData.set(ANIMATION_START_TICK, tick);
+    }
+
+    public void removeAnimation(){
+        this.setCurrentAnimation(AnimationTypes.IDLING);
     }
 
     public void setUsingSpell(@javax.annotation.Nullable ISpellType spell){
@@ -268,8 +309,18 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         return entityData.get(USING_SPELL);
     }
 
-    protected IRealmType getDefaultRealm() {
+    /**
+     * 初始境界。
+     */
+    public IRealmType getDefaultRealm() {
         return RealmTypes.MORTALITY;
+    }
+
+    /**
+     * 前期 / 中期 / 后期随机。
+     */
+    public RealmStages getDefaultStage() {
+        return RealmStages.values()[this.getRandom().nextInt(3)];
     }
 
     @Nullable
@@ -297,7 +348,7 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
-    public boolean isOnCooldown() {
+    public boolean isOnCoolDown() {
         return this.spellCooldown > 0;
     }
 
@@ -324,5 +375,20 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     @Override
     public List<ISpiritualType> getSpiritualTypes() {
         return spiritualRoots.stream().toList();
+    }
+
+    public enum AnimationTypes {
+
+        IDLING,
+
+        ROAR,
+
+        FLAP,
+
+        SHOOT,
+
+        SWING
+
+
     }
 }

@@ -28,7 +28,11 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +44,28 @@ import java.util.Optional;
 public class ElementReactions {
 
     private static final HTSimpleRegistry<IElementReaction> REACTIONS = HTRegistryManager.createSimple(Util.prefix("element_reaction"));
+
+    /* 特殊反应 */
+
+    public static final IElementReaction METAL_GILDING = register(new GildingReaction(
+            "metal_gilding", 10, Elements.METAL, 8)
+    );
+
+    public static final IElementReaction WOOD_GILDING = register(new GildingReaction(
+            "wood_gilding", 10, Elements.WOOD, 8)
+    );
+
+    public static final IElementReaction WATER_GILDING = register(new GildingReaction(
+            "water_gilding", 10, Elements.WATER, 10)
+    );
+
+    public static final IElementReaction FIRE_GILDING = register(new GildingReaction(
+            "fire_gilding", 10, Elements.FIRE, 10)
+    );
+
+    public static final IElementReaction BURNING = register(new FlamingReaction(
+            "burning", false, 120, false, 0.5F, 0.25F)
+    );
 
     /* 相生 */
 
@@ -56,6 +82,10 @@ public class ElementReactions {
 
     public static final IElementReaction QUENCH_BLADE = register(new GenerationReaction(
             "quench_blade", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
+        /**
+         * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingHurt(LivingHurtEvent)} and
+         * {@link hungteen.imm.common.event.IMMLivingEvents#onLivingAttackedBy(LivingAttackEvent)}.
+         */
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -67,34 +97,22 @@ public class ElementReactions {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
-            if(entity instanceof LivingEntity living){
+            if (entity instanceof LivingEntity living) {
                 living.heal(0.25F * scale);
             }
         }
     });
 
-    public static final IElementReaction FLAMING = register(new GenerationReaction(
-            "flaming", false, Elements.WOOD, 0.5F, Elements.FIRE, 0.25F) {
-        @Override
-        public void doReaction(Entity entity, float scale) {
-            super.doReaction(entity, scale);
-            if(entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F){
-                ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
-            }
-            EntityHelper.getPredicateEntities(entity, EntityHelper.getEntityAABB(entity, 4, 3), Entity.class, JavaHelper::alwaysTrue).forEach(target -> {
-                if(target.level().getRandom().nextFloat() < 0.1F){
-                    ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5);
-                }
-            });
-        }
-    });
+    public static final IElementReaction FLAMING = register(new FlamingReaction(
+            "flaming", false, 100, true, 0.5F, 0.25F)
+    );
 
     public static final IElementReaction ASHING = register(new GenerationReaction(
             "ashing", true, Elements.FIRE, 10, Elements.EARTH, 4) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
-            if(! EntityUtil.isManaFull(entity)){
+            if (!EntityUtil.isManaFull(entity)) {
                 EntityUtil.addMana(entity, scale * 20);
             } else {
                 if (entity instanceof LivingEntity living) {
@@ -144,16 +162,14 @@ public class ElementReactions {
 
     public static final IElementReaction MELTING = register(new InhibitionReaction(
             "melting", true, Elements.FIRE, 4, Elements.METAL, 8) {
-        @Override
-        public void doReaction(Entity entity, float scale) {
-            super.doReaction(entity, scale);
-            entity.setSecondsOnFire((int) (4 * scale));
-            entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), 1.5F * scale, Level.ExplosionInteraction.NONE);
-        }
+
     });
 
-    public static final IElementReaction CUTTING = register(new InhibitionReaction(
-            "cutting", false, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {
+    public static final IElementReaction CUTTING = register(new CuttingReaction(
+            "cutting", false, 1F, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {
+        /**
+         * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingDamage(LivingDamageEvent)}.
+         */
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -168,7 +184,7 @@ public class ElementReactions {
         }
     });
 
-    public static MutableComponent getCategory(){
+    public static MutableComponent getCategory() {
         return TipUtil.misc("element_reaction");
     }
 
@@ -197,13 +213,18 @@ public class ElementReactions {
         @Override
         public float match(Entity entity) {
             final float ratio = elements.stream().map(entry -> {
-                //相生反应后一元素的特判。
-                if(entry.amount() == 0){
-                    return ElementManager.hasElement(entity, entry.element(), entry.mustRobust()) ? 10000000F : 0F;
-                }
-                return ElementManager.getAmount(entity, entry.element(), entry.mustRobust()) / entry.amount();
+                return getMatchAmount(entity, entry);
             }).min(Float::compareTo).orElse(0F);
-            return once() ? ratio : Math.min(1F, ratio);
+            return once ? ratio : Math.min(1F, ratio);
+        }
+
+        protected float getMatchAmount(Entity entity, ElementEntry entry) {
+            //相生反应后一元素的特判。
+            if (entry.amount() == 0) {
+                return ElementManager.hasElement(entity, entry.element(), entry.mustRobust()) ? 10000000F : 0F;
+            }
+            return ElementManager.getAmount(entity, entry.element(), entry.mustRobust()) / entry.amount();
+
         }
 
         @Override
@@ -213,7 +234,7 @@ public class ElementReactions {
             });
         }
 
-        protected boolean canSpawnAmethyst(Entity entity){
+        protected boolean canSpawnAmethyst(Entity entity) {
             return allRobust(entity) && (this.once() || (entity.level().getRandom().nextFloat() < 0.75F && entity.tickCount % 10 == 5));
         }
 
@@ -223,9 +244,9 @@ public class ElementReactions {
             });
         }
 
-        protected Optional<ElementAmethyst> spawnAmethyst(Entity entity){
+        protected Optional<ElementAmethyst> spawnAmethyst(Entity entity) {
             final ElementAmethyst amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
-            if(amethyst != null){
+            if (amethyst != null) {
                 amethyst.setPos(entity.position());
                 final double dx = RandomHelper.doubleRange(entity.level().getRandom(), 0.1F);
                 final double dy = entity.level().getRandom().nextDouble() * 0.1F;
@@ -274,7 +295,11 @@ public class ElementReactions {
         private final boolean spawnAmethyst;
 
         private GenerationReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float productionAmount) {
-            super(name, once, 100, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, 0F)));
+            this(name, once, 100, main, mainAmount, off, productionAmount);
+        }
+
+        private GenerationReaction(String name, boolean once, int priority, Elements main, float mainAmount, Elements off, float productionAmount) {
+            super(name, once, priority, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, 0F)));
             this.ingredient = main;
             this.production = off;
             this.ingredientAmount = mainAmount;
@@ -284,7 +309,7 @@ public class ElementReactions {
 
         @Override
         public void doReaction(Entity entity, float scale) {
-            if(this.spawnAmethyst && canSpawnAmethyst(entity)){
+            if (this.spawnAmethyst && canSpawnAmethyst(entity)) {
                 this.spawnAmethyst(entity).ifPresent(elementAmethyst -> {
                     final float multiplier = scale * (this.once() ? 1 : 20);
                     ElementManager.addElementAmount(elementAmethyst, this.ingredient, true, this.ingredientAmount * multiplier);
@@ -319,7 +344,7 @@ public class ElementReactions {
 
         @Override
         public void doReaction(Entity entity, float scale) {
-            if(this.spawnAmethyst && canSpawnAmethyst(entity)){
+            if (this.spawnAmethyst && canSpawnAmethyst(entity)) {
                 this.spawnAmethyst(entity).ifPresent(elementAmethyst -> {
                     final float multiplier = scale * (this.once() ? 1 : 20);
                     ElementManager.addElementAmount(elementAmethyst, this.ingredient, true, this.mainAmount * multiplier);
@@ -330,7 +355,155 @@ public class ElementReactions {
         }
     }
 
-    record ElementEntry(Elements element, boolean mustRobust, float amount){
+    /**
+     * (强木 + 火)为基本相生反应，但是(弱木 + 火)也能发生相生反应！
+     */
+    private static class FlamingReaction extends GenerationReaction {
+
+        private final boolean robustReaction;
+
+        private FlamingReaction(String name, boolean once, int priority, boolean robustReaction, float woodCostAmount, float fireGenAmount) {
+            super("flaming", false, priority, Elements.WOOD, woodCostAmount, Elements.FIRE, fireGenAmount);
+            this.robustReaction = robustReaction;
+        }
+
+        @Override
+        protected float getMatchAmount(Entity entity, ElementEntry entry) {
+            if(entry.element() == Elements.FIRE && ! this.robustReaction){
+                return ElementManager.getElementAmount(entity, Elements.FIRE, false);
+            }
+            return super.getMatchAmount(entity, entry);
+        }
+
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+            if(! this.robustReaction){
+                entity.setSecondsOnFire(Math.max(2, (int)(scale * 5)));
+            }
+            if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
+                ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
+            }
+            EntityHelper.getPredicateEntities(entity, EntityHelper.getEntityAABB(entity, 4, 3), Entity.class, JavaHelper::alwaysTrue).forEach(target -> {
+                if (target.level().getRandom().nextFloat() < 0.1F) {
+                    ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5);
+                }
+            });
+        }
+    }
+
+    /**
+     * （火 + 金）相克反应。
+     */
+    private static class MeltingReaction extends InhibitionReaction {
+
+        private final float waterAmount;
+
+        private MeltingReaction(String name, boolean once, float waterAmount, Elements main, float mainAmount, Elements off, float offAmount) {
+            super(name, once, main, mainAmount, off, offAmount);
+            this.waterAmount = waterAmount;
+        }
+
+        @Override
+        public float match(Entity entity) {
+            final float scale = super.match(entity);
+            if(!ElementManager.hasElement(entity, Elements.WATER, false)){
+                return scale;
+            } else if(entity.level().getRandom().nextFloat() < 0.05F) {
+                final float amount = Math.min(ElementManager.getAmount(entity, Elements.WATER, false), this.waterAmount * scale);
+                return Math.min(scale, amount / this.waterAmount) / 5;
+            }
+            return 0F;
+        }
+
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            super.doReaction(entity, scale);
+            float seconds = 4 * scale;
+            float range = 1.5F * scale;
+            if(ElementManager.hasElement(entity, Elements.FIRE, true)){
+                seconds *= 1.5F;
+            }
+            if(ElementManager.hasElement(entity, Elements.METAL, true)){
+                range += Math.sqrt(scale + 1) / 2;
+            }
+
+            final boolean hasWater = ElementManager.hasElement(entity, Elements.WATER, false);
+            // 水介入反应导致爆炸被抑制。
+            if(hasWater){
+                seconds *= 0.5F;
+                range *= 0.6F;
+            }
+            entity.setSecondsOnFire((int) seconds + 2);
+            entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), range, Level.ExplosionInteraction.NONE);
+            // 爆炸后再附着元素。
+            if(hasWater){
+                EntityUtil.forRange(entity, LivingEntity.class, range * 2, range, EntityHelper::isEntityValid, (target, factor) -> {
+                    ElementManager.addElementAmount(target, Elements.WATER, false, scale * 10F * factor);
+                });
+            }
+        }
+
+        @Override
+        public void consume(Entity entity, float scale) {
+            super.consume(entity, scale);
+            if(ElementManager.hasElement(entity, Elements.WATER, false)){
+                ElementManager.consumeAmount(entity, Elements.WATER, false, this.waterAmount * scale);
+            }
+        }
+    }
+
+    /**
+     * (强木 + 火)为基本相生反应，但是(弱木 + 火)也能发生相生反应！
+     */
+    public static class CuttingReaction extends InhibitionReaction {
+
+        private final float waterAmount;
+
+        private CuttingReaction(String name, boolean once, float waterAmount, Elements main, float mainAmount, Elements off, float offAmount) {
+            super(name, once, main, mainAmount, off, offAmount);
+            this.waterAmount = waterAmount;
+        }
+
+        public float getWaterAmount() {
+            return waterAmount;
+        }
+    }
+
+    /**
+     * (强土 + 其他元素)为镀光反应。
+     */
+    public static class GildingReaction extends ElementReaction {
+
+        private static final List<GildingReaction> REACTIONS = new ArrayList<>();
+        private final Elements element;
+        private final float amount;
+
+        private GildingReaction(String name, float mainAmount, Elements off, float offAmount) {
+            super(name, false, 150, List.of(new ElementEntry(Elements.EARTH, true, mainAmount), new ElementEntry(off, false, offAmount)));
+            this.element = off;
+            this.amount = offAmount;
+            REACTIONS.add(this);
+        }
+
+        /**
+         * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingHurt(LivingHurtEvent)}.
+         */
+        public static void ifGlidingActive(Entity attacker, Entity target){
+            REACTIONS.forEach(reaction -> {
+                ElementManager.ifActiveReaction(attacker, reaction, (action, scale) -> {
+                    ElementManager.addElementAmount(target, reaction.element, false, reaction.amount * scale * 0.6F);
+                });
+            });
+        }
+
+        @Override
+        public void doReaction(Entity entity, float scale) {
+
+        }
+    }
+
+    record ElementEntry(Elements element, boolean mustRobust, float amount) {
 
     }
 

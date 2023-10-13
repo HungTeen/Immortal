@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -190,10 +191,10 @@ public class ElementManager {
     /**
      * Server side only.
      */
-    public static void ifActiveReaction(Entity entity, IElementReaction reaction, Consumer<Float> consumer, Runnable runnable) {
+    public static void ifActiveReaction(Entity entity, IElementReaction reaction, BiConsumer<IElementReaction, Float> consumer, Runnable runnable) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
             if (cap.isActiveReaction(reaction)) {
-                consumer.accept(cap.getActiveScale(reaction));
+                consumer.accept(reaction, cap.getActiveScale(reaction));
             } else {
                 runnable.run();
             }
@@ -203,7 +204,7 @@ public class ElementManager {
     /**
      * Server side only.
      */
-    public static void ifActiveReaction(Entity entity, IElementReaction reaction, Consumer<Float> consumer) {
+    public static void ifActiveReaction(Entity entity, IElementReaction reaction, BiConsumer<IElementReaction, Float> consumer) {
         ifActiveReaction(entity, reaction, consumer, () -> {});
     }
 

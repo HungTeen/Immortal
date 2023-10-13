@@ -1,4 +1,4 @@
-package hungteen.imm.client.model.entity;// Made with Blockbench 4.7.0
+package hungteen.imm.client.model.entity.villager;// Made with Blockbench 4.7.0
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
@@ -6,6 +6,7 @@ package hungteen.imm.client.model.entity;// Made with Blockbench 4.7.0
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.client.model.AnimatedEntityModel;
+import hungteen.imm.client.model.entity.villager.VillagerAnimations;
 import hungteen.imm.common.entity.human.VillagerLikeEntity;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.ArmedModel;
@@ -137,7 +138,7 @@ public class VillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityM
 			}
 		}
 
-		this.animate(entity.mockAnimationState, Animations.VILLAGER_LIKE_MOCK, ageInTicks, 1F);
+		this.animate(entity.mockAnimationState, VillagerAnimations.VILLAGER_LIKE_MOCK, ageInTicks, 1F);
 	}
 
 	@Override

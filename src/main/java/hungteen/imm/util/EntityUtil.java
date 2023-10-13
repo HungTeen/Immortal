@@ -1,8 +1,10 @@
 package hungteen.imm.util;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
@@ -42,6 +44,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -53,20 +56,35 @@ import java.util.stream.Collectors;
  **/
 public class EntityUtil {
 
-    public static void disableShield(Level level, Entity entity){
+    /**
+     * @param attacker 考虑范围的中心，通常是攻击者。
+     * @param predicate 搜索目标过滤。
+     * @param consumer 根据目标到中心的距离，计算得到一个受伤程度。
+     * @param <T> 搜索范围的实体类型。
+     */
+    public static <T extends Entity> void forRange(Entity attacker, Class<T> clazz, float width, float height, Predicate<T> predicate, BiConsumer<T, Float> consumer) {
+        final AABB aabb = MathUtil.getUpperAABB(attacker.position(), width, height);
+        EntityHelper.getPredicateEntities(attacker, aabb, clazz, predicate)
+                .stream().map(target -> Pair.of(target, (float) Math.max(0, 1 - attacker.distanceToSqr(target) / (width * width)))).filter(pair -> pair.getSecond() > 0).forEach(pair -> {
+                    consumer.accept(pair.getFirst(), pair.getSecond());
+                });
+    }
+
+    public static void disableShield(Level level, Entity entity) {
         disableShield(level, entity, 100);
     }
 
     /**
      * 破盾。{@link Mob#doHurtTarget(Entity)}.
+     *
      * @param entity 持盾的实体。
-     * @param time 破盾作用时间。
+     * @param time   破盾作用时间。
      */
-    public static void disableShield(Level level, Entity entity, int time){
-        if(entity instanceof Player player && ItemUtil.isShield(player.getUseItem())){
+    public static void disableShield(Level level, Entity entity, int time) {
+        if (entity instanceof Player player && ItemUtil.isShield(player.getUseItem())) {
             player.getCooldowns().addCooldown(player.getUseItem().getItem(), time);
             player.stopUsingItem();
-            level.broadcastEntityEvent(entity, (byte)30);
+            level.broadcastEntityEvent(entity, (byte) 30);
         }
     }
 
@@ -80,6 +98,7 @@ public class EntityUtil {
 
     /**
      * 发射子弹。
+     *
      * @param projectile 子弹。
      * @param vec        子弹发射方向。
      * @param speed      子弹速度。
@@ -103,7 +122,7 @@ public class EntityUtil {
             return PlayerUtil.addItem(player, stack);
         } else if (entity instanceof InventoryCarrier carrier) {
             final ItemStack result = carrier.getInventory().addItem(stack);
-            if(! result.isEmpty()){
+            if (!result.isEmpty()) {
                 entity.spawnAtLocation(result);
                 return false;
             }
@@ -207,7 +226,7 @@ public class EntityUtil {
 
     @Nullable
     public static IMMEntityCapability getEntityCapability(Entity entity) {
-        if(entity != null) {
+        if (entity != null) {
             return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
         }
         return null;
@@ -270,22 +289,24 @@ public class EntityUtil {
 
     /**
      * 是否有玩家视角，限制部分灵根的显示。
+     *
      * @param viewPlayer 玩家的视角。
      */
     public static List<ISpiritualType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
-        if(viewPlayer == null){
+        if (viewPlayer == null) {
             return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
                     : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
         }
         return PlayerUtil.filterSpiritRoots(viewPlayer, getSpiritualRoots(entity));
     }
 
-    public static List<Elements> getElements(Entity entity){
+    public static List<Elements> getElements(Entity entity) {
         return getElements(entity, null);
     }
 
     /**
      * 是否有玩家视角，限制部分元素的显示。
+     *
      * @param viewPlayer 玩家的视角。
      */
     public static List<Elements> getElements(Entity entity, @Nullable Player viewPlayer) {

@@ -119,13 +119,11 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 //        this.tradeOffers = TradeOffers.createFromStream(additionalData);
 //    }
 
-    @org.jetbrains.annotations.Nullable
+    //TODO 数据包随机灵根，接管法术。
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable SpawnGroupData groupData, @org.jetbrains.annotations.Nullable CompoundTag compoundTag) {
-        if (!accessor.isClientSide()) {
-            this.updateHumanSetting();
-        }
-        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable CompoundTag tag) {
+        this.updateHumanSetting();
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
     }
 
     @Override

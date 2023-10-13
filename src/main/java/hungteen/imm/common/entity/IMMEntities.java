@@ -1,6 +1,9 @@
 package hungteen.imm.common.entity;
 
+import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.ImmortalMod;
+import hungteen.imm.common.entity.creature.monster.BiFang;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
 import hungteen.imm.common.entity.golem.CopperGolem;
 import hungteen.imm.common.entity.golem.CreeperGolem;
@@ -13,9 +16,12 @@ import hungteen.imm.common.entity.human.villager.CommonVillager;
 import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
+import hungteen.imm.util.Colors;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,7 +30,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -60,6 +68,7 @@ public class IMMEntities {
 
     /* Monster */
     public static final RegistryObject<EntityType<SharpStake>> SHARP_STAKE = registerEntityType(SharpStake::new, "sharp_stake", MobCategory.MONSTER, builder -> builder.sized(1F, 1.05F));
+    public static final RegistryObject<EntityType<BiFang>> BI_FANG = registerEntityType(BiFang::new, "bi_fang", MobCategory.MONSTER, builder -> builder.sized(1F, 2F).fireImmune());
 
     //    /* Undead */
 //
@@ -84,6 +93,7 @@ public class IMMEntities {
 
         /* Monster */
         ev.put(SHARP_STAKE.get(), SharpStake.createAttributes().build());
+        ev.put(BI_FANG.get(), BiFang.createAttributes().build());
 //        /* undead */
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
 //
@@ -104,6 +114,7 @@ public class IMMEntities {
 
         /* Monster */
         ev.register(SHARP_STAKE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        ev.register(BI_FANG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
         /* undead */
 
@@ -115,28 +126,39 @@ public class IMMEntities {
      * {@link ImmortalMod#ImmortalMod()}
      */
     public static void registerSpawnEggs(RegisterEvent event) {
-//        Arrays.asList(
-//                /* Human */
-//                Pair.of(DISCIPLE_VILLAGER, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
-//
-//                /* Creature */
+        List.of(
+                /* Human */
+                Pair.of(EMPTY_CULTIVATOR, Pair.of(ColorHelper.DYE_WHITE, ColorHelper.BLACK)),
+                Pair.of(SPIRITUAL_BEGINNER_CULTIVATOR, Pair.of(ColorHelper.DYE_WHITE, ColorHelper.BLACK)),
+
+                /* Creature */
 //                Pair.of(GRASS_CARP, Pair.of(ColorHelper.GREEN, ColorHelper.DARK_GREEN)),
 //                Pair.of(SILK_WORM, Pair.of(ColorHelper.WHITE, ColorHelper.EARTH_ROOT)),
-//
-//                /* Undead */
+
+                /* Monster */
+                Pair.of(SHARP_STAKE, Pair.of(ColorHelper.DARK_GREEN, ColorHelper.DYE_BROWN)),
+                Pair.of(BI_FANG, Pair.of(ColorHelper.RED, ColorHelper.DARK_AQUA)),
+
+                /* Undead */
 //                Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))
-//        ).forEach(pair -> {
-//            if (MAP.containsKey(pair.getFirst())) {
-//                event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(MAP.get(pair.getFirst()) + "_spawn_egg"), () ->
-//                        new ForgeSpawnEggItem(
-//                                () -> pair.getFirst().get(),
-//                                pair.getSecond().getFirst(),
-//                                pair.getSecond().getSecond(),
-//                                new Item.Properties().tab(CreativeModeTab.TAB_MISC)
-//                        )
-//                );
-//            }
-//        });
+
+                /* Golem */
+                Pair.of(IRON_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+                Pair.of(SNOW_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+                Pair.of(CREEPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+                Pair.of(COPPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK))
+        ).forEach(pair -> {
+            if (MAP.containsKey(pair.getFirst())) {
+                event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(MAP.get(pair.getFirst()) + "_spawn_egg"), () ->
+                        new ForgeSpawnEggItem(
+                                () -> pair.getFirst().get(),
+                                pair.getSecond().getFirst().rgb(),
+                                pair.getSecond().getSecond().rgb(),
+                                new Item.Properties()
+                        )
+                );
+            }
+        });
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityType(EntityType.EntityFactory factory, String name, MobCategory classification) {

@@ -9,8 +9,12 @@ import hungteen.imm.api.registry.ISpellType;
  **/
 public record Spell(ISpellType spell, int level) {
 
-    public Spell(ISpellType spell){
-        this(spell, 1);
+    public static Spell create(ISpellType spell){
+        return create(spell, 1);
+    }
+
+    public static Spell create(ISpellType spell, int level){
+        return new Spell(spell, level);
     }
 
 }

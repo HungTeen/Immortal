@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.biome;
 
 import hungteen.imm.common.world.feature.IMMVegetationPlacements;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -12,6 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
@@ -33,7 +35,7 @@ public class EastWorldBiomes {
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         final HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
         context.register(IMMBiomes.PLAINS, plains(features, carvers, false, false));
-        context.register(IMMBiomes.SAVANNA, savanna(features, carvers, false, false));
+        context.register(IMMBiomes.SAVANNA, savanna(features, carvers));
         context.register(IMMBiomes.DESERT, desert(features, carvers));
         context.register(IMMBiomes.BAMBOO_JUNGLE, bambooJungle(features, carvers));
         context.register(IMMBiomes.MEADOW, meadow(features, carvers));
@@ -109,34 +111,21 @@ public class EastWorldBiomes {
     }
 
     /**
-     * Pillager Base.
-     * Spiritual Market.
-     * Ravager.
+     * BiFang Bird.
      */
-    private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers, boolean windSwept, boolean plateau) {
+    private static Biome savanna(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.RAVAGER, 1, 1, 1));
+//        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.RAVAGER, 1, 1, 1));
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-//        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 1, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 1));
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-//        if (plateau) {
-//            spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.LLAMA, 8, 4, 4));
-//        }
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
         EastWorldFeatures.addOres(genBuilder, false, false);
         BiomeDefaultFeatures.addDefaultSoftDisks(genBuilder);
-        if (windSwept) {
-            BiomeDefaultFeatures.addShatteredSavannaTrees(genBuilder);
-            BiomeDefaultFeatures.addDefaultFlowers(genBuilder);
-            BiomeDefaultFeatures.addShatteredSavannaGrass(genBuilder);
-        } else {
-            BiomeDefaultFeatures.addSavannaTrees(genBuilder);
-            BiomeDefaultFeatures.addWarmFlowers(genBuilder);
-            BiomeDefaultFeatures.addSavannaExtraGrass(genBuilder);
-            BiomeDefaultFeatures.addSavannaGrass(genBuilder);
-        }
+        BiomeDefaultFeatures.addWarmFlowers(genBuilder);
+        BiomeDefaultFeatures.addSavannaExtraGrass(genBuilder);
+        BiomeDefaultFeatures.addSavannaGrass(genBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(genBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(genBuilder);
 
@@ -144,7 +133,8 @@ public class EastWorldBiomes {
     }
 
     /**
-     *
+     * Pillager Base.
+     * Ravager.
      */
     private static Biome desert(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();

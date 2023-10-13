@@ -31,6 +31,7 @@ public class IMMModelLayers {
 
     /* Monsters */
     public static final ModelLayerLocation SHARP_STAKE = register("sharp_stake");
+    public static final ModelLayerLocation BI_FANG = register("bi_fang");
 
     /*
     Zombie Entities.

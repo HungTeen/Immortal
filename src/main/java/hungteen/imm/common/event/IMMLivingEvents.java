@@ -47,7 +47,7 @@ public class IMMLivingEvents {
             // 附加元素。
             ElementManager.attachElement(event.getEntity());
             // 元素反应：寄生。
-            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, scale -> {
+            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, (reaction, scale) -> {
                 if(EntityUtil.hasMana(event.getEntity())){
                     EntityUtil.addMana(event.getEntity(), - scale * 2.5F);
                 } else {
@@ -73,7 +73,7 @@ public class IMMLivingEvents {
         if(event.getEntity().level() instanceof ServerLevel level) {
             ElementManager.attachDamageElement(level, event.getEntity(), event.getSource());
             // 发生淬刃的被攻击者，会记录最大的受伤害值。
-            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.QUENCH_BLADE, scale -> {
+            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
                 ElementManager.setQuenchBladeDamage(event.getEntity(), event.getAmount(), true);
             }, () -> {
                 ElementManager.setQuenchBladeDamage(event.getEntity(), 0, true);
@@ -86,7 +86,8 @@ public class IMMLivingEvents {
         if(event.getEntity().level() instanceof ServerLevel level) {
             SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
             if(event.getSource().is(DamageTypes.MOB_ATTACK) || event.getSource().is(DamageTypes.PLAYER_ATTACK)){
-                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, scale -> {
+                ElementReactions.GildingReaction.ifGlidingActive(event.getSource().getEntity(), event.getEntity());
+                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
                     final float damage = event.getAmount() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
                     event.setAmount(damage);
                     ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 5);
@@ -114,8 +115,13 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent event){
         if(EntityHelper.isServer(event.getEntity())){
-            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, scale -> {
-                event.setAmount(event.getAmount() + scale * 0.8F);
+            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, (reaction, scale) -> {
+                if(ElementManager.hasElement(event.getEntity(), Elements.WATER, false) && reaction instanceof ElementReactions.CuttingReaction cuttingReaction){
+                    float amount = Math.min(ElementManager.getAmount(event.getEntity(), Elements.WATER, false), cuttingReaction.getWaterAmount() * scale);
+                    event.setAmount(event.getAmount() + (scale - amount / cuttingReaction.getWaterAmount()) * 0.8F);
+                } else {
+                    event.setAmount(event.getAmount() + scale * 0.8F);
+                }
             });
         }
     }

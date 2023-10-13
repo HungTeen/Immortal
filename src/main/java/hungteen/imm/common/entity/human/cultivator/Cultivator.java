@@ -38,18 +38,15 @@ public abstract class Cultivator extends HumanEntity {
         entityData.define(CULTIVATOR_TYPE, CultivatorTypes.SLIM_STEVE.ordinal());
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag compoundTag) {
-        if(!accessor.isClientSide()){
-            // 随机选择散修类型。
-            WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
-            this.setCustomName(this.getCultivatorType().getDisplayName());
-            if(! getCultivatorType().isCommon()){
-                this.modifyAttributes(getCultivatorType());
-            }
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+        // 随机选择散修类型。
+        WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
+        this.setCustomName(this.getCultivatorType().getDisplayName());
+        if(! getCultivatorType().isCommon()){
+            this.modifyAttributes(getCultivatorType());
         }
-        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, groupData, compoundTag);
     }
 
     /**

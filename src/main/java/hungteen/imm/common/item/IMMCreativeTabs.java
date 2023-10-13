@@ -51,6 +51,7 @@ public interface IMMCreativeTabs {
                                 IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
                                 IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get()
                         ));
+                        items.addAll(getBannerPatterns());
                         // 葫芦。
                         BlockUtil.getGourds().forEach(pair -> items.add(pair.getSecond()));
                         // 装饰方块。

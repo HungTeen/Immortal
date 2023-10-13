@@ -23,7 +23,7 @@ public class UseSpellGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if(!this.spellEntity.isOnCooldown()){
+        if(!this.spellEntity.isOnCoolDown()){
             Spell usingSpell = null;
             final HTHitResult result = this.spellEntity.createHitResult();
             for (Spell spell : this.spellEntity.getSortedSpells()) {

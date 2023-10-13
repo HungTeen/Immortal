@@ -443,6 +443,11 @@
   "misc.imm.reaction.melting": "Melting",
   "misc.imm.reaction.cutting": "Cutting",
   "misc.imm.reaction.parasitism": "Parasitism",
+  "misc.imm.reaction.metal_gilding": "Gilding",
+  "misc.imm.reaction.wood_gilding": "Gilding",
+  "misc.imm.reaction.water_gilding": "Gilding",
+  "misc.imm.reaction.fire_gilding": "Gilding",
+  "misc.imm.reaction.burning": "Burning",
 
   "misc.imm.cultivation_type.empty": "Empty",
   "misc.imm.cultivation_type.mortal": "Mortal",

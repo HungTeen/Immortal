@@ -172,22 +172,12 @@ public class IMMSurfaceRules {
 //                        )
 //                ),
                 rulesource3,
-//                SurfaceRules.ifTrue(
-//                        SurfaceRules.isBiome(Biomes.WINDSWEPT_SAVANNA),
-//                        SurfaceRules.sequence(
-//                                SurfaceRules.ifTrue(surfaceNoiseAbove(1.75D), STONE),
-//                                SurfaceRules.ifTrue(surfaceNoiseAbove(-0.5D), COARSE_DIRT)
-//                        )
-//                ),
-//                SurfaceRules.ifTrue(
-//                        SurfaceRules.isBiome(Biomes.WINDSWEPT_GRAVELLY_HILLS),
-//                        SurfaceRules.sequence(
-//                                SurfaceRules.ifTrue(surfaceNoiseAbove(2.0D), putStoneOrGravel),
-//                                SurfaceRules.ifTrue(surfaceNoiseAbove(1.0D), STONE),
-//                                SurfaceRules.ifTrue(surfaceNoiseAbove(-1.0D), putDirtOrGrass),
-//                                putStoneOrGravel
-//                        )
-//                ),
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(IMMBiomes.SAVANNA),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(surfaceNoiseAbove(1.75D), COARSE_DIRT)
+                        )
+                ),
 //                SurfaceRules.ifTrue(
 //                        SurfaceRules.isBiome(Biomes.OLD_GROWTH_PINE_TAIGA, Biomes.OLD_GROWTH_SPRUCE_TAIGA),
 //                        SurfaceRules.sequence(

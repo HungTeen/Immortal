@@ -1,5 +1,7 @@
 package hungteen.imm.common.entity;
 
+import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.RandomUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -7,10 +9,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @program: Immortal
@@ -34,6 +45,16 @@ public abstract class IMMGrowableMob extends IMMMob {
     }
 
     @Override
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+        this.onAgeChangeTo(getRandomSpawnAge().sample(accessor.getRandom()), true);
+    }
+
+    public IntProvider getRandomSpawnAge(){
+        return UniformInt.of(1, this.getMaxAge());
+    }
+
+    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
         super.onSyncedDataUpdated(dataAccessor);
         if(dataAccessor.equals(AGE)) {
@@ -53,7 +74,7 @@ public abstract class IMMGrowableMob extends IMMMob {
             }
         } else{
             if(EntityUtil.isEntityValid(this)){
-                if(this.canGrow()){
+                if(this.canNaturallyGrow()){
                     if(this.growTick >= this.getGrowNeedTime()){
                         this.onGrow();
                     }
@@ -63,21 +84,42 @@ public abstract class IMMGrowableMob extends IMMMob {
         }
     }
 
+    /**
+     * Only on server side.
+     */
+    public void updateRealmByAge(int age){
+
+    }
+
     public void onGrow(){
-        this.setAge(this.getAge() + 1);
+        this.onAgeChangeTo(this.getAge() + 1, false);
         this.growTick = 0;
+    }
+
+    public void onAgeChangeTo(int age, boolean firstSpawn){
+        if(EntityHelper.isServer(this) && this.getAge() != age){
+            this.updateRealmByAge(age);
+            if(! firstSpawn){
+                this.setRealmStage(RealmStages.PRELIMINARY);
+            }
+        }
+        this.setAge(age);
     }
 
     public int getMaxAge(){
         return 1;
     }
 
-    public boolean canGrow(){
+    public boolean canNaturallyGrow(){
         return this.getAge() < this.getMaxAge();
     }
 
     public int getGrowNeedTime(){
         return 24000;
+    }
+
+    public boolean isMature(){
+        return this.getAge() >= this.getMaxAge();
     }
 
     public boolean spawnEggMatch(ItemStack stack){

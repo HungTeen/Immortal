@@ -1,4 +1,4 @@
-package hungteen.imm.client.model.entity;
+package hungteen.imm.client.model.entity.villager;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -7,10 +7,10 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 /**
  * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 10:30
+ * @author: PangTeen
+ * @create: 2023/10/13 20:15
  **/
-public class Animations {
+public class VillagerAnimations {
 
     public static final AnimationDefinition VILLAGER_LIKE_MOCK = AnimationDefinition.Builder.withLength(1.04f)
             .addAnimation("head",

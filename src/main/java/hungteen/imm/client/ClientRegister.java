@@ -18,8 +18,11 @@ import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
+import hungteen.imm.client.model.entity.villager.PillagerModel;
+import hungteen.imm.client.model.entity.villager.VillagerModel;
 import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
+import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
@@ -89,6 +92,7 @@ public class ClientRegister {
 
         /* Monster */
         event.registerEntityRenderer(IMMEntities.SHARP_STAKE.get(), SharpStakeRender::new);
+        event.registerEntityRenderer(IMMEntities.BI_FANG.get(), BiFangRender::new);
 
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
@@ -130,6 +134,7 @@ public class ClientRegister {
 
         /* Monster */
         event.registerLayerDefinition(IMMModelLayers.SHARP_STAKE, CubeModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.BI_FANG, BiFangModel::createBodyLayer);
 
         /* zombie entity */
         event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);

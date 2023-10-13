@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public interface IHasSpell extends IHasMana {
 
-    boolean isOnCooldown();
+    boolean isOnCoolDown();
 
     void trigger(@Nullable Spell spell);
 

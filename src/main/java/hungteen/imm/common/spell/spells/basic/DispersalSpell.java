@@ -22,7 +22,7 @@ public class DispersalSpell extends SpellType {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(owner instanceof Player player && owner.level() instanceof ServerLevel serverLevel){
-            ElementalMasterySpell.addElement(player, true, false, 10);
+            ElementalMasterySpell.addElement(player, player, true, false, 10);
             ParticleHelper.spawnParticles(serverLevel, IMMParticles.SPIRITUAL_MANA.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
             return true;
         }
