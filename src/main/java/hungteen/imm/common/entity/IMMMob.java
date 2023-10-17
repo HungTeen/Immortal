@@ -1,6 +1,5 @@
 package hungteen.imm.common.entity;
 
-import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.IMMAPI;
@@ -14,6 +13,7 @@ import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
@@ -35,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -136,19 +137,25 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
-    public void trigger(@Nullable Spell spell) {
-        if(spell == null){
-            this.spellCooldown = 20;
-        } else {
-            this.setUsingSpell(spell.spell());
-            this.addMana(- spell.spell().getConsumeMana());
-            this.spellCooldown = spell.spell().getCooldown();
-            this.usedSpell(spell);
-        }
+    public void trigger(@NotNull Spell spell) {
+        this.setUsingSpell(spell.spell());
+        this.addMana(- spell.spell().getConsumeMana());
+        this.setCoolDown(spell.spell().getCooldown());
+        this.usedSpell(spell);
     }
 
-    protected void usedSpell(@Nullable Spell spell){
+    protected void usedSpell(@NotNull Spell spell){
 
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity living) {
+        if(super.canAttack(living)){
+            //TODO 不攻击高境界。
+//            return RealmManager.getEntityRealm(living);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -297,7 +304,11 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         entityData.set(ANIMATION_START_TICK, tick);
     }
 
-    public void removeAnimation(){
+    public boolean isIdle(){
+        return this.getCurrentAnimation() == AnimationTypes.IDLING;
+    }
+
+    public void setIdle(){
         this.setCurrentAnimation(AnimationTypes.IDLING);
     }
 
@@ -353,6 +364,11 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
+    public void setCoolDown(int cd) {
+        this.spellCooldown = cd;
+    }
+
+    @Override
     public int getSpellLevel(ISpellType spell) {
         return learnedSpells.getOrDefault(spell, 0);
     }
@@ -380,6 +396,8 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     public enum AnimationTypes {
 
         IDLING,
+        IDLING_1,
+        IDLING_2,
 
         ROAR,
 

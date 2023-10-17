@@ -19,7 +19,7 @@ import net.minecraft.world.phys.AABB;
 public class IntimidateSpell extends SpellType {
 
     public IntimidateSpell() {
-        super("intimidate", properties(SpellCategories.CUSTOM).maxLevel(1).cd(200).mana(20));
+        super("intimidate", properties(SpellCategories.CUSTOM).maxLevel(1).cd(300).mana(20));
     }
 
     @Override

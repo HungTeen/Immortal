@@ -5,6 +5,7 @@ import hungteen.imm.api.enums.SpellCategories;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.world.entity.Mob;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,7 +21,9 @@ public interface IHasSpell extends IHasMana {
 
     boolean isOnCoolDown();
 
-    void trigger(@Nullable Spell spell);
+    void setCoolDown(int cd);
+
+    void trigger(@NotNull Spell spell);
 
     int getSpellLevel(ISpellType spell);
 

@@ -26,17 +26,12 @@ public class BiFangRender extends IMMMobRender<BiFang> {
         super(rendererManager, new BiFangModel(rendererManager.bakeLayer(IMMModelLayers.BI_FANG)), 0.8F);
     }
 
-    @Override
-    public float getScaleByEntity(BiFang entity) {
-        return super.getScaleByEntity(entity) * 2.5F;
-    }
-
-    @Override
-    protected float getBob(BiFang biFang, float partialTicks) {
-        float f = Mth.lerp(partialTicks, biFang.oFlap, biFang.flap);
-        float f1 = Mth.lerp(partialTicks, biFang.oFlapSpeed, biFang.flapSpeed);
-        return (Mth.sin(f) + 1.0F) * f1;
-    }
+//    @Override
+//    protected float getBob(BiFang biFang, float partialTicks) {
+//        float f = Mth.lerp(partialTicks, biFang.oFlap, biFang.flap);
+//        float f1 = Mth.lerp(partialTicks, biFang.oFlapSpeed, biFang.flapSpeed);
+//        return (Mth.sin(f) + 1.0F) * f1;
+//    }
 
     @Override
     public ResourceLocation getTextureLocation(BiFang worm) {

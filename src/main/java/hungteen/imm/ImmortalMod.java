@@ -25,6 +25,7 @@ import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.misc.IMMBannerPatterns;
+import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.common.recipe.IMMRecipes;
@@ -124,6 +125,7 @@ public class ImmortalMod {
         IMMActivities.register(modBus);
         IMMPoiTypes.register(modBus);
         IMMProfessions.register(modBus);
+        IMMSounds.register(modBus);
 //        IMMPoolTypes.register(modBus);
         IMMStructureTypes.register(modBus);
         IMMStructurePieces.register(modBus);

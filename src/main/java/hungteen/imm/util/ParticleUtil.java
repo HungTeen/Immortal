@@ -10,6 +10,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -29,6 +30,9 @@ public class ParticleUtil {
         return block(state).setPos(pos);
     }
 
+    public static void spawnEntityParticle(Entity entity, ParticleOptions particle, int count, double speed){
+        ParticleHelper.spawnParticles(entity.level(), particle, entity.getX(), entity.getY(0.5), entity.getZ(), count, entity.getBbWidth(), entity.getBbHeight() / 2, speed);
+    }
 //    public static void spawnLineSpiritualParticle(Level world, float red, float green, float blue, Vec3 origin, Vec3 target, float particleRatio, int particleCountEach, double offsetScale) {
 //        double distance = origin.distanceTo(target);
 //        int particleNum = Mth.ceil(distance * (double) particleRatio);

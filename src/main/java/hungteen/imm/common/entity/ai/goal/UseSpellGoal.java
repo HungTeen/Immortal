@@ -3,6 +3,7 @@ package hungteen.imm.common.entity.ai.goal;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.records.Spell;
+import net.minecraft.world.entity.ai.behavior.StartAttacking;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
@@ -32,7 +33,11 @@ public class UseSpellGoal extends Goal {
                     break;
                 }
             }
-            this.spellEntity.trigger(usingSpell);
+            if(usingSpell == null){
+                this.spellEntity.setCoolDown(20);
+            } else {
+                this.spellEntity.trigger(usingSpell);
+            }
         }
         return false;
     }

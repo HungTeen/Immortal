@@ -25,6 +25,8 @@ public class IMMMemories {
     public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_MELEE_ATTACK = register("unable_melee_attack");
     public static final RegistryObject<MemoryModuleType<Boolean>> UNABLE_RANGE_ATTACK = register("unable_range_attack");
     public static final RegistryObject<MemoryModuleType<Projectile>> NEAREST_PROJECTILE = register("nearest_projectile");
+    public static final RegistryObject<MemoryModuleType<Boolean>> SPELL_COOLING_DOWN = register("spell_cooling_down");
+    public static final RegistryObject<MemoryModuleType<Boolean>> IDLE_COOLING_DOWN = register("idle_cooling_down");
 
     private static <U> RegistryObject<MemoryModuleType<U>> register(String name){
         return MEMORIES.register(name, () -> new MemoryModuleType<>(Optional.empty()));

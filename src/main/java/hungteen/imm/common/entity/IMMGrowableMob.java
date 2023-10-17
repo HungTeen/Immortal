@@ -36,6 +36,7 @@ public abstract class IMMGrowableMob extends IMMMob {
 
     public IMMGrowableMob(EntityType<? extends IMMGrowableMob> type, Level level) {
         super(type, level);
+        this.refreshDimensions();
     }
 
     @Override
@@ -97,7 +98,7 @@ public abstract class IMMGrowableMob extends IMMMob {
     }
 
     public void onAgeChangeTo(int age, boolean firstSpawn){
-        if(EntityHelper.isServer(this) && this.getAge() != age){
+        if(EntityHelper.isServer(this)){
             this.updateRealmByAge(age);
             if(! firstSpawn){
                 this.setRealmStage(RealmStages.PRELIMINARY);

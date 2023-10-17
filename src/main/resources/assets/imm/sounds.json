@@ -1,0 +1,14 @@
+{
+  "bi_fang_ambient": {
+    "subtitle": "sound.imm.bi_fang_ambient",
+    "sounds": [{"name": "imm:entity/bi_fang/ambient1"},{"name": "imm:entity/bi_fang/ambient2"},{"name": "imm:entity/bi_fang/ambient3"}]
+  },
+  "bi_fang_roar": {
+    "subtitle": "sound.imm.bi_fang_roar",
+    "sounds": [{"name": "imm:entity/bi_fang/roar"}]
+  },
+  "bi_fang_flap": {
+    "subtitle": "sound.imm.bi_fang_flap",
+    "sounds": [{"name": "imm:entity/bi_fang/flap"}]
+  }
+}
