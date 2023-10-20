@@ -1,13 +1,14 @@
 {
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 1080133475,
+    "salt": 1692262025,
     "separation": 8,
-    "spacing": 34
+    "spacing": 32,
+    "spread_type": "triangular"
   },
   "structures": [
     {
-      "structure": "imm:plains_trading_market",
+      "structure": "imm:spiritual_flame_altar",
       "weight": 1
     }
   ]

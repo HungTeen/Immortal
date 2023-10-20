@@ -2,7 +2,6 @@ package hungteen.imm.common.entity.creature.monster;
 
 import com.mojang.serialization.Dynamic;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
@@ -40,23 +39,22 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
  * 毕方鸟。
+ *
  * @program: Immortal
  * @author: PangTeen
  * @create: 2023/10/12 18:35
@@ -69,7 +67,6 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     private static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(SPEED_UUID, "speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
     private static final AttributeModifier ATTACK_MODIFIER = new AttributeModifier(ATTACK_UUID, "attack boost", 3D, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(ARMOR_UUID, "armor boost", 4D, AttributeModifier.Operation.ADDITION);
-    private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BiFang.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState flyAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState idle1AnimationState = new AnimationState();
@@ -78,17 +75,11 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     public final AnimationState roarAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
     public final AnimationState flapAnimationState = new AnimationState();
-    private final MoveControl walkMoveController;
-    private final MoveControl flyMoveController;
-    private GroundPathNavigation groundPathNavigation;
-    private FlyingPathNavigation flyingPathNavigation;
     private int groundTick = 0;
 
     public BiFang(EntityType<? extends IMMGrowableMob> type, Level level) {
         super(type, level);
-        this.walkMoveController = new BiFangMoveControl(this);
-        this.flyMoveController = new FlyingMoveControl(this, 30, true);
-        this.moveControl = this.walkMoveController;
+        this.moveControl = new BiFangFlyMoveControl(this);
         this.getNavigation().setCanFloat(true);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
@@ -98,7 +89,6 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(FLYING, false);
     }
 
     protected Brain.Provider<BiFang> brainProvider() {
@@ -124,7 +114,9 @@ public class BiFang extends IMMGrowableMob implements Enemy {
                 /* Custom */
                 IMMMemories.SPELL_COOLING_DOWN.get(),
                 IMMMemories.IDLE_COOLING_DOWN.get(),
-                MemoryModuleType.IS_PANICKING
+                MemoryModuleType.IS_PANICKING,
+                IMMMemories.UNABLE_MELEE_ATTACK.get(),
+                IMMMemories.UNABLE_RANGE_ATTACK.get()
         ), List.of(
                 SensorType.NEAREST_LIVING_ENTITIES,
                 SensorType.NEAREST_PLAYERS,
@@ -137,15 +129,15 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     public Brain<BiFang> getBrain() {
-        return (Brain<BiFang>)super.getBrain();
+        return (Brain<BiFang>) super.getBrain();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
-                .add(Attributes.MOVEMENT_SPEED, 0.6D)
-                .add(Attributes.FLYING_SPEED, 1F)
+                .add(Attributes.MOVEMENT_SPEED, 0D)
+                .add(Attributes.FLYING_SPEED, 0.6F)
                 .add(Attributes.ATTACK_DAMAGE, 7F)
                 .add(Attributes.FOLLOW_RANGE, 60)
                 .add(Attributes.ARMOR, 4.0D)
@@ -154,7 +146,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        return this.getGroundPathNavigation(level);
+        return new FlyingPathNavigation(this, level);
     }
 
     @Override
@@ -179,9 +171,9 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
         super.onSyncedDataUpdated(dataAccessor);
-        if(dataAccessor.equals(CURRENT_ANIMATION)){
+        if (dataAccessor.equals(CURRENT_ANIMATION)) {
             this.resetAnimations();
-            switch (this.getCurrentAnimation()){
+            switch (this.getCurrentAnimation()) {
                 case IDLING -> {
                     this.idleAnimationState.startIfStopped(this.tickCount);
                 }
@@ -207,7 +199,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     protected void customServerAiStep() {
         this.level().getProfiler().push("biFangBrain");
-        this.getBrain().tick((ServerLevel)this.level(), this);
+        this.getBrain().tick((ServerLevel) this.level(), this);
         this.level().getProfiler().pop();
         this.level().getProfiler().push("biFangActivityUpdate");
         BiFangAi.updateActivity(this);
@@ -218,41 +210,32 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     public void tick() {
         super.tick();
-        if(this.isFlying()){
-            this.moveControl = this.flyMoveController;
-            this.navigation = this.getFlyingPathNavigation(level());
-        } else {
-            this.moveControl = this.walkMoveController;
-            this.navigation = this.getGroundPathNavigation(level());
-        }
-        if(EntityHelper.isServer(this)){
-            if(this.tickCount % 50 == 0 && this.getRandom().nextFloat() < 0.35F){
+        if (EntityHelper.isServer(this)) {
+            if (this.tickCount % 50 == 0 && this.getRandom().nextFloat() < 0.35F) {
                 ElementManager.addElementAmount(this, Elements.WOOD, false, 20);
             }
         } else {
-            if(this.onGround()){
-                if(this.groundTick < 5){
-                    ++ this.groundTick;
+            if (this.onGround()) {
+                if (this.groundTick < 5) {
+                    ++this.groundTick;
                 }
             } else {
                 this.groundTick = 0;
             }
-            this.flyAnimationState.animateWhen(! (this.onGround() && this.groundTick >= 5), this.tickCount);
-            switch (this.getCurrentAnimation()){
+            this.flyAnimationState.animateWhen(!(this.onGround() && this.groundTick >= 5), this.tickCount);
+            switch (this.getCurrentAnimation()) {
                 case ROAR -> {
-                    if(atAnimationTick(15)) this.playSound(IMMSounds.BI_FANG_ROAR.get());
-                    else if(atAnimationTick(30)) this.setIdle();
+                    if (atAnimationTick(15)) this.playSound(IMMSounds.BI_FANG_ROAR.get());
+                    else if (atAnimationTick(30)) this.setIdle();
                 }
-                case FLAP -> {
-                    if(inFlameRange()){
-                        ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 20, 0.15F);
-                    }
-                }
+//                case FLAP -> {
+//                    if (inFlameRange()) {
+//                        ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 20, 0.15F);
+//                    }
+//                }
             }
-            if(this.isFlying()){
-                if(this.getMana() / this.getMaxMana() >= 0.5F){
-                    ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 5, 0.15F);
-                }
+            if (this.getMana() / this.getMaxMana() >= 0.5F) {
+                ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 5, 0.15F);
             }
         }
     }
@@ -264,13 +247,13 @@ public class BiFang extends IMMGrowableMob implements Enemy {
 
     @Override
     public boolean canUseSpell(ISpellType spell) {
-        return EntityHelper.isEntityValid(this.getTarget()) && this.distanceTo(this.getTarget()) < 20 && ! this.getTarget().hasEffect(IMMEffects.OPPRESSION.get());
+        return EntityHelper.isEntityValid(this.getTarget()) && this.distanceTo(this.getTarget()) < 20 && !this.getTarget().hasEffect(IMMEffects.OPPRESSION.get());
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if(super.hurt(source, amount)){
-            if(source.getEntity() instanceof LivingEntity living){
+        if (super.hurt(source, amount)) {
+            if (source.getEntity() instanceof LivingEntity living) {
                 BiFangAi.wasHurtBy(this, living, amount);
             }
             return true;
@@ -293,7 +276,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         }
     }
 
-    protected boolean inFlameRange(){
+    protected boolean inFlameRange() {
         return this.inAnimationRange(3, 7);
     }
 
@@ -362,28 +345,6 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected void jumpFromGround() {
-        this.getBrain().getMemory(MemoryModuleType.WALK_TARGET).ifPresentOrElse(walkTarget -> {
-            final Vec3 vec3 = walkTarget.getTarget().currentPosition().subtract(this.position()).normalize().scale(this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-            this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
-        }, super::jumpFromGround);
-    }
-
-    public FlyingPathNavigation getFlyingPathNavigation(Level level) {
-        if(this.flyingPathNavigation == null){
-            this.flyingPathNavigation = new FlyingPathNavigation(this, level);
-        }
-        return this.flyingPathNavigation;
-    }
-
-    public GroundPathNavigation getGroundPathNavigation(Level level) {
-        if(this.groundPathNavigation == null){
-            this.groundPathNavigation = new GroundPathNavigation(this, level);
-        }
-        return this.groundPathNavigation;
-    }
-
-    @Override
     public float getScale() {
         return this.getAge() == 1 ? 0.6F : 1;
     }
@@ -393,73 +354,94 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         return (this.getBbWidth() + 1) * 2.0F * (this.getBbWidth() + 1) * 2.0F + entity.getBbWidth();
     }
 
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if(tag.contains("BiFangFlying")){
-            this.setFlying(tag.getBoolean("BiFangFlying"));
-        }
-    }
+    static class BiFangFlyMoveControl extends MoveControl {
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("BiFangFlying", this.isFlying());
-    }
-
-    public void setFlying(boolean flying){
-        entityData.set(FLYING, flying);
-    }
-
-    public boolean isFlying() {
-        return entityData.get(FLYING);
-    }
-
-    static class BiFangMoveControl extends MoveControl {
-
-        private int jumpDelay;
         private final BiFang biFang;
+        private final int maxTurn;
+        private final boolean hoversInPlace;
 
-        public BiFangMoveControl(BiFang biFang) {
+        public BiFangFlyMoveControl(BiFang biFang) {
             super(biFang);
             this.biFang = biFang;
+            this.maxTurn = 30;
+            this.hoversInPlace = false;
         }
 
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
                 this.operation = MoveControl.Operation.WAIT;
-                double d0 = this.wantedX - this.mob.getX();
-                double d1 = this.wantedY - this.mob.getY();
-                double d2 = this.wantedZ - this.mob.getZ();
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                if (d3 < (double)2.5000003E-7F) {
+                this.mob.setNoGravity(true);
+                final double dx = this.wantedX - this.mob.getX();
+                final double dy = this.wantedY - this.mob.getY();
+                final double dz = this.wantedZ - this.mob.getZ();
+                final double dis = dx * dx + dy * dy + dz * dz;
+                // Too close.
+                if (dis < (double) 2.5000003E-7F) {
                     this.mob.setYya(0.0F);
                     this.mob.setZza(0.0F);
                     return;
                 }
 
-                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 90.0F));
-                this.mob.yHeadRot = this.mob.getYRot();
-                this.mob.yBodyRot = this.mob.getYRot();
-                if (this.mob.onGround() && d3 >= 10) {
-                    if (this.jumpDelay-- <= 0) {
-                        this.jumpDelay = 20;
-
-                        this.biFang.getJumpControl().jump();
-//                        if (this.biFang.doPlayJumpSound()) {
-//                            this.biFang.playSound(this.biFang.getJumpSound(), this.biFang.getSoundVolume(), this.biFang.getSoundPitch());
-//                        }
-                    } else {
-                        this.biFang.xxa = 0.0F;
-                        this.biFang.zza = 0.0F;
-                        this.mob.setSpeed(0.0F);
-                    }
-                } else {
-                    this.mob.setSpeed(0.05F);
+                final float yRot = (float) (Mth.atan2(dz, dx) * (double) (180F / (float) Math.PI)) - 90.0F;
+                this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yRot, 90.0F));
+                final float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
+                this.mob.setSpeed(speed);
+                if (this.mob.onGround()) {
+                    this.mob.setZza(0);
+                    this.mob.setXxa(0);
                 }
+                final double d = Math.sqrt(dx * dx + dz * dz);
+                if (Math.abs(dy) > (double) 1.0E-5F || Math.abs(d) > (double) 1.0E-5F) {
+                    final float xRot = (float) (-(Mth.atan2(dy, d) * (double) (180F / (float) Math.PI)));
+                    this.mob.setXRot(this.rotlerp(this.mob.getXRot(), xRot, (float) this.maxTurn));
+                    this.mob.setYya(dy > 0.0D ? speed : -speed);
+                }
+            } else if (this.operation == Operation.STRAFE && this.mob.getTarget() != null) {
+                this.mob.setNoGravity(true);
+                final float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
+                final float dz = this.strafeForwards;
+                final float dx = this.strafeRight;
+                final float dy = (this.mob.getTarget().getEyeY() + 5 - biFang.getY() > 0) ? 1F : -1F;
+//                final float d = Math.min(1, Mth.sqrt(dx * dx + dy * dy + dz * dz));
+//                f2 *= f4;
+//                f3 *= f4;
+//                float f5 = Mth.sin(this.mob.getYRot() * ((float)Math.PI / 180F));
+//                float f6 = Mth.cos(this.mob.getYRot() * ((float)Math.PI / 180F));
+//                float f7 = f2 * f6 - f3 * f5;
+//                float f8 = f3 * f6 + f2 * f5;
+//                if (!this.isWalkable(f7, f8)) {
+//                    this.strafeForwards = 1.0F;
+//                    this.strafeRight = 0.0F;
+//                }
+                if(! this.mob.closerThan(this.mob.getTarget(), 10)){
+                    this.strafeForwards *= -1;
+                }
+                this.mob.setSpeed(speed);
+                this.mob.setZza(this.strafeForwards);
+                this.mob.setXxa(this.strafeRight);
+                this.mob.setYya(dy);
+                this.operation = MoveControl.Operation.WAIT;
+            } else {
+                if (!this.hoversInPlace) {
+                    this.mob.setNoGravity(false);
+                }
+
+                this.mob.setYya(0.0F);
+                this.mob.setZza(0.0F);
             }
         }
+
+//        private boolean isWalkable(float p_24997_, float p_24998_) {
+//            PathNavigation pathnavigation = this.mob.getNavigation();
+//            if (pathnavigation != null) {
+//                NodeEvaluator nodeevaluator = pathnavigation.getNodeEvaluator();
+//                if (nodeevaluator != null && nodeevaluator.getBlockPathType(this.mob.level(), Mth.floor(this.mob.getX() + (double) p_24997_), this.mob.getBlockY(), Mth.floor(this.mob.getZ() + (double) p_24998_)) != BlockPathTypes.WALKABLE) {
+//                    return false;
+//                }
+//            }
+//
+//            return true;
+//        }
     }
 
 }

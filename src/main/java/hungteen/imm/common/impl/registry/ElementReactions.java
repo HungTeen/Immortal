@@ -379,7 +379,7 @@ public class ElementReactions {
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
             if(! this.robustReaction){
-                entity.setSecondsOnFire(Math.max(2, (int)(scale * 5)));
+                entity.setSecondsOnFire(Math.min(2, (int)(scale * 5)));
             }
             if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
                 ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);

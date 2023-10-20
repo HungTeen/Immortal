@@ -4,6 +4,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.StructureSets;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -19,7 +20,7 @@ public interface IMMStructureSets {
 
     ResourceKey<StructureSet> TELEPORT_RUINS = create("teleport_ruins");
     ResourceKey<StructureSet> PLAINS_TRADING_MARKET_SET = create("plains_trading_markets");
-//    ResourceKey<StructureSet> SPIRITUAL_PLAINS_VILLAGE_SET = create("spiritual_plains_villages");
+    ResourceKey<StructureSet> SPIRITUAL_FLAME_ALTAR_SET = create("spiritual_flame_altars");
 
     static void register(BootstapContext<StructureSet> context) {
         final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
@@ -30,10 +31,19 @@ public interface IMMStructureSets {
         context.register(PLAINS_TRADING_MARKET_SET, new StructureSet(
                 structures.getOrThrow(IMMStructures.PLAINS_TRADING_MARKET),
                 new RandomSpreadStructurePlacement(
-                        20,
+                        34,
                         8,
                         RandomSpreadType.LINEAR,
                         1080133475
+                )
+        ));
+        context.register(SPIRITUAL_FLAME_ALTAR_SET, new StructureSet(
+                structures.getOrThrow(IMMStructures.SPIRITUAL_FLAME_ALTAR),
+                new RandomSpreadStructurePlacement(
+                        32,
+                        8,
+                        RandomSpreadType.TRIANGULAR,
+                        1692262025
                 )
         ));
     }

@@ -49,6 +49,8 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
                 .add(Biomes.PLAINS, Biomes.SAVANNA_PLATEAU);
         this.tag(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET)
                 .add(IMMBiomes.PLAINS);
+        this.tag(IMMBiomeTags.HAS_SPIRITUAL_FLAME_ALTAR)
+                .add(IMMBiomes.SAVANNA);
     }
 
     @SafeVarargs

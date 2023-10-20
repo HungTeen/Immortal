@@ -1,6 +1,8 @@
 package hungteen.imm.common.world.structure;
 
 import hungteen.imm.common.world.structure.structures.PlainsTradingMarket;
+import hungteen.imm.common.world.structure.structures.SpiritualFlameAltar;
+import hungteen.imm.common.world.structure.structures.SpiritualPlainsVillage;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -22,15 +24,16 @@ public interface IMMTemplatePools {
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_CULTIVATORS = create("trading_market/plains/cultivators");
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_TREES = create("trading_market/plains/trees");
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_ANIMALS = create("trading_market/plains/animals");
+    ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_CENTER = create("spiritual_flame_altar/center");
+    ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_SIDE_PLATES = create("spiritual_flame_altar/side_plates");
+    ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_COLUMNS = create("spiritual_flame_altar/columns");
+    ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_WALLS = create("spiritual_flame_altar/walls");
+    ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_BI_FANG = create("spiritual_flame_altar/bi_fang");
 
     static void register(BootstapContext<StructureTemplatePool> context){
         PlainsTradingMarket.initPools(context);
-//        SpiritualPlainsVillage.initPools(context);
+        SpiritualFlameAltar.initPools(context);
     }
-
-//    static SpawnEntityPoolElement entity(EntityType<?> type, StructureTemplatePool.Projection projection){
-//        return new SpawnEntityPoolElement(type, projection);
-//    }
 
     private static ResourceKey<StructureTemplatePool> create(String name) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, Util.prefix(name));

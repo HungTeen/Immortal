@@ -35,7 +35,7 @@ public interface IMMStructures {
 
     ResourceKey<Structure> TELEPORT_RUIN = create("teleport_ruin");
     ResourceKey<Structure> PLAINS_TRADING_MARKET = create("plains_trading_market");
-    //    ResourceKey<Structure> SPIRITUAL_PLAINS_VILLAGE = create("spiritual_plains_village");
+    ResourceKey<Structure> SPIRITUAL_FLAME_ALTAR = create("spiritual_flame_altar");
 
     static void register(BootstapContext<Structure> context) {
 //        SpiritualPlainsVillage.initStructures(context);
@@ -75,7 +75,22 @@ public interface IMMStructures {
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
                 true,
                 Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                80
+                60
+        ));
+        context.register(SPIRITUAL_FLAME_ALTAR, new JigsawStructure(
+                new Structure.StructureSettings(
+                        biomes.getOrThrow(IMMBiomeTags.HAS_SPIRITUAL_FLAME_ALTAR),
+                        Map.of(),
+                        GenerationStep.Decoration.SURFACE_STRUCTURES,
+                        TerrainAdjustment.BEARD_THIN
+                ),
+                pools.getOrThrow(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_CENTER),
+                Optional.empty(),
+                5,
+                ConstantHeight.of(new VerticalAnchor.Absolute(0)),
+                true,
+                Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                50
         ));
     }
 
