@@ -20,11 +20,14 @@ import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Evoker;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -38,6 +41,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
@@ -56,11 +61,27 @@ import java.util.stream.Collectors;
  **/
 public class EntityUtil {
 
+    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, BlockPos pos) {
+        return spawn(level, entityType, pos, false);
+    }
+
+    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, BlockPos pos, boolean checkPosition) {
+        T entity = entityType.create(level);
+        if (entity != null && (!checkPosition || (level.isUnobstructed(entity) && level.noCollision(entity)))) {
+            if (entity instanceof Mob mob) {
+                ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+            }
+            level.addFreshEntityWithPassengers(entity);
+            return Optional.of(entity);
+        }
+        return Optional.empty();
+    }
+
     /**
-     * @param attacker 考虑范围的中心，通常是攻击者。
+     * @param attacker  考虑范围的中心，通常是攻击者。
      * @param predicate 搜索目标过滤。
-     * @param consumer 根据目标到中心的距离，计算得到一个受伤程度。
-     * @param <T> 搜索范围的实体类型。
+     * @param consumer  根据目标到中心的距离，计算得到一个受伤程度。
+     * @param <T>       搜索范围的实体类型。
      */
     public static <T extends Entity> void forRange(Entity attacker, Class<T> clazz, float width, float height, Predicate<T> predicate, BiConsumer<T, Float> consumer) {
         final AABB aabb = MathUtil.getUpperAABB(attacker.position(), width, height);

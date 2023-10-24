@@ -85,7 +85,7 @@ public class SpiritualFlameAltar {
                 List.of(
                         Pair.of(
                                 StructurePoolElement.legacy(name("column_01"), brickCrack)
-                                        .apply(StructureTemplatePool.Projection.RIGID), 10
+                                        .apply(StructureTemplatePool.Projection.RIGID), 16
                         ),
                         Pair.of(
                                 StructurePoolElement.legacy(name("column_02"), brickCrack)
@@ -93,7 +93,7 @@ public class SpiritualFlameAltar {
                         ),
                         Pair.of(
                                 StructurePoolElement.legacy(name("column_03"), brickCrack)
-                                        .apply(StructureTemplatePool.Projection.RIGID), 10
+                                        .apply(StructureTemplatePool.Projection.RIGID), 12
                         ),
                         Pair.of(
                                 StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 1
@@ -110,14 +110,14 @@ public class SpiritualFlameAltar {
                         ),
                         Pair.of(
                                 StructurePoolElement.legacy(name("wall_02"), brickCrack)
-                                        .apply(StructureTemplatePool.Projection.RIGID), 10
+                                        .apply(StructureTemplatePool.Projection.RIGID), 6
                         ),
                         Pair.of(
                                 StructurePoolElement.legacy(name("wall_03"), brickCrack)
                                         .apply(StructureTemplatePool.Projection.RIGID), 10
                         ),
                         Pair.of(
-                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 15
+                                StructurePoolElement.empty().apply(StructureTemplatePool.Projection.RIGID), 10
                         )
                 )
         ));

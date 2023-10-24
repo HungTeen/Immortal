@@ -45,7 +45,7 @@ public class ElementAmethystRender extends EntityRenderer<ElementAmethyst> {
         stack.pushPose();
         RenderUtil.commonTranslate(stack, 1F);
         this.solidModel.renderToBuffer(stack, bufferIn.getBuffer(CUTOUT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1F);
-        this.lightModel.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.5F);
+        this.lightModel.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.35F);
         stack.popPose();
         super.render(entityIn, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }

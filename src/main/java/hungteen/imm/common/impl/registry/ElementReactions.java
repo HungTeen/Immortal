@@ -13,6 +13,8 @@ import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.creature.spirit.ElementSpirit;
+import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
@@ -26,7 +28,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.AbstractIllager;
+import net.minecraft.world.entity.monster.Vex;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -35,6 +41,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -499,6 +506,37 @@ public class ElementReactions {
 
         @Override
         public void doReaction(Entity entity, float scale) {
+
+        }
+    }
+
+    /**
+     * 化灵反应。
+     */
+    public static abstract class SummonSpiritReaction extends ElementReaction {
+
+        public static final int SPIRIT_COST = 10;
+        private final Supplier<EntityType<ElementSpirit>> spiritType;
+        private final Elements element;
+        private final float amount;
+
+        private SummonSpiritReaction(String name, Supplier<EntityType<ElementSpirit>> spiritType, Elements element, float amount) {
+            super(name, true, 200, List.of(
+                    new ElementEntry(Elements.SPIRIT, true, SPIRIT_COST),
+                    new ElementEntry(element, true, amount)
+            ));
+            this.spiritType = spiritType;
+            this.element = element;
+            this.amount = amount;
+        }
+
+        @Override
+        public void doReaction(Entity entity, float scale) {
+            if(entity.level() instanceof ServerLevel serverLevel){
+                EntityUtil.spawn(serverLevel, this.spiritType.get(), entity.blockPosition()).ifPresent(spirit -> {
+                    ElementManager.addElementAmount(spirit, Elements.SPIRIT, false, scale * SPIRIT_COST);
+                });
+            }
 
         }
     }

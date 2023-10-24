@@ -14,20 +14,20 @@ import net.minecraft.client.model.geom.builders.*;
 public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
 
 	private final ModelPart total;
-	private final ModelPart light;
-	private final ModelPart cube;
+	private final ModelPart solid;
 	private final ModelPart coat;
+	private final ModelPart corner;
 
 	public ElementAmethystModel(ModelPart root, boolean isSolid) {
 		this.total = root.getChild("total");
-		this.light = this.total.getChild("light");
-		this.cube = this.total.getChild("cube");
-		this.coat = this.total.getChild("coat");
+		this.solid = total.getChild("solid");
+		this.coat = total.getChild("coat");
+		this.corner = total.getChild("corner");
 		if(isSolid){
-			this.light.visible = false;
 			this.coat.visible = false;
 		} else {
-			this.cube.visible = false;
+			this.solid.visible = false;
+			this.corner.visible = false;
 		}
 	}
 
@@ -37,12 +37,11 @@ public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
 
 		PartDefinition total = partdefinition.addOrReplaceChild("total", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition light = total.addOrReplaceChild("light", CubeListBuilder.create().texOffs(24, 14).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 18.0F, 0.0F, new CubeDeformation(0.0F))
-				.texOffs(24, 10).addBox(0.0F, -24.0F, -2.0F, 0.0F, 18.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 1.0F, 0.0F));
+		PartDefinition solid = total.addOrReplaceChild("solid", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -8.0F, -3.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition cube = total.addOrReplaceChild("cube", CubeListBuilder.create().texOffs(0, 16).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.5F, 0.0F));
+		PartDefinition coat = total.addOrReplaceChild("coat", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -5.5F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(4.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition coat = total.addOrReplaceChild("coat", CubeListBuilder.create().texOffs(0, 0).addBox(-3.5F, -7.0F, -3.5F, 7.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition corner = total.addOrReplaceChild("corner", CubeListBuilder.create().texOffs(0, 12).addBox(-4.0F, -9.0F, -4.25F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}

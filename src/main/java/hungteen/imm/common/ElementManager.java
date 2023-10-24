@@ -71,12 +71,13 @@ public class ElementManager {
                 Elements.SPIRIT, ColorHelper.PURPLE
         ));
     }
+
     /**
      * 在世界更新末尾更新，仅服务端。
      */
     public static void tickElements(Entity entity) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
-            if(canReactionOn(entity)){
+            if (canReactionOn(entity)) {
                 // Update Misc.
                 cap.update();
                 // Element Reactions.
@@ -114,7 +115,7 @@ public class ElementManager {
             final float elementAmount = getAmount(entity, element, false);
             if (level.getRandom().nextFloat() < 0.2F) {
                 final int particleCount = Math.min(Mth.ceil(elementAmount / 15), 5);
-                if(particleCount > 0){
+                if (particleCount > 0) {
                     ParticleHelper.spawnParticles(level, getParticle(element), entity.position().add(0, entity.getBbHeight() / 2, 0), particleCount, entity.getBbWidth(), entity.getBbHeight() / 2, 0);
                 }
             }
@@ -124,8 +125,8 @@ public class ElementManager {
     /**
      * Tick附着元素。
      */
-    public static void attachElement(LivingEntity entity){
-        if(entity.isInWater() && entity.getRandom().nextFloat() < 0.1F && entity.tickCount % 5 == 0){
+    public static void attachElement(LivingEntity entity) {
+        if (entity.isInWater() && entity.getRandom().nextFloat() < 0.1F && entity.tickCount % 5 == 0) {
             addElementAmount(entity, Elements.WATER, false, 1F);
         }
     }
@@ -133,11 +134,11 @@ public class ElementManager {
     /**
      * 受到伤害之前，附着元素。
      */
-    public static void attachDamageElement(ServerLevel level, LivingEntity entity, DamageSource source){
-        if(entity.getRandom().nextFloat() < 0.2F){
-            if(source.is(DamageTypes.IN_FIRE)){ // 篝火。
+    public static void attachDamageElement(ServerLevel level, LivingEntity entity, DamageSource source) {
+        if (entity.getRandom().nextFloat() < 0.2F) {
+            if (source.is(DamageTypes.IN_FIRE)) { // 篝火。
                 addElementAmount(entity, Elements.FIRE, false, 1F);
-            } else if(source.is(DamageTypes.LAVA)){ // 岩浆。
+            } else if (source.is(DamageTypes.LAVA)) { // 岩浆。
                 addElementAmount(entity, Elements.FIRE, false, 2F);
             }
         }
@@ -147,7 +148,7 @@ public class ElementManager {
         if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.get())) {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
         }
-        if(entity instanceof ElementAmethyst){
+        if (entity instanceof ElementAmethyst) {
             return 0.5F;
         }
         return 1F;
@@ -205,7 +206,8 @@ public class ElementManager {
      * Server side only.
      */
     public static void ifActiveReaction(Entity entity, IElementReaction reaction, BiConsumer<IElementReaction, Float> consumer) {
-        ifActiveReaction(entity, reaction, consumer, () -> {});
+        ifActiveReaction(entity, reaction, consumer, () -> {
+        });
     }
 
     /**
@@ -254,7 +256,7 @@ public class ElementManager {
 
     public static boolean hasElement(Entity entity, boolean mustRobust) {
         for (Elements element : Elements.values()) {
-            if(ElementManager.hasElement(entity, element, mustRobust)){
+            if (ElementManager.hasElement(entity, element, mustRobust)) {
                 return true;
             }
         }
@@ -264,7 +266,7 @@ public class ElementManager {
     public static HTColor getElementColor(Entity entity, boolean mustRobust) {
         final Colors.ColorMixer mixer = Colors.mixer();
         for (Elements element : Elements.values()) {
-            if(hasElement(entity, element, mustRobust)){
+            if (hasElement(entity, element, mustRobust)) {
                 mixer.add(getElementColor(element));
             }
         }
@@ -296,7 +298,7 @@ public class ElementManager {
 
     public static void setQuenchBladeDamage(Entity entity, float damage, boolean force) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
-            if (! force) {
+            if (!force) {
                 cap.setQuenchBladeDamage(Math.max(cap.getQuenchBladeDamage(), damage));
             } else {
                 cap.setQuenchBladeDamage(damage);
@@ -308,7 +310,7 @@ public class ElementManager {
         return EntityUtil.getCapabilityResult(entity, IMMEntityCapability::getQuenchBladeDamage, 0F);
     }
 
-    public static ParticleOptions getParticle(Elements element){
+    public static ParticleOptions getParticle(Elements element) {
         return ELEMENT_PARTICLE_MAP.getOrDefault(element, IMMParticles.SPIRITUAL_MANA).get();
     }
 
@@ -320,8 +322,8 @@ public class ElementManager {
         EntityUtil.getOptCapability(entity).ifPresent(IMMEntityCapability::clearElements);
     }
 
-    public static boolean canReactionOn(Entity entity){
-        return ! entity.getType().is(IMMEntityTags.NO_ELEMENT_REACTIONS);
+    public static boolean canReactionOn(Entity entity) {
+        return !entity.getType().is(IMMEntityTags.NO_ELEMENT_REACTIONS);
     }
 
     public static boolean displayRobust(Entity entity) {

@@ -7,7 +7,7 @@
         "processors": "imm:flame_altar_cracked",
         "projection": "rigid"
       },
-      "weight": 10
+      "weight": 16
     },
     {
       "element": {
@@ -25,7 +25,7 @@
         "processors": "imm:flame_altar_cracked",
         "projection": "rigid"
       },
-      "weight": 10
+      "weight": 12
     },
     {
       "element": {

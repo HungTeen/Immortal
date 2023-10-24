@@ -42,7 +42,7 @@ public class MixinFoodData {
             cancellable = true
     )
     private void onTick(Player player, CallbackInfo result) {
-        if(player.getHealth() * 2 > player.getMaxHealth()){
+        if(player.getHealth() > 20){
             this.tickTimer = 0;
             result.cancel();
         }

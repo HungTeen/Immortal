@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.creature.monster.BiFang;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
+import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.common.entity.golem.CopperGolem;
 import hungteen.imm.common.entity.golem.CreeperGolem;
 import hungteen.imm.common.entity.golem.IronGolem;
@@ -67,10 +68,15 @@ public class IMMEntities {
 //    public static final RegistryObject<EntityType<SilkWorm>> SILK_WORM = registerEntityType(SilkWorm::new, "silk_worm", MobCategory.CREATURE);
 
     /* Monster */
+
     public static final RegistryObject<EntityType<SharpStake>> SHARP_STAKE = registerEntityType(SharpStake::new, "sharp_stake", MobCategory.MONSTER, builder -> builder.sized(1F, 1.05F));
     public static final RegistryObject<EntityType<BiFang>> BI_FANG = registerEntityType(BiFang::new, "bi_fang", MobCategory.MONSTER, builder -> builder.sized(0.9F, 3.2F).fireImmune());
 
-    //    /* Undead */
+    /* Spirit */
+
+    public static final RegistryObject<EntityType<WaterSpirit>> WATER_SPIRIT = registerEntityType(WaterSpirit::new, "water_spirit", MobCategory.CREATURE, builder -> builder.sized(0.85F, 0.3F));
+
+//    /* Undead */
 //
 //    public static final RegistryObject<EntityType<SpiritualZombie>> SPIRITUAL_ZOMBIE = registerEntityType(SpiritualZombie::new, "spiritual_zombie", MobCategory.MONSTER);
 
@@ -82,22 +88,26 @@ public class IMMEntities {
     public static final RegistryObject<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", MobCategory.CREATURE, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
 
     public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
-        /* human */
+        /* Human */
         ev.put(EMPTY_CULTIVATOR.get(), HumanEntity.createAttributes().build());
         ev.put(SPIRITUAL_BEGINNER_CULTIVATOR.get(), HumanEntity.createAttributes().build());
         ev.put(COMMON_VILLAGER.get(), IMMVillager.createAttributes().build());
 
-        /* creature */
+        /* Creature */
 //        ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
 //        ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());
 
         /* Monster */
         ev.put(SHARP_STAKE.get(), SharpStake.createAttributes().build());
         ev.put(BI_FANG.get(), BiFang.createAttributes().build());
+
+        /* Spirit */
+        ev.put(WATER_SPIRIT.get(), WaterSpirit.createAttributes().build());
+
 //        /* undead */
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
 //
-        /* golem */
+        /* Golem */
         ev.put(IRON_GOLEM.get(), IronGolem.createAttributes());
         ev.put(SNOW_GOLEM.get(), SnowGolem.createAttributes());
         ev.put(CREEPER_GOLEM.get(), CreeperGolem.createAttributes());
@@ -105,16 +115,19 @@ public class IMMEntities {
     }
 
     public static void registerPlacements(SpawnPlacementRegisterEvent ev) {
-        /* human */
+        /* Human */
         ev.register(EMPTY_CULTIVATOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         ev.register(SPIRITUAL_BEGINNER_CULTIVATOR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         ev.register(COMMON_VILLAGER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
-        /* creature */
+        /* Creature */
 
         /* Monster */
         ev.register(SHARP_STAKE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         ev.register(BI_FANG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+
+        /* Spirit */
+        ev.register(WATER_SPIRIT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
         /* undead */
 
@@ -138,6 +151,9 @@ public class IMMEntities {
                 /* Monster */
                 Pair.of(SHARP_STAKE, Pair.of(ColorHelper.DARK_GREEN, ColorHelper.DYE_BROWN)),
                 Pair.of(BI_FANG, Pair.of(ColorHelper.RED, ColorHelper.DARK_AQUA)),
+
+                /* Spirit */
+                Pair.of(WATER_SPIRIT, Pair.of(ColorHelper.AQUA, ColorHelper.BLUE)),
 
                 /* Undead */
 //                Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))

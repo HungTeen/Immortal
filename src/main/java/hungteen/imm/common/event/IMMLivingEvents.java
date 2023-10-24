@@ -8,6 +8,7 @@ import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;

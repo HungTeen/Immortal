@@ -6,7 +6,8 @@
   "mixins": [
     "MixinFoodData",
     "MixinItemEntity",
-    "MixinBlock"
+    "MixinBlock",
+    "MixinLivingEntity"
   ],
   "client": [
     "MixinMouseHandler"

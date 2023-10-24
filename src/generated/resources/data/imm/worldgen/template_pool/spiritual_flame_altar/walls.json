@@ -16,7 +16,7 @@
         "processors": "imm:flame_altar_cracked",
         "projection": "rigid"
       },
-      "weight": 10
+      "weight": 6
     },
     {
       "element": {
@@ -31,7 +31,7 @@
       "element": {
         "element_type": "minecraft:empty_pool_element"
       },
-      "weight": 15
+      "weight": 10
     }
   ],
   "fallback": "minecraft:empty"

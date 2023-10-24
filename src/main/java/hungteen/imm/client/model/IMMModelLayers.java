@@ -11,9 +11,11 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 public class IMMModelLayers {
 
     /* Misc */
+
     public static final ModelLayerLocation ELEMENT_AMETHYST = register("element_amethyst");
 
     /* Humans */
+
     public static final ModelLayerLocation CULTIVATOR = register("cultivator");
     public static final ModelLayerLocation CULTIVATOR_INNER_ARMOR = registerInnerArmor("cultivator");
     public static final ModelLayerLocation CULTIVATOR_OUTER_ARMOR = registerOuterArmor("cultivator");
@@ -23,26 +25,28 @@ public class IMMModelLayers {
     public static final ModelLayerLocation VILLAGER = register("villager");
     public static final ModelLayerLocation PILLAGER = register("pillager");
 
-    /*
-    Animals.
-    */
+    /* Animals */
+
     public static final ModelLayerLocation GRASS_CARP = register("grass_carp");
     public static final ModelLayerLocation SILK_WORM = register("silk_worm");
 
     /* Monsters */
+
     public static final ModelLayerLocation SHARP_STAKE = register("sharp_stake");
     public static final ModelLayerLocation BI_FANG = register("bi_fang");
 
-    /*
-    Zombie Entities.
-     */
+    /* Spirits */
+
+    public static final ModelLayerLocation WATER_SPIRIT = register("water_spirit");
+
+    /* Zombies */
+
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE = register("spiritual_zombie");
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
 
-    /*
-    Golem Entities.
-     */
+    /* Golems */
+
     public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
     public static final ModelLayerLocation SNOW_GOLEM = register("snow_golem");
     public static final ModelLayerLocation CREEPER_GOLEM = register("creeper_golem");
