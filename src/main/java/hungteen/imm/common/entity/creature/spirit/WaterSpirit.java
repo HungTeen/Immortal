@@ -1,13 +1,17 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,15 +20,12 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.animal.frog.FrogAi;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * @program: Immortal
@@ -33,29 +34,59 @@ import java.util.EnumSet;
  **/
 public class WaterSpirit extends ElementSpirit {
 
+    private static final EntityDataAccessor<OptionalInt> VEHICLE_ID = SynchedEntityData.defineId(WaterSpirit.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+
     public WaterSpirit(EntityType<? extends IMMMob> type, Level level) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 30, true);
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(VEHICLE_ID, OptionalInt.empty());
+    }
+
+    @Override
     protected void registerGoals() {
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true));
+        super.registerGoals();
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, FireSpirit.class, true));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.1F, true));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1F, 80));
-        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return ElementSpirit.createAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.35D)
-                .add(Attributes.FLYING_SPEED, 0.4D)
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
+                .add(Attributes.FLYING_SPEED, 0.45D)
                 ;
     }
 
     public static boolean isWaterSpiritRiding(Entity entity) {
         return entity.getPassengers().stream().anyMatch(WaterSpirit.class::isInstance);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if(accessor.equals(VEHICLE_ID)){
+            getOptVehicle().ifPresentOrElse(this::startRiding, this::stopRiding);
+        }
+    }
+
+    @Override
+    public boolean startRiding(Entity entity) {
+        if(super.startRiding(entity)){
+            this.setServerVehicle(entity.getId());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void stopRiding() {
+        super.stopRiding();
+        this.clearServerVehicle();
     }
 
     /**
@@ -66,7 +97,7 @@ public class WaterSpirit extends ElementSpirit {
         if(target instanceof LivingEntity living){
             this.startRiding(target);
             if(living.getAirSupply() <= 0){
-                living.setAirSupply(living.getAirSupply() - 1);
+                living.setAirSupply(living.getAirSupply() - 5);
             } else {
                 living.setAirSupply(Math.max(0, living.getAirSupply() - RandomHelper.getMinMax(living.getRandom(), 20, 40)));
             }
@@ -78,6 +109,41 @@ public class WaterSpirit extends ElementSpirit {
             return true;
         }
         return super.doHurtTarget(target);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if(tag.contains("ServerVehicleId")){
+            this.setServerVehicle(tag.getInt("ServerVehicleId"));
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        getServerVehicle().ifPresent(id -> {
+            tag.putInt("ServerVehicleId", id);
+        });
+    }
+
+    public Optional<Entity> getOptVehicle() {
+        if(getServerVehicle().isPresent()){
+            return Optional.ofNullable(level().getEntity(getServerVehicle().getAsInt()));
+        }
+        return Optional.empty();
+    }
+
+    public OptionalInt getServerVehicle(){
+        return entityData.get(VEHICLE_ID);
+    }
+
+    public void setServerVehicle(int vehicle){
+        entityData.set(VEHICLE_ID, OptionalInt.of(vehicle));
+    }
+
+    public void clearServerVehicle(){
+        entityData.set(VEHICLE_ID, OptionalInt.empty());
     }
 
     @Override

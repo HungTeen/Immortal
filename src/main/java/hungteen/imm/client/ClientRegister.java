@@ -18,6 +18,8 @@ import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
+import hungteen.imm.client.model.entity.spirit.FireSpiritModel;
+import hungteen.imm.client.model.entity.spirit.MetalSpiritModel;
 import hungteen.imm.client.model.entity.spirit.WaterSpiritModel;
 import hungteen.imm.client.model.entity.villager.PillagerModel;
 import hungteen.imm.client.model.entity.villager.VillagerModel;
@@ -25,6 +27,8 @@ import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
+import hungteen.imm.client.render.entity.spirit.FireSpiritRender;
+import hungteen.imm.client.render.entity.spirit.MetalSpiritRender;
 import hungteen.imm.client.render.entity.spirit.WaterSpiritRender;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
@@ -38,6 +42,7 @@ import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.creature.spirit.MetalSpirit;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.IMMMenus;
@@ -75,7 +80,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        /* misc entity */
+        /* Misc Entity */
         event.registerEntityRenderer(IMMEntities.ELEMENT_AMETHYST.get(), ElementAmethystRender::new);
         event.registerEntityRenderer(IMMEntities.TELEPORT_FORMATION.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
@@ -83,32 +88,34 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.THROWING_ITEM.get(), ThrowingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
 
-        /* human */
+        /* Human */
         event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
         event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), CultivatorRender::new);
 
-        /* Creatures */
+        /* Creature */
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
 
-        /* Monsters */
+        /* Monster */
         event.registerEntityRenderer(IMMEntities.SHARP_STAKE.get(), SharpStakeRender::new);
         event.registerEntityRenderer(IMMEntities.BI_FANG.get(), BiFangRender::new);
 
-        /* Spirits */
+        /* Spirit */
+        event.registerEntityRenderer(IMMEntities.METAL_SPIRIT.get(), MetalSpiritRender::new);
         event.registerEntityRenderer(IMMEntities.WATER_SPIRIT.get(), WaterSpiritRender::new);
+        event.registerEntityRenderer(IMMEntities.FIRE_SPIRIT.get(), FireSpiritRender::new);
 
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
 
-        /* Golems */
+        /* Golem */
         event.registerEntityRenderer(IMMEntities.IRON_GOLEM.get(), IronGolemRender::new);
         event.registerEntityRenderer(IMMEntities.SNOW_GOLEM.get(), SnowGolemRender::new);
         event.registerEntityRenderer(IMMEntities.CREEPER_GOLEM.get(), CreeperGolemRender::new);
         event.registerEntityRenderer(IMMEntities.COPPER_GOLEM.get(), CopperGolemRender::new);
 
-        /* BlockEntities */
+        /* Block Entity */
         event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);
     }
 
@@ -133,23 +140,25 @@ public class ClientRegister {
         event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR, () -> OUTER_ARMOR);
 
-        /* Creatures */
+        /* Creature */
         event.registerLayerDefinition(IMMModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.SILK_WORM, SilkWormModel::createBodyLayer);
 
-        /* Monsters */
+        /* Monster */
         event.registerLayerDefinition(IMMModelLayers.SHARP_STAKE, CubeModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.BI_FANG, BiFangModel::createBodyLayer);
 
-        /* Spirits */
+        /* Spirit */
+        event.registerLayerDefinition(IMMModelLayers.METAL_SPIRIT, MetalSpiritModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.WATER_SPIRIT, WaterSpiritModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.FIRE_SPIRIT, FireSpiritModel::createBodyLayer);
 
-        /* Zombies */
+        /* Zombie */
         event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
         event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
 
-        /* Golems */
+        /* Golem */
         event.registerLayerDefinition(IMMModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);

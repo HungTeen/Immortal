@@ -50,10 +50,19 @@ public class ElementManager {
     public static final int DISPLAY_ROBUST_CD = 10;
     private static final float DECAY_SPEED = 0.03F;
     private static final float DECAY_VALUE = 0.1F;
+    private static final Map<Elements, Elements> TARGET_ELEMENTS = new EnumMap<>(Elements.class);
     private static final Map<Elements, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Elements.class);
     private static final Map<Elements, HTColor> ELEMENT_COLOR_MAP = new EnumMap<>(Elements.class);
 
     static {
+        TARGET_ELEMENTS.putAll(Map.of(
+                Elements.METAL, Elements.WOOD,
+                Elements.WOOD, Elements.EARTH,
+                Elements.WATER, Elements.FIRE,
+                Elements.FIRE, Elements.METAL,
+                Elements.EARTH, Elements.WATER,
+                Elements.SPIRIT, Elements.SPIRIT
+        ));
         ELEMENT_PARTICLE_MAP.putAll(Map.of(
                 Elements.METAL, IMMParticles.METAL_ELEMENT,
                 Elements.WOOD, IMMParticles.WOOD_ELEMENT,
@@ -110,8 +119,13 @@ public class ElementManager {
         });
     }
 
+    public static Elements getTargetElement(Elements element) {
+        return TARGET_ELEMENTS.getOrDefault(element, Elements.SPIRIT);
+    }
+
     public static void clientTickElements(Level level, Entity entity) {
         for (Elements element : Elements.values()) {
+            if(element == Elements.SPIRIT) continue; // 业元素不显示粒子。
             final float elementAmount = getAmount(entity, element, false);
             if (level.getRandom().nextFloat() < 0.2F) {
                 final int particleCount = Math.min(Mth.ceil(elementAmount / 15), 5);

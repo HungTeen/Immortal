@@ -42,15 +42,15 @@ public class ElementRenderer {
         if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
             final Map<Elements, Float> elements = ElementManager.getElements(entity);
-            final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), Arrays.stream(Elements.values()).toList());
-            final int cnt = elements.size();
+            final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), elements.keySet().stream().toList());
+            final int cnt = list.size();
             final float barWidth = cnt + (cnt - 1) * ELEMENT_INTERVAL;
             stack.pushPose();
             stack.translate(0, entity.getBbHeight() + 0.6F, 0.0F);
             stack.mulPose(renderer.entityRenderDispatcher.cameraOrientation());
             stack.scale(-scale, -scale, scale);
             RenderSystem.enableBlend();
-            if(! elements.isEmpty()){
+            if(! list.isEmpty()){
                 int tmp = 0;
                 for (Elements element : list) {
                     if(! elements.containsKey(element)) continue;

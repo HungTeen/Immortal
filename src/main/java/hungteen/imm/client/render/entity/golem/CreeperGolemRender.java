@@ -23,8 +23,8 @@ public class CreeperGolemRender extends IMMMobRender<CreeperGolem> {
     }
 
     @Override
-    protected void scale(CreeperGolem p_114046_, PoseStack stack, float partialTicks) {
-        float f = p_114046_.getSwelling(partialTicks);
+    protected void scale(CreeperGolem p_114046_, PoseStack stack, float partialTick) {
+        float f = p_114046_.getSwelling(partialTick);
         float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
         f = Mth.clamp(f, 0.0F, 1.0F);
         f *= f;

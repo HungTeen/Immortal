@@ -30,7 +30,7 @@ public class IMMRenderTypes extends RenderType{
                 RenderSystem.defaultBlendFunc();
             });
 
-    public static final RenderType DUMMY_BLOCK = RenderType.create(
+    public static final RenderType DUMMY_BLOCK = create(
             Util.prefixName("dummy_block"),
             DefaultVertexFormat.BLOCK,
             VertexFormat.Mode.QUADS,
@@ -45,26 +45,25 @@ public class IMMRenderTypes extends RenderType{
                     .createCompositeState(false)
     );
 
-    private IMMRenderTypes(String p_173178_, VertexFormat p_173179_, VertexFormat.Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_) {
-        super(p_173178_, p_173179_, p_173180_, p_173181_, p_173182_, p_173183_, p_173184_, p_173185_);
-    }
-
-//    public static final RenderType DUMMY_BLOCK = new RenderType(
-//            Util.prefixName("dummy_block"),
+//    public static final RenderType LIGHT_ENTITY = create(
+//            "eyes",
 //            DefaultVertexFormat.NEW_ENTITY,
 //            VertexFormat.Mode.QUADS,
 //            256,
+//            false,
 //            true,
-//            true,
-//            () -> {
-//                Sheets.translucentCullBlockSheet().setupRenderState();
-//                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.4F);
-//            },
-//            () -> {
-//                Sheets.translucentCullBlockSheet().clearRenderState();
-//                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-//            }
-//    ) {
-//    };
+//            RenderType.CompositeState.builder()
+//                    .setShaderState(RENDERTYPE_EYES_SHADER)
+//                    .setTextureState(new RenderStateShard.TextureStateShard(p_286170_, false, false))
+//                    .setTransparencyState(ADDITIVE_TRANSPARENCY)
+//                    .setWriteMaskState(COLOR_WRITE)
+//                    .createCompositeState(false)
+//    );
+            /**
+             * NO USE.
+             */
+    private IMMRenderTypes(String p_173178_, VertexFormat p_173179_, VertexFormat.Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_) {
+        super(p_173178_, p_173179_, p_173180_, p_173181_, p_173182_, p_173183_, p_173184_, p_173185_);
+    }
 
 }

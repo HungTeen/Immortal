@@ -279,6 +279,10 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         return getAnimationStartTick() + tick == this.level().getGameTime();
     }
 
+    public boolean afterAnimationTick(int pos){
+        return getAnimationStartTick() + pos <= level().getGameTime();
+    }
+
     public AnimationTypes getCurrentAnimation() {
         return AnimationTypes.values()[Math.min(getAnimationIndex(), AnimationTypes.values().length - 1)];
     }
@@ -405,8 +409,16 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
 
         SHOOT,
 
-        SWING
+        SWING,
 
+        /**
+         * 闲置和攻击之间的过渡。
+         */
+        IDLE_TO_ATTACK,
 
+        /**
+         * 攻击和闲置之间的过渡。
+         */
+        ATTACK_TO_IDLE,
     }
 }

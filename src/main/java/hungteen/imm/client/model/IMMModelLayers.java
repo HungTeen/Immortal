@@ -14,7 +14,7 @@ public class IMMModelLayers {
 
     public static final ModelLayerLocation ELEMENT_AMETHYST = register("element_amethyst");
 
-    /* Humans */
+    /* Human */
 
     public static final ModelLayerLocation CULTIVATOR = register("cultivator");
     public static final ModelLayerLocation CULTIVATOR_INNER_ARMOR = registerInnerArmor("cultivator");
@@ -25,27 +25,29 @@ public class IMMModelLayers {
     public static final ModelLayerLocation VILLAGER = register("villager");
     public static final ModelLayerLocation PILLAGER = register("pillager");
 
-    /* Animals */
+    /* Creature */
 
     public static final ModelLayerLocation GRASS_CARP = register("grass_carp");
     public static final ModelLayerLocation SILK_WORM = register("silk_worm");
 
-    /* Monsters */
+    /* Monster */
 
     public static final ModelLayerLocation SHARP_STAKE = register("sharp_stake");
     public static final ModelLayerLocation BI_FANG = register("bi_fang");
 
-    /* Spirits */
+    /* Spirit */
 
+    public static final ModelLayerLocation METAL_SPIRIT = register("metal_spirit");
     public static final ModelLayerLocation WATER_SPIRIT = register("water_spirit");
+    public static final ModelLayerLocation FIRE_SPIRIT = register("fire_spirit");
 
-    /* Zombies */
+    /* Zombie */
 
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE = register("spiritual_zombie");
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
     public static final ModelLayerLocation SPIRITUAL_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
 
-    /* Golems */
+    /* Golem */
 
     public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
     public static final ModelLayerLocation SNOW_GOLEM = register("snow_golem");

@@ -5,6 +5,8 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.entity.creature.monster.BiFang;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
+import hungteen.imm.common.entity.creature.spirit.FireSpirit;
+import hungteen.imm.common.entity.creature.spirit.MetalSpirit;
 import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.common.entity.golem.CopperGolem;
 import hungteen.imm.common.entity.golem.CreeperGolem;
@@ -74,7 +76,9 @@ public class IMMEntities {
 
     /* Spirit */
 
-    public static final RegistryObject<EntityType<WaterSpirit>> WATER_SPIRIT = registerEntityType(WaterSpirit::new, "water_spirit", MobCategory.CREATURE, builder -> builder.sized(0.85F, 0.3F));
+    public static final RegistryObject<EntityType<MetalSpirit>> METAL_SPIRIT = registerEntityType(MetalSpirit::new, "metal_spirit", MobCategory.CREATURE, builder -> builder.sized(0.9F, 1.4F));
+    public static final RegistryObject<EntityType<WaterSpirit>> WATER_SPIRIT = registerEntityType(WaterSpirit::new, "water_spirit", MobCategory.CREATURE, builder -> builder.sized(0.85F, 1.3F));
+    public static final RegistryObject<EntityType<FireSpirit>> FIRE_SPIRIT = registerEntityType(FireSpirit::new, "fire_spirit", MobCategory.CREATURE, builder -> builder.sized(0.6F, 0.7F).fireImmune());
 
 //    /* Undead */
 //
@@ -102,7 +106,9 @@ public class IMMEntities {
         ev.put(BI_FANG.get(), BiFang.createAttributes().build());
 
         /* Spirit */
+        ev.put(METAL_SPIRIT.get(), MetalSpirit.createAttributes().build());
         ev.put(WATER_SPIRIT.get(), WaterSpirit.createAttributes().build());
+        ev.put(FIRE_SPIRIT.get(), FireSpirit.createAttributes().build());
 
 //        /* undead */
 //        ev.put(SPIRITUAL_ZOMBIE.get(), SpiritualZombie.createAttributes().build());
@@ -127,7 +133,9 @@ public class IMMEntities {
         ev.register(BI_FANG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
         /* Spirit */
+        ev.register(METAL_SPIRIT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         ev.register(WATER_SPIRIT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        ev.register(FIRE_SPIRIT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
         /* undead */
 
@@ -153,7 +161,9 @@ public class IMMEntities {
                 Pair.of(BI_FANG, Pair.of(ColorHelper.RED, ColorHelper.DARK_AQUA)),
 
                 /* Spirit */
+                Pair.of(METAL_SPIRIT, Pair.of(ColorHelper.GOLD, ColorHelper.WHITE)),
                 Pair.of(WATER_SPIRIT, Pair.of(ColorHelper.AQUA, ColorHelper.BLUE)),
+                Pair.of(FIRE_SPIRIT, Pair.of(ColorHelper.YELLOW, ColorHelper.ORANGE)),
 
                 /* Undead */
 //                Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))
