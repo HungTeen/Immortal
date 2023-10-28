@@ -163,7 +163,7 @@ public class ElementManager {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
         }
         if (entity instanceof ElementAmethyst) {
-            return 0.5F;
+            return 0.25F;
         }
         return 1F;
     }
@@ -240,6 +240,10 @@ public class ElementManager {
 
     public static void setElementAmount(Entity entity, Elements element, boolean robust, float value) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> cap.setElementAmount(element, robust, value));
+    }
+
+    public static void addElementAmount(Entity entity, Elements element, boolean robust, float value, float maxValue) {
+        EntityUtil.getOptCapability(entity).ifPresent(cap -> cap.addElementAmount(element, robust, value, maxValue));
     }
 
     public static void addElementAmount(Entity entity, Elements element, boolean robust, float value) {

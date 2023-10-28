@@ -91,16 +91,13 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         super.defineSynchedData();
     }
 
+    @Override
     protected Brain.Provider<BiFang> brainProvider() {
         return Brain.provider(List.of(
                 /* Nearest Living Entities Sensor */
                 MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
                 /* Nearest Players Sensor */
                 MemoryModuleType.NEAREST_PLAYERS, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
-                /* Nearest Item Sensor */
-                MemoryModuleType.NEAREST_VISIBLE_WANTED_ITEM,
-                /* Nearest Bed Sensor */
-                MemoryModuleType.NEAREST_BED,
                 /* Hurt By Sensor */
                 MemoryModuleType.HURT_BY, MemoryModuleType.HURT_BY_ENTITY,
                 /* MoveToTargetSink Behavior*/
@@ -124,10 +121,12 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         ));
     }
 
+    @Override
     protected Brain<?> makeBrain(Dynamic<?> dynamic) {
         return BiFangAi.makeBrain(this.brainProvider().makeBrain(dynamic));
     }
 
+    @Override
     public Brain<BiFang> getBrain() {
         return (Brain<BiFang>) super.getBrain();
     }

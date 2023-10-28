@@ -411,6 +411,10 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
 
         SWING,
 
+        RUSH,
+
+        EAT,
+
         /**
          * 闲置和攻击之间的过渡。
          */

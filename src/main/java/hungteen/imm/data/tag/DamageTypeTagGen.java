@@ -29,5 +29,6 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
         this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.SPIRITUAL_MANA);
         // Vanilla Tags.
         this.tag(DamageTypeTags.BYPASSES_ARMOR).addTag(IMMDamageTypeTags.SPIRITUALS);
+        this.tag(DamageTypeTags.IS_FIRE).add(IMMDamageTypes.FIRE_ELEMENT);
     }
 }

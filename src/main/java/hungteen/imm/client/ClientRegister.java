@@ -18,18 +18,14 @@ import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
-import hungteen.imm.client.model.entity.spirit.FireSpiritModel;
-import hungteen.imm.client.model.entity.spirit.MetalSpiritModel;
-import hungteen.imm.client.model.entity.spirit.WaterSpiritModel;
+import hungteen.imm.client.model.entity.spirit.*;
 import hungteen.imm.client.model.entity.villager.PillagerModel;
 import hungteen.imm.client.model.entity.villager.VillagerModel;
 import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
-import hungteen.imm.client.render.entity.spirit.FireSpiritRender;
-import hungteen.imm.client.render.entity.spirit.MetalSpiritRender;
-import hungteen.imm.client.render.entity.spirit.WaterSpiritRender;
+import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
@@ -87,6 +83,7 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.THROWING_ITEM.get(), ThrowingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
+        event.registerEntityRenderer(IMMEntities.POISON_WIND.get(), EmptyEffectRender::new);
 
         /* Human */
         event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
@@ -103,8 +100,10 @@ public class ClientRegister {
 
         /* Spirit */
         event.registerEntityRenderer(IMMEntities.METAL_SPIRIT.get(), MetalSpiritRender::new);
+        event.registerEntityRenderer(IMMEntities.WOOD_SPIRIT.get(), WoodSpiritRender::new);
         event.registerEntityRenderer(IMMEntities.WATER_SPIRIT.get(), WaterSpiritRender::new);
         event.registerEntityRenderer(IMMEntities.FIRE_SPIRIT.get(), FireSpiritRender::new);
+        event.registerEntityRenderer(IMMEntities.EARTH_SPIRIT.get(), EarthSpiritRender::new);
 
 //        /* undead */
 //        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
@@ -150,8 +149,10 @@ public class ClientRegister {
 
         /* Spirit */
         event.registerLayerDefinition(IMMModelLayers.METAL_SPIRIT, MetalSpiritModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.WOOD_SPIRIT, WoodSpiritModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.WATER_SPIRIT, WaterSpiritModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.FIRE_SPIRIT, FireSpiritModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.EARTH_SPIRIT, EarthSpiritModel::createBodyLayer);
 
         /* Zombie */
         event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);

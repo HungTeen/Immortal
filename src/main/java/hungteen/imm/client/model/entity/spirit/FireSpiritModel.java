@@ -49,12 +49,12 @@ public class FireSpiritModel<T extends FireSpirit> extends EntityModel<T> {
 
         PartDefinition inner = total.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition outer = total.addOrReplaceChild("outer", CubeListBuilder.create().texOffs(32, 28).addBox(4.0F, -2.0F, 4.0F, -8.0F, -8.0F, -8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition middle = total.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(28, 42).addBox(3.5F, -2.5F, 3.5F, -7.0F, -7.0F, -7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
         PartDefinition face = total.addOrReplaceChild("face", CubeListBuilder.create().texOffs(8, 8).addBox(-4.25F, -7.0F, -4.25F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 8).addBox(1.25F, -6.0F, -4.25F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition outer = total.addOrReplaceChild("outer", CubeListBuilder.create().texOffs(0, 12).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition middle = total.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 28).addBox(-3.5F, -9.5F, -3.5F, 7.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

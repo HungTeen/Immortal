@@ -8,6 +8,7 @@ import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.network.EntityElementPacket;
 import hungteen.imm.common.network.NetworkHandler;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 import java.util.*;
@@ -156,8 +157,12 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     }
 
     public void addElementAmount(Elements element, boolean robust, float value) {
+        this.addElementAmount(element, robust, value, Float.MAX_VALUE);
+    }
+
+    public void addElementAmount(Elements element, boolean robust, float value, float maxAmount) {
         this.checkValid(element, robust);
-        final float result = Math.max(getElementAmount(element, robust) + value, 0);
+        final float result = Mth.clamp(getElementAmount(element, robust) + value, 0, maxAmount);
         this.setElementAmount(element, robust, result, false);
     }
 

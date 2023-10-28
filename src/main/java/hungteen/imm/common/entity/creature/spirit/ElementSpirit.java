@@ -26,6 +26,8 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
@@ -34,6 +36,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -84,15 +88,31 @@ public abstract class ElementSpirit extends IMMMob {
     private static IRealmType getRealmByLevel(int level) {
         switch (level) {
             case 1 -> {
-                return RealmTypes.SPIRITUAL_LEVEL_1;
+                return RealmTypes.MONSTER_LEVEL_1;
             }
             case 2 -> {
-                return RealmTypes.SPIRITUAL_LEVEL_2;
+                return RealmTypes.MONSTER_LEVEL_2;
             }
             default -> {
-                return RealmTypes.SPIRITUAL_LEVEL_3;
+                return RealmTypes.MONSTER_LEVEL_3;
             }
         }
+    }
+
+    protected static Optional<? extends LivingEntity> findNearestValidAttackTarget(ElementSpirit spirit, Predicate<LivingEntity> hateSpiritPredicate) {
+        final NearestVisibleLivingEntities nearestEntities = spirit.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty());
+        Optional<LivingEntity> result = nearestEntities.findClosest(hateSpiritPredicate);
+        if(result.isEmpty()){
+            result = nearestEntities.findClosest(target -> {
+                return ElementManager.hasElement(target, ElementManager.getTargetElement(spirit.getElement()), false);
+            });
+            if(result.isEmpty()){
+                result = nearestEntities.findClosest(target -> {
+                    return ! ElementManager.hasElement(target, spirit.getElement(), true) && !(target instanceof ElementSpirit elementSpirit && elementSpirit.getElement() == spirit.getElement());
+                });
+            }
+        }
+        return result;
     }
 
     @Override
@@ -108,7 +128,7 @@ public abstract class ElementSpirit extends IMMMob {
             }
             if(this.tickCount % 5 == 0){
                 // No Support Element.
-                if(! ElementManager.hasElement(this, Elements.SPIRIT, false) && ! ElementManager.hasElement(this, getElement(), false)){
+                if(! ElementManager.hasElement(this, Elements.SPIRIT, false) || ! ElementManager.hasElement(this, getElement(), false)){
                     this.disappear();
                     this.discard();
                 }

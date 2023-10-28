@@ -533,7 +533,7 @@ public class ElementReactions {
         @Override
         public void doReaction(Entity entity, float scale) {
             if(entity.level() instanceof ServerLevel serverLevel){
-                EntityUtil.spawn(serverLevel, this.spiritType.get(), entity.blockPosition()).ifPresent(spirit -> {
+                EntityUtil.spawn(serverLevel, this.spiritType.get(), entity.position()).ifPresent(spirit -> {
                     ElementManager.addElementAmount(spirit, Elements.SPIRIT, false, scale * SPIRIT_COST);
                     ElementManager.addElementAmount(spirit, element, false, scale * amount);
                 });

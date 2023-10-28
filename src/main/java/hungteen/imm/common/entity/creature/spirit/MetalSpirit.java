@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.monster.warden.Warden;
@@ -36,9 +37,10 @@ public class MetalSpirit extends ElementSpirit{
 
     public static AttributeSupplier.Builder createAttributes() {
         return ElementSpirit.createAttributes()
-                .add(Attributes.MAX_HEALTH, 32.0D)
-                .add(Attributes.ARMOR, 8)
-                .add(Attributes.ATTACK_DAMAGE, 7)
+                .add(Attributes.MAX_HEALTH, 28.0D)
+                .add(Attributes.ARMOR, 6)
+                .add(Attributes.ARMOR_TOUGHNESS, 2)
+                .add(Attributes.ATTACK_DAMAGE, 8)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 ;
     }
@@ -46,8 +48,9 @@ public class MetalSpirit extends ElementSpirit{
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, WoodSpirit.class, true));
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SpiritMeleeAttackGoal(this, 50, 1.2F, true));
+        this.goalSelector.addGoal(1, new SpiritMeleeAttackGoal(this, 60, 1.2F, true));
     }
 
     @Override
@@ -68,6 +71,9 @@ public class MetalSpirit extends ElementSpirit{
                 case ATTACK_TO_IDLE -> {
                     this.preIdleAnimationState.startIfStopped(tickCount);
                 }
+                case SWING -> {
+                    this.attackAnimationState.startIfStopped(tickCount);
+                }
             }
         }
     }
@@ -76,13 +82,6 @@ public class MetalSpirit extends ElementSpirit{
     public void tick() {
         super.tick();
         if(EntityHelper.isServer(this)){
-            // 闲置时 遇到敌人。
-            if(this.getCurrentAnimation() == AnimationTypes.IDLING && this.isAggressive()){
-                this.setCurrentAnimation(AnimationTypes.IDLE_TO_ATTACK);
-            }
-            if(finishPreAggressive() && !this.isAggressive()){
-                this.setCurrentAnimation(AnimationTypes.ATTACK_TO_IDLE);
-            }
             if(finishPreIdle()){
                 this.setIdle();
             }
@@ -133,7 +132,13 @@ public class MetalSpirit extends ElementSpirit{
 
         @Override
         public boolean canUse() {
-            return super.canUse();
+            return this.spirit.getCurrentAnimation() != AnimationTypes.ATTACK_TO_IDLE && super.canUse();
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            this.spirit.setCurrentAnimation(AnimationTypes.IDLE_TO_ATTACK);
         }
 
         @Override
@@ -156,8 +161,10 @@ public class MetalSpirit extends ElementSpirit{
             if (distance <= d0 && (this.spirit.finishPreAggressive() || this.spirit.getCurrentAnimation() == AnimationTypes.SWING)){
                 if(this.animatedTick <= 0){
                     this.animatedTick = this.attackCD;
+                    if(! this.spirit.finishPreAggressive()){
+                        this.spirit.serverChange(MELEE_ATTACK_ID);
+                    }
                     this.spirit.setCurrentAnimation(AnimationTypes.SWING);
-                    this.spirit.serverChange(MELEE_ATTACK_ID);
                     this.mob.swing(InteractionHand.MAIN_HAND);
                 }
             }

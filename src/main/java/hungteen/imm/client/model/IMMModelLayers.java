@@ -38,8 +38,10 @@ public class IMMModelLayers {
     /* Spirit */
 
     public static final ModelLayerLocation METAL_SPIRIT = register("metal_spirit");
+    public static final ModelLayerLocation WOOD_SPIRIT = register("wood_spirit");
     public static final ModelLayerLocation WATER_SPIRIT = register("water_spirit");
     public static final ModelLayerLocation FIRE_SPIRIT = register("fire_spirit");
+    public static final ModelLayerLocation EARTH_SPIRIT = register("earth_spirit");
 
     /* Zombie */
 

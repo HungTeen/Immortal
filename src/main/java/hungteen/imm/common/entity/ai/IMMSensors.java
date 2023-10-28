@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity.ai;
 
+import hungteen.imm.common.entity.ai.sensor.NearestAmethystSensor;
 import hungteen.imm.common.entity.ai.sensor.NearestBoatSensor;
 import hungteen.imm.common.entity.ai.sensor.NearestProjectileSensor;
 import hungteen.imm.util.Util;
@@ -24,6 +25,7 @@ public class IMMSensors {
 
     public static final RegistryObject<SensorType<NearestBoatSensor<Mob>>> NEAREST_BOAT = register("nearest_boat", NearestBoatSensor::new);
     public static final RegistryObject<SensorType<NearestProjectileSensor<Mob>>> HAS_PROJECTILE_NEARBY = register("has_projectile_nearby", NearestProjectileSensor::new);
+    public static final RegistryObject<SensorType<NearestAmethystSensor<Mob>>> NEAREST_AMETHYST = register("nearest_amethyst", NearestAmethystSensor::new);
 
     private static <U extends Sensor<?>> RegistryObject<SensorType<U>> register(String name, Supplier<U> supplier){
         return SENSORS.register(name, () -> new SensorType<>(supplier));

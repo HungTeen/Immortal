@@ -61,16 +61,17 @@ import java.util.stream.Collectors;
  **/
 public class EntityUtil {
 
-    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, BlockPos pos) {
+    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, Vec3 pos) {
         return spawn(level, entityType, pos, false);
     }
 
-    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, BlockPos pos, boolean checkPosition) {
+    public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, Vec3 pos, boolean checkPosition) {
         T entity = entityType.create(level);
         if (entity != null && (!checkPosition || (level.isUnobstructed(entity) && level.noCollision(entity)))) {
             if (entity instanceof Mob mob) {
-                ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+                ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(BlockPos.containing(pos)), MobSpawnType.COMMAND, null, null);
             }
+            entity.setPos(pos);
             level.addFreshEntityWithPassengers(entity);
             return Optional.of(entity);
         }

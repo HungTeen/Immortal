@@ -5,6 +5,7 @@ import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.client.render.entity.spirit.FireSpiritRender;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
@@ -14,6 +15,7 @@ import net.minecraft.client.model.SlimeModel;
 import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -40,14 +42,17 @@ import java.util.EnumSet;
  **/
 public class FireSpirit extends ElementSpirit{
 
+    private static final int SPLIT_AMOUNT = 5;
     public float targetSquish;
     public float squish;
     public float oSquish;
     private boolean wasOnGround;
+    private int splitChance;
 
     public FireSpirit(EntityType<? extends IMMMob> type, Level level) {
         super(type, level);
         this.moveControl = new SpiritJumpMoveControl(this);
+        this.splitChance = 3; // 默认最多3次。
     }
 
     @Override
@@ -61,7 +66,7 @@ public class FireSpirit extends ElementSpirit{
 
     public static AttributeSupplier.Builder createAttributes() {
         return ElementSpirit.createAttributes()
-                .add(Attributes.MAX_HEALTH, 14.0D)
+                .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.27D)
                 ;
     }
@@ -73,6 +78,13 @@ public class FireSpirit extends ElementSpirit{
         super.tick();
         if(EntityHelper.isServer(this)){
             if(this.tickCount % 5 == 0 && this.getRandom().nextFloat() < 0.25){
+                final float fireAmount = ElementManager.getElementAmount(this, Elements.FIRE, false);
+                EntityUtil.forRange(this, LivingEntity.class, 2F, 2F, target -> {
+                    return !(target instanceof FireSpirit) && this != target.getVehicle();
+                }, (target, factor) -> {
+                    ElementManager.addElementAmount(target, Elements.FIRE, false, fireAmount * 0.2F * factor, 5);
+                    target.setSecondsOnFire(5);
+                });
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 10, 0.1);
             }
         }
@@ -93,25 +105,34 @@ public class FireSpirit extends ElementSpirit{
             return !(target instanceof FireSpirit);
         }, (target, factor) -> {
             ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5 * factor);
-            target.hurt(IMMDamageSources.fireElement(this), scale * factor * 3);
+            target.hurt(IMMDamageSources.fireElement(this), scale * factor * 10);
         });
         this.playSound(SoundEvents.GENERIC_EXPLODE);
+    }
+
+    protected void split(){
+        final float spiritAmount = ElementManager.getElementAmount(this, Elements.SPIRIT, false);
+        final float fireAmount = ElementManager.getElementAmount(this, Elements.FIRE, false);
+        if(this.level() instanceof ServerLevel serverLevel && this.getSplitChance() > 0 && Math.min(spiritAmount, fireAmount) >= SPLIT_AMOUNT){
+            for(int i = 0; i < 2; ++ i){
+                EntityUtil.spawn(serverLevel, IMMEntities.FIRE_SPIRIT.get(), position()).ifPresent(spirit -> {
+                    spirit.setSplitChance(this.getSplitChance() - 1);
+                    ElementManager.addElementAmount(spirit, Elements.SPIRIT, false, spiritAmount * 0.5F);
+                    ElementManager.addElementAmount(spirit, Elements.FIRE, false, fireAmount * 0.5F);
+                    spirit.setRealmLevel(this.getRealmLevel());
+                    spirit.setRealm(this.getRealm());
+                });
+            }
+        }
     }
 
     @Override
     protected void tickDeath() {
         if (!this.level().isClientSide() && !this.isRemoved()) {
+            this.split();
             this.disappear();
             this.level().broadcastEntityEvent(this, (byte)60);
             this.remove(Entity.RemovalReason.KILLED);
-        }
-    }
-
-    @Override
-    public void push(Entity entity) {
-        super.push(entity);
-        if(! entity.isOnFire()){
-            entity.setSecondsOnFire(10);
         }
     }
 
@@ -134,11 +155,25 @@ public class FireSpirit extends ElementSpirit{
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("WasOnGround", this.wasOnGround);
+        tag.putInt("SplitChance", this.getSplitChance());
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.wasOnGround = tag.getBoolean("WasOnGround");
+        if(tag.contains("WasOnGround")){
+            this.wasOnGround = tag.getBoolean("WasOnGround");
+        }
+        if(tag.contains("SplitChance")){
+            this.setSplitChance(tag.getInt("SplitChance"));
+        }
+    }
+
+    public void setSplitChance(int splitChance) {
+        this.splitChance = splitChance;
+    }
+
+    public int getSplitChance() {
+        return splitChance;
     }
 
     @Override
