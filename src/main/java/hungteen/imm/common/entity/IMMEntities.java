@@ -17,6 +17,7 @@ import hungteen.imm.common.entity.human.villager.CommonVillager;
 import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
+import hungteen.imm.common.item.IMMSpawnEggItem;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.*;
@@ -166,24 +167,24 @@ public class IMMEntities {
                 Pair.of(BI_FANG, Pair.of(ColorHelper.RED, ColorHelper.DARK_AQUA)),
 
                 /* Spirit */
-                Pair.of(METAL_SPIRIT, Pair.of(ColorHelper.GOLD, ColorHelper.WHITE)),
+                Pair.of(METAL_SPIRIT, Pair.of(ColorHelper.YELLOW, ColorHelper.ORANGE)),
                 Pair.of(WOOD_SPIRIT, Pair.of(ColorHelper.YELLOW_GREEN, ColorHelper.GREEN)),
                 Pair.of(WATER_SPIRIT, Pair.of(ColorHelper.AQUA, ColorHelper.BLUE)),
-                Pair.of(FIRE_SPIRIT, Pair.of(ColorHelper.YELLOW, ColorHelper.ORANGE)),
-                Pair.of(EARTH_SPIRIT, Pair.of(ColorHelper.ORANGE_YELLOW, ColorHelper.GRAY)),
+                Pair.of(FIRE_SPIRIT, Pair.of(ColorHelper.GOLD, ColorHelper.WHITE)),
+                Pair.of(EARTH_SPIRIT, Pair.of(ColorHelper.ORANGE_YELLOW, ColorHelper.GRAY))
 
                 /* Undead */
 //                Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))
 
                 /* Golem */
-                Pair.of(IRON_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
-                Pair.of(SNOW_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
-                Pair.of(CREEPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
-                Pair.of(COPPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK))
+//                Pair.of(IRON_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+//                Pair.of(SNOW_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+//                Pair.of(CREEPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK)),
+//                Pair.of(COPPER_GOLEM, Pair.of(ColorHelper.WHITE, ColorHelper.BLACK))
         ).forEach(pair -> {
             if (MAP.containsKey(pair.getFirst())) {
                 event.register(ForgeRegistries.ITEMS.getRegistryKey(), Util.prefix(MAP.get(pair.getFirst()) + "_spawn_egg"), () ->
-                        new ForgeSpawnEggItem(
+                        new IMMSpawnEggItem(
                                 () -> pair.getFirst().get(),
                                 pair.getSecond().getFirst().rgb(),
                                 pair.getSecond().getSecond().rgb(),

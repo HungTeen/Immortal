@@ -1,8 +1,12 @@
 package hungteen.imm.client.event.handler;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.IMMConfigs;
+import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientData;
+import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.IMMKeyBinds;
 import hungteen.imm.common.network.NetworkHandler;
@@ -10,32 +14,52 @@ import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-08-27 11:16
  **/
-public class SpellCircleHandler {
+public class SpellHandler {
 
     /**
      * {@link hungteen.imm.client.event.ClientEvents#tick(TickEvent.ClientTickEvent)}
      */
-    public static void tickSpellCircle() {
-        if(ClientUtil.player() != null) {
-            // 不能使用轮盘时，强制关闭。
-            if (ClientData.ShowSpellCircle) {
-                if (!SpellManager.canUseCircle(ClientUtil.player())) {
-                    ClientData.ShowSpellCircle = false;
-                }
+    public static void tick(@NotNull Player player) {
+        // 不能使用轮盘时，强制关闭。
+        if (ClientData.ShowSpellCircle) {
+            if (!SpellManager.canUseCircle(player)) {
+                ClientData.ShowSpellCircle = false;
             }
-            // update change.
-            if (SpellManager.canUseCircle(ClientUtil.player()) && useDefaultCircle()) {
-                if (ClientData.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()) {
-                    switchSpellCircle(ClientData.LastSelectedPosition);
+        }
+        // 更新轮盘的改变。
+        if (SpellManager.canUseCircle(player) && useDefaultCircle()) {
+            if (ClientData.ShowSpellCircle ^ IMMKeyBinds.displayingSpellCircle()) {
+                switchSpellCircle(ClientData.LastSelectedPosition);
+            }
+        }
+        // 长按以检测法术释放。
+        if (ClientProxy.MC.isWindowActive() && ClientUtil.screen() == null) {
+            if (IMMKeyBinds.ACTIVATE_SPELL.isDown()) {
+                final ISpellType spell = PlayerUtil.getPreparingSpell(player);
+                if (EntityHelper.isEntityValid(player) && spell != null) {
+                    if (! PlayerUtil.isSpellOnCoolDown(player, spell)) {
+                        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
+                    } else {
+                        // 冷却提醒。
+                        if(! ClientData.sendOnCoolDown){
+                            PlayerHelper.sendTipTo(player, SpellManager.SPELL_ON_CD.withStyle(ChatFormatting.RED));
+                            ClientData.sendOnCoolDown = true;
+                        }
+                    }
                 }
+            } else {
+                ClientData.sendOnCoolDown = false;
             }
         }
     }
@@ -104,18 +128,19 @@ public class SpellCircleHandler {
 
     /**
      * 当鼠标或键盘输入时，进行轮盘操作。
+     *
      * @param key 鼠标或键盘的key。
      * @return true if cancel event.
      */
-    public static boolean checkSpellCircle(int key){
-        if(! useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
+    public static boolean checkSpellCircle(int key) {
+        if (!useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())) {
             // Switch display of spell circle.
-            if(key == IMMKeyBinds.getKeyValue(IMMKeyBinds.SPELL_CIRCLE)){
+            if (key == IMMKeyBinds.getKeyValue(IMMKeyBinds.SPELL_CIRCLE)) {
                 switchSpellCircle(-1);
                 return true;
             }
             // Right click to activate spell.
-            if(ClientData.ShowSpellCircle && key == InputConstants.MOUSE_BUTTON_RIGHT){
+            if (ClientData.ShowSpellCircle && key == InputConstants.MOUSE_BUTTON_RIGHT) {
                 switchSpellCircle(ClientData.LastSelectedPosition);
                 return true;
             }
@@ -125,13 +150,14 @@ public class SpellCircleHandler {
 
     /**
      * 当鼠标或键盘输入时，进行轮盘操作。
+     *
      * @param delta 滚轮移动方向。
      * @return true if cancel event.
      */
-    public static boolean selectOnSpellCircle(double delta){
-        if(! SpellCircleHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())){
+    public static boolean selectOnSpellCircle(double delta) {
+        if (!SpellHandler.useDefaultCircle() && SpellManager.canUseCircle(ClientUtil.player())) {
             // Scroll to switch select position.
-            if(delta != 0.0 && ClientUtil.player() != null && ClientData.ShowSpellCircle) {
+            if (delta != 0.0 && ClientUtil.player() != null && ClientData.ShowSpellCircle) {
                 ClientData.LastSelectedPosition = (ClientData.LastSelectedPosition + (delta < 0 ? 1 : -1) + Constants.SPELL_CIRCLE_SIZE) % Constants.SPELL_CIRCLE_SIZE;
                 return true;
             }

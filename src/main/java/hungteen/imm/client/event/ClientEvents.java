@@ -1,9 +1,8 @@
 package hungteen.imm.client.event;
 
 import hungteen.imm.ImmortalMod;
-import hungteen.imm.client.ClientHandler;
-import hungteen.imm.client.ClientUtil;
-import hungteen.imm.client.event.handler.SpellCircleHandler;
+import hungteen.imm.client.*;
+import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.common.ElementManager;
@@ -28,7 +27,7 @@ public class ClientEvents {
         if(event.phase == TickEvent.Phase.END){
             if(ClientUtil.player() != null){
                 ClientHandler.onSmithing();
-                SpellCircleHandler.tickSpellCircle();
+                SpellHandler.tick(ClientUtil.player());
                 MeditationScreen.tickMeditation();
                 ReactionRenderer.tick();
             }

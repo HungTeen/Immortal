@@ -22,6 +22,7 @@ public interface IMMPlacements {
         IMMOrePlacements.register(context);
         IMMVegetationPlacements.register(context);
         IMMTreePlacements.register(context);
+        IMMStructurePlacements.register(context);
     }
 
     static ResourceKey<PlacedFeature> create(String name){

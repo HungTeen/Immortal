@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.interfaces.IHasMana;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.effect.IMMEffects;
@@ -115,7 +116,7 @@ public class IMMLivingEvents {
 
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent event){
-        if(EntityHelper.isServer(event.getEntity())){
+        if(EntityHelper.isServer(event.getEntity()) && event.getEntity().level() instanceof ServerLevel serverLevel){
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, (reaction, scale) -> {
                 if(ElementManager.hasElement(event.getEntity(), Elements.WATER, false) && reaction instanceof ElementReactions.CuttingReaction cuttingReaction){
                     float amount = Math.min(ElementManager.getAmount(event.getEntity(), Elements.WATER, false), cuttingReaction.getWaterAmount() * scale);
@@ -123,6 +124,7 @@ public class IMMLivingEvents {
                 } else {
                     event.setAmount(event.getAmount() + scale * 0.8F);
                 }
+                ParticleUtil.spawnParticles(serverLevel, IMMParticles.METAL_DAMAGE.get(), event.getEntity().position(), 1, 0.1, 0);
             });
         }
     }

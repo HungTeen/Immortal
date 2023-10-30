@@ -176,6 +176,8 @@ public class ClientRegister {
         event.registerSpriteSet(IMMParticles.EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
         event.registerSpriteSet(IMMParticles.SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
         event.registerSpriteSet(IMMParticles.SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
+        event.registerSpriteSet(IMMParticles.METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
     }
 
     @SubscribeEvent

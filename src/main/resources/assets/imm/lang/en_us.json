@@ -149,10 +149,26 @@
   "entity.imm.throwing_item": "Throwing Item",
 
   "entity.imm.empty_cultivator": "Empty Cultivator",
+  "entity.imm.empty_cultivator.egg": "Empty Cultivator Spawn Egg",
   "entity.imm.spiritual_beginner_cultivator": "Spiritual Beginner Cultivator",
+  "entity.imm.spiritual_beginner_cultivator.egg": "Spiritual Beginner Cultivator Spawn Egg",
   "entity.imm.common_villager": "Common Villager",
 
   "entity.imm.sharp_stake": "Sharp Stake",
+  "entity.imm.sharp_stake.egg": "Sharp Stake Spawn Egg",
+  "entity.imm.bi_fang": "Bi Fang",
+  "entity.imm.bi_fang.egg": "Bi Fang Spawn Egg",
+
+  "entity.imm.metal_spirit": "Metal Spirit",
+  "entity.imm.metal_spirit.egg": "Metal Spirit Spawn Egg",
+  "entity.imm.wood_spirit": "Wood Spirit",
+  "entity.imm.wood_spirit.egg": "Wood Spirit Spawn Egg",
+  "entity.imm.water_spirit": "Water Spirit",
+  "entity.imm.water_spirit.egg": "Water Spirit Spawn Egg",
+  "entity.imm.fire_spirit": "Fire Spirit",
+  "entity.imm.fire_spirit.egg": "Fire Spirit Spawn Egg",
+  "entity.imm.earth_spirit": "Earth Spirit",
+  "entity.imm.earth_spirit.egg": "Earth Spirit Spawn Egg",
 
   "entity.imm.iron_golem": "Iron Golem",
   "entity.imm.snow_golem": "Snow Golem",
@@ -448,6 +464,11 @@
   "misc.imm.reaction.water_gilding": "Gilding",
   "misc.imm.reaction.fire_gilding": "Gilding",
   "misc.imm.reaction.burning": "Burning",
+  "misc.imm.reaction.metal_spirit": "Metal Spirit",
+  "misc.imm.reaction.wood_spirit": "Wood Spirit",
+  "misc.imm.reaction.water_spirit": "Water Spirit",
+  "misc.imm.reaction.fire_spirit": "Fire Spirit",
+  "misc.imm.reaction.earth_spirit": "Earth Spirit",
 
   "misc.imm.cultivation_type.empty": "Empty",
   "misc.imm.cultivation_type.mortal": "Mortal",

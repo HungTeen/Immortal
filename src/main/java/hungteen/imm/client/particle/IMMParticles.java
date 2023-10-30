@@ -31,6 +31,8 @@ public class IMMParticles {
     public static final RegistryObject<SimpleParticleType> EARTH_ELEMENT = PARTICLE_TYPES.register("earth_element", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPIRIT_ELEMENT = PARTICLE_TYPES.register("spirit_element", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPIRITUAL_FLAME = PARTICLE_TYPES.register("spiritual_flame", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> METAL_EXPLOSION = PARTICLE_TYPES.register("metal_explosion", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> METAL_DAMAGE = PARTICLE_TYPES.register("metal_damage", () -> new SimpleParticleType(false));
 
     /**
      * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}

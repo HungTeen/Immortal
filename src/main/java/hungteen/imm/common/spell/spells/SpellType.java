@@ -1,10 +1,11 @@
 package hungteen.imm.common.spell.spells;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import hungteen.imm.util.enums.SpellSortCategories;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -18,24 +19,29 @@ import net.minecraft.world.entity.player.Player;
  */
 public abstract class SpellType implements ISpellType {
 
+    private static int id = 0;
     private final String name;
     private final int maxLevel;
     private final int consumeMana;
     private final int cooldown;
     private final boolean canTrigger;
-    private final SpellCategories category;
+    private final boolean canPlaceOnCircle;
+    private final int priority;
+    private final SpellUsageCategories category;
     private final ResourceLocation resourceLocation;
 
     public SpellType(String name, SpellProperties properties) {
-        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger, properties.category);
+        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger, properties.canPlaceOnCircle, id ++, properties.usageCategory);
     }
 
-    public SpellType(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, SpellCategories category) {
+    private SpellType(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, boolean canPlaceOnCircle, int priority, SpellUsageCategories category) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.consumeMana = consumeMana;
         this.cooldown = cooldown;
         this.canTrigger = canTrigger;
+        this.canPlaceOnCircle = canPlaceOnCircle;
+        this.priority = priority;
         this.category = category;
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
@@ -72,7 +78,22 @@ public abstract class SpellType implements ISpellType {
     }
 
     @Override
-    public SpellCategories getCategory() {
+    public boolean canPlaceOnCircle() {
+        return canPlaceOnCircle;
+    }
+
+    @Override
+    public int getPriority() {
+        return priority;
+    }
+
+    @Override
+    public int getModPriority() {
+        return 100;
+    }
+
+    @Override
+    public SpellUsageCategories getCategory() {
         return category;
     }
 
@@ -102,23 +123,25 @@ public abstract class SpellType implements ISpellType {
     }
 
     public static SpellProperties properties(){
-        return properties(SpellCategories.PLAYER_ONLY);
+        return properties(SpellUsageCategories.PLAYER_ONLY);
     }
 
-    public static SpellProperties properties(SpellCategories category){
+    public static SpellProperties properties(SpellUsageCategories category){
         return new SpellProperties(category);
     }
 
     public static class SpellProperties {
 
-        private final SpellCategories category;
+        private final SpellUsageCategories usageCategory;
         private int maxLevel = 1;
         private int consumeMana = 0;
         private int cooldown = 0;
         private boolean canTrigger = true;
+        private boolean canPlaceOnCircle = true;
+        private SpellSortCategories sortCategory = SpellSortCategories.MISC;
 
-        public SpellProperties(SpellCategories category) {
-            this.category = category;
+        public SpellProperties(SpellUsageCategories category) {
+            this.usageCategory = category;
         }
 
         public SpellProperties maxLevel(int maxLevel){
@@ -139,6 +162,11 @@ public abstract class SpellType implements ISpellType {
         public SpellProperties notTrigger(){
             this.canTrigger = false;
             return this;
+        }
+
+        public SpellProperties notOnCircle(){
+            this.canPlaceOnCircle = false;
+            return this.notTrigger();
         }
 
     }

@@ -1,6 +1,7 @@
 package hungteen.imm.common.world.structure;
 
 import hungteen.imm.common.world.structure.structures.PlainsTradingMarket;
+import hungteen.imm.common.world.structure.structures.SpiritLab;
 import hungteen.imm.common.world.structure.structures.SpiritualFlameAltar;
 import hungteen.imm.common.world.structure.structures.SpiritualPlainsVillage;
 import hungteen.imm.util.Util;
@@ -29,10 +30,17 @@ public interface IMMTemplatePools {
     ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_COLUMNS = create("spiritual_flame_altar/columns");
     ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_WALLS = create("spiritual_flame_altar/walls");
     ResourceKey<StructureTemplatePool> SPIRITUAL_FLAME_ALTAR_BI_FANG = create("spiritual_flame_altar/bi_fang");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_CENTER = create("spirit_lab/center");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_MAIN = create("spirit_lab/labs");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_SIDE = create("spirit_lab/sides");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_HOUSES = create("spirit_lab/houses");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_DECORS = create("spirit_lab/decors");
+    ResourceKey<StructureTemplatePool> SPIRIT_LAB_TREES = create("spirit_lab/trees");
 
     static void register(BootstapContext<StructureTemplatePool> context){
         PlainsTradingMarket.initPools(context);
         SpiritualFlameAltar.initPools(context);
+        SpiritLab.initPools(context);
     }
 
     private static ResourceKey<StructureTemplatePool> create(String name) {

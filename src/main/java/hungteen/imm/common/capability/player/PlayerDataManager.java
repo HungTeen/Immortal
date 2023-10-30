@@ -356,6 +356,13 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.spellList[Mth.clamp(pos, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
     }
 
+    public boolean isSpellOnCircle(ISpellType spell) {
+        for (ISpellType spellType : this.spellList) {
+            if(spell == spellType) return true;
+        }
+        return false;
+    }
+
     public void cooldownSpell(@NotNull ISpellType spell, long num) {
         this.spellCDs.put(spell, num);
         this.sendSpellPacket(SpellPacket.SpellOptions.COOL_DOWN, spell, num);

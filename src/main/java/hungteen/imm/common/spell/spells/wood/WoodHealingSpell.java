@@ -3,7 +3,7 @@ package hungteen.imm.common.spell.spells.wood;
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.effect.MobEffects;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class WoodHealingSpell extends SpellType {
 
     public WoodHealingSpell() {
-        super("wood_healing", properties(SpellCategories.BUFF_SELF).maxLevel(1).mana(40).cd(500));
+        super("wood_healing", properties(SpellUsageCategories.BUFF_SELF).maxLevel(1).mana(40).cd(500));
     }
 
     @Override

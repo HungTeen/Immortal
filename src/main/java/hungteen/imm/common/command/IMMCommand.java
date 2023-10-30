@@ -149,11 +149,14 @@ public class IMMCommand {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(realm.getRegistryName())
-                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, null))
+                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, null, false))
                                             .then(Commands.argument("stage", StringArgumentType.string())
                                                     .suggests(IMMSuggestions.ALL_REALM_STAGES)
-                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage")))
+                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage"), false))
+                                            .then(Commands.literal("force")
+                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage"), true))
                                             )))
+                            )
                             .then(Commands.literal("show")
                                     .executes(command -> showRealm(command.getSource(), EntityArgument.getPlayers(command, "targets")))
                             )
@@ -374,10 +377,10 @@ public class IMMCommand {
 
     /* Realm */
 
-    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm, @Nullable String stageString) {
+    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm, @Nullable String stageString, boolean force) {
         RealmStages stage = Optional.ofNullable(stageString).map(String::toUpperCase).map(RealmStages::valueOf).orElse(RealmStages.PRELIMINARY);
         for (ServerPlayer player : targets) {
-            final boolean result = PlayerUtil.checkAndSetRealm(player, realm, stage);
+            final boolean result = PlayerUtil.checkAndSetRealm(player, realm, stage, force);
             final Component info = result ? RealmManager.getRealmInfo(realm, stage) : COMMAND_CULTIVATION_NOT_ENOUGH;
             PlayerHelper.sendMsgTo(player, info);
             source.sendSuccess(() -> getPlayerInfo(player, info), true);

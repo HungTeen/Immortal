@@ -3,7 +3,7 @@ package hungteen.imm.common.spell.spells.fire;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.SpellManager;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.HitResult;
 public class IgnitionSpell extends SpellType {
 
     public IgnitionSpell() {
-        super("ignition", properties(SpellCategories.DEBUFF_TARGET).mana(25).cd(60).maxLevel(1));
+        super("ignition", properties(SpellUsageCategories.DEBUFF_TARGET).mana(25).cd(60).maxLevel(1));
     }
 
     public static void checkIgnitionArrow(Projectile projectile, HitResult hitResult){

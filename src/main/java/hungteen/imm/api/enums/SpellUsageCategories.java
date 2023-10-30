@@ -5,7 +5,7 @@ package hungteen.imm.api.enums;
  * @author: HungTeen
  * @create: 2023-09-03 19:26
  **/
-public enum SpellCategories {
+public enum SpellUsageCategories {
 
     /**
      * 只有玩家可用。
@@ -35,11 +35,11 @@ public enum SpellCategories {
 
     private final boolean requireEntityTarget;
 
-    SpellCategories(){
+    SpellUsageCategories(){
         this(false);
     }
 
-    SpellCategories(boolean requireEntityTarget){
+    SpellUsageCategories(boolean requireEntityTarget){
         this.requireEntityTarget = requireEntityTarget;
     }
 

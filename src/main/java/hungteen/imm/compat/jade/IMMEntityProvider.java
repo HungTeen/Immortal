@@ -45,24 +45,26 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         PlayerHelper.getClientPlayer().ifPresent(player -> {
             final IElementHelper helper = iTooltip.getElementHelper();
-            if(PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && RealmManager.mayHaveRoots(entityAccessor.getEntity())){
-                List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getSpiritualRoots(entityAccessor.getEntity()));
-                iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots))));
-            }
-            if(PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)){
-                final IRealmType playerRealm = RealmManager.getEntityRealm(player);
-                final IRealmType realm = RealmManager.getEntityRealm(entityAccessor.getEntity());
-                final RealmStages stage = RealmManager.getRealmStage(entityAccessor.getEntity()).orElse(null);
-                final MutableComponent component = RealmTypes.getCategory().append(": ");
-                if(RealmManager.hasRealmGap(playerRealm, realm) && !RealmManager.compare(playerRealm, realm)){
-                    final int gap = RealmManager.getRealmGap(playerRealm, realm);
-                    if(gap == 1){
-                        iTooltip.add(helper.text(component.append(realm.getComponent())));
+            if(PlayerUtil.isSpellOnCoolDown(player, SpellTypes.SPIRIT_EYES)) {
+                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && RealmManager.mayHaveRoots(entityAccessor.getEntity())) {
+                    List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getSpiritualRoots(entityAccessor.getEntity()));
+                    iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots))));
+                }
+                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)) {
+                    final IRealmType playerRealm = RealmManager.getEntityRealm(player);
+                    final IRealmType realm = RealmManager.getEntityRealm(entityAccessor.getEntity());
+                    final RealmStages stage = RealmManager.getRealmStage(entityAccessor.getEntity()).orElse(null);
+                    final MutableComponent component = RealmTypes.getCategory().append(": ");
+                    if (RealmManager.hasRealmGap(playerRealm, realm) && !RealmManager.compare(playerRealm, realm)) {
+                        final int gap = RealmManager.getRealmGap(playerRealm, realm);
+                        if (gap == 1) {
+                            iTooltip.add(helper.text(component.append(realm.getComponent())));
+                        } else {
+                            iTooltip.add(helper.text(TipUtil.UNKNOWN));
+                        }
                     } else {
-                        iTooltip.add(helper.text(TipUtil.UNKNOWN));
+                        iTooltip.add(helper.text(component.append(RealmManager.getRealmInfo(realm, stage))));
                     }
-                } else {
-                    iTooltip.add(helper.text(component.append(RealmManager.getRealmInfo(realm, stage))));
                 }
             }
             // 要开启调试模式。

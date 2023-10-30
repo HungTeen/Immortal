@@ -51,6 +51,8 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
                 .add(IMMBiomes.PLAINS);
         this.tag(IMMBiomeTags.HAS_SPIRITUAL_FLAME_ALTAR)
                 .add(IMMBiomes.SAVANNA);
+        this.tag(IMMBiomeTags.HAS_SPIRIT_LAB)
+                .add(IMMBiomes.CUT_DARK_FOREST);
     }
 
     @SafeVarargs

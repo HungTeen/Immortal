@@ -80,7 +80,7 @@ public class SpellPacket {
                             });
                         }
                         case ACTIVATE -> {
-                            SpellManager.pressToActivateSpell(ctx.get().getSender());
+                            SpellManager.activateSpell(ctx.get().getSender());
                         }
                     }
                 }

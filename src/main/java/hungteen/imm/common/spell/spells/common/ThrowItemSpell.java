@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells.common;
 
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 public class ThrowItemSpell extends SpellType {
 
     public ThrowItemSpell() {
-        super("throw_item", properties(SpellCategories.ATTACK_TARGET).maxLevel(1).mana(25).cd(80));
+        super("throw_item", properties(SpellUsageCategories.ATTACK_TARGET).maxLevel(1).mana(25).cd(80));
     }
 
     @Override

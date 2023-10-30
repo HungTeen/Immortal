@@ -68,12 +68,12 @@ public class PoisonWind extends ThrowableProjectile {
                 if (entity instanceof LivingEntity) {
                     cloud.setOwner((LivingEntity)entity);
                 }
-                cloud.setRadius(3.0F);
+                cloud.setRadius(1.5F);
                 cloud.setDuration(100);
                 cloud.addEffect(EffectHelper.viewEffect(MobEffects.POISON, 200, 2));
                 if (!list.isEmpty()) {
                     for(LivingEntity livingentity : list) {
-                        ElementManager.addElementAmount(livingentity, Elements.WOOD, false, 4, 8F);
+                        ElementManager.addElementAmount(livingentity, Elements.WOOD, false, 1, 2F);
                         double d0 = this.distanceToSqr(livingentity);
                         if (d0 < 16.0D) {
                             cloud.setPos(livingentity.getX(), livingentity.getY(), livingentity.getZ());
@@ -82,16 +82,10 @@ public class PoisonWind extends ThrowableProjectile {
                     }
                 }
 
-//                this.level().levelEvent(2006, this.blockPosition(), this.isSilent() ? -1 : 1);
                 this.level().addFreshEntity(cloud);
                 this.discard();
             }
         }
-    }
-
-    @Override
-    public boolean isPickable() {
-        return false;
     }
 
     @Override

@@ -87,7 +87,7 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
                 }
                 return InteractionResult.SUCCESS;
             } else if (level.getBlockEntity(blockPos) instanceof SpiritualFurnaceBlockEntity furnaceBlockEntity) {
-                if (! level.isClientSide() && furnaceBlockEntity.canInteractWith()) {
+                if (level.isClientSide() && furnaceBlockEntity.canInteractWith()) {
                     furnaceBlockEntity.setDisplayBlockPattern(level, !furnaceBlockEntity.isDisplayBlockPattern());
                     if (furnaceBlockEntity.isDisplayBlockPattern()) {
                         PlayerHelper.sendTipTo(player, TipUtil.info("start_display_furnace").withStyle(ChatFormatting.GREEN));

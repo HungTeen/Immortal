@@ -238,7 +238,11 @@ public class PlayerUtil {
         return getManagerResult(player, m -> m.getSpellAt(pos), null);
     }
 
-    public static boolean isSpellOnCooldown(Player player, ISpellType spell) {
+    public static boolean isSpellOnCircle(Player player, ISpellType spell) {
+        return getManagerResult(player, m -> m.isSpellOnCircle(spell), false);
+    }
+
+    public static boolean isSpellOnCoolDown(Player player, ISpellType spell) {
         return getManagerResult(player, m -> m.isSpellOnCoolDown(spell), false);
     }
 
@@ -385,14 +389,14 @@ public class PlayerUtil {
      * Only used on client side.
      */
     public static void clientSetRealm(Player player, IRealmType realm){
-        checkAndSetRealm(player, realm, RealmStages.PRELIMINARY);
+        checkAndSetRealm(player, realm, RealmStages.PRELIMINARY, false);
     }
 
     /**
      * 尝试直接改变境界。
      * @return 是否改变成功。
      */
-    public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage){
+    public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage, boolean force){
         final AtomicBoolean success = new AtomicBoolean(true);
         getOptManager(player).ifPresent(m -> {
             if(EntityHelper.isServer(player)){
@@ -401,7 +405,15 @@ public class PlayerUtil {
                     m.setRealmType(realm);
                     m.setRealmStage(stage);
                 } else {
-                    success.set(false);
+                    if(force){
+                        final float requiredXp = RealmManager.getStageRequiredCultivation(realm, stage) / ExperienceTypes.values().length;
+                        for (ExperienceTypes type : ExperienceTypes.values()) {
+                            m.setExperience(type, requiredXp);
+                        }
+                        m.setRealmType(realm);
+                        m.setRealmStage(stage);
+                    }
+                    success.set(force);
                 }
             } else {
                 m.setRealmType(realm);

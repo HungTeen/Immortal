@@ -113,7 +113,7 @@ public class EmptyCultivatorAi {
     public static void initIdleBehaviors(Brain<EmptyCultivator> brain, float speed) {
         brain.addActivity(Activity.IDLE, 10, ImmutableList.of(
                 //寻找目标
-                new StartFighting<>(EmptyCultivatorAi::findNearestValidAttackTarget),
+//                new StartFighting<>(EmptyCultivatorAi::findNearestValidAttackTarget),
                 //吃东西
                 new EatFood(),
                 //四处逛逛

@@ -25,6 +25,7 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -102,13 +103,29 @@ public class SpellOverlay {
      * Refer to {@link Gui#renderHotbar(float, GuiGraphics)}.
      */
     public static void renderPreparedSpell(ForgeGui gui, GuiGraphics graphics, float partialTick, int width, int height) {
-        final ISpellType spell = PlayerUtil.getPreparingSpell(ClientUtil.player());
-        if (ClientUtil.canRenderOverlay() && spell != null) {
+        if (ClientUtil.canRenderOverlay()){
             ClientUtil.push("renderPreparedSpell");
-            final int x = ((width >> 1) - 91 - 26) - 2;
-            final int y = (height - 16 - 3) - 22;
-            graphics.blit(TEXTURE, x, y, 20, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
-            renderSpellSlot(graphics, spell, x, y, true);
+            List<ISpellType> spells = new ArrayList<>();
+            final ISpellType mainSpell = PlayerUtil.getPreparingSpell(ClientUtil.player());
+            if(mainSpell != null) spells.add(mainSpell);
+            for(int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++ i){
+                final ISpellType curSpell = PlayerUtil.getSpellAt(ClientUtil.player(), i);
+                if(curSpell != null && PlayerUtil.isSpellOnCoolDown(ClientUtil.player(), curSpell) && !spells.contains(curSpell)){
+                    spells.add(curSpell);
+                }
+            }
+            int displayCount = spells.size();
+            if(displayCount > 0){
+                final int stride = SPELL_SLOT_LEN / 2;
+                int x = ((width >> 1) - 91 - 26) - 2 - (displayCount - 1) * stride;
+                final int y = (height - 16 - 3) - 22;
+                for(int i = displayCount - 1; i >= 0; -- i){
+                    int addY = (spells.get(i) == mainSpell ? -3 : 0);
+                    graphics.blit(TEXTURE, x, y + addY, 20, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
+                    renderSpellSlot(graphics, spells.get(i), x, y + addY, true);
+                    x += stride;
+                }
+            }
             ClientUtil.pop();
         }
     }

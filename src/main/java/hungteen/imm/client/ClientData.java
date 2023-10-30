@@ -18,6 +18,8 @@ public class ClientData {
 
     public static boolean isDebugMode = false; // 是否开启Debug模式。
 
+    public static boolean sendOnCoolDown = false; // 是否发送了冷却消息。
+
     public static boolean StartSmithing = false;
     public static float SmithingProgress = 0;
     public static float BestPointDisplayTick = 0;

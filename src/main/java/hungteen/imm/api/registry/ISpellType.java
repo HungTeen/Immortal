@@ -2,7 +2,7 @@ package hungteen.imm.api.registry;
 
 import hungteen.htlib.api.interfaces.ISimpleEntry;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,10 +53,20 @@ public interface ISpellType extends ISimpleEntry {
     float getLearnPoint(int level);
 
     /**
-     * 法术是否能被触发，能则会被放置在法术轮盘上。
+     * 法术是否能被触发（包括主动和被动）。
      * @return Whether can the spell be triggered.
      */
     boolean canTrigger();
+
+    /**
+     * 法术是否能被放置在法术轮盘上。
+     * @return Whether can the spell be place on circle.
+     */
+    boolean canPlaceOnCircle();
+
+    int getPriority();
+
+    int getModPriority();
 
     default ClipContext.Block getBlockClipMode(int level){
         return ClipContext.Block.COLLIDER;
@@ -70,7 +80,7 @@ public interface ISpellType extends ISimpleEntry {
      * 此法术是否为玩家专属，其他生物不需要学。
      * @return Whether can the spell be learned by non-player entities.
      */
-    SpellCategories getCategory();
+    SpellUsageCategories getCategory();
 
     MutableComponent getSpellDesc(int level);
 

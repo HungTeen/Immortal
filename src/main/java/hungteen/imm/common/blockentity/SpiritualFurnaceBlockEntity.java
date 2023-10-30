@@ -166,17 +166,17 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         return Optional.empty();
     }
 
-    @Override
-    public @org.jetbrains.annotations.Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        tag.putBoolean("DisplayBlockPattern", this.displayBlockPattern);
-        return tag;
-    }
+//    @Override
+//    public @org.jetbrains.annotations.Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+//        return ClientboundBlockEntityDataPacket.create(this);
+//    }
+//
+//    @Override
+//    public CompoundTag getUpdateTag() {
+//        CompoundTag tag = super.getUpdateTag();
+//        tag.putBoolean("DisplayBlockPattern", this.displayBlockPattern);
+//        return tag;
+//    }
 
     @Override
     public void load(CompoundTag tag) {
@@ -190,9 +190,6 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         if(tag.contains("MaxFlameValue")){
             this.maxFlameValue = tag.getInt("MaxFlameValue");
         }
-        if(tag.contains("DisplayBlockPattern")){
-            this.displayBlockPattern = tag.getBoolean("DisplayBlockPattern");
-        }
     }
 
     @Override
@@ -201,7 +198,6 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         tag.putBoolean("HasTriggered", this.triggered);
         tag.putInt("CurrentFlameValue", this.currentFlameValue);
         tag.putInt("MaxFlameValue", this.maxFlameValue);
-        tag.putBoolean("DisplayBlockPattern", this.displayBlockPattern);
     }
 
     @Nullable
@@ -240,8 +236,6 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     public void setDisplayBlockPattern(Level level, boolean displayBlockPattern) {
         this.displayBlockPattern = displayBlockPattern;
         this.lastInteractTime = level.getGameTime();
-        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        this.setChanged();
     }
 
     @Override

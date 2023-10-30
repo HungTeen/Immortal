@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells.wood;
 
 import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.SpellCategories;
+import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class WitherSpell extends SpellType {
 
     public WitherSpell() {
-        super("wither", properties(SpellCategories.DEBUFF_TARGET).maxLevel(1).mana(50).cd(450));
+        super("wither", properties(SpellUsageCategories.DEBUFF_TARGET).maxLevel(1).mana(50).cd(450));
     }
 
     @Override

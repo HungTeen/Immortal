@@ -9,7 +9,7 @@ import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
-import hungteen.imm.client.event.handler.SpellCircleHandler;
+import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.client.gui.GuiUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.HTButton;
@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         this.scrollComponent = new ScrollComponent<>(this, 16, 6, 5) {
             @Override
             protected boolean onClick(Minecraft mc, Screen screen, ISpellType spell, int slotId) {
-                if (spell.canTrigger()) {
+                if (spell.canPlaceOnCircle()) {
                     if (SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()) {
                         SpellScreen.this.selectPos = slotId + 1; // 选择当前法术。
                     } else if (SpellScreen.this.selectOnCircle()) {
@@ -84,15 +85,15 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         this.scrollComponent.setOffset(this.leftPos + 15, this.topPos + 13);
         this.scrollComponent.setInterval(2);
         this.modeButton = new ModeButton(Button.builder(TipUtil.gui("meditation.mode"), (button) -> {
-            if (SpellCircleHandler.useDefaultCircle()) {
+            if (SpellHandler.useDefaultCircle()) {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_move_mode")));
             } else {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
             }
-            SpellCircleHandler.changeCircleMode();
+            SpellHandler.changeCircleMode();
             NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
         }).pos(this.leftPos - BUTTON_WIDTH, this.topPos).tooltip(Tooltip.create(
-                TipUtil.gui("meditation." + (SpellCircleHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
+                TipUtil.gui("meditation." + (SpellHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
         )));
         this.addRenderableWidget(this.modeButton);
     }
@@ -213,7 +214,8 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     public List<ISpellType> getItems() {
         return SpellTypes.registry().getValues().stream()
                 .filter(type -> PlayerUtil.hasLearnedSpell(getMinecraft().player, type))
-//                .filter(ISpellType::canTrigger)
+                .sorted(Comparator.comparingInt(ISpellType::getPriority))
+                .sorted(Comparator.comparingInt(ISpellType::getModPriority))
                 .toList();
     }
 
@@ -232,14 +234,14 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         }
         components.add(SpellManager.getCostComponent(item.getConsumeMana()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
         components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
-        if (!item.canTrigger()) {
+        if (!item.canPlaceOnCircle()) {
             components.add(TipUtil.tooltip("can_not_select").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         }
         graphics.renderTooltip(font, components, Optional.empty(), x, y);
     }
 
     public void setSpellAt(int pos, @Nullable ISpellType spell) {
-        if (spell != null && spell.canTrigger()) {
+        if (spell != null && spell.canPlaceOnCircle()) {
             NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
         } else if(spell == null){
             NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, pos));

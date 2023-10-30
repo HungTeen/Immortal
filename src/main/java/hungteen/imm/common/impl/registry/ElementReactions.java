@@ -74,6 +74,28 @@ public class ElementReactions {
             "burning", false, 120, false, 0.5F, 0.25F)
     );
 
+    /* 化灵 */
+
+    public static final IElementReaction METAL_SPIRIT = register(new SummonSpiritReaction<>(
+            "metal_spirit", IMMEntities.METAL_SPIRIT, Elements.METAL, 10
+    ));
+
+    public static final IElementReaction WOOD_SPIRIT = register(new SummonSpiritReaction<>(
+            "wood_spirit", IMMEntities.WOOD_SPIRIT, Elements.WOOD, 10
+    ));
+
+    public static final IElementReaction WATER_SPIRIT = register(new SummonSpiritReaction<>(
+            "water_spirit", IMMEntities.WATER_SPIRIT, Elements.WATER, 10
+    ));
+
+    public static final IElementReaction FIRE_SPIRIT = register(new SummonSpiritReaction<>(
+            "fire_spirit", IMMEntities.FIRE_SPIRIT, Elements.FIRE, 10
+    ));
+
+    public static final IElementReaction EARTH_SPIRIT = register(new SummonSpiritReaction<>(
+            "earth_spirit", IMMEntities.EARTH_SPIRIT, Elements.EARTH, 10
+    ));
+
     /* 相生 */
 
     public static final IElementReaction CRYSTALLIZATION = register(new GenerationReaction(
@@ -513,14 +535,14 @@ public class ElementReactions {
     /**
      * 化灵反应。
      */
-    public static abstract class SummonSpiritReaction extends ElementReaction {
+    public static class SummonSpiritReaction<T extends ElementSpirit> extends ElementReaction {
 
         public static final int SPIRIT_COST = 10;
-        private final Supplier<EntityType<ElementSpirit>> spiritType;
+        private final Supplier<EntityType<T>> spiritType;
         private final Elements element;
         private final float amount;
 
-        private SummonSpiritReaction(String name, Supplier<EntityType<ElementSpirit>> spiritType, Elements element, float amount) {
+        private SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Elements element, float amount) {
             super(name, true, 200, List.of(
                     new ElementEntry(Elements.SPIRIT, true, SPIRIT_COST),
                     new ElementEntry(element, true, amount)

@@ -195,22 +195,22 @@
   },
   "requirements": [
     [
-      "placed_red_wool_cushion",
-      "placed_light_gray_wool_cushion",
-      "placed_white_wool_cushion",
-      "placed_light_blue_wool_cushion",
-      "placed_black_wool_cushion",
-      "placed_orange_wool_cushion",
-      "placed_cyan_wool_cushion",
-      "placed_pink_wool_cushion",
       "placed_brown_wool_cushion",
       "placed_blue_wool_cushion",
+      "placed_orange_wool_cushion",
+      "placed_pink_wool_cushion",
+      "placed_magenta_wool_cushion",
+      "placed_red_wool_cushion",
+      "placed_black_wool_cushion",
       "placed_gray_wool_cushion",
-      "placed_lime_wool_cushion",
-      "placed_green_wool_cushion",
-      "placed_purple_wool_cushion",
+      "placed_white_wool_cushion",
       "placed_yellow_wool_cushion",
-      "placed_magenta_wool_cushion"
+      "placed_light_blue_wool_cushion",
+      "placed_cyan_wool_cushion",
+      "placed_purple_wool_cushion",
+      "placed_light_gray_wool_cushion",
+      "placed_green_wool_cushion",
+      "placed_lime_wool_cushion"
     ]
   ],
   "sends_telemetry_event": true

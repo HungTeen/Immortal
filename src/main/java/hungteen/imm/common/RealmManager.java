@@ -89,7 +89,7 @@ public class RealmManager {
         final IRealmType oldRealm = PlayerUtil.getPlayerRealm(player);
         final RealmStages oldStage = PlayerUtil.getPlayerRealmStage(player);
         if(oldRealm != realm){
-            PlayerUtil.checkAndSetRealm(player, realm, stage);
+            PlayerUtil.checkAndSetRealm(player, realm, stage, false);
         } else if(oldStage != stage){
             PlayerUtil.checkAndSetRealmStage(player, stage);
         }

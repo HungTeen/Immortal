@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.client.render.entity.spirit.FireSpiritRender;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -52,7 +54,7 @@ public class FireSpirit extends ElementSpirit{
     public FireSpirit(EntityType<? extends IMMMob> type, Level level) {
         super(type, level);
         this.moveControl = new SpiritJumpMoveControl(this);
-        this.splitChance = 3; // 默认最多3次。
+        this.splitChance = 2; // 默认最多3次。
     }
 
     @Override
@@ -78,11 +80,10 @@ public class FireSpirit extends ElementSpirit{
         super.tick();
         if(EntityHelper.isServer(this)){
             if(this.tickCount % 5 == 0 && this.getRandom().nextFloat() < 0.25){
-                final float fireAmount = ElementManager.getElementAmount(this, Elements.FIRE, false);
                 EntityUtil.forRange(this, LivingEntity.class, 2F, 2F, target -> {
                     return !(target instanceof FireSpirit) && this != target.getVehicle();
                 }, (target, factor) -> {
-                    ElementManager.addElementAmount(target, Elements.FIRE, false, fireAmount * 0.2F * factor, 5);
+                    ElementManager.addElementAmount(target, Elements.FIRE, false, 0.5F * factor, 2);
                     target.setSecondsOnFire(5);
                 });
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 10, 0.1);
@@ -104,8 +105,8 @@ public class FireSpirit extends ElementSpirit{
         EntityUtil.forRange(this, LivingEntity.class, 4F, 3F, target -> {
             return !(target instanceof FireSpirit);
         }, (target, factor) -> {
-            ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5 * factor);
-            target.hurt(IMMDamageSources.fireElement(this), scale * factor * 10);
+            ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 2 * factor);
+            target.hurt(IMMDamageSources.fireElement(this), scale * factor * 6);
         });
         this.playSound(SoundEvents.GENERIC_EXPLODE);
     }
@@ -148,7 +149,7 @@ public class FireSpirit extends ElementSpirit{
     }
 
     @Override
-    public boolean isOnFire() {
+    public boolean isSensitiveToWater() {
         return true;
     }
 

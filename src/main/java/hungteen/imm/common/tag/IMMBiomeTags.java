@@ -28,6 +28,7 @@ public interface IMMBiomeTags {
     TagKey<Biome> HAS_TELEPORT_RUIN = tag("has_structure/teleport_ruin");
     TagKey<Biome> HAS_PLAINS_TRADING_MARKET = tag("has_structure/plains_trading_market");
     TagKey<Biome> HAS_SPIRITUAL_FLAME_ALTAR = tag("has_structure/spiritual_flame_altar");
+    TagKey<Biome> HAS_SPIRIT_LAB = tag("has_structure/spirit_lab");
 
     private static TagKey<Biome> tag(String name){
         return BiomeHelper.get().tag(Util.prefix(name));

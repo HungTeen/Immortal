@@ -3,6 +3,7 @@ package hungteen.imm.common.entity.creature.spirit;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -98,6 +99,12 @@ public class MetalSpirit extends ElementSpirit{
                 this.attackAnimationState.start(tickCount);
             }
         }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        ElementManager.addElementAmount(target, Elements.METAL, false, 3, 5);
+        return super.doHurtTarget(target);
     }
 
     protected boolean finishPreAggressive(){

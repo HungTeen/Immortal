@@ -21,6 +21,7 @@ public interface IMMStructureSets {
     ResourceKey<StructureSet> TELEPORT_RUINS = create("teleport_ruins");
     ResourceKey<StructureSet> PLAINS_TRADING_MARKET_SET = create("plains_trading_markets");
     ResourceKey<StructureSet> SPIRITUAL_FLAME_ALTAR_SET = create("spiritual_flame_altars");
+    ResourceKey<StructureSet> SPIRIT_LAB_SET = create("spirit_labs");
 
     static void register(BootstapContext<StructureSet> context) {
         final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
@@ -44,6 +45,15 @@ public interface IMMStructureSets {
                         8,
                         RandomSpreadType.TRIANGULAR,
                         1692262025
+                )
+        ));
+        context.register(SPIRIT_LAB_SET, new StructureSet(
+                structures.getOrThrow(IMMStructures.SPIRIT_LAB),
+                new RandomSpreadStructurePlacement(
+                        32,
+                        8,
+                        RandomSpreadType.LINEAR,
+                        1420587049
                 )
         ));
     }

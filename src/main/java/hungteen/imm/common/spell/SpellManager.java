@@ -1,7 +1,6 @@
 package hungteen.imm.common.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.records.Spell;
@@ -32,19 +31,17 @@ import java.util.function.Supplier;
 public class SpellManager {
 
     private static final MutableComponent FORGOT_SPELL = TipUtil.info("spell.forgot");
-    private static final MutableComponent SPELL_ON_CD = TipUtil.info("spell.on_cooldown");
+    public static final MutableComponent SPELL_ON_CD = TipUtil.info("spell.on_cooldown");
     private static final int FAIL_CD = 20;
 
-    public static void pressToActivateSpell(Player player) {
-        if (EntityHelper.isServer(player)) {
-            // 使用法术的判断。
-            if (EntityHelper.isEntityValid(player) && SpellManager.hasSpellSelected(player)) {
-                SpellManager.activateSpell(player);
-            }
-        } else {
-            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
-        }
-    }
+//    public static void pressToActivateSpell(Player player) {
+//        // 使用法术的判断。
+//        if (EntityHelper.isEntityValid(player) && SpellManager.hasSpellSelected(player)) {
+//            if (EntityHelper.isServer(player)) {
+//                SpellManager.activateSpell(player);
+//            }
+//        }
+//    }
 
     /**
      * Only on Client Side.
@@ -105,6 +102,9 @@ public class SpellManager {
         }
     }
 
+    /**
+     * TODO 支持生物的法术释放。
+     */
     public static Optional<Spell> canActivateSpell(LivingEntity entity, @Nullable ISpellType targetSpell, boolean sendTip) {
         if (entity instanceof Player player) {
             return canActivateSpell(player, targetSpell, sendTip);
@@ -116,17 +116,17 @@ public class SpellManager {
      * 是否能够触发法术。
      *
      * @param player      释放法术的玩家。
-     * @param targetSpell 当前要求触发的法术（检查与选择的法术是否匹配）。
+     * @param targetSpell null表示主动触发手上的法术，否则为被动触发。
      * @param sendTip     是否给予不能触发的反馈。
      * @return empty 表示不能触发。
      */
     public static Optional<Spell> canActivateSpell(Player player, @Nullable ISpellType targetSpell, boolean sendTip) {
-        final ISpellType spell = PlayerUtil.getPreparingSpell(player);
-        if (spell != null && (targetSpell == null || spell == targetSpell)) {
+        final ISpellType spell = targetSpell == null ? PlayerUtil.getPreparingSpell(player) : targetSpell;
+        if (spell != null && (targetSpell == null || PlayerUtil.isSpellOnCircle(player, spell))) {
             final int level = PlayerUtil.getSpellLevel(player, spell);
             if (level > 0) {
                 // 冷却结束。
-                if (!PlayerUtil.isSpellOnCooldown(player, spell)) {
+                if (!PlayerUtil.isSpellOnCoolDown(player, spell)) {
                     // 灵力足够。
                     if (PlayerUtil.getMana(player) >= spell.getConsumeMana()) {
                         if (!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
