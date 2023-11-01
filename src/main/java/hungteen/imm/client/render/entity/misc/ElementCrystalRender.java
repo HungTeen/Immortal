@@ -5,9 +5,9 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.records.HTColor;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.ElementAmethystModel;
+import hungteen.imm.client.model.entity.ElementCrystalModel;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,22 +21,22 @@ import net.minecraft.resources.ResourceLocation;
  * @author: HungTeen
  * @create: 2023-09-18 20:30
  **/
-public class ElementAmethystRender extends EntityRenderer<ElementAmethyst> {
+public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
 
-    private static final ResourceLocation TEXTURE = Util.get().entityTexture("element_amethyst");
+    private static final ResourceLocation TEXTURE = Util.get().entityTexture("element_crystal");
     private static final RenderType CUTOUT = RenderType.entityCutoutNoCull(TEXTURE);
     private static final RenderType LIGHT = RenderType.eyes(TEXTURE);
-    private final ElementAmethystModel solidModel;
-    private final ElementAmethystModel lightModel;
+    private final ElementCrystalModel solidModel;
+    private final ElementCrystalModel lightModel;
 
-    public ElementAmethystRender(EntityRendererProvider.Context context) {
+    public ElementCrystalRender(EntityRendererProvider.Context context) {
         super(context);
-        this.solidModel = new ElementAmethystModel(context.bakeLayer(IMMModelLayers.ELEMENT_AMETHYST), true);
-        this.lightModel = new ElementAmethystModel(context.bakeLayer(IMMModelLayers.ELEMENT_AMETHYST), false);
+        this.solidModel = new ElementCrystalModel(context.bakeLayer(IMMModelLayers.ELEMENT_CRYSTAL), true);
+        this.lightModel = new ElementCrystalModel(context.bakeLayer(IMMModelLayers.ELEMENT_CRYSTAL), false);
     }
 
     @Override
-    public void render(ElementAmethyst entityIn, float entityYaw, float partialTicks, PoseStack stack,
+    public void render(ElementCrystal entityIn, float entityYaw, float partialTicks, PoseStack stack,
                        MultiBufferSource bufferIn, int packedLightIn) {
         final HTColor color = ElementManager.getElementColor(entityIn, false);
         final float red = ColorHelper.to(color.red());
@@ -51,7 +51,7 @@ public class ElementAmethystRender extends EntityRenderer<ElementAmethyst> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ElementAmethyst entity) {
+    public ResourceLocation getTextureLocation(ElementCrystal entity) {
         return null;
     }
 

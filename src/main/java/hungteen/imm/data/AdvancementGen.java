@@ -1,5 +1,6 @@
 package hungteen.imm.data;
 
+import com.google.common.collect.Comparators;
 import hungteen.htlib.data.HTAdvancementGen;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -69,7 +71,7 @@ public class AdvancementGen extends HTAdvancementGen {
                     .addCriterion("reach_east_world", SpiritualPearlTrigger.TriggerInstance.test(IMMEntities.EMPTY_CULTIVATOR.get(), 0))
                     .save(saver, loc("stuck_in_mortal"));
             Advancement.Builder cushionBuilder = task(imMortal, WoolCushionBlock.getWoolCushion(DyeColor.RED), "long_cultivation");
-            BlockHelper.get().filterEntries(CushionBlock.class::isInstance).forEach(entry -> {
+            BlockHelper.get().filterEntries(CushionBlock.class::isInstance).stream().sorted(Comparator.comparing(l -> l.getKey().location())).forEach(entry -> {
                 cushionBuilder.addCriterion("placed_" + entry.getKey().location().getPath(), ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(entry.getValue()));
             });
             Advancement longCultivation = cushionBuilder.requirements(RequirementsStrategy.OR)

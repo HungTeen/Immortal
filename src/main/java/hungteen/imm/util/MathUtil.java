@@ -1,6 +1,5 @@
 package hungteen.imm.util;
 
-import hungteen.htlib.util.helper.MathHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -28,12 +27,18 @@ public class MathUtil {
         return Math.log(x) / Math.log(2);
     }
 
-    public static float unwrapDegree(float degree){
+    public static float toRadian(float degree){
         return degree * ((float)Math.PI / 180F);
     }
 
-    public static double unwrapDegree(double degree){
+    public static double toRadian(double degree){
         return degree * (Math.PI / 180D);
+    }
+
+    public static Vec3 rotateHorizontally(Vec3 vec, double degree){
+        final double sin = Math.sin(toRadian(degree));
+        final double cos = Math.cos(toRadian(degree));
+        return new Vec3(vec.z * cos - vec.x * sin, vec.y, vec.x * cos + vec.z * sin);
     }
 
     public static int getBarLen(float num, float maxNum, int maxLen) {

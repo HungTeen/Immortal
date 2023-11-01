@@ -18,12 +18,10 @@ import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
 import hungteen.imm.common.item.IMMSpawnEggItem;
-import hungteen.imm.util.Colors;
 import hungteen.imm.util.Util;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,7 +30,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +47,14 @@ public class IMMEntities {
 
     /* Misc */
 
-    public static final RegistryObject<EntityType<ElementAmethyst>> ELEMENT_AMETHYST = registerEntityType(ElementAmethyst::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
+    public static final RegistryObject<EntityType<ElementCrystal>> ELEMENT_AMETHYST = registerEntityType(ElementCrystal::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
     public static final RegistryObject<EntityType<TeleportFormation>> TELEPORT_FORMATION = registerEntityType(TeleportFormation::new, "teleport_formation", MobCategory.MISC, builder -> builder.sized(0F, 0F));
     public static final RegistryObject<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC, builder -> builder.sized(0.4F, 0.4F));
     public static final RegistryObject<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC, builder -> builder.sized(0.9F, 1.8F));
     public static final RegistryObject<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<ThrowingItemEntity>> THROWING_ITEM = registerEntityType(ThrowingItemEntity::new, "throwing_item", MobCategory.MISC, builder -> builder.clientTrackingRange(3).updateInterval(10));
     public static final RegistryObject<EntityType<PoisonWind>> POISON_WIND = registerEntityType(PoisonWind::new, "poison_wind", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10));
+    public static final RegistryObject<EntityType<Tornado>> TORNADO = registerEntityType(Tornado::new, "tornado", MobCategory.MISC, builder -> builder.sized(2F, 2F));
 
     /* Human */
 

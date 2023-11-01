@@ -11,49 +11,33 @@ import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
-import hungteen.imm.common.entity.ai.behavior.IdleBehavior;
-import hungteen.imm.common.entity.ai.behavior.UseSpell;
-import hungteen.imm.common.entity.creature.monster.BiFang;
-import hungteen.imm.common.entity.creature.monster.BiFangAi;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
-import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -175,7 +159,7 @@ public class EarthSpirit extends ElementSpirit {
         super.customServerAiStep();
     }
 
-    public void eat(ElementAmethyst amethyst){
+    public void eat(ElementCrystal amethyst){
         final float amount = ElementManager.getElementAmount(amethyst, Elements.EARTH, false);
         ElementManager.addElementAmount(this, Elements.EARTH, false, amount);
         ElementManager.addElementAmount(this, Elements.SPIRIT, false, amount);
@@ -205,7 +189,7 @@ public class EarthSpirit extends ElementSpirit {
                 instance.registered(MemoryModuleType.LOOK_TARGET),
                 instance.present(IMMMemories.ELEMENT_AMETHYST.get())
         ).apply(instance, (walkTarget, lookTarget, amethyst) -> (level, mob, time) -> {
-            ElementAmethyst elementAmethyst = instance.get(amethyst);
+            ElementCrystal elementAmethyst = instance.get(amethyst);
             if (mob.closerThan(elementAmethyst, 2)) {
                 walkTarget.erase();
             } else {
@@ -227,7 +211,7 @@ public class EarthSpirit extends ElementSpirit {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, EarthSpirit spirit) {
-            final Optional<ElementAmethyst> opt = spirit.getBrain().getMemory(IMMMemories.ELEMENT_AMETHYST.get());
+            final Optional<ElementCrystal> opt = spirit.getBrain().getMemory(IMMMemories.ELEMENT_AMETHYST.get());
             return spirit.isIdle() && opt.isPresent() && spirit.closerThan(opt.get(), 2);
         }
 

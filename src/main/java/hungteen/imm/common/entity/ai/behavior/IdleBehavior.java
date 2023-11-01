@@ -5,6 +5,7 @@ import hungteen.imm.common.entity.ai.IMMMemories;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 import java.util.Map;
@@ -21,7 +22,8 @@ public class IdleBehavior extends Behavior<IMMMob> {
 
     public IdleBehavior(IMMMob.AnimationTypes animationType, int cd, IntProvider cooldown) {
         super(Map.of(
-                IMMMemories.IDLE_COOLING_DOWN.get(), MemoryStatus.VALUE_ABSENT
+                IMMMemories.IDLE_COOLING_DOWN.get(), MemoryStatus.VALUE_ABSENT,
+                MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT
         ), cd);
         this.animationType = animationType;
         this.cooldown = cooldown;

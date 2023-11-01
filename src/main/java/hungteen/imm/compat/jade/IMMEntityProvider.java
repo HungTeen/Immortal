@@ -45,7 +45,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         PlayerHelper.getClientPlayer().ifPresent(player -> {
             final IElementHelper helper = iTooltip.getElementHelper();
-            if(PlayerUtil.isSpellOnCoolDown(player, SpellTypes.SPIRIT_EYES)) {
+            if(PlayerUtil.isSpellOnCircle(player, SpellTypes.SPIRIT_EYES)) {
                 if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && RealmManager.mayHaveRoots(entityAccessor.getEntity())) {
                     List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getSpiritualRoots(entityAccessor.getEntity()));
                     iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots))));

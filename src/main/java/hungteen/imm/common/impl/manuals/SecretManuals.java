@@ -48,7 +48,7 @@ public interface SecretManuals {
         register(context, SpellTypes.RELEASING, 1, builder -> {
             builder.require(spiritual_level_1);
         });
-        register(context, SpellTypes.INTIMIDATE, 1, builder -> {
+        register(context, SpellTypes.INTIMIDATION, 1, builder -> {
             builder.require(spiritual_level_2);
         });
 
@@ -147,15 +147,15 @@ public interface SecretManuals {
         });
 
         /* 土系法术 */
-        register(context, SpellTypes.EARTH_EVADING, 1, builder -> {
-            builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.EARTH));
-        });
-        register(context, SpellTypes.AMETHYST_EXPLOSION, 1, builder -> {
+//        register(context, SpellTypes.EARTH_EVADING, 1, builder -> {
+//            builder.require(spiritual_level_2)
+//                    .require(ElementRequirement.create(Elements.EARTH));
+//        });
+        register(context, SpellTypes.CRYSTAL_EXPLOSION, 1, builder -> {
             builder.require(spiritual_level_3)
                     .require(SpellRequirement.single(SpellTypes.EARTH_MASTERY, 3));
         });
-        register(context, SpellTypes.AMETHYST_HEART, 1, builder -> {
+        register(context, SpellTypes.CRYSTAL_HEART, 1, builder -> {
             builder.require(spiritual_level_3)
                     .require(SpellRequirement.single(SpellTypes.EARTH_MASTERY, 3));
         });

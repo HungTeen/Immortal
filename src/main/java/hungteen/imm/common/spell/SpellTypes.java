@@ -11,9 +11,8 @@ import hungteen.imm.common.spell.spells.common.PickupBlockSpell;
 import hungteen.imm.common.spell.spells.common.PickupItemSpell;
 import hungteen.imm.common.spell.spells.common.ThrowItemSpell;
 import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
-import hungteen.imm.common.spell.spells.earth.AmethystExplosionSpell;
-import hungteen.imm.common.spell.spells.earth.AmethystHeartSpell;
-import hungteen.imm.common.spell.spells.earth.EarthEvadingSpell;
+import hungteen.imm.common.spell.spells.earth.CrystalExplosionSpell;
+import hungteen.imm.common.spell.spells.earth.CrystalHeartSpell;
 import hungteen.imm.common.spell.spells.fire.BurningSpell;
 import hungteen.imm.common.spell.spells.fire.IgnitionSpell;
 import hungteen.imm.common.spell.spells.fire.LavaBreathingSpell;
@@ -41,7 +40,7 @@ public class SpellTypes {
     public static final ISpellType MEDITATION = register(new MeditationSpell());
     public static final ISpellType DISPERSAL = register(new DispersalSpell());
     public static final ISpellType RELEASING = register(new ReleasingSpell());
-    public static final ISpellType INTIMIDATE = register(new IntimidateSpell());
+    public static final ISpellType INTIMIDATION = register(new IntimidationSpell());
 
     /* 神识 - Consciousness */
 
@@ -79,9 +78,9 @@ public class SpellTypes {
 
     /* 土系法术 - Earth Spell */
 
-    public static final ISpellType EARTH_EVADING = register(new EarthEvadingSpell());
-    public static final ISpellType AMETHYST_EXPLOSION = register(new AmethystExplosionSpell());
-    public static final ISpellType AMETHYST_HEART = register(new AmethystHeartSpell());
+//    public static final ISpellType EARTH_EVADING = register(new EarthEvadingSpell());
+    public static final ISpellType CRYSTAL_EXPLOSION = register(new CrystalExplosionSpell());
+    public static final ISpellType CRYSTAL_HEART = register(new CrystalHeartSpell());
 
     /* 元素精通 - Element Mastery */
 

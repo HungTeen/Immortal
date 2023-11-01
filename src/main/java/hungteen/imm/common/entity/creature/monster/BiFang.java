@@ -1,6 +1,7 @@
 package hungteen.imm.common.entity.creature.monster;
 
 import com.mojang.serialization.Dynamic;
+import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.records.Spell;
@@ -14,16 +15,17 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -31,19 +33,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,6 +75,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     public final AnimationState roarAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
     public final AnimationState flapAnimationState = new AnimationState();
+    private final ServerBossEvent bossEvent = (ServerBossEvent)(new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS)).setDarkenScreen(false);
     private int groundTick = 0;
 
     public BiFang(EntityType<? extends IMMGrowableMob> type, Level level) {
@@ -155,7 +156,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
 
     @Override
     protected List<Spell> createLearnSpells() {
-        return List.of(Spell.create(SpellTypes.INTIMIDATE));
+        return List.of(Spell.create(SpellTypes.INTIMIDATION), Spell.create(SpellTypes.WOOD_HEALING));
     }
 
     @Override
@@ -204,6 +205,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         BiFangAi.updateActivity(this);
         this.level().getProfiler().pop();
         super.customServerAiStep();
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
     }
 
     @Override
@@ -212,6 +214,12 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         if (EntityHelper.isServer(this)) {
             if (this.tickCount % 50 == 0 && this.getRandom().nextFloat() < 0.35F) {
                 ElementManager.addElementAmount(this, Elements.WOOD, false, 20);
+            }
+            switch (this.getCurrentAnimation()) {
+                case ROAR -> {
+                    if (atAnimationTick(15)) this.playSound(IMMSounds.BI_FANG_ROAR.get());
+                    else if (atAnimationTick(30)) this.setIdle();
+                }
             }
         } else {
             if (this.onGround()) {
@@ -223,15 +231,15 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             }
             this.flyAnimationState.animateWhen(!(this.onGround() && this.groundTick >= 5), this.tickCount);
             switch (this.getCurrentAnimation()) {
-                case ROAR -> {
-                    if (atAnimationTick(15)) this.playSound(IMMSounds.BI_FANG_ROAR.get());
-                    else if (atAnimationTick(30)) this.setIdle();
+                case FLAP -> {
+                    if (inAnimationRange(3, 7)) {
+                        for(int i = 0; i < 10; ++ i){
+                            final Vec3 pos = getEyePosition().add(this.getLookAngle().normalize().scale(0.5F)).offsetRandom(getRandom(), 1.5F);
+                            final Vec3 speed = this.getLookAngle().normalize().scale(0.15F);
+                            level().addParticle(ParticleTypes.CLOUD, pos.x, pos.y, pos.z, speed.x, speed.y, speed.z);
+                        }
+                    }
                 }
-//                case FLAP -> {
-//                    if (inFlameRange()) {
-//                        ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 20, 0.15F);
-//                    }
-//                }
             }
             if (this.getMana() / this.getMaxMana() >= 0.5F) {
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 5, 0.15F);
@@ -241,12 +249,21 @@ public class BiFang extends IMMGrowableMob implements Enemy {
 
     @Override
     protected void usedSpell(@NotNull Spell spell) {
-        this.setCurrentAnimation(AnimationTypes.ROAR);
+        if(spell.spell() == SpellTypes.INTIMIDATION){
+            this.setCurrentAnimation(AnimationTypes.ROAR);
+        } else if(spell.spell() == SpellTypes.WOOD_HEALING){
+            ParticleUtil.spawnEntityParticle(this, ParticleTypes.HEART, 20, 0.15F);
+        }
     }
 
     @Override
     public boolean canUseSpell(ISpellType spell) {
-        return EntityHelper.isEntityValid(this.getTarget()) && this.distanceTo(this.getTarget()) < 20 && !this.getTarget().hasEffect(IMMEffects.OPPRESSION.get());
+        if(spell == SpellTypes.INTIMIDATION){
+            return IntimidationSpell.canUseOn(this, this.getTarget());
+        } else if(spell == SpellTypes.WOOD_HEALING){
+            return (this.getTarget() == null && this.getHealth() < this.getMaxHealth()) || (this.getTarget() != null && ! this.closerThan(this.getTarget(), 20)) || this.getHealth() < 10;
+        }
+        return false;
     }
 
     @Override
@@ -273,10 +290,6 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         switch (id) {
             case MELEE_ATTACK_ID -> this.attackAnimationState.start(this.tickCount);
         }
-    }
-
-    protected boolean inFlameRange() {
-        return this.inAnimationRange(3, 7);
     }
 
     @Override
@@ -322,6 +335,18 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         this.flapAnimationState.stop();
     }
 
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.bossEvent.addPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
@@ -358,6 +383,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         private final BiFang biFang;
         private final int maxTurn;
         private final boolean hoversInPlace;
+        private long nextChangeTick = 0;
+        private float variantSpeed = 0;
 
         public BiFangFlyMoveControl(BiFang biFang) {
             super(biFang);
@@ -398,9 +425,14 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             } else if (this.operation == Operation.STRAFE && this.mob.getTarget() != null) {
                 this.mob.setNoGravity(true);
                 final float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
+                if(this.mob.level().getGameTime() >= this.nextChangeTick){
+                    this.nextChangeTick = this.mob.level().getGameTime() + this.mob.getRandom().nextIntBetweenInclusive(5, 20);
+                    this.variantSpeed = (float) RandomHelper.getMinMax(this.mob.getRandom(), 2F, 3F) * RandomHelper.getSide(this.mob.getRandom());
+                }
                 final float dz = this.strafeForwards;
-                final float dx = this.strafeRight;
+                final float dx = this.strafeRight + this.variantSpeed;
                 final float dy = (this.mob.getTarget().getEyeY() + 5 - biFang.getY() > 0) ? 1F : -1F;
+
 //                final float d = Math.min(1, Mth.sqrt(dx * dx + dy * dy + dz * dz));
 //                f2 *= f4;
 //                f3 *= f4;
@@ -417,14 +449,19 @@ public class BiFang extends IMMGrowableMob implements Enemy {
                 }
                 this.mob.setSpeed(speed);
                 this.mob.setZza(this.strafeForwards);
-                this.mob.setXxa(this.strafeRight);
+                this.mob.setXxa(dx);
                 this.mob.setYya(dy);
+                if (this.mob.onGround()) {
+                    this.mob.setZza(0);
+                    this.mob.setXxa(0);
+                }
                 this.operation = MoveControl.Operation.WAIT;
             } else {
                 if (!this.hoversInPlace) {
                     this.mob.setNoGravity(false);
                 }
 
+                this.mob.setXxa(0);
                 this.mob.setYya(0.0F);
                 this.mob.setZza(0.0F);
             }

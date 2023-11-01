@@ -14,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class LevitationSpell extends SpellType {
 
     public LevitationSpell() {
-        super("levitation", properties().maxLevel(1).mana(10).cd(10));
+        super("levitation", properties().maxLevel(1).mana(10).cd(35));
     }
 
     @Override

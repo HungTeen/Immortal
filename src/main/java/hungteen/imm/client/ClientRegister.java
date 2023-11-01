@@ -24,7 +24,8 @@ import hungteen.imm.client.model.entity.villager.VillagerModel;
 import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
-import hungteen.imm.client.render.entity.misc.ElementAmethystRender;
+import hungteen.imm.client.render.entity.misc.ElementCrystalRender;
+import hungteen.imm.client.render.entity.misc.TornadoRender;
 import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.client.render.level.LevelRenderStages;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
@@ -38,7 +39,6 @@ import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.entity.creature.spirit.MetalSpirit;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.IMMMenus;
@@ -77,13 +77,14 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         /* Misc Entity */
-        event.registerEntityRenderer(IMMEntities.ELEMENT_AMETHYST.get(), ElementAmethystRender::new);
+        event.registerEntityRenderer(IMMEntities.ELEMENT_AMETHYST.get(), ElementCrystalRender::new);
         event.registerEntityRenderer(IMMEntities.TELEPORT_FORMATION.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_PEARL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(IMMEntities.FLYING_ITEM.get(), FlyingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.THROWING_ITEM.get(), ThrowingItemEntityRender::new);
         event.registerEntityRenderer(IMMEntities.SPIRITUAL_FLAME.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.POISON_WIND.get(), EmptyEffectRender::new);
+        event.registerEntityRenderer(IMMEntities.TORNADO.get(), TornadoRender::new);
 
         /* Human */
         event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
@@ -127,7 +128,8 @@ public class ClientRegister {
         LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
         /* Misc */
-        event.registerLayerDefinition(IMMModelLayers.ELEMENT_AMETHYST, ElementAmethystModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.ELEMENT_CRYSTAL, ElementCrystalModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.TORNADO, TornadoModel::createBodyLayer);
 
         /* Human */
         event.registerLayerDefinition(IMMModelLayers.VILLAGER, VillagerModel::createBodyLayer);

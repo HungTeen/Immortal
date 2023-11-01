@@ -17,12 +17,12 @@ import net.minecraft.world.entity.LivingEntity;
 public class WoodHealingSpell extends SpellType {
 
     public WoodHealingSpell() {
-        super("wood_healing", properties(SpellUsageCategories.BUFF_SELF).maxLevel(1).mana(40).cd(500));
+        super("wood_healing", properties(SpellUsageCategories.BUFF_SELF).maxLevel(1).mana(40).cd(400));
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.HEAL, 200, 0));
+        owner.addEffect(EffectHelper.viewEffect(MobEffects.REGENERATION, 300, 0));
         ElementManager.addElementAmount(owner, Elements.WOOD, true, 15);
         return true;
     }

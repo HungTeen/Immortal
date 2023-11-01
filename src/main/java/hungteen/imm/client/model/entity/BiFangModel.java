@@ -656,7 +656,7 @@ public class BiFangModel extends AnimatedEntityModel<BiFang> {
     }
 
     private void animateHeadLookTarget(float netHeadYaw, float headPitch) {
-        this.head.xRot = (headPitch - 30) * ((float)Math.PI / 180F);
+        this.head.xRot = (-headPitch - 30) * ((float)Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
     }
 

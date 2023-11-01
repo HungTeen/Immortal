@@ -23,7 +23,7 @@ import net.minecraft.world.phys.HitResult;
 public class IgnitionSpell extends SpellType {
 
     public IgnitionSpell() {
-        super("ignition", properties(SpellUsageCategories.DEBUFF_TARGET).mana(25).cd(60).maxLevel(1));
+        super("ignition", properties(SpellUsageCategories.DEBUFF_TARGET).mana(5).cd(60).maxLevel(1));
     }
 
     public static void checkIgnitionArrow(Projectile projectile, HitResult hitResult){

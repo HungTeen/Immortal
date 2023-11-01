@@ -8,9 +8,10 @@ import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.IMMAttributes;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ReactionPacket;
+import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.EntityUtil;
@@ -19,8 +20,8 @@ import hungteen.imm.util.TipUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.commands.WeatherCommand;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -28,12 +29,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -51,6 +53,7 @@ public class ElementManager {
     private static final float DECAY_SPEED = 0.03F;
     private static final float DECAY_VALUE = 0.1F;
     private static final Map<Elements, Elements> TARGET_ELEMENTS = new EnumMap<>(Elements.class);
+    private static final Map<Elements, TagKey<Block>> ELEMENT_BLOCK_TAGS = new EnumMap<>(Elements.class);
     private static final Map<Elements, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Elements.class);
     private static final Map<Elements, HTColor> ELEMENT_COLOR_MAP = new EnumMap<>(Elements.class);
 
@@ -62,6 +65,14 @@ public class ElementManager {
                 Elements.FIRE, Elements.METAL,
                 Elements.EARTH, Elements.WATER,
                 Elements.SPIRIT, Elements.SPIRIT
+        ));
+        ELEMENT_BLOCK_TAGS.putAll(Map.of(
+                Elements.METAL, IMMBlockTags.METAL_ELEMENT_ATTACHED_BLOCKS,
+                Elements.WOOD, IMMBlockTags.WOOD_ELEMENT_ATTACHED_BLOCKS,
+                Elements.WATER, IMMBlockTags.WATER_ELEMENT_ATTACHED_BLOCKS,
+                Elements.FIRE, IMMBlockTags.FIRE_ELEMENT_ATTACHED_BLOCKS,
+                Elements.EARTH, IMMBlockTags.EARTH_ELEMENT_ATTACHED_BLOCKS,
+                Elements.SPIRIT, IMMBlockTags.SPIRIT_ELEMENT_ATTACHED_BLOCKS
         ));
         ELEMENT_PARTICLE_MAP.putAll(Map.of(
                 Elements.METAL, IMMParticles.METAL_ELEMENT,
@@ -140,8 +151,18 @@ public class ElementManager {
      * Tick附着元素。
      */
     public static void attachElement(LivingEntity entity) {
-        if (entity.isInWater() && entity.getRandom().nextFloat() < 0.1F && entity.tickCount % 5 == 0) {
-            addElementAmount(entity, Elements.WATER, false, 1F);
+        if (entity.tickCount % 5 == 0 && entity.getRandom().nextFloat() < 0.1F) {
+            if(entity.isInWaterOrRain()){
+                addElementAmount(entity, Elements.WATER, false, 1F);
+                return;
+            }
+            final BlockState state = entity.level().getBlockState(entity.getOnPos());
+            for (Map.Entry<Elements, TagKey<Block>> entry : ELEMENT_BLOCK_TAGS.entrySet()) {
+                if(state.is(entry.getValue())){
+                    addElementAmount(entity, entry.getKey(), false, 1F);
+                    break;
+                }
+            }
         }
     }
 
@@ -162,7 +183,7 @@ public class ElementManager {
         if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.get())) {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
         }
-        if (entity instanceof ElementAmethyst) {
+        if (entity instanceof ElementCrystal) {
             return 0.25F;
         }
         return 1F;

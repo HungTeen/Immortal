@@ -7,13 +7,16 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.behavior.*;
+import hungteen.imm.common.entity.misc.Tornado;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.MathUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -109,6 +112,7 @@ public class BiFangAi {
         brain.addActivity(Activity.IDLE, 10, ImmutableList.of(
                 StartAttacking.create(BiFangAi::findNearestValidAttackTarget),
                 new MoveToTargetSink(),
+                UseSpell.create(UniformInt.of(60, 120)),
                 new RunOne<>(ImmutableList.of(
                         Pair.of(RandomStroll.stroll(speed), 1),
                         Pair.of(SetWalkTargetFromLookTarget.create(speed, 3), 1),
@@ -132,9 +136,10 @@ public class BiFangAi {
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 Pair.of(3, new RunOne<>(ImmutableList.of(
                         Pair.of(UseSpell.create(UniformInt.of(10, 100)), 0),
-                        Pair.of(new FlapWindAttack(), 1),
+                        Pair.of(new FlapAttack(), 1),
                         Pair.of(MeleeAttack.create(20), 2),
-                        Pair.of(burnReaction(20, UniformInt.of(30, 50)), 4)
+                        Pair.of(burnReaction(20, UniformInt.of(30, 50)), 4),
+                        Pair.of(new BlowWindAttack(0.5F), 4)
                 )))
         ));
     }
@@ -150,7 +155,8 @@ public class BiFangAi {
                 Pair.of(3, new RunOne<>(ImmutableList.of(
                         Pair.of(new ShootFireballAttack(), 0),
                         Pair.of(new ShootFlameAttack(), 1),
-                        Pair.of(burnReaction(20, UniformInt.of(20, 30)), 2)
+                        Pair.of(burnReaction(20, UniformInt.of(20, 30)), 2),
+                        Pair.of(new BlowWindAttack(0.15F), 4)
                 )))
         ));
     }
@@ -161,13 +167,13 @@ public class BiFangAi {
                 setAttackTarget(biFang, target);
             }
         }
-        if (amount > 7) {
-            biFang.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_PANICKING, true, 200);
-        }
+//        if (amount > 7) {
+//            biFang.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_PANICKING, true, 200);
+//        }
     }
 
     private static void setAttackTarget(BiFang biFang, LivingEntity target) {
-        biFang.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_TARGET, target, 600L);
+        biFang.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, target);
     }
 
     private static Optional<? extends LivingEntity> findNearestValidAttackTarget(BiFang biFang) {
@@ -190,19 +196,21 @@ public class BiFangAi {
         }));
     }
 
-    static class FlapWindAttack extends Behavior<BiFang> {
+    static class BlowWindAttack extends Behavior<BiFang> {
 
-        private static final float CONSUME_MANA = 10F;
+        private static final float CONSUME_MANA = 30F;
+        private final float chance;
 
-        public FlapWindAttack() {
+        public BlowWindAttack(float chance) {
             super(Map.of(
                     MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT
-            ), 30);
+            ), 50);
+            this.chance = chance;
         }
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getTarget() != null && biFang.closerThan(biFang.getTarget(), 10);
+            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < chance;
         }
 
         @Override
@@ -219,6 +227,56 @@ public class BiFangAi {
         protected void tick(ServerLevel level, BiFang biFang, long time) {
             if (biFang.atAnimationTick(10) && biFang.getMana() >= CONSUME_MANA) {
                 biFang.addMana(-CONSUME_MANA);
+                for(int i = -1; i <= 1; ++ i){
+                    Tornado tornado = IMMEntities.TORNADO.get().create(level);
+                    if(tornado != null){
+                        Vec3 vec = biFang.getLookAngle();
+                        if(biFang.getTarget() != null){
+                            vec = biFang.getTarget().position().subtract(biFang.position());
+                        }
+                        vec = MathUtil.rotateHorizontally(vec, i * RandomHelper.getMinMax(biFang.getRandom(), 30, 60)).normalize();
+                        tornado.setPos(biFang.position().add(vec.x * 0.5, 0, vec.z * 0.5));
+                        tornado.setDeltaMovement(vec.scale(0.3));
+                        tornado.setScale(biFang.getScale() * 2);
+                        level.addFreshEntity(tornado);
+                    }
+                }
+                biFang.playSound(IMMSounds.BI_FANG_FLAP.get());
+            }
+        }
+
+        @Override
+        protected void stop(ServerLevel level, BiFang biFang, long time) {
+            biFang.setIdle();
+        }
+    }
+
+    static class FlapAttack extends Behavior<BiFang> {
+
+        public FlapAttack() {
+            super(Map.of(
+                    MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT
+            ), 30);
+        }
+
+        @Override
+        protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
+            return biFang.isIdle() && biFang.getTarget() != null && biFang.closerThan(biFang.getTarget(), 4);
+        }
+
+        @Override
+        protected boolean canStillUse(ServerLevel level, BiFang biFang, long time) {
+            return true;
+        }
+
+        @Override
+        protected void start(ServerLevel level, BiFang biFang, long time) {
+            biFang.setCurrentAnimation(IMMMob.AnimationTypes.FLAP);
+        }
+
+        @Override
+        protected void tick(ServerLevel level, BiFang biFang, long time) {
+            if (biFang.atAnimationTick(10)) {
                 final AABB aabb = EntityHelper.getEntityAABB(biFang, 7, 2);
                 EntityHelper.getPredicateEntities(biFang, aabb, LivingEntity.class, target -> {
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
@@ -227,7 +285,7 @@ public class BiFangAi {
                         double cos = vec.dot(lookVec) / vec.length() / lookVec.length();
                         double angle = Math.acos(cos);
                         if (Math.abs(angle) < 1) {
-                            target.knockback(4 / vec.length(), lookVec.x, lookVec.z);
+                            EntityUtil.knockback(target, 10 / vec.length(), -lookVec.x, -lookVec.z);
                             return true;
                         }
                     }
@@ -308,7 +366,7 @@ public class BiFangAi {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.1F;
+            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.2F;
         }
 
         @Override

@@ -21,6 +21,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -60,6 +61,13 @@ import java.util.stream.Collectors;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static void knockback(LivingEntity target, double strength, double dx, double dz){
+        target.knockback(strength, dx, dz);
+        if(target instanceof ServerPlayer serverPlayer){
+            serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(serverPlayer));
+        }
+    }
 
     public static <T extends Entity> Optional<T> spawn(ServerLevel level, EntityType<T> entityType, Vec3 pos) {
         return spawn(level, entityType, pos, false);

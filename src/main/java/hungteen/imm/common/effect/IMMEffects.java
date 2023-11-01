@@ -24,7 +24,7 @@ public class IMMEffects {
 
     public static final RegistryObject<MobEffect> OPPRESSION = EFFECTS.register("oppression", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb())
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "96c795e1-dbde-4512-a0a7-13489da62f7e", -0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL)
-            .addAttributeModifier(Attributes.ATTACK_DAMAGE, "6960b14b-d46f-47de-a758-d8233249fd23", -0.5F, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributeModifier(Attributes.ATTACK_DAMAGE, "6960b14b-d46f-47de-a758-d8233249fd23", -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(Attributes.ATTACK_SPEED, "13aaad41-0289-4375-8b20-6d129a6eee80", -0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(Attributes.FLYING_SPEED, "2f9401f7-e4d2-4b27-bd23-b97f938f17d0", -0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL)
     );

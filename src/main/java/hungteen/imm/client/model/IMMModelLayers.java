@@ -12,7 +12,8 @@ public class IMMModelLayers {
 
     /* Misc */
 
-    public static final ModelLayerLocation ELEMENT_AMETHYST = register("element_amethyst");
+    public static final ModelLayerLocation ELEMENT_CRYSTAL = register("element_crystal");
+    public static final ModelLayerLocation TORNADO = register("tornado");
 
     /* Human */
 

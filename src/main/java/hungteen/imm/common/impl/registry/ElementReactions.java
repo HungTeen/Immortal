@@ -14,8 +14,7 @@ import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.creature.spirit.ElementSpirit;
-import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -30,9 +29,6 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.AbstractIllager;
-import net.minecraft.world.entity.monster.Vex;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -273,8 +269,8 @@ public class ElementReactions {
             });
         }
 
-        protected Optional<ElementAmethyst> spawnAmethyst(Entity entity) {
-            final ElementAmethyst amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
+        protected Optional<ElementCrystal> spawnAmethyst(Entity entity) {
+            final ElementCrystal amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
             if (amethyst != null) {
                 amethyst.setPos(entity.position());
                 final double dx = RandomHelper.doubleRange(entity.level().getRandom(), 0.1F);

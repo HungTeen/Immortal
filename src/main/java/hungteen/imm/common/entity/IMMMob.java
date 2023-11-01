@@ -404,6 +404,8 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
 
         ROAR,
 
+        HEAL,
+
         FLAP,
 
         SHOOT,

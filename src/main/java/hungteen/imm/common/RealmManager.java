@@ -221,6 +221,15 @@ public class RealmManager {
         return Optional.empty();
     }
 
+    /**
+     * 有大境界差距并且左边的大。
+     */
+    public static boolean hasRealmGapAndLarger(Entity entity1, Entity entity2) {
+        final IRealmType realm1 = getEntityRealm(entity1);
+        final IRealmType realm2 = getEntityRealm(entity2);
+        return hasRealmGap(realm1, realm2) && compare(realm1, realm2);
+    }
+
     public static int getRealmGap(IRealmType realm1, IRealmType realm2) {
         return realm1.getRealmValue() / 100 - realm2.getRealmValue() / 100;
     }

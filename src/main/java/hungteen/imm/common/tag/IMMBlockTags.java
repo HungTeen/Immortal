@@ -14,6 +14,14 @@ public interface IMMBlockTags {
 
     /* Forge */
 
+    TagKey<Block> METAL_ELEMENT_ATTACHED_BLOCKS = forgeTag("metal_element_attached_blocks");
+    TagKey<Block> WOOD_ELEMENT_ATTACHED_BLOCKS = forgeTag("wood_element_attached_blocks");
+    TagKey<Block> WATER_ELEMENT_ATTACHED_BLOCKS = forgeTag("water_element_attached_blocks");
+    TagKey<Block> FIRE_ELEMENT_ATTACHED_BLOCKS = forgeTag("fire_element_attached_blocks");
+    TagKey<Block> EARTH_ELEMENT_ATTACHED_BLOCKS = forgeTag("earth_element_attached_blocks");
+    TagKey<Block> SPIRIT_ELEMENT_ATTACHED_BLOCKS = forgeTag("spirit_element_attached_blocks");
+
+
     TagKey<Block> SPIRITUAL_ORES = forgeTag("spiritual_ores");
     TagKey<Block> CINNABAR_ORES = forgeTag("ores/cinnabar");
 

@@ -5,20 +5,20 @@ package hungteen.imm.client.model.entity;// Made with Blockbench 4.8.3
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
+public class ElementCrystalModel extends EntityModel<ElementCrystal> {
 
 	private final ModelPart total;
 	private final ModelPart solid;
 	private final ModelPart coat;
 	private final ModelPart corner;
 
-	public ElementAmethystModel(ModelPart root, boolean isSolid) {
+	public ElementCrystalModel(ModelPart root, boolean isSolid) {
 		this.total = root.getChild("total");
 		this.solid = total.getChild("solid");
 		this.coat = total.getChild("coat");
@@ -47,7 +47,7 @@ public class ElementAmethystModel extends EntityModel<ElementAmethyst> {
 	}
 
 	@Override
-	public void setupAnim(ElementAmethyst entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(ElementCrystal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 

@@ -1,7 +1,6 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
@@ -10,12 +9,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -25,9 +20,9 @@ import net.minecraft.world.phys.AABB;
  * @author: HungTeen
  * @create: 2023-09-18 12:49
  **/
-public class ElementAmethyst extends HTEntity {
+public class ElementCrystal extends HTEntity {
 
-    public ElementAmethyst(EntityType<?> type, Level world) {
+    public ElementCrystal(EntityType<?> type, Level world) {
         super(type, world);
     }
 

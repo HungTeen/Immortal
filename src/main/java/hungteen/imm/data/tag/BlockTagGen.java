@@ -7,6 +7,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -30,6 +31,19 @@ public class BlockTagGen extends HTBlockTagGen {
         this.addMCTags();
 
         /* Forge */
+        this.tag(IMMBlockTags.METAL_ELEMENT_ATTACHED_BLOCKS)
+                .addTags(Tags.Blocks.ORES_GOLD, Tags.Blocks.STORAGE_BLOCKS_GOLD, Tags.Blocks.STORAGE_BLOCKS_RAW_GOLD);
+        this.tag(IMMBlockTags.WOOD_ELEMENT_ATTACHED_BLOCKS)
+                .add(Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, Blocks.MYCELIUM);
+        this.tag(IMMBlockTags.WATER_ELEMENT_ATTACHED_BLOCKS)
+                .addTags(BlockTags.SNOW, BlockTags.ICE);
+        this.tag(IMMBlockTags.FIRE_ELEMENT_ATTACHED_BLOCKS)
+                .add(Blocks.MAGMA_BLOCK);
+        this.tag(IMMBlockTags.EARTH_ELEMENT_ATTACHED_BLOCKS)
+                .add(Blocks.MUD);
+        this.tag(IMMBlockTags.SPIRIT_ELEMENT_ATTACHED_BLOCKS)
+                .add(Blocks.CRYING_OBSIDIAN, Blocks.SOUL_SAND);
+
         this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
         this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
 

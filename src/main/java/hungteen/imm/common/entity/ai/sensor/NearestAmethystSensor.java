@@ -2,15 +2,11 @@ package hungteen.imm.common.entity.ai.sensor;
 
 import com.google.common.collect.ImmutableSet;
 import hungteen.imm.common.entity.ai.IMMMemories;
-import hungteen.imm.common.entity.misc.ElementAmethyst;
+import hungteen.imm.common.entity.misc.ElementCrystal;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.AABB;
 
 import java.util.Comparator;
@@ -31,7 +27,7 @@ public class NearestAmethystSensor<T extends Mob> extends Sensor<T> {
     @Override
     protected void doTick(ServerLevel serverLevel, T owner) {
         AABB aabb = owner.getBoundingBox().inflate(12, 4, 12);
-        List<ElementAmethyst> list = serverLevel.getEntitiesOfClass(ElementAmethyst.class, aabb, (target) -> {
+        List<ElementCrystal> list = serverLevel.getEntitiesOfClass(ElementCrystal.class, aabb, (target) -> {
             return owner.getSensing().hasLineOfSight(target);
         });
         list.sort(Comparator.comparingDouble(owner::distanceToSqr));
