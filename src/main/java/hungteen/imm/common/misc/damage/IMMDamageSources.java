@@ -23,12 +23,24 @@ public class IMMDamageSources {
         return DamageHelper.source(causingEntity, IMMDamageTypes.SPIRITUAL_MANA, causingEntity);
     }
 
+    public static DamageSource woodElement(Entity causingEntity){
+        return woodElement(causingEntity, causingEntity);
+    }
+
+    public static DamageSource woodElement(Entity causingEntity, Entity owner){
+        return DamageHelper.source(causingEntity, IMMDamageTypes.WOOD_ELEMENT, owner, causingEntity);
+    }
+
     public static DamageSource waterElement(Entity causingEntity){
         return DamageHelper.source(causingEntity, IMMDamageTypes.WATER_ELEMENT, causingEntity);
     }
 
     public static DamageSource fireElement(Entity causingEntity){
-        return DamageHelper.source(causingEntity, IMMDamageTypes.FIRE_ELEMENT, causingEntity);
+        return fireElement(causingEntity, causingEntity);
+    }
+
+    public static DamageSource fireElement(Entity causingEntity, Entity owner){
+        return DamageHelper.source(causingEntity, IMMDamageTypes.FIRE_ELEMENT, owner, causingEntity);
     }
 
 }

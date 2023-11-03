@@ -29,12 +29,15 @@ public class EntityTagGen extends HTHolderTagsProvider<EntityType<?>> {
         /* Forge */
         this.tag(IMMEntityTags.VILLAGERS).add(EntityType.VILLAGER, EntityType.WANDERING_TRADER);
         this.tag(IMMEntityTags.PILLAGERS).add(EntityType.PILLAGER, EntityType.WITCH, EntityType.ILLUSIONER, EntityType.VINDICATOR, EntityType.EVOKER);
+        this.tag(IMMEntityTags.COMMON_ARTIFACTS).add(EntityType.ENDER_PEARL);
+        this.tag(IMMEntityTags.REALM_FOLLOW_OWNER_ENTITIES)
+                .add(EntityType.LLAMA_SPIT, EntityType.EVOKER_FANGS, EntityType.SHULKER_BULLET)
+                .add(IMMEntities.TORNADO.get());
 
         /* Immortal */
         this.tag(IMMEntityTags.NO_ELEMENT_REACTIONS).add(IMMEntities.SPIRITUAL_PEARL.get(), IMMEntities.ELEMENT_AMETHYST.get());
         this.tag(IMMEntityTags.CULTIVATORS).add(EntityType.PLAYER, IMMEntities.EMPTY_CULTIVATOR.get(), IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get());
         this.tag(IMMEntityTags.HUMAN_BEINGS).addTags(IMMEntityTags.CULTIVATORS, IMMEntityTags.VILLAGERS, IMMEntityTags.PILLAGERS);
-
     }
 
 }

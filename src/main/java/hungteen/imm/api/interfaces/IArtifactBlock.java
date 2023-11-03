@@ -1,6 +1,6 @@
 package hungteen.imm.api.interfaces;
 
-import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -15,6 +15,6 @@ public interface IArtifactBlock extends IArtifactItem{
      * 获取法器类型。
      * @return type.
      */
-    IArtifactType getArtifactType(BlockState state);
+    IRealmType getRealm(BlockState state);
 
 }

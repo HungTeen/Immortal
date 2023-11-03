@@ -68,11 +68,12 @@ public class TornadoModel<T extends Tornado> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.wind1.yRot = (float) (ageInTicks * 0.2);
-        this.wind2.yRot = (float) (ageInTicks * 0.3);
-        this.wind3.yRot = (float) (ageInTicks * 0.35);
-        this.wind4.yRot = (float) (ageInTicks * 0.25);
-        this.wind5.yRot = (float) (ageInTicks * 0.1);
+        final float dir = entity.isClockWise() ? 1 : -1;
+        this.wind1.yRot = (float) (ageInTicks * 0.2 * dir);
+        this.wind2.yRot = (float) (ageInTicks * 0.3 * dir);
+        this.wind3.yRot = (float) (ageInTicks * 0.35 * dir);
+        this.wind4.yRot = (float) (ageInTicks * 0.25 * dir);
+        this.wind5.yRot = (float) (ageInTicks * 0.1 * dir);
     }
 
     @Override

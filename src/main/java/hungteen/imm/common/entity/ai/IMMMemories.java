@@ -3,6 +3,7 @@ package hungteen.imm.common.entity.ai;
 import com.mojang.serialization.Codec;
 import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.util.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -29,6 +30,7 @@ public class IMMMemories {
     public static final RegistryObject<MemoryModuleType<Boolean>> SPELL_COOLING_DOWN = register("spell_cooling_down");
     public static final RegistryObject<MemoryModuleType<Boolean>> IDLE_COOLING_DOWN = register("idle_cooling_down");
     public static final RegistryObject<MemoryModuleType<ElementCrystal>> ELEMENT_AMETHYST = register("element_amethyst");
+    public static final RegistryObject<MemoryModuleType<BlockPos>> HOME = register("home");
 
     private static <U> RegistryObject<MemoryModuleType<U>> register(String name){
         return MEMORIES.register(name, () -> new MemoryModuleType<>(Optional.empty()));

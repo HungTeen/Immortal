@@ -5,10 +5,11 @@ import hungteen.htlib.common.impl.raid.HTRaidComponents;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.interfaces.IHasRealm;
+import hungteen.imm.api.interfaces.*;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.capability.player.PlayerDataManager;
@@ -17,6 +18,10 @@ import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.tag.IMMBlockTags;
+import hungteen.imm.common.tag.IMMDamageTypeTags;
+import hungteen.imm.common.tag.IMMEntityTags;
+import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.ItemUtil;
@@ -29,22 +34,24 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * @program: Immortal
@@ -57,7 +64,16 @@ public class RealmManager {
     private static final float DEFAULT_KILL_XP = 0.2F;
     private static final Map<EntityType<?>, IRealmType> DEFAULT_REALM_MAP = new HashMap<>();
     private static final Map<EntityType<?>, Float> KILL_XP_MAP = new HashMap<>();
+    private static final Map<TagKey<DamageType>, IRealmType> DAMAGE_REALM_MAP = new HashMap<>();
     private static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
+
+    static {
+        DAMAGE_REALM_MAP.putAll(Map.of(
+                IMMDamageTypeTags.IMM_REALM_LEVEL_1, RealmTypes.SPIRITUAL_LEVEL_1,
+                IMMDamageTypeTags.IMM_REALM_LEVEL_2, RealmTypes.SPIRITUAL_LEVEL_2,
+                IMMDamageTypeTags.IMM_REALM_LEVEL_3, RealmTypes.SPIRITUAL_LEVEL_3
+        ));
+    }
 
     /**
      * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
@@ -150,6 +166,28 @@ public class RealmManager {
         }
     }
 
+    /**
+     * {@link ImmortalMod#ImmortalMod()}
+     */
+    public static void realmAttackGap(LivingHurtEvent event){
+        final LivingEntity target = event.getEntity();
+        final DamageSource source = event.getSource();
+        if(source.getDirectEntity() != null){
+            final int gap = getRealmGap(target, source.getDirectEntity());
+            if(gap > 0){
+                // 伤害减免。
+                event.setAmount((float) (event.getAmount() * Math.pow(0.15, gap)));
+            } else {
+                event.setAmount((float) (event.getAmount() * Math.pow(1.1, - gap)));
+            }
+        } else {
+            final int gap = getRealmGap(getRealm(target), getDamageSourceRealm(source));
+            if(gap > 0){
+                event.setAmount((float) (event.getAmount() * Math.pow(0.2, gap)));
+            }
+        }
+    }
+
     public static List<BreakThroughRaid> breakThroughRaids(Level level){
         return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
     }
@@ -176,8 +214,17 @@ public class RealmManager {
         DEFAULT_REALM_MAP.put(type, realm);
     }
 
-    public static IRealmType getDefaultRealm(EntityType<?> type){
-        return DEFAULT_REALM_MAP.getOrDefault(type, RealmTypes.MORTALITY);
+    public static IRealmType getDefaultRealm(EntityType<?> type, IRealmType defaultRealm){
+        return DEFAULT_REALM_MAP.getOrDefault(type, defaultRealm);
+    }
+
+    public static IRealmType getDamageSourceRealm(DamageSource source){
+        for (Map.Entry<TagKey<DamageType>, IRealmType> entry : DAMAGE_REALM_MAP.entrySet()) {
+            if(source.is(entry.getKey())){
+                return entry.getValue();
+            }
+        }
+        return RealmTypes.NOT_IN_REALM;
     }
 
     public static void addKillXp(EntityType<?> type, float value){
@@ -197,7 +244,7 @@ public class RealmManager {
     }
 
     public static int getConsciousness(Entity entity){
-        final IRealmType realm = RealmManager.getEntityRealm(entity);
+        final IRealmType realm = RealmManager.getRealm(entity);
         if(entity instanceof Player player){
             final int consciousness = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.CONSCIOUSNESS);
             return (realm.getBaseConsciousness() + consciousness);
@@ -225,9 +272,13 @@ public class RealmManager {
      * 有大境界差距并且左边的大。
      */
     public static boolean hasRealmGapAndLarger(Entity entity1, Entity entity2) {
-        final IRealmType realm1 = getEntityRealm(entity1);
-        final IRealmType realm2 = getEntityRealm(entity2);
+        final IRealmType realm1 = getRealm(entity1);
+        final IRealmType realm2 = getRealm(entity2);
         return hasRealmGap(realm1, realm2) && compare(realm1, realm2);
+    }
+
+    public static int getRealmGap(Entity entity1, Entity entity2) {
+        return getRealmGap(getRealm(entity1), getRealm(entity2));
     }
 
     public static int getRealmGap(IRealmType realm1, IRealmType realm2) {
@@ -245,15 +296,49 @@ public class RealmManager {
         return realm1.getRealmValue() > realm2.getRealmValue();
     }
 
-    public static IRealmType getEntityRealm(Entity entity) {
-        if(entity instanceof Player player){
-            return PlayerUtil.getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
+    public static IRealmType getRealm(Entity entity) {
+        if(entity instanceof IHasRealm realmEntity){
+            return realmEntity.getRealm();
+        } else if(entity instanceof LivingEntity){
+            if(entity instanceof Player player){
+                return PlayerUtil.getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
+            }
+            return getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
+        } else {
+            if(entity instanceof TraceableEntity traceableEntity){
+                if(entity.getType().is(IMMEntityTags.REALM_FOLLOW_OWNER_ENTITIES)){
+                    if(traceableEntity.getOwner() != null){
+                        return getRealm(traceableEntity.getOwner());
+                    }
+                }
+            }
+            return getDefaultRealm(entity.getType(), RealmTypes.NOT_IN_REALM);
         }
-        return entity instanceof IHasRealm ? ((IHasRealm) entity).getRealm() : getDefaultRealm(entity.getType());
+    }
+
+    public static IRealmType getRealm(ItemStack stack){
+        if(stack.is(IMMItemTags.COMMON_ARTIFACTS)) return RealmTypes.COMMON_ARTIFACT;
+        if(stack.is(IMMItemTags.MODERATE_ARTIFACTS)) return RealmTypes.MODERATE_ARTIFACT;
+        if(stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) return RealmTypes.ADVANCED_ARTIFACT;
+        if(stack.getItem() instanceof IArtifactItem artifactItem) return artifactItem.getArtifactRealm(stack);
+        if(stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) return artifactBlock.getArtifactRealm(stack);
+        return RealmTypes.NOT_IN_REALM;
+    }
+
+    public static IRealmType getRealm(BlockState state){
+        if(state.is(IMMBlockTags.COMMON_ARTIFACTS)) return RealmTypes.COMMON_ARTIFACT;
+        if(state.is(IMMBlockTags.MODERATE_ARTIFACTS)) return RealmTypes.MODERATE_ARTIFACT;
+        if(state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) return RealmTypes.ADVANCED_ARTIFACT;
+        if(state.getBlock() instanceof IArtifactBlock artifactBlock) return artifactBlock.getRealm(state);
+        return RealmTypes.NOT_IN_REALM;
+    }
+
+    public static boolean notCommon(IRealmType type) {
+        return type != RealmTypes.NOT_IN_REALM && type != RealmTypes.MORTALITY;
     }
 
     public static ICultivationType getCultivationType(Entity entity) {
-        return getEntityRealm(entity).getCultivationType();
+        return getRealm(entity).getCultivationType();
     }
 
     public static float getStageRequiredCultivation(IRealmType realm, RealmStages stage){

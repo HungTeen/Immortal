@@ -10,7 +10,7 @@ import hungteen.imm.common.block.artifacts.RuneWorkBench;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.*;
-import hungteen.imm.common.impl.ArtifactTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -58,8 +58,8 @@ public class IMMBlocks {
 
     /* Entity Blocks */
 
-    public static final RegistryObject<Block> COPPER_FURNACE = BLOCKS.register("copper_furnace", () -> new SpiritualFurnaceBlock(Block.Properties.copy(Blocks.COPPER_BLOCK), ArtifactTypes.COMMON_ARTIFACT));
-    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoomBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL), ArtifactTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_FURNACE = BLOCKS.register("copper_furnace", () -> new SpiritualFurnaceBlock(Block.Properties.copy(Blocks.COPPER_BLOCK), RealmTypes.COMMON_ARTIFACT));
+    public static final RegistryObject<Block> COPPER_ELIXIR_ROOM = BLOCKS.register("copper_elixir_room", () -> new ElixirRoomBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL), RealmTypes.COMMON_ARTIFACT));
 //    public static final RegistryObject<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.register("copper_spiritual_room", () -> new SpiritualRoom(ArtifactTypes.COMMON_ARTIFACT));
 //    public static final RegistryObject<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.register("copper_smithing_artifact", () -> new SmithingArtifact(ArtifactTypes.COMMON_ARTIFACT));
 

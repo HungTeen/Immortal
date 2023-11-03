@@ -479,6 +479,7 @@
   "misc.imm.cultivation_type.wizard": "Wizard",
   "misc.imm.cultivation_type.ghost": "Ghost",
   "misc.imm.cultivation_type.blood": "Blood",
+  "misc.imm.cultivation_type.artifact": "Artifact",
 
   "misc.imm.realm": "Realm",
   "misc.imm.realm.not_in_realm": "Not In Realm",
@@ -493,6 +494,9 @@
   "misc.imm.realm.undead_level_2": "Undead II",
   "misc.imm.realm.undead_level_3": "Undead III",
   "misc.imm.realm.spiritual_flame_1": "Spiritual Flame I",
+  "misc.imm.realm.common_artifact" : "Common Artifact",
+  "misc.imm.realm.moderate_artifact" : "Moderate Artifact",
+  "misc.imm.realm.advanced_artifact" : "Advanced Artifact",
 
   "misc.imm.realm_stage": "Realm Stage",
   "misc.imm.realm_stage.preliminary": "Preliminary",
@@ -515,12 +519,6 @@
   "misc.imm.player_data.spiritual_mana" : "Spiritual Mana",
   "misc.imm.player_data.max_spiritual_mana" : "Extra Spiritual Mana",
   "misc.imm.player_data.break_through_progress" : "Break Through Progress",
-
-  "misc.imm.artifact_type.unknown" : "Unknown",
-  "misc.imm.artifact_type.common_item" : "Common Item",
-  "misc.imm.artifact_type.common_artifact" : "Common Artifact",
-  "misc.imm.artifact_type.moderate_artifact" : "Moderate Artifact",
-  "misc.imm.artifact_type.advanced_artifact" : "Advanced Artifact",
 
   "misc.imm.accuracy.trash" : "(Trash)",
   "misc.imm.accuracy.toxic" : "(Toxic)",

@@ -1,8 +1,8 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.client.util.RenderHelper;
-import hungteen.imm.api.registry.IArtifactType;
-import hungteen.imm.common.impl.ArtifactTypes;
+import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.util.Colors;
 import net.minecraft.network.chat.Component;
@@ -22,6 +22,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-11-06 12:07
  **/
+@Deprecated
 public class RawArtifactBox extends ArtifactItem {
 
     private static final String ARTIFACT_ITEM = "ArtifactItem";
@@ -29,7 +30,7 @@ public class RawArtifactBox extends ArtifactItem {
     private static final String SPIRITUAL_VALUE_REQUIRED = "SpiritualValueRequired";
 
     public RawArtifactBox() {
-        super(ArtifactTypes.UNKNOWN);
+        super(RealmTypes.NOT_IN_REALM);
     }
 
 //    @Override
@@ -81,8 +82,8 @@ public class RawArtifactBox extends ArtifactItem {
     }
 
     @Override
-    public IArtifactType getArtifactType(ItemStack stack) {
-        return super.getArtifactType(stack);
+    public IRealmType getArtifactRealm(ItemStack stack) {
+        return super.getArtifactRealm(stack);
     }
 
     @Override

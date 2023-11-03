@@ -58,7 +58,7 @@ public class IMMAPIImpl implements IMMAPI.IImmortalAPI {
 
     @Override
     public IRealmType getEntityRealm(Entity entity) {
-        return RealmManager.getEntityRealm(entity);
+        return RealmManager.getRealm(entity);
     }
 
     @Override

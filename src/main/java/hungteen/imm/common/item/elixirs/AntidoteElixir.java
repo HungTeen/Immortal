@@ -31,7 +31,7 @@ public class AntidoteElixir{
 //
 //    @Override
 //    protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-//        return immortal().apply(IMMAPI.get().getEntityRealm(livingEntity));
+//        return immortal().apply(IMMAPI.get().getRealm(livingEntity));
 //    }
 
 }

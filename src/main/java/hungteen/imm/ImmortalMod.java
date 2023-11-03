@@ -81,6 +81,7 @@ public class ImmortalMod {
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
 //        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
+        forgeBus.addListener(EventPriority.LOWEST, RealmManager::realmAttackGap);
 
         /* Misc Initialization */
         IMMConfigs.init();

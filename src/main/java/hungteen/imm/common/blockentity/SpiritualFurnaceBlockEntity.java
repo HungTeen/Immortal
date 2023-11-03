@@ -2,9 +2,9 @@ package hungteen.imm.common.blockentity;
 
 import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
 import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.impl.ArtifactTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.common.tag.IMMItemTags;
@@ -12,9 +12,6 @@ import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -249,7 +246,7 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         return new SpiritualFurnaceMenu(id, inventory, this.accessData, this.getBlockPos());
     }
 
-    public IArtifactType getArtifactType() {
-        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.UNKNOWN;
+    public IRealmType getArtifactType() {
+        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getRealm(this.getBlockState()) : RealmTypes.NOT_IN_REALM;
     }
 }

@@ -3,9 +3,7 @@ package hungteen.imm.common.item.artifacts;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.LevelHelper;
 import hungteen.htlib.util.helper.registry.ParticleHelper;
-import hungteen.imm.api.registry.IArtifactType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
@@ -43,7 +41,7 @@ public class FlameGourd extends ArtifactItem {
     private static final String COLLECTED_FLAME_LEVEL = "CollectedFlameLevel";
     private static final int MAX_FLAME_AMOUNT = 500;
 
-    public FlameGourd(IArtifactType artifactType) {
+    public FlameGourd(IRealmType artifactType) {
         super(artifactType);
     }
 
@@ -118,10 +116,10 @@ public class FlameGourd extends ArtifactItem {
      * 火葫芦的等级不能低于灵火等级。
      */
     public static boolean canStoreFlame(ItemStack stack, FlameGourd gourd, SpiritualFlame flame){
-        return canStoreFlame(gourd.getArtifactType(stack), flame.getRealm());
+        return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRealm());
     }
 
-    public static boolean canStoreFlame(IArtifactType artifactType, IRealmType realmType){
+    public static boolean canStoreFlame(IRealmType artifactType, IRealmType realmType){
         return artifactType.getRealmValue() >= realmType.getRealmValue();
     }
 

@@ -151,7 +151,7 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     public boolean canAttack(LivingEntity living) {
         if(super.canAttack(living)){
             //TODO 不攻击高境界。
-//            return RealmManager.getEntityRealm(living);
+//            return RealmManager.getRealm(living);
             return true;
         }
         return false;

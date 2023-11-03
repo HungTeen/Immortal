@@ -51,8 +51,8 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                     iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots))));
                 }
                 if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)) {
-                    final IRealmType playerRealm = RealmManager.getEntityRealm(player);
-                    final IRealmType realm = RealmManager.getEntityRealm(entityAccessor.getEntity());
+                    final IRealmType playerRealm = RealmManager.getRealm(player);
+                    final IRealmType realm = RealmManager.getRealm(entityAccessor.getEntity());
                     final RealmStages stage = RealmManager.getRealmStage(entityAccessor.getEntity()).orElse(null);
                     final MutableComponent component = RealmTypes.getCategory().append(": ");
                     if (RealmManager.hasRealmGap(playerRealm, realm) && !RealmManager.compare(playerRealm, realm)) {

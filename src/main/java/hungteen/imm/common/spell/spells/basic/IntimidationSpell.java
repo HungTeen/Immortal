@@ -31,12 +31,14 @@ public class IntimidationSpell extends SpellType {
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         final double range = RealmManager.getSpiritRange(owner);
         final AABB aabb = EntityHelper.getEntityAABB(owner, range, range / 2);
-        final IRealmType realm = RealmManager.getEntityRealm(owner);
+        final IRealmType realm = RealmManager.getRealm(owner);
         EntityHelper.getPredicateEntities(owner, aabb, LivingEntity.class, entity -> {
             return RealmManager.hasRealmGapAndLarger(owner, entity);
         }).forEach(target -> { //TODO 防止误伤队友。
-            final IRealmType targetRealm = RealmManager.getEntityRealm(target);
+            final IRealmType targetRealm = RealmManager.getRealm(target);
             final int gap = RealmManager.getRealmGap(realm, targetRealm);
+            // 威压百分比扣血，但不会扣完。
+            target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
             target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.get(), 600, gap));
         });
         return true;

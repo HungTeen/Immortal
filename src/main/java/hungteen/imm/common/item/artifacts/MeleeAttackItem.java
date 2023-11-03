@@ -40,7 +40,7 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
     protected final float attackRange;
 
     public MeleeAttackItem(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
-        super(new Properties().stacksTo(1).durability(tier.getUses()), tier.getArtifactType());
+        super(new Properties().stacksTo(1).durability(tier.getUses()), tier.getArtifactRealm());
         this.meleeAttackType = meleeAttackType;
         this.attackDamage = tier.getAttackDamage() + this.meleeAttackType.getBaseAttackDamage();
         this.attackSpeed = tier.getAttackSpeed() + this.meleeAttackType.getBaseAttackSpeed();

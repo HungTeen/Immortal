@@ -23,6 +23,7 @@ public class CultivationTypes {
     public static final ICultivationType MONSTER = register(new CultivationType("monster", false, true));
     public static final ICultivationType UNDEAD = register(new CultivationType("undead", true, true));
     public static final ICultivationType WIZARD = register(new CultivationType("wizard", true, false));
+    public static final ICultivationType ARTIFACT = register(new CultivationType("artifact", false, true));
 //    public static final ICultivationType GHOST = register(new CultivationType("ghost"));
 //    public static final ICultivationType BLOOD = register(new CultivationType("blood"));
 

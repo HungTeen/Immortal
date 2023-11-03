@@ -18,4 +18,5 @@ public class RandomUtil {
     public static float getTriangle(RandomSource source){
         return source.nextFloat() - source.nextFloat();
     }
+
 }

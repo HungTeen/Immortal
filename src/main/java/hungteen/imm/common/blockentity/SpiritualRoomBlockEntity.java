@@ -23,8 +23,8 @@ public class SpiritualRoomBlockEntity {
 //        return itemHandler;
 //    }
 //
-//    public IArtifactType getArtifactType() {
-//        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.EMPTY;
+//    public IArtifactType getArtifactRealm() {
+//        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactRealm(this.getBlockState()) : ArtifactTypes.EMPTY;
 //    }
 
 }

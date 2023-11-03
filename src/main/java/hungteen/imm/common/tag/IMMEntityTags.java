@@ -5,6 +5,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 
 /**
  * @author PangTeen
@@ -13,14 +14,21 @@ import net.minecraft.world.entity.EntityType;
  */
 public interface IMMEntityTags {
 
-    /* forge */
+    /* Forge */
+
     TagKey<EntityType<?>> VILLAGERS = forgeTag("villagers");
     TagKey<EntityType<?>> PILLAGERS = forgeTag("pillagers");
+    TagKey<EntityType<?>> REALM_FOLLOW_OWNER_ENTITIES = forgeTag("realm_follow_owner_entities");
+    TagKey<EntityType<?>> COMMON_ARTIFACTS = forgeTag("artifacts/common");
+    TagKey<EntityType<?>> MODERATE_ARTIFACTS = forgeTag("artifacts/moderate");
+    TagKey<EntityType<?>> ADVANCED_ARTIFACTS = forgeTag("artifacts/advanced");
 
-    /* immortal */
+    /* Immortal */
+
     TagKey<EntityType<?>> NO_ELEMENT_REACTIONS = tag("no_element_reactions");
     TagKey<EntityType<?>> CULTIVATORS = tag("cultivators");
     TagKey<EntityType<?>> HUMAN_BEINGS = tag("human_beings");
+
 
 
     private static TagKey<EntityType<?>> tag(String name){

@@ -1,10 +1,9 @@
 package hungteen.imm.common.blockentity;
 
 import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.impl.ArtifactTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
@@ -128,10 +127,6 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
 
     public boolean isLargeFurnace(){
         return this.furnaceBlockEntity != null && ! isMiniFurnace();
-    }
-
-    public IArtifactType getArtifactType() {
-        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getArtifactType(this.getBlockState()) : ArtifactTypes.UNKNOWN;
     }
 
 }

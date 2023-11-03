@@ -7,6 +7,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,10 +27,17 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // IMM Tags.
-        this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.SPIRITUAL_MANA);
         // Vanilla Tags.
         this.tag(DamageTypeTags.BYPASSES_ARMOR).addTag(IMMDamageTypeTags.SPIRITUALS);
-        this.tag(DamageTypeTags.IS_FIRE).add(IMMDamageTypes.FIRE_ELEMENT);
+        this.tag(DamageTypeTags.BYPASSES_SHIELD).addTag(IMMDamageTypeTags.ELEMENTS);
+
+        // Forge Tags.
+        this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_1).add(DamageTypes.WITHER);
+
+        // IMM Tags.
+        this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.SPIRITUAL_MANA);
+        this.tag(IMMDamageTypeTags.ELEMENTS)
+                .add(IMMDamageTypes.WOOD_ELEMENT, IMMDamageTypes.WATER_ELEMENT, IMMDamageTypes.FIRE_ELEMENT);
+
     }
 }

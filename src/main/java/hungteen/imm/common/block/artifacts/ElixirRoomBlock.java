@@ -1,6 +1,6 @@
 package hungteen.imm.common.block.artifacts;
 
-import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -32,8 +32,8 @@ public class ElixirRoomBlock extends ArtifactEntityBlock {
 
     private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 6, 15);
 
-    public ElixirRoomBlock(BlockBehaviour.Properties properties, IArtifactType artifactType) {
-        super(properties, artifactType);
+    public ElixirRoomBlock(BlockBehaviour.Properties properties, IRealmType realmType) {
+        super(properties, realmType);
     }
 
     @Override

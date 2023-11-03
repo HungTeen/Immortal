@@ -102,7 +102,7 @@ public abstract class ElixirItem extends Item {
      * @return False to explode, True to successfully eat elixir, absent to pass.
      */
     public Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack){
-        final IRealmType realm = RealmManager.getEntityRealm( livingEntity);
+        final IRealmType realm = RealmManager.getRealm( livingEntity);
         final ICultivationType cultivationType = realm.getCultivationType();
         var lowRealm = getLowestRealm(cultivationType);
         var highRealm = getHighestRealm(cultivationType);

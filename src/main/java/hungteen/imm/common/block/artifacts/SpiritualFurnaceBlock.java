@@ -1,7 +1,7 @@
 package hungteen.imm.common.block.artifacts;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.registry.IArtifactType;
+import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.blockentity.FunctionalFurnaceBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
@@ -11,7 +11,6 @@ import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -48,10 +47,10 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    public SpiritualFurnaceBlock(BlockBehaviour.Properties properties, IArtifactType artifactType) {
+    public SpiritualFurnaceBlock(BlockBehaviour.Properties properties, IRealmType realmType) {
         super(properties.requiresCorrectToolForDrops().lightLevel(state -> {
             return state.getValue(LIT) ? 15 : 0;
-        }), artifactType);
+        }), realmType);
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.FALSE).setValue(FACING, Direction.NORTH));
     }
 

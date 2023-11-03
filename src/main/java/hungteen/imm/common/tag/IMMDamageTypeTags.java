@@ -3,8 +3,10 @@ package hungteen.imm.common.tag;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.item.Item;
 
 /**
  * @author PangTeen
@@ -13,7 +15,20 @@ import net.minecraft.world.damagesource.DamageType;
  */
 public interface IMMDamageTypeTags {
 
+    /* Forge */
+
+    TagKey<DamageType> IMM_REALM_LEVEL_1 = forgeTag("imm_realms/level_1");
+    TagKey<DamageType> IMM_REALM_LEVEL_2 = forgeTag("imm_realms/level_2");
+    TagKey<DamageType> IMM_REALM_LEVEL_3 = forgeTag("imm_realms/level_3");
+
+    /* Immortal */
+
     TagKey<DamageType> SPIRITUALS = tag("spirituals");
+    TagKey<DamageType> ELEMENTS = tag("elements");
+
+    private static TagKey<DamageType> forgeTag(String name){
+        return create(Util.forge().prefix(name));
+    }
 
     private static TagKey<DamageType> tag(String name){
         return create(Util.prefix(name));

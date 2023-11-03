@@ -22,6 +22,7 @@ public class IMMActivities {
     public static final RegistryObject<Activity> ESCAPE = register("escape");
     public static final RegistryObject<Activity> TRADE = register("trade");
     public static final RegistryObject<Activity> EAT = register("eat");
+    public static final RegistryObject<Activity> HOME = register("home");
 
     private static RegistryObject<Activity> register(String name){
         return ACTIVITIES.register(name, () -> new Activity(Util.prefixName(name)));

@@ -220,6 +220,10 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
         return this.flameLevel;
     }
 
+    public void setFullAmount(){
+        this.setFlameAmount(MAX_AMOUNT);
+    }
+
     public void setFlameAmount(float amount) {
         entityData.set(FLAME_AMOUNT, Mth.clamp(amount, 0, MAX_AMOUNT));
     }

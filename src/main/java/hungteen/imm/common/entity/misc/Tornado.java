@@ -1,19 +1,25 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
+import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,13 +27,20 @@ import java.util.UUID;
  * @author: PangTeen
  * @create: 2023/10/19 21:08
  **/
-public class Tornado extends HTEntity implements TraceableEntity {
+public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditionalSpawnData {
 
     private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(Tornado.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> REST_TICK = SynchedEntityData.defineId(Tornado.class, EntityDataSerializers.INT);
     @Nullable
     private LivingEntity owner;
     @Nullable
     private UUID ownerUUID;
+    private int targetId;
+    @Nullable
+    private Entity targetEntity;
+    private int workDuration;
+    private boolean clockWise;
+    private float speed;
 
     public Tornado(EntityType<?> type, Level world) {
         super(type, world);
@@ -37,38 +50,82 @@ public class Tornado extends HTEntity implements TraceableEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(SCALE, 1F);
+        entityData.define(REST_TICK, 0);
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeInt(this.targetId);
+        buffer.writeBoolean(this.clockWise);
+        buffer.writeFloat(this.speed);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.targetId = additionalData.readInt();
+        this.clockWise = additionalData.readBoolean();
+        this.speed = additionalData.readFloat();
+    }
+
+    public void shootTo(@Nullable Entity target, int duration, boolean clockWise, float speed) {
+        if (target != null) {
+            this.setTargetId(target.getId());
+        }
+        this.setWorkDuration(duration);
+        this.setClockWise(clockWise);
+        this.setSpeed(speed);
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
-        if(accessor.equals(SCALE)){
+        if (accessor.equals(SCALE)) {
             this.refreshDimensions();
         }
     }
 
     @Override
     public void tick() {
+        this.noPhysics = true;
         super.tick();
+        this.getTarget().ifPresentOrElse(target -> {
+            final Vec3 vec = target.position().subtract(position()).normalize();
+            final Vec3 cur = getDeltaMovement().normalize();
+            final float changeSpeed = (this.getRestTick() <= 0 ? 0.02F : 0.1F);
+            this.setDeltaMovement((cur.add(vec.scale(changeSpeed))).normalize().scale(getSpeed()));
+        }, () -> {
+            final Vec3 speed = this.getDeltaMovement();
+            this.setDeltaMovement(speed.x, Math.max(0, speed.y), speed.z);
+        });
         tickMove(0.99F, 0.99F);
-        if(EntityHelper.isServer(this)){
+        if (EntityHelper.isServer(this)) {
+            if(this.tickCount % 20 == 0 && this.random.nextFloat() < 0.5F && ElementManager.hasElement(this, Elements.WOOD, false)){
+                ElementManager.addElementAmount(this, Elements.WOOD, false, 20);
+            }
+            if (this.getRestTick() > 0) {
+                this.setRestTick(this.getRestTick() - 1);
+            }
             EntityUtil.forRange(this, LivingEntity.class, getBbWidth(), getBbHeight(), target -> {
                 return target != getOwner();
             }, (target, scale) -> {
-                if(isFireTornado()){
-                    target.hurt(this.damageSources().inFire(), Math.min(1, 3F * scale * getScale()));
+                if (isFireTornado()) {
+                    target.hurt(IMMDamageSources.fireElement(this), Math.min(1, 3F * scale * getScale()));
+                    ElementManager.addElementAmount(target, Elements.FIRE, false, 2 * getScale(), 20);
+                } else {
+                    target.hurt(IMMDamageSources.woodElement(this), Math.min(1, 1F * scale * getScale()));
                 }
-                ElementManager.addElementAmount(target, Elements.WOOD, false, getScale() * (1 + 5 * scale), 20);
+                ElementManager.addElementAmount(target, Elements.WOOD, false, 3 * getScale(), 20);
+                if (this.getRestTick() == 0) {
+                    this.setRestTick(RandomHelper.getMinMax(random, 100, 200));
+                }
             });
-            if(this.tickCount >= 500){
+            if (this.tickCount >= this.getWorkDuration()) {
                 this.discard();
             }
-        } else {
-
         }
     }
 
-    public boolean isFireTornado(){
+    public boolean isFireTornado() {
         return ElementManager.hasElement(this, Elements.FIRE, false);
     }
 
@@ -81,9 +138,9 @@ public class Tornado extends HTEntity implements TraceableEntity {
     @Override
     public LivingEntity getOwner() {
         if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
+            Entity entity = ((ServerLevel) this.level()).getEntity(this.ownerUUID);
             if (entity instanceof LivingEntity) {
-                this.owner = (LivingEntity)entity;
+                this.owner = (LivingEntity) entity;
             }
         }
         return this.owner;
@@ -95,12 +152,44 @@ public class Tornado extends HTEntity implements TraceableEntity {
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return super.canBeCollidedWith();
+    }
+
+    public Optional<Entity> getTarget() {
+        if (this.targetEntity == null) {
+            this.targetEntity = level().getEntity(this.targetId);
+        }
+        return Optional.ofNullable(this.targetEntity);
+    }
+
+    @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         if (tag.hasUUID("Owner")) {
             this.ownerUUID = tag.getUUID("Owner");
         }
-        if(tag.contains("Scale")){
+        if (tag.contains("Scale")) {
             this.setScale(tag.getFloat("Scale"));
+        }
+        if (tag.contains("RestTick")) {
+            this.setRestTick(tag.getInt("RestTick"));
+        }
+        if (tag.contains("TargetId")) {
+            this.setTargetId(tag.getInt("TargetId"));
+        }
+        if (tag.contains("WorkDuration")) {
+            this.setWorkDuration(tag.getInt("WorkDuration"));
+        }
+        if (tag.contains("ClockWise")) {
+            this.setClockWise(tag.getBoolean("ClockWise"));
+        }
+        if (tag.contains("MoveSpeed")) {
+            this.setSpeed(tag.getFloat("MoveSpeed"));
         }
     }
 
@@ -110,6 +199,11 @@ public class Tornado extends HTEntity implements TraceableEntity {
             tag.putUUID("Owner", this.ownerUUID);
         }
         tag.putFloat("Scale", this.getScale());
+        tag.putInt("RestTick", this.getRestTick());
+        tag.putInt("TargetId", this.getTargetId());
+        tag.putInt("WorkDuration", this.getWorkDuration());
+        tag.putBoolean("ClockWise", this.isClockWise());
+        tag.putFloat("MoveSpeed", this.getSpeed());
     }
 
     public void setScale(float scale) {
@@ -120,8 +214,49 @@ public class Tornado extends HTEntity implements TraceableEntity {
         return entityData.get(SCALE);
     }
 
+    public void setRestTick(int tick) {
+        entityData.set(REST_TICK, tick);
+    }
+
+    public int getRestTick() {
+        return entityData.get(REST_TICK);
+    }
+
     @Override
     protected float getGravityVelocity() {
-        return 0.001F;
+        return 0F;
     }
+
+    public void setClockWise(boolean clockWise) {
+        this.clockWise = clockWise;
+    }
+
+    public boolean isClockWise() {
+        return clockWise;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
+    }
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setWorkDuration(int workDuration) {
+        this.workDuration = workDuration;
+    }
+
+    public int getWorkDuration() {
+        return workDuration;
+    }
+
 }

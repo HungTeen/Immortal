@@ -479,6 +479,7 @@
   "misc.imm.cultivation_type.wizard": "魔法师",
   "misc.imm.cultivation_type.ghost": "鬼修",
   "misc.imm.cultivation_type.blood": "血修",
+  "misc.imm.cultivation_type.artifact": "法器",
 
   "misc.imm.realm": "境界",
   "misc.imm.realm.not_in_realm": "不在体系中",
@@ -493,6 +494,9 @@
   "misc.imm.realm.undead_level_2": "中阶亡灵",
   "misc.imm.realm.undead_level_3": "高阶亡灵",
   "misc.imm.realm.spiritual_flame_1": "一级灵火",
+  "misc.imm.realm.common_artifact" : "一般法器",
+  "misc.imm.realm.moderate_artifact" : "中阶法器",
+  "misc.imm.realm.advanced_artifact" : "高阶法器",
 
   "misc.imm.realm_stage": "境界阶段",
   "misc.imm.realm_stage.preliminary": "前期",
@@ -515,12 +519,6 @@
   "misc.imm.player_data.spiritual_mana" : "灵力",
   "misc.imm.player_data.max_spiritual_mana" : "额外最大灵力",
   "misc.imm.player_data.break_through_progress" : "突破进度",
-
-  "misc.imm.artifact_type.unknown" : "体系之外",
-  "misc.imm.artifact_type.common_item" : "普通物品",
-  "misc.imm.artifact_type.common_artifact" : "一般法器",
-  "misc.imm.artifact_type.moderate_artifact" : "中阶法器",
-  "misc.imm.artifact_type.advanced_artifact" : "高阶法器",
 
   "misc.imm.accuracy.trash" : "（废丹）",
   "misc.imm.accuracy.toxic" : "（毒丹）",

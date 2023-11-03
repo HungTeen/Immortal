@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
-import hungteen.imm.common.ArtifactManager;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.CushionBlock;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.manuals.SecretManual;
@@ -23,13 +23,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @program: Immortal
@@ -101,9 +99,9 @@ public interface IMMCreativeTabs {
                     .withTabsBefore(SECRET_MANUALS.getKey())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
-                            return ArtifactManager.notCommon(ArtifactManager.getArtifactType(new ItemStack(item)));
+                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item)));
                         }).stream().map(ItemStack::new)
-                                .sorted(Comparator.comparingInt(ArtifactManager::getRealmValue))
+                                .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
                                 .forEach(output::accept);
                     })
     );

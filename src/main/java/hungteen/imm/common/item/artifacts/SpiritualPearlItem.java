@@ -3,8 +3,8 @@ package hungteen.imm.common.item.artifacts;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
-import hungteen.imm.common.impl.ArtifactTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -31,7 +31,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 public class SpiritualPearlItem extends ArtifactItem {
 
     public SpiritualPearlItem() {
-        super(ArtifactTypes.COMMON_ARTIFACT);
+        super(RealmTypes.COMMON_ARTIFACT);
     }
 
     @Override

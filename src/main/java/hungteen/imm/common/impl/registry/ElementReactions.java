@@ -15,6 +15,7 @@ import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.creature.spirit.ElementSpirit;
 import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -403,8 +404,9 @@ public class ElementReactions {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
-            if(! this.robustReaction){
+            if(! this.robustReaction && entity.level().getRandom().nextFloat() < 0.1F){
                 entity.setSecondsOnFire(Math.min(2, (int)(scale * 5)));
+                entity.hurt(IMMDamageSources.fireElement(null), scale * 3);
             }
             if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
                 ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
