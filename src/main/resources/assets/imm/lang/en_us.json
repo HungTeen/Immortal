@@ -279,6 +279,8 @@
   "itemGroup.imm.runes": "IMM Runes",
   "_comment13": "--------------------------------------------Biome-------------------------------------------",
   "_comment14": "--------------------------------------------Patchouli-------------------------------------------",
+  "book.imm.guide_book": "Cultivation Guide",
+  "book.imm.guide_book.info": "This mod is still far from perfect and can only be used as an experience test.",
   "_comment15": "--------------------------------------------KeyBind-------------------------------------------",
   "key.categories.imm": "IMM Keys",
   "key.imm.spell_circle": "Spell Circle",

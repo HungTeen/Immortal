@@ -1,0 +1,21 @@
+{
+  "name": "修士",
+  "icon": "minecraft:leather_chestplate",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "人类在对长生之法的漫长探索中，有极少数人偶然发现通过吸收和炼化灵气不仅可以延年益寿，还可以增强对外界环境的感知能力。后来，人们便将这样使用灵气的生物统称为灵修。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "然而主世界是一片灵气浓度较低的区域，这里的绝大多数人类以经验的形式认识灵气，他们惯于通过主世界特色的方式利用灵气。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "除了人类能够利用灵气之外，很多生物也感知到了灵气。其中的大多数生物在吸收灵气后获得了更强大的力量，其中兽性未脱者被称为妖兽。"
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 2
+}

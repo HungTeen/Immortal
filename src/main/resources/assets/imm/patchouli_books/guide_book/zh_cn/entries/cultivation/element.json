@@ -1,0 +1,17 @@
+{
+  "name": "元素",
+  "icon": "imm:textures/spell/metal_mastery.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "人们认为世界是由金、木、水、火、土构成的，它们代表了最基本的物质和能量形态。每种元素都有其独特的性质和特征，它们之间相互依存、相互制约、相互转化。五行之间的相互作用和平衡是世间万物形成和发展的基础。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "金元素代表着清洁、革新、肃杀，木元素代表着生长、繁衍、柔韧，水元素代表着下行、滋润、渗透，火元素代表着发散、释放、光明，土元素代表着包容、转化、承载。"
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 0
+}

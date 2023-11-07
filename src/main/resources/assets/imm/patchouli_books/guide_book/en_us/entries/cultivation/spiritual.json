@@ -1,0 +1,18 @@
+{
+  "name": "灵气",
+  "icon": "minecraft:emerald",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "灵气是存在于自然环境中的与经验同源的特殊能量，它看不见摸不着，是一种十分重要的资源。世界各处虽然都弥散着灵气，但不同世界甚至不同生物群系的灵气浓度都各不相同。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "灵石",
+      "text": "一些特殊矿物具有吸收灵气的能力，人们称之为灵石。绿宝石就是其中之一，但其所包含的灵气十分有限。灵石是修仙者之间的通用货币，除此之外还可以用来延续灵火的灵力等等功效。"
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 1
+}

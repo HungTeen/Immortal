@@ -1,0 +1,19 @@
+{
+  "name": "丹修",
+  "icon": "minecraft:spiritual_inspiration_elixir",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "丹修是灵修的一种，他们通过炼制并服用吸收天地间灵气的丹药来增长自己的修为，是绝大部分人类修行的选择。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:red_wool_cushion",
+      "title": "坐垫",
+      "text": "使用坐垫可以查看修行面板。"
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 4
+}

@@ -69,7 +69,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
      flatDir {
-         dir 'E:\\Projects\\idea\\HTLib\\build\\libs'
+         dir 'D:\\Projects\\Idea\\HTLib\\build\\libs'
      }
 }
 

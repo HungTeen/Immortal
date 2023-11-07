@@ -1,0 +1,17 @@
+{
+  "name": "东土",
+  "icon": "minecraft:grass_block",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "主世界灵气相对稀薄，曾有人搭建传送阵寻找远方富有灵气之地，东土便是其一。在平原找到传送门遗迹，收集足够的灵石激活传送阵，即可传送到东土世界。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "东土的平原有散修坊市，这里可以是法术秘籍的重要来源；东土的黑森林是一片诡异之处，这里也许能发现鲜为人知的结构；在温带草原可以遇见神秘的怪鸟。"
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 6
+}

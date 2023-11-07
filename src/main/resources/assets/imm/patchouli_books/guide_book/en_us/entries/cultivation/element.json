@@ -1,0 +1,17 @@
+{
+  "name": "Element",
+  "icon": "imm:textures/spell/metal_mastery.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "People think that the world is made up of gold, wood, water, fire and earth, which represent the most basic forms of matter and energy. Each element has its own unique nature and characteristics, and they depend on each other, restrict each other and transform each other. The interaction and balance between the five elements is the basis for the formation and development of all things in the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Metal represents cleanliness, innovation and killing. Wood represents growth, reproduction and flexibility. Water represents downward, moisturizing and permeating. Fire represents divergence, release and light. Earth represents tolerance, transformation and bearing."
+    }
+  ],
+  "advancement": "imm:immortal/im_mortal",
+  "sortnum": 0
+}

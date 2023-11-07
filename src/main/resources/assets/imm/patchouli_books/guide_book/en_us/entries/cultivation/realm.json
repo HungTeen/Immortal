@@ -1,0 +1,17 @@
+{
+  "name": "境界",
+  "icon": "imm:textures/spell/meditation.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "境界是修行等级的一种描述，人们将同境界化为初期、中期、后期、小圆满和大圆满五个阶段，当达到小圆满阶段就可以开始尝试突破。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "修为是人们日积月累沉淀历练的结果，是战斗、丹药、功法、人缘等方面的总和。随着修为的提升，会逐渐触碰到当前境界的瓶颈，此时必须寻求突破之法。"
+    }
+  ],
+  "advancement": "imm:immortal/long_cultivation",
+  "sortnum": 5
+}
