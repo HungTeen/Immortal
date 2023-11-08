@@ -1,6 +1,6 @@
 {
   "name": "丹修",
-  "icon": "minecraft:spiritual_inspiration_elixir",
+  "icon": "imm:spiritual_inspiration_elixir",
   "category": "imm:cultivation",
   "pages": [
     {
@@ -12,6 +12,24 @@
       "item": "imm:red_wool_cushion",
       "title": "坐垫",
       "text": "使用坐垫可以查看修行面板。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:spiritual_inspiration_elixir",
+      "title": "一级灵修",
+      "text": "服用此丹药可以助力突破到一级灵修。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:gather_breath_elixir",
+      "title": "二级灵修",
+      "text": "服用此丹药可以助力突破到二级灵修。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:refine_breath_elixir",
+      "title": "三级灵修",
+      "text": "服用此丹药可以助力突破到三级灵修。"
     }
   ],
   "advancement": "imm:immortal/im_mortal",

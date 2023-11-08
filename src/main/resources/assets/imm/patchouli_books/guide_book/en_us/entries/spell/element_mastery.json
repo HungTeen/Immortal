@@ -1,0 +1,13 @@
+{
+  "name": "元素精通",
+  "icon": "imm:textures/spell/fire_mastery.png",
+  "category": "imm:spell",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "拥有灵根的人可以通过学习对应元素的功法来增强对该元素的掌控能力，并在施展相应法术时有几率附着该元素。元素精通I有一定概率对目标附加弱元素；元素精通II有一定几率对自身附加弱元素；元素精通III开始有较低概率附着成强元素；元素精通IV有一定概率对目标附加强元素；元素精通V有一定概率对自身附着强元素。"
+    }
+  ],
+  "advancement": "imm:immortal/spiritual_1",
+  "sortnum": 1
+}

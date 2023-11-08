@@ -165,17 +165,18 @@ public interface SecretManuals {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
                 builder.require(spiritual_level_2)
-                        .require(new EMPRequirement(1))
+//                        .require(new EMPRequirement(1))
                         .require(SpellRequirement.single(SpellTypes.RELEASING, 1));
             });
             register(context, spell, 2, builder -> {
                 builder.require(spiritual_level_2)
-                        .require(new EMPRequirement(2))
+//                        .require(new EMPRequirement(2))
                         .require(SpellRequirement.single(SpellTypes.DISPERSAL, 1));
             });
             register(context, spell, 3, builder -> {
                 builder.require(spiritual_level_3)
-                        .require(new EMPRequirement(3));
+//                        .require(new EMPRequirement(3))
+                        ;
             });
         }
     }

@@ -92,12 +92,25 @@ public class AdvancementGen extends HTAdvancementGen {
             Advancement spells = task(imMortal, IMMItems.SECRET_MANUAL.get(), "spells")
                     .addCriterion("learn_spells", PlayerLearnSpellsTrigger.TriggerInstance.test(1))
                     .save(saver, loc("spells"));
-            Advancement.Builder elementMasteryBuilder = task(spells, IMMItems.SECRET_MANUAL.get(), "element_mastery_beginner");
+            Advancement.Builder elementMasteryBuilder1 = task(spells, IMMItems.SECRET_MANUAL.get(), "element_mastery_beginner");
             ElementalMasterySpell.getSpells().forEach(spell -> {
-                elementMasteryBuilder.addCriterion("learn_" + spell.getName(), PlayerLearnSpellTrigger.TriggerInstance.test(spell, 1));
+                elementMasteryBuilder1.addCriterion("learn_" + spell.getName(), PlayerLearnSpellTrigger.TriggerInstance.test(spell, 1));
             });
-            elementMasteryBuilder.requirements(RequirementsStrategy.OR)
+            Advancement elementMasteryBeginner = elementMasteryBuilder1.requirements(RequirementsStrategy.OR)
                     .save(saver, loc("element_mastery_beginner"));
+            Advancement.Builder elementMasteryBuilder2 = task(elementMasteryBeginner, IMMItems.SECRET_MANUAL.get(), "element_mastery_expert");
+            ElementalMasterySpell.getSpells().forEach(spell -> {
+                elementMasteryBuilder2.addCriterion("learn_" + spell.getName(), PlayerLearnSpellTrigger.TriggerInstance.test(spell, 3));
+            });
+            Advancement elementMasteryExpert = elementMasteryBuilder2.requirements(RequirementsStrategy.OR)
+                    .save(saver, loc("element_mastery_expert"));
+            Advancement.Builder elementMasteryBuilder3 = task(elementMasteryExpert, IMMItems.SECRET_MANUAL.get(), "element_master");
+            ElementalMasterySpell.getSpells().forEach(spell -> {
+                elementMasteryBuilder3.addCriterion("learn_" + spell.getName(), PlayerLearnSpellTrigger.TriggerInstance.test(spell, 5));
+            });
+            elementMasteryBuilder3.requirements(RequirementsStrategy.OR)
+                    .save(saver, loc("element_master"));
+
             Advancement spellMaster = task(spells, IMMItems.SECRET_MANUAL.get(), "spell_master")
                     .addCriterion("learn_spells", PlayerLearnSpellsTrigger.TriggerInstance.test(10))
                     .save(saver, loc("spell_master"));

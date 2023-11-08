@@ -1,0 +1,33 @@
+{
+  "name": "特殊反应",
+  "icon": "imm:textures/spell/crystal_explosion.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "自燃反应：火与木的反应会无视木元素的强度。但如果木元素不是强元素，则在燃烧反应的基础上，实体着火并受到火元素伤害。反应强度影响火元素每次造成的伤害量。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "爆炸反应：熔融反应时如果火元素是强元素，则实体着火时间延长；如果金元素是强元素，则爆炸范围和伤害增大。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "滋润反应：切裂反应发生时，如果实体同时附着有水元素，则实体消耗对应量的水元素以防止造成的伤害增加。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "暴沸反应：熔融反应发生时，如果实体同时附着有水元素，则阻止熔融反应的发生，转而进行小范围且持续发生的爆炸，在小范围内附着水元素。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "镀光反应：实体附着强土元素时，如果还附着有其他元素，则每次近战攻击时，消耗一些土元素和相应元素使实体的物理攻击附带该元素。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "矿化反应：实体附着强土元素时，如果还附着有其他强元素，则消耗这两种元素并生成一个附着这两种元素的元素水晶。"
+    }
+  ],
+  "advancement": "imm:immortal/element_mastery_beginner",
+  "sortnum": 10
+}

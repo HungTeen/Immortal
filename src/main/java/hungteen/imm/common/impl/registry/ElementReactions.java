@@ -186,10 +186,9 @@ public class ElementReactions {
         }
     });
 
-    public static final IElementReaction MELTING = register(new InhibitionReaction(
-            "melting", true, Elements.FIRE, 4, Elements.METAL, 8) {
-
-    });
+    public static final IElementReaction MELTING = register(new MeltingReaction(
+            "melting", true, 5, Elements.FIRE, 4, Elements.METAL, 8)
+    );
 
     public static final IElementReaction CUTTING = register(new CuttingReaction(
             "cutting", false, 1F, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {

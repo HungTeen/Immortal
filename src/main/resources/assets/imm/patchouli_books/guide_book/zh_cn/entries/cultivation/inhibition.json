@@ -1,0 +1,33 @@
+{
+  "name": "相克反应",
+  "icon": "imm:textures/spell/critical_hit.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "以下任意一对元素同时存在时，相克反应会触发。反应少量消耗前一种元素，大量消耗后一种元素。发生相克反应会对涉及的实体产生有害的效果。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "固化反应（土克水）：瞬间反应。目标获得固化效果，速度减慢，如果固化时目标受到大于其血量10%伤害，固化会解除同时目标受到的当次伤害被增强。反应强度决定固化时间和等级。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "升腾反应（水克火）：瞬间反应。目标获得的负面效果被扩散成药水云。反应强度决定效果云的存在时间。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "熔融反应（火克金）：瞬间反应。目标着火并且产生一次无视敌我的火元素爆炸。反应强度决定爆炸范围和伤害。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "切裂反应（金克木）：持续反应。反应发生期间，实体受到伤害时，会额外受到一次金元素伤害。反应强度决定伤害量。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "寄生反应（木克土）：持续反应。实体持续失去灵气，灵气为零时失去生命值。反应强度决定失去的量。"
+    }
+  ],
+  "advancement": "imm:immortal/element_mastery_beginner",
+  "sortnum": 8
+}

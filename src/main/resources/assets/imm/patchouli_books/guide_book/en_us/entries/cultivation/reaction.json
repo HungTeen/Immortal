@@ -1,0 +1,21 @@
+{
+  "name": "元素反应",
+  "icon": "imm:textures/spell/earth_mastery.png",
+  "category": "imm:cultivation",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "大多数情况下元素处于稳定状态，互相作用构成了整个世界。但通过灵气的作用，可以使元素处于活跃状态，此时依据各元素的特性，一些元素之间会触发反应，也就是元素反应。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "元素的活跃状态分为强和弱两种情况，强活跃状态的元素简称强元素，弱活跃状态的元素简称弱元素。强元素相比弱元素具有更高的反应优先级，强元素能够参加弱元素的所有反应。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "通过法术等手段可以在生物上附着一定量的元素，这些元素会随着时间衰减，可以在生物头顶看到其当前被附着的元素。"
+    }
+  ],
+  "advancement": "imm:immortal/element_mastery_beginner",
+  "sortnum": 7
+}

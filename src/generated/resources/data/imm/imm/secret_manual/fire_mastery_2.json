@@ -19,10 +19,6 @@
       "realm_type": "imm:spiritual_level_2"
     },
     {
-      "type": "imm:emp",
-      "level": 2
-    },
-    {
       "type": "imm:spell",
       "require_spells": [
         {

@@ -1,0 +1,73 @@
+{
+  "parent": "imm:immortal/element_mastery_expert",
+  "criteria": {
+    "learn_earth_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:earth_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    },
+    "learn_fire_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:fire_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    },
+    "learn_metal_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:metal_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    },
+    "learn_spirit_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:spirit_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    },
+    "learn_water_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:water_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    },
+    "learn_wood_mastery": {
+      "conditions": {
+        "level": 5,
+        "spell": "imm:wood_mastery"
+      },
+      "trigger": "imm:player_learn_spell"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.imm.element_master.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "imm:secret_manual"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.imm.element_master.title"
+    }
+  },
+  "requirements": [
+    [
+      "learn_metal_mastery",
+      "learn_wood_mastery",
+      "learn_water_mastery",
+      "learn_fire_mastery",
+      "learn_earth_mastery",
+      "learn_spirit_mastery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

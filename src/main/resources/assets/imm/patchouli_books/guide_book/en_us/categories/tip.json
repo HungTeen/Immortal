@@ -1,0 +1,7 @@
+{
+  "name": "帮助",
+  "description": "这里提供一些其他方面的帮助",
+  "icon": "imm:spiritual_eyes",
+  "parent": "imm:cultivation",
+  "sortnum":0
+}
