@@ -1,0 +1,24 @@
+{
+  "name": "帮助",
+  "icon": "minecraft:compass",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "请跟随原版进度的指引进行游戏。目前模组处于公测阶段，一定存在大量不足之处甚至bug，欢迎进行反馈。"
+    },
+    {
+      "type": "patchouli:link",
+      "url": "https://discord.com/invite/CfHFqB34Ye",
+      "text": "欢迎进入本模组作者的Discord，可以在里面和其他玩家一起交流互动、查看mod最新开发进展等。点击下方按钮可以直接跳转到Discord。",
+      "link_text": "Discord"
+    },
+    {
+      "type": "patchouli:link",
+      "url": "https://github.com/HungTeen/Immortal/issues",
+      "text": "游玩中遇到的各种问题、对mod未来的各种建议可以在github issues里面提出。点击下方按钮可以直接跳转到相应页面。",
+      "link_text": "Github Issues"
+    }
+  ],
+  "sortnum": 0
+}

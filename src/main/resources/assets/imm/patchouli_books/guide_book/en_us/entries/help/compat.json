@@ -1,0 +1,12 @@
+{
+  "name": "Compat",
+  "icon": "minecraft:string",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In order to optimize the experience, this mod has been compat with some well-known mods, including JEI, Patchouli and Jade."
+    }
+  ],
+  "sortnum": 1
+}

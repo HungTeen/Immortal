@@ -6,7 +6,9 @@ import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.level.Level;
 
@@ -23,7 +25,20 @@ public class SpiritualBeginnerCultivator extends Cultivator {
 
     @Override
     protected SimpleContainer createInventory() {
-        return new SimpleContainer(12);
+        return new SimpleContainer(16);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean flag = super.hurt(source, amount);
+        if (this.level().isClientSide) {
+            return false;
+        } else {
+            if (flag && source.getEntity() instanceof LivingEntity) {
+                SpiritualCultivatorAi.wasHurtBy(this, (LivingEntity)source.getEntity());
+            }
+            return flag;
+        }
     }
 
     @Override
@@ -45,11 +60,6 @@ public class SpiritualBeginnerCultivator extends Cultivator {
     @Override
     protected Brain.Provider<SpiritualBeginnerCultivator> brainProvider() {
         return Brain.provider(getMemoryModules(), getSensorModules());
-    }
-
-    @Override
-    public ICultivationType getCultivationType() {
-        return CultivationTypes.SPIRITUAL;
     }
 
 }

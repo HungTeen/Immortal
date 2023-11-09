@@ -40,7 +40,7 @@ public class EmptyCultivator extends Cultivator {
 
     @Override
     protected SimpleContainer createInventory() {
-        return new SimpleContainer(18);
+        return new SimpleContainer(12);
     }
 
     @Override
@@ -97,11 +97,6 @@ public class EmptyCultivator extends Cultivator {
     @Override
     protected Brain.Provider<EmptyCultivator> brainProvider() {
         return Brain.provider(getMemoryModules(), getSensorModules());
-    }
-
-    @Override
-    public ICultivationType getCultivationType() {
-        return CultivationTypes.MORTAL;
     }
 
 }

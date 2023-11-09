@@ -1,15 +1,15 @@
 {
-  "name": "东土",
+  "name": "East World",
   "icon": "minecraft:grass_block",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "主世界灵气相对稀薄，曾有人搭建传送阵寻找远方富有灵气之地，东土便是其一。在平原找到传送门遗迹，收集足够的灵石激活传送阵，即可传送到东土世界。"
+      "text": "The spiritual in overworld was relatively thin. Someone had once set up a teleport formation to search for a place rich in spiritual in the distance. East world was one of them. Find the Teleport Ruin on the plain biome, collect enough Spiritual Stones to activate teleport anchors, and then you can teleport to east world."
     },
     {
       "type": "patchouli:text",
-      "text": "东土的平原有散修坊市，这里可以是法术秘籍的重要来源；东土的黑森林是一片诡异之处，这里也许能发现鲜为人知的结构；在温带草原可以遇见神秘的怪鸟。"
+      "text": "The plains there have trading market, which can be an important source of secret manuals; the dark forest there is a strange place, where little-known structures may be found; and mysterious strange birds can be found in temperate plain."
     }
   ],
   "advancement": "imm:immortal/im_mortal",

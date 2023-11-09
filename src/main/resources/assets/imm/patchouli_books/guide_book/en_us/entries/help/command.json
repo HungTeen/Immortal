@@ -1,0 +1,12 @@
+{
+  "name": "Command",
+  "icon": "minecraft:command_block",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "/imm root : Can manipulate the player's spiritual roots. /imm spell : Can manipulate the player's spells. /imm experience : Can manipulate the player's cultivation level. /imm realm : Can manipulate the player's realm level. /imm data : Can manipulate the player's data. /imm element : Can manipulate the attachment of elements to entities. /imm tp : Can teleport quickly to other dimensions."
+    }
+  ],
+  "sortnum": 2
+}

@@ -1,31 +1,31 @@
 {
-  "name": "相生反应",
+  "name": "Generation Reaction",
   "icon": "imm:textures/spell/sprout.png",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "以下任意一对元素同时存在且前者为强元素时，相生反应会触发。反应消耗前一个元素，生成后一个元素。发生相生反应会对涉及的实体产生有益的效果。"
+      "text": "When any of the following pairs of elements exist at the same time and the former is a strong element, the phase reaction will be triggered. The reaction consumes the previous element and produces the latter element. The occurrence of a generation reaction will have a beneficial effect on the entity involved."
     },
     {
       "type": "patchouli:text",
-      "text": "结晶反应（土生金）：瞬间反应。实体获得伤害吸收效果。反应强度决定伤害吸收效果的等级。"
+      "text": "Crystallization(Earth -> Metal): Instant reaction. The entity gains damage absorption effect. The intensity of reaction determines the level of damage absorption effect."
     },
     {
       "type": "patchouli:text",
-      "text": "淬刃反应（金生水）：持续反应。实体会依据反应时受到的最高伤害（被挡掉的也算在内），在下一次主动攻击时全部附加，并额外附着水元素。反应强度决定水元素附着量。"
+      "text": "Quench Blade(Metal -> Water): Continuous reaction. The entity will attach all additional water elements to the next active attack, depending on the maximum damage received during the reaction (including those that have been blocked). The reaction intensity determines the attachment amount of water elements."
     },
     {
       "type": "patchouli:text",
-      "text": "生长反应（水生木）：持续反应。实体恢复一定血量。反应强度决定血量。"
+      "text": "Growing(Water -> Wood): Continuous reaction. The entity restores a certain amount of health. The intensity of the reaction determines the amount of blood."
     },
     {
       "type": "patchouli:text",
-      "text": "燃烧反应：（木生火）：持续反应。实体将火元素扩散到周围的实体上。反应强度决定火元素附着量。"
+      "text": "Flaming(Wood -> Fire): Continuous reaction. The entity spreads the fire element to the surrounding entity. The reaction intensity determines the amount of fire element attachment."
     },
     {
       "type": "patchouli:text",
-      "text": "化灰反应：（火生土）：瞬间反应。实体获得灵气，当灵气满时获得生命值。反应强度决定获得的量。"
+      "text": "Ashing(Fire -> Earth): Instant reaction. The entity gains spiritual and gains health when spiritual is full. The intensity of the reaction determines the amount obtained."
     }
   ],
   "advancement": "imm:immortal/element_mastery_expert",

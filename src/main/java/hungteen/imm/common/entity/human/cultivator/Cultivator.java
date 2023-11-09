@@ -30,6 +30,7 @@ public abstract class Cultivator extends HumanEntity {
 
     public Cultivator(EntityType<? extends HumanEntity> type, Level level) {
         super(type, level);
+        this.xpReward = 10;
     }
 
     @Override

@@ -172,11 +172,11 @@ public class RealmManager {
     public static void realmAttackGap(LivingHurtEvent event){
         final LivingEntity target = event.getEntity();
         final DamageSource source = event.getSource();
-        if(source.getDirectEntity() != null){
-            final int gap = getRealmGap(target, source.getDirectEntity());
+        if(source.getEntity() != null){
+            final int gap = getRealmGap(target, source.getEntity());
             if(gap > 0){
                 // 伤害减免。
-                event.setAmount((float) (event.getAmount() * Math.pow(0.15, gap)));
+                event.setAmount((float) (event.getAmount() * Math.pow(0.1, gap)));
             } else {
                 event.setAmount((float) (event.getAmount() * Math.pow(1.1, - gap)));
             }
@@ -305,13 +305,6 @@ public class RealmManager {
             }
             return getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
         } else {
-            if(entity instanceof TraceableEntity traceableEntity){
-                if(entity.getType().is(IMMEntityTags.REALM_FOLLOW_OWNER_ENTITIES)){
-                    if(traceableEntity.getOwner() != null){
-                        return getRealm(traceableEntity.getOwner());
-                    }
-                }
-            }
             return getDefaultRealm(entity.getType(), RealmTypes.NOT_IN_REALM);
         }
     }

@@ -1,0 +1,24 @@
+{
+  "name": "Tips",
+  "icon": "minecraft:compass",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Please follow the guidance of the minecraft advancement to play the game. At present, the mod is in the stage of public testing, there must be a lot of shortcomings or even bugs, welcome to feedback."
+    },
+    {
+      "type": "patchouli:link",
+      "url": "https://discord.com/invite/CfHFqB34Ye",
+      "text": "Welcome to the Discord of PangTeen's mod community, where you can interact with other players and check the latest development progress of mod. Click the button below to jump directly to Discord.",
+      "link_text": "Discord"
+    },
+    {
+      "type": "patchouli:link",
+      "url": "https://github.com/HungTeen/Immortal/issues",
+      "text": "All kinds of problems encountered in the game and suggestions for the future of mod can be put forward in github issues. Click the button below to jump directly to the appropriate page.",
+      "link_text": "Github Issues"
+    }
+  ],
+  "sortnum": 0
+}

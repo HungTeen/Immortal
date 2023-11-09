@@ -1,31 +1,31 @@
 {
-  "name": "相克反应",
+  "name": "Inhibition Reaction",
   "icon": "imm:textures/spell/critical_hit.png",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "以下任意一对元素同时存在时，相克反应会触发。反应少量消耗前一种元素，大量消耗后一种元素。发生相克反应会对涉及的实体产生有害的效果。"
+      "text": "Inhibition reaction will be triggered when any of the following pairs of elements exist at the same time. The reaction consumes a small amount of the former element and a large amount of the latter. The occurrence of inhibition reaction can have a harmful effect on the entity involved."
     },
     {
       "type": "patchouli:text",
-      "text": "固化反应（土克水）：瞬间反应。目标获得固化效果，速度减慢，如果固化时目标受到大于其血量10%伤害，固化会解除同时目标受到的当次伤害被增强。反应强度决定固化时间和等级。"
+      "text": "Solidification(Earth -> Water): Instant reaction. The target gains a solidification effect and slows down. If the target takes more than 10% of its health during solidification, the solidification will release and the current damage taken by the target will be enhanced. The reaction strength determines the effect time and level."
     },
     {
       "type": "patchouli:text",
-      "text": "升腾反应（水克火）：瞬间反应。目标获得的负面效果被扩散成药水云。反应强度决定效果云的存在时间。"
+      "text": "Vaporization(Water -> Fire): Instant reaction. The negative effects achieved by the target are spread into effect cloud. The reaction intensity determines the existence time of the effect cloud."
     },
     {
       "type": "patchouli:text",
-      "text": "熔融反应（火克金）：瞬间反应。目标着火并且产生一次无视敌我的火元素爆炸。反应强度决定爆炸范围和伤害。"
+      "text": "Melting(Fire -> Metal): Instant reaction. The target catches fire and produces an explosion of fire elements that ignore the enemy or self. The intensity of the reaction determines the scope and damage of the explosion."
     },
     {
       "type": "patchouli:text",
-      "text": "切裂反应（金克木）：持续反应。反应发生期间，实体受到伤害时，会额外受到一次金元素伤害。反应强度决定伤害量。"
+      "text": "Cutting(Metal -> Wood): Continuous reaction. During the reaction, when the entity is damaged, it will receive an additional metal element damage. The intensity of reaction determines the amount of damage."
     },
     {
       "type": "patchouli:text",
-      "text": "寄生反应（木克土）：持续反应。实体持续失去灵气，灵气为零时失去生命值。反应强度决定失去的量。"
+      "text": "Parasitism(Wood -> Earth): Continuous reaction. The entity continues to lose spiritual, and then lose health if no spiritual. The intensity of the reaction determines the amount of loss."
     }
   ],
   "advancement": "imm:immortal/element_mastery_beginner",

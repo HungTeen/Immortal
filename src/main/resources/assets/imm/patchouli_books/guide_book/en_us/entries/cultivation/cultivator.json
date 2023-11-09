@@ -1,19 +1,19 @@
 {
-  "name": "修士",
+  "name": "Cultivator",
   "icon": "minecraft:leather_chestplate",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "人类在对长生之法的漫长探索中，有极少数人偶然发现通过吸收和炼化灵气不仅可以延年益寿，还可以增强对外界环境的感知能力。后来，人们便将这样使用灵气的生物统称为灵修。"
+      "text": "In the long exploration of the method of longevity, very few people have accidentally found that absorbing and refining spiritual can not only prolong life, but also enhance the ability to perceive the external environment. Later, people referred to such creatures that use spiritual as spiritual cultivator."
     },
     {
       "type": "patchouli:text",
-      "text": "然而主世界是一片灵气浓度较低的区域，这里的绝大多数人类以经验的形式认识灵气，他们惯于通过主世界特色的方式利用灵气。"
+      "text": "However, overworld is an area with a low concentration of spiritual, where the vast majority of human beings know spiritual in the form of experience orb, and they are used to using spiritual in a way with the characteristics of overworld. But this way of guiding spiritual conflicts with the way of spiritual cultivator, so cultivator cannot use anything possessed by enchantment."
     },
     {
       "type": "patchouli:text",
-      "text": "除了人类能够利用灵气之外，很多生物也感知到了灵气。其中的大多数生物在吸收灵气后获得了更强大的力量，其中兽性未脱者被称为妖兽。"
+      "text": "Apart from humans being able to utilize spiritual, many creatures were also able to sense spiritual. Most of the creatures gained greater strength after absorbing spiritual, and those who had not shed their beast nature were called monster."
     }
   ],
   "advancement": "imm:immortal/im_mortal",

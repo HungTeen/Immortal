@@ -1,0 +1,12 @@
+{
+  "name": "联动模组",
+  "icon": "minecraft:string",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "为了优化体验，本模组和一些知名模组进行了联动，目前包括JEI、帕秋莉手册和玉。"
+    }
+  ],
+  "sortnum": 1
+}

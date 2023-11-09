@@ -1,0 +1,12 @@
+{
+  "name": "命令",
+  "icon": "minecraft:command_block",
+  "category": "imm:help",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "本模组添加了/imm命令。/imm root ：可以操作玩家的灵根。 /imm spell ：可以操作玩家的功法。 /imm experience ：可以操作玩家的修为。 /imm realm ：可以操作玩家的境界。 /imm data ：可以操作玩家的数据。 /imm element ：可以操作实体的元素附着。 /imm tp ：可以快速传送到其他维度。"
+    }
+  ],
+  "sortnum": 2
+}

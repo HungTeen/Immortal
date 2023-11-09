@@ -1,23 +1,23 @@
 {
-  "name": "功法",
+  "name": "Spell",
   "icon": "imm:secret_manual",
   "category": "imm:spell",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "功法是运用自身灵力的特定方法和技巧，是修仙者提升实力的基本方式之一。功法包括主动法术、被动法术和特殊功法三种。主动法术是指需要主动触发其效用；被动法术只要满足触发条件即可自动触发；特殊功法指学习后无需触发的功法。"
+      "text": "Spell were specific methods and techniques for using spiritual. It's one of the basic ways for cultivators to increase their strength. Spells included active spells, passive spells, and special spells. Active spells needed to be triggered actively; passive spells could be triggered automatically as long as the trigger conditions were met; special spells did not need to be triggered after learning."
     },
     {
       "type": "patchouli:text",
-      "text": "功法秘籍中记录了功法的学习条件、功法咒语等内容，当满足所需学习条件后即可学习相应的功法。学习条件包括了境界、前置功法、特定灵根等。"
+      "text": "The secret manual of the cultivation method recorded the learning conditions and incantations of the spell. After meeting the required learning conditions, the corresponding spell could be learned. The learning requirements included realms, prerequisite spells, and specific spiritual roots."
     },
     {
       "type": "patchouli:text",
-      "text": "想要触发主动法术和被动法术首先需要将它们放置到法术轮盘中，右击坐垫打坐可以在法术页面看到法术轮盘。被动法术只要在法术轮盘上即可自动检测条件并触发，而主动法术还要选择为预备法术并按下释放法术的按键才能触发。"
+      "text": "To trigger spells, you first need to place them in the spell circle. Right-click on the cushion to see the spell circle on the spell page. Passive spells can be automatically detected and triggered as long as they are selected on the spell circle, while active spells can only be triggered if they are selected as preparatory spells and press the release button to trigger it."
     },
     {
       "type": "patchouli:text",
-      "text": "预备法术的选择有滚轮模式和移动模式2种模式，移动模式是初始默认模式。移动模式需要长按轮盘按键同时将鼠标往想选择的法术的方向移动，法术图标亮起后松开轮盘按键即选择成功。对于滚轮模式，按一下轮盘按键即可打开轮盘界面，然后通过滚轮操作依次切换选中的法术，再按依次轮盘按键即选择成功。"
+      "text": " There are two modes for selecting preparatory spells: wheel mode and movement mode. Movement mode is the initial default mode. Move mode requires long press circle button and move mouse to the direction of the spell you want to select. After the spell icon lights up, release circle button to select successfully. For wheel mode, press the circle button once to open the circle, and then switch spells by scroll mouse, and then press the circle button again to select."
     }
   ],
   "advancement": "imm:immortal/spiritual_1",

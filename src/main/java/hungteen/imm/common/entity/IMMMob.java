@@ -13,6 +13,7 @@ import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
@@ -164,6 +165,12 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
 
     public void serverChange(int id){
         this.level().broadcastEntityEvent(this, (byte) id);
+    }
+
+    @Override
+    public int getExperienceReward() {
+        final float realmXp = RealmManager.getStageRequiredCultivation(getRealm(), getRealmStage()) * 0.05F;
+        return (int) (realmXp + this.xpReward);
     }
 
     @Override

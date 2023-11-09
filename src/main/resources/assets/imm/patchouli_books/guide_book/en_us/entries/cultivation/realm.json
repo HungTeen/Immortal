@@ -1,15 +1,19 @@
 {
-  "name": "境界",
+  "name": "Realm",
   "icon": "imm:textures/spell/meditation.png",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "境界是修行等级的一种描述，人们将同境界化为初期、中期、后期、小圆满和大圆满五个阶段，当达到小圆满阶段就可以开始尝试突破。"
+      "text": "The realm is a description of the level of cultivation. people divide the same realm into five stages: preliminary stage, midterm stage, sophisticated stage, close to perfection stage and perfection stage. When reach the close to perfection stage, entity can begin to try to break through to next realm."
     },
     {
       "type": "patchouli:text",
-      "text": "修为是人们日积月累沉淀历练的结果，是战斗、丹药、功法、人缘等方面的总和。随着修为的提升，会逐渐触碰到当前境界的瓶颈，此时必须寻求突破之法。"
+      "text": "Cultivation is the result of people's accumulated experience, and it is the sum of combat, elixir, skill, popularity and so on. With the increase of cultivation, people will gradually encounter the bottleneck of the current realm, and they must seek a breakthrough at this time."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Creatures of different levels had great differences in combat. The damage caused by low-level creatures to high-level creatures would be reduced by 90% every realm difference, while the damage caused by high-level creatures to low-level creatures would be increased by 10% every realm difference. Moreover, most creatures had intimidation spell, which could exert pressure on low-level creatures within range."
     }
   ],
   "advancement": "imm:immortal/long_cultivation",

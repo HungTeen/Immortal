@@ -11,6 +11,7 @@ import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraftforge.event.TickEvent;
@@ -18,6 +19,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,6 +66,14 @@ public class IMMPlayerEvents {
                 });
             });
             event.getOriginal().invalidateCaps();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
+        if(RealmManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
+            EntityUtil.addMana(event.getEntity(), event.getOrb().getValue() * 0.4F);
+            event.setCanceled(true);
         }
     }
 

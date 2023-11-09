@@ -1,16 +1,17 @@
 {
-  "name": "灵气",
+  "name": "Spiritual",
   "icon": "minecraft:emerald",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "灵气是存在于自然环境中的与经验同源的特殊能量，它看不见摸不着，是一种十分重要的资源。世界各处虽然都弥散着灵气，但不同世界甚至不同生物群系的灵气浓度都各不相同。"
+      "text": "Spiritual is a special energy with the same origin as experience orb that exists in the natural environment. It is invisible and untouchable. It is a very important resource. Although Reiki is diffused all over the world, the concentration of spiritual varies from world to world and even from biome to biome."
     },
     {
       "type": "patchouli:spotlight",
-      "title": "灵石",
-      "text": "一些特殊矿物具有吸收灵气的能力，人们称之为灵石。绿宝石就是其中之一，但其所包含的灵气十分有限。灵石是修仙者之间的通用货币，除此之外还可以用来延续灵火的灵力等等功效。"
+      "item": "minecraft:emerald",
+      "title": "Spiritual Stone",
+      "text": "Some special minerals have the ability to absorb spiritual, which is called spiritual stone. Emerald is one of them, but it contains very limited spiritual. Spiritual stone is the common currency among cultivators, in addition, it can also be used to extend the spiritual power of spirit fire and so on."
     }
   ],
   "advancement": "imm:immortal/im_mortal",

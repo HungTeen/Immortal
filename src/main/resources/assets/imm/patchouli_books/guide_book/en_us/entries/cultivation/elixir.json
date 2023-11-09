@@ -1,17 +1,35 @@
 {
-  "name": "丹修",
-  "icon": "minecraft:spiritual_inspiration_elixir",
+  "name": "Elixir Cultivator",
+  "icon": "imm:spiritual_inspiration_elixir",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "丹修是灵修的一种，他们通过炼制并服用吸收天地间灵气的丹药来增长自己的修为，是绝大部分人类修行的选择。"
+      "text": "Elixir cultivators were a type of spiritual cultivator. They refined and consumed elixir that absorbed spiritual from heaven and earth to increase their cultivation. This was the choice of most humans to cultivate."
     },
     {
       "type": "patchouli:spotlight",
       "item": "imm:red_wool_cushion",
-      "title": "坐垫",
-      "text": "使用坐垫可以查看修行面板。"
+      "title": "Cushion",
+      "text": "Sit on cushion can see cultivation gui."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:spiritual_inspiration_elixir",
+      "title": "Spiritual Level 1",
+      "text": "Taking this kind of elixir can help break through to spiritual level I."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:gather_breath_elixir",
+      "title": "Spiritual Level 2",
+      "text": "Taking this kind of elixir can help break through to spiritual level II."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "imm:refine_breath_elixir",
+      "title": "Spiritual Level 3",
+      "text": "Taking this kind of elixir can help break through to spiritual level III."
     }
   ],
   "advancement": "imm:immortal/im_mortal",

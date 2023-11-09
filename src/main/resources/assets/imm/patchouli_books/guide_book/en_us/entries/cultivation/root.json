@@ -1,11 +1,11 @@
 {
-  "name": "灵根",
+  "name": "Spiritual Root",
   "icon": "imm:textures/spell/wood_mastery.png",
   "category": "imm:cultivation",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "灵气具有不同的元素属性，每个生物个体对不同的元素灵气都有不同的亲和程度，人们将对某种元素灵气具有较强亲和度称作具有该元素的灵根。生物可能具有若干种灵根，没有灵根的生物对灵气几乎没有感知，通常无法成为灵修。"
+      "text": "Spiritual has different element attributes, and each creature has different affinity to different elements. People call the spiritual with a strong affinity to a certain element as the root with that element. Creatures may have several kinds of spiritual roots, and creatures without spiritual roots have little sense of spiritual and usually cannot become cultivator."
     }
   ],
   "advancement": "imm:immortal/im_mortal",
