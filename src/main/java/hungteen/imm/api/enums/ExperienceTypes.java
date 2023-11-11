@@ -10,7 +10,7 @@ public enum ExperienceTypes {
     /**
      * Eat elixir to gain experience.
      */
-    ELIXIR,
+//    ELIXIR,
 
     /**
      * Fight with mobs to gain experience.
@@ -22,9 +22,14 @@ public enum ExperienceTypes {
      */
     SPELL,
 
+//    /**
+//     * Complete missions to gain experience.
+//     */
+//    MISSION,
+
     /**
-     * Complete missions to gain experience.
+     * Trade with others.
      */
-    MISSION
+    PERSONALITY
     ;
 }

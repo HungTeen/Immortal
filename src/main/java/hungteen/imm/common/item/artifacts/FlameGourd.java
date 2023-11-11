@@ -7,6 +7,7 @@ import hungteen.htlib.util.helper.registry.ParticleHelper;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
+import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.TipUtil;
@@ -92,6 +93,13 @@ public class FlameGourd extends ArtifactItem {
         } else {
             ParticleHelper.spawnLineMovingParticle(livingEntity.level(), SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getEyePosition(), livingEntity.getEyePosition(), 2, 0.1, 0.1);
         }
+    }
+
+    public static ItemStack createFlameGourd(float percent){
+        ItemStack stack = new ItemStack(IMMItems.FLAME_GOURD.get());
+        setFlameAmount(stack, (int) (MAX_FLAME_AMOUNT * percent));
+        setFlameLevel(stack, 1);
+        return stack;
     }
 
     public static int getFlameLevel(ItemStack stack){

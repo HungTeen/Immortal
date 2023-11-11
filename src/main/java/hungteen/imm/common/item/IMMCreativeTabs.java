@@ -42,11 +42,17 @@ public interface IMMCreativeTabs {
             builder.icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .displayItems((parameters, output) -> {
+                        //TODO 等待下次更新。
+                        final Set<ItemLike> blackList = Set.of(
+                                IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
+                                IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
+                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
+                        );
                         final List<ItemLike> items = new ArrayList<>();
                         // 种子之类的杂项。
                         items.addAll(List.of(
-                                IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
-                                IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
+//                                IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
+//                                IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
                                 IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get()
                         ));
                         items.addAll(getBannerPatterns());
@@ -54,11 +60,14 @@ public interface IMMCreativeTabs {
                         BlockUtil.getGourds().forEach(pair -> items.add(pair.getSecond()));
                         // 装饰方块。
                         items.addAll(List.of(
-                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
+//                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
                         ));
+                        // 刷怪蛋。
+                        items.addAll(ItemUtil.getSpawnEggs());
                         items.forEach(output::accept);
                         // 防止有被遗漏的物品。
                         final Set<Item> itemSet = items.stream().map(ItemLike::asItem).collect(Collectors.toSet());
+                        itemSet.addAll(blackList.stream().map(ItemLike::asItem).collect(Collectors.toSet()));
                         Util.get().filterValues(ItemHelper.get(), item -> {
                             if(itemSet.contains(item)) return false; // 已经被添加，不再考虑。
                             if(item instanceof ElixirItem) return false; // 排除丹药。

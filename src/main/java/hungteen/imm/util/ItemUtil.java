@@ -77,6 +77,10 @@ public class ItemUtil {
         return Util.get().filterEntries(ItemHelper.get(), BannerPatternItem.class::isInstance);
     }
 
+    public static List<Item> getSpawnEggs(){
+        return Util.get().filterValues(ItemHelper.get(), SpawnEggItem.class::isInstance);
+    }
+
     /**
      * {@link ImmortalMod#coreRegister()}
      */

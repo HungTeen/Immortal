@@ -9,6 +9,7 @@ import hungteen.imm.common.entity.ai.behavior.*;
 import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.util.BrainUtil;
 import hungteen.imm.util.ItemUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -98,6 +99,7 @@ public class SpiritualCultivatorAi {
                 new Swim(0.8F),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),
+                new WearArmor(),
                 InteractWithDoor.create(),
                 GoToWantedItem.create(speed, false, 4)
 //                new StopHoldingItemIfNoLongerAdmiring<>(),
@@ -116,6 +118,7 @@ public class SpiritualCultivatorAi {
 //                new StartFighting<>(EmptyCultivatorAi::findNearestValidAttackTarget),
                 //吃东西
                 new EatFood(),
+                UseSpell.create(UniformInt.of(60, 120)),
                 //四处逛逛
                 new RunOne<>(ImmutableList.of(
                         Pair.of(RandomStroll.stroll(speed), 1),
@@ -142,7 +145,7 @@ public class SpiritualCultivatorAi {
         brain.addActivityWithConditions(IMMActivities.MELEE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, new SwitchMeleeAttackItem(0.05F)),
-                Pair.of(1, new WearArmor()),
+                Pair.of(1, UseSpell.create(UniformInt.of(60, 120))),
 //                Pair.of(1, new MeleeKeepDistance(speed)),
                 // 攻击范围内清除路径，范围外则搜索路径
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
@@ -161,7 +164,7 @@ public class SpiritualCultivatorAi {
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
 //                Pair.of(1, new BackUpIfTooClose<>(64, speed)),
                 Pair.of(1, new SwitchRangeAttackItem(0.08F)),
-                Pair.of(1, new WearArmor()),
+                Pair.of(1, UseSpell.create(UniformInt.of(60, 120))),
                 // 攻击范围内清除路径，范围外则搜索路径
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 // 用远程攻击
@@ -179,6 +182,7 @@ public class SpiritualCultivatorAi {
     public static void initEscapeBehaviors(Brain<SpiritualBeginnerCultivator> brain, float speed) {
         brain.addActivityWithConditions(IMMActivities.ESCAPE.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
+                Pair.of(1, UseSpell.create(UniformInt.of(60, 120))),
                 Pair.of(1, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, speed, 12, true)),
                 Pair.of(1, new WearArmor()),
                 Pair.of(2, new EatFood()),

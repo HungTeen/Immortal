@@ -5,13 +5,16 @@ import hungteen.htlib.common.registry.HTCodecRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
+import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.codec.ItemEntry;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
+import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
@@ -96,6 +99,7 @@ public interface HumanSettings {
                                 range(2, 3),
                                 true,
                                 SimpleWeightedList.<TradeEntry>builder()
+                                        .add(spellTrade(3, SpellTypes.MEDITATION, 1), 10)
                                         .add(new TradeEntry(
                                                 List.of(new ItemStack(Items.EMERALD, 3)),
                                                 List.of(new ItemStack(Items.DIAMOND_SWORD)),
@@ -132,12 +136,117 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 100,
                 Optional.empty(),
-                List.of(),
-                Optional.empty()
+                List.of(
+                        single(new ItemEntry(
+                                new ItemStack(Items.BREAD),
+                                range(24, 48),
+                                constant(0)
+                        )),
+                        single(new ItemEntry(
+                                new ItemStack(Items.GOLDEN_APPLE),
+                                range(1, 3),
+                                constant(0)
+                        )),
+                        single(new ItemEntry(
+                                new ItemStack(Items.ARROW),
+                                range(24, 48),
+                                constant(0)
+                        )),
+                        single(new ItemEntry(
+                                new ItemStack(Items.ENDER_PEARL),
+                                range(1, 2),
+                                constant(0)
+                        )),
+                        single(new ItemEntry(
+                                new ItemStack(Items.SHIELD),
+                                constant(1),
+                                constant(0)
+                        )),
+                        single(new ItemEntry(
+                                new ItemStack(Items.BOW),
+                                constant(1),
+                                range(4, 8)
+                        )),
+                        pair(new ItemEntry(
+                                new ItemStack(Items.IRON_SWORD),
+                                constant(1),
+                                range(5, 10)
+                        ), new ItemEntry(
+                                new ItemStack(Items.DIAMOND_SWORD),
+                                constant(1),
+                                range(2, 5)
+                        )),
+                        pair(new ItemEntry(
+                                new ItemStack(Items.IRON_CHESTPLATE),
+                                constant(1),
+                                range(5, 10)
+                        ), new ItemEntry(
+                                new ItemStack(Items.DIAMOND_CHESTPLATE),
+                                constant(1),
+                                range(2, 5)
+                        )),
+                        pair(new ItemEntry(
+                                new ItemStack(Items.IRON_LEGGINGS),
+                                constant(1),
+                                range(5, 10)
+                        ), new ItemEntry(
+                                new ItemStack(Items.DIAMOND_LEGGINGS),
+                                constant(1),
+                                range(2, 5)
+                        )),
+                        pair(new ItemEntry(
+                                new ItemStack(Items.IRON_HELMET),
+                                constant(1),
+                                range(5, 10)
+                        ), new ItemEntry(
+                                new ItemStack(Items.GOLDEN_HELMET),
+                                constant(1),
+                                range(10, 15)
+                        )),
+                        pair(new ItemEntry(
+                                new ItemStack(Items.IRON_BOOTS),
+                                constant(1),
+                                range(5, 10)
+                        ), new ItemEntry(
+                                new ItemStack(Items.DIAMOND_BOOTS),
+                                constant(1),
+                                range(2, 5)
+                        ))
+                ),
+                Optional.of(new TradeSetting(
+                        range(6, 10),
+                        true,
+                        SimpleWeightedList.<TradeEntry>builder()
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(10, SpellTypes.SPIRIT_EYES, 2), 5)
+                                .add(spellTrade(4, SpellTypes.PICKUP_ITEM, 1), 9)
+                                .add(spellTrade(6, SpellTypes.PICKUP_ITEM, 2), 5)
+                                .add(spellTrade(10, SpellTypes.THROW_ITEM, 1), 7)
+                                .add(spellTrade(6, SpellTypes.PICKUP_BLOCK, 1), 9)
+                                .add(spellTrade(8, SpellTypes.PICKUP_BLOCK, 2), 6)
+                                .add(spellTrade(12, SpellTypes.FLY_WITH_ITEM, 1), 7)
+                                .add(spellTrade(16, SpellTypes.FLY_WITH_ITEM, 2), 4)
+                                .add(new TradeEntry(
+                                        List.of(new ItemStack(Items.EMERALD, 2)),
+                                        List.of(new ItemStack(IMMItems.GOURD_SEEDS.get(), 4)),
+                                        range(2, 4)
+                                ), 12)
+                                .add(new TradeEntry(
+                                        List.of(new ItemStack(Items.EMERALD, 32)),
+                                        List.of(FlameGourd.createFlameGourd(0.2F)),
+                                        constant(1)
+                                ), 5)
+                                .build()
+                        )
+                )
         ));
         context.register(METAL_BEGINNER, new HumanSetting(
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                20,
+                50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
                                 List.of(SpiritualTypes.METAL)
@@ -166,27 +275,23 @@ public interface HumanSettings {
                         range(4, 6),
                         true,
                         SimpleWeightedList.<TradeEntry>builder()
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 8)),
-                                        List.of(SecretManualItem.create(SpellTypes.METAL_MASTERY, 1)),
-                                        constant(1)
-                                ), 10)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 16)),
-                                        List.of(SecretManualItem.create(SpellTypes.METAL_MASTERY, 2)),
-                                        constant(1)
-                                ), 6)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
-                                        List.of(SecretManualItem.create(SpellTypes.METAL_MASTERY, 3)),
-                                        constant(1)
-                                ), 3)
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 1), 10)
+                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 2), 8)
+                                .add(spellTrade(16, SpellTypes.METAL_MASTERY, 3), 6)
+                                .add(spellTrade(6, SpellTypes.CRITICAL_HIT, 1), 7)
+                                .add(spellTrade(12, SpellTypes.METAL_MENDING, 1), 4)
+                                .add(spellTrade(8, SpellTypes.SHARPNESS, 1), 6)
                                 .build()
                 ))
         ));
         context.register(WOOD_BEGINNER, new HumanSetting(
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                20,
+                50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
                                 List.of(SpiritualTypes.WOOD)
@@ -216,27 +321,24 @@ public interface HumanSettings {
                         range(4, 6),
                         true,
                         SimpleWeightedList.<TradeEntry>builder()
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 8)),
-                                        List.of(SecretManualItem.create(SpellTypes.WOOD_MASTERY, 1)),
-                                        constant(1)
-                                ), 10)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 16)),
-                                        List.of(SecretManualItem.create(SpellTypes.WOOD_MASTERY, 2)),
-                                        constant(1)
-                                ), 6)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
-                                        List.of(SecretManualItem.create(SpellTypes.WOOD_MASTERY, 3)),
-                                        constant(1)
-                                ), 3)
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 1), 10)
+                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 2), 8)
+                                .add(spellTrade(16, SpellTypes.WOOD_MASTERY, 3), 6)
+                                .add(spellTrade(6, SpellTypes.LEVITATION, 1), 8)
+                                .add(spellTrade(8, SpellTypes.SPROUT, 1), 7)
+                                .add(spellTrade(10, SpellTypes.WITHER, 1), 6)
+                                .add(spellTrade(10, SpellTypes.WOOD_HEALING, 1), 6)
                                 .build()
                 ))
         ));
         context.register(WATER_BEGINNER, new HumanSetting(
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                20,
+                50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
                                 List.of(SpiritualTypes.WATER)
@@ -268,27 +370,21 @@ public interface HumanSettings {
                         range(4, 6),
                         true,
                         SimpleWeightedList.<TradeEntry>builder()
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 8)),
-                                        List.of(SecretManualItem.create(SpellTypes.WATER_MASTERY, 1)),
-                                        constant(1)
-                                ), 10)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 16)),
-                                        List.of(SecretManualItem.create(SpellTypes.WATER_MASTERY, 2)),
-                                        constant(1)
-                                ), 6)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
-                                        List.of(SecretManualItem.create(SpellTypes.WATER_MASTERY, 3)),
-                                        constant(1)
-                                ), 3)
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 1), 10)
+                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 2), 8)
+                                .add(spellTrade(16, SpellTypes.WATER_MASTERY, 3), 6)
+                                .add(spellTrade(6, SpellTypes.WATER_BREATHING, 1), 8)
                                 .build()
                 ))
         ));
         context.register(FIRE_BEGINNER, new HumanSetting(
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                20,
+                50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
                                 List.of(SpiritualTypes.FIRE)
@@ -320,27 +416,24 @@ public interface HumanSettings {
                         range(4, 6),
                         true,
                         SimpleWeightedList.<TradeEntry>builder()
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 8)),
-                                        List.of(SecretManualItem.create(SpellTypes.FIRE_MASTERY, 1)),
-                                        constant(1)
-                                ), 10)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 16)),
-                                        List.of(SecretManualItem.create(SpellTypes.FIRE_MASTERY, 2)),
-                                        constant(1)
-                                ), 6)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
-                                        List.of(SecretManualItem.create(SpellTypes.FIRE_MASTERY, 3)),
-                                        constant(1)
-                                ), 3)
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 1), 10)
+                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 2), 8)
+                                .add(spellTrade(16, SpellTypes.FIRE_MASTERY, 3), 6)
+                                .add(spellTrade(8, SpellTypes.BURNING, 1), 8)
+                                .add(spellTrade(8, SpellTypes.BURNING, 2), 6)
+                                .add(spellTrade(7, SpellTypes.LAVA_BREATHING, 1), 8)
+                                .add(spellTrade(10, SpellTypes.IGNITION, 1), 7)
                                 .build()
                 ))
         ));
         context.register(EARTH_BEGINNER, new HumanSetting(
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                20,
+                50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
                                 List.of(SpiritualTypes.EARTH)
@@ -370,21 +463,16 @@ public interface HumanSettings {
                         range(4, 6),
                         true,
                         SimpleWeightedList.<TradeEntry>builder()
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 8)),
-                                        List.of(SecretManualItem.create(SpellTypes.EARTH_MASTERY, 1)),
-                                        constant(1)
-                                ), 10)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 16)),
-                                        List.of(SecretManualItem.create(SpellTypes.EARTH_MASTERY, 2)),
-                                        constant(1)
-                                ), 6)
-                                .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
-                                        List.of(SecretManualItem.create(SpellTypes.EARTH_MASTERY, 3)),
-                                        constant(1)
-                                ), 3)
+                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 1), 10)
+                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 2), 8)
+                                .add(spellTrade(16, SpellTypes.EARTH_MASTERY, 3), 6)
+                                .add(spellTrade(8, SpellTypes.CRYSTAL_EXPLOSION, 1), 7)
+                                .add(spellTrade(8, SpellTypes.CRYSTAL_HEART, 1), 5)
                                 .build()
                 ))
         ));
@@ -562,6 +650,13 @@ public interface HumanSettings {
 //            )
 //    );
 
+    static TradeEntry spellTrade(int emerald, ISpellType spell, int level){
+        return new TradeEntry(
+                List.of(new ItemStack(Items.EMERALD, emerald)),
+                List.of(SecretManualItem.create(spell, level)),
+                constant(1)
+        );
+    }
     static ItemStack stack(Item item) {
         return new ItemStack(item);
     }

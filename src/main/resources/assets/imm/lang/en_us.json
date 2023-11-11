@@ -147,6 +147,8 @@
   "entity.imm.spiritual_flame": "Spiritual Flame",
   "entity.imm.flying_item": "Flying Item",
   "entity.imm.throwing_item": "Throwing Item",
+  "entity.imm.poison_wind": "Poison Wind",
+  "entity.imm.tornado": "Tornado",
 
   "entity.imm.empty_cultivator": "Empty Cultivator",
   "entity.imm.empty_cultivator.egg": "Empty Cultivator Spawn Egg",
@@ -524,7 +526,7 @@
 
   "misc.imm.player_data.spiritual_mana" : "Spiritual Mana",
   "misc.imm.player_data.max_spiritual_mana" : "Extra Spiritual Mana",
-  "misc.imm.player_data.break_through_progress" : "Break Through Progress",
+  "misc.imm.player_data.break_through_progress" : "Break Through",
 
   "misc.imm.accuracy.trash" : "(Trash)",
   "misc.imm.accuracy.toxic" : "(Toxic)",
@@ -539,5 +541,6 @@
   "misc.imm.xp_type.elixir": "Elixir",
   "misc.imm.xp_type.fighting": "Fighting",
   "misc.imm.xp_type.spell": "Spell",
-  "misc.imm.xp_type.mission": "Mission"
+  "misc.imm.xp_type.mission": "Mission",
+  "misc.imm.xp_type.personality": "Personality"
 }

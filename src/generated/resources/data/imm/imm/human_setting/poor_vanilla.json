@@ -383,6 +383,27 @@
           "result_items": [
             {
               "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:meditation_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 3,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
               "id": "minecraft:diamond_sword",
               "tag": {
                 "Damage": 0

@@ -129,7 +129,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         final Player player = ClientUtil.player();
         switch (item) {
             case ELIXIR_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
+//                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case FIGHT_CULTIVATION -> {
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceTypes.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
@@ -138,7 +138,10 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceTypes.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case MISSION_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
+//                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
+            }
+            case PERSONALITY_CULTIVATION -> {
+                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceTypes.PERSONALITY), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case CULTIVATION -> {
                 this.renderProgressWithText(graphics, RealmManager.getCultivation(), x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
@@ -203,6 +206,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         LEARN_CULTIVATION,
 
         MISSION_CULTIVATION,
+
+        PERSONALITY_CULTIVATION,
 
         CULTIVATION,
 

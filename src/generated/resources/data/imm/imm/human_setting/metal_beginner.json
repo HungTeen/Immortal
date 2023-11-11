@@ -170,6 +170,111 @@
         "data": {
           "cost_items": [
             {
+              "Count": 4,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:meditation_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 4,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:dispersal_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 4,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:releasing_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 5,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:intimidation_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 6,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:spirit_eyes_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
               "Count": 8,
               "id": "minecraft:emerald"
             }
@@ -191,7 +296,7 @@
         "data": {
           "cost_items": [
             {
-              "Count": 16,
+              "Count": 8,
               "id": "minecraft:emerald"
             }
           ],
@@ -206,13 +311,13 @@
           ],
           "trade_count": 1
         },
-        "weight": 6
+        "weight": 8
       },
       {
         "data": {
           "cost_items": [
             {
-              "Count": 32,
+              "Count": 16,
               "id": "minecraft:emerald"
             }
           ],
@@ -227,9 +332,72 @@
           ],
           "trade_count": 1
         },
-        "weight": 3
+        "weight": 6
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 6,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:critical_hit_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 7
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 12,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:metal_mending_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "Count": 8,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "result_items": [
+            {
+              "Count": 1,
+              "id": "imm:secret_manual",
+              "tag": {
+                "SecretManual": "imm:sharpness_1"
+              }
+            }
+          ],
+          "trade_count": 1
+        },
+        "weight": 6
       }
     ]
   },
-  "weight": 20
+  "weight": 50
 }

@@ -147,6 +147,8 @@
   "entity.imm.spiritual_flame": "灵火",
   "entity.imm.flying_item": "飞行之物",
   "entity.imm.throwing_item": "扔出之物",
+  "entity.imm.poison_wind": "毒云",
+  "entity.imm.tornado": "龙卷风",
 
   "entity.imm.empty_cultivator": "平凡散修",
   "entity.imm.empty_cultivator.egg": "平凡散修刷怪蛋",
@@ -539,5 +541,6 @@
   "misc.imm.xp_type.elixir": "丹药",
   "misc.imm.xp_type.fighting": "战斗",
   "misc.imm.xp_type.spell": "功法",
-  "misc.imm.xp_type.mission": "任务"
+  "misc.imm.xp_type.mission": "任务",
+  "misc.imm.xp_type.personality": "人品"
 }
