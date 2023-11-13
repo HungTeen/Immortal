@@ -127,6 +127,30 @@
         "maxCount": 4,
         "minCount": 4,
         "weight": 10
+      },
+      {
+        "type": "imm:empty_cultivator",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 2
+      },
+      {
+        "type": "imm:spiritual_beginner_cultivator",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "imm:metal_spirit",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 60
+      },
+      {
+        "type": "imm:wood_spirit",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 60
       }
     ],
     "imm:human": [],
@@ -179,6 +203,12 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
+      },
+      {
+        "type": "imm:sharp_stake",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 50
       }
     ],
     "underground_water_creature": [

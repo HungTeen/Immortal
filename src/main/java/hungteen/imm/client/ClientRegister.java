@@ -11,6 +11,7 @@ import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
 import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
+import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
 import hungteen.imm.client.model.entity.*;
@@ -44,6 +45,7 @@ import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ElementToolTip;
+import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
@@ -210,8 +212,9 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
-        event.register(ElementToolTip.class, ClientElementToolTip::new);
-        event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
+//        event.register(ElementToolTip.class, ClientElementToolTip::new);
+//        event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
+        event.register(ManualToolTip.class, ClientManualToolTip::new);
     }
 
     @SubscribeEvent

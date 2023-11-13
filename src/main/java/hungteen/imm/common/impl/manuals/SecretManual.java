@@ -70,4 +70,9 @@ public record SecretManual(List<ILearnRequirement> requirements, IManualContent 
         return content().getInfo();
     }
 
+    public Optional<ResourceLocation> getTexture(){
+        if(content() instanceof LearnSpellManual learnSpellManual) return Optional.of(learnSpellManual.getTexture());
+        return Optional.empty();
+    }
+
 }

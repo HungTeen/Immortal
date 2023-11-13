@@ -6,10 +6,9 @@ import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.event.events.PlayerLearnManualEvent;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.util.EntityUtil;
-import hungteen.imm.util.EventUtil;
-import hungteen.imm.util.PlayerUtil;
-import hungteen.imm.util.TipUtil;
+import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
+import hungteen.imm.common.menu.tooltip.ManualToolTip;
+import hungteen.imm.util.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +18,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -91,16 +91,25 @@ public class SecretManualItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(level != null) {
             getSecretManualPair(level, stack).ifPresent(res -> {
-                components.add(res.getSecond().getManualTitle().withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
-                components.add(res.getSecond().getContentInfo().withStyle(ChatFormatting.GREEN));
+//                components.add(res.getSecond().getManualTitle().withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
+//                components.add(res.getSecond().getContentInfo().withStyle(ChatFormatting.GRAY));
                 PlayerHelper.getClientPlayer().ifPresent(p -> {
                     if(! res.getSecond().getRequirementInfo(p).isEmpty()){
-                        components.add(TipUtil.tooltip(this, "requirements").withStyle(ChatFormatting.RED));
-                        components.addAll(res.getSecond().getRequirementInfo(p));
+                        if(Util.getProxy().isShiftKeyDown()){
+                            components.add(TipUtil.tooltip(this, "requirements").withStyle(ChatFormatting.RED));
+                            components.addAll(res.getSecond().getRequirementInfo(p));
+                        } else {
+                            components.add(TipUtil.rune("shift_to_see_details").withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
+                        }
                     }
                 });
             });
         }
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        return PlayerHelper.getClientPlayer().flatMap(p -> getSecretManualPair(p.level(), stack).map(Pair::getSecond).map(ManualToolTip::new));
     }
 
     public static ItemStack create(ISpellType spell, int level) {
@@ -138,8 +147,4 @@ public class SecretManualItem extends Item {
         return opt.flatMap(secretManualResourceKey -> SecretManuals.registry().getOptValue(level, secretManualResourceKey).map(r -> Pair.of(secretManualResourceKey, r)));
     }
 
-    @Override
-    public Component getDescription() {
-        return super.getDescription();
-    }
 }

@@ -50,8 +50,6 @@ public class DataGenHandler {
 
         /* Datapack */
         DatapackEntriesGen.addProviders(event.includeServer(), generators, output, provider, fileHelper);
-
-        /* Codecs */
     }
 
 }

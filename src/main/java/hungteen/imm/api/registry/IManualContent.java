@@ -1,6 +1,7 @@
 package hungteen.imm.api.registry;
 
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -22,4 +23,6 @@ public interface IManualContent {
     MutableComponent getInfo();
 
     IManualType<?> getType();
+
+    ResourceLocation getTexture();
 }

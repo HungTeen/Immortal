@@ -388,14 +388,14 @@ public class ElementReactions {
         private final boolean robustReaction;
 
         private FlamingReaction(String name, boolean once, int priority, boolean robustReaction, float woodCostAmount, float fireGenAmount) {
-            super("flaming", false, priority, Elements.WOOD, woodCostAmount, Elements.FIRE, fireGenAmount);
+            super(name, once, priority, Elements.WOOD, woodCostAmount, Elements.FIRE, fireGenAmount);
             this.robustReaction = robustReaction;
         }
 
         @Override
         protected float getMatchAmount(Entity entity, ElementEntry entry) {
-            if(entry.element() == Elements.FIRE && ! this.robustReaction){
-                return ElementManager.getElementAmount(entity, Elements.FIRE, false);
+            if(entry.element() == Elements.WOOD && ! this.robustReaction){
+                return ElementManager.getElementAmount(entity, Elements.WOOD, false);
             }
             return super.getMatchAmount(entity, entry);
         }
@@ -405,7 +405,7 @@ public class ElementReactions {
             super.doReaction(entity, scale);
             if(! this.robustReaction && entity.level().getRandom().nextFloat() < 0.1F){
                 entity.setSecondsOnFire(Math.min(2, (int)(scale * 5)));
-                entity.hurt(IMMDamageSources.fireElement(null), scale * 3);
+                entity.hurt(IMMDamageSources.elementReaction(entity), scale * 3);
             }
             if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
                 ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);

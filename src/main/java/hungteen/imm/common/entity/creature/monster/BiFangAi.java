@@ -3,6 +3,7 @@ package hungteen.imm.common.entity.creature.monster;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.common.network.PlaySoundPacket;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
@@ -21,13 +22,16 @@ import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.RandomUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -35,13 +39,19 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -74,11 +84,14 @@ public class BiFangAi {
         biFang.setTarget(targetOpt.orElse(null));
         if (biFang.tickCount % 10 == 0) {
             final double homeDistance = homeDistance(biFang);
-            if(homeDistance >= BACK_HOME_RANGE){
-                biFang.getBrain().setActiveActivityIfPossible(IMMActivities.HOME.get());
-            }
-            if(homeDistance >= CLOSE_TO_HOME){
-                return;
+            if (biFang.getBrain().isActive(IMMActivities.HOME.get())) {
+                if (homeDistance >= CLOSE_TO_HOME) {
+                    return;
+                }
+            } else {
+                if (homeDistance >= BACK_HOME_RANGE) {
+                    biFang.getBrain().setActiveActivityIfPossible(IMMActivities.HOME.get());
+                }
             }
             targetOpt.ifPresentOrElse(target -> {
                 final double distance = biFang.distanceTo(target);
@@ -108,6 +121,8 @@ public class BiFangAi {
                         cd = 200;
                     } else if (percent <= 0.4 && biFang.getRandom().nextFloat() < 0.1F) {
                         cd = 160;
+                    } else if (distance >= 10 && biFang.getRandom().nextFloat() < 0.5F / (distance + 1)) {
+                        cd = 100;
                     }
                     if (cd != 0) {
                         biFang.getBrain().setMemoryWithExpiry(IMMMemories.UNABLE_RANGE_ATTACK.get(), true, UniformInt.of(cd / 2, cd).sample(biFang.getRandom()));
@@ -151,8 +166,8 @@ public class BiFangAi {
     private static void initHomeActivity(Brain<BiFang> brain, float speed) {
         brain.addActivity(IMMActivities.HOME.get(), 10, ImmutableList.of(
                 setHome(speed, 3),
-                new MoveToTargetSink(),
-                UseSpell.create(UniformInt.of(40, 80))
+                new MoveToTargetSink(10000, 20000),
+                UseSpell.create(ConstantInt.of(0))
         ));
     }
 
@@ -162,15 +177,16 @@ public class BiFangAi {
     public static void initMeleeFightActivity(Brain<BiFang> brain, float speed) {
         brain.addActivity(IMMActivities.MELEE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
-                Pair.of(0, new MoveToTargetSink()),
+                Pair.of(0, new MoveToTargetSink(1000, 2000)),
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 Pair.of(3, new RunOne<>(ImmutableList.of(
                         Pair.of(UseSpell.create(UniformInt.of(10, 100)), 0),
                         Pair.of(new FlapAttack(), 1),
                         Pair.of(MeleeAttack.create(20), 2),
                         Pair.of(burnReaction(20, UniformInt.of(30, 50)), 4),
-                        Pair.of(new BlowWindAttack(0.5F), 4),
-                        Pair.of(new ShootFlameAttack(0.05F), 5)
+                        Pair.of(new BlowWindAttack(0.5F), 4)
+//                        ,
+//                        Pair.of(new ShootFlameAttack(0.05F), 5)
                 )))
         ));
     }
@@ -182,7 +198,8 @@ public class BiFangAi {
         brain.addActivity(IMMActivities.RANGE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, UseSpell.create(UniformInt.of(60, 120))),
-                Pair.of(2, BackUpIfTooClose.create(20, speed)),
+//                Pair.of(2, BackUpIfTooClose.create(20, speed)),
+                Pair.of(2, keepDistance(20, speed)),
                 Pair.of(3, new RunOne<>(ImmutableList.of(
                         Pair.of(new ShootFireballAttack(), 0),
                         Pair.of(new ShootFlameAttack(0.2F), 1),
@@ -209,11 +226,11 @@ public class BiFangAi {
     }
 
     private static double homeDistance(BiFang biFang) {
-        if(biFang.getBrain().getMemory(IMMMemories.HOME.get()).isEmpty()){
+        if (biFang.getBrain().getMemory(IMMMemories.HOME.get()).isEmpty()) {
             biFang.getBrain().setMemory(IMMMemories.HOME.get(), biFang.blockPosition());
         }
         final double distance = biFang.distanceToSqr(MathHelper.toVec3(biFang.getBrain().getMemory(IMMMemories.HOME.get()).get()));
-        if(distance >= MAX_REACH_RANGE){
+        if (distance >= MAX_REACH_RANGE) {
             biFang.getBrain().setMemory(IMMMemories.HOME.get(), biFang.blockPosition());
             return 0;
         }
@@ -258,7 +275,7 @@ public class BiFangAi {
 
     public static OneShot<LivingEntity> setHome(float speed, int distance) {
         return BehaviorBuilder.create(instance -> instance.group(
-                instance.absent(MemoryModuleType.WALK_TARGET),
+                instance.registered(MemoryModuleType.WALK_TARGET),
                 instance.present(IMMMemories.HOME.get())
         ).apply(instance, (walkTarget, home) -> (level, living, time) -> {
             walkTarget.set(new WalkTarget(instance.get(home), speed, distance));
@@ -295,13 +312,14 @@ public class BiFangAi {
 
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
-            if (biFang.atAnimationTick(10) && biFang.getMana() >= CONSUME_MANA) {
+            if (biFang.atAnimationTick(15) && biFang.getMana() >= CONSUME_MANA) {
                 biFang.addMana(-CONSUME_MANA);
-                for(int i = -1; i <= 1; ++ i){
+                for (int i = -1; i <= 1; ++i) {
+                    if (i == 0) continue; // 中间的龙卷风不要了。
                     Tornado tornado = IMMEntities.TORNADO.get().create(level);
-                    if(tornado != null){
+                    if (tornado != null) {
                         Vec3 vec = biFang.getLookAngle();
-                        if(biFang.getTarget() != null){
+                        if (biFang.getTarget() != null) {
                             vec = biFang.getTarget().position().subtract(biFang.position());
                         }
                         vec = MathUtil.rotateHorizontally(vec, i * RandomHelper.getMinMax(biFang.getRandom(), 30, 60)).normalize();
@@ -312,7 +330,7 @@ public class BiFangAi {
                         tornado.setDeltaMovement(vec.scale(speed));
                         tornado.setScale(biFang.getScale() * 2);
                         tornado.setOwner(biFang);
-                        if(i == 0){
+                        if (i == 0) {
                             tornado.shootTo(null, duration, biFang.getRandom().nextBoolean(), speed);
                         } else {
                             tornado.shootTo(biFang.getTarget(), duration, (i > 0) ^ inverse, speed);
@@ -335,7 +353,7 @@ public class BiFangAi {
         public FlapAttack() {
             super(Map.of(
                     MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT
-            ), 30);
+            ), 45);
         }
 
         @Override
@@ -355,17 +373,18 @@ public class BiFangAi {
 
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
-            if (biFang.atAnimationTick(8)) {
+            if (biFang.atAnimationTick(15)) {
                 final AABB aabb = EntityHelper.getEntityAABB(biFang, 4, 2);
                 EntityHelper.getPredicateEntities(biFang, aabb, LivingEntity.class, target -> {
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
                     final Vec3 lookVec = biFang.getLookAngle();
-                    if(vec.length() > 0 && lookVec.length() > 0){
+                    if (vec.length() > 0 && lookVec.length() > 0) {
                         double cos = vec.dot(lookVec) / vec.length() / lookVec.length();
                         double angle = Math.acos(cos);
                         if (Math.abs(angle) < 1) {
-                            biFang.doHurtTarget(target);
-                            EntityUtil.knockback(target, 5 / vec.length(), -lookVec.x, -lookVec.z);
+                            target.hurt(biFang.damageSources().mobAttack(biFang), (float) Objects.requireNonNull(biFang.getAttribute(Attributes.ATTACK_DAMAGE)).getValue() * 1F);
+//                            biFang.doHurtTarget(target);
+                            EntityUtil.knockback(target, 3 / vec.length(), -lookVec.x, -lookVec.z);
                             return true;
                         }
                     }
@@ -373,7 +392,7 @@ public class BiFangAi {
                 }).forEach(target -> {
                     ElementManager.addElementAmount(target, Elements.WOOD, false, 6);
                 });
-                biFang.playSound(IMMSounds.BI_FANG_FLAP.get());
+                EntityUtil.playSound(biFang, IMMSounds.BI_FANG_FLAP.get(), SoundSource.HOSTILE);
             }
         }
 
@@ -448,7 +467,7 @@ public class BiFangAi {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.2F;
+            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.5F;
         }
 
         @Override
@@ -464,7 +483,7 @@ public class BiFangAi {
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
             BehaviorUtil.getAttackTarget(biFang).ifPresent(target -> {
-                if (biFang.atAnimationTick(10) && biFang.getMana() >= CONSUME_MANA) {
+                if (biFang.atAnimationTick(5) && biFang.getMana() >= CONSUME_MANA) {
                     biFang.addMana(-CONSUME_MANA);
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
                     LargeFireball largeFireball = new LargeFireball(biFang.level(), biFang, vec.x(), vec.y(), vec.z(), biFang.getAge() + biFang.getPhase());

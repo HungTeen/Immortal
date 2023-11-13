@@ -35,7 +35,7 @@ public abstract class SimpleArtifactBlock extends HTBlock implements IArtifactBl
     }
 
     protected MutableComponent getDesc(ItemStack stack){
-        return TipUtil.desc(this).withStyle(ChatFormatting.GREEN);
+        return TipUtil.desc(this).withStyle(ChatFormatting.GRAY);
     }
 
     @Override

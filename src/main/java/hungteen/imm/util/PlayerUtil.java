@@ -397,8 +397,7 @@ public class PlayerUtil {
      * @return 是否改变成功。
      */
     public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage, boolean force){
-        final AtomicBoolean success = new AtomicBoolean(true);
-        getOptManager(player).ifPresent(m -> {
+        return getManagerResult(player, m -> {
             if(EntityHelper.isServer(player)){
                 // 自身修为达到了此境界的要求。
                 if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, stage)){
@@ -413,13 +412,13 @@ public class PlayerUtil {
                         m.setRealmType(realm);
                         m.setRealmStage(stage);
                     }
-                    success.set(force);
+                    return force;
                 }
             } else {
                 m.setRealmType(realm);
             }
-        });
-        return success.get();
+            return true;
+        }, false);
     }
 
     /**

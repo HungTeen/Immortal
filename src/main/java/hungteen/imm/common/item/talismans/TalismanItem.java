@@ -36,7 +36,7 @@ public abstract class TalismanItem extends Item implements IArtifactItem {
     }
 
     protected MutableComponent getDesc(ItemStack stack){
-        return TipUtil.desc(this).withStyle(ChatFormatting.GREEN);
+        return TipUtil.desc(this).withStyle(ChatFormatting.GRAY);
     }
 
     public boolean canUse(ItemStack stack, Entity entity){

@@ -39,7 +39,7 @@ public record ElementRequirement(Elements element) implements ILearnRequirement 
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return TipUtil.misc("requirement.element", ElementManager.name(element()));
+        return TipUtil.misc("requirement.element", ElementManager.name(element()).getString());
     }
 
     @Override

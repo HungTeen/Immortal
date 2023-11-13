@@ -17,6 +17,8 @@ import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
+import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.network.PlaySoundPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -61,6 +63,10 @@ import java.util.stream.Collectors;
  * @create: 2022-10-20 21:43
  **/
 public class EntityUtil {
+
+    public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
+        NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), sound, soundSource));
+    }
 
     public static void knockback(LivingEntity target, double strength, double dx, double dz){
         target.knockback(strength, dx, dz);
@@ -188,7 +194,7 @@ public class EntityUtil {
         final Vec3 startVec = entity.getEyePosition(1.0F);
         final Vec3 lookVec = entity.getViewVector(1.0F);
         Vec3 endVec = startVec.add(lookVec.scale(distance));
-        final BlockHitResult blockHitResult = entity.level().clip(new ClipContext(startVec, endVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+        final BlockHitResult blockHitResult = entity.level().clip(new ClipContext(startVec, endVec, blockMode, fluidMode, entity));
         if (blockHitResult.getType() != HitResult.Type.MISS) {
             endVec = blockHitResult.getLocation();
         }

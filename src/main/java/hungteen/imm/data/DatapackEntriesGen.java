@@ -20,6 +20,7 @@ import hungteen.imm.common.world.structure.IMMStructureSets;
 import hungteen.imm.common.world.structure.IMMStructures;
 import hungteen.imm.common.world.structure.IMMTemplatePools;
 import hungteen.imm.data.tag.BiomeTagGen;
+import hungteen.imm.data.tag.DamageTypeTagGen;
 import hungteen.imm.data.tag.StructureTagGen;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
@@ -81,6 +82,7 @@ public class DatapackEntriesGen extends DatapackBuiltinEntriesProvider {
         // If you think this looks fixable, please ensure the fixes are tested in runData & runClient as these current issues exist entirely within Forge's internals.
         generator.addProvider(isServer, new BiomeTagGen(output, provider.thenApply(DatapackEntriesGen::append), helper));
         generator.addProvider(isServer, new StructureTagGen(output, provider.thenApply(DatapackEntriesGen::append), helper));
+        generator.addProvider(isServer, new DamageTypeTagGen(output, provider.thenApply(DatapackEntriesGen::append), helper));
     }
 
     private static HolderLookup.Provider append(HolderLookup.Provider original) {

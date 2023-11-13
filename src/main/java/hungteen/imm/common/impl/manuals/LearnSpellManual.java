@@ -11,6 +11,7 @@ import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -53,5 +54,10 @@ public record LearnSpellManual(ISpellType spellType, int level) implements IManu
     @Override
     public IManualType<?> getType() {
         return ManualTypes.LEARN_SPELL;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return spellType().getSpellTexture();
     }
 }

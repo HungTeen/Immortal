@@ -13,6 +13,7 @@ import hungteen.imm.api.interfaces.*;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.capability.player.PlayerDataManager;
+import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
@@ -33,6 +34,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -109,6 +112,8 @@ public class RealmManager {
         } else if(oldStage != stage){
             PlayerUtil.checkAndSetRealmStage(player, stage);
         }
+        player.playSound(SoundEvents.PLAYER_LEVELUP);
+        player.removeEffect(IMMEffects.BREAK_THROUGH.get());
     }
 
     public static void tryBreakThrough(ServerPlayer player){
@@ -117,6 +122,7 @@ public class RealmManager {
         final IRealmType nextRealm;
         final RealmStages nextStage;
         if(currentRealm == RealmTypes.MORTALITY || currentStage.canLevelUp()){
+            // 可以突破到下一个大境界。 TODO 其他修为类型的突破。
             final RealmNode currentNode = findRealmNode(currentRealm);
             final RealmNode nextNode = currentNode.next(CultivationTypes.SPIRITUAL);
             if(nextNode != null){
@@ -128,6 +134,7 @@ public class RealmManager {
                 return;
             }
         } else {
+            // 只能突破到当前境界的下一个阶段。
             nextRealm = currentRealm;
             nextStage = RealmStages.next(currentStage);
         }
@@ -172,20 +179,24 @@ public class RealmManager {
     public static void realmAttackGap(LivingHurtEvent event){
         final LivingEntity target = event.getEntity();
         final DamageSource source = event.getSource();
+        final double amount = event.getAmount();
+        double gapAmount = event.getAmount();
         if(source.getEntity() != null){
             final int gap = getRealmGap(target, source.getEntity());
-            if(gap > 0){
+            if(gap > 0) {
                 // 伤害减免。
-                event.setAmount((float) (event.getAmount() * Math.pow(0.1, gap)));
+                gapAmount = amount * Math.pow(0.1, gap);
             } else {
-                event.setAmount((float) (event.getAmount() * Math.pow(1.1, - gap)));
+                gapAmount = amount * Math.pow(1.1, - gap);
             }
         } else {
-            final int gap = getRealmGap(getRealm(target), getDamageSourceRealm(source));
+            final int gap = source.is(IMMDamageTypeTags.IGNORE_REALM) ? 0 : getRealmGap(getRealm(target), getDamageSourceRealm(source));
             if(gap > 0){
-                event.setAmount((float) (event.getAmount() * Math.pow(0.2, gap)));
+                gapAmount = amount * Math.pow(0.2, gap);
             }
         }
+        // 理论上伤害不能低于0.1。
+        event.setAmount((float) Math.max(Math.min(0.1F, amount), gapAmount));
     }
 
     public static List<BreakThroughRaid> breakThroughRaids(Level level){

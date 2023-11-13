@@ -1,5 +1,6 @@
 package hungteen.imm.common.world.biome;
 
+import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.world.feature.IMMOrePlacements;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -42,6 +43,27 @@ public class EastWorldFeatures {
 
     public static void addSharpStake(MobSpawnSettings.Builder builder){
         builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(IMMEntities.SHARP_STAKE.get(), 50, 1, 2));
+    }
+
+    public static void addSpiritualCultivator(MobSpawnSettings.Builder builder){
+        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.EMPTY_CULTIVATOR.get(), 2, 1, 1));
+        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), 1, 1, 1));
+    }
+
+    public static void addSpirit(MobSpawnSettings.Builder builder, Elements ...elements){
+        for(Elements element : elements){
+            MobSpawnSettings.SpawnerData data = null;
+            switch (element){
+                case METAL -> data = new MobSpawnSettings.SpawnerData(IMMEntities.METAL_SPIRIT.get(), 60, 1, 1);
+                case WOOD -> data = new MobSpawnSettings.SpawnerData(IMMEntities.WOOD_SPIRIT.get(), 60, 1, 1);
+                case WATER -> data = new MobSpawnSettings.SpawnerData(IMMEntities.WATER_SPIRIT.get(), 40, 1, 3);
+                case FIRE -> data = new MobSpawnSettings.SpawnerData(IMMEntities.WATER_SPIRIT.get(), 30, 1, 2);
+                case EARTH -> data = new MobSpawnSettings.SpawnerData(IMMEntities.EARTH_SPIRIT.get(), 50, 1, 2);
+            }
+            if(data != null){
+                builder.addSpawn(MobCategory.CREATURE, data);
+            }
+        }
     }
 
 }

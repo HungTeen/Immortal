@@ -17,6 +17,7 @@ public interface IMMDamageTypeTags {
 
     /* Forge */
 
+    TagKey<DamageType> IGNORE_REALM = forgeTag("imm_realms/ignore_realm");
     TagKey<DamageType> IMM_REALM_LEVEL_1 = forgeTag("imm_realms/level_1");
     TagKey<DamageType> IMM_REALM_LEVEL_2 = forgeTag("imm_realms/level_2");
     TagKey<DamageType> IMM_REALM_LEVEL_3 = forgeTag("imm_realms/level_3");

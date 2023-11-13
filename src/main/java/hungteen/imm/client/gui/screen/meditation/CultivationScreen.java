@@ -128,18 +128,18 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     public void renderItem(Level level, GuiGraphics graphics, CultivationEntries item, int slotId, int x, int y) {
         final Player player = ClientUtil.player();
         switch (item) {
-            case ELIXIR_CULTIVATION -> {
+//            case ELIXIR_CULTIVATION -> {
 //                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
-            }
+//            }
             case FIGHT_CULTIVATION -> {
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceTypes.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case LEARN_CULTIVATION -> {
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceTypes.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
             }
-            case MISSION_CULTIVATION -> {
+//            case MISSION_CULTIVATION -> {
 //                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
-            }
+//            }
             case PERSONALITY_CULTIVATION -> {
                 this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceTypes.PERSONALITY), PlayerUtil.getEachMaxCultivation(player), false);
             }
@@ -165,10 +165,10 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
             case BREAK_THROUGH_PROGRESS -> {
                 this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS), false);
             }
-            case EMP -> {
-                final int emp = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS);
-                this.renderProgressWithText(graphics, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS.getComponent(), x, y, emp, emp + ElementalMasterySpell.calculateUsedEMP(player), false);
-            }
+//            case EMP -> {
+//                final int emp = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS);
+//                this.renderProgressWithText(graphics, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS.getComponent(), x, y, emp, emp + ElementalMasterySpell.calculateUsedEMP(player), false);
+//            }
         }
     }
 
@@ -199,13 +199,13 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     enum CultivationEntries {
 
-        ELIXIR_CULTIVATION,
+//        ELIXIR_CULTIVATION,
 
         FIGHT_CULTIVATION,
 
         LEARN_CULTIVATION,
 
-        MISSION_CULTIVATION,
+//        MISSION_CULTIVATION,
 
         PERSONALITY_CULTIVATION,
 
@@ -217,7 +217,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
         BREAK_THROUGH_PROGRESS,
 
-        EMP
+//        EMP
 
         ;
 

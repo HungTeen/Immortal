@@ -54,7 +54,7 @@ public class IMMLivingEvents {
                     EntityUtil.addMana(event.getEntity(), - scale * 2.5F);
                 } else {
                     if(event.getEntity().getRandom().nextFloat() < 0.2F){
-                        event.getEntity().hurt(IMMDamageSources.elementReaction(null), scale * 2F);
+                        event.getEntity().hurt(IMMDamageSources.elementReaction(event.getEntity()), scale * 2F);
                     }
                 }
             });

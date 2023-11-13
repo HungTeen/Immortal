@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:in_fire",
+    "minecraft:on_fire",
+    "minecraft:hot_floor",
+    "minecraft:fall",
+    "minecraft:fly_into_wall"
+  ]
+}

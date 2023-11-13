@@ -28,11 +28,21 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         // Vanilla Tags.
-        this.tag(DamageTypeTags.BYPASSES_ARMOR).addTag(IMMDamageTypeTags.SPIRITUALS);
+        this.tag(DamageTypeTags.BYPASSES_ARMOR)
+                .addTag(IMMDamageTypeTags.SPIRITUALS)
+                .add(IMMDamageTypes.ELEMENT_REACTION)
+        ;
         this.tag(DamageTypeTags.BYPASSES_SHIELD).addTag(IMMDamageTypeTags.ELEMENTS);
 
         // Forge Tags.
-        this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_1).add(DamageTypes.WITHER);
+        this.tag(IMMDamageTypeTags.IGNORE_REALM)
+                .add(DamageTypes.LIGHTNING_BOLT, DamageTypes.IN_WALL, DamageTypes.CRAMMING, DamageTypes.FELL_OUT_OF_WORLD, DamageTypes.OUTSIDE_BORDER, DamageTypes.GENERIC_KILL, IMMDamageTypes.ELEMENT_REACTION);
+        this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_1)
+                .add(DamageTypes.CACTUS, DamageTypes.SWEET_BERRY_BUSH, DamageTypes.FREEZE);
+        this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_2)
+                .add(DamageTypes.IN_FIRE, DamageTypes.ON_FIRE, DamageTypes.HOT_FLOOR, DamageTypes.FALL, DamageTypes.FLY_INTO_WALL);
+        this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_3)
+                .add(DamageTypes.LAVA, DamageTypes.DROWN, DamageTypes.STARVE, DamageTypes.WITHER);
 
         // IMM Tags.
         this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.SPIRITUAL_MANA);

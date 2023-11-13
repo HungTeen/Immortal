@@ -13,7 +13,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -114,6 +117,9 @@ public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditio
                 } else {
                     target.hurt(IMMDamageSources.woodElement(this), Math.min(1, 1F * scale * getScale()));
                 }
+                if(target.hasEffect(MobEffects.FIRE_RESISTANCE)){
+                    target.removeEffect(MobEffects.FIRE_RESISTANCE);
+                }
                 ElementManager.addElementAmount(target, Elements.WOOD, false, 3 * getScale(), 20);
                 if (this.getRestTick() == 0) {
                     this.setRestTick(RandomHelper.getMinMax(random, 100, 200));
@@ -126,7 +132,7 @@ public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditio
     }
 
     public boolean isFireTornado() {
-        return ElementManager.hasElement(this, Elements.FIRE, false);
+        return ElementManager.hasElement(this, Elements.FIRE, false) || this.isOnFire();
     }
 
     public void setOwner(@Nullable LivingEntity entity) {

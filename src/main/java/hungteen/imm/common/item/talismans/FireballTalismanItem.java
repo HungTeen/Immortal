@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @program: Immortal
@@ -24,15 +25,16 @@ public class FireballTalismanItem extends DurationTalismanItem{
         EntityUtil.playSound(level, entity, SoundEvents.BLAZE_SHOOT);
         if(! level.isClientSide){
             for(int i = 0; i < 1; ++ i){
-                final LargeFireball fireball = new LargeFireball(level, entity, 0, 0, 0, 2);
+                final Vec3 vec = entity.getLookAngle().normalize().scale(2F);
+                final LargeFireball fireball = new LargeFireball(level, entity, vec.x, vec.y, vec.z, 2);
                 final double forward = RandomHelper.doubleRange(entity.getRandom(), 1);
                 final double side = RandomHelper.doubleRange(entity.getRandom(), 2);
                 final double dy = RandomHelper.doubleRange(entity.getRandom(), 0.5);
                 final double dx = Mth.sin(MathUtil.toRadian(entity.getYRot()));
                 final double dz = Mth.cos(MathUtil.toRadian(entity.getYRot()));
                 fireball.setPos(entity.position().add(dx * forward + dz * side, dy + entity.getEyeHeight(), dz * forward + dx * side));
-                fireball.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0.0F, 1.5F, 1.0F);
                 level.addFreshEntity(fireball);
+
             }
         }
         return super.finishUsingItem(stack, level, entity);

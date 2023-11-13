@@ -28,6 +28,7 @@ public class NetworkHandler {
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
 
+        CHANNEL.registerMessage(getId(), PlaySoundPacket.class, PlaySoundPacket::encode, PlaySoundPacket::new, PlaySoundPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), SpellPacket.class, SpellPacket::encode, SpellPacket::new, SpellPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), EmptyClickPacket.class, EmptyClickPacket::encode, EmptyClickPacket::new, EmptyClickPacket.Handler::onMessage);
         CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);

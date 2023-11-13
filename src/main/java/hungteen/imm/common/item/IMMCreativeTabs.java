@@ -46,7 +46,7 @@ public interface IMMCreativeTabs {
                         final Set<ItemLike> blackList = Set.of(
                                 IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
                                 IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
-                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
+                                IMMItems.MULBERRY.get(), IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
                         );
                         final List<ItemLike> items = new ArrayList<>();
                         // 种子之类的杂项。
@@ -108,7 +108,7 @@ public interface IMMCreativeTabs {
                     .withTabsBefore(SECRET_MANUALS.getKey())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
-                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item)));
+                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
                         }).stream().map(ItemStack::new)
                                 .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
                                 .forEach(output::accept);

@@ -230,7 +230,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         final int lvl = PlayerUtil.getSpellLevel(ClientUtil.player(), item);
         components.add(item.getComponent().append("(" + lvl + "/" + item.getMaxLevel() + ")").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
         for (int i = 1; i <= lvl; ++i) {
-            components.add(item.getSpellDesc(lvl).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
+            components.add(item.getSpellDesc(i).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
         }
         components.add(SpellManager.getCostComponent(item.getConsumeMana()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
         components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));

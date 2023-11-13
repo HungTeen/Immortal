@@ -34,7 +34,7 @@ public abstract class RuneItem extends Item {
                 if(Util.getProxy().isShiftKeyDown()){
                     this.addHideComponents(stack, components);
                 } else {
-                    components.add(TipUtil.rune("shift_to_see_details").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                    components.add(TipUtil.rune("shift_to_see_details").withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
                 }
             }
         }

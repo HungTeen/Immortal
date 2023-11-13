@@ -79,6 +79,9 @@ public class AdvancementGen extends HTAdvancementGen {
             task(eastWorld, Blocks.WHITE_TERRACOTTA, "trading_market")
                     .addCriterion("reach_market", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(IMMStructures.PLAINS_TRADING_MARKET)))
                     .save(saver, loc("trading_market"));
+            task(eastWorld, Blocks.CHERRY_LOG, "spirit_lab")
+                    .addCriterion("reach_lab", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(IMMStructures.SPIRIT_LAB)))
+                    .save(saver, loc("spirit_lab"));
             goal(imMortal, IMMBlocks.COPPER_FURNACE.get(), "cauldron")
                     .addCriterion("place_furnace", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(IMMBlocks.COPPER_FURNACE.get()))
                     .save(saver, loc("cauldron"));

@@ -73,6 +73,7 @@ public class IMMPlayerEvents {
     public static void onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
         if(RealmManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
             EntityUtil.addMana(event.getEntity(), event.getOrb().getValue() * 0.4F);
+            event.getOrb().discard();
             event.setCanceled(true);
         }
     }
