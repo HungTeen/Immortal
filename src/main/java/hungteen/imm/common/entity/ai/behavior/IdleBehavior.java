@@ -2,6 +2,7 @@ package hungteen.imm.common.entity.ai.behavior;
 
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
+import hungteen.imm.common.entity.creature.monster.BiFang;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.ai.behavior.Behavior;
@@ -31,12 +32,21 @@ public class IdleBehavior extends Behavior<IMMMob> {
 
     @Override
     protected void start(ServerLevel serverLevel, IMMMob mob, long time) {
-        mob.setCurrentAnimation(animationType);
     }
 
     @Override
     protected boolean canStillUse(ServerLevel serverLevel, IMMMob mob, long time) {
         return true;
+    }
+
+    @Override
+    protected void tick(ServerLevel level, IMMMob mob, long time) {
+        if(mob.isIdle() && mob.onGround()){
+            mob.setCurrentAnimation(animationType);
+        }
+        if(mob.getMoveControl() instanceof BiFang.BiFangFlyMoveControl control){
+            control.setIdle();
+        }
     }
 
     @Override

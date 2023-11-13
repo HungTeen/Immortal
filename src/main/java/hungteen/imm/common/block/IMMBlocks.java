@@ -11,6 +11,7 @@ import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.*;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.world.feature.tree.MulberryTreeGrower;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -95,7 +96,7 @@ public class IMMBlocks {
     public static void registerBlockItems(RegisterEvent event){
         // Register all gourd blocks.
         BlockUtil.getGourds().forEach(pair -> {
-            ItemHelper.get().register(event, pair.getFirst(), () -> new BlockItem(pair.getSecond(), new Item.Properties()));
+            ItemHelper.get().register(event, GourdGrownBlock.getGourdLocation(pair.getFirst()), () -> new GourdBlockItem(pair.getFirst(), pair.getSecond()));
         });
         // Register wool cushion of all colors.
         BlockUtil.getWoolCushions().forEach(pair -> {

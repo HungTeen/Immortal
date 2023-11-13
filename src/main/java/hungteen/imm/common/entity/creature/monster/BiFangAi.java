@@ -324,7 +324,7 @@ public class BiFangAi {
                         }
                         vec = MathUtil.rotateHorizontally(vec, i * RandomHelper.getMinMax(biFang.getRandom(), 30, 60)).normalize();
                         tornado.setPos(biFang.position().add(vec.x * 0.5, 0, vec.z * 0.5));
-                        final float speed = 0.35F;
+                        final float speed = 0.3F;
                         final int duration = 600;
                         final boolean inverse = biFang.getRandom().nextBoolean();
                         tornado.setDeltaMovement(vec.scale(speed));

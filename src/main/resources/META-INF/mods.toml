@@ -8,7 +8,7 @@ showAsResourcePack = false
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_display_name}"
-#updateJSONURL="${mod_update_url}"
+updateJSONURL="${mod_update_url}"
 displayURL = "${mod_display_url}"
 logoFile = "${mod_logo_file}"
 authors="${mod_authors}"
@@ -28,28 +28,3 @@ versionRange = "${minecraft_version_range}"
 modId = "htlib"
 mandatory = true
 versionRange = "${htlib_version_range}"
-
-#[[dependencies.imm]]
-#modId = "jei"
-#mandatory = false
-#versionRange = "[13.1.0.13,)"
-#
-#[[dependencies.imm]]
-#modId = "curios"
-#mandatory = false
-#versionRange = "[1.19.4-5.1.5.3,)"
-#
-#[[dependencies.imm]]
-#modId = "patchouli"
-#mandatory = false
-#versionRange = "[1.19.4-79,)"
-#
-#[[dependencies.imm]]
-#modId = "jade"
-#mandatory = false
-#versionRange = "[10.3.1,)"
-#
-#[[dependencies.imm]]
-#modId = "configured"
-#mandatory = false
-#versionRange = "[2.1.1,)"

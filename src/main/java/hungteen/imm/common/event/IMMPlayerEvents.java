@@ -1,5 +1,6 @@
 package hungteen.imm.common.event;
 
+import hungteen.htlib.common.capability.PlayerCapabilityManager;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.ImmortalMod;
 import hungteen.imm.common.RealmManager;
@@ -46,13 +47,18 @@ public class IMMPlayerEvents {
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
             PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::initialize);
-            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::syncToClient);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if(EntityHelper.isServer(event.getEntity())) {
         }
     }
 

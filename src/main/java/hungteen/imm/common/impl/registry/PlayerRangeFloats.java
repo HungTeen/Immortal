@@ -17,8 +17,8 @@ public class PlayerRangeFloats {
 
     private static final HTSimpleRegistry<IRangeNumber<Float>> NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_float"));
 
-    public static final IRangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
     public static final IRangeNumber<Float> MAX_SPIRITUAL_MANA = register(new PlayerData("max_spiritual_mana", 0, 0, Float.MAX_VALUE));
+    public static final IRangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
     public static final IRangeNumber<Float> BREAK_THROUGH_PROGRESS = register(new PlayerData("break_through_progress", 0, 0, 1));
 
     public static IHTSimpleRegistry<IRangeNumber<Float>> registry() {

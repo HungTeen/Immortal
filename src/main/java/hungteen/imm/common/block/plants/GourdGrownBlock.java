@@ -2,12 +2,16 @@ package hungteen.imm.common.block.plants;
 
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
 import hungteen.htlib.common.block.plants.HTStemGrownBlock;
+import hungteen.htlib.util.helper.registry.EffectHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,6 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -59,42 +64,44 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         /**
          * 土。
          */
-        RED(10),
+        RED(() -> EffectHelper.viewEffect(MobEffects.DAMAGE_BOOST, 200, 1),10),
 
         /**
          * 木。
          */
-        ORANGE(10),
+        ORANGE(() -> EffectHelper.viewEffect(MobEffects.NIGHT_VISION, 400, 1), 10),
 
         /**
          * 金。
          */
-        YELLOW(10),
+        YELLOW(() -> EffectHelper.viewEffect(MobEffects.DAMAGE_RESISTANCE, 200, 1), 10),
 
         /**
          * 火。
          */
-        GREEN(10),
+        GREEN(() -> EffectHelper.viewEffect(MobEffects.FIRE_RESISTANCE, 300, 1), 10),
 
         /**
          * 水。
          */
-        AQUA(10),
+        AQUA(() -> EffectHelper.viewEffect(MobEffects.WATER_BREATHING, 400, 1), 10),
 
         /**
          * 阴。
          */
-        BLUE(1),
+        BLUE(() -> EffectHelper.viewEffect(MobEffects.INVISIBILITY, 300, 1), 1),
 
         /**
          * 阳。
          */
-        PURPLE(1);
+        PURPLE(() -> EffectHelper.viewEffect(MobEffects.WEAKNESS, 200, 1), 1);
 
         private GourdGrownBlock gourdGrownBlock;
+        private final Supplier<MobEffectInstance> effectSupplier;
         private final int weight;
 
-        private GourdTypes(int weight) {
+        private GourdTypes(Supplier<MobEffectInstance> effectSupplier, int weight) {
+            this.effectSupplier = effectSupplier;
             this.weight = weight;
         }
 
@@ -110,5 +117,8 @@ public class GourdGrownBlock extends HTStemGrownBlock {
             return gourdGrownBlock;
         }
 
+        public Supplier<MobEffectInstance> getEffectSupplier() {
+            return effectSupplier;
+        }
     }
 }

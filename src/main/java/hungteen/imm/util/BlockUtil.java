@@ -63,11 +63,9 @@ public class BlockUtil {
                 .toList();
     }
 
-    public static List<Pair<ResourceLocation, Block>> getGourds(){
-        return Arrays.stream(GourdGrownBlock.GourdTypes.values()).map(GourdGrownBlock::getGourdLocation)
-                .map(res -> Pair.of(res, BlockHelper.get().get(res)))
-                .filter(pair -> pair.getSecond().isPresent())
-                .map(pair -> pair.mapSecond(Optional::get))
+    public static List<Pair<GourdGrownBlock.GourdTypes, GourdGrownBlock>> getGourds(){
+        return Arrays.stream(GourdGrownBlock.GourdTypes.values())
+                .map(res -> Pair.of(res, res.getGourdGrownBlock()))
                 .toList();
     }
 }

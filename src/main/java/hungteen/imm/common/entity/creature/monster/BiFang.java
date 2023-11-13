@@ -52,6 +52,7 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -239,7 +240,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         super.tick();
         if (EntityHelper.isServer(this)) {
             if (this.tickCount % 50 == 0 && this.getRandom().nextFloat() < 0.35F) {
-                ElementManager.addElementAmount(this, Elements.WOOD, false, 20);
+                ElementManager.addElementAmount(this, Elements.WOOD, true, 20);
             }
             switch (this.getCurrentAnimation()) {
                 case ROAR -> {
@@ -424,16 +425,21 @@ public class BiFang extends IMMGrowableMob implements Enemy {
 
     private boolean flyPredicate(){
         if (this.groundTick == 0) {
-            if(this.onGround() && this.getDeltaMovement().length() < 0.001){
+            if(this.onGround()){
                 return false;
             }
             this.groundTick = -1;
         } else if(this.groundTick < 0){
-            this.groundTick = 60;
+            this.groundTick = 20;
         } else {
             -- this.groundTick;
         }
         return true;
+    }
+
+    @Override
+    protected float getFlyingSpeed() {
+        return this.getControllingPassenger() instanceof Player ? this.getSpeed() * 0.1F : 0.04F;
     }
 
     @Override
@@ -470,7 +476,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         return spawnFlame;
     }
 
-    static class BiFangFlyMoveControl extends MoveControl {
+    public static class BiFangFlyMoveControl extends MoveControl {
 
         private final BiFang biFang;
         private final int maxTurn;
@@ -483,6 +489,10 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             this.biFang = biFang;
             this.maxTurn = 30;
             this.hoversInPlace = false;
+        }
+
+        public void setIdle(){
+            this.operation = MoveControl.Operation.WAIT;
         }
 
         public void tick() {

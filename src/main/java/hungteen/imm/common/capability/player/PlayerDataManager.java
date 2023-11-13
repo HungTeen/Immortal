@@ -68,6 +68,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         });
     }
 
+    /**
+     * //TODO HTLib
+     */
     public void initialize() {
         if (!this.initialized) {
             // 初始化玩家的灵根
@@ -268,6 +271,8 @@ public class PlayerDataManager implements IPlayerDataManager {
      */
     @Override
     public void syncToClient() {
+        Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
+        this.setRealmType(this.realmType); // Must run before sync mana !
         this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
         this.spiritualRoots.forEach(l -> {
             this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, l.getRegistryName());
@@ -282,8 +287,7 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
         this.floatMap.forEach(this::sendFloatDataPacket);
-        Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
-        this.setRealmType(this.realmType);
+
         if (this.preparingSpell != null) {
             this.setPreparingSpell(this.preparingSpell);
         }

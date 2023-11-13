@@ -94,7 +94,7 @@ public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditio
         this.getTarget().ifPresentOrElse(target -> {
             final Vec3 vec = target.position().subtract(position()).normalize();
             final Vec3 cur = getDeltaMovement().normalize();
-            final float changeSpeed = (this.getRestTick() <= 0 ? 0.02F : 0.1F);
+            final float changeSpeed = (this.getRestTick() <= 0 ? 0.012F : 0.1F);
             this.setDeltaMovement((cur.add(vec.scale(changeSpeed))).normalize().scale(getSpeed()));
         }, () -> {
             final Vec3 speed = this.getDeltaMovement();
@@ -112,13 +112,10 @@ public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditio
                 return target != getOwner();
             }, (target, scale) -> {
                 if (isFireTornado()) {
-                    target.hurt(IMMDamageSources.fireElement(this), Math.min(1, 3F * scale * getScale()));
+                    target.hurt(IMMDamageSources.fireElement(this), Math.min(1, 2F * scale * getScale()));
                     ElementManager.addElementAmount(target, Elements.FIRE, false, 2 * getScale(), 20);
                 } else {
                     target.hurt(IMMDamageSources.woodElement(this), Math.min(1, 1F * scale * getScale()));
-                }
-                if(target.hasEffect(MobEffects.FIRE_RESISTANCE)){
-                    target.removeEffect(MobEffects.FIRE_RESISTANCE);
                 }
                 ElementManager.addElementAmount(target, Elements.WOOD, false, 3 * getScale(), 20);
                 if (this.getRestTick() == 0) {
