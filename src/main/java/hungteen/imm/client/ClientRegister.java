@@ -1,6 +1,8 @@
 package hungteen.imm.client;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
@@ -9,8 +11,6 @@ import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.screen.*;
 import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
 import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
-import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
-import hungteen.imm.client.gui.tooltip.ClientElementToolTip;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
@@ -25,11 +25,6 @@ import hungteen.imm.client.model.entity.villager.VillagerModel;
 import hungteen.imm.client.particle.*;
 import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
-import hungteen.imm.client.render.entity.misc.ElementCrystalRender;
-import hungteen.imm.client.render.entity.misc.TornadoRender;
-import hungteen.imm.client.render.entity.spirit.*;
-import hungteen.imm.client.render.level.LevelRenderStages;
-import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
@@ -37,15 +32,21 @@ import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
 import hungteen.imm.client.render.entity.human.CommonVillagerRender;
 import hungteen.imm.client.render.entity.human.CultivatorRender;
+import hungteen.imm.client.render.entity.misc.ElementCrystalRender;
+import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
+import hungteen.imm.client.render.entity.misc.TornadoRender;
+import hungteen.imm.client.render.entity.spirit.*;
+import hungteen.imm.client.render.level.LevelRenderStages;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.IMMMenus;
-import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
-import hungteen.imm.common.menu.tooltip.ElementToolTip;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
+import hungteen.imm.util.BlockUtil;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
@@ -204,10 +205,26 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event){
+        event.register((blockState, getter, pos, id) -> {
+            if(blockState.getBlock() instanceof GourdGrownBlock gourdGrownBlock){
+                return gourdGrownBlock.getType().getColor();
+            }
+            return ColorHelper.BLACK.rgb();
+        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
+    }
+
+    @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
         ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
+        event.register((stack, id) -> {
+            if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
+                return gourdBlockItem.getGourdType().getColor();
+            }
+            return ColorHelper.BLACK.rgb();
+        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
     }
 
     @SubscribeEvent

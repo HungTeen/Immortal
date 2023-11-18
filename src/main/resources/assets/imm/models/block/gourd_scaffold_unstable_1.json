@@ -1,0 +1,6 @@
+{
+	"parent": "imm:block/gourd_scaffold_unstable",
+	"textures": {
+		"leaves": "imm:block/gourd_scaffold_leaves"
+	}
+}

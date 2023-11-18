@@ -1,7 +1,4 @@
 {
-  "parent": "imm:block/gourd_block",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "gourd": "imm:block/green_gourd"
-  }
+  "parent": "imm:block/gourd",
+  "render_type": "minecraft:cutout"
 }

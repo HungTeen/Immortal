@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "bottom=false": [
+      {
+        "model": "imm:block/gourd_scaffold_stable_1",
+        "weight": 10
+      },
+      {
+        "model": "imm:block/gourd_scaffold_stable_2",
+        "weight": 10
+      }
+    ],
+    "bottom=true": [
+      {
+        "model": "imm:block/gourd_scaffold_unstable_1",
+        "weight": 10
+      },
+      {
+        "model": "imm:block/gourd_scaffold_unstable_2",
+        "weight": 10
+      }
+    ]
+  }
+}

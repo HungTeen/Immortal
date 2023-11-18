@@ -7,7 +7,6 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -78,6 +77,7 @@ public class BlockTagGen extends HTBlockTagGen {
         /* crops */
 //        this.tag(BlockTags.CROPS).add(PVZBlocks.PEA.get(), PVZBlocks.CABBAGE.get(), PVZBlocks.CORN.get());
 
+        this.tag(BlockTags.CLIMBABLE).add(IMMBlocks.GOURD_SCAFFOLD.get());
     }
 
 }

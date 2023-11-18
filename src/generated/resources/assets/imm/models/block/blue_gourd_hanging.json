@@ -1,4 +1,4 @@
 {
-  "parent": "imm:block/gourd",
+  "parent": "imm:block/hanging_gourd",
   "render_type": "minecraft:cutout"
 }

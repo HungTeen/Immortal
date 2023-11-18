@@ -1,19 +1,10 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "imm:block/blue_gourd",
-      "y": 90
-    },
-    "facing=north": {
+    "hanging=false": {
       "model": "imm:block/blue_gourd"
     },
-    "facing=south": {
-      "model": "imm:block/blue_gourd",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "imm:block/blue_gourd",
-      "y": 270
+    "hanging=true": {
+      "model": "imm:block/blue_gourd_hanging"
     }
   }
 }
