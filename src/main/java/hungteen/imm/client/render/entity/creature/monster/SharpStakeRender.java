@@ -21,7 +21,7 @@ public class SharpStakeRender extends MobRenderer<SharpStake, CubeModel<SharpSta
     private static final ResourceLocation EYES = Util.get().entityTexture("wood_eyes");
 
     public SharpStakeRender(EntityRendererProvider.Context context) {
-        super(context, new CubeModel<>(context.bakeLayer(IMMModelLayers.BI_FANG)), 0.5F);
+        super(context, new CubeModel<>(context.bakeLayer(IMMModelLayers.SHARP_STAKE)), 0.5F);
         this.addLayer(new WoodStakeLayer(context, this));
     }
 

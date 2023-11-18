@@ -4,11 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "imm.refmap.json",
   "mixins": [
+    "MixinBlock",
     "MixinFoodData",
     "MixinItemEntity",
-    "MixinBlock",
     "MixinLivingEntity",
-    "MixinMob"
+    "MixinMob",
+    "MixinScaffoldingBlock"
   ],
   "client": [
     "MixinMouseHandler"

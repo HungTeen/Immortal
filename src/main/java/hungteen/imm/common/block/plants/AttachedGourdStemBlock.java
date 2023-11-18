@@ -1,7 +1,9 @@
 package hungteen.imm.common.block.plants;
 
 import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
+import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.IMMItems;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,12 +20,16 @@ public class AttachedGourdStemBlock extends HTAttachedStemBlock {
     }
 
     @Override
-    protected boolean isGrownFruit(BlockState blockState) {
-        return blockState.getBlock() instanceof GourdGrownBlock;
+    protected boolean isGrownFruit(BlockState selfState, BlockState nearbyState) {
+        return nearbyState.getBlock() instanceof GourdScaffoldBlock gourdScaffold && gourdScaffold.getOriginFacing(nearbyState).getOpposite() == getFacing(selfState);
+    }
+
+    public Direction getFacing(BlockState blockState) {
+        return blockState.getValue(FACING);
     }
 
     @Override
     protected BlockState getStemState() {
-        return GourdStemBlock.getFinalAge();
+        return IMMBlocks.GOURD_STEM.get().maxAgeState();
     }
 }
