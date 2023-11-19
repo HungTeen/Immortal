@@ -19,7 +19,7 @@ public interface IMMItemTags {
     TagKey<Item> JUTE = forgeTag("crops/jute");
     TagKey<Item> SPIRITUAL_STONES = forgeTag("spiritual_stones");
     TagKey<Item> SPIRITUAL_STONES_LEVEL_ONE = forgeTag("spiritual_stone/level_one_stones");
-    TagKey<Item> SPIRITUAL_STONES_LEVEL_TWO = forgeTag("spiritual_stone/level_two_stones");
+//    TagKey<Item> SPIRITUAL_STONES_LEVEL_TWO = forgeTag("spiritual_stone/level_two_stones");
     TagKey<Item> COMMON_ARTIFACTS = forgeTag("artifacts/common");
     TagKey<Item> MODERATE_ARTIFACTS = forgeTag("artifacts/moderate");
     TagKey<Item> ADVANCED_ARTIFACTS = forgeTag("artifacts/advanced");

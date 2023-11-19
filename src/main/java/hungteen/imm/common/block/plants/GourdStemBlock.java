@@ -4,10 +4,15 @@ import hungteen.htlib.common.block.plants.HTStemBlock;
 import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.util.TipUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,6 +23,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * @program: Immortal
@@ -28,8 +36,8 @@ public class GourdStemBlock extends HTStemBlock {
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
-            Block.box(7.0D, 0.0D, 7.0D, 9.0D, 5.0D, 9.0D),
-            Block.box(5.0D, 0.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.box(5.0D, 0.0D, 5.0D, 11.0D, 5.0D, 11.0D),
+            Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D),
             Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D),
             Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D),
     };
@@ -51,6 +59,11 @@ public class GourdStemBlock extends HTStemBlock {
                 return;
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> components, TooltipFlag flag) {
+        components.add(TipUtil.desc(stack.getItem()).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     @Override

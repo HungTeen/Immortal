@@ -121,9 +121,10 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
                     getFirstStone().ifPresent(stack -> {
                         if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE)){
                             currentFlameValue += 40;
-                        } else if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO)){
-                            currentFlameValue += 80;
                         }
+//                        else if(stack.is(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO)){
+//                            currentFlameValue += 80;
+//                        }
                     });
                 }
                 maxFlameValue = currentFlameValue;

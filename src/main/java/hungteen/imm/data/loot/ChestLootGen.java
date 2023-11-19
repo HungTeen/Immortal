@@ -2,14 +2,9 @@ package hungteen.imm.data.loot;
 
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.misc.IMMLoots;
-import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.data.loot.packs.VanillaChestLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -35,10 +30,10 @@ public class ChestLootGen implements LootTableSubProvider {
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)
                                 )))
-                        .add(LootItem.lootTableItem(IMMItems.JUTE_SEEDS.get()).setWeight(3)
-                                .apply(SetItemCountFunction.setCount(
-                                        UniformGenerator.between(1.0F, 3.0F)
-                                )))
+//                        .add(LootItem.lootTableItem(IMMItems.JUTE_SEEDS.get()).setWeight(3)
+//                                .apply(SetItemCountFunction.setCount(
+//                                        UniformGenerator.between(1.0F, 3.0F)
+//                                )))
                         .add(LootItem.lootTableItem(Items.COPPER_INGOT).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(
                                         UniformGenerator.between(1.0F, 3.0F)

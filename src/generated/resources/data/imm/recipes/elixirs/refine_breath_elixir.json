@@ -14,10 +14,10 @@
       "item": "imm:ganoderma"
     },
     {
-      "item": "imm:cinnabar"
+      "item": "imm:spiritual_wood"
     },
     {
-      "item": "imm:cinnabar"
+      "item": "minecraft:blaze_rod"
     }
   ],
   "require_level": 1,

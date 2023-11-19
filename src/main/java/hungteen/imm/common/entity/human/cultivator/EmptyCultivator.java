@@ -1,12 +1,10 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
-import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.tag.IMMStructureTags;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.core.BlockPos;
@@ -46,7 +44,7 @@ public class EmptyCultivator extends Cultivator {
     @Override
     public void fillSpecialTrade(TradeOffers offers, RandomSource random) {
         // 主世界则需要添加寻找残破小屋（传送门）的宝藏地图。
-        if(level() instanceof ServerLevel serverLevel && serverLevel.dimension().equals(Level.OVERWORLD) && random.nextFloat() < 0.2F){
+        if(level() instanceof ServerLevel serverLevel && serverLevel.dimension().equals(Level.OVERWORLD) && random.nextFloat() < 0.3F){
             final BlockPos dst = serverLevel.findNearestMapStructure(IMMStructureTags.TELEPORT_RUINS, blockPosition(), 100, true);
             if (dst != null) {
                 ItemStack itemstack = MapItem.create(serverLevel, dst.getX(), dst.getZ(), (byte)2, true, true);

@@ -3,7 +3,8 @@
 	"parent": "block/block",
 	"textures": {
 		"2": "imm:block/gourd",
-		"3": "imm:block/gourd_stick"
+		"3": "imm:block/gourd_stick",
+		"particle": "imm:block/gourd"
 	},
 	"elements": [
 		{

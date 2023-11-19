@@ -6,6 +6,7 @@ import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.codec.ItemEntry;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
@@ -236,10 +237,10 @@ public interface HumanSettings {
                                         range(2, 4)
                                 ), 12)
                                 .add(new TradeEntry(
-                                        List.of(new ItemStack(Items.EMERALD, 32)),
+                                        List.of(new ItemStack(Items.EMERALD, 32), new ItemStack(GourdGrownBlock.GourdTypes.GREEN.getGourdGrownBlock())),
                                         List.of(FlameGourd.createFlameGourd(0.2F)),
                                         constant(1)
-                                ), 5)
+                                ), 9)
                                 .build()
                         )
                 )

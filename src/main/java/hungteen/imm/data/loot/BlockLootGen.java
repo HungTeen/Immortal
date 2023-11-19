@@ -1,22 +1,30 @@
 package hungteen.imm.data.loot;
 
+import hungteen.htlib.common.block.plants.HTStemBlock;
 import hungteen.htlib.data.loot.HTBlockLootGen;
-import hungteen.htlib.util.helper.registry.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.plants.IMMCropBlock;
-import hungteen.imm.common.block.plants.RiceBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.Util;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @program: Immortal
@@ -34,8 +42,11 @@ public class BlockLootGen extends HTBlockLootGen {
     @Override
     protected void generate() {
         /* Plant Blocks */
-        createCropDrops(IMMBlocks.RICE.get(), IMMItems.RICE_STRAW.get(), IMMItems.RICE_SEEDS.get());
-        createCropDrops(IMMBlocks.JUTE.get(), IMMItems.JUTE.get(), IMMItems.JUTE_SEEDS.get());
+        genCropDrops(IMMBlocks.RICE.get(), IMMItems.RICE_STRAW.get(), IMMItems.RICE_SEEDS.get());
+        genCropDrops(IMMBlocks.JUTE.get(), IMMItems.JUTE.get(), IMMItems.JUTE_SEEDS.get());
+        genStemDrops(IMMBlocks.GOURD_STEM.get(), IMMItems.GOURD_SEEDS.get());
+        genAttachedStemDrops(IMMBlocks.GOURD_ATTACHED_STEM.get(), IMMItems.GOURD_SEEDS.get());
+        dropOther(IMMBlocks.GOURD_SCAFFOLD.get(), Items.SCAFFOLDING);
 
         /* Tree Suits */
 
@@ -45,13 +56,23 @@ public class BlockLootGen extends HTBlockLootGen {
         }).map(Map.Entry::getValue).forEach(this::dropSelf);
     }
 
-    protected void createCropDrops(IMMCropBlock cropBlock, Item cropItem, Item seedItem){
-        createCropDrops(cropBlock, cropItem, seedItem, cropBlock.getAgeProperty(), cropBlock.getMaxAge());
+    protected void genCropDrops(IMMCropBlock cropBlock, Item cropItem, Item seedItem){
+        genCropDrops(cropBlock, cropItem, seedItem, cropBlock.getAgeProperty(), cropBlock.getMaxAge());
     }
 
-    protected void createCropDrops(Block cropBlock, Item cropItem, Item seedItem, IntegerProperty property, int reachAge){
+    protected void genCropDrops(Block cropBlock, Item cropItem, Item seedItem, IntegerProperty property, int reachAge){
         this.add(cropBlock, createCropDrops(cropBlock, cropItem, seedItem, LootItemBlockStatePropertyCondition.hasBlockStateProperties(cropBlock)
                         .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(property, reachAge))));
+    }
+
+    public void genStemDrops(HTStemBlock stem, Item seed) {
+        this.add(stem, LootTable.lootTable().withPool(this.applyExplosionDecay(stem, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(seed).apply(stem.getAgeProperty().getPossibleValues(), (p_249795_) -> {
+            return SetItemCountFunction.setCount(BinomialDistributionGenerator.binomial(3, (float)(p_249795_ + 1) / 15.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(stem).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(stem.getAgeProperty(), p_249795_)));
+        })))));
+    }
+
+    public void genAttachedStemDrops(Block block, Item item) {
+        this.add(block, super.createAttachedStemDrops(block, item));
     }
 
     @Override
@@ -61,6 +82,10 @@ public class BlockLootGen extends HTBlockLootGen {
 
     protected boolean contains(Block block){
         return this.knownBlocks.contains(block);
+    }
+
+    protected void add(Block block, Function<Block, LootTable.Builder> function) {
+        this.add(block, function.apply(block));
     }
 
     @Override

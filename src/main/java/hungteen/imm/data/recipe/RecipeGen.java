@@ -135,7 +135,7 @@ public class RecipeGen extends RecipeProvider {
                 Items.PITCHER_POD, IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), IMMItems.SPIRITUAL_WOOD.get()
         ));
         genElixir(consumer, IMMItems.REFINE_BREATH_ELIXIR.get(), 500, 1, Arrays.asList(
-                Items.DIAMOND, Items.DIAMOND, IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMItems.CINNABAR.get(), IMMItems.CINNABAR.get()
+                Items.DIAMOND, Items.DIAMOND, IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), Items.BLAZE_ROD
         ));
     }
 

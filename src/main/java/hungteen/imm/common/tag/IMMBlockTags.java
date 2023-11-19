@@ -31,6 +31,7 @@ public interface IMMBlockTags {
 
     /* IMM */
 
+    TagKey<Block> GOURDS = tag("gourds");
     TagKey<Block> COPPER_BLOCKS = tag("copper_blocks");
     TagKey<Block> COPPER_SLABS = tag("copper_slabs");
     TagKey<Block> FUNCTIONAL_COPPERS = tag("functional_coppers");

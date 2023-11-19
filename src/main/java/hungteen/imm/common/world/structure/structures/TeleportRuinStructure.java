@@ -16,7 +16,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -131,18 +130,19 @@ public class TeleportRuinStructure extends Structure {
                 this.templatePosition = new BlockPos(this.templatePosition.getX(), this.baseHeight, this.templatePosition.getZ());
             }
             super.postProcess(level, manager, generator, randomSource, boundingBox, chunkPos, blockPos);
-            if(location.equals(MUD_HOUSE)){
-                final int topY = this.templatePosition.getY();
-                BlockPos pos = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(settings, new BlockPos(5, 1, 6)));
-                for(int h = this.baseHeight + RUIN_HEIGHT; h <= topY; ++ h){
-                    for(int x = -1; x <= 1; ++ x){
-                        for(int z = -1; z <= 1; ++ z){
-                            final Block block = (x == 0 && z == 0) ? Blocks.AIR : Blocks.DEEPSLATE_TILES;
-                            level.setBlock(new BlockPos(pos.getX() + x, h, pos.getZ() + z), block.defaultBlockState(), 3);
-                        }
-                    }
-                }
-            }
+            // TODO 柱子一直出bug，先删掉了。
+//            if(location.equals(MUD_HOUSE)){
+//                final int topY = this.templatePosition.getY();
+//                BlockPos pos = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(settings, new BlockPos(5, 1, 6)));
+//                for(int h = this.baseHeight + RUIN_HEIGHT; h <= topY; ++ h){
+//                    for(int x = -1; x <= 1; ++ x){
+//                        for(int z = -1; z <= 1; ++ z){
+//                            final Block block = (x == 0 && z == 0) ? Blocks.AIR : Blocks.DEEPSLATE_TILES;
+//                            level.setBlock(new BlockPos(pos.getX() + x, h, pos.getZ() + z), block.defaultBlockState(), 3);
+//                        }
+//                    }
+//                }
+//            }
         }
 
         @Override

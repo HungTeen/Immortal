@@ -16,8 +16,14 @@ public interface IMMLoots {
 
     Set<ResourceLocation> LOCATIONS = Sets.newHashSet();
 
+    /* Chest Loot Tables */
+
     ResourceLocation PLAINS_TRADING_MARKET_COMMON = chest("trading_market/plains_common");
     ResourceLocation PLAINS_TRADING_MARKET_RARE = chest("trading_market/plains_rare");
+
+    private static ResourceLocation entity(String name) {
+        return create("entities/" + name);
+    }
 
     private static ResourceLocation chest(String name) {
         return create("chests/" + name);

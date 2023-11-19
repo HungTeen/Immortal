@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -18,12 +19,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 
 public class GourdScaffoldBlock extends ScaffoldingBlock {
 
     public static final DirectionProperty ORIGIN_FACING = IMMStateProperties.ORIGIN_FACING;
     public static final DirectionProperty TARGET_FACING = IMMStateProperties.TARGET_FACING;
     public static final IntegerProperty REACH_DISTANCE = IMMStateProperties.REACH_DISTANCE;
+    private static final int MAX_REACH_DISTANCE = 12;
 
     public GourdScaffoldBlock() {
         super(Properties.copy(Blocks.SCAFFOLDING).randomTicks());
@@ -45,7 +50,7 @@ public class GourdScaffoldBlock extends ScaffoldingBlock {
                 final int reach = state.getValue(REACH_DISTANCE);
                 if (source.nextFloat() < 0.5) {
                     // 没有延伸过。
-                    if (!isValidReach(level, state, pos) && reach < 15) {
+                    if (!isValidReach(level, state, pos) && reach < MAX_REACH_DISTANCE) {
                         for (Direction direction : Direction.Plane.HORIZONTAL) {
                             if (tryReach(level, state, pos, direction)) return;
                         }
@@ -73,9 +78,7 @@ public class GourdScaffoldBlock extends ScaffoldingBlock {
             level.setBlockAndUpdate(pos, BlockHelper.setProperty(state, REACH_DISTANCE, reach + 1));
         } else {
             // 带藤脚手架 -> 脚手架。
-            BlockState newState = Blocks.SCAFFOLDING.defaultBlockState();
-            copyScaffoldState(state, newState);
-            level.setBlockAndUpdate(pos, newState);
+            level.setBlockAndUpdate(pos, copyScaffoldState(state, Blocks.SCAFFOLDING.defaultBlockState()));
         }
     }
 
@@ -96,6 +99,14 @@ public class GourdScaffoldBlock extends ScaffoldingBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
         return super.canSurvive(state, reader, pos);
+    }
+
+    @Override
+    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
+        if(toolAction == ToolActions.AXE_STRIP){
+            return copyScaffoldState(state, Blocks.SCAFFOLDING.defaultBlockState());
+        }
+        return super.getToolModifiedState(state, context, toolAction, simulate);
     }
 
     public int getSourceReach(LevelReader reader, BlockState state, BlockPos pos) {

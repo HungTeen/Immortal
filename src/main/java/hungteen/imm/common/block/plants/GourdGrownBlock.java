@@ -47,10 +47,12 @@ public class GourdGrownBlock extends HTStemGrownBlock {
     private final GourdTypes type;
 
     static{
-        VoxelShape voxelshape1 = Block.box(5, 0, 5, 11, 5, 11);
-        VoxelShape voxelShape2 = Block.box(6, 5, 6, 10, 9, 10);
+        VoxelShape voxelshape1 = Block.box(5, 0, 5, 11, 6, 11);
+        VoxelShape voxelShape2 = Block.box(6, 6, 6, 10, 9, 10);
+        VoxelShape voxelshape3 = Block.box(5, 1, 5, 11, 7, 11);
+        VoxelShape voxelShape4 = Block.box(6, 7, 6, 10, 10, 10);
         AABB = Shapes.or(voxelshape1, voxelShape2);
-        HANGING_AABB = Shapes.or(voxelshape1, voxelShape2);
+        HANGING_AABB = Shapes.or(voxelshape3, voxelShape4);
     }
 
     public GourdGrownBlock(GourdTypes type) {
@@ -83,6 +85,12 @@ public class GourdGrownBlock extends HTStemGrownBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
         Direction direction = getConnectedDirection(state).getOpposite();
+        if(direction == Direction.UP){
+            BlockState upperState = reader.getBlockState(pos.relative(direction));
+            if(upperState.is(IMMBlocks.GOURD_SCAFFOLD.get()) || upperState.is(Blocks.SCAFFOLDING)){
+                return true;
+            }
+        }
         return Block.canSupportCenter(reader, pos.relative(direction), direction.getOpposite());
     }
 

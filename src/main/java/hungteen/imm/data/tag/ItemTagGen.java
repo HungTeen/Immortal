@@ -33,11 +33,11 @@ public class ItemTagGen extends HTItemTagGen {
         this.tag(IMMItemTags.JUTE).add(IMMItems.JUTE.get());
 
         this.tag(IMMItemTags.SPIRITUAL_STONES).addTags(
-                IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE,
-                IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO
+                IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE
+//                IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO
         );
         this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
-        this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
+//        this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
 
         this.tag(IMMItemTags.COMMON_ARTIFACTS).add(Items.ENDER_PEARL);
 //        this.tag(IMMItemTags.MODERATE_ARTIFACTS).add(Items.TRIDENT);

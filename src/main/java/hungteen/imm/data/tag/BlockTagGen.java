@@ -3,6 +3,7 @@ package hungteen.imm.data.tag;
 import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.tag.IMMBlockTags;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -51,6 +52,7 @@ public class BlockTagGen extends HTBlockTagGen {
         this.tag(IMMBlockTags.ADVANCED_ARTIFACTS).add(Blocks.ENCHANTING_TABLE, Blocks.BEACON);
 
         /* IMM */
+        BlockUtil.getGourds().forEach(p -> this.tag(IMMBlockTags.GOURDS).add(p.getSecond()));
         this.tag(IMMBlockTags.COPPER_BLOCKS)
                 .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
                 .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);
@@ -64,6 +66,16 @@ public class BlockTagGen extends HTBlockTagGen {
     }
 
     private void addMCTags(){
+        /* 挖掘方式 & 等级 */
+
+        this.tag(BlockTags.MINEABLE_WITH_AXE).add(IMMBlocks.GOURD_SCAFFOLD.get())
+                .addTag(IMMBlockTags.GOURDS);
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(IMMBlocks.CINNABAR_ORE.get(), IMMBlocks.COPPER_ELIXIR_ROOM.get(), IMMBlocks.COPPER_FURNACE.get());
+        this.tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(IMMBlocks.GOURD_SCAFFOLD.get())
+                .addTag(IMMBlockTags.GOURDS);
+        this.tag(BlockTags.NEEDS_IRON_TOOL).add(IMMBlocks.CINNABAR_ORE.get(), IMMBlocks.COPPER_ELIXIR_ROOM.get(), IMMBlocks.COPPER_FURNACE.get());
+
         /* Woods */
 //        this.woodIntegration(ImmortalWoods.MULBERRY);
 

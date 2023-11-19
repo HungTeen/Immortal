@@ -46,6 +46,7 @@ public interface IMMCreativeTabs {
                         final Set<ItemLike> blackList = Set.of(
                                 IMMItems.RICE_SEEDS.get(), IMMItems.RICE_STRAW.get(),
                                 IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
+                                IMMBlocks.CINNABAR_ORE.get(),
                                 IMMItems.MULBERRY.get(), IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()
                         );
                         final List<ItemLike> items = new ArrayList<>();

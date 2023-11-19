@@ -655,6 +655,10 @@
             {
               "Count": 32,
               "id": "minecraft:emerald"
+            },
+            {
+              "Count": 1,
+              "id": "imm:green_gourd"
             }
           ],
           "result_items": [
@@ -669,7 +673,7 @@
           ],
           "trade_count": 1
         },
-        "weight": 5
+        "weight": 9
       }
     ]
   },
