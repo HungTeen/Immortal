@@ -6,7 +6,6 @@ import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.client.ClientUtil;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.RealmTypes;
@@ -29,7 +28,10 @@ import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElement;
 import snownee.jade.api.ui.IElementHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author PangTeen
@@ -71,7 +73,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
             if(Util.isDebugMode()){
                 final List<IElement> debugComponents = new ArrayList<>();
                 final Map<Elements, Float> elements = ElementManager.getElements(entityAccessor.getEntity());
-                final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), Arrays.stream(Elements.values()).toList());
+                final List<Elements> list = PlayerUtil.filterElements(player, Arrays.stream(Elements.values()).toList());
                 if(list.size() > 0){
                     for (Elements element : list) {
                         if (!elements.containsKey(element)) continue;

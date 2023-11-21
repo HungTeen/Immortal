@@ -1,3 +1,6 @@
 {
-  "parent": "imm:block/red_gourd"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "imm:item/gourd"
+  }
 }

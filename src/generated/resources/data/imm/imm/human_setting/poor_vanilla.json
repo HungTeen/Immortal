@@ -397,7 +397,7 @@
         "data": {
           "cost_items": [
             {
-              "Count": 3,
+              "Count": 4,
               "id": "minecraft:emerald"
             }
           ],
@@ -424,7 +424,7 @@
         "data": {
           "cost_items": [
             {
-              "Count": 3,
+              "Count": 6,
               "id": "minecraft:emerald"
             }
           ],
@@ -451,7 +451,7 @@
         "data": {
           "cost_items": [
             {
-              "Count": 3,
+              "Count": 8,
               "id": "minecraft:emerald"
             },
             {

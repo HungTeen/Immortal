@@ -126,7 +126,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         /**
          * 木。
          */
-        ORANGE(() -> EffectHelper.viewEffect(MobEffects.NIGHT_VISION, 400, 1), ColorHelper.ORANGE, 10),
+        ORANGE(() -> EffectHelper.viewEffect(MobEffects.NIGHT_VISION, 400, 1), ColorHelper.DYE_ORANGE, 10),
 
         /**
          * 金。
@@ -146,7 +146,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         /**
          * 阴。
          */
-        BLUE(() -> EffectHelper.viewEffect(MobEffects.INVISIBILITY, 300, 1), ColorHelper.DARK_BLUE, 1),
+        BLUE(() -> EffectHelper.viewEffect(MobEffects.INVISIBILITY, 300, 1), ColorHelper.BLUE, 1),
 
         /**
          * 阳。

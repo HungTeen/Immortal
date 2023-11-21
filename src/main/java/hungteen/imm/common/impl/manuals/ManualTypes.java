@@ -12,17 +12,17 @@ import hungteen.imm.util.Util;
  * @program Immortal
  * @data 2023/7/17 15:19
  */
-public class ManualTypes {
+public interface ManualTypes {
 
-    private static final IHTSimpleRegistry<IManualType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("manual_type"));
+    IHTSimpleRegistry<IManualType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("manual_type"));
 
-    public static final IManualType<LearnSpellManual> LEARN_SPELL = register(new ManualType<>("learn_spell", LearnSpellManual.CODEC));
+    IManualType<LearnSpellManual> LEARN_SPELL = register(new ManualType<>("learn_spell", LearnSpellManual.CODEC));
 
-    public static IHTSimpleRegistry<IManualType<?>> registry(){
+    static IHTSimpleRegistry<IManualType<?>> registry(){
         return TYPES;
     }
 
-    public static <T extends IManualContent> IManualType<T> register(IManualType<T> type){
+    static <T extends IManualContent> IManualType<T> register(IManualType<T> type){
         return registry().register(type);
     }
 

@@ -39,7 +39,7 @@ public interface IMMCreativeTabs {
     DeferredRegister<CreativeModeTab> TABS = ItemHelper.tab().createRegister(Util.id());
 
     RegistryObject<CreativeModeTab> MATERIALS = register("materials", builder ->
-            builder.icon(() -> new ItemStack((IMMItems.GOURD_SEEDS.get())))
+            builder.icon(() -> new ItemStack((IMMBlocks.GANODERMA.get())))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .displayItems((parameters, output) -> {
                         //TODO 等待下次更新。
@@ -56,9 +56,10 @@ public interface IMMCreativeTabs {
 //                                IMMItems.JUTE_SEEDS.get(), IMMItems.JUTE.get(),
                                 IMMItems.GOURD_SEEDS.get(), IMMBlocks.GANODERMA.get()
                         ));
-                        items.addAll(getBannerPatterns());
+
                         // 葫芦。
                         BlockUtil.getGourds().forEach(pair -> items.add(pair.getSecond()));
+                        items.addAll(getBannerPatterns());
                         // 装饰方块。
                         items.addAll(List.of(
 //                                IMMBlocks.MULBERRY_LEAVES.get(), IMMBlocks.MULBERRY_LEAVES_WITH_MULBERRIES.get(), IMMBlocks.MULBERRY_SAPLING.get()

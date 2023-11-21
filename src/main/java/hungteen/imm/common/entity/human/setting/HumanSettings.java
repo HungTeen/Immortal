@@ -102,18 +102,18 @@ public interface HumanSettings {
                                 SimpleWeightedList.<TradeEntry>builder()
                                         .add(spellTrade(3, SpellTypes.MEDITATION, 1), 10)
                                         .add(new TradeEntry(
-                                                List.of(new ItemStack(Items.EMERALD, 3)),
+                                                List.of(new ItemStack(Items.EMERALD, 4)),
                                                 List.of(new ItemStack(Items.DIAMOND_SWORD)),
                                                 range(3, 3)
                                         ), 10)
                                         .add(new TradeEntry(
-                                                List.of(new ItemStack(Items.EMERALD, 3)),
+                                                List.of(new ItemStack(Items.EMERALD, 6)),
                                                 List.of(new ItemStack(Items.DIAMOND_HELMET)),
                                                 range(3, 3)
                                         ), 10)
                                         .add(new TradeEntry(
                                                 List.of(
-                                                        new ItemStack(Items.EMERALD, 3),
+                                                        new ItemStack(Items.EMERALD, 8),
                                                         new ItemStack(Items.DIAMOND, 2)
                                                 ),
                                                 List.of(new ItemStack(Items.DIAMOND_CHESTPLATE)),

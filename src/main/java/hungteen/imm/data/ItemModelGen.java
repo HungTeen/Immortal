@@ -3,6 +3,7 @@ package hungteen.imm.data;
 import hungteen.htlib.data.HTItemModelGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.common.block.IMMBlocks;
@@ -12,6 +13,7 @@ import hungteen.imm.common.item.artifacts.MeleeAttackItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
@@ -67,6 +69,10 @@ public class ItemModelGen extends HTItemModelGen {
         ).forEach(block -> {
             genNormalModel(block.get().asItem());
             this.add(block.get().asItem());
+        });
+        BlockUtil.getGourds().forEach(pair -> {
+            genNormal(GourdGrownBlock.getGourdLocation(pair.getFirst()).getPath(), Util.prefix("item/gourd"));
+            this.add(pair.getSecond().asItem());
         });
 
         gen(IMMBlocks.TELEPORT_ANCHOR.get(), block -> genBlockModel(block, name(block) + "_0"));

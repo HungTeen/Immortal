@@ -165,11 +165,11 @@ public class IMMEntities {
                 Pair.of(BI_FANG, Pair.of(ColorHelper.RED, ColorHelper.DARK_AQUA)),
 
                 /* Spirit */
-                Pair.of(METAL_SPIRIT, Pair.of(ColorHelper.YELLOW, ColorHelper.ORANGE)),
-                Pair.of(WOOD_SPIRIT, Pair.of(ColorHelper.YELLOW_GREEN, ColorHelper.GREEN)),
-                Pair.of(WATER_SPIRIT, Pair.of(ColorHelper.AQUA, ColorHelper.BLUE)),
-                Pair.of(FIRE_SPIRIT, Pair.of(ColorHelper.GOLD, ColorHelper.WHITE)),
-                Pair.of(EARTH_SPIRIT, Pair.of(ColorHelper.ORANGE_YELLOW, ColorHelper.GRAY))
+                Pair.of(METAL_SPIRIT, Pair.of(ColorHelper.create(0xffdb3d), ColorHelper.create(0xfeffe1))),
+                Pair.of(WOOD_SPIRIT, Pair.of(ColorHelper.create(0x87e45c), ColorHelper.create(0xc4ffe2))),
+                Pair.of(WATER_SPIRIT, Pair.of(ColorHelper.create(0x50c9e2), ColorHelper.create(0xccfffd))),
+                Pair.of(FIRE_SPIRIT, Pair.of(ColorHelper.create(0xff6100), ColorHelper.create(0xffe638))),
+                Pair.of(EARTH_SPIRIT, Pair.of(ColorHelper.create(0xbb8c41), ColorHelper.create(0xd5d5d5)))
 
                 /* Undead */
 //                Pair.of(SPIRITUAL_ZOMBIE, Pair.of(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN))

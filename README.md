@@ -1,6 +1,6 @@
-# Immortal [![](https://cf.way2muchnoise.eu/full_794622_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/hungteens-lib)
+# Immortal [![](https://cf.way2muchnoise.eu/full_940667_downloads.svg)](https://legacy.curseforge.com/minecraft/mc-mods/pangteens-immortal-adventure)
 
-[![](https://cf.way2muchnoise.eu/versions/794622.svg)](https://www.curseforge.com/minecraft/mc-mods/hungteens-lib)
+[![](https://cf.way2muchnoise.eu/versions/940667.svg)](https://www.curseforge.com/minecraft/mc-mods/hungteens-lib)
 
 My dreaming world.
 
@@ -24,7 +24,7 @@ Immortal requires the following dependencies :
 ---
 ### Current Progress
 
-| Version |   Status   |
-|:-------:|:----------:|
-| 1.20.1  | Developing |
+| Version |   Status   | Stable | Latest |
+|:-------:|:----------:|:------:|:------:|
+| 1.20.1  | Developing | 0.1.0  | 0.1.0  |
 ---
