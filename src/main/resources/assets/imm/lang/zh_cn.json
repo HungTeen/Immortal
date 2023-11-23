@@ -268,6 +268,7 @@
   "info.imm.start_display_furnace": "周围没有完整的炉鼎结构，已显示其摆放方式（再次右击可取消显示）",
   "info.imm.stop_display_furnace": "已关闭炉鼎结构的显示",
   "info.imm.no_root": "没有灵根，无法突破",
+  "info.imm.cultivation_not_enough": "修为未满，不能进行突破",
 
   "info.imm.already_learned_spell": "已学习此法术 ！",
   "info.imm.requirement_not_fit": "此条件不满足：",

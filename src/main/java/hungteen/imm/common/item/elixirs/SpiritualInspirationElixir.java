@@ -7,7 +7,6 @@ import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -33,8 +32,8 @@ public class SpiritualInspirationElixir extends ElixirItem {
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
-            if (PlayerUtil.getSpiritualRoots(player).size() > 0) {
-                PlayerUtil.addFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 1F);
+            if (!PlayerUtil.getSpiritualRoots(player).isEmpty()) {
+                RealmManager.checkAndAddBreakThroughProgress(player, 1F);
             } else {
                 PlayerHelper.sendTipTo(player, TipUtil.info("no_root"));
             }

@@ -9,7 +9,9 @@ import hungteen.imm.ImmortalMod;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.interfaces.*;
+import hungteen.imm.api.interfaces.IArtifactBlock;
+import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.capability.player.PlayerDataManager;
@@ -21,7 +23,6 @@ import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMDamageTypeTags;
-import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
@@ -34,14 +35,16 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -104,6 +107,29 @@ public class RealmManager {
         ));
     }
 
+    public static Optional<RealmStatus> getNextRealmStatus(Player player){
+        return getNextRealmStatus(PlayerUtil.getPlayerRealm(player), PlayerUtil.getPlayerRealmStage(player));
+    }
+
+    /**
+     * 获取当前境界的下一个小境界。
+     * @return 如果是empty，说明没有下一个境界了。
+     */
+    public static Optional<RealmStatus> getNextRealmStatus(IRealmType currentRealm, RealmStages currentStage){
+        if(currentRealm == RealmTypes.MORTALITY || currentStage.canLevelUp()){
+            // 可以突破到下一个大境界。 TODO 其他修为类型的突破。
+            final RealmNode currentNode = findRealmNode(currentRealm);
+            final RealmNode nextNode = currentNode.next(CultivationTypes.SPIRITUAL);
+            if(nextNode != null){
+                return Optional.of(status(nextNode.getRealm(), RealmStages.PRELIMINARY));
+            }
+            return Optional.empty();
+        } else {
+            // 只能突破到当前境界的下一个阶段。
+            return Optional.of(status(currentRealm, RealmStages.next(currentStage)));
+        }
+    }
+
     public static void breakThrough(ServerPlayer player, IRealmType realm, RealmStages stage){
         final IRealmType oldRealm = PlayerUtil.getPlayerRealm(player);
         final RealmStages oldStage = PlayerUtil.getPlayerRealmStage(player);
@@ -119,36 +145,21 @@ public class RealmManager {
     public static void tryBreakThrough(ServerPlayer player){
         final IRealmType currentRealm = PlayerUtil.getPlayerRealm(player);
         final RealmStages currentStage = PlayerUtil.getPlayerRealmStage(player);
-        final IRealmType nextRealm;
-        final RealmStages nextStage;
-        if(currentRealm == RealmTypes.MORTALITY || currentStage.canLevelUp()){
-            // 可以突破到下一个大境界。 TODO 其他修为类型的突破。
-            final RealmNode currentNode = findRealmNode(currentRealm);
-            final RealmNode nextNode = currentNode.next(CultivationTypes.SPIRITUAL);
-            if(nextNode != null){
-                nextRealm = nextNode.getRealm();
-                nextStage = RealmStages.PRELIMINARY;
-            } else {
-                nextStage = currentStage;
-                nextRealm = currentRealm;
-                return;
+        getNextRealmStatus(currentRealm, currentStage).ifPresent(status -> {
+            final IRealmType nextRealm = status.realm();
+            final RealmStages nextStage = status.stage();
+            if(player.level() instanceof ServerLevel serverLevel){
+                final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
+                WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
+                    return raid.match(nextRealm, nextStage, difficulty);
+                }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
+                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
+                    PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
+                }, () -> {
+                    breakThrough(player, nextRealm, nextStage);
+                });
             }
-        } else {
-            // 只能突破到当前境界的下一个阶段。
-            nextRealm = currentRealm;
-            nextStage = RealmStages.next(currentStage);
-        }
-        if(player.level() instanceof ServerLevel serverLevel){
-            final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
-            WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
-                return raid.match(nextRealm, nextStage, difficulty);
-            }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
-                DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
-                PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
-            }, () -> {
-                breakThrough(player, nextRealm, nextStage);
-            });
-        }
+        });
     }
 
     /**
@@ -201,6 +212,19 @@ public class RealmManager {
 
     public static List<BreakThroughRaid> breakThroughRaids(Level level){
         return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
+    }
+
+    public static void checkAndAddBreakThroughProgress(Player player, float progress){
+        if(cultivationEnough(player)){
+            PlayerUtil.addFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS, progress);
+        } else {
+            PlayerHelper.sendTipTo(player, TipUtil.info("cultivation_not_enough").withStyle(ChatFormatting.DARK_RED));
+        }
+    }
+
+    public static boolean cultivationEnough(Player player){
+        final Optional<RealmStatus> nextRealmStatus = getNextRealmStatus(player);
+        return nextRealmStatus.isPresent() && PlayerUtil.getCultivation(player) >= RealmManager.getStageRequiredCultivation(nextRealmStatus.get().realm(), nextRealmStatus.get().stage());
     }
 
     public static float getTrialDifficulty(Player player, IRealmType realm, RealmStages stage){
@@ -424,6 +448,10 @@ public class RealmManager {
         return TipUtil.misc("cultivation");
     }
 
+    public static RealmStatus status(IRealmType realm, RealmStages stage){
+        return new RealmStatus(realm, stage);
+    }
+
     /**
      * A tree node.
      */
@@ -472,6 +500,10 @@ public class RealmManager {
         public IRealmType getPreviousRealm(){
             return this.prevRealm.realm;
         }
+
+    }
+
+    public record RealmStatus(IRealmType realm, RealmStages stage){
 
     }
 

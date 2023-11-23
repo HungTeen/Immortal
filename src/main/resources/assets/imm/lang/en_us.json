@@ -268,6 +268,7 @@
   "info.imm.start_display_furnace": "No complete cauldron structure around, here display it's structure",
   "info.imm.stop_display_furnace": "Stop display cauldron structure",
   "info.imm.no_root": "No spiritual root, cannot cultivate by spiritual",
+  "info.imm.cultivation_not_enough": "Cultivation not reach, can not break through",
 
   "info.imm.already_learned_spell": "Already learned the spell !",
   "info.imm.requirement_not_fit": "The requirement is not fit: ",

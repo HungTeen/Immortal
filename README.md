@@ -26,5 +26,5 @@ Immortal requires the following dependencies :
 
 | Version |   Status   | Stable | Latest |
 |:-------:|:----------:|:------:|:------:|
-| 1.20.1  | Developing | 0.1.0  | 0.1.0  |
+| 1.20.1  | Developing | 0.1.1  | 0.1.1  |
 ---

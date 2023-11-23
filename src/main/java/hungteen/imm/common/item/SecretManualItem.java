@@ -6,7 +6,6 @@ import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.event.events.PlayerLearnManualEvent;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.*;
 import net.minecraft.ChatFormatting;
@@ -134,9 +133,9 @@ public class SecretManualItem extends Item {
         return getLocation(stack).map(l -> SecretManuals.registry().createKey(l));
     }
 
-    public static Optional<SecretManual> getSecretManual(Level level, ItemStack stack) {
+    public static Optional<SecretManual> getSecretManual(@Nullable Level level, ItemStack stack) {
         final Optional<ResourceKey<SecretManual>> opt = getResourceKey(stack);
-        if(opt.isPresent()){
+        if(opt.isPresent() && level != null){
             return SecretManuals.registry().getOptValue(level, opt.get());
         }
         return Optional.empty();

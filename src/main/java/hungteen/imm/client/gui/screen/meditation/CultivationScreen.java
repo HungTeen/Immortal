@@ -2,6 +2,7 @@ package hungteen.imm.client.gui.screen.meditation;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.JavaHelper;
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.client.ClientUtil;
@@ -14,7 +15,6 @@ import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
-import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
@@ -116,7 +116,9 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     @Override
     public List<CultivationEntries> getItems() {
-        return Arrays.stream(CultivationEntries.values()).filter(l -> l.canDisplay(ClientUtil.player())).toList();
+        return Arrays.stream(CultivationEntries.values()).filter(l -> {
+            return PlayerHelper.getClientPlayer().map(l::canDisplay).orElse(false);
+        }).toList();
     }
 
     @Override
@@ -173,10 +175,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     }
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float value, float maxValue, boolean karma) {
-        if(maxValue > 0){
-            this.renderProgress(graphics, x, y, value, maxValue, karma);
-            RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
-        }
+        this.renderProgress(graphics, x, y, value, maxValue, karma);
+        RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float percent, boolean karma) {
@@ -197,25 +197,29 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         graphics.blit(TEXTURE, x + 1, y + 14 + 1, 95, karma ? 146 : 136, width, PROGRESS_BAR_HEIGHT - 2);
     }
 
-    enum CultivationEntries {
+    private static boolean isSpiritual(Player player){
+        return PlayerUtil.getPlayerRealm(player).getCultivationType().isSpiritual();
+    }
+
+    public enum CultivationEntries {
 
 //        ELIXIR_CULTIVATION,
 
-        FIGHT_CULTIVATION,
+        FIGHT_CULTIVATION(CultivationScreen::isSpiritual),
 
-        LEARN_CULTIVATION,
+        LEARN_CULTIVATION(CultivationScreen::isSpiritual),
 
 //        MISSION_CULTIVATION,
 
-        PERSONALITY_CULTIVATION,
+        PERSONALITY_CULTIVATION(CultivationScreen::isSpiritual),
 
-        CULTIVATION,
+        CULTIVATION(CultivationScreen::isSpiritual),
 
         KARMA,
 
-        SPIRITUAL_MANA,
+        SPIRITUAL_MANA(CultivationScreen::isSpiritual),
 
-        BREAK_THROUGH_PROGRESS,
+        BREAK_THROUGH_PROGRESS(CultivationScreen::isSpiritual),
 
 //        EMP
 

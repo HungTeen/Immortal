@@ -5,8 +5,8 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,9 +32,9 @@ public class RefineBreathElixir extends ElixirItem {
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
             if (PlayerUtil.getPlayerRealmStage(player).canLevelUp()) {
-                PlayerUtil.addFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS, (float) RandomHelper.getMinMax(player.getRandom(), 0.16F, 0.38F));
+                RealmManager.checkAndAddBreakThroughProgress(player, (float) RandomHelper.getMinMax(player.getRandom(), 0.16F, 0.38F));
             } else {
-                PlayerUtil.addFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 1F);
+                RealmManager.checkAndAddBreakThroughProgress(player, 1F);
             }
         }
     }
