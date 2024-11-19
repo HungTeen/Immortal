@@ -3,14 +3,12 @@ package hungteen.imm.common.entity.creature.monster;
 import com.mojang.serialization.Dynamic;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
@@ -20,9 +18,9 @@ import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
-import hungteen.imm.data.tag.DamageTypeTagGen;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
+import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -36,8 +34,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -49,22 +45,20 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 毕方鸟。
@@ -75,12 +69,9 @@ import java.util.UUID;
  **/
 public class BiFang extends IMMGrowableMob implements Enemy {
 
-    private static final UUID SPEED_UUID = UUID.fromString("7d543102-6cdf-11ee-b962-0242ac120002");
-    private static final UUID ATTACK_UUID = UUID.fromString("7d5434b8-6cdf-11ee-b962-0242ac120002");
-    private static final UUID ARMOR_UUID = UUID.fromString("7d5435e4-6cdf-11ee-b962-0242ac120002");
-    private static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(SPEED_UUID, "speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
-    private static final AttributeModifier ATTACK_MODIFIER = new AttributeModifier(ATTACK_UUID, "attack boost", 3D, AttributeModifier.Operation.ADDITION);
-    private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(ARMOR_UUID, "armor boost", 4D, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(Util.prefix("speed boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    private static final AttributeModifier ATTACK_MODIFIER = new AttributeModifier(Util.prefix("attack boost"), 3D, AttributeModifier.Operation.ADD_VALUE);
+    private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(Util.prefix("armor boost"), 4D, AttributeModifier.Operation.ADD_VALUE);
     public final AnimationState flyAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState idle1AnimationState = new AnimationState();
@@ -98,19 +89,14 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         super(type, level);
         this.moveControl = new BiFangFlyMoveControl(this);
         this.getNavigation().setCanFloat(true);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(PathType.LAVA, 8.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-    }
-
-    @Override
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
-        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         if(spawnType == MobSpawnType.STRUCTURE){
             this.spawnFlame = true;
         }
@@ -244,8 +230,11 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             }
             switch (this.getCurrentAnimation()) {
                 case ROAR -> {
-                    if (atAnimationTick(15)) this.playSound(IMMSounds.BI_FANG_ROAR.get());
-                    else if (atAnimationTick(30)) this.setIdle();
+                    if (atAnimationTick(15)) {
+                        this.playSound(IMMSounds.BI_FANG_ROAR.get());
+                    } else if (atAnimationTick(30)) {
+                        this.setIdle();
+                    }
                 }
             }
         } else {
@@ -367,8 +356,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return dimensions.height * 0.8F;
+    public double getEyeY() {
+        return getY(0.8);
     }
 
     private void resetAnimations() {
@@ -404,7 +393,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    public boolean ignoreExplosion() {
+    public boolean ignoreExplosion(Explosion explosion) {
         return true;
     }
 
@@ -419,8 +408,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    public double getMeleeAttackRangeSqr(LivingEntity entity) {
-        return (this.getBbWidth() + 1) * 2.0F * (this.getBbWidth() + 1) * 2.0F + entity.getBbWidth();
+    protected AABB getAttackBoundingBox() {
+        return super.getAttackBoundingBox().inflate(1, 0, 1);
     }
 
     private boolean flyPredicate(){
@@ -495,6 +484,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             this.operation = MoveControl.Operation.WAIT;
         }
 
+        @Override
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
                 this.operation = MoveControl.Operation.WAIT;

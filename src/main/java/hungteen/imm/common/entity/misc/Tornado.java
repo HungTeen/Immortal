@@ -2,24 +2,21 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -30,7 +27,7 @@ import java.util.UUID;
  * @author: PangTeen
  * @create: 2023/10/19 21:08
  **/
-public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditionalSpawnData {
+public class Tornado extends HTEntity implements TraceableEntity, IEntityWithComplexSpawn {
 
     private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(Tornado.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> REST_TICK = SynchedEntityData.defineId(Tornado.class, EntityDataSerializers.INT);
@@ -50,21 +47,21 @@ public class Tornado extends HTEntity implements TraceableEntity, IEntityAdditio
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(SCALE, 1F);
-        entityData.define(REST_TICK, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SCALE, 1F);
+        builder.define(REST_TICK, 0);
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeInt(this.targetId);
         buffer.writeBoolean(this.clockWise);
         buffer.writeFloat(this.speed);
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         this.targetId = additionalData.readInt();
         this.clockWise = additionalData.readBoolean();
         this.speed = additionalData.readFloat();

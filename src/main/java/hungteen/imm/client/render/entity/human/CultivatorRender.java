@@ -2,7 +2,7 @@ package hungteen.imm.client.render.entity.human;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.imm.client.ClientProxy;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.CultivatorModel;
 import hungteen.imm.client.render.entity.layer.CultivatorArmorLayer;
@@ -70,10 +70,10 @@ public class CultivatorRender extends LivingEntityRenderer<Cultivator, Cultivato
             if (entity.getCultivatorType().getSkinLocation().isPresent()) {
                 return entity.getCultivatorType().getSkinLocation().get();
             } else {
-                final Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = ClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
+                final Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = IMMClientProxy.MC.getSkinManager().getInsecureSkinInformation(entity.getCultivatorType().getGameProfile().get());
                 if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
                     final MinecraftProfileTexture texture = map.get(MinecraftProfileTexture.Type.SKIN);
-                    final ResourceLocation skinLocation = ClientProxy.MC.getSkinManager().registerTexture(texture, MinecraftProfileTexture.Type.SKIN);
+                    final ResourceLocation skinLocation = IMMClientProxy.MC.getSkinManager().registerTexture(texture, MinecraftProfileTexture.Type.SKIN);
                     String modelValue = texture.getMetadata("model");
                     if (modelValue != null) {
                         entity.getCultivatorType().setSlim(modelValue.equals("slim"));

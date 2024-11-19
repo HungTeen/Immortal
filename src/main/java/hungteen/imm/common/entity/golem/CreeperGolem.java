@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -40,10 +40,10 @@ public class CreeperGolem extends GolemEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SWELL_DIR, -1);
-        this.entityData.define(IS_IGNITED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SWELL_DIR, -1);
+        builder.define(IS_IGNITED, false);
     }
 
     public static AttributeSupplier createAttributes() {

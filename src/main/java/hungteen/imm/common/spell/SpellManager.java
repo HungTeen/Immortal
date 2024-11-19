@@ -49,7 +49,7 @@ public class SpellManager {
      * @param position determines which spell will be selected.
      */
     public static void selectSpellOnCircle(int position) {
-        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.SELECT_SPELL, position));
+        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.SELECT_SPELL, position));
     }
 
     /**

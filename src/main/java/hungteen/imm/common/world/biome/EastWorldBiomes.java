@@ -2,11 +2,10 @@ package hungteen.imm.common.world.biome;
 
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.world.feature.IMMVegetationPlacements;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -14,7 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
@@ -32,7 +30,7 @@ import java.util.function.Consumer;
  **/
 public class EastWorldBiomes {
 
-    public static void initBiomes(BootstapContext<Biome> context) {
+    public static void initBiomes(BootstrapContext<Biome> context) {
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         final HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
         context.register(IMMBiomes.PLAINS, plains(features, carvers, false, false));

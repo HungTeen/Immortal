@@ -3,7 +3,7 @@ package hungteen.imm.util;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.ImmortalMod;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
@@ -82,7 +82,7 @@ public class ItemUtil {
     }
 
     /**
-     * {@link ImmortalMod#coreRegister()}
+     * {@link IMMInitializer#coreRegister()}
      */
 //    public static void registerLargeHeldItems(){
 //        List.of(

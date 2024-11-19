@@ -3,8 +3,7 @@ package hungteen.imm.common.entity.creature.monster;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.CodecHelper;
-import hungteen.htlib.util.helper.JavaHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpiritualType;
@@ -15,23 +14,23 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.tag.IMMBiomeTags;
-import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -43,10 +42,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -104,9 +101,9 @@ public class SharpStake extends IMMMob implements Enemy {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(STAKE, Blocks.OAK_LOG.defaultBlockState());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STAKE, Blocks.OAK_LOG.defaultBlockState());
     }
 
     @Override
@@ -118,8 +115,8 @@ public class SharpStake extends IMMMob implements Enemy {
     }
 
     @Override
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
-        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         // Choose skin.
         STAKE_MAP.forEach((biomeTag, state) -> {
             if(accessor.getBiome(blockPosition()).is(biomeTag)){

@@ -1,6 +1,6 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
@@ -21,9 +21,9 @@ import java.util.List;
  **/
 public record SpiritualRootRequirement(List<ISpiritualType> roots) implements ILearnRequirement {
 
-    public static final Codec<SpiritualRootRequirement> CODEC = RecordCodecBuilder.<SpiritualRootRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<SpiritualRootRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SpiritualTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(SpiritualRootRequirement::roots)
-    ).apply(instance, SpiritualRootRequirement::new)).codec();
+    ).apply(instance, SpiritualRootRequirement::new));
 
     public static SpiritualRootRequirement single(ISpiritualType root){
         return new SpiritualRootRequirement(List.of(root));

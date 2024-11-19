@@ -2,8 +2,8 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasMana;
@@ -15,14 +15,13 @@ import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.Constants;
-import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.MathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,18 +29,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
 import java.util.Optional;
 
@@ -50,7 +45,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-10-07 21:40
  **/
-public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnData, IHasRealm, IHasMana {
+public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, IHasRealm, IHasMana {
 
     public static final float MAX_AMOUNT = Constants.MAX_SPIRITUAL_FLAME_AMOUNT;
     private static final int RECOVER_CD = 50;
@@ -68,19 +63,19 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         buffer.writeInt(this.flameLevel);
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         this.flameLevel = additionalData.readInt();
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(FLAME_AMOUNT, MAX_AMOUNT);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLAME_AMOUNT, MAX_AMOUNT);
     }
 
     @Override
@@ -135,7 +130,7 @@ public class SpiritualFlame extends HTEntity implements IEntityAdditionalSpawnDa
     }
 
     public void flameTarget(LivingEntity target, float percent){
-        target.setSecondsOnFire(Math.max(2, Mth.ceil (10 * percent)));
+        target.setRemainingFireTicks(20 * Math.max(2, Mth.ceil (10 * percent)));
         if(percent > 0.75F){
             ElementManager.addElementAmount(target, Elements.FIRE, true, this.flamePercent() * 15 * percent);
         } else if(percent > 0.25F){

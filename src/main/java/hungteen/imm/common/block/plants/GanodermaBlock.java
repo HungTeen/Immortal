@@ -1,7 +1,7 @@
 package hungteen.imm.common.block.plants;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -24,7 +24,7 @@ public class GanodermaBlock extends SpiritualPlantBlock {
     private static final VoxelShape AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D);
 
     public GanodermaBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM).lightLevel(state -> 8));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_MUSHROOM).lightLevel(state -> 8));
     }
 
     @Override

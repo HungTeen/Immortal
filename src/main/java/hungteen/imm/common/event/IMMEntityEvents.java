@@ -1,22 +1,22 @@
 package hungteen.imm.common.event;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.ImmortalMod;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.spell.spells.fire.IgnitionSpell;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.raid.Raider;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-11-22 23:04
  **/
-@Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMEntityEvents {
 
     @SubscribeEvent

@@ -3,7 +3,7 @@ package hungteen.imm.common.world.feature;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
@@ -28,9 +28,9 @@ public interface IMMVegetationPlacements {
     ResourceKey<PlacedFeature> GANODERMA_DARK_FOREST = IMMPlacements.create("ganoderma_dark_forest");
 
     /**
-     * {@link net.minecraft.data.worldgen.placement.VegetationPlacements#bootstrap(BootstapContext)}
+     * {@link net.minecraft.data.worldgen.placement.VegetationPlacements#bootstrap(BootstrapContext)}
      */
-    static void register(BootstapContext<PlacedFeature> context) {
+    static void register(BootstrapContext<PlacedFeature> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
         final Holder<ConfiguredFeature<?, ?>> treesBirchForest = features.getOrThrow(IMMVegetationFeatures.TREES_BIRCH_FOREST);
         final Holder<ConfiguredFeature<?, ?>> treesDarkForest = features.getOrThrow(IMMVegetationFeatures.TREES_DARK_FOREST);
@@ -59,15 +59,15 @@ public interface IMMVegetationPlacements {
         );
     }
 
-    private static void stake(BootstapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> features, ResourceKey<PlacedFeature> placedKey, ResourceKey<ConfiguredFeature<?, ?>> configuredKey, PlacementModifier extraModifier){
+    private static void stake(BootstrapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> features, ResourceKey<PlacedFeature> placedKey, ResourceKey<ConfiguredFeature<?, ?>> configuredKey, PlacementModifier extraModifier){
         stake(context, placedKey, features.getOrThrow(configuredKey), extraModifier);
     }
 
-    private static void stake(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> resourceKey, Holder<ConfiguredFeature<?, ?>> holder, PlacementModifier extraModifier){
+    private static void stake(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> resourceKey, Holder<ConfiguredFeature<?, ?>> holder, PlacementModifier extraModifier){
         stake(context, resourceKey, holder, PlacementUtils.countExtra(0, 0.5F, 1), extraModifier);
     }
 
-    private static void stake(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> resourceKey, Holder<ConfiguredFeature<?, ?>> holder, PlacementModifier countModifier, PlacementModifier extraModifier){
+    private static void stake(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> resourceKey, Holder<ConfiguredFeature<?, ?>> holder, PlacementModifier countModifier, PlacementModifier extraModifier){
         PlacementUtils.register(context, resourceKey, holder,
                 countModifier,
                 InSquarePlacement.spread(),

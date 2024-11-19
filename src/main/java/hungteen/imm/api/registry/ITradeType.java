@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
  * @program Immortal
  * @data 2023/3/16 10:55
  */
-public interface ITradeType extends ISimpleEntry {
+public interface ITradeType extends SimpleEntry {
 
     void openMenu(ServerPlayer player);
 

@@ -2,13 +2,13 @@ package hungteen.imm.common.world.levelgen;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.util.helper.registry.LevelHelper;
+import hungteen.htlib.util.helper.impl.LevelHelper;
 import hungteen.imm.common.world.levelgen.dimension.EastWorldDimension;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
@@ -26,7 +26,7 @@ public interface IMMLevelStems {
 
     ResourceKey<LevelStem> EAST_WORLD = create("east_world");
 
-    static void register(BootstapContext<LevelStem> context){
+    static void register(BootstrapContext<LevelStem> context){
         final HolderGetter<MultiNoiseBiomeSourceParameterList> holderGetter = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
         final ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> builder = ImmutableList.builder();
         EastWorldDimension.addBiomes(resourceKeyPair -> builder.add(resourceKeyPair.mapSecond(res -> context.lookup(Registries.BIOME).getOrThrow(res))));

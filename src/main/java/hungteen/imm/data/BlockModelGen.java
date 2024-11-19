@@ -4,7 +4,7 @@ import hungteen.htlib.data.HTBlockModelGen;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.util.Util;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,9 +20,10 @@ public class BlockModelGen extends HTBlockModelGen {
 
     @Override
     protected void registerModels() {
-        IMMWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodSuitGen);
     }
 
+    @Override
     public @NotNull String getName() {
         return this.modid + " block models";
     }

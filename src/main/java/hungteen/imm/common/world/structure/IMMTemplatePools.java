@@ -3,10 +3,9 @@ package hungteen.imm.common.world.structure;
 import hungteen.imm.common.world.structure.structures.PlainsTradingMarket;
 import hungteen.imm.common.world.structure.structures.SpiritLab;
 import hungteen.imm.common.world.structure.structures.SpiritualFlameAltar;
-import hungteen.imm.common.world.structure.structures.SpiritualPlainsVillage;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
@@ -37,7 +36,7 @@ public interface IMMTemplatePools {
     ResourceKey<StructureTemplatePool> SPIRIT_LAB_DECORS = create("spirit_lab/decors");
     ResourceKey<StructureTemplatePool> SPIRIT_LAB_TREES = create("spirit_lab/trees");
 
-    static void register(BootstapContext<StructureTemplatePool> context){
+    static void register(BootstrapContext<StructureTemplatePool> context){
         PlainsTradingMarket.initPools(context);
         SpiritualFlameAltar.initPools(context);
         SpiritLab.initPools(context);

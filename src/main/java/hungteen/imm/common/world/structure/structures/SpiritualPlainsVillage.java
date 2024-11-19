@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class SpiritualPlainsVillage {
 
     public static void initStructures(BootstapContext<Structure> context) {
-//        context.register(IMMStructures.SPIRITUAL_PLAINS_VILLAGE, new JigsawStructure(
+//        context.initialize(IMMStructures.SPIRITUAL_PLAINS_VILLAGE, new JigsawStructure(
 //                new Structure.StructureSettings(
 //                        context.lookup(Registries.BIOME).getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS),
 //                        Map.of(),
@@ -91,21 +91,21 @@ public class SpiritualPlainsVillage {
         final Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
         final Holder<StructureProcessorList> moss = processors.getOrThrow(ProcessorLists.MOSSIFY_20_PERCENT);
 
-//        context.register(IMMTemplatePools.PLAINS_VILLAGE_START, new StructureTemplatePool(
+//        context.initialize(IMMTemplatePools.PLAINS_VILLAGE_START, new StructureTemplatePool(
 //                empty,
 //                pools(
 //                        getPoolElements("town_centers/meeting_point", moss, StructureTemplatePool.Projection.RIGID, List.of(10))
 //                )
 //        ));
 
-//        context.register(IMMTemplatePools.PLAINS_VILLAGE_END, new StructureTemplatePool(
+//        context.initialize(IMMTemplatePools.PLAINS_VILLAGE_END, new StructureTemplatePool(
 //                empty,
 //                pools(
 //                        getPoolElements("town_centers/meeting_point", moss, StructureTemplatePool.Projection.RIGID, List.of(10))
 //                )
 //        ));
 //
-//        context.register(IMMTemplatePools.PLAINS_VILLAGE_STREET, new StructureTemplatePool(
+//        context.initialize(IMMTemplatePools.PLAINS_VILLAGE_STREET, new StructureTemplatePool(
 //                empty,
 //                pools(
 //                        getPoolElements("town_centers/meeting_point", moss, StructureTemplatePool.Projection.RIGID, List.of(10))

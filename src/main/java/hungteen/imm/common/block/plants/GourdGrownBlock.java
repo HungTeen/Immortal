@@ -1,15 +1,19 @@
 package hungteen.imm.common.block.plants;
 
-import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
-import hungteen.htlib.common.block.plants.HTStemGrownBlock;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.common.block.plant.HTAttachedStemBlock;
+import hungteen.htlib.common.block.plant.HTStemGrownBlock;
+import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.records.HTColor;
+import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,6 +24,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -40,6 +45,9 @@ import java.util.function.Supplier;
  **/
 public class GourdGrownBlock extends HTStemGrownBlock {
 
+    public static final MapCodec<GourdGrownBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            GourdTypes.CODEC.fieldOf("type").forGetter(GourdGrownBlock::getType)
+    ).apply(instance, GourdGrownBlock::new));
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 
     private static final VoxelShape HANGING_AABB;
@@ -56,7 +64,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
     }
 
     public GourdGrownBlock(GourdTypes type) {
-        super(BlockBehaviour.Properties.copy(Blocks.MELON));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.MELON));
         this.type = type;
         this.registerDefaultState(this.stateDefinition.any().setValue(HANGING, Boolean.FALSE));
     }
@@ -116,7 +124,12 @@ public class GourdGrownBlock extends HTStemGrownBlock {
         return type;
     }
 
-    public enum GourdTypes implements WeightedEntry {
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
+    public enum GourdTypes implements WeightedEntry, StringRepresentable {
 
         /**
          * 土。
@@ -153,6 +166,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
          */
         PURPLE(() -> EffectHelper.viewEffect(MobEffects.WEAKNESS, 200, 1), ColorHelper.DARK_PURPLE, 1);
 
+        public static final Codec<GourdTypes> CODEC = StringRepresentable.fromEnum(GourdTypes::values);
         private GourdGrownBlock gourdGrownBlock;
         private final Supplier<MobEffectInstance> effectSupplier;
         private final int weight;
@@ -172,6 +186,7 @@ public class GourdGrownBlock extends HTStemGrownBlock {
             return color;
         }
 
+        @Override
         public Weight getWeight() {
             return Weight.of(weight);
         }
@@ -182,6 +197,11 @@ public class GourdGrownBlock extends HTStemGrownBlock {
 
         public Supplier<MobEffectInstance> getEffectSupplier() {
             return effectSupplier;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name();
         }
     }
 }

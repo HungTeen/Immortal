@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.ai.behavior.golem;
 
 import com.google.common.collect.ImmutableMap;
 import hungteen.htlib.util.helper.JavaHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.server.level.ServerLevel;

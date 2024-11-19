@@ -4,10 +4,7 @@ import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 
 /**
  * @program: Immortal
@@ -23,8 +20,7 @@ public class CriticalHitSpell extends SpellType {
     public static void checkCriticalHit(Player owner, CriticalHitEvent event) {
         SpellManager.activateSpell(owner, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
             if(! event.isVanillaCritical()){
-                event.setDamageModifier(1.5F);
-                event.setResult(Event.Result.ALLOW);
+                event.setDamageMultiplier(1.5F);
                 return true;
             }
             return false;

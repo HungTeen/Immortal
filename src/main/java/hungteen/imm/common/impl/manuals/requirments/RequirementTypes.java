@@ -1,8 +1,9 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
+import com.mojang.serialization.MapCodec;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.util.Util;
@@ -14,7 +15,7 @@ import hungteen.imm.util.Util;
  */
 public interface RequirementTypes {
 
-    IHTSimpleRegistry<IRequirementType<?>> TYPES = HTRegistryManager.createSimple(Util.prefix("requirement_type"));
+    HTCustomRegistry<IRequirementType<?>> TYPES = HTRegistryManager.custom(Util.prefix("requirement_type"));
 
     IRequirementType<AndRequirement> AND = register(new RequirementType<>("and", AndRequirement.CODEC));
     IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
@@ -26,24 +27,19 @@ public interface RequirementTypes {
     IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
     IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
 
-    static IHTSimpleRegistry<IRequirementType<?>> registry() {
+    static HTCustomRegistry<IRequirementType<?>> registry() {
         return TYPES;
     }
 
     static <T extends ILearnRequirement> IRequirementType<T> register(IRequirementType<T> type) {
-        return registry().register(type);
+        return registry().register(type.getLocation(), type);
     }
 
     static Codec<ILearnRequirement> getCodec() {
         return RequirementTypes.registry().byNameCodec().dispatch(ILearnRequirement::getType, IRequirementType::codec);
     }
 
-    record RequirementType<P extends ILearnRequirement>(String name, Codec<P> codec) implements IRequirementType<P> {
-
-        @Override
-        public String getName() {
-            return name();
-        }
+    record RequirementType<P extends ILearnRequirement>(String name, MapCodec<P> codec) implements IRequirementType<P> {
 
         @Override
         public String getModID() {

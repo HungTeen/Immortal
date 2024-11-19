@@ -1,8 +1,9 @@
 package hungteen.imm.common.event;
 
-import hungteen.htlib.common.capability.PlayerCapabilityManager;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.imm.ImmortalMod;
+import hungteen.htlib.api.HTLibAPI;
+import hungteen.htlib.platform.HTLibPlatformAPI;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.capability.player.PlayerDataManager;
@@ -15,31 +16,31 @@ import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-25 15:52
  **/
-@Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMPlayerEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && EntityHelper.isServer(event.player)) {
-            if(PlayerUtil.isSitInMeditation(event.player)){
-                PlayerUtil.addIntegerData(event.player, PlayerRangeIntegers.MEDITATE_TICK, 1);
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        if (EntityHelper.isServer(event.getEntity())) {
+            if(PlayerUtil.isSitInMeditation(event.getEntity())){
+                PlayerUtil.addIntegerData(event.getEntity(), PlayerRangeIntegers.MEDITATE_TICK, 1);
             }
-            RealmManager.limitEnchantments(event.player);
+            RealmManager.limitEnchantments(event.getEntity());
         }
     }
 
@@ -65,13 +66,14 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            event.getOriginal().reviveCaps();
-            PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
-                PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
-                    l.cloneFromExistingPlayerData(r, event.isWasDeath());
-                });
-            });
-            event.getOriginal().invalidateCaps();
+            // TODO 玩家 Cap clone。
+//            event.getOriginal().reviveCaps();
+//            PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
+//                PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
+//                    l.cloneFromExistingPlayerData(r, event.isWasDeath());
+//                });
+//            });
+//            event.getOriginal().invalidateCaps();
         }
     }
 
@@ -127,7 +129,7 @@ public class IMMPlayerEvents {
      */
     @SubscribeEvent
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
-        NetworkHandler.sendToServer(new EmptyClickPacket(event.getHand()));
+        HTLibPlatformAPI.get().sendToServer(new EmptyClickPacket(event.getHand()));
     }
 
     @SubscribeEvent

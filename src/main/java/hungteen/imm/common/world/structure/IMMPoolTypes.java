@@ -9,9 +9,9 @@ public interface IMMPoolTypes {
 
 //    DeferredRegister<StructurePoolElementType<?>> TYPES = DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, Util.id());
 //
-//    RegistryObject<StructurePoolElementType<SpawnEntityPoolElement>> SPAWN_ENTITY = TYPES.register("spawn_entity", () -> () -> SpawnEntityPoolElement.CODEC);
+//    RegistryObject<StructurePoolElementType<SpawnEntityPoolElement>> SPAWN_ENTITY = TYPES.initialize("spawn_entity", () -> () -> SpawnEntityPoolElement.CODEC);
 //
-//    static void register(IEventBus event){
-//        TYPES.register(event);
+//    static void initialize(IEventBus event){
+//        TYPES.initialize(event);
 //    }
 }

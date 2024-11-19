@@ -7,12 +7,10 @@ import hungteen.imm.client.render.IMMRenderTypes;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class FurnaceBlockEntityRender extends HTBlockEntityRender<SpiritualFurnaceBlockEntity> {
 

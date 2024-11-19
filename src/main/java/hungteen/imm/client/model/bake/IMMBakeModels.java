@@ -6,7 +6,7 @@ import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraftforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class IMMBakeModels {
             event.getModels().put(LargeHeldItemBakeModel.getModelLocation(item), new LargeHeldItemBakeModel(item, event.getModels()));
         });
         {
-            final ModelResourceLocation key = ClientUtil.getModelLocation(IMMItems.SECRET_MANUAL.getId());
+            final ModelResourceLocation key = ClientUtil.getModelLocation(IMMItems.SECRET_MANUAL.getRegistryName());
             final BakedModel oldModel = event.getModels().get(key);
             if (oldModel != null) {
                 event.getModels().put(key, new SecretManualModel(oldModel, event.getModelBakery()));

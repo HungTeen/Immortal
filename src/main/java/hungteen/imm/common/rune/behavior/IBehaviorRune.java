@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.behavior;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  * @author: HungTeen
  * @create: 2023-04-02 21:07
  **/
-public interface IBehaviorRune extends ISimpleEntry, ICraftableRune {
+public interface IBehaviorRune extends SimpleEntry, ICraftableRune {
 
     /**
      * 获取记忆类型构造器。
@@ -43,6 +43,7 @@ public interface IBehaviorRune extends ISimpleEntry, ICraftableRune {
         return getFilterItems().size();
     }
 
+    @Override
     default MutableComponent getComponent() {
         return TipUtil.rune("behavior." + this.getName()).withStyle(ChatFormatting.GOLD);
     }

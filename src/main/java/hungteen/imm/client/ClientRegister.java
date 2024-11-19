@@ -1,19 +1,9 @@
 package hungteen.imm.client;
 
-import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.client.gui.overlay.CommonOverlay;
-import hungteen.imm.client.gui.overlay.ElementOverlay;
-import hungteen.imm.client.gui.overlay.MeditationOverlay;
-import hungteen.imm.client.gui.overlay.SpellOverlay;
-import hungteen.imm.client.gui.screen.*;
-import hungteen.imm.client.gui.screen.furnace.ElixirRoomScreen;
-import hungteen.imm.client.gui.screen.furnace.SpiritualFurnaceScreen;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.bake.IMMBakeModels;
 import hungteen.imm.client.model.entity.*;
 import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
@@ -22,8 +12,6 @@ import hungteen.imm.client.model.entity.golem.SnowGolemModel;
 import hungteen.imm.client.model.entity.spirit.*;
 import hungteen.imm.client.model.entity.villager.PillagerModel;
 import hungteen.imm.client.model.entity.villager.VillagerModel;
-import hungteen.imm.client.particle.*;
-import hungteen.imm.client.render.block.FurnaceBlockEntityRender;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
@@ -37,35 +25,28 @@ import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.TornadoRender;
 import hungteen.imm.client.render.entity.spirit.*;
-import hungteen.imm.client.render.level.LevelRenderStages;
-import hungteen.imm.common.block.plants.GourdGrownBlock;
-import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
-import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
-import hungteen.imm.util.BlockUtil;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.*;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-02 14:59
  **/
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientRegister {
 
     @SubscribeEvent
@@ -119,7 +100,7 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.COPPER_GOLEM.get(), CopperGolemRender::new);
 
         /* Block Entity */
-        event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);
+//        event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);
     }
 
     /**
@@ -173,96 +154,92 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
-        event.registerSpriteSet(IMMParticles.METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
+//        event.registerSpriteSet(IMMParticles.METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
     }
 
-    @SubscribeEvent
-    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
-        event.registerAboveAll("spiritual_mana_bar", CommonOverlay.SPIRITUAL_MANA);
-        event.registerAboveAll("spell_circle", SpellOverlay.SPELL_CIRCLE);
-        event.registerAboveAll("prepared_spell", SpellOverlay.PREPARE_SPELL);
-        event.registerAboveAll("elements", ElementOverlay.INSTANCE);
-        event.registerAboveAll("meditation", MeditationOverlay.INSTANCE);
-//        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
-//            if(RenderEventHandler.canRenderOverlay()){
-//                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
-//            }
-//        });
-    }
+//    @SubscribeEvent
+//    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
+//        event.registerAboveAll("spiritual_mana_bar", CommonOverlay.SPIRITUAL_MANA);
+//        event.registerAboveAll("spell_circle", SpellOverlay.SPELL_CIRCLE);
+//        event.registerAboveAll("prepared_spell", SpellOverlay.PREPARE_SPELL);
+//        event.registerAboveAll("elements", ElementOverlay.INSTANCE);
+//        event.registerAboveAll("meditation", MeditationOverlay.INSTANCE);
+////        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+////            if(RenderEventHandler.canRenderOverlay()){
+////                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
+////            }
+////        });
+//    }
 
     @SubscribeEvent
     public static void registerKeyBinds(RegisterKeyMappingsEvent event){
-        IMMKeyBinds.register(event);
+//        IMMKeyBinds.initialize(event);
     }
 
-    @SubscribeEvent
-    public static void registerBlockColors(RegisterColorHandlersEvent.Block event){
-        event.register((blockState, getter, pos, id) -> {
-            if(blockState.getBlock() instanceof GourdGrownBlock gourdGrownBlock){
-                return gourdGrownBlock.getType().getColor();
-            }
-            return ColorHelper.BLACK.rgb();
-        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
-    }
+//    @SubscribeEvent
+//    public static void registerBlockColors(RegisterColorHandlersEvent.Block event){
+//        event.initialize((blockState, getter, pos, id) -> {
+//            if(blockState.getBlock() instanceof GourdGrownBlock gourdGrownBlock){
+//                return gourdGrownBlock.getType().getColor();
+//            }
+//            return ColorHelper.BLACK.rgb();
+//        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
+//    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
         ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
-        event.register((stack, id) -> {
-            if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
-                return gourdBlockItem.getGourdType().getColor();
-            }
-            return ColorHelper.BLACK.rgb();
-        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
+//        event.initialize((stack, id) -> {
+//            if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
+//                return gourdBlockItem.getGourdType().getColor();
+//            }
+//            return ColorHelper.BLACK.rgb();
+//        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
     }
 
     @SubscribeEvent
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
-//        event.register(ElementToolTip.class, ClientElementToolTip::new);
-//        event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
+//        event.initialize(ElementToolTip.class, ClientElementToolTip::new);
+//        event.initialize(ArtifactToolTip.class, ClientArtifactToolTip::new);
         event.register(ManualToolTip.class, ClientManualToolTip::new);
     }
 
     @SubscribeEvent
     public static void registerLevelRenderStages(RenderLevelStageEvent.RegisterStageEvent event){
-        LevelRenderStages.init(event);
+//        LevelRenderStages.init(event);
     }
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.ModifyBakingResult event) {
-        IMMBakeModels.registerBakeModels(event);
+//        IMMBakeModels.registerBakeModels(event);
     }
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.RegisterAdditional event) {
-        IMMBakeModels.registerBakeModels(event);
+//        IMMBakeModels.registerBakeModels(event);
     }
 
-    @SubscribeEvent
-    public static void onTextureStitch(TextureStitchEvent ev){
-
-    }
 
     public static void registerScreen() {
-        MenuScreens.register(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
-        MenuScreens.register(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
-        MenuScreens.register(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
-//        MenuScreens.register(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
-        MenuScreens.register(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
-        MenuScreens.register(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
-        MenuScreens.register(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
-        MenuScreens.register(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
+//        MenuScreens.initialize(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
+//        MenuScreens.initialize(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
+//        MenuScreens.initialize(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+////        MenuScreens.initialize(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
+//        MenuScreens.initialize(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
     }
 
     public static void registerItemProperties(){

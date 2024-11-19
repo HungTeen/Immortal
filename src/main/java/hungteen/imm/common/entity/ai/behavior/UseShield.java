@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.util.BehaviorUtil;

@@ -1,10 +1,9 @@
 package hungteen.imm.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import hungteen.htlib.client.util.ClientHelper;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 /**
  * @program: Immortal
@@ -29,11 +28,19 @@ public class IMMKeyBinds {
     }
 
     public static boolean mouseDown(KeyMapping key){
-        return ClientHelper.isMouseInput(key) && key.consumeClick();
+        return isMouseInput(key) && key.consumeClick();
     }
 
     public static boolean keyDown(KeyMapping key){
-        return ClientHelper.isKeyInput(key) && key.isDown();
+        return isKeyInput(key) && key.isDown();
+    }
+
+    public static boolean isMouseInput(KeyMapping key) {
+        return key.getKey().getType() == InputConstants.Type.MOUSE;
+    }
+
+    public static boolean isKeyInput(KeyMapping key) {
+        return key.getKey().getType() == InputConstants.Type.KEYSYM;
     }
 
     public static boolean displayingSpellCircle(){

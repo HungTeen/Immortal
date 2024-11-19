@@ -1,14 +1,7 @@
 package hungteen.imm.common.network;
 
-import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.registry.IElementReaction;
-import hungteen.imm.common.impl.registry.ElementReactions;
-import hungteen.imm.util.Util;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -34,22 +27,22 @@ public class ReactionPacket {
         buffer.writeInt(this.entityId);
         buffer.writeUtf(this.type);
     }
-
-    public static class Handler {
-
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(ReactionPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                PlayerHelper.getClientPlayer().map(Entity::level).ifPresent(level -> {
-                    final Entity entity = level.getEntity(message.entityId);
-                    ElementReactions.registry().getValue(message.type).ifPresent(reaction -> {
-                        Util.getProxy().addReaction(entity, reaction);
-                    });
-                });
-            });
-            ctx.get().setPacketHandled(true);
-        }
-    }
+//
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(ReactionPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(() -> {
+//                PlayerHelper.getClientPlayer().map(Entity::level).ifPresent(level -> {
+//                    final Entity entity = level.getEntity(message.entityId);
+//                    ElementReactions.registry().getValue(message.type).ifPresent(reaction -> {
+//                        Util.getProxy().addReaction(entity, reaction);
+//                    });
+//                });
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 }

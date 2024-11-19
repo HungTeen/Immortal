@@ -1,10 +1,9 @@
 package hungteen.imm.common.blockentity;
 
-import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.RealmManager;
+import hungteen.htlib.common.blockentity.ContainerBlockEntity;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +21,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2023-07-12 19:47
  **/
-public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
+public abstract class FunctionalFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
     protected boolean start = false;
     private BlockPattern.BlockPatternMatch lastMatch;
@@ -104,16 +103,16 @@ public abstract class FunctionalFurnaceBlockEntity extends ItemHandlerBlockEntit
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         if(tag.contains("SmeltingStart")){
             this.start = tag.getBoolean("SmeltingStart");
         }
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putBoolean("SmeltingStart", this.start);
     }
 

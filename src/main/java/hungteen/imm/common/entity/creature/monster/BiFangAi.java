@@ -3,23 +3,22 @@ package hungteen.imm.common.entity.creature.monster;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.common.network.PlaySoundPacket;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
-import hungteen.imm.common.entity.ai.behavior.*;
+import hungteen.imm.common.entity.ai.behavior.IdleBehavior;
+import hungteen.imm.common.entity.ai.behavior.UseSpell;
 import hungteen.imm.common.entity.misc.Tornado;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.MathUtil;
-import hungteen.imm.util.RandomUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,15 +35,9 @@ import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.phys.AABB;
@@ -53,8 +46,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * @program: Immortal
@@ -315,7 +306,9 @@ public class BiFangAi {
             if (biFang.atAnimationTick(15) && biFang.getMana() >= CONSUME_MANA) {
                 biFang.addMana(-CONSUME_MANA);
                 for (int i = -1; i <= 1; ++i) {
-                    if (i == 0) continue; // 中间的龙卷风不要了。
+                    if (i == 0) {
+                        continue; // 中间的龙卷风不要了。
+                    }
                     Tornado tornado = IMMEntities.TORNADO.get().create(level);
                     if (tornado != null) {
                         Vec3 vec = biFang.getLookAngle();
@@ -439,7 +432,7 @@ public class BiFangAi {
                     final double d = Math.sqrt(Math.sqrt(distance)) * 0.5;
                     final int cnt = RandomHelper.getMinMax(biFang.getRandom(), 5, 10);
                     for (int i = 0; i < cnt; ++i) {
-                        SmallFireball smallfireball = new SmallFireball(biFang.level(), biFang, biFang.getRandom().triangle(vec.x(), d * 4), biFang.getRandom().triangle(vec.y(), d), biFang.getRandom().triangle(vec.z(), d * 4));
+                        SmallFireball smallfireball = new SmallFireball(biFang.level(), biFang, new Vec3(biFang.getRandom().triangle(vec.x(), d * 4), biFang.getRandom().triangle(vec.y(), d), biFang.getRandom().triangle(vec.z(), d * 4)));
                         smallfireball.setPos(smallfireball.getX(), biFang.getEyeY(), smallfireball.getZ());
                         biFang.level().addFreshEntity(smallfireball);
                     }
@@ -486,7 +479,7 @@ public class BiFangAi {
                 if (biFang.atAnimationTick(5) && biFang.getMana() >= CONSUME_MANA) {
                     biFang.addMana(-CONSUME_MANA);
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
-                    LargeFireball largeFireball = new LargeFireball(biFang.level(), biFang, vec.x(), vec.y(), vec.z(), biFang.getAge() + biFang.getPhase());
+                    LargeFireball largeFireball = new LargeFireball(biFang.level(), biFang, vec, biFang.getAge() + biFang.getPhase());
                     largeFireball.setPos(largeFireball.getX(), biFang.getEyeY(), largeFireball.getZ());
                     largeFireball.setDeltaMovement(largeFireball.getDeltaMovement().scale(2F + biFang.getPhase() * 0.5F));
                     biFang.level().addFreshEntity(largeFireball);

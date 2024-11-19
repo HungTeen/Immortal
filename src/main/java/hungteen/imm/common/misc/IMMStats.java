@@ -18,7 +18,7 @@ public class IMMStats {
     private static DeferredRegister<ResourceLocation> CUSTOM_STATS = DeferredRegister.create(Registries.CUSTOM_STAT, Util.id());
     private static DeferredRegister<StatType<?>> STAT_TYPES = DeferredRegister.create(ForgeRegistries.STAT_TYPES, Util.id());
 
-//    public static final RegistryObject<ResourceLocation> CONTINUOUS_MOUNTAIN = CUSTOM_STATS.register("continuous_mountain", () -> new BannerPattern("continuous_mountain"));
+//    public static final RegistryObject<ResourceLocation> CONTINUOUS_MOUNTAIN = CUSTOM_STATS.initialize("continuous_mountain", () -> new BannerPattern("continuous_mountain"));
 
 //    /**
 //     * {@link hungteen.immortal.ImmortalMod#defferRegister(IEventBus)}

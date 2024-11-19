@@ -3,9 +3,7 @@ package hungteen.imm.common.menu.furnace;
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
-import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
-import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,8 +15,6 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * @program: Immortal
@@ -49,21 +45,21 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
             throw new RuntimeException("Invalid block entity !");
         }
 
-        this.addSlot(new SlotItemHandler(this.blockEntity.getItemHandler(), 0, 91, 25){
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.is(IMMItems.FLAME_GOURD.get());
-            }
-        });
-
-        for(int i = 0; i < 3; ++ i){
-            this.addSlot(new SlotItemHandler(this.blockEntity.getItemHandler(), 1 + i, 73 + 18 * i, 62){
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return stack.is(IMMItemTags.SPIRITUAL_STONES);
-                }
-            });
-        }
+//        this.addSlot(new SlotItemHandler(this.blockEntity.getItemHandler(), 0, 91, 25){
+//            @Override
+//            public boolean mayPlace(ItemStack stack) {
+//                return stack.is(IMMItems.FLAME_GOURD.get());
+//            }
+//        });
+//
+//        for(int i = 0; i < 3; ++ i){
+//            this.addSlot(new SlotItemHandler(this.blockEntity.getItemHandler(), 1 + i, 73 + 18 * i, 62){
+//                @Override
+//                public boolean mayPlace(ItemStack stack) {
+//                    return stack.is(IMMItemTags.SPIRITUAL_STONES);
+//                }
+//            });
+//        }
 
         this.addInventoryAndHotBar(inventory, 19, 108);
 
@@ -74,7 +70,7 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
     public boolean clickMenuButton(Player player, int slotId) {
         if(slotId == 0 && this.canSwitchToFunctionalMenu()){
             if(player instanceof ServerPlayer serverPlayer){
-                NetworkHooks.openScreen(serverPlayer, this.blockEntity.getFunctionalBlockEntity(), buf -> {
+                serverPlayer.openMenu(this.blockEntity.getFunctionalBlockEntity(), buf -> {
                     buf.writeBlockPos(this.blockEntity.getFunctionalBlockEntity().getBlockPos());
                 });
             }

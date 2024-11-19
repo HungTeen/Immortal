@@ -1,6 +1,6 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.ILearnRequirement;
@@ -18,9 +18,9 @@ import net.minecraft.world.level.Level;
  */
 public record CultivationTypeRequirement(ICultivationType cultivationType) implements ILearnRequirement {
 
-    public static final Codec<CultivationTypeRequirement> CODEC = RecordCodecBuilder.<CultivationTypeRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<CultivationTypeRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             CultivationTypes.registry().byNameCodec().fieldOf("cultivation_type").forGetter(CultivationTypeRequirement::cultivationType)
-    ).apply(instance, CultivationTypeRequirement::new)).codec();
+    ).apply(instance, CultivationTypeRequirement::new));
 
     public static ILearnRequirement create(ICultivationType type){
         return new CultivationTypeRequirement(type);

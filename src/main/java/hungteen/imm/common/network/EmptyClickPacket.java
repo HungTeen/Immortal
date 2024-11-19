@@ -1,42 +1,37 @@
 package hungteen.imm.common.network;
 
+import hungteen.htlib.common.network.ServerPacketContext;
+import hungteen.htlib.common.network.packet.PlayToServerPacket;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import hungteen.imm.util.Util;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-30 22:33
  **/
-public class EmptyClickPacket {
+public record EmptyClickPacket(boolean mainHand) implements PlayToServerPacket {
 
-    private final boolean mainHand;
+    public static final Type<EmptyClickPacket> TYPE = new Type<>(Util.prefix("empty_click"));
+    public static final StreamCodec<ByteBuf, EmptyClickPacket> STREAM_CODEC = ByteBufCodecs.BOOL.map(EmptyClickPacket::new, EmptyClickPacket::mainHand);
 
-    public EmptyClickPacket(InteractionHand hand) {
-        this.mainHand = (hand == InteractionHand.MAIN_HAND);
+    public EmptyClickPacket(InteractionHand hand){
+        this(hand == InteractionHand.MAIN_HAND);
     }
 
-    public EmptyClickPacket(FriendlyByteBuf buffer) {
-        this.mainHand = buffer.readBoolean();
+    @Override
+    public void process(ServerPacketContext context) {
+        PlayerEventHandler.rayTrace(context.player(), mainHand() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
     }
 
-    public void encode(FriendlyByteBuf buffer) {
-        buffer.writeBoolean(this.mainHand);
-    }
-
-    public static class Handler {
-        public static void onMessage(EmptyClickPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                final ServerPlayer player = ctx.get().getSender();
-                PlayerEventHandler.rayTrace(player, message.mainHand ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
-            });
-            ctx.get().setPacketHandled(true);
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
     }
 
 }

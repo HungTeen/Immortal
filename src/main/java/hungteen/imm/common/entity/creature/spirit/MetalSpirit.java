@@ -1,22 +1,21 @@
 package hungteen.imm.common.entity.creature.spirit;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.goat.Goat;
-import net.minecraft.world.entity.animal.sniffer.Sniffer;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.level.Level;
 
 /**
@@ -162,23 +161,24 @@ public class MetalSpirit extends ElementSpirit{
         }
 
         @Override
-        protected void checkAndPerformAttack(LivingEntity target, double distance) {
-            double d0 = this.getAttackReachSqr(target);
-            // 距离合适 并且 准备动画完成才可以开始攻击动画。
-            if (distance <= d0 && (this.spirit.finishPreAggressive() || this.spirit.getCurrentAnimation() == AnimationTypes.SWING)){
-                if(this.animatedTick <= 0){
-                    this.animatedTick = this.attackCD;
-                    if(! this.spirit.finishPreAggressive()){
-                        this.spirit.serverChange(MELEE_ATTACK_ID);
-                    }
-                    this.spirit.setCurrentAnimation(AnimationTypes.SWING);
-                    this.mob.swing(InteractionHand.MAIN_HAND);
-                }
-            }
-            // 攻击帧。
-            if(distance <= d0 + 10 && this.animatedTick == this.attackCD - 12){
-                this.mob.doHurtTarget(target);
-            }
+        protected void checkAndPerformAttack(LivingEntity target) {
+//            double d0 = this.getAttackReachSqr(target);
+//            double distance = this.mob.distanceToSqr(target);
+//            // 距离合适 并且 准备动画完成才可以开始攻击动画。
+//            if (this.mob.isWithinMeleeAttackRange(target) && (this.spirit.finishPreAggressive() || this.spirit.getCurrentAnimation() == AnimationTypes.SWING)){
+//                if(this.animatedTick <= 0){
+//                    this.animatedTick = this.attackCD;
+//                    if(! this.spirit.finishPreAggressive()){
+//                        this.spirit.serverChange(MELEE_ATTACK_ID);
+//                    }
+//                    this.spirit.setCurrentAnimation(AnimationTypes.SWING);
+//                    this.mob.swing(InteractionHand.MAIN_HAND);
+//                }
+//            }
+//            // 攻击帧。
+//            if(distance <= d0 + 10 && this.animatedTick == this.attackCD - 12){
+//                this.mob.doHurtTarget(target);
+//            }
         }
 
         @Override
@@ -187,9 +187,5 @@ public class MetalSpirit extends ElementSpirit{
             this.spirit.setCurrentAnimation(AnimationTypes.ATTACK_TO_IDLE);
         }
 
-        @Override
-        protected double getAttackReachSqr(LivingEntity target) {
-            return (this.mob.getBbWidth() + 1) * 2.0F * (this.mob.getBbWidth() + 1) * 2.0F + target.getBbWidth();
-        }
     }
 }

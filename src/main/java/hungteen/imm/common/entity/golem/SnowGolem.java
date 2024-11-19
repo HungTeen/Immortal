@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import net.minecraft.sounds.SoundEvent;

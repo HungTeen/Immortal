@@ -1,7 +1,7 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.common.registry.suit.TreeSuits;
-import hungteen.imm.ImmortalMod;
+import hungteen.htlib.common.registry.suit.HTWoodSuit;
+import hungteen.imm.IMMInitializer;
 
 import java.util.List;
 
@@ -16,14 +16,15 @@ public class IMMWoods {
 //            .updateWoodItem(WoodIntegrations.WoodSuits.WALL_SIGN, p -> new WallSignBlock(p, WoodType.ACACIA)).build();
 
     /**
-     * {@link ImmortalMod#coreRegister()}
+     * {@link IMMInitializer#coreRegister()}
      */
     public static void register(){
-        woods().forEach(TreeSuits::registerWoodIntegration);
+//        woods().forEach(TreeSuits::registerWoodIntegration);
     }
 
-    public static List<TreeSuits.TreeSuit> woods(){
+    public static List<HTWoodSuit> woods(){
         return List.of();
 //        return Arrays.asList(MULBERRY);
     }
+
 }

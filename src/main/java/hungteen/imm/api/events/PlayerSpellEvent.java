@@ -2,8 +2,8 @@ package hungteen.imm.api.events;
 
 import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 /**
  * @program: Immortal
@@ -41,8 +41,7 @@ public class PlayerSpellEvent extends PlayerEvent {
         /**
          * hasRecipe can trigger or not.
          */
-        @Cancelable
-        public static final class Pre extends ActivateSpellEvent {
+        public static final class Pre extends ActivateSpellEvent implements ICancellableEvent {
 
             public Pre(Player player, ISpellType spell, int level) {
                 super(player, spell, level);

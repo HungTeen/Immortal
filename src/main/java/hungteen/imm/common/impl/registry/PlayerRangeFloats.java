@@ -1,9 +1,8 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.RangeNumber;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,21 +14,21 @@ import net.minecraft.network.chat.MutableComponent;
  **/
 public class PlayerRangeFloats {
 
-    private static final HTSimpleRegistry<IRangeNumber<Float>> NUMBERS = HTRegistryManager.createSimple(Util.prefix("player_range_float"));
+    private static final HTSimpleRegistry<RangeNumber<Float>> NUMBERS = HTRegistryManager.simple(Util.prefix("player_range_float"));
 
-    public static final IRangeNumber<Float> MAX_SPIRITUAL_MANA = register(new PlayerData("max_spiritual_mana", 0, 0, Float.MAX_VALUE));
-    public static final IRangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
-    public static final IRangeNumber<Float> BREAK_THROUGH_PROGRESS = register(new PlayerData("break_through_progress", 0, 0, 1));
+    public static final RangeNumber<Float> MAX_SPIRITUAL_MANA = register(new PlayerData("max_spiritual_mana", 0, 0, Float.MAX_VALUE));
+    public static final RangeNumber<Float> SPIRITUAL_MANA = register(new PlayerData("spiritual_mana", 0, 0, Float.MAX_VALUE));
+    public static final RangeNumber<Float> BREAK_THROUGH_PROGRESS = register(new PlayerData("break_through_progress", 0, 0, 1));
 
-    public static IHTSimpleRegistry<IRangeNumber<Float>> registry() {
+    public static HTSimpleRegistry<RangeNumber<Float>> registry() {
         return NUMBERS;
     }
 
-    public static IRangeNumber<Float> register(IRangeNumber<Float> number){
+    public static RangeNumber<Float> register(RangeNumber<Float> number){
         return registry().register(number);
     }
 
-    public record PlayerData(String name, float defaultValue, float minValue, float maxValue) implements IRangeNumber<Float> {
+    public record PlayerData(String name, float defaultValue, float minValue, float maxValue) implements RangeNumber<Float> {
 
         @Override
         public Float defaultData() {
@@ -44,11 +43,6 @@ public class PlayerRangeFloats {
         @Override
         public Float getMinData() {
             return this.minValue;
-        }
-
-        @Override
-        public String getName() {
-            return name;
         }
 
         @Override

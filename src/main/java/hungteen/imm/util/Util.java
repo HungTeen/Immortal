@@ -1,11 +1,11 @@
 package hungteen.imm.util;
 
 import com.mojang.logging.LogUtils;
-import hungteen.htlib.util.helper.ForgeHelper;
-import hungteen.htlib.util.helper.IModIDHelper;
-import hungteen.htlib.util.helper.VanillaHelper;
-import hungteen.imm.CommonProxy;
-import hungteen.imm.ImmortalMod;
+import hungteen.htlib.api.util.helper.HTModIDHelper;
+import hungteen.htlib.util.NeoHelper;
+import hungteen.htlib.util.helper.impl.VanillaHelper;
+import hungteen.imm.common.IMMProxy;
+import hungteen.imm.IMMInitializer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
@@ -24,18 +24,18 @@ public class Util {
 
     // Directly reference a slf4j logger。
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final IModIDHelper HELPER = () -> ImmortalMod.MOD_ID;
+    private static final HTModIDHelper HELPER = () -> IMMInitializer.MOD_ID;
 
-    public static IModIDHelper get(){
+    public static HTModIDHelper get(){
         return HELPER;
     }
 
-    public static IModIDHelper mc(){
+    public static HTModIDHelper mc(){
         return VanillaHelper.get();
     }
 
-    public static IModIDHelper forge(){
-        return ForgeHelper.get();
+    public static HTModIDHelper neo(){
+        return NeoHelper.get();
     }
 
     public static String id(){
@@ -65,8 +65,8 @@ public class Util {
         return getProxy().isDebugMode();
     }
 
-    public static CommonProxy getProxy(){
-        return ImmortalMod.PROXY;
+    public static IMMProxy getProxy(){
+        return IMMProxy.get();
     }
 
     public static <T> List<Holder<T>> wrap(HolderGetter<T> getter, List<ResourceKey<T>> keys){

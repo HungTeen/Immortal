@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpiritualType;
@@ -60,10 +60,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.neoforged.neoforge.common.CommonHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -91,18 +90,18 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     public HumanEntity(EntityType<? extends HumanEntity> type, Level level) {
         super(type, level);
         this.inventory = this.createInventory();
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 16.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, 16.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
         this.getNavigation().setCanFloat(true);
         this.setCanPickUpLoot(true);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(HUMAN_SETTING, HumanSettings.registry().getValue(level(), HumanSettings.DEFAULT));
-        entityData.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(HUMAN_SETTING, HumanSettings.registry().getValue(level(), HumanSettings.DEFAULT));
+        builder.define(SECT_DATA, new HumanSectData(Optional.empty(), Optional.empty()));
     }
 
 //    @Override
@@ -121,9 +120,9 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
     //TODO 数据包随机灵根，接管法术。
     @Override
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @org.jetbrains.annotations.Nullable CompoundTag tag) {
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         this.updateHumanSetting();
-        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
     }
 
     @Override
@@ -152,7 +151,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, 40D)
-                .add(ForgeMod.ENTITY_REACH.get(), 3D)
+                .add(Attributes.ENTITY_INTERACTION_RANGE, 3D)
                 .add(Attributes.ATTACK_SPEED, 4D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
@@ -232,7 +231,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
         final ItemStack projectile = this.getProjectile(this.getMainHandItem());
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             AbstractArrow abstractarrow = this.getArrow(projectile, strength);
-            abstractarrow = ((BowItem) this.getMainHandItem().getItem()).customArrow(abstractarrow);
+            abstractarrow = ((BowItem) this.getMainHandItem().getItem()).customArrow(abstractarrow, projectile, this.getMainHandItem());
             double d0 = target.getX() - this.getX();
             double d1 = target.getY(0.3333333333333333D) - abstractarrow.getY();
             double d2 = target.getZ() - this.getZ();
@@ -251,27 +250,25 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
         if (stack.getItem() instanceof ProjectileWeaponItem) {
             Predicate<ItemStack> predicate = ((ProjectileWeaponItem) stack.getItem()).getSupportedHeldProjectiles();
             ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
-            return net.minecraftforge.common.ForgeHooks.getProjectile(this, stack, itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack);
+            return CommonHooks.getProjectile(this, stack, itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack);
         } else {
-            return net.minecraftforge.common.ForgeHooks.getProjectile(this, stack, ItemStack.EMPTY);
+            return CommonHooks.getProjectile(this, stack, ItemStack.EMPTY);
         }
     }
 
     @Override
-    public ItemStack eat(Level level, ItemStack itemStack) {
-        if (itemStack.isEdible()) {
-            FoodProperties foodProperties = itemStack.getFoodProperties(this);
-            if (foodProperties != null) {
-                this.heal(foodProperties.getNutrition() * 0.5F);
-            }
-        }
-        return super.eat(level, itemStack);
+    public ItemStack eat(Level level, ItemStack itemStack, FoodProperties food) {
+//        if (itemStack.isEdible()) {
+//            FoodProperties foodProperties = itemStack.getFoodProperties(this);
+//            if (foodProperties != null) {
+//                this.heal(foodProperties.getNutrition() * 0.5F);
+//            }
+//        }
+        return super.eat(level, itemStack, food);
     }
 
-    @Override
     public double getMeleeAttackRangeSqr(LivingEntity livingEntity) {
-        final double reach = this.getAttributeValue(ForgeMod.ENTITY_REACH.get());
-        return Math.max(reach * reach + livingEntity.getBbWidth(), super.getMeleeAttackRangeSqr(livingEntity));
+        return this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
     }
 
     /**
@@ -293,7 +290,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     }
 
     protected AbstractArrow getArrow(ItemStack stack, float strength) {
-        return ProjectileUtil.getMobArrow(this, stack, strength);
+        return ProjectileUtil.getMobArrow(this, stack, strength, null);
     }
 
     protected SimpleContainer createInventory() {
@@ -374,7 +371,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 //            }
             if (EntityHelper.isServer(this) && player instanceof ServerPlayer serverPlayer) {
                 this.setTradingPlayer(player);
-                NetworkHooks.openScreen(serverPlayer, new ImmortalMenuProvider() {
+                serverPlayer.openMenu(new ImmortalMenuProvider() {
                     @Override
                     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new MerchantTradeMenu(id, inventory, HumanEntity.this);
@@ -441,11 +438,10 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
         this.setTradingPlayer(null);
     }
 
-    @org.jetbrains.annotations.Nullable
     @Override
-    public Entity changeDimension(ServerLevel serverLevel, ITeleporter teleporter) {
+    public @org.jetbrains.annotations.Nullable Entity changeDimension(DimensionTransition transition) {
         this.stopTrading();
-        return super.changeDimension(serverLevel, teleporter);
+        return super.changeDimension(transition);
     }
 
     @Override
@@ -488,7 +484,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
      * 可恶，人类又不是牲畜！
      */
     @Override
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed() {
         return false;
     }
 
@@ -501,7 +497,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Inventory")) {
-            this.inventory.fromTag(tag.getList("Inventory", 10));
+            this.inventory.fromTag(tag.getList("Inventory", 10), registryAccess());
         }
         if (tag.contains("InventoryLoot")) { // allow setting loot by nbt.
             CodecHelper.parse(ResourceKey.codec(HumanSettings.registry().getRegistryKey()), tag.get("InventoryLoot"))
@@ -525,7 +521,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("Inventory", this.inventory.createTag());
+        tag.put("Inventory", this.inventory.createTag(registryAccess()));
         if (this.tradeOffers != null) {
             this.tradeOffers.addToTag(tag);
         }
@@ -569,8 +565,8 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     public record HumanSectData(Optional<ISectType> outerSect, Optional<ISectType> innerSect) {
 
         public static final Codec<HumanSectData> CODEC = RecordCodecBuilder.<HumanSectData>mapCodec(instance -> instance.group(
-                Codec.optionalField("outer_sect", SectTypes.registry().byNameCodec()).forGetter(HumanSectData::outerSect),
-                Codec.optionalField("inner_sect", SectTypes.registry().byNameCodec()).forGetter(HumanSectData::innerSect)
+                Codec.optionalField("outer_sect", SectTypes.registry().byNameCodec(), true).forGetter(HumanSectData::outerSect),
+                Codec.optionalField("inner_sect", SectTypes.registry().byNameCodec(), true).forGetter(HumanSectData::innerSect)
         ).apply(instance, HumanSectData::new)).codec();
 
     }

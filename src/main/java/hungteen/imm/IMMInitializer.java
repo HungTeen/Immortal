@@ -1,13 +1,15 @@
 package hungteen.imm;
 
-import hungteen.imm.client.ClientProxy;
+import hungteen.htlib.util.NeoHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.CommonRegister;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
-import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.command.CommandHandler;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMAttributes;
@@ -37,118 +39,102 @@ import hungteen.imm.common.world.feature.IMMFeatures;
 import hungteen.imm.common.world.structure.IMMStructurePieces;
 import hungteen.imm.common.world.structure.IMMStructureTypes;
 import hungteen.imm.data.DataGenHandler;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-23 23:32
  **/
-@Mod(ImmortalMod.MOD_ID)
-public class ImmortalMod {
+@Mod(IMMAPI.MOD_ID)
+public class IMMInitializer {
 
-    public static final String MOD_ID = "imm";
+    public static final String MOD_ID = IMMAPI.id();
 
-    public static CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-
-    public ImmortalMod() {
+    public IMMInitializer(IEventBus modBus, ModContainer container) {
         /* Mod Bus Events */
-        final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modBus.addListener(EventPriority.NORMAL, ImmortalMod::setUp);
+        modBus.addListener(EventPriority.NORMAL, IMMInitializer::setUp);
         modBus.addListener(EventPriority.NORMAL, DataGenHandler::dataGen);
-        modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
-        modBus.addListener(EventPriority.NORMAL, ImmortalMod::register);
+//        modBus.addListener(EventPriority.NORMAL, CapabilityHandler::registerCapabilities);
+        modBus.addListener(EventPriority.NORMAL, IMMInitializer::register);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::registerPlacements);
         modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::fillCreativeTabs);
         defferRegister(modBus);
 
         /* Forge Bus Events */
-        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-        forgeBus.addGenericListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
-        forgeBus.addGenericListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
+        final IEventBus forgeBus = NeoForge.EVENT_BUS;
+//        forgeBus.addListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
+//        forgeBus.addListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
         forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
 //        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
-        forgeBus.addListener(EventPriority.NORMAL, ImmortalMod::serverStarted);
-        forgeBus.addListener(EventPriority.LOWEST, RealmManager::realmAttackGap);
+        forgeBus.addListener(EventPriority.NORMAL, IMMInitializer::serverStarted);
+//        forgeBus.addListener(EventPriority.LOWEST, RealmManager::realmAttackGap);
 
         /* Misc Initialization */
-        IMMConfigs.init();
+        IMMConfigs.init(container);
         AdvancementHandler.init();
 
         /* Custom Registry */
         coreRegister();
     }
 
-    /**
-     * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
-     */
     public static void defferRegister(IEventBus modBus) {
         /* HungTeen Registers */
-        CultivationTypes.registry().register(modBus);
-        RealmTypes.registry().register(modBus);
-        SpellTypes.registry().register(modBus);
-        ElixirEffects.registry().register(modBus);
-        HumanSettings.registry().register(modBus);
-        ManualTypes.registry().register(modBus);
-        RequirementTypes.registry().register(modBus);
-        SecretManuals.registry().register(modBus);
-        SpiritualTypes.registry().register(modBus);
+        CultivationTypes.registry().initialize();
+        RealmTypes.registry().initialize();
+        SpellTypes.registry().initialize();
+        ElixirEffects.registry().initialize();
+        HumanSettings.registry().initialize();
+        ManualTypes.registry().initialize();
+        RequirementTypes.registry().initialize();
+        SecretManuals.registry().initialize();
+        SpiritualTypes.registry().initialize();
 
         /* Deferred Registers */
-        IMMItems.register(modBus);
-        IMMBlocks.register(modBus);
-        IMMEntities.register(modBus);
-        IMMAttributes.register(modBus);
-        IMMCreativeTabs.register(modBus);
-        IMMBlockEntities.register(modBus);
-        IMMEffects.register(modBus);
-        IMMSchedules.register(modBus);
-        IMMRecipes.register(modBus);
-        IMMRecipeSerializers.register(modBus);
-        IMMMenus.register(modBus);
-        IMMBannerPatterns.register(modBus);
-        IMMParticles.register(modBus);
-        IMMDataSerializers.register(modBus);
-        IMMMemories.register(modBus);
-        IMMSensors.register(modBus);
-        IMMActivities.register(modBus);
-        IMMPoiTypes.register(modBus);
-        IMMProfessions.register(modBus);
-        IMMSounds.register(modBus);
-//        IMMPoolTypes.register(modBus);
-        IMMStructureTypes.register(modBus);
-        IMMStructurePieces.register(modBus);
-        IMMFeatures.register(modBus);
+        IMMItems.initialize(modBus);
+        IMMBlocks.initialize(modBus);
+        IMMEntities.initialize(modBus);
+        IMMAttributes.initialize(modBus);
+        IMMCreativeTabs.initialize(modBus);
+        IMMBlockEntities.initialize(modBus);
+        IMMEffects.initialize(modBus);
+        IMMSchedules.initialize(modBus);
+        IMMRecipes.initialize(modBus);
+        IMMRecipeSerializers.initialize(modBus);
+        IMMMenus.initialize(modBus);
+        IMMBannerPatterns.initialize(modBus);
+        IMMParticles.initialize(modBus);
+        IMMDataSerializers.initialize(modBus);
+        IMMMemories.initialize(modBus);
+        IMMSensors.initialize(modBus);
+        IMMActivities.initialize(modBus);
+        IMMPoiTypes.initialize(modBus);
+        IMMProfessions.initialize(modBus);
+        IMMSounds.initialize(modBus);
+//        IMMPoolTypes.initialize(modBus);
+        IMMStructureTypes.initialize(modBus);
+        IMMStructurePieces.initialize(modBus);
+        IMMFeatures.initialize(modBus);
     }
 
-    /**
-     * register minecraft stuffs at {@link ImmortalMod#ImmortalMod()}.
-     */
     public static void register(RegisterEvent event) {
-        if(ForgeRegistries.ITEMS.equals(event.getForgeRegistry())){
+        if(NeoHelper.canRegister(event, ItemHelper.get())){
             IMMEntities.registerSpawnEggs(event);
             IMMBlocks.registerBlockItems(event);
             IMMItems.registerItems(event);
-        } else if(ForgeRegistries.BLOCKS.equals(event.getForgeRegistry())){
+        } else if(NeoHelper.canRegister(event, BlockHelper.get())){
             IMMBlocks.registerBlocks(event);
         }
     }
 
-    /**
-     * register custom stuffs at {@link ImmortalMod#ImmortalMod()}.
-     */
     public static void coreRegister() {
         IMMWoods.register();
         IMMDummyEntities.init();
@@ -169,7 +155,7 @@ public class ImmortalMod {
 ////            PotionRecipeHandler.registerPotionRecipes();
             CommonRegister.registerCompostable();
             RealmManager.init();
-            CapabilityHandler.init();
+//            CapabilityHandler.init();
         });
         NetworkHandler.init();
     }

@@ -6,8 +6,8 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.RangeNumber;
+import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.enums.ExperienceTypes;
@@ -23,7 +23,6 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -33,13 +32,12 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.commands.RecipeCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.server.command.EnumArgument;
+import net.minecraft.world.level.portal.DimensionTransition;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -235,7 +233,7 @@ public class IMMCommand {
         for (ServerPlayer player : targets) {
             ServerLevel serverlevel = ((ServerLevel) player.level()).getServer().getLevel(resourceKey);
             if (serverlevel != null) {
-                player.changeDimension(serverlevel, IMMTeleporter.INSTANCE);
+                player.changeDimension(new DimensionTransition(serverlevel, player, DimensionTransition.PLAY_PORTAL_SOUND));
             }
         }
         return targets.size();
@@ -281,7 +279,9 @@ public class IMMCommand {
         PlayerUtil.getOptManager(player).ifPresent(l -> {
             final MutableComponent component = TipUtil.command("spiritual_root", player.getName().getString());
             component.append(SpiritualTypes.getSpiritualRoots(l.getSpiritualRoots()));
-            if (spread) PlayerHelper.sendMsgTo(player, component);
+            if (spread) {
+                PlayerHelper.sendMsgTo(player, component);
+            }
             source.sendSuccess(() -> component, true);
         });
     }
@@ -399,7 +399,7 @@ public class IMMCommand {
 
     /* Numbers */
 
-    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
+    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
@@ -408,7 +408,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data, int value) {
+    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getIntegerData(player, data)));
@@ -417,14 +417,14 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Integer> data) {
+    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data) {
         for (ServerPlayer player : targets) {
             source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
-    private static int setFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data, float value) {
+    private static int setFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setFloatData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
@@ -433,7 +433,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data, float value) {
+    private static int addFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addFloatData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getFloatData(player, data)));
@@ -442,7 +442,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int showFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRangeNumber<Float> data) {
+    private static int showFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data) {
         for (ServerPlayer player : targets) {
             source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getFloatData(player, data)), true);
         }
@@ -464,11 +464,11 @@ public class IMMCommand {
         return Component.literal(player.getName().getString() + " -> ").append(component);
     }
 
-    private static <T extends Number> Component getNumberComponent(Player player, ISimpleEntry data, T value) {
+    private static <T extends Number> Component getNumberComponent(Player player, SimpleEntry data, T value) {
         return getPlayerInfo(player, getNumberComponent(data, value));
     }
 
-    private static <T extends Number> Component getNumberComponent(ISimpleEntry data, T value) {
+    private static <T extends Number> Component getNumberComponent(SimpleEntry data, T value) {
         return Component.literal(data.getComponent().getString() + " : " + value);
     }
 

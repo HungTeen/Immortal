@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.human.setting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
@@ -13,7 +13,7 @@ import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +27,9 @@ public record HumanSetting(EntityType<?> type, int weight, Optional<CultivationS
     public static final Codec<HumanSetting> CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(
             EntityHelper.get().getCodec().fieldOf("type").forGetter(HumanSetting::type),
             Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("weight", 1).forGetter(HumanSetting::weight),
-            Codec.optionalField("cultivation_setting", CultivationSetting.CODEC).forGetter(HumanSetting::cultivationSetting),
+            Codec.optionalField("cultivation_setting", CultivationSetting.CODEC, true).forGetter(HumanSetting::cultivationSetting),
             LootSetting.CODEC.listOf().fieldOf("loot_settings").forGetter(HumanSetting::lootSettings),
-            Codec.optionalField("trade_setting", TradeSetting.CODEC).forGetter(HumanSetting::tradeSetting)
+            Codec.optionalField("trade_setting", TradeSetting.CODEC, true).forGetter(HumanSetting::tradeSetting)
     ).apply(instance, HumanSetting::new)).codec();
 
     public static final Codec<HumanSetting> NETWORK_CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(
@@ -57,7 +57,7 @@ public record HumanSetting(EntityType<?> type, int weight, Optional<CultivationS
                 offers.add(new TradeOffer(entry, random));
             });
             entity.fillSpecialTrade(offers, random);
-            MinecraftForge.EVENT_BUS.post(new HumanFillTradeEvent(entity, offers));
+            NeoForge.EVENT_BUS.post(new HumanFillTradeEvent(entity, offers));
             entity.setTradeOffers(offers);
         });
     }

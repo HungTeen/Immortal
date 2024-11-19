@@ -1,6 +1,6 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ILearnRequirement;
@@ -19,9 +19,9 @@ import net.minecraft.world.level.Level;
  **/
 public record ElementRequirement(Elements element) implements ILearnRequirement {
 
-    public static final Codec<ElementRequirement> CODEC = RecordCodecBuilder.<ElementRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<ElementRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Elements.CODEC.fieldOf("element").forGetter(ElementRequirement::element)
-    ).apply(instance, ElementRequirement::new)).codec();
+    ).apply(instance, ElementRequirement::new));
 
     public static ElementRequirement create(Elements element){
         return new ElementRequirement(element);

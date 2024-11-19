@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.imm.ImmortalMod;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.util.Util;
 
 /**
@@ -25,7 +25,7 @@ public class FilterRuneTypes {
     public static final IFilterRuneType<GreaterGateRune> GREATER = register(new DefaultRuneType<>("greater", true, true, 1, 1, GreaterGateRune.CODEC));
 
     /**
-     * {@link ImmortalMod#coreRegister()}
+     * {@link IMMInitializer#coreRegister()}
      */
     public static void register(){
     }

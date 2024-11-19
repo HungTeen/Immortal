@@ -1,8 +1,8 @@
 package hungteen.imm.common.world.levelgen;
 
-import hungteen.htlib.util.helper.registry.LevelHelper;
+import hungteen.htlib.util.helper.impl.LevelHelper;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -20,7 +20,7 @@ public interface IMMDimensionTypes {
 
     ResourceKey<DimensionType> EAST_WORLD = create("east_world");
 
-    static void register(BootstapContext<DimensionType> context){
+    static void register(BootstrapContext<DimensionType> context){
         context.register(EAST_WORLD, new DimensionType(
                 OptionalLong.empty(),
                 true,

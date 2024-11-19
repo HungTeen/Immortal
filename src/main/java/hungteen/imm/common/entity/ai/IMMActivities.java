@@ -1,11 +1,13 @@
 package hungteen.imm.common.entity.ai;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.schedule.Activity;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -14,21 +16,21 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMActivities {
 
-    private static final DeferredRegister<Activity> ACTIVITIES = DeferredRegister.create(ForgeRegistries.ACTIVITIES, Util.id());
+    private static final HTVanillaRegistry<Activity> ACTIVITIES = HTRegistryManager.vanilla(Registries.ACTIVITY, Util.id());
 
-    public static final RegistryObject<Activity> MELEE_FIGHT = register("melee_fight");
-    public static final RegistryObject<Activity> KEEP_DISTANCE = register("keep_distance");
-    public static final RegistryObject<Activity> RANGE_FIGHT = register("range_fight");
-    public static final RegistryObject<Activity> ESCAPE = register("escape");
-    public static final RegistryObject<Activity> TRADE = register("trade");
-    public static final RegistryObject<Activity> EAT = register("eat");
-    public static final RegistryObject<Activity> HOME = register("home");
+    public static final HTHolder<Activity> MELEE_FIGHT = register("melee_fight");
+    public static final HTHolder<Activity> KEEP_DISTANCE = register("keep_distance");
+    public static final HTHolder<Activity> RANGE_FIGHT = register("range_fight");
+    public static final HTHolder<Activity> ESCAPE = register("escape");
+    public static final HTHolder<Activity> TRADE = register("trade");
+    public static final HTHolder<Activity> EAT = register("eat");
+    public static final HTHolder<Activity> HOME = register("home");
 
-    private static RegistryObject<Activity> register(String name){
+    private static HTHolder<Activity> register(String name){
         return ACTIVITIES.register(name, () -> new Activity(Util.prefixName(name)));
     }
 
-    public static void register(IEventBus event){
-        ACTIVITIES.register(event);
+    public static void initialize(IEventBus event){
+        NeoHelper.initRegistry(ACTIVITIES, event);
     }
 }

@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.spell.spells.common.FlyWithItemSpell;
 import hungteen.imm.util.EntityUtil;
@@ -21,9 +21,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -54,11 +54,12 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(ITEM_STACK, ItemStack.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ITEM_STACK, ItemStack.EMPTY);
     }
 
+    @Override
     public void tick() {
         super.tick();
 
@@ -205,7 +206,7 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("FlyingItemStack")){
-            this.setItemStack(ItemStack.of(tag.getCompound("FlyingItemStack")));
+            this.setItemStack(ItemStack.parseOptional(registryAccess(), tag.getCompound("FlyingItemStack")));
         }
         if (tag.hasUUID("Thrower")) {
             this.thrower = tag.getUUID("Thrower");
@@ -218,7 +219,7 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("FlyingItemStack", this.getItemStack().save(new CompoundTag()));
+        tag.put("FlyingItemStack", this.getItemStack().save(registryAccess()));
         if (this.thrower != null) {
             tag.putUUID("Thrower", this.thrower);
         }
@@ -248,14 +249,13 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
         return this.getItemStack().getItem() instanceof BlockItem ? EntityDimensions.scalable(1F, 1F) : EntityDimensions.scalable(0.9F, 0.2F);
     }
 
-    @Override
-    public double getMyRidingOffset() {
-        return super.getMyRidingOffset();
+    public double getPassengersRidingOffset() {
+        return this.getItemStack().getItem() instanceof BlockItem ? 1.3 : 0.5;
     }
 
     @Override
-    public double getPassengersRidingOffset() {
-        return this.getItemStack().getItem() instanceof BlockItem ? 1.3 : 0.5;
+    public Vec3 getPassengerRidingPosition(Entity entity) {
+        return new Vec3(0, this.getPassengersRidingOffset(), 0);
     }
 
     @org.jetbrains.annotations.Nullable

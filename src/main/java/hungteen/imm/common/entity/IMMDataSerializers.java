@@ -1,9 +1,14 @@
 package hungteen.imm.common.entity;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.api.registry.SimpleEntry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.CodecHelper;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
@@ -15,11 +20,11 @@ import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,48 +37,52 @@ import java.util.function.Supplier;
  **/
 public interface IMMDataSerializers {
 
-    DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
+    HTVanillaRegistry<EntityDataSerializer<?>> DATA_SERIALIZERS = HTRegistryManager.vanilla(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
-    RegistryObject<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
-    RegistryObject<EntityDataSerializer<ISpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
-    RegistryObject<EntityDataSerializer<Optional<ISpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
+    HTHolder<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
+    HTHolder<EntityDataSerializer<ISpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
+    HTHolder<EntityDataSerializer<Optional<ISpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
 
-    RegistryObject<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
-    RegistryObject<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
+    HTHolder<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
+    HTHolder<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
 
-    RegistryObject<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new CodecEntityDataSerializer<>("HumanSetting", HumanSetting.CODEC));
+    HTHolder<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new CodecEntityDataSerializer<>("HumanSetting", HumanSetting.CODEC));
 
     /**
-     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
+     * {@link IMMInitializer#defferRegister(IEventBus)}
      */
-    static void register(IEventBus event){
-        DATA_SERIALIZERS.register(event);
+    static void initialize(IEventBus event){
+        NeoHelper.initRegistry(DATA_SERIALIZERS, event);
     }
 
     class OptionalEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<Optional<T>> {
 
+        public final StreamCodec<RegistryFriendlyByteBuf, Optional<T>> STREAM_CODEC = StreamCodec.of(this::write, this::read);
         private final Supplier<EntityDataSerializer<T>> serializer;
 
         public OptionalEntityDataSerializer(Supplier<EntityDataSerializer<T>> serializer) {
             this.serializer = serializer;
         }
 
-        @Override
-        public void write(FriendlyByteBuf buf, Optional<T> opt) {
+        public void write(RegistryFriendlyByteBuf buf, Optional<T> opt) {
             if(opt.isPresent()){
                 buf.writeBoolean(true);
-                serializer.get().write(buf, opt.get());
+                serializer.get().codec().encode(buf, opt.get());
             } else {
                 buf.writeBoolean(false);
             }
         }
 
-        @Override
-        public Optional<T> read(FriendlyByteBuf buf) {
+        public Optional<T> read(RegistryFriendlyByteBuf buf) {
             if(buf.readBoolean()){
-                return Optional.of(serializer.get().read(buf));
+                return Optional.of(serializer.get().codec().decode(buf));
             }
             return Optional.empty();
+        }
+
+        @Override
+        public StreamCodec<? super RegistryFriendlyByteBuf, Optional<T>> codec() {
+            return STREAM_CODEC;
         }
     }
 
@@ -82,6 +91,7 @@ public interface IMMDataSerializers {
      */
     class CodecEntityDataSerializer<T> implements EntityDataSerializer.ForValueType<T> {
 
+        public final StreamCodec<RegistryFriendlyByteBuf, T> STREAM_CODEC = StreamCodec.of(this::write, this::read);
         private final String name;
         private final Codec<T> codec;
 
@@ -90,19 +100,17 @@ public interface IMMDataSerializers {
             this.codec = codec;
         }
 
-        @Override
         public void write(FriendlyByteBuf byteBuf, T entry) {
             CompoundTag tag = new CompoundTag();
-            CodecHelper.encodeNbt(codec(), entry).result().ifPresent(nbt -> tag.put(name(), nbt));
+            CodecHelper.encodeNbt(codec, entry).result().ifPresent(nbt -> tag.put(name(), nbt));
             byteBuf.writeNbt(tag);
         }
 
-        @Override
         public T read(FriendlyByteBuf byteBuf) {
             CompoundTag tag = byteBuf.readNbt();
             AtomicReference<T> entry = new AtomicReference<>();
             if(tag != null && tag.contains(name())){
-                CodecHelper.parse(codec(), tag.get(name())).result().ifPresent(entry::set);
+                CodecHelper.parse(codec, tag.get(name())).result().ifPresent(entry::set);
             }
             return entry.get();
         }
@@ -111,14 +119,15 @@ public interface IMMDataSerializers {
             return name;
         }
 
-        public Codec<T> codec() {
-            return codec;
+        @Override
+        public StreamCodec<? super RegistryFriendlyByteBuf, T> codec() {
+            return STREAM_CODEC;
         }
     }
 
-    class SimpleEntityDataSerializer<T extends ISimpleEntry> extends CodecEntityDataSerializer<T> {
+    class SimpleEntityDataSerializer<T extends SimpleEntry> extends CodecEntityDataSerializer<T> {
 
-        public SimpleEntityDataSerializer(IHTSimpleRegistry<T> registry) {
+        public SimpleEntityDataSerializer(HTCustomRegistry<T> registry) {
             super(registry.getRegistryName().toString(), registry.byNameCodec());
         }
     }

@@ -1,6 +1,7 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
@@ -19,9 +20,9 @@ import net.minecraft.world.level.Level;
  **/
 public record EMPRequirement(int level) implements ILearnRequirement {
 
-    public static final Codec<EMPRequirement> CODEC = RecordCodecBuilder.<EMPRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<EMPRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("level").forGetter(EMPRequirement::level)
-    ).apply(instance, EMPRequirement::new)).codec();
+    ).apply(instance, EMPRequirement::new));
 
     @Override
     public boolean check(Level level, Player player) {

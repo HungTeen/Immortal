@@ -2,10 +2,8 @@ package hungteen.imm.common.tag;
 
 import hungteen.htlib.util.helper.registry.BiomeHelper;
 import hungteen.imm.util.Util;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 
 /**
  * @program: Immortal
@@ -35,6 +33,6 @@ public interface IMMBiomeTags {
     }
 
     private static TagKey<Biome> forgeTag(String name){
-        return BiomeHelper.get().tag(Util.forge().prefix(name));
+        return BiomeHelper.get().tag(Util.neo().prefix(name));
     }
 }

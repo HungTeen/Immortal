@@ -1,13 +1,12 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
@@ -31,9 +30,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +44,7 @@ import java.util.function.Supplier;
  **/
 public class ElementReactions {
 
-    private static final HTSimpleRegistry<IElementReaction> REACTIONS = HTRegistryManager.createSimple(Util.prefix("element_reaction"));
+    private static final HTSimpleRegistry<IElementReaction> REACTIONS = HTRegistryManager.simple(Util.prefix("element_reaction"));
 
     /* 特殊反应 */
 
@@ -108,10 +105,6 @@ public class ElementReactions {
 
     public static final IElementReaction QUENCH_BLADE = register(new GenerationReaction(
             "quench_blade", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
-        /**
-         * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingHurt(LivingHurtEvent)} and
-         * {@link hungteen.imm.common.event.IMMLivingEvents#onLivingAttackedBy(LivingAttackEvent)}.
-         */
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -156,7 +149,7 @@ public class ElementReactions {
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
             if (entity instanceof LivingEntity living) {
-                living.addEffect(EffectHelper.viewEffect(IMMEffects.SOLIDIFICATION.get(), (int) (100 * scale), Mth.ceil(scale)));
+                living.addEffect(EffectHelper.viewEffect(IMMEffects.SOLIDIFICATION.holder(), (int) (100 * scale), Mth.ceil(scale)));
             }
         }
     });
@@ -167,7 +160,7 @@ public class ElementReactions {
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
             if (entity instanceof LivingEntity living) {
-                List<MobEffectInstance> effects = living.getActiveEffects().stream().filter(instance -> instance.getEffect().getCategory() == MobEffectCategory.HARMFUL).toList();
+                List<MobEffectInstance> effects = living.getActiveEffects().stream().filter(instance -> instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL).toList();
                 if (!effects.isEmpty()) {
                     AreaEffectCloud areaeffectcloud = new AreaEffectCloud(entity.level(), entity.getX(), entity.getY(), entity.getZ());
                     areaeffectcloud.setRadius(2.5F);
@@ -213,7 +206,7 @@ public class ElementReactions {
         return TipUtil.misc("element_reaction");
     }
 
-    public static IHTSimpleRegistry<IElementReaction> registry() {
+    public static HTSimpleRegistry<IElementReaction> registry() {
         return REACTIONS;
     }
 
@@ -292,7 +285,7 @@ public class ElementReactions {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return name;
         }
 
@@ -303,7 +296,7 @@ public class ElementReactions {
 
         @Override
         public MutableComponent getComponent() {
-            return TipUtil.misc("reaction." + getName());
+            return TipUtil.misc("reaction." + name());
         }
     }
 
@@ -404,7 +397,7 @@ public class ElementReactions {
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
             if(! this.robustReaction && entity.level().getRandom().nextFloat() < 0.1F){
-                entity.setSecondsOnFire(Math.min(2, (int)(scale * 5)));
+                entity.setRemainingFireTicks(Math.min(2, (int)(scale * 5)) * 20);
                 entity.hurt(IMMDamageSources.elementReaction(entity), scale * 2);
             }
             if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
@@ -460,7 +453,7 @@ public class ElementReactions {
                 seconds *= 0.5F;
                 range *= 0.6F;
             }
-            entity.setSecondsOnFire((int) seconds + 2);
+            entity.setRemainingFireTicks(((int) seconds + 2) * 20);
             entity.level().explode(null, entity.getX(), entity.getY(), entity.getZ(), range, Level.ExplosionInteraction.NONE);
             // 爆炸后再附着元素。
             if(hasWater){
@@ -512,9 +505,6 @@ public class ElementReactions {
             REACTIONS.add(this);
         }
 
-        /**
-         * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingHurt(LivingHurtEvent)}.
-         */
         public static void ifGlidingActive(Entity attacker, Entity target){
             REACTIONS.forEach(reaction -> {
                 ElementManager.ifActiveReaction(attacker, reaction, (action, scale) -> {

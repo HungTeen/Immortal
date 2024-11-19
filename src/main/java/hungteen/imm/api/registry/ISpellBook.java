@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @author: HungTeen
  * @create: 2022-11-16 23:35
  **/
-public interface ISpellBook extends ISimpleEntry {
+public interface ISpellBook extends SimpleEntry {
 
     /**
      * Get Spells in this book ordered by spell level.

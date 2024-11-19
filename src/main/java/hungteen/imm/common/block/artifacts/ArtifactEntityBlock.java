@@ -7,9 +7,9 @@ import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +31,10 @@ public abstract class ArtifactEntityBlock extends HTEntityBlock implements IArti
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter getter, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Item.TooltipContext getter, List<Component> components, TooltipFlag flag) {
         components.add(this.getDesc(itemStack));
     }
+
 
     protected MutableComponent getDesc(ItemStack stack){
         return TipUtil.desc(this).withStyle(ChatFormatting.GRAY);
@@ -47,5 +48,9 @@ public abstract class ArtifactEntityBlock extends HTEntityBlock implements IArti
     @Override
     public IRealmType getArtifactRealm(ItemStack stack) {
         return this.realmType;
+    }
+
+    public IRealmType getRealmType() {
+        return realmType;
     }
 }

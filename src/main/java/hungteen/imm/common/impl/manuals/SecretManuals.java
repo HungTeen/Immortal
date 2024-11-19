@@ -1,20 +1,22 @@
 package hungteen.imm.common.impl.manuals;
 
-import hungteen.htlib.api.interfaces.IHTCodecRegistry;
-import hungteen.htlib.common.registry.HTCodecRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.api.registry.HTCodecRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.manuals.requirments.*;
+import hungteen.imm.common.impl.manuals.requirments.CultivationTypeRequirement;
+import hungteen.imm.common.impl.manuals.requirments.ElementRequirement;
+import hungteen.imm.common.impl.manuals.requirments.RealmRequirement;
+import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
 import hungteen.imm.common.impl.registry.CultivationTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -30,9 +32,9 @@ import java.util.function.Consumer;
  */
 public interface SecretManuals {
 
-    HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.create(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
+    HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.codec(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
 
-    static void register(BootstapContext<SecretManual> context){
+    static void register(BootstrapContext<SecretManual> context){
         final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.SPIRITUAL);
         final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.SPIRITUAL_LEVEL_1, true);
         final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.SPIRITUAL_LEVEL_2, true);
@@ -84,7 +86,7 @@ public interface SecretManuals {
         register(context, SpellTypes.FLY_WITH_ITEM, 2, builder -> {
             builder.require(spiritual_level_3);
         });
-//        register(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
+//        initialize(context, SpellTypes.FLY_WITH_ITEM, 3, builder -> {
 //            builder.require(spiritual_level_3);
 //        });
 
@@ -147,7 +149,7 @@ public interface SecretManuals {
         });
 
         /* 土系法术 */
-//        register(context, SpellTypes.EARTH_EVADING, 1, builder -> {
+//        initialize(context, SpellTypes.EARTH_EVADING, 1, builder -> {
 //            builder.require(spiritual_level_2)
 //                    .require(ElementRequirement.create(Elements.EARTH));
 //        });
@@ -181,7 +183,7 @@ public interface SecretManuals {
         }
     }
 
-    static void register(BootstapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
+    static void register(BootstrapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
         if(level > 0 && level <= spell.getMaxLevel()){
             final Builder builder = builder(spell, level);
             if(level > 1){
@@ -194,7 +196,7 @@ public interface SecretManuals {
         }
     }
 
-    static IHTCodecRegistry<SecretManual> registry(){
+    static HTCodecRegistry<SecretManual> registry(){
         return TUTORIALS;
     }
 

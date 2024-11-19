@@ -1,25 +1,22 @@
 package hungteen.imm.common.network;
 
-import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.util.PlayerUtil;
+import hungteen.htlib.api.registry.RangeNumber;
+import hungteen.htlib.common.network.ClientPacketContext;
+import hungteen.htlib.common.network.packet.PlayToClientPacket;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-13 21:34
  **/
-public class FloatDataPacket {
+public class FloatDataPacket implements PlayToClientPacket {
 
     private String type;
     private float value;
 
-    public FloatDataPacket(IRangeNumber<Float> data, float value) {
+    public FloatDataPacket(RangeNumber<Float> data, float value) {
         this.type = data.getRegistryName();
         this.value = value;
     }
@@ -34,21 +31,31 @@ public class FloatDataPacket {
         buffer.writeFloat(this.value);
     }
 
-    public static class Handler {
+    @Override
+    public void process(ClientPacketContext clientPacketContext) {
 
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(FloatDataPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                PlayerHelper.getClientPlayer().ifPresent(player -> {
-                    PlayerRangeFloats.registry().getValue(message.type).ifPresent(data -> {
-                        PlayerUtil.setFloatData(player, data, message.value);
-                    });
-                });
-            });
-            ctx.get().setPacketHandled(true);
-        }
     }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
+    }
+
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(FloatDataPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(()->{
+//                PlayerHelper.getClientPlayer().ifPresent(player -> {
+//                    PlayerRangeFloats.registry().getValue(message.type).ifPresent(data -> {
+//                        PlayerUtil.setFloatData(player, data, message.value);
+//                    });
+//                });
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 
 }

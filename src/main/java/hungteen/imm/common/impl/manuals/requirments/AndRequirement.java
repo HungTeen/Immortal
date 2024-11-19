@@ -1,11 +1,10 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.util.TipUtil;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -20,9 +19,9 @@ import java.util.List;
  */
 public record AndRequirement(List<ILearnRequirement> requirements) implements ILearnRequirement{
 
-    public static final Codec<AndRequirement> CODEC = RecordCodecBuilder.<AndRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<AndRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RequirementTypes.getCodec().listOf().fieldOf("requirements").forGetter(AndRequirement::requirements)
-    ).apply(instance, AndRequirement::new)).codec();
+    ).apply(instance, AndRequirement::new));
 
     @Override
     public boolean check(Level level, Player player) {

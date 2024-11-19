@@ -11,7 +11,6 @@ import hungteen.imm.util.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -77,7 +76,7 @@ public class SecretManualItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity living) {
         return 60;
     }
 
@@ -87,9 +86,9 @@ public class SecretManualItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        if(level != null) {
-            getSecretManualPair(level, stack).ifPresent(res -> {
+    public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
+        if(context != null) {
+            getSecretManualPair(context.level(), stack).ifPresent(res -> {
 //                components.add(res.getSecond().getManualTitle().withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
 //                components.add(res.getSecond().getContentInfo().withStyle(ChatFormatting.GRAY));
                 PlayerHelper.getClientPlayer().ifPresent(p -> {
@@ -117,20 +116,21 @@ public class SecretManualItem extends Item {
 
     public static ItemStack create(ResourceKey<SecretManual> key) {
         final ItemStack stack = new ItemStack(IMMItems.SECRET_MANUAL.get());
-        setSpellBook(stack, key.location());
+//        setSpellBook(stack, key.location());
         return stack;
     }
 
-    public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {
-        stack.getOrCreateTag().putString(SECRET_MANUAL, spellBook.toString());
-    }
-
-    public static Optional<ResourceLocation> getLocation(ItemStack stack) {
-        return stack.getOrCreateTag().contains(SECRET_MANUAL) ? Optional.of(new ResourceLocation(stack.getOrCreateTag().getString(SECRET_MANUAL))) : Optional.empty();
-    }
+//    public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {
+//        stack.getOrCreateTag().putString(SECRET_MANUAL, spellBook.toString());
+//    }
+//
+//    public static Optional<ResourceLocation> getLocation(ItemStack stack) {
+//        return stack.getOrCreateTag().contains(SECRET_MANUAL) ? Optional.of(new ResourceLocation(stack.getOrCreateTag().getString(SECRET_MANUAL))) : Optional.empty();
+//    }
 
     public static Optional<ResourceKey<SecretManual>> getResourceKey(ItemStack stack) {
-        return getLocation(stack).map(l -> SecretManuals.registry().createKey(l));
+//        return getLocation(stack).map(l -> SecretManuals.registry().createKey(l));
+        return Optional.empty();
     }
 
     public static Optional<SecretManual> getSecretManual(@Nullable Level level, ItemStack stack) {

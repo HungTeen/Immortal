@@ -7,7 +7,7 @@ import hungteen.imm.common.world.structure.structures.TeleportRuinStructure;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.biome.Biome;
@@ -38,7 +38,7 @@ public interface IMMStructures {
     ResourceKey<Structure> SPIRITUAL_FLAME_ALTAR = create("spiritual_flame_altar");
     ResourceKey<Structure> SPIRIT_LAB = create("spirit_lab");
 
-    static void register(BootstapContext<Structure> context) {
+    static void register(BootstrapContext<Structure> context) {
 //        SpiritualPlainsVillage.initStructures(context);
         final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
@@ -76,7 +76,10 @@ public interface IMMStructures {
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
                 true,
                 Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                60
+                60,
+                List.of(),
+                JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                JigsawStructure.DEFAULT_LIQUID_SETTINGS
         ));
         context.register(SPIRITUAL_FLAME_ALTAR, new JigsawStructure(
                 new Structure.StructureSettings(
@@ -91,7 +94,10 @@ public interface IMMStructures {
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
                 true,
                 Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                50
+                50,
+                List.of(),
+                JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                JigsawStructure.DEFAULT_LIQUID_SETTINGS
         ));
         context.register(SPIRIT_LAB, new JigsawStructure(
                 new Structure.StructureSettings(
@@ -106,7 +112,10 @@ public interface IMMStructures {
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
                 true,
                 Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
-                50
+                50,
+                List.of(),
+                JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                JigsawStructure.DEFAULT_LIQUID_SETTINGS
         ));
     }
 

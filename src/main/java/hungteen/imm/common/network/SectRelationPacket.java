@@ -1,20 +1,17 @@
 package hungteen.imm.common.network;
 
-import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.htlib.common.network.ClientPacketContext;
+import hungteen.htlib.common.network.packet.PlayToClientPacket;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.common.impl.registry.SectTypes;
-import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-26 18:48
  **/
-public class SectRelationPacket {
+public class SectRelationPacket implements PlayToClientPacket {
 
     private final String type;
     private final float value;
@@ -34,21 +31,31 @@ public class SectRelationPacket {
         buffer.writeFloat(this.value);
     }
 
-    public static class Handler {
+    @Override
+    public void process(ClientPacketContext clientPacketContext) {
 
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(SectRelationPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                PlayerHelper.getClientPlayer().ifPresent(player -> {
-                    SectTypes.registry().getValue(message.type).ifPresent(type -> {
-                        PlayerUtil.setSectRelation(player, type, message.value);
-                    });
-                });
-            });
-            ctx.get().setPacketHandled(true);
-        }
     }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
+    }
+
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(SectRelationPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(()->{
+//                PlayerHelper.getClientPlayer().ifPresent(player -> {
+//                    SectTypes.registry().getValue(message.type).ifPresent(type -> {
+//                        PlayerUtil.setSectRelation(player, type, message.value);
+//                    });
+//                });
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 
 }

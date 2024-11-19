@@ -52,10 +52,10 @@ public class ElixirCategory implements IRecipeCategory<ElixirRecipe> {
         return title;
     }
 
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
+//    @Override
+//    public IDrawable getBackground() {
+//        return background;
+//    }
 
     @Override
     public IDrawable getIcon() {

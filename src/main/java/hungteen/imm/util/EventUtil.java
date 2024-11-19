@@ -1,7 +1,8 @@
 package hungteen.imm.util;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
  * @author PangTeen
@@ -11,7 +12,10 @@ import net.minecraftforge.eventbus.api.Event;
 public class EventUtil {
 
     public static boolean post(Event event){
-        return MinecraftForge.EVENT_BUS.post(event);
+        if(NeoForge.EVENT_BUS.post(event) instanceof ICancellableEvent cancellableEvent){
+            return cancellableEvent.isCanceled();
+        }
+        return false;
     }
 
 }

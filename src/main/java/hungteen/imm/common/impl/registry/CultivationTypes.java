@@ -1,7 +1,7 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.Component;
@@ -13,29 +13,29 @@ import net.minecraft.network.chat.MutableComponent;
  * @author: HungTeen
  * @create: 2022-10-13 15:09
  **/
-public class CultivationTypes {
+public interface CultivationTypes {
 
-    private static final IHTSimpleRegistry<ICultivationType> TYPES = HTRegistryManager.createSimple(Util.prefix("cultivation_type"));
+    HTCustomRegistry<ICultivationType> TYPES = HTRegistryManager.custom(Util.prefix("cultivation_type"));
 
-    public static final ICultivationType UNKNOWN = register(new CultivationType("unknown", true, false));
-    public static final ICultivationType MORTAL = register(new CultivationType("mortal", true, false));
-    public static final ICultivationType SPIRITUAL = register(new CultivationType("spiritual", false, true));
-    public static final ICultivationType MONSTER = register(new CultivationType("monster", false, true));
-    public static final ICultivationType UNDEAD = register(new CultivationType("undead", true, true));
-    public static final ICultivationType WIZARD = register(new CultivationType("wizard", true, false));
-    public static final ICultivationType ARTIFACT = register(new CultivationType("artifact", false, true));
-//    public static final ICultivationType GHOST = register(new CultivationType("ghost"));
-//    public static final ICultivationType BLOOD = register(new CultivationType("blood"));
+    ICultivationType UNKNOWN = register(new CultivationType("unknown", true, false));
+    ICultivationType MORTAL = register(new CultivationType("mortal", true, false));
+    ICultivationType SPIRITUAL = register(new CultivationType("spiritual", false, true));
+    ICultivationType MONSTER = register(new CultivationType("monster", false, true));
+    ICultivationType UNDEAD = register(new CultivationType("undead", true, true));
+    ICultivationType WIZARD = register(new CultivationType("wizard", true, false));
+    ICultivationType ARTIFACT = register(new CultivationType("artifact", false, true));
+//    public static final ICultivationType GHOST = initialize(new CultivationType("ghost"));
+//    public static final ICultivationType BLOOD = initialize(new CultivationType("blood"));
 
-    public static IHTSimpleRegistry<ICultivationType> registry(){
+    static HTCustomRegistry<ICultivationType> registry(){
         return TYPES;
     }
 
-    public static ICultivationType register(ICultivationType type){
-        return registry().register(type);
+    static ICultivationType register(ICultivationType type){
+        return registry().register(type.getLocation(), type);
     }
 
-    public record CultivationType(String name, boolean canEnchant, boolean isSpiritual) implements ICultivationType {
+    record CultivationType(String name, boolean canEnchant, boolean isSpiritual) implements ICultivationType {
 
         @Override
         public MutableComponent getComponent() {

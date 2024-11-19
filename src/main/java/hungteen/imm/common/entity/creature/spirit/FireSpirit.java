@@ -1,10 +1,8 @@
 package hungteen.imm.common.entity.creature.spirit;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.client.render.entity.spirit.FireSpiritRender;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
@@ -12,15 +10,12 @@ import hungteen.imm.common.impl.registry.SpiritualTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
-import net.minecraft.client.model.SlimeModel;
-import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -30,8 +25,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -84,7 +77,7 @@ public class FireSpirit extends ElementSpirit{
                     return !(target instanceof FireSpirit) && this != target.getVehicle();
                 }, (target, factor) -> {
                     ElementManager.addElementAmount(target, Elements.FIRE, false, 0.5F * factor, 2);
-                    target.setSecondsOnFire(5);
+                    target.setRemainingFireTicks(100);
                 });
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 10, 0.1);
             }
@@ -108,7 +101,7 @@ public class FireSpirit extends ElementSpirit{
             ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 2 * factor);
             target.hurt(IMMDamageSources.fireElement(this), scale * factor * 6);
         });
-        this.playSound(SoundEvents.GENERIC_EXPLODE);
+        this.playSound(SoundEvents.GENERIC_EXPLODE.value());
     }
 
     protected void split(){
@@ -138,7 +131,7 @@ public class FireSpirit extends ElementSpirit{
     }
 
     @Override
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
         this.hasImpulse = true;
@@ -153,12 +146,14 @@ public class FireSpirit extends ElementSpirit{
         return true;
     }
 
+    @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("WasOnGround", this.wasOnGround);
         tag.putInt("SplitChance", this.getSplitChance());
     }
 
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("WasOnGround")){

@@ -2,7 +2,7 @@ package hungteen.imm.common.item;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * @author: PangTeen
  * @create: 2023/10/29 14:31
  **/
-public class IMMSpawnEggItem extends ForgeSpawnEggItem {
+public class IMMSpawnEggItem extends DeferredSpawnEggItem {
 
 
     @Nullable

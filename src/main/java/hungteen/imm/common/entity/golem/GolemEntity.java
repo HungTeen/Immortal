@@ -32,8 +32,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraft.world.level.portal.DimensionTransition;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -60,9 +59,9 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(OWNER_UUID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(OWNER_UUID, Optional.empty());
     }
 
     @Override
@@ -141,9 +140,9 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if(hand == InteractionHand.MAIN_HAND && canInteractWith(player)){
-            if(player instanceof ServerPlayer){
+            if(player instanceof ServerPlayer serverPlayer){
                 this.setInteractPlayer(player);
-                NetworkHooks.openScreen((ServerPlayer) player, new ImmortalMenuProvider() {
+                serverPlayer.openMenu(new ImmortalMenuProvider() {
                     @Override
                     public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new GolemInventoryMenu(id, inventory, GolemEntity.this.getId());
@@ -186,11 +185,10 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
         this.refreshBrain();
     }
 
-    @org.jetbrains.annotations.Nullable
     @Override
-    public Entity changeDimension(ServerLevel level, ITeleporter teleporter) {
+    public @org.jetbrains.annotations.Nullable Entity changeDimension(DimensionTransition transition) {
         this.stopInteracting();
-        return super.changeDimension(level, teleporter);
+        return super.changeDimension(transition);
     }
 
     @Override
@@ -205,8 +203,8 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
     }
 
     @Override
-    public boolean canBeLeashed(Player player) {
-        return this.getOwnerUUID().isPresent() && this.getOwnerUUID().get().equals(player.getUUID());
+    public boolean canBeLeashed() {
+        return false;
     }
 
     public abstract int getRuneInventorySize();
@@ -244,10 +242,10 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
             tag.putUUID("GolemOwner", this.getOwnerUUID().get());
         }
         if (this.runeInventory != null) {
-            tag.put("GolemRuneInventory", this.runeInventory.createTag());
+            tag.put("GolemRuneInventory", this.runeInventory.createTag(registryAccess()));
         }
         if(this.itemInventory != null) {
-            tag.put("GolemItemInventory", this.itemInventory.createTag());
+            tag.put("GolemItemInventory", this.itemInventory.createTag(registryAccess()));
         }
     }
 
@@ -258,10 +256,10 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
             this.setOwnerUUID(tag.getUUID("GolemOwner"));
         }
         if(tag.contains("GolemRuneInventory")){
-            this.runeInventory.fromTag(NBTUtil.list(tag, "GolemRuneInventory"));
+            this.runeInventory.fromTag(NBTUtil.list(tag, "GolemRuneInventory"), registryAccess());
         }
         if(tag.contains("GolemItemInventory")){
-            this.itemInventory.fromTag(NBTUtil.list(tag, "GolemItemInventory"));
+            this.itemInventory.fromTag(NBTUtil.list(tag, "GolemItemInventory"), registryAccess());
         }
         this.refreshBrain();
     }

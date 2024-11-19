@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 
 /**
  * 跨境界体系的参考标准。
@@ -8,7 +8,7 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
  * @author: HungTeen
  * @create: 2022-09-29 12:40
  **/
-public interface IRealmType extends ISimpleEntry {
+public interface IRealmType extends SimpleEntry {
 
     /**
      * 此境界的最大修为。

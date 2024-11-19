@@ -1,6 +1,6 @@
 package hungteen.imm.mixin;
 
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.world.entity.item.ItemEntity;

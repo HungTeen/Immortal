@@ -1,12 +1,10 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -21,7 +19,7 @@ import net.minecraft.network.chat.Style;
  **/
 public interface RealmTypes {
 
-    HTSimpleRegistry<IRealmType> TYPES = HTRegistryManager.createSimple(Util.prefix("realm"));
+    HTCustomRegistry<IRealmType> TYPES = HTRegistryManager.custom(Util.prefix("realm"));
 
     /**
      * 无境界。
@@ -59,9 +57,9 @@ public interface RealmTypes {
 
     IRealmType SPIRITUAL_FLAME_1 = nonLiving("spiritual_flame_1", 90, Constants.MAX_SPIRITUAL_FLAME_AMOUNT, CultivationTypes.SPIRITUAL);
 
-//    IRealmType SPIRITUAL_FLAME_2 = register(new RealmType("spiritual_flame_2", 100, 200, 125, 120, CultivationTypes.SPIRITUAL));
+//    IRealmType SPIRITUAL_FLAME_2 = initialize(new RealmType("spiritual_flame_2", 100, 200, 125, 120, CultivationTypes.SPIRITUAL));
 //
-//    IRealmType SPIRITUAL_FLAME_3 = register(new RealmType("spiritual_flame_3", 200, 300, 160, 150, CultivationTypes.SPIRITUAL));
+//    IRealmType SPIRITUAL_FLAME_3 = initialize(new RealmType("spiritual_flame_3", 200, 300, 160, 150, CultivationTypes.SPIRITUAL));
 
     /* 法器 */
 
@@ -73,12 +71,12 @@ public interface RealmTypes {
         return TipUtil.misc("realm");
     }
 
-    static IHTSimpleRegistry<IRealmType> registry() {
+    static HTCustomRegistry<IRealmType> registry() {
         return TYPES;
     }
 
     static IRealmType register(IRealmType type) {
-        return registry().register(type);
+        return registry().register(type.getLocation(), type);
     }
 
     static IRealmType artifact(String name, int realmValue, Style style){

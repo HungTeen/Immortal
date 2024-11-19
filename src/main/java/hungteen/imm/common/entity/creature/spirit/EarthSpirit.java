@@ -32,8 +32,8 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.List;
 import java.util.Map;
@@ -169,7 +169,9 @@ public class EarthSpirit extends ElementSpirit {
 
     @Override
     public boolean canDrownInFluidType(FluidType type) {
-        if (type == ForgeMod.WATER_TYPE.get()) return false;
+        if (type == NeoForgeMod.WATER_TYPE.value()) {
+            return false;
+        }
         return super.canDrownInFluidType(type);
     }
 

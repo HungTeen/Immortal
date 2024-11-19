@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import net.minecraft.world.entity.Entity;
 
 /**
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
  * @program Immortal
  * @data 2023/7/1 16:22
  */
-public interface IElementReaction extends ISimpleEntry {
+public interface IElementReaction extends SimpleEntry {
 
     float match(Entity entity);
 

@@ -1,12 +1,12 @@
 package hungteen.imm.common.capability.entity;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.network.EntityElementPacket;
-import hungteen.imm.common.network.NetworkHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -236,7 +236,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
 
     public void sendElementPacket(Elements element, boolean robust, float amount) {
         if (EntityHelper.isServer(entity)) {
-            NetworkHandler.sendToClientEntityAndSelf(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
+            NetworkHelper.sendToClientTrackingPlayerAndSelf(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
         }
     }
 

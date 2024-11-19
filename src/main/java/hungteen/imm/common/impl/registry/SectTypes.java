@@ -1,8 +1,7 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.util.Util;
 
@@ -13,17 +12,17 @@ import hungteen.imm.util.Util;
  **/
 public class SectTypes {
 
-    private static final HTSimpleRegistry<ISectType> TRADE_TYPES = HTRegistryManager.createSimple(Util.prefix("sect_type"));
+    private static final HTCustomRegistry<ISectType> TRADE_TYPES = HTRegistryManager.custom(Util.prefix("sect_type"));
 
     public static final ISectType VILLAGER_KINGDOM = register(new SectType("villager_kingdom"));
     public static final ISectType PILLAGER_TRIBE = register(new SectType("pillager_tribe"));
 
-    public static IHTSimpleRegistry<ISectType> registry() {
+    public static HTCustomRegistry<ISectType> registry() {
         return TRADE_TYPES;
     }
 
     private static ISectType register(ISectType type){
-        return registry().register(type);
+        return registry().register(type.getLocation(), type);
     }
 
     public static void register(){
@@ -31,11 +30,6 @@ public class SectTypes {
 
 
     public record SectType(String name) implements ISectType {
-
-        @Override
-        public String getName() {
-            return name();
-        }
 
         @Override
         public String getModID() {

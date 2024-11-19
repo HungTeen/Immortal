@@ -2,11 +2,11 @@ package hungteen.imm.client.event.handler;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.ClientProxy;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.IMMKeyBinds;
 import hungteen.imm.common.network.NetworkHandler;
@@ -17,7 +17,7 @@ import hungteen.imm.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.TickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpellHandler {
 
     /**
-     * {@link hungteen.imm.client.event.ClientEvents#tick(TickEvent.ClientTickEvent)}
+     * {@link hungteen.imm.client.event.ClientEvents#tick(ClientTickEvent.Post)}
      */
     public static void tick(@NotNull Player player) {
         // 不能使用轮盘时，强制关闭。
@@ -44,12 +44,12 @@ public class SpellHandler {
             }
         }
         // 长按以检测法术释放。
-        if (ClientProxy.MC.isWindowActive() && ClientUtil.screen() == null) {
+        if (IMMClientProxy.MC.isWindowActive() && ClientUtil.screen() == null) {
             if (IMMKeyBinds.ACTIVATE_SPELL.isDown()) {
                 final ISpellType spell = PlayerUtil.getPreparingSpell(player);
                 if (EntityHelper.isEntityValid(player) && spell != null) {
                     if (! PlayerUtil.isSpellOnCoolDown(player, spell)) {
-                        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.ACTIVATE));
+                        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.ACTIVATE));
                     } else {
                         // 冷却提醒。
                         if(! ClientData.sendOnCoolDown){
@@ -99,7 +99,7 @@ public class SpellHandler {
         // Check whether there need sync config file or not.
         final int mode = PlayerUtil.getSpellCircleMode(ClientUtil.player());
         if (mode == 0) {
-            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.SYNC_CIRCLE_OP));
+            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.SYNC_CIRCLE_OP));
             return IMMConfigs.defaultSpellCircle();
         }
         return mode == 1;

@@ -1,9 +1,8 @@
 package hungteen.imm.common.impl.registry;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTCustomRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.enums.Elements;
@@ -27,7 +26,7 @@ import java.util.function.Supplier;
  **/
 public interface SpiritualTypes {
 
-    HTSimpleRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.createSimple(Util.prefix("spiritual_root"));
+    HTCustomRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.custom(Util.prefix("spiritual_root"));
 
     ISpiritualType METAL = register(new SpiritualType(
             "metal",
@@ -106,10 +105,10 @@ public interface SpiritualTypes {
     }
 
     static ISpiritualType register(ISpiritualType type) {
-        return registry().register(type);
+        return registry().register(type.getLocation(), type);
     }
 
-    static IHTSimpleRegistry<ISpiritualType> registry() {
+    static HTCustomRegistry<ISpiritualType> registry() {
         return SPIRITUAL_TYPES;
     }
 

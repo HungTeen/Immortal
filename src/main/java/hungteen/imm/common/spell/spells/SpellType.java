@@ -103,7 +103,7 @@ public abstract class SpellType implements ISpellType {
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 

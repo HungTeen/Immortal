@@ -3,7 +3,7 @@ package hungteen.imm.common.impl.registry;
 import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
 import hungteen.htlib.common.registry.HTRegistryManager;
 import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.imm.ImmortalMod;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.registry.ITradeType;
 import hungteen.imm.util.Util;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +35,7 @@ public class TradeTypes {
     public abstract static class TradeType implements ITradeType {
 
         /**
-         * {@link ImmortalMod#coreRegister()}
+         * {@link IMMInitializer#coreRegister()}
          */
         public static void register(){
             TradeTypes.registry().register(TYPES);

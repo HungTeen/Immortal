@@ -2,10 +2,9 @@ package hungteen.imm.common.rune.behavior;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
-import hungteen.imm.ImmortalMod;
+import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.entity.ai.behavior.golem.*;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
@@ -24,7 +23,7 @@ import java.util.function.Supplier;
  **/
 public class BehaviorRunes {
 
-    private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.createSimple(Util.prefix("behavior_runes"));
+    private static final HTSimpleRegistry<IBehaviorRune> BEHAVIOR_RUNES = HTRegistryManager.simple(Util.prefix("behavior_runes"));
 
     public static final IBehaviorRune SENSE_NEAREST_LIVINGS = register(
             new BehaviorRune("sense_nearest_livings",
@@ -163,12 +162,12 @@ public class BehaviorRunes {
             )
     );
 
-    public static IHTSimpleRegistry<IBehaviorRune> registry() {
+    public static HTSimpleRegistry<IBehaviorRune> registry() {
         return BEHAVIOR_RUNES;
     }
 
     /**
-     * {@link ImmortalMod#coreRegister()}
+     * {@link IMMInitializer#coreRegister()}
      */
     public static void register() {
 
@@ -208,7 +207,7 @@ public class BehaviorRunes {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return this.name;
         }
 

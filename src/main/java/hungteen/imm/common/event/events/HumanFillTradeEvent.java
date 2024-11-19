@@ -2,7 +2,7 @@ package hungteen.imm.common.event.events;
 
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 /**
  * @author PangTeen

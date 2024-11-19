@@ -1,6 +1,6 @@
 package hungteen.imm.client;
 
-import hungteen.imm.CommonProxy;
+import hungteen.imm.common.IMMProxy;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.common.network.NetworkHandler;
@@ -20,7 +20,7 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-10-16 21:18
  **/
-public class ClientProxy extends CommonProxy {
+public class IMMClientProxy extends IMMProxy {
 
     public static final Minecraft MC = Minecraft.getInstance();
 

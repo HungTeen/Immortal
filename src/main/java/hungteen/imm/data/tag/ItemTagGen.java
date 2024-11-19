@@ -4,13 +4,10 @@ import hungteen.htlib.data.tag.HTItemTagGen;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
-import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,8 +18,8 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class ItemTagGen extends HTItemTagGen {
 
-    public ItemTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, provider, tagLookup, Util.id(), existingFileHelper);
+    public ItemTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup) {
+        super(output, provider, tagLookup);
     }
 
     @Override

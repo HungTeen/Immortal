@@ -3,10 +3,8 @@ package hungteen.imm.common.tag;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.item.Item;
 
 /**
  * @author PangTeen
@@ -28,7 +26,7 @@ public interface IMMDamageTypeTags {
     TagKey<DamageType> ELEMENTS = tag("elements");
 
     private static TagKey<DamageType> forgeTag(String name){
-        return create(Util.forge().prefix(name));
+        return create(Util.neo().prefix(name));
     }
 
     private static TagKey<DamageType> tag(String name){

@@ -1,8 +1,12 @@
 package hungteen.imm.common.item;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.RealmManager;
@@ -17,13 +21,12 @@ import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -36,9 +39,9 @@ import java.util.stream.Collectors;
  **/
 public interface IMMCreativeTabs {
 
-    DeferredRegister<CreativeModeTab> TABS = ItemHelper.tab().createRegister(Util.id());
+    HTVanillaRegistry<CreativeModeTab> TABS = HTRegistryManager.vanilla(Registries.CREATIVE_MODE_TAB, Util.id());
 
-    RegistryObject<CreativeModeTab> MATERIALS = register("materials", builder ->
+    HTHolder<CreativeModeTab> MATERIALS = register("materials", builder ->
             builder.icon(() -> new ItemStack((IMMBlocks.GANODERMA.get())))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .displayItems((parameters, output) -> {
@@ -85,18 +88,18 @@ public interface IMMCreativeTabs {
                     })
     );
 
-    RegistryObject<CreativeModeTab> ELIXIRS = register("elixirs", builder ->
+    HTHolder<CreativeModeTab> ELIXIRS = register("elixirs", builder ->
             builder.icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
-                    .withTabsBefore(MATERIALS.getKey())
+                    .withTabsBefore(MATERIALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         output.acceptAll(ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream()
                                 .filter(JavaHelper.not(CustomElixirItem.class::isInstance)).map(ItemStack::new).toList());
                     })
     );
 
-    RegistryObject<CreativeModeTab> SECRET_MANUALS = register("secret_manuals", builder ->
+    HTHolder<CreativeModeTab> SECRET_MANUALS = register("secret_manuals", builder ->
             builder.icon(() -> new ItemStack((IMMItems.SECRET_MANUAL.get())))
-                    .withTabsBefore(ELIXIRS.getKey())
+                    .withTabsBefore(ELIXIRS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         HolderLookup.RegistryLookup<SecretManual> secretManuals = parameters.holders().lookupOrThrow(SecretManuals.registry().getRegistryKey());
                         secretManuals.listElementIds().forEach(r -> {
@@ -105,9 +108,9 @@ public interface IMMCreativeTabs {
                     })
     );
 
-    RegistryObject<CreativeModeTab> ARTIFACTS = register("artifacts", builder ->
+    HTHolder<CreativeModeTab> ARTIFACTS = register("artifacts", builder ->
             builder.icon(() -> new ItemStack((IMMItems.SPIRITUAL_PEARL.get())))
-                    .withTabsBefore(SECRET_MANUALS.getKey())
+                    .withTabsBefore(SECRET_MANUALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
                             return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
@@ -117,9 +120,9 @@ public interface IMMCreativeTabs {
                     })
     );
 
-    RegistryObject<CreativeModeTab> RUNES = register("runes", builder ->
+    HTHolder<CreativeModeTab> RUNES = register("runes", builder ->
             builder.icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
-                    .withTabsBefore(ARTIFACTS.getKey())
+                    .withTabsBefore(ARTIFACTS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
                             output.accept(new ItemStack(item));
@@ -146,25 +149,25 @@ public interface IMMCreativeTabs {
 //                    new ItemStack(IMMBlocks.COPPER_FURNACE.get())
 //            ));
         } else if (event.getTabKey().equals(CreativeModeTabs.FOOD_AND_DRINKS)) {
-            getFoodItems().forEach(event::accept);
+//            getFoodItems().forEach(event::accept);
         } else if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
             getBannerPatterns().forEach(event::accept);
         }
     }
 
-    private static List<Item> getFoodItems(){
-        return Util.get().filterValues(ItemHelper.get(), Item::isEdible);
-    }
+//    private static List<Item> getFoodItems(){
+//        return Util.get().filterValues(ItemHelper.get(), Item::isEdible);
+//    }
 
     private static List<Item> getBannerPatterns(){
         return ItemUtil.getBannerPatterns().stream().map(Map.Entry::getValue).toList();
     }
 
-    static void register(IEventBus modBus) {
-        TABS.register(modBus);
+    static void initialize(IEventBus modBus) {
+        NeoHelper.initRegistry(TABS, modBus);
     }
 
-    private static RegistryObject<CreativeModeTab> register(String name, Consumer<CreativeModeTab.Builder> consumer) {
+    private static HTHolder<CreativeModeTab> register(String name, Consumer<CreativeModeTab.Builder> consumer) {
         return TABS.register(name, () -> {
             final CreativeModeTab.Builder builder = CreativeModeTab.builder().title(Component.translatable(StringHelper.langKey("itemGroup", Util.id(), name)));
             consumer.accept(builder);

@@ -1,10 +1,12 @@
 package hungteen.imm.common.block.plants;
 
-import hungteen.htlib.common.block.plants.HTAttachedStemBlock;
+import com.mojang.serialization.MapCodec;
+import hungteen.htlib.common.block.plant.HTAttachedStemBlock;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.IMMItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,8 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
  **/
 public class AttachedGourdStemBlock extends HTAttachedStemBlock {
 
+    public static final MapCodec<AttachedGourdStemBlock> CODEC = simpleCodec(p -> new AttachedGourdStemBlock());
+
     public AttachedGourdStemBlock() {
-        super(() -> IMMItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.ATTACHED_MELON_STEM));
+        super(IMMItems.GOURD_SEEDS, BlockBehaviour.Properties.ofFullCopy(Blocks.ATTACHED_MELON_STEM));
     }
 
     @Override
@@ -31,5 +35,10 @@ public class AttachedGourdStemBlock extends HTAttachedStemBlock {
     @Override
     protected BlockState getStemState() {
         return IMMBlocks.GOURD_STEM.get().maxAgeState();
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
     }
 }

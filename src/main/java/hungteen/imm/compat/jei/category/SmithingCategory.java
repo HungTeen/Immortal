@@ -72,10 +72,10 @@ public class SmithingCategory implements IRecipeCategory<SmithingArtifactRecipe>
 //        return SmithingArtifactBlockEntity.TITLE;
     }
 
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
+//    @Override
+//    public IDrawable getBackground() {
+//        return background;
+//    }
 
     @Override
     public IDrawable getIcon() {

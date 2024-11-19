@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.RandomUtil;
@@ -9,19 +9,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * @program: Immortal
@@ -40,14 +36,14 @@ public abstract class IMMGrowableMob extends IMMMob {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(AGE, 1); // [1, max age].
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(AGE, 1); // [1, max age].
     }
 
     @Override
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
-        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         this.onAgeChangeTo(getRandomSpawnAge().sample(accessor.getRandom()), true);
     }
 
@@ -124,7 +120,7 @@ public abstract class IMMGrowableMob extends IMMMob {
     }
 
     public boolean spawnEggMatch(ItemStack stack){
-        return stack.getItem() instanceof SpawnEggItem item && this.getType().equals(item.getType(stack.getOrCreateTag()));
+        return stack.getItem() instanceof SpawnEggItem item && this.getType().equals(item.getType(stack));
     }
 
     @Override

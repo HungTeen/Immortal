@@ -1,11 +1,10 @@
 package hungteen.imm.common.entity.misc.formation;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.world.IMMTeleporter;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 
 import java.util.HashMap;
@@ -56,6 +56,9 @@ public class TeleportFormation extends FormationEntity {
                 final AABB aabb = new AABB(this.position().add(-TELEPORT_WIDTH, -TELEPORT_HEIGHT, -TELEPORT_WIDTH), this.position().add(TELEPORT_WIDTH, TELEPORT_HEIGHT, TELEPORT_WIDTH));
                 // Update ticks.
                 Iterator<Map.Entry<Integer, Integer>> iterator = entityInsideTicks.entrySet().iterator();
+                final MinecraftServer server = serverLevel.getServer();
+                final ResourceKey<Level> dst = EntityHelper.inDimension(this, IMMLevels.EAST_WORLD) ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
+                final ServerLevel dstLevel = server.getLevel(dst);
                 while (iterator.hasNext()) {
                     final Map.Entry<Integer, Integer> pair = iterator.next();
                     final int id = pair.getKey();
@@ -68,12 +71,9 @@ public class TeleportFormation extends FormationEntity {
                         // Still inside.
                         final int ticks = tick + (aabb.intersects(entity.getBoundingBox()) ? 1 : -2);
                         if (ticks > TELEPORT_CD) {
-                            final MinecraftServer server = serverLevel.getServer();
-                            final ResourceKey<Level> dst = EntityHelper.inDimension(this, IMMLevels.EAST_WORLD) ? Level.OVERWORLD : IMMLevels.EAST_WORLD;
-                            final ServerLevel dstLevel = server.getLevel(dst);
                             if (dstLevel != null) {
                                 entity.setPortalCooldown();
-                                entity.changeDimension(dstLevel, IMMTeleporter.INSTANCE);
+                                entity.changeDimension(new DimensionTransition(serverLevel, entity, DimensionTransition.PLAY_PORTAL_SOUND));
                             }
                         } else {
                             this.spawnTeleportParticles(entity, ticks);
@@ -83,7 +83,7 @@ public class TeleportFormation extends FormationEntity {
                 }
                 // Find new inside entities.
                 if (this.random.nextFloat() < 0.1F) {
-                    EntityHelper.getPredicateEntities(this, aabb, Entity.class, Entity::canChangeDimensions).forEach(entity -> {
+                    EntityHelper.getPredicateEntities(this, aabb, Entity.class, e -> e.canChangeDimensions(level(), dstLevel)).forEach(entity -> {
                         if (!entityInsideTicks.containsKey(entity.getId())) {
                             entityInsideTicks.put(entity.getId(), 0);
                         }

@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.RealmStages;
@@ -21,9 +21,7 @@ import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,8 +31,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +42,7 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-10-21 18:37
  **/
-public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasRealm, IEntityAdditionalSpawnData, IHasMana, IHasSpell {
+public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, IHasRoot, IHasRealm, IHasMana, IHasSpell {
 
     protected static final int MELEE_ATTACK_ID = 4;
     private static final EntityDataAccessor<IRealmType> REALM = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.REALM.get());
@@ -64,29 +61,29 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(REALM, getDefaultRealm());
-        entityData.define(REALM_STAGE, getDefaultStage().ordinal());
-        entityData.define(USING_SPELL, Optional.empty());
-        entityData.define(CURRENT_ANIMATION, AnimationTypes.IDLING.ordinal());
-        entityData.define(ANIMATION_START_TICK, 0L);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(REALM, getDefaultRealm())
+                .define(REALM_STAGE, getDefaultStage().ordinal())
+                .define(USING_SPELL, Optional.empty())
+                .define(CURRENT_ANIMATION, AnimationTypes.IDLING.ordinal())
+                .define(ANIMATION_START_TICK, 0L);
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
         if (!accessor.isClientSide()) {
             Optional.ofNullable(this.getSpawnSound()).ifPresent(l -> this.playSound(l, this.getSoundVolume(), this.getVoicePitch()));
-            this.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+            this.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         }
-        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data, tag);
+        return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data);
     }
 
     /**
      * 加入世界前的最后处理。
      */
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         this.spiritualRoots.addAll(this.createSpiritualRoots(accessor));
         createLearnSpells().forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
     }
@@ -103,20 +100,21 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
-        final int count = additionalData.readInt();
-        this.spiritualRoots.clear();
-        for (int i = 0; i < count; ++i) {
-            this.spiritualRoots.add(additionalData.readRegistryIdUnsafe(SpiritualTypes.registry().getRegistry()));
-        }
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
+//        final int count = additionalData.readInt();
+//        this.spiritualRoots.clear();
+//        for (int i = 0; i < count; ++i) {
+//            Holder<ISpiritualType> root = SpiritualTypes.registry().helper().getStreamCodec().decode(additionalData);
+//            this.spiritualRoots.add(root.value());
+//        }
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
-        buffer.writeInt(this.spiritualRoots.size());
-        this.spiritualRoots.forEach(type -> {
-            buffer.writeRegistryIdUnsafe(SpiritualTypes.registry().getRegistry(), type);
-        });
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+//        buffer.writeInt(this.spiritualRoots.size());
+//        this.spiritualRoots.forEach(type -> {
+//            buffer.writeRegistryIdUnsafe(SpiritualTypes.registry().getRegistry(), type);
+//        });
     }
 
     @Override
@@ -131,8 +129,12 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
 
     @Override
     public boolean canUseSpell(ISpellType spell) {
-        if(spell.getCategory() == SpellUsageCategories.PLAYER_ONLY) return false;
-        if(spell.getCategory().requireEntityTarget()) return EntityHelper.isEntityValid(this.getTarget());
+        if(spell.getCategory() == SpellUsageCategories.PLAYER_ONLY) {
+            return false;
+        }
+        if(spell.getCategory().requireEntityTarget()) {
+            return EntityHelper.isEntityValid(this.getTarget());
+        }
         return true;
     }
 
@@ -168,7 +170,7 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     }
 
     @Override
-    public int getExperienceReward() {
+    public int getBaseExperienceReward() {
         final float realmXp = RealmManager.getStageRequiredCultivation(getRealm(), getRealmStage()) * 0.05F;
         return (int) (realmXp + this.xpReward);
     }
@@ -364,6 +366,7 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
         return this.getMana() >= this.getMaxMana();
     }
 
+    @Override
     public float getMaxMana() {
         return this.getRealm().getSpiritualValue();
     }
@@ -391,11 +394,6 @@ public abstract class IMMMob extends PathfinderMob implements IHasRoot, IHasReal
     @Override
     public Mob self() {
         return this;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

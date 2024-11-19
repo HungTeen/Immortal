@@ -1,13 +1,17 @@
 package hungteen.imm.common.capability.player;
 
-import hungteen.htlib.api.interfaces.IPlayerDataManager;
-import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.api.registry.RangeNumber;
+import hungteen.htlib.platform.HTLibPlatformAPI;
+import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.registry.*;
+import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.registry.ISectType;
+import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
@@ -27,7 +31,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +41,7 @@ import java.util.*;
  * @author: HungTeen
  * @create: 2022-09-24 15:02
  **/
-public class PlayerDataManager implements IPlayerDataManager {
+public class PlayerDataManager {
 
     private final Player player;
     private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>(); // 灵根。
@@ -47,8 +50,8 @@ public class PlayerDataManager implements IPlayerDataManager {
     private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // 法术轮盘。
     private final HashMap<ISectType, Float> sectRelations = new HashMap<>(); // 宗门关系。
     private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class); // 修为。
-    private final HashMap<IRangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // 其他整数数据。
-    private final HashMap<IRangeNumber<Float>, Float> floatMap = new HashMap<>(); // 其他小数数据。
+    private final HashMap<RangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // 其他整数数据。
+    private final HashMap<RangeNumber<Float>, Float> floatMap = new HashMap<>(); // 其他小数数据。
     private IRealmType realmType = RealmTypes.MORTALITY; // 当前境界。
     private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
     private ISpellType preparingSpell = null; // 当前选好的法术。
@@ -79,7 +82,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         }
     }
 
-    @Override
     public void tick() {
         if (EntityHelper.isServer(player)) {
             // 灵气自然增长。
@@ -93,14 +95,14 @@ public class PlayerDataManager implements IPlayerDataManager {
             }
             // 突破检测。
             if (this.getFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS) >= 1) {
-                if ((player.tickCount & 1) == 0)
-                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.get(), 200, 0));
+                if ((player.tickCount & 1) == 0) {
+                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.holder(), 200, 0));
+                }
             }
             //TODO 随时间更新Sect
         }
     }
 
-    @Override
     public CompoundTag saveToNBT() {
         CompoundTag tag = new CompoundTag();
         {
@@ -169,7 +171,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         return tag;
     }
 
-    @Override
     public void loadFromNBT(CompoundTag tag) {
         if (tag.contains("SpiritualRoots")) {
             spiritualRoots.clear();
@@ -260,8 +261,7 @@ public class PlayerDataManager implements IPlayerDataManager {
     /**
      * copy player data when clone event happen.
      */
-    @Override
-    public void cloneFromExistingPlayerData(IPlayerDataManager data, boolean died) {
+    public void cloneFromExistingPlayerData(PlayerDataManager data, boolean died) {
         this.loadFromNBT(data.saveToNBT());
         this.syncToClient();
     }
@@ -269,7 +269,6 @@ public class PlayerDataManager implements IPlayerDataManager {
     /**
      * sync data to client side.
      */
-    @Override
     public void syncToClient() {
         Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
         this.setRealmType(this.realmType); // Must run before sync mana !
@@ -278,11 +277,11 @@ public class PlayerDataManager implements IPlayerDataManager {
             this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, l.getRegistryName());
         });
         this.learnSpells.forEach((spell, level) -> {
-            this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, level);
+            this.sendSpellPacket(SpellPacket.SpellOption.LEARN, spell, level);
         });
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; i++) {
             if (this.spellList[i] != null) {
-                this.sendSpellPacket(SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, this.spellList[i], i);
+                this.sendSpellPacket(SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, this.spellList[i], i);
             }
         }
         this.integerMap.forEach(this::sendIntegerDataPacket);
@@ -335,7 +334,7 @@ public class PlayerDataManager implements IPlayerDataManager {
             PlayerLearnSpellTrigger.INSTANCE.trigger(serverPlayer, spell, level);
             PlayerLearnSpellsTrigger.INSTANCE.trigger(serverPlayer, (int) this.learnSpells.values().stream().filter(l -> l > 0).count());
         }
-        this.sendSpellPacket(SpellPacket.SpellOptions.LEARN, spell, lvl);
+        this.sendSpellPacket(SpellPacket.SpellOption.LEARN, spell, lvl);
     }
 
     public void forgetSpell(ISpellType spell) {
@@ -348,12 +347,12 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void setSpellAt(int pos, ISpellType spell) {
         this.spellList[pos] = spell;
-        this.sendSpellPacket(SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, spell, pos);
+        this.sendSpellPacket(SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, spell, pos);
     }
 
     public void removeSpellAt(int pos) {
         this.spellList[pos] = null;
-        this.sendSpellPacket(SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, SpellTypes.MEDITATION, pos);
+        this.sendSpellPacket(SpellPacket.SpellOption.REMOVE_SPELL_ON_CIRCLE, SpellTypes.MEDITATION, pos);
     }
 
     public ISpellType getSpellAt(int pos) {
@@ -362,14 +361,16 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public boolean isSpellOnCircle(ISpellType spell) {
         for (ISpellType spellType : this.spellList) {
-            if(spell == spellType) return true;
+            if(spell == spellType) {
+                return true;
+            }
         }
         return false;
     }
 
     public void cooldownSpell(@NotNull ISpellType spell, long num) {
         this.spellCDs.put(spell, num);
-        this.sendSpellPacket(SpellPacket.SpellOptions.COOL_DOWN, spell, num);
+        this.sendSpellPacket(SpellPacket.SpellOption.COOL_DOWN, spell, num);
     }
 
     public boolean isSpellOnCoolDown(@NotNull ISpellType spell) {
@@ -388,9 +389,9 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.learnSpells.getOrDefault(spell, 0);
     }
 
-    public void sendSpellPacket(SpellPacket.SpellOptions option, @Nullable ISpellType spell, long num) {
+    public void sendSpellPacket(SpellPacket.SpellOption option, @Nullable ISpellType spell, long num) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new SpellPacket(spell, option, num));
+            NetworkHelper.sendToClient((ServerPlayer) getPlayer(), new SpellPacket(spell, option, num));
         }
     }
 
@@ -411,7 +412,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void sendSectPacket(ISectType sect, float value) {
         if (getPlayer() instanceof ServerPlayer p) {
-            NetworkHandler.sendToClient(p, new SectRelationPacket(sect, value));
+            NetworkHelper.sendToClient(p, new SectRelationPacket(sect, value));
         }
     }
 
@@ -446,21 +447,21 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     /* Player Number Data Related Methods */
 
-    public int getIntegerData(IRangeNumber<Integer> rangeData) {
+    public int getIntegerData(RangeNumber<Integer> rangeData) {
         return integerMap.getOrDefault(rangeData, rangeData.defaultData());
     }
 
-    public float getFloatData(IRangeNumber<Float> rangeData) {
+    public float getFloatData(RangeNumber<Float> rangeData) {
         return floatMap.getOrDefault(rangeData, rangeData.defaultData());
     }
 
-    public void setIntegerData(IRangeNumber<Integer> rangeData, int value) {
+    public void setIntegerData(RangeNumber<Integer> rangeData, int value) {
         value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
         integerMap.put(rangeData, value);
         sendIntegerDataPacket(rangeData, value);
     }
 
-    public void setFloatData(IRangeNumber<Float> rangeData, float value) {
+    public void setFloatData(RangeNumber<Float> rangeData, float value) {
         if (rangeData == PlayerRangeFloats.SPIRITUAL_MANA) {
             value = Mth.clamp(value, rangeData.getMinData(), getFullManaValue());
         } else {
@@ -470,11 +471,11 @@ public class PlayerDataManager implements IPlayerDataManager {
         sendFloatDataPacket(rangeData, value);
     }
 
-    public void addIntegerData(IRangeNumber<Integer> rangeData, int value) {
+    public void addIntegerData(RangeNumber<Integer> rangeData, int value) {
         setIntegerData(rangeData, getIntegerData(rangeData) + value);
     }
 
-    public void addFloatData(IRangeNumber<Float> rangeData, float value) {
+    public void addFloatData(RangeNumber<Float> rangeData, float value) {
         setFloatData(rangeData, getFloatData(rangeData) + value);
     }
 
@@ -498,15 +499,15 @@ public class PlayerDataManager implements IPlayerDataManager {
         return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 1;
     }
 
-    public void sendIntegerDataPacket(IRangeNumber<Integer> rangeData, int value) {
+    public void sendIntegerDataPacket(RangeNumber<Integer> rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
+            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
         }
     }
 
-    public void sendFloatDataPacket(IRangeNumber<Float> rangeData, float value) {
+    public void sendFloatDataPacket(RangeNumber<Float> rangeData, float value) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
+            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
         }
     }
 
@@ -562,7 +563,7 @@ public class PlayerDataManager implements IPlayerDataManager {
 
     public void sendMiscDataPacket(MiscDataPacket.Types type, String data, float value) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHandler.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
+            NetworkHelper.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
         }
     }
 
@@ -577,7 +578,6 @@ public class PlayerDataManager implements IPlayerDataManager {
         return this.realmNode;
     }
 
-    @Override
     public Player getPlayer() {
         return this.player;
     }

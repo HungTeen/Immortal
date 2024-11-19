@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMItems;
@@ -68,6 +68,7 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
         return Optional.ofNullable(this.target);
     }
 
+    @Override
     public boolean shouldRenderAtSqrDistance(double dis) {
         double d0 = this.getBoundingBox().getSize() * 4.0D;
         if (Double.isNaN(d0)) {
@@ -78,14 +79,17 @@ public class SpiritualPearl extends HTEntity implements ItemSupplier {
         return dis < d0 * d0;
     }
 
+    @Override
     public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 
+    @Override
     public boolean isAttackable() {
         return false;
     }
 
+    @Override
     public ItemStack getItem() {
         return new ItemStack(IMMItems.SPIRITUAL_PEARL.get());
     }

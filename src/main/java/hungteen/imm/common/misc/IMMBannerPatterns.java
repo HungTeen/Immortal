@@ -1,11 +1,13 @@
 package hungteen.imm.common.misc;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @author PangTeen
@@ -14,25 +16,22 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public interface IMMBannerPatterns {
 
-    DeferredRegister<BannerPattern> BANNER_PATTERNS = DeferredRegister.create(Registries.BANNER_PATTERN, Util.id());
+    HTVanillaRegistry<BannerPattern> BANNER_PATTERNS = HTRegistryManager.vanilla(Registries.BANNER_PATTERN, Util.id());
 
-    RegistryObject<BannerPattern> CONTINUOUS_MOUNTAIN = register("continuous_mountain");
-    RegistryObject<BannerPattern> FLOWING_CLOUD = register("flowing_cloud");
-    RegistryObject<BannerPattern> FOLDED_THUNDER = register("folded_thunder");
-    RegistryObject<BannerPattern> RHOMBUS = register("rhombus");
-    RegistryObject<BannerPattern> TALISMAN = register("talisman");
-    RegistryObject<BannerPattern> COILED_LOONG = register("coiled_loong");
-    RegistryObject<BannerPattern> HOVERING_PHOENIX = register("hovering_phoenix");
+    HTHolder<BannerPattern> CONTINUOUS_MOUNTAIN = register("continuous_mountain");
+    HTHolder<BannerPattern> FLOWING_CLOUD = register("flowing_cloud");
+    HTHolder<BannerPattern> FOLDED_THUNDER = register("folded_thunder");
+    HTHolder<BannerPattern> RHOMBUS = register("rhombus");
+    HTHolder<BannerPattern> TALISMAN = register("talisman");
+    HTHolder<BannerPattern> COILED_LOONG = register("coiled_loong");
+    HTHolder<BannerPattern> HOVERING_PHOENIX = register("hovering_phoenix");
 
-    static RegistryObject<BannerPattern> register(String name) {
-        return BANNER_PATTERNS.register(name, () -> new BannerPattern(name));
+    static HTHolder<BannerPattern> register(String name) {
+        return BANNER_PATTERNS.register(name, () -> new BannerPattern(Util.prefix(name), name));
     }
 
-    /**
-     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
-     */
-    static void register(IEventBus event) {
-        BANNER_PATTERNS.register(event);
+    static void initialize(IEventBus event) {
+        NeoHelper.initRegistry(BANNER_PATTERNS, event);
     }
 
 }

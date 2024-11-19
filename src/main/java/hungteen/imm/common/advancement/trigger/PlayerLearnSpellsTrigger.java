@@ -1,12 +1,15 @@
 package hungteen.imm.common.advancement.trigger;
 
-import com.google.gson.JsonObject;
-import hungteen.imm.api.registry.ISpellType;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.util.Util;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
+
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -22,30 +25,28 @@ public class PlayerLearnSpellsTrigger extends SimpleCriterionTrigger<PlayerLearn
         return ID;
     }
 
-    protected PlayerLearnSpellsTrigger.TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
-        final int count = GsonHelper.getAsInt(jsonObject, "count", 0);
-        return new PlayerLearnSpellsTrigger.TriggerInstance(predicate, count);
-    }
-
     public void trigger(ServerPlayer player, int count) {
         this.trigger(player, (instance) -> instance.matches(player, count));
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+    @Override
+    public Codec<TriggerInstance> codec() {
+        return TriggerInstance.CODEC;
+    }
 
-        private final int count;
+    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, int count) implements SimpleCriterionTrigger.SimpleInstance  {
 
-        public TriggerInstance(ContextAwarePredicate predicate, int count) {
-            super(ID, predicate);
-            this.count = count;
-        }
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::playerPredicate),
+                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("count", 0).forGetter(TriggerInstance::count)
+        ).apply(instance, TriggerInstance::new));
 
-        public static PlayerLearnSpellsTrigger.TriggerInstance test(ContextAwarePredicate playerPredicate, int count) {
+        public static TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, int count) {
             return new PlayerLearnSpellsTrigger.TriggerInstance(playerPredicate, count);
         }
 
-        public static PlayerLearnSpellsTrigger.TriggerInstance test(int count) {
-            return test(ContextAwarePredicate.ANY, count);
+        public static TriggerInstance test(int count) {
+            return test(Optional.empty(), count);
         }
 
         public boolean matches(ServerPlayer player, int count) {
@@ -53,11 +54,8 @@ public class PlayerLearnSpellsTrigger extends SimpleCriterionTrigger<PlayerLearn
         }
 
         @Override
-        public JsonObject serializeToJson(SerializationContext context) {
-            JsonObject jsonobject = super.serializeToJson(context);
-            jsonobject.addProperty("count", this.count);
-            return jsonobject;
+        public Optional<ContextAwarePredicate> player() {
+            return playerPredicate;
         }
-
     }
 }

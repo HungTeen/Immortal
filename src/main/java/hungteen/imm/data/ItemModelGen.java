@@ -2,17 +2,17 @@ package hungteen.imm.data;
 
 import hungteen.htlib.data.HTItemModelGen;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.imm.common.block.plants.GourdGrownBlock;
-import hungteen.imm.common.item.elixirs.ElixirItem;
-import hungteen.imm.common.world.ElixirManager;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
+import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
+import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
@@ -21,9 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Arrays;
 
@@ -54,7 +53,7 @@ public class ItemModelGen extends HTItemModelGen {
         });
 
         /* Woods */
-        IMMWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodSuitGen);
 
         /* Block-items with tex in block folder */
         Arrays.asList(
@@ -105,14 +104,14 @@ public class ItemModelGen extends HTItemModelGen {
         });
 
         /* For mostly common items. */
-        for (Item item : ForgeRegistries.ITEMS) {
+        for (Item item : ItemHelper.get().values()) {
             if (!Util.in(key(item)) || addedItems.contains(item)){
                 continue;
             }
             if (item instanceof SpawnEggItem) {
                 // for spawn eggs.
                 addedItems.add(item);
-                getBuilder(name(item)).parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+                getBuilder(name(item)).parent(getExistingFile(ResourceLocation.withDefaultNamespace("item/template_spawn_egg")));
             } else if(item instanceof ElixirItem elixirItem){
                 // for elixir items.
                 addedItems.add(item);
@@ -129,7 +128,7 @@ public class ItemModelGen extends HTItemModelGen {
         /*
         Last step for all normal item models.
          */
-        for (Item item : ForgeRegistries.ITEMS) {
+        for (Item item : ItemHelper.get().values()) {
             if (Util.in(key(item)) && !addedItems.contains(item)) {
                 genNormal(name(item), Util.prefix("item/" + name(item)));
             }

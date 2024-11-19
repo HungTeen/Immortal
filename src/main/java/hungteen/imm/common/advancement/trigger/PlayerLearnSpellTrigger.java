@@ -1,13 +1,17 @@
 package hungteen.imm.common.advancement.trigger;
 
-import com.google.gson.JsonObject;
-import hungteen.imm.api.registry.IRealmType;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
+
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -23,46 +27,38 @@ public class PlayerLearnSpellTrigger extends SimpleCriterionTrigger<PlayerLearnS
         return ID;
     }
 
-    protected PlayerLearnSpellTrigger.TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
-        final String spell = GsonHelper.getAsString(jsonObject, "spell");
-        final int level = GsonHelper.getAsInt(jsonObject, "level", 1);
-        return new PlayerLearnSpellTrigger.TriggerInstance(predicate, spell, level);
-    }
-
     public void trigger(ServerPlayer player, ISpellType spell, int level) {
-        this.trigger(player, (instance) -> instance.matches(player, spell.getRegistryName(), level));
+        this.trigger(player, (instance) -> instance.matches(player, spell, level));
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+    @Override
+    public Codec<TriggerInstance> codec() {
+        return TriggerInstance.CODEC;
+    }
 
-        private final String realm;
-        private final int level;
+    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, ISpellType spell, int level) implements SimpleCriterionTrigger.SimpleInstance {
 
-        public TriggerInstance(ContextAwarePredicate predicate, String realm, int level) {
-            super(ID, predicate);
-            this.realm = realm;
-            this.level = level;
-        }
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::playerPredicate),
+                SpellTypes.registry().byNameCodec().fieldOf("spell").forGetter(TriggerInstance::spell),
+                Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("level", 0).forGetter(TriggerInstance::level)
+        ).apply(instance, TriggerInstance::new));
 
-        public static PlayerLearnSpellTrigger.TriggerInstance test(ContextAwarePredicate playerPredicate, String realm, int level) {
-            return new PlayerLearnSpellTrigger.TriggerInstance(playerPredicate, realm, level);
+        public static PlayerLearnSpellTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, ISpellType spell, int level) {
+            return new PlayerLearnSpellTrigger.TriggerInstance(playerPredicate, spell, level);
         }
 
         public static PlayerLearnSpellTrigger.TriggerInstance test(ISpellType spell, int level) {
-            return test(ContextAwarePredicate.ANY, spell.getRegistryName(), level);
+            return test(Optional.empty(), spell, level);
         }
 
-        public boolean matches(ServerPlayer player, String realm, int level) {
-            return this.realm.equals(realm) && level == this.level;
+        public boolean matches(ServerPlayer player, ISpellType spell, int level) {
+            return this.spell().equals(spell) && level == this.level;
         }
 
         @Override
-        public JsonObject serializeToJson(SerializationContext context) {
-            JsonObject jsonobject = super.serializeToJson(context);
-            jsonobject.addProperty("spell", this.realm);
-            jsonobject.addProperty("level", this.level);
-            return jsonobject;
+        public Optional<ContextAwarePredicate> player() {
+            return playerPredicate;
         }
-
     }
 }

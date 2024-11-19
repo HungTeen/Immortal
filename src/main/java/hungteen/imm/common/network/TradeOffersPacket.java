@@ -1,12 +1,7 @@
 package hungteen.imm.common.network;
 
-import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import hungteen.imm.common.menu.MerchantTradeMenu;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /**
  * @author PangTeen
@@ -33,21 +28,21 @@ public class TradeOffersPacket {
         this.tradeOffers.writeToStream(buffer);
     }
 
-    public static class Handler {
-
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(TradeOffersPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                PlayerHelper.getClientPlayer().ifPresent(player -> {
-                    if(player.containerMenu instanceof MerchantTradeMenu menu && player.containerMenu.containerId == message.containerId) {
-                        menu.getTrader().setTradeOffers(message.tradeOffers);
-                    }
-                });
-            });
-            ctx.get().setPacketHandled(true);
-        }
-    }
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(TradeOffersPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(()->{
+//                PlayerHelper.getClientPlayer().ifPresent(player -> {
+//                    if(player.containerMenu instanceof MerchantTradeMenu menu && player.containerMenu.containerId == message.containerId) {
+//                        menu.getTrader().setTradeOffers(message.tradeOffers);
+//                    }
+//                });
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 
 }

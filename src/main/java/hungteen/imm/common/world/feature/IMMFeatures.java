@@ -1,19 +1,21 @@
 package hungteen.imm.common.world.feature;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.common.world.feature.configuration.HorizontalStakeConfiguration;
 import hungteen.imm.common.world.feature.configuration.WoodStakeConfiguration;
 import hungteen.imm.common.world.feature.features.HorizontalStakeFeature;
 import hungteen.imm.common.world.feature.features.WoodStakeFeature;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -22,7 +24,7 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public interface IMMFeatures {
 
-//    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.register("mulberry_tree", () ->
+//    public static final RegistryObject<ConfiguredFeature<?, ?>> MULBERRY_TREE = CONFIGURED_FEATURES.initialize("mulberry_tree", () ->
 //            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
 //                    BlockStateProvider.simple(ImmortalWoods.MULBERRY.getLog()),
 //                    new StraightTrunkPlacer(5, 6, 3),
@@ -32,19 +34,19 @@ public interface IMMFeatures {
 //            ).build())
 //    );
 
-    DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Util.id());
+    HTVanillaRegistry<Feature<?>> FEATURES = HTRegistryManager.vanilla(Registries.FEATURE, Util.id());
 
-    RegistryObject<WoodStakeFeature> WOOD_STAKE = FEATURES.register("wood_stake", () -> new WoodStakeFeature(WoodStakeConfiguration.CODEC));
-    RegistryObject<HorizontalStakeFeature> HORIZONTAL_STAKE = FEATURES.register("horizontal_stake", () -> new HorizontalStakeFeature(HorizontalStakeConfiguration.CODEC));
+    HTHolder<WoodStakeFeature> WOOD_STAKE = FEATURES.register("wood_stake", () -> new WoodStakeFeature(WoodStakeConfiguration.CODEC));
+    HTHolder<HorizontalStakeFeature> HORIZONTAL_STAKE = FEATURES.register("horizontal_stake", () -> new HorizontalStakeFeature(HorizontalStakeConfiguration.CODEC));
 
-    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         IMMOreFeatures.register(context);
         IMMVegetationFeatures.register(context);
         IMMTreeFeatures.register(context);
     }
 
-    static void register(IEventBus modBus){
-        FEATURES.register(modBus);
+    static void initialize(IEventBus modBus){
+        NeoHelper.initRegistry(FEATURES, modBus);
     }
 
     static ResourceKey<ConfiguredFeature<?, ?>> create(String name){

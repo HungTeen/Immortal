@@ -1,12 +1,10 @@
 package hungteen.imm.common.block;
 
-import hungteen.htlib.util.helper.registry.ItemHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -41,7 +39,7 @@ public class WoolCushionBlock extends CushionBlock{
     }
 
     public WoolCushionBlock(DyeColor dyeColor) {
-        super(BlockBehaviour.Properties.copy(Blocks.BLACK_BED).mapColor(dyeColor.getMapColor()));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_BED).mapColor(dyeColor.getMapColor()));
         this.dyeColor = dyeColor;
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
         COLOR_TO_CUSHION.put(dyeColor, this);

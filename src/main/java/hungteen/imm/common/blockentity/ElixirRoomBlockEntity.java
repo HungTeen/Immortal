@@ -1,9 +1,7 @@
 package hungteen.imm.common.blockentity;
 
-import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.common.recipe.IMMRecipes;
@@ -11,20 +9,23 @@ import hungteen.imm.common.world.ElixirManager;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,12 +39,12 @@ import java.util.Optional;
 public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
 
     public static final MutableComponent TITLE = TipUtil.gui("elixir_room");
-    protected final ItemStackHandler itemHandler = new ItemStackHandler(9){
-        @Override
-        public int getSlotLimit(int slot) {
-            return 1;
-        }
-    };
+    protected final NonNullList<ItemStack> itemHandler = NonNullList.createWithCapacity(9);
+//        @Override
+//        public int getSlotLimit(int slot) {
+//            return 1;
+//        }
+//    };
     protected final ContainerData accessData = new ContainerData() {
         @Override
         public int get(int id) {
@@ -98,8 +99,8 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
         this.getFurnaceOpt().ifPresent(furnace -> {
             this.smeltingTick = 0;
             this.updateResult(player);
-            for(int i = 0 ; i < this.itemHandler.getSlots() ; ++ i){
-                this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+            for(int i = 0 ; i < this.itemHandler.size() ; ++ i){
+                this.itemHandler.set(i, ItemStack.EMPTY);
             }
             this.update();
         });
@@ -109,26 +110,24 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     public void onFinish(){
         super.onFinish();
         this.smeltingTick = 0;
-        this.itemHandler.setStackInSlot(4, this.result.copy());
+        this.itemHandler.set(4, this.result.copy());
         this.result = ItemStack.EMPTY;
         this.update();
     }
 
     public void updateResult(Player player){
         if(level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer){
-            final SimpleContainer container = new SimpleContainer(9);
-            for(int i = 0; i < this.itemHandler.getSlots(); ++ i){
-                container.setItem(i, this.itemHandler.getStackInSlot(i));
-            }
-            final Optional<ElixirRecipe> recipe = level.getRecipeManager().getRecipeFor(IMMRecipes.ELIXIR.get(), container, level);
-            if(recipe.isPresent() && matchLevel(recipe.get())){
+            final CraftingInput input = CraftingInput.of(3, 3, this.itemHandler);
+            final Optional<RecipeHolder<ElixirRecipe>> recipeOpt = level.getRecipeManager().getRecipeFor(IMMRecipes.ELIXIR.get(), input, level);
+            if(recipeOpt.isPresent() && matchLevel(recipeOpt.get().value())){
                 // Locked recipe.
-                this.result = recipe.get().assemble(container, level.registryAccess());
-                this.smeltingCD = recipe.get().getSmeltingCD();
-                serverPlayer.awardRecipes(List.of(recipe.get()));
+                ElixirRecipe recipe = recipeOpt.get().value();
+                this.result = recipe.assemble(input, level.registryAccess());
+                this.smeltingCD = recipe.getSmeltingCD();
+                serverPlayer.awardRecipes(List.of(recipeOpt.get()));
             } else {
                 // Custom recipe.
-                ElixirManager.getElixirResult(serverLevel, container).ifPresentOrElse(stack -> {
+                ElixirManager.getElixirResult(serverLevel, this.itemHandler).ifPresentOrElse(stack -> {
                     this.result = stack.copy();
                 }, () -> {
                     this.elixirExplode();
@@ -139,7 +138,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public List<ElixirRecipe> getAvailableRecipes(Level level){
-        return level.getRecipeManager().getAllRecipesFor(IMMRecipes.ELIXIR.get()).stream().filter(this::matchLevel).toList();
+        return level.getRecipeManager().getAllRecipesFor(IMMRecipes.ELIXIR.get()).stream().map(RecipeHolder::value).filter(this::matchLevel).toList();
     }
 
     public void elixirExplode(){
@@ -157,8 +156,8 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public boolean hasIngredient(){
-        for(int i = 0; i < this.itemHandler.getSlots(); ++ i){
-            if(! this.itemHandler.getStackInSlot(i).isEmpty()){
+        for(int i = 0; i < this.itemHandler.size(); ++ i){
+            if(! this.itemHandler.get(i).isEmpty()){
                 return true;
             }
         }
@@ -170,15 +169,15 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         if(tag.contains("ElixirResult")){
-            this.result = ItemStack.of(tag.getCompound("ElixirResult"));
+            this.result = ItemStack.parseOptional(provider, tag.getCompound("ElixirResult"));
         }
         if(tag.contains("SmeltingCD")){
             this.smeltingCD = tag.getInt("SmeltingCD");
@@ -189,9 +188,9 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("ElixirResult", this.result.serializeNBT());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.put("ElixirResult", this.result.saveOptional(provider));
         tag.putInt("SmeltingCD", this.smeltingCD);
         tag.putInt("SmeltingTick", this.smeltingTick);
     }
@@ -201,7 +200,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     @Override
-    public ItemStackHandler getItemHandler() {
+    public NonNullList<ItemStack> getItems() {
         return this.itemHandler;
     }
 
@@ -220,4 +219,8 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
         return RealmManager.getRealm(getBlockState());
     }
 
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        return new int[0];
+    }
 }

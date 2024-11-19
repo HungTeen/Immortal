@@ -1,7 +1,7 @@
 package hungteen.imm.util;
 
+import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.records.HTColor;
 
 import java.util.ArrayList;
 import java.util.List;

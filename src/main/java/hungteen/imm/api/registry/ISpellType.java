@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.ClipContext;
  * @author: HungTeen
  * @create: 2022-09-29 12:30
  **/
-public interface ISpellType extends ISimpleEntry {
+public interface ISpellType extends SimpleEntry {
 
     /**
      * 法术被触发。

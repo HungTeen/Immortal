@@ -1,7 +1,7 @@
 package hungteen.imm.client.model.bake;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -10,12 +10,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +31,7 @@ public class LargeHeldItemBakeModel implements BakedModel {
     private final BakedModel heldModel;
     private final BakedModel guiModel;
 
-    public LargeHeldItemBakeModel(Item item, Map<ResourceLocation, BakedModel> bakedModels) {
+    public LargeHeldItemBakeModel(Item item, Map<ModelResourceLocation, BakedModel> bakedModels) {
         this.heldModel = bakedModels.get(getHeldModelLocation(item));
         this.guiModel = bakedModels.get(getModelLocation(item));
     }
@@ -45,11 +44,11 @@ public class LargeHeldItemBakeModel implements BakedModel {
         }
     }
 
-    public static ResourceLocation getModelLocation(Item item){
+    public static ModelResourceLocation getModelLocation(Item item){
         return new ModelResourceLocation(ItemHelper.get().getKey(item), IMMBakeModels.INVENTORY);
     }
 
-    public static ResourceLocation getHeldModelLocation(Item item){
+    public static ModelResourceLocation getHeldModelLocation(Item item){
         return new ModelResourceLocation(ItemUtil.getLargeHeldLocation(item), IMMBakeModels.INVENTORY);
     }
 

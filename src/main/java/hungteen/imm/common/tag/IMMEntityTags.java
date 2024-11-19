@@ -5,7 +5,6 @@ import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 
 /**
  * @author PangTeen
@@ -36,7 +35,7 @@ public interface IMMEntityTags {
     }
 
     private static TagKey<EntityType<?>> forgeTag(String name){
-        return create(Util.forge().prefix(name));
+        return create(Util.neo().prefix(name));
     }
 
     private static TagKey<EntityType<?>> mcTag(String name){

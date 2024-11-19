@@ -1,11 +1,14 @@
 package hungteen.imm.common.block.artifacts;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.blockentity.FunctionalFurnaceBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -16,10 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,8 +31,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -44,6 +43,10 @@ import javax.annotation.Nullable;
  **/
 public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
 
+    public static final MapCodec<SpiritualFurnaceBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            propertiesCodec(),
+            RealmTypes.registry().byNameCodec().fieldOf("realm").forGetter(SpiritualFurnaceBlock::getRealmType)
+    ).apply(instance, SpiritualFurnaceBlock::new));
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -80,7 +83,7 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
                 final BlockInWorld blockInWorld = getFurnace(match);
                 final BlockPos keypoint = blockInWorld.getPos();
                 if (blockInWorld.getState().getBlock() instanceof SpiritualFurnaceBlock furnaceBlock && player instanceof ServerPlayer serverPlayer && ! serverPlayer.hasContainerOpen()) {
-                    NetworkHooks.openScreen(serverPlayer, furnaceBlock.getMenuProvider(blockState, level, keypoint), buf -> {
+                    serverPlayer.openMenu(furnaceBlock.getMenuProvider(blockState, level, keypoint), buf -> {
                         buf.writeBlockPos(keypoint);
                     });
                 }
@@ -106,7 +109,9 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
 
     @Nullable
     public static SpiritualFurnaceBlockEntity getFurnaceBlockEntity(@NotNull BlockPattern.BlockPatternMatch match) {
-        if (getFurnace(match).getEntity() instanceof SpiritualFurnaceBlockEntity blockEntity) return blockEntity;
+        if (getFurnace(match).getEntity() instanceof SpiritualFurnaceBlockEntity blockEntity) {
+            return blockEntity;
+        }
         return null;
     }
 
@@ -117,7 +122,9 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
     @Nullable
     public static FunctionalFurnaceBlockEntity getFunctionalBlockEntity(@NotNull BlockPattern.BlockPatternMatch match) {
         final BlockInWorld blockInWorld = getFunctional(match);
-        if (getFunctional(match).getEntity() instanceof FunctionalFurnaceBlockEntity blockEntity) return blockEntity;
+        if (getFunctional(match).getEntity() instanceof FunctionalFurnaceBlockEntity blockEntity) {
+            return blockEntity;
+        }
         return null;
     }
 
@@ -137,6 +144,7 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
         return level.isClientSide ? null : createTickerHelper(blockEntityType, IMMBlockEntities.SPIRITUAL_FURNACE.get(), SpiritualFurnaceBlockEntity::serverTick);
     }
 
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
@@ -156,4 +164,8 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
         return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
 }

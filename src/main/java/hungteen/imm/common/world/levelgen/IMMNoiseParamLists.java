@@ -2,7 +2,7 @@ package hungteen.imm.common.world.levelgen;
 
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
 
@@ -27,9 +27,9 @@ public interface IMMNoiseParamLists {
 //            }
 //    );
 
-    static void register(BootstapContext<MultiNoiseBiomeSourceParameterList> context) {
+    static void register(BootstrapContext<MultiNoiseBiomeSourceParameterList> context) {
 //        final HolderGetter<Biome> holdergetter = context.lookup(Registries.BIOME);
-//        context.register(EAST_WORLD, new MultiNoiseBiomeSourceParameterList(EAST_WORLD_PRESET, holdergetter));
+//        context.initialize(EAST_WORLD, new MultiNoiseBiomeSourceParameterList(EAST_WORLD_PRESET, holdergetter));
     }
 
     static ResourceKey<MultiNoiseBiomeSourceParameterList> create(String name) {

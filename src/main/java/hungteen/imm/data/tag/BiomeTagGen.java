@@ -1,10 +1,9 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTTagsProvider;
-import hungteen.htlib.util.helper.registry.BiomeHelper;
+import hungteen.htlib.util.helper.impl.BiomeHelper;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.common.world.biome.IMMBiomes;
-import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -12,9 +11,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,8 +22,8 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class BiomeTagGen extends HTTagsProvider<Biome> {
 
-    public BiomeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, provider, BiomeHelper.get(), Util.id(), existingFileHelper);
+    public BiomeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+        super(output, provider, BiomeHelper.get());
     }
 
     @Override
@@ -41,7 +38,7 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
 
         bind(IMMBiomes.PLAINS, Tags.Biomes.IS_PLAINS);
         bind(IMMBiomes.DESERT, Tags.Biomes.IS_DESERT, Tags.Biomes.IS_HOT, Tags.Biomes.IS_DRY, Tags.Biomes.IS_SANDY);
-        bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE);
+        bind(IMMBiomes.SAVANNA, BiomeTags.IS_SAVANNA, Tags.Biomes.IS_HOT, Tags.Biomes.IS_SPARSE_VEGETATION_OVERWORLD);
         bind(IMMBiomes.BAMBOO_JUNGLE, BiomeTags.IS_JUNGLE, Tags.Biomes.IS_HOT, Tags.Biomes.IS_WET);
 
         /* IMM */

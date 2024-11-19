@@ -1,18 +1,18 @@
 package hungteen.imm.common.event;
 
-import hungteen.imm.ImmortalMod;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/3/28 17:12
  */
-@Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMItemEvents {
 
     @SubscribeEvent

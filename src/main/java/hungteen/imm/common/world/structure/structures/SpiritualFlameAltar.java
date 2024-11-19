@@ -8,12 +8,9 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
-import net.minecraft.data.worldgen.ProcessorLists;
-import net.minecraft.data.worldgen.placement.VillagePlacements;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
@@ -41,7 +38,7 @@ public class SpiritualFlameAltar {
         ));
     }
 
-    public static void initPools(BootstapContext<StructureTemplatePool> context) {
+    public static void initPools(BootstrapContext<StructureTemplatePool> context) {
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         final HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
         final Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);

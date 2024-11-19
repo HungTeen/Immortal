@@ -2,7 +2,7 @@ package hungteen.imm.data;
 
 import hungteen.htlib.data.HTBlockStateGen;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
@@ -18,9 +18,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +90,7 @@ public class BlockStateGen extends HTBlockStateGen {
         this.gen(IMMBlocks.GOURD_STEM.get(), b -> crop(b, GourdStemBlock.AGE, cutout()));
 
         /* Woods */
-        IMMWoods.woods().forEach(this::woodIntegration);
+        IMMWoods.woods().forEach(this::woodSuitGen);
 
         /* Blocks with cross style. */
         Arrays.asList(
@@ -125,7 +124,7 @@ public class BlockStateGen extends HTBlockStateGen {
                 });
 
         /* Common Blocks. */
-        for (Block block : ForgeRegistries.BLOCKS) {
+        for (Block block : BlockHelper.get().values()) {
             if (!Util.in(key(block)) || addedBlocks.contains(block)) {
                 continue;
             }
@@ -136,7 +135,7 @@ public class BlockStateGen extends HTBlockStateGen {
         }
 
         /* Last step for all normal block models. */
-        for (Block block : ForgeRegistries.BLOCKS) {
+        for (Block block : BlockHelper.get().values()) {
             if (Util.in(key(block)) && !addedBlocks.contains(block)) {
                 simpleBlock(block);
             }

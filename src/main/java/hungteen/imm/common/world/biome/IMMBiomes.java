@@ -1,8 +1,8 @@
 package hungteen.imm.common.world.biome;
 
-import hungteen.htlib.util.helper.registry.BiomeHelper;
+import hungteen.htlib.util.helper.impl.BiomeHelper;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -24,7 +24,7 @@ public interface IMMBiomes {
     /**
      * Look at {@link net.minecraft.world.level.biome.Biomes}.
      */
-    static void register(BootstapContext<Biome> context){
+    static void register(BootstrapContext<Biome> context){
         EastWorldBiomes.initBiomes(context);
     }
 

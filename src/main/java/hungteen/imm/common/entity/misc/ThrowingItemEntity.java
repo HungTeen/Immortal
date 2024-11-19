@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.misc;
 
-import hungteen.htlib.util.helper.registry.ItemHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.util.EntityUtil;
@@ -9,14 +9,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.CombatTracker;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -43,9 +41,9 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(WORK_FINISHED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(WORK_FINISHED, false);
     }
 
     @Override
@@ -57,7 +55,9 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
             }
         }
         if (this.workFinished()) {
-            if (!this.noPhysics) this.noPhysics = true;
+            if (!this.noPhysics) {
+                this.noPhysics = true;
+            }
             Optional.ofNullable(this.getOwner()).ifPresentOrElse(entity -> {
                 this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1F));
                 if (!this.level().isClientSide() && entity.distanceTo(this) < 2) {
@@ -90,8 +90,8 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         super.onHitEntity(result);
         double damage = 1F + ItemHelper.getItemBonusDamage(this.getItem(), EquipmentSlot.MAINHAND);
         result.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), (float) damage);
-        if(EntityUtil.ownerOrSelf(this) instanceof LivingEntity living){
-            this.getItem().hurtAndBreak(3, living, (e) -> {
+        if(EntityUtil.ownerOrSelf(this) instanceof LivingEntity living && living.level() instanceof ServerLevel serverLevel){
+            this.getItem().hurtAndBreak(3, serverLevel, living, (e) -> {
                 this.discard();
             });
         }

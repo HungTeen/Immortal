@@ -1,13 +1,13 @@
 package hungteen.imm.common.world.feature;
 
-import hungteen.htlib.util.helper.registry.FeatureHelper;
+import hungteen.htlib.util.helper.impl.FeatureHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.world.feature.configuration.HorizontalStakeConfiguration;
 import hungteen.imm.common.world.feature.configuration.WoodStakeConfiguration;
 import hungteen.imm.util.FeatureUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -44,9 +44,9 @@ public interface IMMVegetationFeatures {
     ResourceKey<ConfiguredFeature<?, ?>> PATCH_GANODERMA = FeatureUtils.createKey("patch_ganoderma");
 
     /**
-     * {@link net.minecraft.data.worldgen.features.VegetationFeatures#bootstrap(BootstapContext)}
+     * {@link net.minecraft.data.worldgen.features.VegetationFeatures#bootstrap(BootstrapContext)}
      */
-    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = FeatureHelper.config().lookup(context);
         final HolderGetter<PlacedFeature> placedFeatures = FeatureHelper.placed().lookup(context);
         Holder<ConfiguredFeature<?, ?>> brownMushroom = features.getOrThrow(TreeFeatures.HUGE_BROWN_MUSHROOM);

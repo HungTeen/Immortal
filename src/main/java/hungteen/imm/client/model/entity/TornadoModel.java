@@ -2,15 +2,11 @@ package hungteen.imm.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.records.HTColor;
 import hungteen.imm.common.entity.misc.Tornado;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
@@ -77,8 +73,8 @@ public class TornadoModel<T extends Tornado> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, rgba);
     }
 
 }

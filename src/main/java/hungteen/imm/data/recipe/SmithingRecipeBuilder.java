@@ -2,14 +2,10 @@ package hungteen.imm.data.recipe;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -19,8 +15,6 @@ import net.minecraft.world.level.ItemLike;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * @program: Immortal
@@ -79,7 +73,7 @@ public class SmithingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public SmithingRecipeBuilder unlockedBy(String name, CriterionTriggerInstance triggerInstance) {
+    public SmithingRecipeBuilder unlockedBy(String name, Criterion<?> triggerInstance) {
         this.advancement.addCriterion(name, triggerInstance);
         return this;
     }
@@ -96,9 +90,9 @@ public class SmithingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(Consumer<FinishedRecipe> p_126141_, ResourceLocation consumer) {
+    public void save(RecipeOutput p_126141_, ResourceLocation consumer) {
         this.ensureValid(consumer);
-        this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(consumer)).rewards(AdvancementRewards.Builder.recipe(consumer)).requirements(RequirementsStrategy.OR);
+//        this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(consumer)).rewards(AdvancementRewards.Builder.recipe(consumer)).requirements(RequirementsStrategy.OR);
 //        p_126141_.accept(new SmithingRecipeBuilder.SmithingResult(
 //                consumer,
 //                this.result,
@@ -116,31 +110,31 @@ public class SmithingRecipeBuilder implements RecipeBuilder {
     }
 
     private void ensureValid(ResourceLocation location) {
-        if (this.rows.isEmpty()) {
-            throw new IllegalStateException("No pattern is defined for shaped recipe " + location + "!");
-        } else {
-            Set<Character> set = Sets.newHashSet(this.key.keySet());
-            set.remove(' ');
-
-            for(String s : this.rows) {
-                for(int i = 0; i < s.length(); ++i) {
-                    char c0 = s.charAt(i);
-                    if (!this.key.containsKey(c0) && c0 != ' ') {
-                        throw new IllegalStateException("Pattern in recipe " + location + " uses undefined symbol '" + c0 + "'");
-                    }
-
-                    set.remove(c0);
-                }
-            }
-
-            if (!set.isEmpty()) {
-                throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + location);
-            } else if (this.rows.size() == 1 && this.rows.get(0).length() == 1) {
-                throw new IllegalStateException("Shaped recipe " + location + " only takes in a single item - should it be a shapeless recipe instead?");
-            } else if (this.advancement.getCriteria().isEmpty()) {
-                throw new IllegalStateException("No way of obtaining recipe " + location);
-            }
-        }
+//        if (this.rows.isEmpty()) {
+//            throw new IllegalStateException("No pattern is defined for shaped recipe " + location + "!");
+//        } else {
+//            Set<Character> set = Sets.newHashSet(this.key.keySet());
+//            set.remove(' ');
+//
+//            for(String s : this.rows) {
+//                for(int i = 0; i < s.length(); ++i) {
+//                    char c0 = s.charAt(i);
+//                    if (!this.key.containsKey(c0) && c0 != ' ') {
+//                        throw new IllegalStateException("Pattern in recipe " + location + " uses undefined symbol '" + c0 + "'");
+//                    }
+//
+//                    set.remove(c0);
+//                }
+//            }
+//
+//            if (!set.isEmpty()) {
+//                throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + location);
+//            } else if (this.rows.size() == 1 && this.rows.get(0).length() == 1) {
+//                throw new IllegalStateException("Shaped recipe " + location + " only takes in a single item - should it be a shapeless recipe instead?");
+//            } else if (this.advancement.getCriteria().isEmpty()) {
+//                throw new IllegalStateException("No way of obtaining recipe " + location);
+//            }
+//        }
     }
 
 //    public static class SmithingResult extends ShapedRecipeBuilder.Result {

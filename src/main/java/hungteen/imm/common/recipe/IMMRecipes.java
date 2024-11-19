@@ -1,14 +1,16 @@
 package hungteen.imm.common.recipe;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.common.recipe.HTRecipeType;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -18,19 +20,19 @@ import net.minecraftforge.registries.RegistryObject;
 public class IMMRecipes {
 
     static {
-        ShapedRecipe.setCraftingSize(7, 7);
+        ShapedRecipePattern.setCraftingSize(7, 7);
     }
 
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Util.id());
+    private static final HTVanillaRegistry<RecipeType<?>> RECIPE_TYPES = HTRegistryManager.vanilla(Registries.RECIPE_TYPE, Util.id());
 
-    public static final RegistryObject<RecipeType<ElixirRecipe>> ELIXIR = register("elixir");
-    public static final RegistryObject<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT = register("smithing_artifact");
+    public static final HTHolder<RecipeType<ElixirRecipe>> ELIXIR = register("elixir");
+    public static final HTHolder<RecipeType<SmithingArtifactRecipe>> SMITHING_ARTIFACT = register("smithing_artifact");
 
-    public static void register(IEventBus event){
-        RECIPE_TYPES.register(event);
+    public static void initialize(IEventBus event){
+        NeoHelper.initRegistry(RECIPE_TYPES, event);
     }
 
-    private static <T extends Recipe<?>> RegistryObject<RecipeType<T>> register(String name){
+    private static <T extends Recipe<?>> HTHolder<RecipeType<T>> register(String name){
         return RECIPE_TYPES.register(name, () -> new HTRecipeType<>(Util.prefix(name)));
     }
 

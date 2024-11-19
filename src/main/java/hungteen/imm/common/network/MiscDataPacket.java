@@ -1,23 +1,16 @@
 package hungteen.imm.common.network;
 
-import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
-import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.util.PlayerUtil;
+import hungteen.htlib.common.network.ClientPacketContext;
+import hungteen.htlib.common.network.packet.PlayToClientPacket;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-10-26 18:48
  **/
-public class MiscDataPacket {
+public class MiscDataPacket implements PlayToClientPacket {
 
     private final int type;
     private final String data;
@@ -41,30 +34,40 @@ public class MiscDataPacket {
         buffer.writeFloat(this.value);
     }
 
-    public static class Handler {
+    @Override
+    public void process(ClientPacketContext clientPacketContext) {
 
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(MiscDataPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                PlayerHelper.getClientPlayer().ifPresent(player -> {
-                    final Types type = Types.values()[message.type];
-                    switch (type) {
-                        case ADD_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.addSpiritualRoot(player, l));
-                        case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
-                        case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
-                        case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
-                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.clientSetRealm(player, realm));
-                        case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
-                        case PREPARING_SPELL -> SpellTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setPreparingSpell(player, l));
-                        case CLEAR_PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, null);
-                    }
-                });
-            });
-            ctx.get().setPacketHandled(true);
-        }
     }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
+    }
+
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(MiscDataPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(()->{
+//                PlayerHelper.getClientPlayer().ifPresent(player -> {
+//                    final Types type = Types.values()[message.type];
+//                    switch (type) {
+//                        case ADD_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.addSpiritualRoot(player, l));
+//                        case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
+//                        case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
+//                        case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
+//                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.clientSetRealm(player, realm));
+//                        case REALM_STAGE -> PlayerUtil.checkAndSetRealmStage(player, RealmStages.valueOf(message.data));
+//                        case PREPARING_SPELL -> SpellTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.setPreparingSpell(player, l));
+//                        case CLEAR_PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, null);
+//                    }
+//                });
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 
     public enum Types{
 

@@ -1,11 +1,14 @@
 package hungteen.imm.common.recipe;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -14,16 +17,16 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMRecipeSerializers {
 
-    private static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Util.id());
+    private static final HTVanillaRegistry<RecipeSerializer<?>> SERIALIZERS = HTRegistryManager.vanilla(Registries.RECIPE_SERIALIZER, Util.id());
 
-    public static final RegistryObject<ElixirRecipe.Serializer> ELIXIR = SERIALIZERS.register("elixir_serializer", ElixirRecipe.Serializer::new);
-    public static final RegistryObject<SmithingArtifactRecipe.Serializer> SMITHING_ARTIFACT = SERIALIZERS.register("smithing_artifact_serializer", SmithingArtifactRecipe.Serializer::new);
+    public static final HTHolder<ElixirRecipe.Serializer> ELIXIR = SERIALIZERS.register("elixir_serializer", ElixirRecipe.Serializer::new);
+    public static final HTHolder<SmithingArtifactRecipe.Serializer> SMITHING_ARTIFACT = SERIALIZERS.register("smithing_artifact_serializer", SmithingArtifactRecipe.Serializer::new);
 
     /**
-     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
+     * {@link IMMInitializer#defferRegister(IEventBus)}
      */
-    public static void register(IEventBus event){
-        SERIALIZERS.register(event);
+    public static void initialize(IEventBus event){
+        NeoHelper.initRegistry(SERIALIZERS, event);
     }
 
 }

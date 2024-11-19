@@ -1,6 +1,6 @@
 package hungteen.imm.api.registry;
 
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 
 /**
  * 修炼类型。
@@ -8,7 +8,7 @@ import hungteen.htlib.api.interfaces.ISimpleEntry;
  * @author: HungTeen
  * @create: 2022-10-13 15:08
  **/
-public interface ICultivationType extends ISimpleEntry {
+public interface ICultivationType extends SimpleEntry {
 
     /**
      * 能否使用附魔物品。

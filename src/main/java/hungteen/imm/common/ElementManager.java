@@ -1,8 +1,8 @@
 package hungteen.imm.common;
 
+import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
-import hungteen.htlib.util.records.HTColor;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
@@ -136,7 +136,9 @@ public class ElementManager {
 
     public static void clientTickElements(Level level, Entity entity) {
         for (Elements element : Elements.values()) {
-            if(element == Elements.SPIRIT) continue; // 业元素不显示粒子。
+            if(element == Elements.SPIRIT) {
+                continue; // 业元素不显示粒子。
+            }
             final float elementAmount = getAmount(entity, element, false);
             if (level.getRandom().nextFloat() < 0.2F) {
                 final int particleCount = Math.min(Mth.ceil(elementAmount / 15), 5);
@@ -180,8 +182,8 @@ public class ElementManager {
     }
 
     public static float getDecayFactor(Entity entity) {
-        if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.get())) {
-            return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.get());
+        if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.holder())) {
+            return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.holder());
         }
         if (entity instanceof ElementCrystal) {
             return 0.25F;
@@ -219,7 +221,9 @@ public class ElementManager {
             if (getDecayAmount(mid, amount, factor) <= 0) {
                 res = mid;
                 r = mid - 1;
-            } else l = mid + 1;
+            } else {
+                l = mid + 1;
+            }
         }
         return res;
     }

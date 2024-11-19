@@ -53,14 +53,6 @@ public interface IArtifactTier extends Tier {
     }
 
     /**
-     * No usage.
-     */
-    @Override
-    default int getLevel(){
-        return 0;
-    }
-
-    /**
      * No usage because Artifact Item can not enchant.
      * @return enchantment point.
      */

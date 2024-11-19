@@ -4,14 +4,11 @@ import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.BlockUtil;
-import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,8 +19,8 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class BlockTagGen extends HTBlockTagGen {
 
-    public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, provider, Util.id(), existingFileHelper);
+    public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+        super(output, provider);
     }
 
     @Override

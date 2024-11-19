@@ -2,6 +2,7 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
@@ -23,12 +24,12 @@ import java.util.List;
  */
 public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implements ILearnRequirement {
 
-    public static final Codec<SpellRequirement> CODEC = RecordCodecBuilder.<SpellRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<SpellRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.mapPair(
                     SpellTypes.registry().byNameCodec().fieldOf("spell"),
                     Codec.intRange(0, Integer.MAX_VALUE).fieldOf("level")
             ).codec().listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
-    ).apply(instance, SpellRequirement::new)).codec();
+    ).apply(instance, SpellRequirement::new));
 
     public static SpellRequirement single(ISpellType spell, int level) {
         return new SpellRequirement(List.of(Pair.of(spell, level)));

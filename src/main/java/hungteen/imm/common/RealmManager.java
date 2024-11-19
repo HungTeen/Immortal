@@ -1,11 +1,8 @@
 package hungteen.imm.common;
 
-import hungteen.htlib.HTLib;
-import hungteen.htlib.common.impl.raid.HTRaidComponents;
-import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.ImmortalMod;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
@@ -25,7 +22,6 @@ import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMDamageTypeTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
-import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -51,8 +47,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -82,7 +77,7 @@ public class RealmManager {
     }
 
     /**
-     * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
+     * {@link IMMInitializer#setUp(FMLCommonSetupEvent)}
      */
     public static void init(){
         fillEntityMap();
@@ -139,7 +134,7 @@ public class RealmManager {
             PlayerUtil.checkAndSetRealmStage(player, stage);
         }
         player.playSound(SoundEvents.PLAYER_LEVELUP);
-        player.removeEffect(IMMEffects.BREAK_THROUGH.get());
+        player.removeEffect(IMMEffects.BREAK_THROUGH.holder());
     }
 
     public static void tryBreakThrough(ServerPlayer player){
@@ -153,7 +148,7 @@ public class RealmManager {
                 WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
                     return raid.match(nextRealm, nextStage, difficulty);
                 }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
-                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
+//                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
                     PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
                 }, () -> {
                     breakThrough(player, nextRealm, nextStage);
@@ -184,34 +179,32 @@ public class RealmManager {
         }
     }
 
-    /**
-     * {@link ImmortalMod#ImmortalMod()}
-     */
-    public static void realmAttackGap(LivingHurtEvent event){
-        final LivingEntity target = event.getEntity();
-        final DamageSource source = event.getSource();
-        final double amount = event.getAmount();
-        double gapAmount = event.getAmount();
-        if(source.getEntity() != null){
-            final int gap = getRealmGap(target, source.getEntity());
-            if(gap > 0) {
-                // 伤害减免。
-                gapAmount = amount * Math.pow(0.1, gap);
-            } else {
-                gapAmount = amount * Math.pow(1.1, - gap);
-            }
-        } else {
-            final int gap = source.is(IMMDamageTypeTags.IGNORE_REALM) ? 0 : getRealmGap(getRealm(target), getDamageSourceRealm(source));
-            if(gap > 0){
-                gapAmount = amount * Math.pow(0.2, gap);
-            }
-        }
-        // 理论上伤害不能低于0.1。
-        event.setAmount((float) Math.max(Math.min(0.1F, amount), gapAmount));
-    }
+//    public static void realmAttackGap(LivingHurtEvent event){
+//        final LivingEntity target = event.getEntity();
+//        final DamageSource source = event.getSource();
+//        final double amount = event.getAmount();
+//        double gapAmount = event.getAmount();
+//        if(source.getEntity() != null){
+//            final int gap = getRealmGap(target, source.getEntity());
+//            if(gap > 0) {
+//                // 伤害减免。
+//                gapAmount = amount * Math.pow(0.1, gap);
+//            } else {
+//                gapAmount = amount * Math.pow(1.1, - gap);
+//            }
+//        } else {
+//            final int gap = source.is(IMMDamageTypeTags.IGNORE_REALM) ? 0 : getRealmGap(getRealm(target), getDamageSourceRealm(source));
+//            if(gap > 0){
+//                gapAmount = amount * Math.pow(0.2, gap);
+//            }
+//        }
+//        // 理论上伤害不能低于0.1。
+//        event.setAmount((float) Math.max(Math.min(0.1F, amount), gapAmount));
+//    }
 
     public static List<BreakThroughRaid> breakThroughRaids(Level level){
-        return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
+//        return HTRaidComponents.registry().getValues(level).stream().filter(BreakThroughRaid.class::isInstance).map(BreakThroughRaid.class::cast).toList();
+        return List.of();
     }
 
     public static void checkAndAddBreakThroughProgress(Player player, float progress){
@@ -345,19 +338,30 @@ public class RealmManager {
     }
 
     public static IRealmType getRealm(ItemStack stack){
-        if(stack.is(IMMItemTags.COMMON_ARTIFACTS)) return RealmTypes.COMMON_ARTIFACT;
-        if(stack.is(IMMItemTags.MODERATE_ARTIFACTS)) return RealmTypes.MODERATE_ARTIFACT;
-        if(stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) return RealmTypes.ADVANCED_ARTIFACT;
-        if(stack.getItem() instanceof IArtifactItem artifactItem) return artifactItem.getArtifactRealm(stack);
-        if(stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) return artifactBlock.getArtifactRealm(stack);
+        if(stack.is(IMMItemTags.COMMON_ARTIFACTS)) {
+            return RealmTypes.COMMON_ARTIFACT;
+        } else if(stack.is(IMMItemTags.MODERATE_ARTIFACTS)) {
+            return RealmTypes.MODERATE_ARTIFACT;
+        } else if(stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) {
+            return RealmTypes.ADVANCED_ARTIFACT;
+        } else if(stack.getItem() instanceof IArtifactItem artifactItem) {
+            return artifactItem.getArtifactRealm(stack);
+        } else if(stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) {
+            return artifactBlock.getArtifactRealm(stack);
+        }
         return RealmTypes.NOT_IN_REALM;
     }
 
     public static IRealmType getRealm(BlockState state){
-        if(state.is(IMMBlockTags.COMMON_ARTIFACTS)) return RealmTypes.COMMON_ARTIFACT;
-        if(state.is(IMMBlockTags.MODERATE_ARTIFACTS)) return RealmTypes.MODERATE_ARTIFACT;
-        if(state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) return RealmTypes.ADVANCED_ARTIFACT;
-        if(state.getBlock() instanceof IArtifactBlock artifactBlock) return artifactBlock.getRealm(state);
+        if(state.is(IMMBlockTags.COMMON_ARTIFACTS)) {
+            return RealmTypes.COMMON_ARTIFACT;
+        } else if(state.is(IMMBlockTags.MODERATE_ARTIFACTS)) {
+            return RealmTypes.MODERATE_ARTIFACT;
+        } else if(state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) {
+            return RealmTypes.ADVANCED_ARTIFACT;
+        } else if(state.getBlock() instanceof IArtifactBlock artifactBlock) {
+            return artifactBlock.getRealm(state);
+        }
         return RealmTypes.NOT_IN_REALM;
     }
 
@@ -407,17 +411,24 @@ public class RealmManager {
 
     @Nullable
     private static RealmNode seekRealm(RealmNode root, IRealmType type){
-        if(root == null) return null;
-        if(root.realm == type) return root;
+        if(root == null) {
+            return null;
+        } else if(root.realm == type) {
+            return root;
+        }
         for (RealmNode nextRealm : root.nextRealms) {
             final RealmNode node = seekRealm(nextRealm, type);
-            if(node != null) return node;
+            if(node != null) {
+                return node;
+            }
         }
         return null;
     }
 
     public static MutableComponent getRealmInfo(IRealmType realm, @Nullable RealmStages stage){
-        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY || stage == null) return realm.getComponent();
+        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY || stage == null) {
+            return realm.getComponent();
+        }
         return realm.getComponent().append("-").append(getStageComponent(stage));
     }
 
@@ -483,7 +494,7 @@ public class RealmManager {
 
         public void add(RealmNode node){
             if(nextRealms.stream().anyMatch(l -> l.realm == node.realm)){
-                HTLib.getLogger().warn("Duplicate realm node : " + node.realm.getRegistryName());
+                IMMAPI.logger().warn("Duplicate realm node : {}", node.realm.getRegistryName());
             } else {
                 nextRealms.add(node);
             }

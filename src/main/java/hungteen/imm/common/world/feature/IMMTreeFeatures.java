@@ -1,6 +1,6 @@
 package hungteen.imm.common.world.feature;
 
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -35,7 +35,7 @@ public interface IMMTreeFeatures {
     /**
      * {@link net.minecraft.data.worldgen.features.TreeFeatures}
      */
-    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         final BeehiveDecorator beehiveDecorator = new BeehiveDecorator(0.02F);
         FeatureUtils.register(context, TALL_BIRCH_TREE, Feature.TREE, createStraightBlobTree(
                 Blocks.BIRCH_LOG, Blocks.BIRCH_LEAVES, 6, 2, 3, 2

@@ -22,35 +22,35 @@ import java.util.Optional;
 public class ClientUtil {
 
     public static Optional<Minecraft> mc(){
-        return Optional.ofNullable(ClientProxy.mc());
+        return Optional.ofNullable(IMMClientProxy.mc());
     }
 
     public static Optional<MultiPlayerGameMode> mode(){
-        return Optional.ofNullable(ClientProxy.mc().gameMode);
+        return Optional.ofNullable(IMMClientProxy.mc().gameMode);
     }
 
     public static Options option(){
-        return ClientProxy.mc().options;
+        return IMMClientProxy.mc().options;
     }
 
     public static LocalPlayer player(){
-        return ClientProxy.mc().player;
+        return IMMClientProxy.mc().player;
     }
 
     public static Screen screen(){
-        return ClientProxy.mc().screen;
+        return IMMClientProxy.mc().screen;
     }
 
     public static ClientLevel level(){
-        return ClientProxy.mc().level;
+        return IMMClientProxy.mc().level;
     }
 
     public static SoundManager soundManager(){
-        return ClientProxy.mc().getSoundManager();
+        return IMMClientProxy.mc().getSoundManager();
     }
 
     public static Camera camera(){
-        return ClientProxy.mc().gameRenderer.getMainCamera();
+        return IMMClientProxy.mc().gameRenderer.getMainCamera();
     }
 
     public static void push(String name, Runnable runnable) {
@@ -65,11 +65,11 @@ public class ClientUtil {
     }
 
     public static void push(String name){
-        ClientProxy.mc().getProfiler().push(name);
+        IMMClientProxy.mc().getProfiler().push(name);
     }
 
     public static void pop(){
-        ClientProxy.mc().getProfiler().pop();
+        IMMClientProxy.mc().getProfiler().pop();
     }
 
     public static ModelResourceLocation getModelLocation(ResourceLocation location){

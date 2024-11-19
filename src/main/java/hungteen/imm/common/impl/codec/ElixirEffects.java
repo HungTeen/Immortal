@@ -1,11 +1,10 @@
 package hungteen.imm.common.impl.codec;
 
-import hungteen.htlib.api.interfaces.IHTCodecRegistry;
-import hungteen.htlib.common.registry.HTCodecRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.api.registry.HTCodecRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.common.codec.ElixirEffect;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffects;
 
@@ -18,17 +17,17 @@ import java.util.List;
  */
 public interface ElixirEffects {
 
-    HTCodecRegistry<ElixirEffect> SETTING = HTRegistryManager.create(Util.prefix("elixir_effect"), () -> ElixirEffect.CODEC, () -> ElixirEffect.CODEC);
+    HTCodecRegistry<ElixirEffect> SETTING = HTRegistryManager.codec(Util.prefix("elixir_effect"), () -> ElixirEffect.CODEC, () -> ElixirEffect.CODEC);
 
     ResourceKey<ElixirEffect> SPEED_UP = create("speed_up");
     ResourceKey<ElixirEffect> SLOW_DOWN = create("slow_down");
 
-    static void register(BootstapContext<ElixirEffect> context) {
+    static void register(BootstrapContext<ElixirEffect> context) {
         context.register(SPEED_UP, new ElixirEffect(MobEffects.MOVEMENT_SPEED, List.of(1)));
         context.register(SLOW_DOWN, new ElixirEffect(MobEffects.MOVEMENT_SLOWDOWN, List.of(2)));
     }
 
-    static IHTCodecRegistry<ElixirEffect> registry() {
+    static HTCodecRegistry<ElixirEffect> registry() {
         return SETTING;
     }
 

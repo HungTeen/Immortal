@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.structure.structures;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.util.helper.registry.FeatureHelper;
+import hungteen.htlib.util.helper.impl.FeatureHelper;
 import hungteen.imm.common.world.feature.IMMStructurePlacements;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
 import hungteen.imm.common.world.structure.IMMTemplatePools;
@@ -9,9 +9,8 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -26,7 +25,7 @@ import java.util.List;
  **/
 public class SpiritLab {
 
-    public static void initPools(BootstapContext<StructureTemplatePool> context) {
+    public static void initPools(BootstrapContext<StructureTemplatePool> context) {
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         final HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
         final HolderGetter<PlacedFeature> features = FeatureHelper.placed().lookup(context);

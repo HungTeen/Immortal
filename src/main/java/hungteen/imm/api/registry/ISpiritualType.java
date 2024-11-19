@@ -1,7 +1,7 @@
 package hungteen.imm.api.registry;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.api.enums.Elements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
@@ -14,7 +14,7 @@ import java.util.Set;
  * @author: HungTeen
  * @create: 2022-09-24 16:03
  **/
-public interface ISpiritualType extends ISimpleEntry, WeightedEntry {
+public interface ISpiritualType extends SimpleEntry, WeightedEntry {
 
     /**
      * 此灵根包含哪些基本元素。
@@ -33,6 +33,7 @@ public interface ISpiritualType extends ISimpleEntry, WeightedEntry {
      * 灵根产生的权重。
      * the spawn weight of spiritual roots.
      */
+    @Override
     Weight getWeight();
 
     /**

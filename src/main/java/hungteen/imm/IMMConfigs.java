@@ -1,7 +1,8 @@
 package hungteen.imm;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -14,25 +15,22 @@ public class IMMConfigs {
     private static Common COMMON_CONFIG;
     private static Client CLIENT_CONFIG;
 
-    /**
-     * {@link ImmortalMod#ImmortalMod()}
-     */
-    public static void init(){
+    public static void init(ModContainer container){
         {
-            final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
-            ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, specPair.getRight());
+            final Pair<Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Common::new);
+            container.registerConfig(ModConfig.Type.COMMON, specPair.getRight());
             COMMON_CONFIG = specPair.getLeft();
         }
         {
-            final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
-            ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.CLIENT, specPair.getRight());
+            final Pair<Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Client::new);
+            container.registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
             CLIENT_CONFIG = specPair.getLeft();
         }
     }
 
     public static class Common {
 
-        public Common(ForgeConfigSpec.Builder builder) {
+        public Common(ModConfigSpec.Builder builder) {
             //World Settings.
             builder.comment("Settings about global rules.").push("Rule Settings");
             {
@@ -125,35 +123,35 @@ public class IMMConfigs {
         public BlockSettings BlockSettings = new BlockSettings();
 
         public static class RuleSettings {
-            public ForgeConfigSpec.DoubleValue noRootChance;
-            public ForgeConfigSpec.DoubleValue oneRootChance;
-            public ForgeConfigSpec.DoubleValue twoRootChance;
-            public ForgeConfigSpec.DoubleValue threeRootChance;
-            public ForgeConfigSpec.DoubleValue fourRootChance;
-            public ForgeConfigSpec.IntValue metalRootWeight;
-            public ForgeConfigSpec.IntValue woodRootWeight;
-            public ForgeConfigSpec.IntValue waterRootWeight;
-            public ForgeConfigSpec.IntValue fireRootWeight;
-            public ForgeConfigSpec.IntValue earthRootWeight;
-            public ForgeConfigSpec.IntValue spiritRootWeight;
+            public ModConfigSpec.DoubleValue noRootChance;
+            public ModConfigSpec.DoubleValue oneRootChance;
+            public ModConfigSpec.DoubleValue twoRootChance;
+            public ModConfigSpec.DoubleValue threeRootChance;
+            public ModConfigSpec.DoubleValue fourRootChance;
+            public ModConfigSpec.IntValue metalRootWeight;
+            public ModConfigSpec.IntValue woodRootWeight;
+            public ModConfigSpec.IntValue waterRootWeight;
+            public ModConfigSpec.IntValue fireRootWeight;
+            public ModConfigSpec.IntValue earthRootWeight;
+            public ModConfigSpec.IntValue spiritRootWeight;
         }
 
         public static class BlockSettings {
-            public ForgeConfigSpec.IntValue furnaceExplodeCD;
+            public ModConfigSpec.IntValue furnaceExplodeCD;
         }
 
     }
 
     public static class Client {
 
-        public Client(ForgeConfigSpec.Builder builder) {
+        public Client(ModConfigSpec.Builder builder) {
                 defaultSpellCircle = builder
                         .translation("config.immortal.default_spell_circle")
                         .comment("Use the default setting to control spell circle.")
                         .define("DefaultSpellCircle", true);
         }
 
-        public ForgeConfigSpec.BooleanValue defaultSpellCircle;
+        public ModConfigSpec.BooleanValue defaultSpellCircle;
 
     }
 

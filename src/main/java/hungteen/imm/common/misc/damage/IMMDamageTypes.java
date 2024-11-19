@@ -2,7 +2,7 @@ package hungteen.imm.common.misc.damage;
 
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageScaling;
@@ -23,7 +23,7 @@ public interface IMMDamageTypes {
     ResourceKey<DamageType> WATER_ELEMENT = create("water_element");
     ResourceKey<DamageType> FIRE_ELEMENT = create("fire_element");
 
-    static void register(BootstapContext<DamageType> context) {
+    static void register(BootstrapContext<DamageType> context) {
         register(context, SPIRITUAL_FLAME, 0.06F);
         register(context, SPIRITUAL_MANA, 0.05F);
         register(context, ELEMENT_REACTION, 0F);
@@ -32,7 +32,7 @@ public interface IMMDamageTypes {
         register(context, FIRE_ELEMENT, 0.06F);
     }
 
-    static void register(BootstapContext<DamageType> context, ResourceKey<DamageType> key, float exhaustion){
+    static void register(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, float exhaustion){
         context.register(key, new DamageType("imm." + key.location().getPath(), DamageScaling.NEVER, exhaustion, DamageEffects.HURT, DeathMessageType.DEFAULT));
     }
 

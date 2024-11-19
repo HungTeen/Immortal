@@ -1,13 +1,14 @@
 package hungteen.imm.common.world;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.elixirs.CustomElixirItem;
 import hungteen.imm.util.Util;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -15,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ClampedNormalInt;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -48,12 +48,12 @@ public class ElixirManager extends SavedData {
     /**
      * @return empty means will explode.
      */
-    public static Optional<ItemStack> getElixirResult(ServerLevel level, SimpleContainer container){
+    public static Optional<ItemStack> getElixirResult(ServerLevel level, NonNullList<ItemStack> container){
         final ElixirManager manager = get(level);
         final Map<Integer, Integer> bins = new HashMap<>();
-        for(int i = 0; i < container.getContainerSize(); ++ i){
-            if(! container.getItem(i).isEmpty()){
-                final ResourceLocation key = ItemHelper.get().getKey(container.getItem(i).getItem());
+        for(int i = 0; i < container.size(); ++ i){
+            if(! container.get(i).isEmpty()){
+                final ResourceLocation key = ItemHelper.get().getKey(container.get(i).getItem());
                 final BitSet value = manager.getElixirValue(key);
                 final BitSet direction = manager.getElixirDirection(key);
                 for(int j = 0; j < BITS; ++ j){
@@ -135,7 +135,9 @@ public class ElixirManager extends SavedData {
         final RandomSource random = level.getRandom();
         final BitSet bitSet = new BitSet(BITS);
         for(int i = 0; i < BITS; ++ i){
-            if(random.nextFloat() < 0.5F) bitSet.set(i);
+            if(random.nextFloat() < 0.5F) {
+                bitSet.set(i);
+            }
         }
         return bitSet;
     }
@@ -153,16 +155,19 @@ public class ElixirManager extends SavedData {
     }
 
     public static ElixirManager get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent((compound) -> load(level, compound), () -> new ElixirManager(level), "elixir_manager");
+        return level.getDataStorage().computeIfAbsent(new Factory<>(
+                () -> new ElixirManager(level),
+                (tag, provider) -> load(level, tag, provider)
+        ), "elixir_manager");
     }
 
-    private static ElixirManager load(ServerLevel level, CompoundTag tag) {
+    private static ElixirManager load(ServerLevel level, CompoundTag tag, HolderLookup.Provider provider) {
         ElixirManager manager = new ElixirManager(level);
         if (tag.contains("ElixirValues")) {
             final ListTag list = tag.getList("ElixirValues", Tag.TAG_COMPOUND);
             list.stream().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast).forEach(nbt -> {
                if(nbt.contains("Name")){
-                   final ResourceLocation key = new ResourceLocation(nbt.getString("Name"));
+                   final ResourceLocation key = ResourceLocation.parse(nbt.getString("Name"));
                    if(nbt.contains("Value")){
                        manager.setElixirValue(key, nbt.getByteArray("Value"));
                    }
@@ -175,7 +180,8 @@ public class ElixirManager extends SavedData {
         return manager;
     }
 
-    public CompoundTag save(CompoundTag tag) {
+    @Override
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
         {
             final ListTag list = new ListTag();
             this.elixirValue.keySet().forEach(key -> {

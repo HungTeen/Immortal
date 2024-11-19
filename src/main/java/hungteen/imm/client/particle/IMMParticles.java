@@ -1,18 +1,21 @@
 package hungteen.imm.client.particle;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.client.ClientRegister;
 import hungteen.imm.util.Util;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 /**
  * Step 1. make your own particle class. <br>
- * Step 2. register particle type here. <br>
+ * Step 2. initialize particle type here. <br>
  * Step 3. bind your particle factory at {@link ClientRegister#registerFactories(RegisterParticleProvidersEvent)}
  * @program: Immortal
  * @author: HungTeen
@@ -20,24 +23,24 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMParticles {
 
-    // Don't forget register particle factory in client register.
-    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =  DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Util.id());
+    // Don't forget initialize particle factory in client initialize.
+    private static final HTVanillaRegistry<ParticleType<?>> PARTICLE_TYPES =  HTRegistryManager.vanilla(Registries.PARTICLE_TYPE, Util.id());
 
-    public static final RegistryObject<SimpleParticleType> SPIRITUAL_MANA = PARTICLE_TYPES.register("spiritual_mana", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> METAL_ELEMENT = PARTICLE_TYPES.register("metal_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> WOOD_ELEMENT = PARTICLE_TYPES.register("wood_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> WATER_ELEMENT = PARTICLE_TYPES.register("water_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> FIRE_ELEMENT = PARTICLE_TYPES.register("fire_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> EARTH_ELEMENT = PARTICLE_TYPES.register("earth_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPIRIT_ELEMENT = PARTICLE_TYPES.register("spirit_element", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPIRITUAL_FLAME = PARTICLE_TYPES.register("spiritual_flame", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> METAL_EXPLOSION = PARTICLE_TYPES.register("metal_explosion", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> METAL_DAMAGE = PARTICLE_TYPES.register("metal_damage", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> SPIRITUAL_MANA = PARTICLE_TYPES.register("spiritual_mana", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> METAL_ELEMENT = PARTICLE_TYPES.register("metal_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> WOOD_ELEMENT = PARTICLE_TYPES.register("wood_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> WATER_ELEMENT = PARTICLE_TYPES.register("water_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> FIRE_ELEMENT = PARTICLE_TYPES.register("fire_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> EARTH_ELEMENT = PARTICLE_TYPES.register("earth_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> SPIRIT_ELEMENT = PARTICLE_TYPES.register("spirit_element", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> SPIRITUAL_FLAME = PARTICLE_TYPES.register("spiritual_flame", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> METAL_EXPLOSION = PARTICLE_TYPES.register("metal_explosion", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> METAL_DAMAGE = PARTICLE_TYPES.register("metal_damage", () -> new SimpleParticleType(false));
 
     /**
-     * {@link hungteen.imm.ImmortalMod#defferRegister(IEventBus)}
+     * {@link IMMInitializer#defferRegister(IEventBus)}
      */
-    public static void register(IEventBus event){
-        PARTICLE_TYPES.register(event);
+    public static void initialize(IEventBus event){
+        NeoHelper.initRegistry(PARTICLE_TYPES, event);
     }
 }

@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.common.ElementManager;
 import net.minecraft.core.particles.ParticleTypes;

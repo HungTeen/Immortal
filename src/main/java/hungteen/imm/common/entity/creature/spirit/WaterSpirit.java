@@ -1,7 +1,6 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
@@ -15,18 +14,19 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.extensions.IForgeFluid;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -47,9 +47,9 @@ public class WaterSpirit extends ElementSpirit {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(VEHICLE_ID, OptionalInt.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VEHICLE_ID, OptionalInt.empty());
     }
 
     @Override
@@ -101,8 +101,9 @@ public class WaterSpirit extends ElementSpirit {
     public boolean doHurtTarget(Entity target) {
         if(target instanceof LivingEntity living){
             this.startRiding(target);
-            if(living.canDrownInFluidType(ForgeMod.WATER_TYPE.get()))
+            if(living.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value())) {
                 ElementManager.addElementAmount(target, Elements.WATER, false, 3F, 5F);
+            }
             if(living.getAirSupply() <= 0){
                 living.setAirSupply(living.getAirSupply() - 5);
             } else {
@@ -120,7 +121,9 @@ public class WaterSpirit extends ElementSpirit {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if(source.is(DamageTypeTags.IS_FIRE)) amount /= 2;
+        if(source.is(DamageTypeTags.IS_FIRE)) {
+            amount /= 2;
+        }
         return super.hurt(source, amount);
     }
 
@@ -167,7 +170,9 @@ public class WaterSpirit extends ElementSpirit {
 
     @Override
     public boolean canDrownInFluidType(FluidType type) {
-        if (type == ForgeMod.WATER_TYPE.get()) return false;
+        if (type == NeoForgeMod.WATER_TYPE.value()) {
+            return false;
+        }
         return super.canDrownInFluidType(type);
     }
 

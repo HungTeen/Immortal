@@ -1,12 +1,14 @@
 package hungteen.imm.common.entity;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.api.registry.PTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -15,14 +17,14 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public interface IMMAttributes {
 
-    DeferredRegister<Attribute> ATTRIBUTES = EntityHelper.attribute().createRegister(Util.id());
+    HTVanillaRegistry<Attribute> ATTRIBUTES = HTRegistryManager.vanilla(Registries.ATTRIBUTE, Util.id());
 
-    RegistryObject<Attribute> ELEMENT_DECAY_FACTOR = ATTRIBUTES.register("element_decay_factor", () -> {
+    PTHolder<Attribute> ELEMENT_DECAY_FACTOR = ATTRIBUTES.registerForHolder("element_decay_factor", () -> {
         return new RangedAttribute("attribute.name.imm.element_decay_factor", 1.0D, 0.0D, 2.0D);
     });
 
-    static void register(IEventBus bus){
-        ATTRIBUTES.register(bus);
+    static void initialize(IEventBus bus){
+        NeoHelper.initRegistry(ATTRIBUTES, bus);
     }
 
 }

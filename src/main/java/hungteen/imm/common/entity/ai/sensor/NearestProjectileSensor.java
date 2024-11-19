@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.sensor;
 
 import com.google.common.collect.ImmutableSet;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

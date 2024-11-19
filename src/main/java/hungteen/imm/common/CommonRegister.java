@@ -1,9 +1,10 @@
 package hungteen.imm.common;
 
-import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
+import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.IMMItems;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
  * @program: Immortal
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class CommonRegister {
 
     /**
-     * {@link hungteen.imm.ImmortalMod#setUp(FMLCommonSetupEvent)}
+     * {@link IMMInitializer#setUp(FMLCommonSetupEvent)}
      */
     public static void registerCompostable() {
         BlockHelper.registerCompostable(0.3F, IMMBlocks.MULBERRY_LEAVES.get());

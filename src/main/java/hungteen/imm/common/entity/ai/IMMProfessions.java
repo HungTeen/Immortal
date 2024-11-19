@@ -1,15 +1,17 @@
 package hungteen.imm.common.entity.ai;
 
 import com.google.common.collect.ImmutableSet;
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -18,15 +20,15 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMProfessions {
 
-    private static final DeferredRegister<VillagerProfession> PROFESSION_TYPES = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Util.id());
+    private static final HTVanillaRegistry<VillagerProfession> PROFESSION_TYPES = HTRegistryManager.vanilla(Registries.VILLAGER_PROFESSION, Util.id());
 
-//    public static final RegistryObject<VillagerProfession> ELIXIR_CRAFTER = register("elixir_crafter", ImmortalPoiTypes.ELIXIR_ROOM.getKey());
+//    public static final HTHolder<VillagerProfession> ELIXIR_CRAFTER = initialize("elixir_crafter", ImmortalPoiTypes.ELIXIR_ROOM.getKey());
 
-    private static RegistryObject<VillagerProfession> register(String name, ResourceKey<PoiType> poiTypeKey){
+    private static HTHolder<VillagerProfession> register(String name, ResourceKey<PoiType> poiTypeKey){
         return register(name, poiTypeKey, null);
     }
 
-    private static RegistryObject<VillagerProfession> register(String name, ResourceKey<PoiType> poiTypeKey, SoundEvent soundEvent){
+    private static HTHolder<VillagerProfession> register(String name, ResourceKey<PoiType> poiTypeKey, SoundEvent soundEvent){
         return PROFESSION_TYPES.register(name, () -> new VillagerProfession(
                 Util.prefixName(name),
                 poi -> poi.is(poiTypeKey),
@@ -37,8 +39,8 @@ public class IMMProfessions {
         ));
     }
 
-    public static void register(IEventBus event){
-        PROFESSION_TYPES.register(event);
+    public static void initialize(IEventBus event){
+        NeoHelper.initRegistry(PROFESSION_TYPES, event);
     }
     
 }

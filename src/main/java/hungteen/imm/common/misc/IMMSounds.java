@@ -1,12 +1,13 @@
 package hungteen.imm.common.misc;
 
-import hungteen.htlib.util.helper.registry.SoundHelper;
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -15,17 +16,17 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public interface IMMSounds {
 
-    DeferredRegister<SoundEvent> SOUNDS = SoundHelper.get().createRegister(Util.id());
+    HTVanillaRegistry<SoundEvent> SOUNDS = HTRegistryManager.vanilla(Registries.SOUND_EVENT, Util.id());
 
-    RegistryObject<SoundEvent> BI_FANG_AMBIENT = create("bi_fang_ambient");
-    RegistryObject<SoundEvent> BI_FANG_ROAR = create("bi_fang_roar");
-    RegistryObject<SoundEvent> BI_FANG_FLAP = create("bi_fang_flap");
+    HTHolder<SoundEvent> BI_FANG_AMBIENT = create("bi_fang_ambient");
+    HTHolder<SoundEvent> BI_FANG_ROAR = create("bi_fang_roar");
+    HTHolder<SoundEvent> BI_FANG_FLAP = create("bi_fang_flap");
 
-    static RegistryObject<SoundEvent> create(String name){
+    static HTHolder<SoundEvent> create(String name){
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Util.prefix(name)));
     }
 
-    static void register(IEventBus event){
-        SOUNDS.register(event);
+    static void initialize(IEventBus event){
+        NeoHelper.initRegistry(SOUNDS, event);
     }
 }

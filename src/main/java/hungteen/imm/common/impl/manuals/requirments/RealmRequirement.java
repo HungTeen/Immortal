@@ -1,6 +1,7 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRealmType;
@@ -19,10 +20,10 @@ import net.minecraft.world.level.Level;
  */
 public record RealmRequirement(IRealmType realmType, boolean lowest) implements ILearnRequirement {
 
-    public static final Codec<RealmRequirement> CODEC = RecordCodecBuilder.<RealmRequirement>mapCodec(instance -> instance.group(
+    public static final MapCodec<RealmRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RealmTypes.registry().byNameCodec().fieldOf("realm_type").forGetter(RealmRequirement::realmType),
             Codec.BOOL.optionalFieldOf("lowest", true).forGetter(RealmRequirement::lowest)
-    ).apply(instance, RealmRequirement::new)).codec();
+    ).apply(instance, RealmRequirement::new));
 
     public static ILearnRequirement create(IRealmType type, boolean lowest){
         return new RealmRequirement(type, lowest);

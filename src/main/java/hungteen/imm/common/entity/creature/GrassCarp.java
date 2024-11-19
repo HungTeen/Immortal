@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.creature;
 
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,12 +34,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.IShearable;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +52,7 @@ import java.util.function.Predicate;
  * @author: HungTeen
  * @create: 2022-10-20 21:38
  **/
-public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
+public class GrassCarp extends Animal implements Bucketable, IShearable {
 
     private static final EntityDataAccessor<Boolean> BALD = SynchedEntityData.defineId(GrassCarp.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(GrassCarp.class, EntityDataSerializers.BOOLEAN);
@@ -65,15 +65,15 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     public GrassCarp(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FishMoveControl(this);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.refreshDimensions();
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BALD, false);
-        this.entityData.define(FROM_BUCKET, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BALD, false);
+        builder.define(FROM_BUCKET, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -123,12 +123,14 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
         }
     }
 
+    @Override
     public void baseTick() {
         int i = this.getAirSupply();
         super.baseTick();
         this.handleAirSupply(i);
     }
 
+    @Override
     public void travel(Vec3 vec3) {
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(0.01F, vec3);
@@ -143,6 +145,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 
     }
 
+    @Override
     public void aiStep() {
         if (!this.isInWater() && this.onGround() && this.verticalCollision) {
             this.setDeltaMovement(this.getDeltaMovement().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double) 0.4F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
@@ -175,7 +178,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 //            return true;
 //        }
 
-        if (this.level().getBlockState(pos).is(Tags.Blocks.STONE)) {
+        if (this.level().getBlockState(pos).is(Tags.Blocks.STONES)) {
             this.level().setBlock(pos, Blocks.MOSS_BLOCK.defaultBlockState(), 3);
             return true;
         }
@@ -184,13 +187,13 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     @Override
-    public boolean isShearable(@NotNull ItemStack item, Level level, BlockPos pos) {
+    public boolean isShearable(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         return !this.isBald();
     }
 
     @NotNull
     @Override
-    public List<ItemStack> onSheared(@Nullable Player player, @NotNull ItemStack item, Level level, BlockPos pos, int fortune) {
+    public List<ItemStack> onSheared(@Nullable Player player, @NotNull ItemStack item, Level level, BlockPos pos) {
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
         this.gameEvent(GameEvent.SHEAR, player);
         if (!level.isClientSide) {
@@ -208,6 +211,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
         return java.util.Collections.emptyList();
     }
 
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
@@ -225,14 +229,16 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
 
     }
 
+    @Override
     public void saveToBucketTag(ItemStack itemStack) {
         Bucketable.saveDefaultDataToBucketTag(this, itemStack);
-        CompoundTag compoundtag = itemStack.getOrCreateTag();
-        compoundtag.putBoolean("Bald", this.isBald());
-        compoundtag.putInt("Age", this.getAge());
-        compoundtag.putInt("NextChangeTick", this.nextChangeTick);
+//        CompoundTag compoundtag = itemStack.save(registryAccess());
+//        compoundtag.putBoolean("Bald", this.isBald());
+//        compoundtag.putInt("Age", this.getAge());
+//        compoundtag.putInt("NextChangeTick", this.nextChangeTick);
     }
 
+    @Override
     public void loadFromBucketTag(CompoundTag tag) {
         Bucketable.loadDefaultDataFromBucketTag(this, tag);
         if (tag.contains("Bald")) {
@@ -334,13 +340,8 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     @Override
-    public MobType getMobType() {
-        return MobType.WATER;
-    }
-
-    @Override
-    public EntityDimensions getDimensions(Pose p_21047_) {
-        return EntityDimensions.scalable(0.6F, 0.6F).scale(this.getScale());
+    protected EntityDimensions getDefaultDimensions(Pose p_316700_) {
+        return EntityDimensions.scalable(0.6F, 0.6F);
     }
 
     private int getNextChangeTick() {
@@ -348,13 +349,8 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
-    @Override
     public boolean canDrownInFluidType(FluidType type) {
-        return type != ForgeMod.WATER_TYPE.get();
+        return type != NeoForgeMod.WATER_TYPE.value();
     }
 
     @Override
@@ -363,7 +359,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
     }
 
     @Override
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed() {
         return false;
     }
 
@@ -380,8 +376,9 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             this.fish = p_27501_;
         }
 
+        @Override
         public void tick() {
-            if (this.fish.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
+            if (this.fish.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value())) {
                 this.fish.setDeltaMovement(this.fish.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
             }
 
@@ -416,6 +413,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             this.fish = p_27505_;
         }
 
+        @Override
         public boolean canUse() {
             return this.fish.canRandomSwim() && super.canUse();
         }
@@ -432,6 +430,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
+        @Override
         public boolean canUse() {
             if (this.grassCarp.isBaby() || !this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
                 return false;
@@ -454,15 +453,18 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             return EntityUtil.isEntityValid(this.target) && this.target.distanceTo(this.grassCarp) <= 100;
         }
 
+        @Override
         public void start() {
             this.grassCarp.getNavigation().moveTo(this.target, 1F);
             this.cooldown = this.grassCarp.random.nextInt(100);
         }
 
+        @Override
         public void stop() {
             this.target = null;
         }
 
+        @Override
         public void tick() {
             if (this.grassCarp.distanceTo(this.target) <= 2) {
                 this.grassCarp.setItemSlot(EquipmentSlot.MAINHAND, this.target.getItem());
@@ -482,6 +484,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             this.grassCarp = grassCarp;
         }
 
+        @Override
         public boolean canUse() {
             return super.canUse() && !this.grassCarp.isBaby() && !this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
         }
@@ -491,11 +494,13 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             return super.canContinueToUse() && !this.grassCarp.isBaby() && !this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
         }
 
+        @Override
         protected boolean isValidTarget(LevelReader levelReader, BlockPos blockPos) {
             BlockPos blockpos = blockPos.above();
             return levelReader.isEmptyBlock(blockpos) && levelReader.isEmptyBlock(blockpos.above()) && levelReader.getBlockState(blockPos).entityCanStandOn(levelReader, blockPos, this.grassCarp);
         }
 
+        @Override
         public void tick() {
             if (this.grassCarp.distanceToSqr(MathHelper.toVec3(this.blockPos)) <= 8) {
                 this.drop(this.grassCarp.getItemBySlot(EquipmentSlot.MAINHAND));
@@ -509,7 +514,7 @@ public class GrassCarp extends Animal implements Bucketable, IForgeShearable {
             if (!itemStack.isEmpty()) {
                 ItemEntity itementity = new ItemEntity(this.grassCarp.level(), this.grassCarp.getX(), this.grassCarp.getEyeY(), this.grassCarp.getZ(), itemStack);
                 itementity.setPickUpDelay(40);
-                itementity.setThrower(this.grassCarp.getUUID());
+                itementity.setThrower(this.grassCarp);
                 final Vec3 speed = MathHelper.toVec3(this.blockPos).subtract(this.grassCarp.position()).add(0, 1.2, 0).normalize();
                 itementity.setDeltaMovement(speed.scale(0.5F));
                 this.grassCarp.level().addFreshEntity(itementity);

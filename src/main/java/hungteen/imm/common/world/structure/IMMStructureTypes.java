@@ -1,12 +1,14 @@
 package hungteen.imm.common.world.structure;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.common.world.structure.structures.TeleportRuinStructure;
 import hungteen.imm.util.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @author PangTeen
@@ -15,11 +17,11 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class IMMStructureTypes {
 
-    private static final DeferredRegister<StructureType<?>> STRUCTURE_TYPE = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE.key(), Util.id());
+    private static final HTVanillaRegistry<StructureType<?>> STRUCTURE_TYPE = HTRegistryManager.vanilla(Registries.STRUCTURE_TYPE, Util.id());
 
-    public static final RegistryObject<StructureType<TeleportRuinStructure>> TELEPORT_RUIN = STRUCTURE_TYPE.register("teleport_ruin", () -> () -> TeleportRuinStructure.CODEC);
+    public static final HTHolder<StructureType<TeleportRuinStructure>> TELEPORT_RUIN = STRUCTURE_TYPE.register("teleport_ruin", () -> () -> TeleportRuinStructure.CODEC);
 
-    public static void register(IEventBus eventBus){
-        STRUCTURE_TYPE.register(eventBus);
+    public static void initialize(IEventBus eventBus){
+        NeoHelper.initRegistry(STRUCTURE_TYPE, eventBus);
     }
 }

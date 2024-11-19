@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -41,7 +40,7 @@ public abstract class RuneBaseMenu extends HTContainerMenu {
     public boolean clickMenuButton(Player player, int id) {
         if (this.isValidTabIndex(id) && getFromIndex(id) != getRuneCategory()) {
             if(player instanceof ServerPlayer p){
-                NetworkHooks.openScreen(p, getMenuProvider(this.getFromIndex(id)));
+                p.openMenu(getMenuProvider(this.getFromIndex(id)));
             }
         }
         return true;

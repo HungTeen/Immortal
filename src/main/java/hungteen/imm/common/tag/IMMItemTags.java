@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
  **/
 public interface IMMItemTags {
 
-    /* forge */
+    /* neo */
 
     TagKey<Item> RICE_SEEDS = forgeTag("seeds/rice");
     TagKey<Item> JUTE_SEEDS = forgeTag("seeds/jute");
@@ -40,7 +40,7 @@ public interface IMMItemTags {
     }
 
     private static TagKey<Item> forgeTag(String name){
-        return ItemTags.create(Util.forge().prefix(name));
+        return ItemTags.create(Util.neo().prefix(name));
     }
 
 }

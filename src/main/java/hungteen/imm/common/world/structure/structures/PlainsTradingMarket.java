@@ -8,7 +8,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.data.worldgen.placement.VillagePlacements;
@@ -63,7 +63,7 @@ public class PlainsTradingMarket {
     /**
      * {@link net.minecraft.data.worldgen.PlainVillagePools}
      */
-    public static void initPools(BootstapContext<StructureTemplatePool> context) {
+    public static void initPools(BootstrapContext<StructureTemplatePool> context) {
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         final HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
         final HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);

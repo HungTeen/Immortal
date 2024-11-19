@@ -1,7 +1,7 @@
 package hungteen.imm.common.block.plants;
 
-import hungteen.htlib.common.block.plants.HTStemBlock;
-import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.common.block.HTStemBlock;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.TipUtil;
@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -43,7 +44,7 @@ public class GourdStemBlock extends HTStemBlock {
     };
 
     public GourdStemBlock() {
-        super(() -> IMMItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.copy(Blocks.MELON_STEM));
+        super(() -> IMMItems.GOURD_SEEDS.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.MELON_STEM));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class GourdStemBlock extends HTStemBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
         components.add(TipUtil.desc(stack.getItem()).withStyle(ChatFormatting.DARK_GRAY));
     }
 

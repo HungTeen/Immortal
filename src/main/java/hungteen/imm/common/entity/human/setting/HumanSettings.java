@@ -1,8 +1,7 @@
 package hungteen.imm.common.entity.human.setting;
 
-import hungteen.htlib.api.interfaces.IHTCodecRegistry;
-import hungteen.htlib.common.registry.HTCodecRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
+import hungteen.htlib.api.registry.HTCodecRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.registry.ISpellType;
@@ -19,7 +18,7 @@ import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -43,7 +42,7 @@ import java.util.Optional;
  */
 public interface HumanSettings {
 
-    HTCodecRegistry<HumanSetting> SETTING = HTRegistryManager.create(Util.prefix("human_setting"), () -> HumanSetting.CODEC, () -> HumanSetting.NETWORK_CODEC);
+    HTCodecRegistry<HumanSetting> SETTING = HTRegistryManager.codec(Util.prefix("human_setting"), () -> HumanSetting.CODEC, () -> HumanSetting.NETWORK_CODEC);
 
     ResourceKey<HumanSetting> DEFAULT = create("default");
     ResourceKey<HumanSetting> POOR_VANILLA = create("poor_vanilla");
@@ -54,7 +53,7 @@ public interface HumanSettings {
     ResourceKey<HumanSetting> FIRE_BEGINNER = create("fire_beginner");
     ResourceKey<HumanSetting> EARTH_BEGINNER = create("earth_beginner");
 
-    static void register(BootstapContext<HumanSetting> context) {
+    static void register(BootstrapContext<HumanSetting> context) {
         context.register(DEFAULT, new HumanSetting(
                 IMMEntities.EMPTY_CULTIVATOR.get(),
                 0,
@@ -686,7 +685,7 @@ public interface HumanSettings {
         return new LootSetting(SimpleWeightedList.pair(entry1, entry2));
     }
 
-    static IHTCodecRegistry<HumanSetting> registry() {
+    static HTCodecRegistry<HumanSetting> registry() {
         return SETTING;
     }
 

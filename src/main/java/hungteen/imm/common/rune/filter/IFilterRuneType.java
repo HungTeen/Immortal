@@ -1,7 +1,7 @@
 package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.api.interfaces.ISimpleEntry;
+import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -10,7 +10,7 @@ import net.minecraft.network.chat.MutableComponent;
  * @author: HungTeen
  * @create: 2023-04-04 21:37
  **/
-public interface IFilterRuneType<P extends IFilterRune> extends ISimpleEntry {
+public interface IFilterRuneType<P extends IFilterRune> extends SimpleEntry {
 
     boolean isBaseType();
 

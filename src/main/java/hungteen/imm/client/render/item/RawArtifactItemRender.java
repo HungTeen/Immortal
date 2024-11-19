@@ -1,7 +1,7 @@
 package hungteen.imm.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import hungteen.imm.client.ClientProxy;
+import hungteen.imm.client.IMMClientProxy;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public class RawArtifactItemRender extends BlockEntityWithoutLevelRenderer {
 
     public RawArtifactItemRender() {
-        super(ClientProxy.MC.getBlockEntityRenderDispatcher(), ClientProxy.MC.getEntityModels());
+        super(IMMClientProxy.MC.getBlockEntityRenderDispatcher(), IMMClientProxy.MC.getEntityModels());
     }
 
     @Override

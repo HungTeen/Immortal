@@ -1,6 +1,6 @@
 package hungteen.imm.common.blockentity;
 
-import hungteen.htlib.common.blockentity.ItemHandlerBlockEntity;
+import hungteen.htlib.common.blockentity.ContainerBlockEntity;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
@@ -11,6 +11,9 @@ import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
@@ -23,9 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
-import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
@@ -33,9 +35,9 @@ import java.util.Optional;
  * @author: HungTeen
  * @create: 2022-10-09 09:30
  **/
-public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implements MenuProvider {
+public class SpiritualFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
-    protected final ItemStackHandler itemHandler = new ItemStackHandler(4);
+    protected final NonNullList<ItemStack> itemHandler = NonNullList.createWithCapacity(4);
     protected final ContainerData accessData = new ContainerData() {
         @Override
         public int get(int id) {
@@ -77,6 +79,11 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
 
     public SpiritualFurnaceBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
         super(type, blockPos, blockState);
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItems() {
+        return itemHandler;
     }
 
     public void opened() {
@@ -152,13 +159,13 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     }
 
     private ItemStack getGourd(){
-        return this.getItemHandler().getStackInSlot(0);
+        return this.getItem(0);
     }
 
     public Optional<ItemStack> getFirstStone(){
         for(int i = 1; i < 4; ++ i){
-            if(this.getItemHandler().getStackInSlot(i).is(IMMItemTags.SPIRITUAL_STONES)){
-                return Optional.of(this.getItemHandler().getStackInSlot(i));
+            if(this.getItem(i).is(IMMItemTags.SPIRITUAL_STONES)){
+                return Optional.of(this.getItem(i));
             }
         }
         return Optional.empty();
@@ -176,9 +183,10 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
 //        return tag;
 //    }
 
+
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         if(tag.contains("HasTriggered")){
             this.triggered = tag.getBoolean("HasTriggered");
         }
@@ -191,8 +199,8 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putBoolean("HasTriggered", this.triggered);
         tag.putInt("CurrentFlameValue", this.currentFlameValue);
         tag.putInt("MaxFlameValue", this.maxFlameValue);
@@ -236,11 +244,6 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
         this.lastInteractTime = level.getGameTime();
     }
 
-    @Override
-    public ItemStackHandler getItemHandler() {
-        return itemHandler;
-    }
-
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
@@ -249,5 +252,10 @@ public class SpiritualFurnaceBlockEntity extends ItemHandlerBlockEntity implemen
 
     public IRealmType getArtifactType() {
         return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getRealm(this.getBlockState()) : RealmTypes.NOT_IN_REALM;
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        return new int[0]; // TODO slot for face ?
     }
 }

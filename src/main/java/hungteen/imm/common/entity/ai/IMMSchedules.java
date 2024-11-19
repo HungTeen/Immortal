@@ -1,13 +1,15 @@
 package hungteen.imm.common.entity.ai;
 
+import hungteen.htlib.api.registry.HTHolder;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
+import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
 
 /**
  * @program: Immortal
@@ -16,9 +18,9 @@ import net.minecraftforge.registries.RegistryObject;
  **/
 public class IMMSchedules {
 
-    private static final DeferredRegister<Schedule> SCHEDULES = DeferredRegister.create(ForgeRegistries.SCHEDULES, Util.id());
+    private static final HTVanillaRegistry<Schedule> SCHEDULES = HTRegistryManager.vanilla(Registries.SCHEDULE, Util.id());
 
-    public static final RegistryObject<Schedule> DAY_WORK = SCHEDULES.register("day_work", () -> builder()
+    public static final HTHolder<Schedule> DAY_WORK = SCHEDULES.register("day_work", () -> builder()
                 .changeActivityAt(10, Activity.IDLE)
                 .changeActivityAt(2000, Activity.WORK)
 //                .changeActivityAt(9000, Activity.MEET)
@@ -27,7 +29,7 @@ public class IMMSchedules {
                 .build()
     );
 
-    public static final RegistryObject<Schedule> NIGHT_WORK = SCHEDULES.register("night_work", () -> builder()
+    public static final HTHolder<Schedule> NIGHT_WORK = SCHEDULES.register("night_work", () -> builder()
             .changeActivityAt(12100, Activity.IDLE)
             .changeActivityAt(14000, Activity.WORK)
 //            .changeActivityAt(21000, Activity.MEET)
@@ -40,8 +42,8 @@ public class IMMSchedules {
         return new ScheduleBuilder(new Schedule());
     }
 
-    public static void register(IEventBus modBus){
-        SCHEDULES.register(modBus);
+    public static void initialize(IEventBus modBus){
+        NeoHelper.initRegistry(SCHEDULES, modBus);
     }
 
 }

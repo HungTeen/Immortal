@@ -1,14 +1,17 @@
 package hungteen.imm.common.advancement.trigger;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.Util;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -24,42 +27,37 @@ public class PlayerRealmChangeTrigger extends SimpleCriterionTrigger<PlayerRealm
         return ID;
     }
 
-    protected PlayerRealmChangeTrigger.TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
-        final String realm = GsonHelper.getAsString(jsonObject, "realm");
-        return new PlayerRealmChangeTrigger.TriggerInstance(predicate, realm);
-    }
-
     public void trigger(ServerPlayer player, IRealmType realm) {
-        this.trigger(player, (instance) -> instance.matches(player, realm.getRegistryName()));
+        this.trigger(player, (instance) -> instance.matches(player, realm));
     }
 
-    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+    @Override
+    public Codec<TriggerInstance> codec() {
+        return TriggerInstance.CODEC;
+    }
 
-        private final String realm;
+    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, IRealmType realm) implements SimpleCriterionTrigger.SimpleInstance  {
 
-        public TriggerInstance(ContextAwarePredicate predicate, String realm) {
-            super(ID, predicate);
-            this.realm = realm;
-        }
+        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::playerPredicate),
+                RealmTypes.registry().byNameCodec().fieldOf("realm").forGetter(TriggerInstance::realm)
+        ).apply(instance, TriggerInstance::new));
 
-        public static PlayerRealmChangeTrigger.TriggerInstance test(ContextAwarePredicate playerPredicate, String realm) {
+        public static PlayerRealmChangeTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, IRealmType realm) {
             return new PlayerRealmChangeTrigger.TriggerInstance(playerPredicate, realm);
         }
 
         public static PlayerRealmChangeTrigger.TriggerInstance test(IRealmType realm) {
-            return test(ContextAwarePredicate.ANY, realm.getRegistryName());
+            return test(Optional.empty(), realm);
         }
 
-        public boolean matches(ServerPlayer player, String realm) {
+        public boolean matches(ServerPlayer player, IRealmType realm) {
             return this.realm.equals(realm);
         }
 
         @Override
-        public JsonObject serializeToJson(SerializationContext context) {
-            JsonObject jsonobject = super.serializeToJson(context);
-            jsonobject.addProperty("realm", this.realm);
-            return jsonobject;
+        public Optional<ContextAwarePredicate> player() {
+            return playerPredicate();
         }
-
     }
 }

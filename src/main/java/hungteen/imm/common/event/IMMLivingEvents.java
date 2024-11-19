@@ -1,45 +1,37 @@
 package hungteen.imm.common.event;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
-import hungteen.imm.ImmortalMod;
-import hungteen.imm.api.enums.Elements;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.interfaces.IHasMana;
-import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.effect.IMMEffects;
-import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
-import hungteen.imm.common.spell.spells.metal.SharpnessSpell;
-import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
-import hungteen.imm.util.ParticleUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-25 16:32
  **/
-@Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMLivingEvents {
 
     @SubscribeEvent
-    public static void tick(LivingEvent.LivingTickEvent event) {
-        if(EntityHelper.isServer(event.getEntity())){
+    public static void tick(EntityTickEvent.Post event) {
+        if(EntityHelper.isServer(event.getEntity()) && event.getEntity() instanceof LivingEntity living){
             // 灵气自然增长。
             if(event.getEntity() instanceof IHasMana entity && EntityUtil.canManaIncrease(event.getEntity())) {
                 if(! entity.isManaFull()){
@@ -47,7 +39,7 @@ public class IMMLivingEvents {
                 }
             }
             // 附加元素。
-            ElementManager.attachElement(event.getEntity());
+            ElementManager.attachElement(living);
             // 元素反应：寄生。
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, (reaction, scale) -> {
                 if(EntityUtil.hasMana(event.getEntity())){
@@ -58,7 +50,7 @@ public class IMMLivingEvents {
                     }
                 }
             });
-            RealmManager.limitEnchantments(event.getEntity());
+            RealmManager.limitEnchantments(living);
         }
     }
 
@@ -71,12 +63,13 @@ public class IMMLivingEvents {
 //    }
 
     @SubscribeEvent
-    public static void onLivingAttackedBy(LivingAttackEvent event){
+    public static void onLivingAttackedBy(LivingDamageEvent.Post event){
+        // TODO New Damage.
         if(event.getEntity().level() instanceof ServerLevel level) {
             ElementManager.attachDamageElement(level, event.getEntity(), event.getSource());
             // 发生淬刃的被攻击者，会记录最大的受伤害值。
             ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
-                ElementManager.setQuenchBladeDamage(event.getEntity(), event.getAmount(), true);
+                ElementManager.setQuenchBladeDamage(event.getEntity(), event.getNewDamage(), true);
             }, () -> {
                 ElementManager.setQuenchBladeDamage(event.getEntity(), 0, true);
             });
@@ -84,56 +77,56 @@ public class IMMLivingEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event){
-        if(event.getEntity().level() instanceof ServerLevel level) {
-            SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
-            if(event.getSource().is(DamageTypes.MOB_ATTACK) || event.getSource().is(DamageTypes.PLAYER_ATTACK)){
-                ElementReactions.GildingReaction.ifGlidingActive(event.getSource().getEntity(), event.getEntity());
-                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
-                    final float damage = event.getAmount() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
-                    event.setAmount(damage);
-                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 5);
-                });
-            }
-        }
+    public static void onLivingHurt(LivingDamageEvent.Pre event){
+//        if(event.getEntity().level() instanceof ServerLevel level) {
+//            SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
+//            if(event.getSource().is(DamageTypes.MOB_ATTACK) || event.getSource().is(DamageTypes.PLAYER_ATTACK)){
+//                ElementReactions.GildingReaction.ifGlidingActive(event.getSource().getEntity(), event.getEntity());
+//                ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
+//                    final float damage = event.getNewDamage() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
+//                    event.setNewDamage(damage);
+//                    ElementManager.addElementAmount(event.getEntity(), Elements.WATER, false, scale * 5);
+//                });
+//            }
+//        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public static void postLivingHurt(LivingHurtEvent event){
-        if(event.getEntity().level() instanceof ServerLevel level) {
-            if (event.getEntity().hasEffect(IMMEffects.SOLIDIFICATION.get())) {
-                if (event.getAmount() >= event.getEntity().getMaxHealth() * 0.1F) {
-                    event.getEntity().removeEffect(IMMEffects.SOLIDIFICATION.get());
-                    event.setAmount(event.getAmount() * 1.1F);
-                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 20, 0, 0.15);
-                    event.getEntity().playSound(SoundEvents.GRAVEL_BREAK);
-                } else {
-                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 10, 0, 0.15);
-                }
-            }
-        }
+    public static void postLivingHurt(LivingDamageEvent.Pre event){
+//        if(event.getEntity().level() instanceof ServerLevel level) {
+//            if (event.getEntity().hasEffect(IMMEffects.SOLIDIFICATION.holder())) {
+//                if (event.getNewDamage() >= event.getEntity().getMaxHealth() * 0.1F) {
+//                    event.getEntity().removeEffect(IMMEffects.SOLIDIFICATION.holder());
+//                    event.setNewDamage(event.getNewDamage() * 1.1F);
+//                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 20, 0, 0.15);
+//                    event.getEntity().playSound(SoundEvents.GRAVEL_BREAK);
+//                } else {
+//                    ParticleHelper.spawnParticles(level, ParticleUtil.block(Blocks.DIRT.defaultBlockState()), event.getEntity().getEyePosition(), 10, 0, 0.15);
+//                }
+//            }
+//        }
     }
 
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent event){
-        if(EntityHelper.isServer(event.getEntity()) && event.getEntity().level() instanceof ServerLevel serverLevel){
-            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, (reaction, scale) -> {
-                if(ElementManager.hasElement(event.getEntity(), Elements.WATER, false) && reaction instanceof ElementReactions.CuttingReaction cuttingReaction){
-                    float amount = Math.min(ElementManager.getAmount(event.getEntity(), Elements.WATER, false), cuttingReaction.getWaterAmount() * scale);
-                    event.setAmount(event.getAmount() + (scale - amount / cuttingReaction.getWaterAmount()) * 0.8F);
-                } else {
-                    event.setAmount(event.getAmount() + scale * 0.8F);
-                }
-                ParticleUtil.spawnParticles(serverLevel, IMMParticles.METAL_DAMAGE.get(), event.getEntity().position(), 1, 0.1, 0);
-            });
-        }
+//        if(EntityHelper.isServer(event.getEntity()) && event.getEntity().level() instanceof ServerLevel serverLevel){
+//            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.CUTTING, (reaction, scale) -> {
+//                if(ElementManager.hasElement(event.getEntity(), Elements.WATER, false) && reaction instanceof ElementReactions.CuttingReaction cuttingReaction){
+//                    float amount = Math.min(ElementManager.getAmount(event.getEntity(), Elements.WATER, false), cuttingReaction.getWaterAmount() * scale);
+//                    event.setAmount(event.getAmount() + (scale - amount / cuttingReaction.getWaterAmount()) * 0.8F);
+//                } else {
+//                    event.setAmount(event.getAmount() + scale * 0.8F);
+//                }
+//                ParticleUtil.spawnParticles(serverLevel, IMMParticles.METAL_DAMAGE.get(), event.getEntity().position(), 1, 0.1, 0);
+//            });
+//        }
     }
 
     /**
      * 优先级最低，确保此时没有事件取消格挡（也就是盾一定会格挡）。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onShieldBlock(ShieldBlockEvent event){
+    public static void onShieldBlock(LivingShieldBlockEvent event){
         if(EntityHelper.isServer(event.getEntity())){
             if(event.getDamageSource().getDirectEntity() instanceof ThrowingItemEntity throwingItem && throwingItem.getOwner() instanceof LivingEntity attacker){
                 if(throwingItem.getItem().canDisableShield(event.getEntity().getUseItem(), event.getEntity(), attacker)){
@@ -146,10 +139,10 @@ public class IMMLivingEvents {
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onLivingDeath(LivingDeathEvent ev) {
         if(ev.getEntity() instanceof ServerPlayer player){
-            if(BreakThroughTrial.checkTrialFail(player)){
-                ev.setCanceled(true);
-                return;
-            }
+//            if(BreakThroughTrial.checkTrialFail(player)){
+//                ev.setCanceled(true);
+//                return;
+//            }
         }
         // Cause by player.
         if(ev.getSource().getEntity() instanceof ServerPlayer player) {

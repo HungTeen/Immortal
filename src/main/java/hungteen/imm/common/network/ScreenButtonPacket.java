@@ -1,12 +1,6 @@
 package hungteen.imm.common.network;
 
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 /**
  * @author PangTeen
@@ -37,30 +31,30 @@ public class ScreenButtonPacket {
         buffer.writeInt(this.val);
     }
 
-    public static class Handler {
-
-        /**
-         * Only Server sync to Client.
-         */
-        public static void onMessage(ScreenButtonPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(()->{
-                final ServerPlayer player = ctx.get().getSender();
-                if(player != null){
-                    switch (Types.values()[message.id]){
-                        case BREAK_THROUGH -> {
-                            RealmManager.tryBreakThrough(player);
-                        }
-                        case SET_SPAWN_POINT -> {
-                            // See SetSpawnCommand.
-                            player.setRespawnPosition(player.level().dimension(), player.blockPosition().above(), 0, true, false);
-                        }
-                        case QUIT_MEDITATION -> PlayerUtil.quitMeditate(player);
-                    }
-                }
-            });
-            ctx.get().setPacketHandled(true);
-        }
-    }
+//    public static class Handler {
+//
+//        /**
+//         * Only Server sync to Client.
+//         */
+//        public static void onMessage(ScreenButtonPacket message, Supplier<NetworkEvent.Context> ctx) {
+//            ctx.get().enqueueWork(()->{
+//                final ServerPlayer player = ctx.get().getSender();
+//                if(player != null){
+//                    switch (Types.values()[message.id]){
+//                        case BREAK_THROUGH -> {
+//                            RealmManager.tryBreakThrough(player);
+//                        }
+//                        case SET_SPAWN_POINT -> {
+//                            // See SetSpawnCommand.
+//                            player.setRespawnPosition(player.level().dimension(), player.blockPosition().above(), 0, true, false);
+//                        }
+//                        case QUIT_MEDITATION -> PlayerUtil.quitMeditate(player);
+//                    }
+//                }
+//            });
+//            ctx.get().setPacketHandled(true);
+//        }
+//    }
 
     public enum Types {
 

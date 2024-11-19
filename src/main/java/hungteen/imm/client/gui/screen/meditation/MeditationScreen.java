@@ -3,9 +3,9 @@ package hungteen.imm.client.gui.screen.meditation;
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.BlockHelper;
-import hungteen.imm.client.ClientProxy;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 import java.util.function.Supplier;
 
@@ -53,23 +53,23 @@ public abstract class MeditationScreen extends HTScreen {
     }
 
     /**
-     * {@link hungteen.imm.client.event.ClientEvents#tick(TickEvent.ClientTickEvent)}
+     * {@link hungteen.imm.client.event.ClientEvents#tick(ClientTickEvent.Post)}
      */
     public static void tickMeditation(){
         if (ClientUtil.screen() == null && ClientUtil.player() != null) {
             if(PlayerUtil.isSitInMeditation(ClientUtil.player())){
-                ClientProxy.mc().setScreen(new RestingScreen());
+                IMMClientProxy.mc().setScreen(new RestingScreen());
             }
         }
         if(ClientUtil.screen() instanceof MeditationScreen){
             if(! PlayerUtil.isSitInMeditation(ClientUtil.player())){
-                ClientProxy.mc().setScreen(null);
+                IMMClientProxy.mc().setScreen(null);
             }
         }
     }
 
     public static boolean canRenderMeditation() {
-        return ClientProxy.MC.screen instanceof MeditationScreen;
+        return IMMClientProxy.MC.screen instanceof MeditationScreen;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.structure.structures;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
@@ -46,7 +46,7 @@ import java.util.Optional;
  */
 public class TeleportRuinStructure extends Structure {
 
-    public static final Codec<TeleportRuinStructure> CODEC = simpleCodec(TeleportRuinStructure::new);
+    public static final MapCodec<TeleportRuinStructure> CODEC = simpleCodec(TeleportRuinStructure::new);
     static final ResourceLocation MUD_HOUSE = Util.prefix("teleport_ruins/mud_house");
     private static final ResourceLocation TELEPORT_RUIN = Util.prefix("teleport_ruins/teleport_ruin");
     private static final int RUIN_HEIGHT = 5;
@@ -119,7 +119,7 @@ public class TeleportRuinStructure extends Structure {
 
         @Override
         public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource randomSource, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
-            final ResourceLocation location = new ResourceLocation(this.templateName);
+            final ResourceLocation location = ResourceLocation.parse(this.templateName);
             final StructurePlaceSettings settings = makeSettings(this.placeSettings.getRotation(), location);
             if(location.equals(MUD_HOUSE)){
                 final BlockPos blockpos = OFFSETS.get(location);

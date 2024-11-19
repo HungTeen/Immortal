@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * @program: Immortal
@@ -41,7 +40,7 @@ public abstract class FunctionalFurnaceMenu<T extends FunctionalFurnaceBlockEnti
     public boolean clickMenuButton(Player player, int slotId) {
         if(slotId == 0 && this.canSwitchToFurnaceMenu()){
             if(player instanceof ServerPlayer serverPlayer){
-                NetworkHooks.openScreen(serverPlayer, this.getBlockEntity().getFurnaceBlockEntity(), buf -> {
+                serverPlayer.openMenu(this.getBlockEntity().getFurnaceBlockEntity(), buf -> {
                     buf.writeBlockPos(this.blockEntity.getFurnaceBlockEntity().getBlockPos());
                 });
             }

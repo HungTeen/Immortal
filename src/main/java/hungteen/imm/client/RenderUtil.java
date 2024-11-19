@@ -31,10 +31,10 @@ public class RenderUtil {
     public static final ResourceLocation EMPTY_ENTITY_TEXTURE = Util.get().entityTexture("empty");
 
     public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
-        RenderHelper.renderScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
+        RenderHelper.renderScaledText(stack, ClientHelper.font(), IMMClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
     public static void renderCenterScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
-        RenderHelper.renderCenterScaledText(stack, ClientHelper.font(), ClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
+        RenderHelper.renderCenterScaledText(stack, ClientHelper.font(), IMMClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
 
     public static void renderEntityInInventoryFollowsMouse(GuiGraphics graphics, int posX, int posY, float scale, float deltaX, float deltaY, LivingEntity living) {

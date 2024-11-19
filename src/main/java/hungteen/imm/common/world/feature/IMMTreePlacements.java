@@ -3,7 +3,7 @@ package hungteen.imm.common.world.feature;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Blocks;
@@ -22,9 +22,9 @@ public interface IMMTreePlacements {
     ResourceKey<PlacedFeature> TALL_DARK_OAK_CHECKED = IMMPlacements.create("tall_dark_oak_checked");
 
     /**
-     * {@link net.minecraft.data.worldgen.placement.TreePlacements#bootstrap(BootstapContext)}
+     * {@link net.minecraft.data.worldgen.placement.TreePlacements#bootstrap(BootstrapContext)}
      */
-    static void register(BootstapContext<PlacedFeature> context) {
+    static void register(BootstrapContext<PlacedFeature> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
         final Holder<ConfiguredFeature<?, ?>> tallBirch = features.getOrThrow(IMMTreeFeatures.TALL_BIRCH_TREE);
         final Holder<ConfiguredFeature<?, ?>> tallBirchWithBees = features.getOrThrow(IMMTreeFeatures.TALL_BIRCH_TREE_WITH_BEES);

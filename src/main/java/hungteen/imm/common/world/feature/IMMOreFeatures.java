@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.feature;
 
 import hungteen.imm.common.block.IMMBlocks;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -22,7 +22,7 @@ public interface IMMOreFeatures {
 
     ResourceKey<ConfiguredFeature<?, ?>> ORE_CINNABAR = IMMFeatures.create("ore_cinnabar");
 
-    static void register(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    static void register(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         final RuleTest matchStone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         final List<OreConfiguration.TargetBlockState> cinnabarTargetList = List.of(OreConfiguration.target(matchStone, IMMBlocks.CINNABAR_ORE.get().defaultBlockState()));
         FeatureUtils.register(context, ORE_CINNABAR, Feature.ORE, new OreConfiguration(cinnabarTargetList, 9));

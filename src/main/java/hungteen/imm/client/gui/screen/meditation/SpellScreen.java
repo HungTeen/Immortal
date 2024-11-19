@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.client.ClientProxy;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.event.handler.SpellHandler;
@@ -91,7 +91,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
             }
             SpellHandler.changeCircleMode();
-            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOptions.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
+            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
         }).pos(this.leftPos - BUTTON_WIDTH, this.topPos).tooltip(Tooltip.create(
                 TipUtil.gui("meditation." + (SpellHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
         )));
@@ -135,7 +135,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
         for (int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++i) {
             final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
             final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
-            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
+            final ISpellType spell = PlayerUtil.getSpellAt(IMMClientProxy.MC.player, i);
             if (spell != null && MathHelper.isInArea(mouseX, mouseY, x, y, SPELL_SLOT_LEN, SPELL_SLOT_LEN)) {
                 graphics.renderTooltip(font, spell.getComponent(), mouseX, mouseY);
             }
@@ -162,7 +162,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
             final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
             graphics.blit(SPELL_CIRCLE, x, y, isSelected ? 20 : 0, 128, SPELL_SLOT_LEN, SPELL_SLOT_LEN);
             // Render the spell texture.
-            final ISpellType spell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
+            final ISpellType spell = PlayerUtil.getSpellAt(IMMClientProxy.MC.player, i);
             if (spell != null) {
                 graphics.blit(spell.getSpellTexture(), x + 2, y + 2, 0, 0, 16, 16, 16, 16);
             }
@@ -186,13 +186,13 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
                 final int x = SpellOverlay.getSlotX(leftPos + CIRCLE_LEN * 3 / 2, i);
                 final int y = SpellOverlay.getSlotY(topPos + CIRCLE_LEN / 2, i);
                 if (MathUtil.inSlotArea(mouseX, mouseY, x, y, SPELL_SLOT_LEN, SPELL_SLOT_LEN)) {
-                    final ISpellType curSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, i);
+                    final ISpellType curSpell = PlayerUtil.getSpellAt(IMMClientProxy.MC.player, i);
                     if (this.noSelection()) {
                         this.selectPos = - i - 1; // selected this.
                     } else if (this.selectOnCircle()) {
                         // 交换轮盘上法术的位置
                         final int lastSlotId = - this.selectPos - 1;
-                        final ISpellType oldSpell = PlayerUtil.getSpellAt(ClientProxy.MC.player, lastSlotId);
+                        final ISpellType oldSpell = PlayerUtil.getSpellAt(IMMClientProxy.MC.player, lastSlotId);
                         setSpellAt(i, oldSpell);
                         setSpellAt(lastSlotId, curSpell);
                         this.selectPos = 0; // reset.
@@ -242,9 +242,9 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     public void setSpellAt(int pos, @Nullable ISpellType spell) {
         if (spell != null && spell.canPlaceOnCircle()) {
-            NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOptions.SET_SPELL_ON_CIRCLE, pos));
+            NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, pos));
         } else if(spell == null){
-            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOptions.REMOVE_SPELL_ON_CIRCLE, pos));
+            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOption.REMOVE_SPELL_ON_CIRCLE, pos));
         }
     }
 

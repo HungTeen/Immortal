@@ -1,34 +1,32 @@
 package hungteen.imm.client.event;
 
-import hungteen.imm.ImmortalMod;
-import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.client.render.level.ElementRenderer;
 import hungteen.imm.client.render.level.ReactionRenderer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.*;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-07-02 16:43
  **/
-@Mod.EventBusSubscriber(modid = ImmortalMod.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID, value = Dist.CLIENT)
 public class RenderEvents {
 
     @SubscribeEvent
-    public static void preRenderOverlay(RenderGuiOverlayEvent.Pre ev) {
-        if(ev.getOverlay() == VanillaGuiOverlay.EXPERIENCE_BAR.type() || ev.getOverlay() == VanillaGuiOverlay.JUMP_BAR.type()){
-            if(CommonOverlay.canRenderManaBar()){
-                ev.setCanceled(true);
-            }
-        }
+    public static void preRenderOverlay(RenderGuiLayerEvent.Pre ev) {
+//        if(ev.getLayer() == VanillaGuiOverlay.EXPERIENCE_BAR.type() || ev.getOverlay() == VanillaGuiOverlay.JUMP_BAR.type()){
+//            if(CommonOverlay.canRenderManaBar()){
+//                ev.setCanceled(true);
+//            }
+//        }
     }
 
     @SubscribeEvent
-    public static void postRenderOverlay(RenderGuiOverlayEvent.Post ev) {
+    public static void postRenderOverlay(RenderGuiLayerEvent.Post ev) {
     }
 
     @SubscribeEvent

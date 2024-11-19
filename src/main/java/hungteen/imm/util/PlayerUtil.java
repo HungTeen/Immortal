@@ -1,11 +1,10 @@
 package hungteen.imm.util;
 
-import hungteen.htlib.api.interfaces.IRangeNumber;
-import hungteen.htlib.common.capability.PlayerCapabilityManager;
+import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.enums.Elements;
@@ -13,7 +12,6 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.player.PlayerDataManager;
 import hungteen.imm.common.command.IMMCommand;
 import hungteen.imm.common.impl.registry.*;
@@ -108,7 +106,7 @@ public class PlayerUtil {
             ItemEntity itementity = player.drop(stack, false);
             if (itementity != null) {
                 itementity.setNoPickUpDelay();
-                itementity.setThrower(player.getUUID());
+                itementity.setThrower(player);
             }
             return false;
         }
@@ -157,11 +155,13 @@ public class PlayerUtil {
 
     @Nullable
     public static PlayerDataManager getManager(Player player) {
-        return PlayerCapabilityManager.getManager(player, CapabilityHandler.PLAYER_CAP);
+//        return PlayerCapabilityManager.getManager(player, CapabilityHandler.PLAYER_CAP);
+        return null;
     }
 
     public static <T> T getManagerResult(Player player, Function<PlayerDataManager, T> function, T defaultValue) {
-        return PlayerCapabilityManager.getManagerResult(player, CapabilityHandler.PLAYER_CAP, function, defaultValue);
+//        return PlayerCapabilityManager.getManagerResult(player, CapabilityHandler.PLAYER_CAP, function, defaultValue);
+        return defaultValue;
     }
 
     /* Operations About Spiritual Roots */
@@ -296,27 +296,27 @@ public class PlayerUtil {
 
     /* Operations about Player Range Data */
 
-    public static void setIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
+    public static void setIntegerData(Player player, RangeNumber<Integer> rangeData, int value){
         getOptManager(player).ifPresent(l -> l.setIntegerData(rangeData, value));
     }
 
-    public static void addIntegerData(Player player, IRangeNumber<Integer> rangeData, int value){
+    public static void addIntegerData(Player player, RangeNumber<Integer> rangeData, int value){
         getOptManager(player).ifPresent(l -> l.addIntegerData(rangeData, value));
     }
 
-    public static int getIntegerData(Player player, IRangeNumber<Integer> rangeData){
+    public static int getIntegerData(Player player, RangeNumber<Integer> rangeData){
         return getManagerResult(player, m -> m.getIntegerData(rangeData), rangeData.defaultData());
     }
 
-    public static void setFloatData(Player player, IRangeNumber<Float> rangeData, float value){
+    public static void setFloatData(Player player, RangeNumber<Float> rangeData, float value){
         getOptManager(player).ifPresent(l -> l.setFloatData(rangeData, value));
     }
 
-    public static void addFloatData(Player player, IRangeNumber<Float> rangeData, float value){
+    public static void addFloatData(Player player, RangeNumber<Float> rangeData, float value){
         getOptManager(player).ifPresent(l -> l.addFloatData(rangeData, value));
     }
 
-    public static float getFloatData(Player player, IRangeNumber<Float> rangeData){
+    public static float getFloatData(Player player, RangeNumber<Float> rangeData){
         return getManagerResult(player, m -> m.getFloatData(rangeData), rangeData.defaultData());
     }
 
@@ -357,14 +357,18 @@ public class PlayerUtil {
 
     public static List<ISpiritualType> filterSpiritRoots(Player player, List<ISpiritualType> roots){
         return roots.stream().filter(root -> {
-            if(root == SpiritualTypes.SPIRIT) return knowSpiritElement(player);
+            if(root == SpiritualTypes.SPIRIT) {
+                return knowSpiritElement(player);
+            }
             return true;
         }).toList();
     }
 
     public static List<Elements> filterElements(Player player, List<Elements> elements){
         return elements.stream().filter(element -> {
-            if(element == Elements.SPIRIT) return knowSpiritElement(player);
+            if(element == Elements.SPIRIT) {
+                return knowSpiritElement(player);
+            }
             return true;
         }).toList();
     }
@@ -397,14 +401,15 @@ public class PlayerUtil {
      * @return 是否改变成功。
      */
     public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage, boolean force){
-        return getManagerResult(player, m -> {
-            if(EntityHelper.isServer(player)){
+        // 自身修为达到了此境界的要求。
+        return Boolean.TRUE.equals(getManagerResult(player, m -> {
+            if (EntityHelper.isServer(player)) {
                 // 自身修为达到了此境界的要求。
-                if(m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, stage)){
+                if (m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, stage)) {
                     m.setRealmType(realm);
                     m.setRealmStage(stage);
                 } else {
-                    if(force){
+                    if (force) {
                         final float requiredXp = RealmManager.getStageRequiredCultivation(realm, stage) / ExperienceTypes.values().length;
                         for (ExperienceTypes type : ExperienceTypes.values()) {
                             m.setExperience(type, requiredXp);
@@ -418,7 +423,7 @@ public class PlayerUtil {
                 m.setRealmType(realm);
             }
             return true;
-        }, false);
+        }, false));
     }
 
     /**

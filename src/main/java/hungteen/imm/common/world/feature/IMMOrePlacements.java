@@ -3,7 +3,7 @@ package hungteen.imm.common.world.feature;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -24,7 +24,7 @@ public interface IMMOrePlacements {
     ResourceKey<PlacedFeature> ORE_EMERALD_SMALL = IMMPlacements.create("ore_emerald_small");
     ResourceKey<PlacedFeature> ORE_CINNABAR = IMMPlacements.create("ore_cinnabar");
 
-    static void register(BootstapContext<PlacedFeature> context) {
+    static void register(BootstrapContext<PlacedFeature> context) {
         final HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
         final Holder<ConfiguredFeature<?, ?>> emeraldOre = features.getOrThrow(OreFeatures.ORE_EMERALD);
         final Holder<ConfiguredFeature<?, ?>> cinnabarOre = features.getOrThrow(IMMOreFeatures.ORE_CINNABAR);
