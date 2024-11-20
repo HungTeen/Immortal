@@ -1,0 +1,169 @@
+plugins {
+    id("multiplatform-convention")
+
+    alias(libs.plugins.moddevgradle)
+    alias(libs.plugins.modpublish)
+}
+
+version = modVersion
+var mcVersion = libs.versions.minecraft.asProvider().get()
+var htlibVersion = libs.versions.htlib.asProvider().get()
+base {
+    archivesName = "${modName}-neoforge-${mcVersion}"
+}
+
+neoForge {
+    version = libs.versions.neoforge.asProvider().get()
+
+    validateAccessTransformers = true
+    accessTransformers.files.setFrom(project(":common").file("src/main/resources/META-INF/accesstransformer-nf.cfg"))
+
+    addModdingDependenciesTo(sourceSets.test)
+
+    parchment{
+        minecraftVersion.set(libs.versions.parchment.minecraft.get())
+        mappingsVersion.set(libs.versions.parchment.asProvider().get())
+    }
+
+    runs {
+        configureEach {
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+
+        mods.create("${modId}").sourceSet(project.sourceSets.getByName("main"))
+
+        create("client") {
+            client()
+        }
+
+        create("server") {
+            server()
+//            programArgument("--nogui")
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven { // Curseforge maven.
+        url "https://minecraft.curseforge.com/api/maven/"
+    }
+    maven { // Jade.
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+dependencies {
+    implementation(libs.neoforge)
+    compileOnly(project(":common"))
+
+    implementation("hungteen.htlib:HTLib:${mcVersion}-${htlibVersion}-neoforge")
+//    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+//    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+//    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+//    compileOnly "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-NEOFORGE:api"
+//    localRuntime "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-NEOFORGE"
+
+//    implementation "curse.maven:jade-324717:${jade_version}"
+
+//    implementation "curse.maven:configured-457570:${configured_version}"
+
+}
+
+tasks.named('test').configure {
+    //Disable builtin test as we have JUnit enabled in Common
+    enabled(false)
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).configureEach {
+    from project(":common").sourceSets.main.resources
+}
+
+task apiJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'api'
+
+    include "hungteen/${modId}/api/**"
+
+    // Sources included because of MinecraftForge/ForgeGradle#369
+    from project(":common").sourceSets.main.allJava
+    from(sourceSets.main.allJava)
+    from(sourceSets.main.output)
+}
+
+artifacts {
+    archives apiJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = modName
+            version "${mcVersion}-${modVersion}-neoforge"
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+//publishMods {
+//    file = jar.archiveFile
+//    type = (modVersionType == "STABLE" ? STABLE : BETA)
+//    modLoaders.add("neoforge")
+//    displayName.set("${modName}-${project.version} for NeoForge $mcVersion")
+//
+//    additionalFiles.from(apiJar.archiveFile)
+//
+////    dryRun = true
+//
+//    curseforge {
+//        projectId = curseProjectId
+//        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+//
+//        minecraftVersions.add(mcVersion)
+//        javaVersions.add(JavaVersion.VERSION_21)
+//
+//        clientRequired = true
+//        serverRequired = true
+//
+//        changelog = rootProject.file("docs/en_us/changelog.md").text
+//    }
+//
+//    modrinth {
+//        projectId = modrinthId
+//        accessToken = providers.environmentVariable("MODRINTH_API_KEY")
+//
+//        minecraftVersions.add(mcVersion)
+//
+//        changelog = rootProject.file("docs/en_us/changelog.md").text
+//    }
+//}
