@@ -39,7 +39,7 @@ public class ThrowItemSpell extends SpellType {
             if(! EntityUtil.notConsume(owner)){
                 throwItem.shrink(1);
             }
-            LevelUtil.playSound(owner.level(), SoundEvents.TRIDENT_THROW, SoundSource.NEUTRAL, projectile.position(), 1F, 1F);
+            LevelUtil.playSound(owner.level(), SoundEvents.TRIDENT_THROW.value(), SoundSource.NEUTRAL, projectile.position(), 1F, 1F);
             return true;
         } else {
             this.sendTip(owner, "no_item_in_hands");

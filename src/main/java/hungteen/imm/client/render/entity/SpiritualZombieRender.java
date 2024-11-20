@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class SpiritualZombieRender extends HumanoidMobRenderer<SpiritualZombie, SpiritualZombieModel<SpiritualZombie>> {
 
-    private static final ResourceLocation ZOMBIE_LOCATION = new ResourceLocation("textures/entity/zombie/zombie.png");
+    private static final ResourceLocation ZOMBIE_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png");
 
     public SpiritualZombieRender(EntityRendererProvider.Context context) {
         super(context, new SpiritualZombieModel<>(context.bakeLayer(IMMModelLayers.SPIRITUAL_ZOMBIE)), 0.5F);

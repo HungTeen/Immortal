@@ -22,7 +22,7 @@ public abstract class FormationEntity extends HTEntity {
     }
 
     @Override
-    public boolean canChangeDimensions() {
+    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
         return false;
     }
 

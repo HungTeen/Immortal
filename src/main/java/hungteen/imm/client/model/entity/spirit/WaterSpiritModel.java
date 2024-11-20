@@ -4,13 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.SlimeRenderer;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
@@ -18,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
  * @create: 2023/10/24 12:22
  **/
 public class WaterSpiritModel<T extends WaterSpirit> extends EntityModel<T> {
-    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "waterspiritmodel"), "main");
+
     private final ModelPart total;
     private final ModelPart inner;
     private final ModelPart tentacles;
@@ -60,8 +55,8 @@ public class WaterSpiritModel<T extends WaterSpirit> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, rgba);
     }
 
 }

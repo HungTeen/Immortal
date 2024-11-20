@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells.basic;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.WeightedList;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.client.particle.IMMParticles;

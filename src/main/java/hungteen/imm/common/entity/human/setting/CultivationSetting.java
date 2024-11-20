@@ -18,7 +18,7 @@ import java.util.Optional;
 public record CultivationSetting(Optional<IRealmType> realm, List<ISpiritualType> roots) {
 
     public static final Codec<CultivationSetting> CODEC = RecordCodecBuilder.<CultivationSetting>mapCodec(instance -> instance.group(
-            Codec.optionalField("realm", RealmTypes.registry().byNameCodec()).forGetter(CultivationSetting::realm),
+            Codec.optionalField("realm", RealmTypes.registry().byNameCodec(), true).forGetter(CultivationSetting::realm),
             SpiritualTypes.registry().byNameCodec().listOf().fieldOf("roots").forGetter(CultivationSetting::roots)
     ).apply(instance, CultivationSetting::new)).codec();
 

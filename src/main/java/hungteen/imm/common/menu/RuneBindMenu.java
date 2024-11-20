@@ -137,7 +137,7 @@ public class RuneBindMenu extends RuneBaseMenu{
                     }
                 }
             }
-            if(! ItemStack.isSameItemSameTags(stack, this.inputContainer.getItem(0))){
+            if(! ItemStack.isSameItemSameComponents(stack, this.inputContainer.getItem(0))){
                 this.resultContainer.setItem(0, stack);
             } else {
                 this.resultContainer.setItem(0, ItemStack.EMPTY);

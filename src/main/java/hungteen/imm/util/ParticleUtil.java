@@ -2,7 +2,7 @@ package hungteen.imm.util;
 
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;

@@ -1,6 +1,5 @@
 package hungteen.imm.util;
 
-import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.chunk.ChunkCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -36,7 +35,8 @@ public class LevelUtil {
 
     @Nullable
     public static ChunkCapability getChunkCapability(Level level, BlockPos pos) {
-        return level.getChunkAt(pos).getCapability(CapabilityHandler.CHUNK_CAP).resolve().orElse(null);
+//        return level.getChunkAt(pos).getCapability(CapabilityHandler.CHUNK_CAP).resolve().orElse(null);
+        return null;
     }
 
 }

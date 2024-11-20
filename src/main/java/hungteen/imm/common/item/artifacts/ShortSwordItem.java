@@ -4,6 +4,8 @@ import hungteen.imm.api.interfaces.IArtifactTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 
 /**
  * @program: Immortal
@@ -17,13 +19,13 @@ public class ShortSwordItem extends MeleeAttackItem {
     }
 
     @Override
-    public boolean isCorrectToolForDrops(BlockState state) {
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
         return state.is(Blocks.COBWEB);
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
-        return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
+        return ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(toolAction);
     }
 
 }

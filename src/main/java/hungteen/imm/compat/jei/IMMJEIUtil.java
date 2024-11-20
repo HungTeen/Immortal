@@ -1,6 +1,6 @@
 package hungteen.imm.compat.jei;
 
-import hungteen.htlib.util.helper.VanillaHelper;
+import hungteen.htlib.util.helper.impl.VanillaHelper;
 import net.minecraft.resources.ResourceLocation;
 
 /**

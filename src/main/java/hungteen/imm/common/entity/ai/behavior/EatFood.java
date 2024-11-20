@@ -37,7 +37,7 @@ public class EatFood extends Behavior<HumanEntity> {
     protected void start(ServerLevel level, HumanEntity entity, long time) {
         entity.switchInventory(InteractionHand.OFF_HAND, ItemUtil::isFood);
         entity.startUsingItem(InteractionHand.OFF_HAND);
-        this.finishUsingTick = time + entity.getOffhandItem().getUseDuration();
+        this.finishUsingTick = time + entity.getOffhandItem().getUseDuration(entity);
     }
 
     @Override

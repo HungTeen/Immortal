@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * @program: Immortal
@@ -74,7 +74,7 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack itemStack) {
+    public int getUseDuration(ItemStack itemStack, LivingEntity living) {
         return 1200;
     }
 
@@ -84,7 +84,7 @@ public class HammerItem extends MeleeAttackItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return super.canPerformAction(stack, toolAction) || IMMToolActions.DEFAULT_HAMMER_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
+        return super.canPerformAction(stack, ability) || IMMToolActions.DEFAULT_HAMMER_ACTIONS.contains(ability);
     }
 }

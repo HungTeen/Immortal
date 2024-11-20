@@ -33,7 +33,7 @@ public record ItemEntry(ItemStack itemStack, IntProvider count, IntProvider ench
         stack.setCount(count().sample(random));
         final int point = enchantPoint().sample(random);
         if(point > 0){
-            EnchantmentHelper.enchantItem(random, stack, point, false);
+//            EnchantmentHelper.enchantItem(random, stack, point, false);
         }
         return stack;
     }

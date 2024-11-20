@@ -1,12 +1,12 @@
 package hungteen.imm.client.gui.screen.meditation;
 
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ScreenButtonPacket;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
@@ -45,7 +45,7 @@ public class RestingScreen extends MeditationScreen {
         final int x = (this.width - BUTTON_WIDTH) >> 1;
         final int y = (this.height - BUTTON_HEIGHT) >> 1;
         this.breakThroughButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.break_through"), (button) -> {
-            NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.BREAK_THROUGH));
+            NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.BREAK_THROUGH));
             this.sendWakeUp();
         }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.break_through_button")))){
             @Override
@@ -54,7 +54,7 @@ public class RestingScreen extends MeditationScreen {
             }
         };
         this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
-            NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.SET_SPAWN_POINT));
+            NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.SET_SPAWN_POINT));
         }).pos(x, y).tooltip(Tooltip.create(TipUtil.gui("meditation.set_spawn_point_button"))));
         this.quitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit"), (button) -> {
             this.sendWakeUp();
@@ -69,7 +69,7 @@ public class RestingScreen extends MeditationScreen {
         super.render(graphics, mouseX, mouseY, partialTicks);
         final int x = (this.width >> 1) - 91;
         int y = this.height - 32 + 3;
-        CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
+//        CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
         // Render Break Through Bar.
         if (PlayerUtil.reachThreshold(ClientUtil.player())) {
             y -= 20;

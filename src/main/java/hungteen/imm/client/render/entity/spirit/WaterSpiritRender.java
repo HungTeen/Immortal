@@ -2,6 +2,7 @@ package hungteen.imm.client.render.entity.spirit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.spirit.WaterSpiritModel;
 import hungteen.imm.client.render.entity.IMMMobRender;
@@ -9,9 +10,7 @@ import hungteen.imm.common.entity.creature.spirit.WaterSpirit;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.SlimeModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +18,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 
 /**
  * @program: Immortal
@@ -63,7 +61,7 @@ public class WaterSpiritRender extends IMMMobRender<WaterSpirit> {
                 this.getParentModel().copyPropertiesTo(this.model);
                 this.model.prepareMobModel(spirit, p_117474_, p_117475_, p_117476_);
                 this.model.setupAnim(spirit, p_117474_, p_117475_, p_117477_, p_117478_, p_117479_);
-                this.model.renderToBuffer(stack, consumer, p_117472_, LivingEntityRenderer.getOverlayCoords(spirit, 0.0F), 1.0F, 1.0F, 1.0F, 0.5F);
+                this.model.renderToBuffer(stack, consumer, p_117472_, LivingEntityRenderer.getOverlayCoords(spirit, 0.0F), ColorHelper.toARGB(0.5F, 1.0F, 1.0F, 1.0F));
             }
         }
     }

@@ -1,8 +1,9 @@
 package hungteen.imm.util;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
@@ -10,9 +11,8 @@ import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.component.DyedItemColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +27,19 @@ import java.util.Set;
 public class ItemUtil {
 
     private static final String SUFFIX = "large_held";
-    private static final List<RegistryObject<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
+    private static final List<HTHolder<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
 
-    /**
-     * {@link net.minecraft.world.item.enchantment.EnchantmentHelper#getEnchantments(ItemStack)}.
-     */
     public static boolean hasEnchantment(ItemStack stack){
-        return ! (stack.is(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTags()).isEmpty();
+        return false;
+//        return ! (stack.is(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTags()).isEmpty();
     }
     public static ItemStack dyeArmor(Item item, List<DyeColor> colors){
-        return DyeableLeatherItem.dyeArmor(new ItemStack(item), colors.stream().map(DyeItem::byColor).toList());
+        return DyedItemColor.applyDyes(new ItemStack(item), colors.stream().map(DyeItem::byColor).toList());
     }
 
     public static boolean isFood(ItemStack stack) {
-        return stack.isEdible();
+//        return stack.is;
+        return false;
     }
 
     public static boolean isArmor(ItemStack stack) {
@@ -56,7 +55,8 @@ public class ItemUtil {
     }
 
     public static boolean isMeleeWeapon(ItemStack stack) {
-        return stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(Attributes.ATTACK_DAMAGE) || stack.is(IMMItemTags.MELEE_ATTACK_ITEMS);
+        return false;
+//        return stack.getAttributeModifiers().containsKey(Attributes.ATTACK_DAMAGE) || stack.is(IMMItemTags.MELEE_ATTACK_ITEMS);
     }
 
     public static boolean isRangeWeapon(ItemStack stack) {
@@ -93,15 +93,15 @@ public class ItemUtil {
     /**
      * Register item so that it will change BakedModel.
      */
-    public static void registerLargeHeldItem(RegistryObject<Item> item){
+    public static void registerLargeHeldItem(HTHolder<Item> item){
         if(! LARGE_HELD_ITEMS.contains(item)){
             LARGE_HELD_ITEMS.add(item);
         } else {
-            Util.warn("Registered this item {} before", item.getKey().location());
+            Util.warn("Registered this item {} before", item.getId());
         }
     }
 
     public static List<Item> getLargeHeldItems(){
-        return LARGE_HELD_ITEMS.stream().map(RegistryObject::get).toList();
+        return LARGE_HELD_ITEMS.stream().map(HTHolder::get).toList();
     }
 }

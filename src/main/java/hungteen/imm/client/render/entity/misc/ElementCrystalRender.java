@@ -2,7 +2,6 @@ package hungteen.imm.client.render.entity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.util.HTColor;
-import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.ElementCrystalModel;
@@ -15,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 
 /**
  * @program: Immortal
@@ -39,13 +39,10 @@ public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
     public void render(ElementCrystal entityIn, float entityYaw, float partialTicks, PoseStack stack,
                        MultiBufferSource bufferIn, int packedLightIn) {
         final HTColor color = ElementManager.getElementColor(entityIn, false);
-        final float red = ColorHelper.to(color.red());
-        final float green = ColorHelper.to(color.green());
-        final float blue = ColorHelper.to(color.blue());
         stack.pushPose();
         RenderUtil.commonTranslate(stack, 1F);
-        this.solidModel.renderToBuffer(stack, bufferIn.getBuffer(CUTOUT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1F);
-        this.lightModel.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 0.35F);
+        this.solidModel.renderToBuffer(stack, bufferIn.getBuffer(CUTOUT), packedLightIn, OverlayTexture.NO_OVERLAY, color.argb());
+        this.lightModel.renderToBuffer(stack, bufferIn.getBuffer(LIGHT), packedLightIn, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(FastColor.as8BitChannel(0.35F), color.rgb()));
         stack.popPose();
         super.render(entityIn, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }

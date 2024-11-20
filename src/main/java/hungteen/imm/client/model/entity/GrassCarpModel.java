@@ -66,7 +66,7 @@ public class GrassCarpModel<T extends GrassCarp> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int rgba) {
         total.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

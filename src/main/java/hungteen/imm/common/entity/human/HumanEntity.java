@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.interfaces.IHuman;
@@ -426,7 +427,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
     public void updateTradeOffers(){
         if(getTradingPlayer() instanceof ServerPlayer player && player.containerMenu instanceof MerchantTradeMenu){
-            NetworkHandler.sendToClient(player, new TradeOffersPacket(player.containerMenu.containerId, this.tradeOffers));
+            NetworkHelper.sendToClient(player, new TradeOffersPacket(player.containerMenu.containerId, this.tradeOffers));
         }
     }
 

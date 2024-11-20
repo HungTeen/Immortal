@@ -5,7 +5,7 @@ import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.data.worldgen.ProcessorLists;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  **/
 public class SpiritualPlainsVillage {
 
-    public static void initStructures(BootstapContext<Structure> context) {
+    public static void initStructures(BootstrapContext<Structure> context) {
 //        context.initialize(IMMStructures.SPIRITUAL_PLAINS_VILLAGE, new JigsawStructure(
 //                new Structure.StructureSettings(
 //                        context.lookup(Registries.BIOME).getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS),
@@ -85,7 +85,7 @@ public class SpiritualPlainsVillage {
 //        ));
 //    }
 
-    public static void initPools(BootstapContext<StructureTemplatePool> context){
+    public static void initPools(BootstrapContext<StructureTemplatePool> context){
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         final HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
         final Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);

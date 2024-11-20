@@ -135,10 +135,10 @@ public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
 //    }
 
     @Override
-    public boolean mouseScrolled(double p_94686_, double p_94687_, double delta) {
+    public boolean mouseScrolled(double p_94686_, double p_94687_, double deltaX, double deltaY) {
         if (this.canScroll()) {
             final int rows = this.getHiddenRows();
-            final double f = delta / rows;
+            final double f = deltaX / rows;
             this.scrollPercent = Mth.clamp(this.scrollPercent - f, 0.0F, 1.0F);
             this.startIndex = Math.round((float) (this.scrollPercent * rows)) * COLS;
         }

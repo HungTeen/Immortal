@@ -124,10 +124,12 @@ public class RuneCraftingMenu extends RuneBaseMenu {
     }
 
     private boolean inputSlotChanged(){
-        while(this.lastInputItems.size() < INPUT_SLOT_NUM) this.lastInputItems.add(ItemStack.EMPTY);
+        while(this.lastInputItems.size() < INPUT_SLOT_NUM) {
+            this.lastInputItems.add(ItemStack.EMPTY);
+        }
         boolean changed = false;
         for(int i = 0; i < INPUT_SLOT_NUM; ++ i) {
-            if (!ItemStack.isSameItemSameTags(this.lastInputItems.get(i), this.inputContainer.getItem(i))) {
+            if (!ItemStack.isSameItemSameComponents(this.lastInputItems.get(i), this.inputContainer.getItem(i))) {
                 changed = true;
                 this.lastInputItems.set(i, this.inputContainer.getItem(i).copy());
             }

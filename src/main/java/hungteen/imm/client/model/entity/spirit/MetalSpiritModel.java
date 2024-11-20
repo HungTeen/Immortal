@@ -501,8 +501,8 @@ public class MetalSpiritModel<T extends MetalSpirit> extends AnimatedEntityModel
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, rgba);
     }
 
     @Override

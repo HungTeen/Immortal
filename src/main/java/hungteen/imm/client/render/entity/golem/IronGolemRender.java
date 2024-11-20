@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class IronGolemRender extends IMMMobRender<IronGolem> {
 
-    private static final ResourceLocation GOLEM_LOCATION = new ResourceLocation("textures/entity/iron_golem/iron_golem.png");
+    private static final ResourceLocation GOLEM_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem.png");
 
     public IronGolemRender(EntityRendererProvider.Context rendererManager) {
         super(rendererManager, new IronGolemModel<>(rendererManager.bakeLayer(IMMModelLayers.IRON_GOLEM)), 0.7F);

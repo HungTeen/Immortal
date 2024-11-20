@@ -1,9 +1,6 @@
 package hungteen.imm.common.effect;
 
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 /**
  * @program: Immortal
@@ -16,8 +13,4 @@ public class NoCureMobEffect extends IMMMobEffect {
         super(category, color);
     }
 
-    @Override
-    public List<ItemStack> getCurativeItems() {
-        return List.of();
-    }
 }

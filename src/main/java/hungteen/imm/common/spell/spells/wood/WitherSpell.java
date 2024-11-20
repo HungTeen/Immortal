@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.wood;
 
-import hungteen.htlib.util.helper.registry.EffectHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.common.spell.spells.SpellType;

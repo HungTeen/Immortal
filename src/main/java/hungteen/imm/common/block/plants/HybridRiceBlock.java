@@ -4,7 +4,6 @@ import hungteen.imm.common.item.IMMItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +29,7 @@ import javax.annotation.Nullable;
  * @program Immortal
  * @data 2023/5/31 10:22
  */
-public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock {
+public class HybridRiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
@@ -52,7 +50,7 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
     };
 
     public HybridRiceBlock() {
-        super(Properties.copy(Blocks.WHEAT));
+        super(Properties.ofFullCopy(Blocks.WHEAT));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(this.getAgeProperty(), 0)
                 .setValue(HALF, DoubleBlockHalf.LOWER)
@@ -60,23 +58,9 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
         );
     }
 
-    /**
-     * modify from super method.
-     */
     @Override
-    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource random) {
-        if (!serverLevel.isAreaLoaded(blockPos, 1))
-            return; // Forge: prevent loading unloaded chunks when checking neighbor's light
-        if (!isUpperState(blockState) && serverLevel.getRawBrightness(blockPos, 0) >= 9 && random.nextFloat() < 0.25F) {
-            int i = this.getAge(blockState);
-            if (i < this.getMaxAge()) {
-                float f = getGrowthSpeed(this, serverLevel, blockPos);
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(serverLevel, blockPos, blockState, random.nextInt((int) (25.0F / f) + 1) == 0)) {
-                    this.onGrow(serverLevel, blockState, blockPos, i + 1);
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(serverLevel, blockPos, blockState);
-                }
-            }
-        }
+    public boolean canNaturalGrow(ServerLevel level, BlockState state, BlockPos pos) {
+        return !isUpperState(state) && level.getRawBrightness(pos, 0) >= 9 && level.random.nextFloat() < 0.25F;
     }
 
     /**
@@ -88,8 +72,9 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
             return super.canSurvive(state, reader, pos);
         } else {
             BlockState blockstate = reader.getBlockState(pos.below());
-            if (state.getBlock() != this)
+            if (state.getBlock() != this) {
                 return super.canSurvive(state, reader, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            }
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
     }
@@ -120,7 +105,7 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState state, Player player) {
         if (!level.isClientSide) {
             if (player.isCreative()) {
                 preventCreativeDropFromBottomPart(level, blockPos, state, player);
@@ -129,7 +114,7 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
             }
         }
 
-        super.playerWillDestroy(level, blockPos, state, player);
+        return super.playerWillDestroy(level, blockPos, state, player);
     }
 
     @Override
@@ -162,8 +147,8 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader reader, BlockPos blockPos, BlockState blockState, boolean flag) {
-        return !isUpperState(blockState) && super.isValidBonemealTarget(reader, blockPos, blockState, flag);
+    public boolean isValidBonemealTarget(LevelReader reader, BlockPos blockPos, BlockState blockState) {
+        return !isUpperState(blockState) && super.isValidBonemealTarget(reader, blockPos, blockState);
     }
 
     /**
@@ -184,6 +169,7 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
         return super.getBonemealAgeIncrease(level) / 3;
     }
 
+    @Override
     protected void onGrow(Level level, BlockState state, BlockPos pos, int age) {
         if (!isUpperState(state)) {
             level.setBlock(pos, this.getStateForAge(age, false), 2);
@@ -216,6 +202,16 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
         return MAX_AGE;
     }
 
+    @Override
+    public VoxelShape[] getShapes() {
+        return new VoxelShape[0];
+    }
+
+    @Override
+    public ItemLike getSeedItem(BlockState state) {
+        return IMMItems.RICE_SEEDS.get();
+    }
+
     /**
      * Not every age will change the state and texture.
      */
@@ -238,11 +234,6 @@ public class HybridRiceBlock extends CropBlock implements SimpleWaterloggedBlock
     @Override
     public FluidState getFluidState(BlockState blockState) {
         return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
-    }
-
-    @Override
-    protected ItemLike getBaseSeedId() {
-        return IMMItems.RICE_SEEDS.get();
     }
 
 

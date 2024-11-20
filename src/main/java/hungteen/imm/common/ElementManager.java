@@ -9,8 +9,6 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.misc.ElementCrystal;
-import hungteen.imm.common.network.NetworkHandler;
-import hungteen.imm.common.network.ReactionPacket;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.util.Colors;
@@ -96,38 +94,40 @@ public class ElementManager {
      * 在世界更新末尾更新，仅服务端。
      */
     public static void tickElements(Entity entity) {
-        EntityUtil.getOptCapability(entity).ifPresent(cap -> {
-            if (canReactionOn(entity)) {
-                // Update Misc.
-                cap.update();
-                // Element Reactions.
-                final Iterator<IElementReaction> iterator = cap.getPossibleReactions().iterator();
-                while (iterator.hasNext()) {
-                    final IElementReaction reaction = iterator.next();
-                    final float scale = reaction.match(entity);
-                    if (scale > 0) {
-                        reaction.doReaction(entity, (float) (MathUtil.log2(scale + 1)));
-                        reaction.consume(entity, scale);
-                        if (!reaction.once()) {
-                            cap.setActiveScale(reaction, scale);
+        if(entity.level() instanceof ServerLevel serverLevel) {
+            EntityUtil.getOptCapability(entity).ifPresent(cap -> {
+                if (canReactionOn(entity)) {
+                    // Update Misc.
+                    cap.update();
+                    // Element Reactions.
+                    final Iterator<IElementReaction> iterator = cap.getPossibleReactions().iterator();
+                    while (iterator.hasNext()) {
+                        final IElementReaction reaction = iterator.next();
+                        final float scale = reaction.match(entity);
+                        if (scale > 0) {
+                            reaction.doReaction(entity, (float) (MathUtil.log2(scale + 1)));
+                            reaction.consume(entity, scale);
+                            if (!reaction.once()) {
+                                cap.setActiveScale(reaction, scale);
+                            }
+//                            NetworkHelper.sendToClient(serverLevel, entity, entity.position(), 60, new ReactionPacket(entity.getId(), reaction));
+                        } else {
+                            iterator.remove();
                         }
-                        NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 60, new ReactionPacket(entity.getId(), reaction));
-                    } else {
-                        iterator.remove();
                     }
                 }
-            }
-            // Decay Elements.
-            for (int i = 0; i < 2; ++i) {
-                final boolean robust = (i == 0);
-                for (Elements element : Elements.values()) {
-                    if (cap.hasElement(element, robust)) {
-                        final float decayAmount = getDecayAmount(entity, element, robust);
-                        cap.addElementAmount(element, robust, -decayAmount);
+                // Decay Elements.
+                for (int i = 0; i < 2; ++i) {
+                    final boolean robust = (i == 0);
+                    for (Elements element : Elements.values()) {
+                        if (cap.hasElement(element, robust)) {
+                            final float decayAmount = getDecayAmount(entity, element, robust);
+                            cap.addElementAmount(element, robust, -decayAmount);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     public static Elements getTargetElement(Elements element) {

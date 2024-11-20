@@ -59,8 +59,8 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        return this.scrollComponent.mouseScrolled(delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        return this.scrollComponent.mouseScrolled(deltaX);
     }
 
     @Override

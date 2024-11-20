@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "${neoforge_loader_range}"
+loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
 
 [[mods]]
@@ -17,6 +17,9 @@ file = "META-INF/accesstransformer.cfg"
 
 [[mixins]]
 config = "${mod_id}.mixins.json"
+
+#[[mods]]
+#enumExtensions="META-INF/enumextensions.json"
 
 [[dependencies.${ mod_id }]] #optional
 modId = "neoforge"

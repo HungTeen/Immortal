@@ -1,7 +1,9 @@
 plugins {
+    id 'idea'
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev'
+//    id 'net.neoforged.gradle.userdev'
 }
 
 version = mod_version
@@ -20,39 +22,36 @@ neoForge {
     version = neo_version
 
     validateAccessTransformers = true
+    accessTransformers.files.setFrom("src/main/resources/META-INF/accesstransformer.cfg")
+
+    parchment {
+        // Get versions from https://parchmentmc.org/docs/getting-started
+        // Omit the "v"-prefix in mappingsVersion
+        minecraftVersion = parchment_version
+        mappingsVersion = mappings_version
+    }
 
     runs {
         configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
         }
         client {
             client()
-
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
 //            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
             data()
-
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
 
     mods {
         "${mod_id}" {
-            sourceSet(sourceSets.main)
+            sourceSet sourceSets.main
         }
     }
 }
@@ -88,8 +87,6 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
@@ -104,12 +101,12 @@ dependencies {
     implementation("hungteen.htlib:HTLib:${minecraft_version}-${htlib_version}-neoforge")
 }
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
+            neoforge_version_range : neo_version_range,
             loader_version_range   : loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
@@ -125,12 +122,11 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             htlib_version_range    : htlib_version_range
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+
+    filesMatching(["pack.mcmeta", 'META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
 }
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
 
 tasks.named('jar', Jar).configure {
     manifest {
@@ -143,9 +139,14 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Vendor'   : mod_authors,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "Built-On-Minecraft"      : minecraft_version,
-                "MixinConfigs"            : "$mod_id.mixins.json"
+                "MixinConfigs"            : "${mod_id}.mixins.json"
         ])
     }
+}
+
+processResources {
+    // Exclude datagenerator .cache directory
+    exclude '.cache'
 }
 
 task apiJar(type: Jar, dependsOn: classes) {

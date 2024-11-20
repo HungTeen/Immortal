@@ -6,7 +6,6 @@ import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.tag.IMMStructureTags;
-import hungteen.imm.util.TipUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -20,8 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.List;
 
@@ -49,8 +46,8 @@ public class EmptyCultivator extends Cultivator {
             if (dst != null) {
                 ItemStack itemstack = MapItem.create(serverLevel, dst.getX(), dst.getZ(), (byte)2, true, true);
                 MapItem.renderBiomePreviewMap(serverLevel, itemstack);
-                MapItemSavedData.addTargetDecoration(itemstack, dst, "+", MapDecoration.Type.MANSION);
-                itemstack.setHoverName(TipUtil.tooltip("teleport_ruin_map"));
+//                MapItemSavedData.addTargetDecoration(itemstack, dst, "+", MapDecoration.MANSION);
+//                itemstack.setHoverName(TipUtil.tooltip("teleport_ruin_map"));
                 offers.add(new TradeOffer(new TradeEntry(
                         List.of(
                                 new ItemStack(Items.EMERALD, 8),

@@ -34,19 +34,19 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
     public ElixirRoomMenu(int id, Inventory inventory, ContainerData accessData, BlockPos pos) {
         super(id, IMMMenus.ELIXIR_ROOM.get(), inventory, accessData, pos);
 
-        this.addInventories(73, 53, 3, 3, 0, (i, x, y) -> {
-            return new SlotItemHandler(this.blockEntity.getItemHandler(), i, x, y) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return ! ElixirRoomMenu.this.started();
-                }
-
-                @Override
-                public boolean isActive() {
-                    return ! ElixirRoomMenu.this.started();
-                }
-            };
-        });
+//        this.addInventories(73, 53, 3, 3, 0, (i, x, y) -> {
+//            return new SlotItemHandler(this.blockEntity.getItemHandler(), i, x, y) {
+//                @Override
+//                public boolean mayPlace(@NotNull ItemStack stack) {
+//                    return ! ElixirRoomMenu.this.started();
+//                }
+//
+//                @Override
+//                public boolean isActive() {
+//                    return ! ElixirRoomMenu.this.started();
+//                }
+//            };
+//        });
 
         this.addInventoryAndHotBar(inventory, 19, 140);
 

@@ -18,8 +18,9 @@ public abstract class IMMMobEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int lvl) {
+    public boolean applyEffectTick(LivingEntity entity, int lvl) {
 
+        return false;
     }
 
     @Override
@@ -28,7 +29,8 @@ public abstract class IMMMobEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int time, int level) {
-        return false;
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return super.shouldApplyEffectTickThisTick(duration, amplifier);
     }
+
 }

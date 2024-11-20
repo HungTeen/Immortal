@@ -6,12 +6,10 @@ import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.util.Colors;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,7 +43,7 @@ public class RawArtifactBox extends ArtifactItem {
 //    }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
 
     }
 
@@ -56,29 +54,32 @@ public class RawArtifactBox extends ArtifactItem {
     }
 
     public static void setArtifactItem(ItemStack stack, ItemStack artifactItem){
-        stack.getOrCreateTag().put(ARTIFACT_ITEM, artifactItem.serializeNBT());
+//        stack.getOrCreateTag().put(ARTIFACT_ITEM, artifactItem.serializeNBT());
     }
 
     public static ItemStack getArtifactItem(ItemStack stack){
-        return ItemStack.of(stack.getOrCreateTag().getCompound(ARTIFACT_ITEM));
+//        return ItemStack.of(stack.getOrCreateTag().getCompound(ARTIFACT_ITEM));
+        return ItemStack.EMPTY;
     }
 
     public static void addSpiritualValue(ItemStack stack, int value){
         final int currentValue = getSpiritualValue(stack);
         final int maxValue = getSpiritualValueRequired(stack);
-        stack.getOrCreateTag().putInt(SPIRITUAL_VALUE, Mth.clamp(currentValue + value, 0, maxValue));
+//        stack.getOrCreateTag().putInt(SPIRITUAL_VALUE, Mth.clamp(currentValue + value, 0, maxValue));
     }
 
     public static int getSpiritualValue(ItemStack stack){
-        return stack.getOrCreateTag().getInt(SPIRITUAL_VALUE);
+//        return stack.getOrCreateTag().getInt(SPIRITUAL_VALUE);
+        return 0;
     }
 
     public static void setSpiritualValueRequired(ItemStack stack, int value){
-        stack.getOrCreateTag().putInt(SPIRITUAL_VALUE_REQUIRED, value);
+//        stack.getOrCreateTag().putInt(SPIRITUAL_VALUE_REQUIRED, value);
     }
 
     public static int getSpiritualValueRequired(ItemStack stack){
-        return stack.getOrCreateTag().getInt(SPIRITUAL_VALUE_REQUIRED);
+//        return stack.getOrCreateTag().getInt(SPIRITUAL_VALUE_REQUIRED);
+        return 0;
     }
 
     @Override
@@ -107,11 +108,11 @@ public class RawArtifactBox extends ArtifactItem {
         return super.getDescription();
     }
 
-    @Override
-    public Rarity getRarity(ItemStack stack) {
-        final ItemStack artifact = getArtifactItem(stack);
-        return stack.isEmpty() ? Rarity.COMMON : artifact.getRarity();
-    }
+//    @Override
+//    public Rarity getRarity(ItemStack stack) {
+//        final ItemStack artifact = getArtifactItem(stack);
+//        return stack.isEmpty() ? Rarity.COMMON : artifact.getRarity();
+//    }
 
     @Override
     public Component getName(ItemStack stack) {

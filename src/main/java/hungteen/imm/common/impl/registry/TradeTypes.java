@@ -1,8 +1,7 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.registry.ITradeType;
 import hungteen.imm.util.Util;
@@ -18,10 +17,10 @@ import java.util.List;
  */
 public class TradeTypes {
 
-    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.createSimple(Util.prefix("trade_type"));
+    private static final HTSimpleRegistry<ITradeType> TRADE_TYPES = HTRegistryManager.simple(Util.prefix("trade_type"));
     private static final List<ITradeType> TYPES = new ArrayList<>();
 
-    public static IHTSimpleRegistry<ITradeType> registry() {
+    public static HTSimpleRegistry<ITradeType> registry() {
         return TRADE_TYPES;
     }
 
@@ -49,7 +48,7 @@ public class TradeTypes {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return this.name;
         }
 

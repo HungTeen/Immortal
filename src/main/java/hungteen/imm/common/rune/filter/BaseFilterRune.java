@@ -3,6 +3,7 @@ package hungteen.imm.common.rune.filter;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -11,7 +12,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -71,13 +71,13 @@ public abstract class BaseFilterRune implements IFilterRune {
     }
 
     public String getDataText(){
-        return parse().map(l -> {
-            if(l instanceof Item item) return item.getDescription();
-            if(l instanceof Block block) return block.getName();
-            if(l instanceof EntityType<?> type) return type.getDescription();
-            if(l instanceof Boolean b) return TipUtil.misc(b ? "true" : "false").withStyle(b ? ChatFormatting.GREEN : ChatFormatting.RED).withStyle(ChatFormatting.BOLD);
-            if(l instanceof Float f) return TipUtil.misc("percent", (int)(f * 100));
-            return UNKNOWN_COMPONENT;
+        return parse().map(l -> switch (l){
+            case Item item -> item.getDescription();
+            case Block block -> block.getName();
+            case EntityType<?> type -> type.getDescription();
+            case Boolean b -> TipUtil.misc(b ? "true" : "false").withStyle(b ? ChatFormatting.GREEN : ChatFormatting.RED).withStyle(ChatFormatting.BOLD);
+            case Float f -> TipUtil.misc("percent", (int)(f * 100));
+            default -> UNKNOWN_COMPONENT;
         }).orElse(UNKNOWN_COMPONENT).getString();
     }
 
@@ -125,7 +125,7 @@ public abstract class BaseFilterRune implements IFilterRune {
 
     public record Info(Item item, CompoundTag tag) {
         public static final Codec<Info> CODEC = RecordCodecBuilder.<Info>mapCodec(instance -> instance.group(
-                ForgeRegistries.ITEMS.getCodec().fieldOf(ITEM).forGetter(Info::item),
+                ItemHelper.get().getCodec().fieldOf(ITEM).forGetter(Info::item),
                 CompoundTag.CODEC.fieldOf(DATA).forGetter(Info::tag)
         ).apply(instance, Info::new)).codec();
     }

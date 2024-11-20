@@ -6,7 +6,6 @@ package hungteen.imm.client.model.entity.villager;// Made with Blockbench 4.5.1
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.client.model.AnimatedEntityModel;
-import hungteen.imm.client.model.entity.villager.VillagerAnimations;
 import hungteen.imm.common.entity.human.VillagerLikeEntity;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -91,8 +90,8 @@ public class PillagerModel<T extends VillagerLikeEntity> extends AnimatedEntityM
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+		total.render(poseStack, vertexConsumer, packedLight, packedOverlay, rgba);
 	}
 
 	@Override

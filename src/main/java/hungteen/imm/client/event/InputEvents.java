@@ -1,10 +1,10 @@
 package hungteen.imm.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import hungteen.imm.IMMInitializer;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.event.InputEvent;
  * @author: HungTeen
  * @create: 2022-10-09 21:55
  **/
-@EventBusSubscriber(modid = IMMInitializer.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID, value = Dist.CLIENT)
 public class InputEvents {
 
     @SubscribeEvent

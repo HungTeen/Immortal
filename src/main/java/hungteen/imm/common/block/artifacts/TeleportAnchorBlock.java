@@ -14,10 +14,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -50,25 +49,22 @@ public class TeleportAnchorBlock extends SimpleArtifactBlock {
     }
 
     public TeleportAnchorBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.REINFORCED_DEEPSLATE), RealmTypes.ADVANCED_ARTIFACT);
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.REINFORCED_DEEPSLATE), RealmTypes.ADVANCED_ARTIFACT);
         this.registerDefaultState(this.stateDefinition.any().setValue(CHARGE, 0));
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        final ItemStack itemstack = player.getItemInHand(hand);
+    protected ItemInteractionResult useItemOn(ItemStack itemstack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (hand == InteractionHand.MAIN_HAND && !isTeleportFuel(itemstack) && isTeleportFuel(player.getItemInHand(InteractionHand.OFF_HAND))) {
-            return InteractionResult.PASS;
-        } else if (isTeleportFuel(itemstack) && canBeCharged(blockState)) {
-            charge(level, pos, blockState);
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        } else if (isTeleportFuel(itemstack) && canBeCharged(state)) {
+            charge(level, pos, state);
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        } else if (blockState.getValue(CHARGE) == 0) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.CONSUME;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -125,7 +121,7 @@ public class TeleportAnchorBlock extends SimpleArtifactBlock {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

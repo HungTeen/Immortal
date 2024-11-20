@@ -3,7 +3,7 @@ package hungteen.imm.common.advancement;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
-import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
+import hungteen.imm.util.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 
 /**
@@ -14,10 +14,10 @@ import net.minecraft.advancements.CriteriaTriggers;
 public class AdvancementHandler {
 
     public static void init() {
-        CriteriaTriggers.register(SpiritualPearlTrigger.INSTANCE);
-        CriteriaTriggers.register(PlayerRealmChangeTrigger.INSTANCE);
-        CriteriaTriggers.register(PlayerLearnSpellTrigger.INSTANCE);
-        CriteriaTriggers.register(PlayerLearnSpellsTrigger.INSTANCE);
+//        CriteriaTriggers.register(Util.prefixName("spiritual_pearl"), SpiritualPearlTrigger.INSTANCE);
+        CriteriaTriggers.register(Util.prefixName("realm"), PlayerRealmChangeTrigger.INSTANCE);
+        CriteriaTriggers.register(Util.prefixName("learn_spell"), PlayerLearnSpellTrigger.INSTANCE);
+        CriteriaTriggers.register(Util.prefixName("learn_spells"), PlayerLearnSpellsTrigger.INSTANCE);
     }
 
 }

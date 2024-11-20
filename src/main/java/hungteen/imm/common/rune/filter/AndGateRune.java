@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
@@ -17,9 +17,9 @@ import java.util.function.Predicate;
  **/
 public class AndGateRune extends ListGateRune{
 
-    public static final Codec<AndGateRune> CODEC = RecordCodecBuilder.<AndGateRune>mapCodec(instance -> instance.group(
+    public static final MapCodec<AndGateRune> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ListGateRune.Info.CODEC.fieldOf("info").forGetter(AndGateRune::getInfo)
-    ).apply(instance, AndGateRune::new)).codec();
+    ).apply(instance, AndGateRune::new));
 
     public AndGateRune(Item item, List<IFilterRune> filters) {
         this(new Info(item, filters));

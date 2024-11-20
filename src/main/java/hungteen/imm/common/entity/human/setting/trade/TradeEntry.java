@@ -2,7 +2,6 @@ package hungteen.imm.common.entity.human.setting.trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +49,7 @@ public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems,
     }
 
     /**
-     * 两个物品之间是否匹配。
+     * TODO 两个物品之间是否匹配。
      * @param payItem 当前的物品。
      * @param costItem 至少需要的物品。
      * @return 是否匹配。
@@ -64,7 +63,8 @@ public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems,
                 itemstack.setDamageValue(itemstack.getDamageValue());
             }
 
-            return ItemStack.isSameItem(itemstack, costItem) && (!costItem.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(costItem.getTag(), itemstack.getTag(), false));
+            return false;
+//            return ItemStack.isSameItem(itemstack, costItem) && (!costItem.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(costItem.getTag(), itemstack.getTag(), false));
         }
     }
     

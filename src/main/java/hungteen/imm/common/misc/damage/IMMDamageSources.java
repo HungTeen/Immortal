@@ -1,6 +1,6 @@
 package hungteen.imm.common.misc.damage;
 
-import hungteen.htlib.util.helper.registry.DamageHelper;
+import hungteen.htlib.util.helper.impl.DamageHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;

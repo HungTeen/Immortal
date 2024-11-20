@@ -1,13 +1,16 @@
 package hungteen.imm.common.network;
 
+import hungteen.htlib.common.network.ServerPacketContext;
+import hungteen.htlib.common.network.packet.PlayToServerPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @data 2023/3/18 15:08
  */
-public class ScreenButtonPacket {
+public class ScreenButtonPacket implements PlayToServerPacket {
 
     private final int id;
     private final int val;
@@ -29,6 +32,16 @@ public class ScreenButtonPacket {
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(this.id);
         buffer.writeInt(this.val);
+    }
+
+    @Override
+    public void process(ServerPacketContext serverPacketContext) {
+
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
     }
 
 //    public static class Handler {

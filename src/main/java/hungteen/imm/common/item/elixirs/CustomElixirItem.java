@@ -3,7 +3,6 @@ package hungteen.imm.common.item.elixirs;
 import hungteen.htlib.util.helper.ColorHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -38,10 +37,10 @@ public class CustomElixirItem extends ElixirItem {
 
     public static void setEffects(ItemStack stack, List<MobEffectInstance> effects){
         final ListTag tag = getEffectList(stack);
-        effects.forEach(instance -> {
-            tag.add(instance.save(new CompoundTag()));
-        });
-        stack.getOrCreateTag().put(EFFECTS, tag);
+//        effects.forEach(instance -> {
+//            tag.add(instance.save(new CompoundTag()));
+//        });
+//        stack.getOrCreateTag().put(EFFECTS, tag);
     }
 
     public static List<MobEffectInstance> getEffects(ItemStack stack){
@@ -52,7 +51,8 @@ public class CustomElixirItem extends ElixirItem {
     }
 
     private static ListTag getEffectList(ItemStack stack){
-        return stack.getOrCreateTag().contains(EFFECTS) ? stack.getOrCreateTag().getList(EFFECTS, Tag.TAG_COMPOUND) : new ListTag();
+//        return stack.getOrCreateTag().contains(EFFECTS) ? stack.getOrCreateTag().getList(EFFECTS, Tag.TAG_COMPOUND) : new ListTag();
+        return new ListTag();
     }
 
     @Override

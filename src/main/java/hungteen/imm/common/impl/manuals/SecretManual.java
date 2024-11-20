@@ -35,7 +35,7 @@ public record SecretManual(List<ILearnRequirement> requirements, IManualContent 
             RequirementTypes.getCodec().listOf().optionalFieldOf("requirements", List.of()).forGetter(SecretManual::requirements),
             ManualTypes.getManualCodec().fieldOf("content").forGetter(SecretManual::content),
             ResourceLocation.CODEC.optionalFieldOf("model", Util.prefix("secret_manual")).forGetter(SecretManual::model),
-            Codec.optionalField("title", CodecHelper.componentCodec()).forGetter(SecretManual::title)
+            Codec.optionalField("title", CodecHelper.componentCodec(), true).forGetter(SecretManual::title)
     ).apply(instance, SecretManual::new)).codec();
 
     public boolean canLearn(Level level, Player player) {

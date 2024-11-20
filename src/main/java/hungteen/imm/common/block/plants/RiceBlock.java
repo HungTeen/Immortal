@@ -39,7 +39,7 @@ public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
     };
 
     public RiceBlock() {
-        super(Properties.copy(Blocks.WHEAT));
+        super(Properties.ofFullCopy(Blocks.WHEAT));
         this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(WATERLOGGED, false));
     }
 
@@ -56,13 +56,8 @@ public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public int getStateIndex(BlockState state) {
-        return getAge(state) / 2;
-    }
-
-    @Override
-    public VoxelShape[] getShapes() {
-        return SHAPE_BY_AGE;
+    public BlockState getStateForAge(int age) {
+        return this.defaultBlockState().setValue(AGE, age);
     }
 
     @Override
@@ -71,7 +66,7 @@ public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public ItemLike getSeedItem(BlockState state) {
+    public ItemLike getBaseSeedId() {
         return IMMItems.RICE_SEEDS.get();
     }
 
@@ -83,6 +78,16 @@ public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
     @Override
     public int getMaxAge() {
         return MAX_AGE;
+    }
+
+    @Override
+    public VoxelShape[] getShapes() {
+        return SHAPE_BY_AGE;
+    }
+
+    @Override
+    public ItemLike getSeedItem(BlockState state) {
+        return null;
     }
 
 }

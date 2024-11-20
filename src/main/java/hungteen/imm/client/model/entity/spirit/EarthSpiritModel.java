@@ -8,15 +8,9 @@ import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraft.client.animation.definitions.SnifferAnimation;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.SnifferModel;
-import net.minecraft.client.model.WardenModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
@@ -309,8 +303,8 @@ public class EarthSpiritModel<T extends EarthSpirit> extends AnimatedEntityModel
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+        total.render(poseStack, vertexConsumer, packedLight, packedOverlay, rgba);
     }
 
     @Override

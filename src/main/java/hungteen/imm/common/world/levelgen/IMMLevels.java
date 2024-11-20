@@ -1,6 +1,6 @@
 package hungteen.imm.common.world.levelgen;
 
-import hungteen.htlib.util.helper.registry.LevelHelper;
+import hungteen.htlib.util.helper.impl.LevelHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;

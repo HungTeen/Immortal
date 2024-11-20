@@ -61,8 +61,9 @@ public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> im
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        return this.scrollComponent.mouseScrolled(delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        // TODO delta ?
+        return this.scrollComponent.mouseScrolled(deltaX);
     }
 
     @Override

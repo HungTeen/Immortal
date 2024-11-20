@@ -74,14 +74,14 @@ public abstract class FilterRuneItem<T> extends RuneItem {
     }
 
     private void putFilterRaw(ItemStack stack, Tag tag) {
-        stack.getOrCreateTag().put(FILTER, tag);
+//        stack.getOrCreateTag().put(FILTER, tag);
     }
 
     public Optional<IFilterRune> getGateRune(ItemStack stack) {
-        if (stack.getOrCreateTag().contains(FILTER)) {
-            final CompoundTag nbt = getFilterRaw(stack);
-            return CodecHelper.parse(FilterRuneTypes.getCodec(), nbt).result();
-        }
+//        if (stack.getOrCreateTag().contains(FILTER)) {
+//            final CompoundTag nbt = getFilterRaw(stack);
+//            return CodecHelper.parse(FilterRuneTypes.getCodec(), nbt).result();
+//        }
         return Optional.empty();
     }
 
@@ -90,7 +90,8 @@ public abstract class FilterRuneItem<T> extends RuneItem {
     }
 
     private CompoundTag getFilterRaw(ItemStack stack) {
-        return stack.getOrCreateTag().getCompound(FILTER);
+//        return stack.getOrCreateTag().getCompound(FILTER);
+        return new CompoundTag();
     }
 
     public void setInfo(ItemStack stack, T info) {

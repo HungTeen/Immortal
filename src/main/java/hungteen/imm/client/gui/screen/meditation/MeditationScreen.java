@@ -3,13 +3,13 @@ package hungteen.imm.client.gui.screen.meditation;
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.ScreenButtonPacket;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
@@ -135,7 +135,7 @@ public abstract class MeditationScreen extends HTScreen {
     }
 
     protected void sendWakeUp() {
-        NetworkHandler.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.QUIT_MEDITATION));
+        NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.QUIT_MEDITATION));
     }
 
     protected void switchScreen(int val){

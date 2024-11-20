@@ -1,6 +1,7 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.imm.api.interfaces.IArtifactTier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -16,7 +17,7 @@ public class SwordItem extends MeleeAttackItem {
     }
 
     @Override
-    public boolean isCorrectToolForDrops(BlockState state) {
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
         return state.is(Blocks.COBWEB);
     }
 

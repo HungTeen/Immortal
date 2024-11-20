@@ -13,14 +13,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -85,15 +83,15 @@ public class ElementRenderer {
 //        RenderType  type = RenderType.itemEntityTranslucentCull(ELEMENTS);
 //        final VertexConsumer vertexconsumer = bufferSource.getBuffer(type);
         final VertexConsumer vertexconsumer = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE);
-        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, sx, sy, packedLight);
-        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, sx, dy, packedLight);
-        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, dx, dy, packedLight);
-        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, dx, sy, packedLight);
+//        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, sx, sy, packedLight);
+//        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, sx, dy, packedLight);
+//        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, dx, dy, packedLight);
+//        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, dx, sy, packedLight);
         stack.popPose();
     }
 
     private static void vertex(VertexConsumer consumer, Matrix4f matrix4f, Matrix3f matrix3f, float x, float y, float z, float r, float g, float b, float a, float u, float v, int packedLight) {
-        consumer.vertex(matrix4f, x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+//        consumer.addVertex(matrix4f, x, y, z).setColor(r, g, b, a).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(matrix3f.pose, 0.0F, 1.0F, 0.0F).endVertex();
     }
 
     public static void renderSmithingBar(GuiGraphics graphics, int screenHeight, int screenWidth) {

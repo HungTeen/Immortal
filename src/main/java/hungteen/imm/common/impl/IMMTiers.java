@@ -3,9 +3,12 @@ package hungteen.imm.common.impl;
 import hungteen.imm.api.interfaces.IArtifactTier;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.impl.registry.RealmTypes;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
@@ -64,6 +67,11 @@ public class IMMTiers {
         @Override
         public int getUses() {
             return durability;
+        }
+
+        @Override
+        public TagKey<Block> getIncorrectBlocksForDrops() {
+            return BlockTags.INCORRECT_FOR_DIAMOND_TOOL; // TODO incorrect blocks for drop.
         }
 
         @Override

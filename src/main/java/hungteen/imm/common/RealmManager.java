@@ -1,6 +1,5 @@
 package hungteen.imm.common;
 
-import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
@@ -145,14 +144,14 @@ public class RealmManager {
             final RealmStages nextStage = status.stage();
             if(player.level() instanceof ServerLevel serverLevel){
                 final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
-                WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
-                    return raid.match(nextRealm, nextStage, difficulty);
-                }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
-//                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
-                    PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
-                }, () -> {
-                    breakThrough(player, nextRealm, nextStage);
-                });
+//                WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
+//                    return raid.match(nextRealm, nextStage, difficulty);
+//                }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
+////                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
+//                    PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
+//                }, () -> {
+//                    breakThrough(player, nextRealm, nextStage);
+//                });
             }
         });
     }

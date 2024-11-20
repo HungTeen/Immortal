@@ -45,7 +45,7 @@ public abstract class DurationTalismanItem extends TalismanItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity living) {
         return 30;
     }
 

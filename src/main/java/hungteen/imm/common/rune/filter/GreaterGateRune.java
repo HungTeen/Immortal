@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +14,9 @@ import net.minecraft.world.item.Item;
  **/
 public class GreaterGateRune extends BaseFilterRune {
 
-    public static final Codec<GreaterGateRune> CODEC = RecordCodecBuilder.<GreaterGateRune>mapCodec(instance -> instance.group(
+    public static final MapCodec<GreaterGateRune> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Info.CODEC.fieldOf(INFO).forGetter(GreaterGateRune::getInfo)
-    ).apply(instance, GreaterGateRune::new)).codec();
+    ).apply(instance, GreaterGateRune::new));
 
     public GreaterGateRune(Item item, CompoundTag tag) {
         this(new Info(item, tag));
@@ -28,8 +28,11 @@ public class GreaterGateRune extends BaseFilterRune {
 
     @Override
     public boolean check(Object target, Object current) {
-        if(target instanceof Float a && current instanceof Float b) return Float.compare(a, b) == 1;
-        if(target instanceof Integer a && current instanceof Integer b) return Integer.compare(a, b) == 1;
+        if(target instanceof Float a && current instanceof Float b) {
+            return Float.compare(a, b) == 1;
+        } else if(target instanceof Integer a && current instanceof Integer b) {
+            return Integer.compare(a, b) == 1;
+        }
         return false;
     }
 

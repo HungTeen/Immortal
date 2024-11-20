@@ -1,15 +1,15 @@
 package hungteen.imm.client.event.handler;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.IMMKeyBinds;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.util.Constants;
@@ -49,7 +49,7 @@ public class SpellHandler {
                 final ISpellType spell = PlayerUtil.getPreparingSpell(player);
                 if (EntityHelper.isEntityValid(player) && spell != null) {
                     if (! PlayerUtil.isSpellOnCoolDown(player, spell)) {
-                        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.ACTIVATE));
+                        NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.ACTIVATE));
                     } else {
                         // 冷却提醒。
                         if(! ClientData.sendOnCoolDown){
@@ -99,7 +99,7 @@ public class SpellHandler {
         // Check whether there need sync config file or not.
         final int mode = PlayerUtil.getSpellCircleMode(ClientUtil.player());
         if (mode == 0) {
-            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.SYNC_CIRCLE_OP));
+            NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.SYNC_CIRCLE_OP));
             return IMMConfigs.defaultSpellCircle();
         }
         return mode == 1;

@@ -35,10 +35,10 @@ public class DataGenHandler {
         generators.addProvider(event.includeServer(), new BannerPatternTagGen(output, provider));
 
         /* Recipes */
-        generators.addProvider(event.includeServer(), new RecipeGen(output));
+        generators.addProvider(event.includeServer(), new RecipeGen(output, provider));
 
         /* Loot Tables */
-        generators.addProvider(event.includeServer(), new LootTableGen(output));
+        generators.addProvider(event.includeServer(), new LootTableGen(output, provider));
 
         /* Advancements */
         generators.addProvider(event.includeServer(), new AdvancementGen(output, provider, fileHelper));

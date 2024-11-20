@@ -42,7 +42,7 @@ public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T>
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         final List<RuneCategories> list = this.menu.getRuneCategories();
         for(int i = 0; i < list.size(); i++) {
             final int y = this.menu.getRuneCategory() == list.get(i) ? 20 : 40;

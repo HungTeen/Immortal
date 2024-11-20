@@ -4,13 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.imm.common.entity.creature.spirit.FireSpirit;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * @program: Immortal
@@ -65,7 +63,8 @@ public class FireSpiritModel<T extends FireSpirit> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        total.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, packedOverlay, red, green, blue, 0.5F);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int rgba) {
+//        total.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, packedOverlay, red, green, blue, 0.5F);
+        total.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, packedOverlay, rgba);
     }
 }

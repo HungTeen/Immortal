@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,6 +29,6 @@ public interface IFilterRuneType<P extends IFilterRune> extends SimpleEntry {
         return TipUtil.rune(this.getName() + "_filter.desc");
     }
 
-    Codec<P> codec();
+    MapCodec<P> codec();
 
 }

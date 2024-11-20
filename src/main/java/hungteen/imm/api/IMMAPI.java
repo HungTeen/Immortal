@@ -23,7 +23,7 @@ import java.util.Optional;
  **/
 public interface IMMAPI {
 
-    String MOD_ID = "htlib";
+    String MOD_ID = "imm";
 
     Logger LOGGER = LogUtils.getLogger();
 

@@ -1,8 +1,8 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;

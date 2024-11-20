@@ -49,7 +49,7 @@ public class JuteBlock extends IMMCropBlock {
     };
 
     public JuteBlock() {
-        super(Properties.copy(Blocks.SUGAR_CANE));
+        super(Properties.ofFullCopy(Blocks.SUGAR_CANE));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(AGE, 0)
                 .setValue(HALF, DoubleBlockHalf.LOWER)
@@ -75,8 +75,9 @@ public class JuteBlock extends IMMCropBlock {
             return super.canSurvive(state, reader, pos);
         } else {
             BlockState blockstate = reader.getBlockState(pos.below());
-            if (state.getBlock() != this)
+            if (state.getBlock() != this) {
                 return super.canSurvive(state, reader, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            }
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
     }
@@ -107,7 +108,7 @@ public class JuteBlock extends IMMCropBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState state, Player player) {
         if (!level.isClientSide) {
             if (player.isCreative()) {
                 preventCreativeDropFromBottomPart(level, blockPos, state, player);
@@ -116,7 +117,7 @@ public class JuteBlock extends IMMCropBlock {
             }
         }
 
-        super.playerWillDestroy(level, blockPos, state, player);
+        return super.playerWillDestroy(level, blockPos, state, player);
     }
 
     @Override
@@ -149,8 +150,8 @@ public class JuteBlock extends IMMCropBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader reader, BlockPos blockPos, BlockState blockState, boolean flag) {
-        return !isUpperState(blockState) && super.isValidBonemealTarget(reader, blockPos, blockState, flag);
+    public boolean isValidBonemealTarget(LevelReader reader, BlockPos blockPos, BlockState blockState) {
+        return !isUpperState(blockState) && super.isValidBonemealTarget(reader, blockPos, blockState);
     }
 
     @Override

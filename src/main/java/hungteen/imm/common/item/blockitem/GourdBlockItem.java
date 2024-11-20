@@ -23,7 +23,7 @@ public class GourdBlockItem extends BlockItem {
 
     public GourdBlockItem(GourdGrownBlock.GourdTypes gourdType, Block block) {
         super(block, new Item.Properties().food(new FoodProperties.Builder()
-                .nutrition(2).saturationMod(0.3F)
+                .nutrition(2).saturationModifier(0.3F)
                 .effect(gourdType.getEffectSupplier(), 1F)
                 .build()
         ));

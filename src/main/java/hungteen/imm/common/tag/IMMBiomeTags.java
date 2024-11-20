@@ -1,6 +1,6 @@
 package hungteen.imm.common.tag;
 
-import hungteen.htlib.util.helper.registry.BiomeHelper;
+import hungteen.htlib.util.helper.impl.BiomeHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;

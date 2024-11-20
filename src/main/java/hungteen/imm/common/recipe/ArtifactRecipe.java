@@ -1,14 +1,10 @@
 package hungteen.imm.common.recipe;
 
-import hungteen.htlib.common.menu.container.SimpleCraftingContainer;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 /**
@@ -16,7 +12,7 @@ import net.minecraft.world.level.Level;
  * @author: HungTeen
  * @create: 2022-10-28 22:21
  **/
-public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> {
+public abstract class ArtifactRecipe implements Recipe<CraftingInput> {
 
     protected final ResourceLocation id;
     protected final String group;
@@ -39,9 +35,9 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
     }
 
     @Override
-    public boolean matches(SimpleCraftingContainer container, Level level) {
-        for (int i = 0; i <= container.getHeight() - this.height; ++i) {
-            for (int j = 0; j <= container.getWidth() - this.width; ++j) {
+    public boolean matches(CraftingInput container, Level level) {
+        for (int i = 0; i <= container.height() - this.height; ++i) {
+            for (int j = 0; j <= container.width() - this.width; ++j) {
                 if (this.matches(container, i, j)) {
                     return true;
                 }
@@ -50,16 +46,16 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
         return false;
     }
 
-    private boolean matches(SimpleCraftingContainer container, int posX, int posY) {
-        for(int i = 0; i < container.getHeight(); ++i) {
-            for(int j = 0; j < container.getWidth(); ++j) {
+    private boolean matches(CraftingInput container, int posX, int posY) {
+        for(int i = 0; i < container.height(); ++i) {
+            for(int j = 0; j < container.width(); ++j) {
                 final int currentX = i - posX;
                 final int currentY = j - posY;
                 Ingredient ingredient = Ingredient.EMPTY;
                 if(currentX >= 0 && currentX < this.height && currentY >= 0 && currentY < this.width) {
                     ingredient = this.ingredients.get(currentY + currentX * this.width);
                 }
-                if(! ingredient.test(container.getItem(j + i * container.getWidth()))){
+                if(! ingredient.test(container.getItem(j + i * container.width()))){
                     return false;
                 }
             }
@@ -68,7 +64,7 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
     }
 
     @Override
-    public ItemStack assemble(SimpleCraftingContainer container, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingInput container, HolderLookup.Provider registryAccess) {
         return this.result.copy();
     }
 
@@ -78,7 +74,7 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider registryAccess) {
         //TODO 配方注释了
 //        if(this.needRecovery){
 //            ItemStack stack = new ItemStack(ImmortalItems.RAW_ARTIFACT_BOX.get());
@@ -90,11 +86,6 @@ public abstract class ArtifactRecipe implements Recipe<SimpleCraftingContainer> 
 
     public int getRequireLevel() {
         return requireLevel;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return this.id;
     }
 
     @Override

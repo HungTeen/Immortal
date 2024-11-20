@@ -26,7 +26,7 @@ public class FireballTalismanItem extends DurationTalismanItem{
         if(! level.isClientSide){
             for(int i = 0; i < 1; ++ i){
                 final Vec3 vec = entity.getLookAngle().normalize().scale(2F);
-                final LargeFireball fireball = new LargeFireball(level, entity, vec.x, vec.y, vec.z, 2);
+                final LargeFireball fireball = new LargeFireball(level, entity, vec, 2);
                 final double forward = RandomHelper.doubleRange(entity.getRandom(), 1);
                 final double side = RandomHelper.doubleRange(entity.getRandom(), 2);
                 final double dy = RandomHelper.doubleRange(entity.getRandom(), 0.5);

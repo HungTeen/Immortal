@@ -12,7 +12,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -126,7 +125,7 @@ public class MerchantTradeMenu extends HTContainerMenu {
         if (!requireStack.isEmpty()) {
             for(int i = 3; i < 39; ++i) {
                 ItemStack curStack = this.slots.get(i).getItem();
-                if (!curStack.isEmpty() && ItemStack.isSameItemSameTags(requireStack, curStack)) {
+                if (!curStack.isEmpty() && ItemStack.isSameItemSameComponents(requireStack, curStack)) {
                     ItemStack oldStack = this.tradeContainer.getItem(pos);
                     int oldCnt = oldStack.isEmpty() ? 0 : oldStack.getCount();
                     int cnt = Math.min(requireStack.getMaxStackSize() - oldCnt, curStack.getCount());

@@ -1,12 +1,13 @@
 package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -26,7 +27,7 @@ public class EntityFilterRune extends FilterRuneItem<EntityType<?>> {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if(! level.isClientSide() && player.getItemInHand(hand).getItem() instanceof EntityFilterRune rune){
-            final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player.getEntityReach());
+            final HitResult hitResult = EntityUtil.getHitResult(player, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE));
             if(hitResult instanceof EntityHitResult result){
                 rune.bind(player, player.getItemInHand(hand), result.getEntity().getType());
             }

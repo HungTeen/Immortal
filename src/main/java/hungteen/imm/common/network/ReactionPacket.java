@@ -1,14 +1,17 @@
 package hungteen.imm.common.network;
 
+import hungteen.htlib.common.network.ClientPacketContext;
+import hungteen.htlib.common.network.packet.PlayToClientPacket;
 import hungteen.imm.api.registry.IElementReaction;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2023-08-23 22:24
  **/
-public class ReactionPacket {
+public class ReactionPacket implements PlayToClientPacket {
 
     private final int entityId;
     private final String type;
@@ -26,6 +29,16 @@ public class ReactionPacket {
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(this.entityId);
         buffer.writeUtf(this.type);
+    }
+
+    @Override
+    public void process(ClientPacketContext clientPacketContext) {
+
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
     }
 //
 //    public static class Handler {

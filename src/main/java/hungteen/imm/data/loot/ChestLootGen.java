@@ -3,6 +3,7 @@ package hungteen.imm.data.loot;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.misc.IMMLoots;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -22,7 +23,7 @@ import java.util.function.BiConsumer;
 public class ChestLootGen implements LootTableSubProvider {
 
     @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
         consumer.accept(IMMLoots.PLAINS_TRADING_MARKET_COMMON, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(UniformGenerator.between(3.0F, 8.0F))

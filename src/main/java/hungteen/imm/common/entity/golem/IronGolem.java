@@ -67,7 +67,7 @@ public class IronGolem extends GolemEntity{
             double d0 = d2;
             double d1 = Math.max(0.0D, 1.0D - d0);
             entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, (double)0.4F * d1, 0.0D));
-            this.doEnchantDamageEffects(this, entity);
+//            this.damageE(this, entity);
         }
 
         this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);

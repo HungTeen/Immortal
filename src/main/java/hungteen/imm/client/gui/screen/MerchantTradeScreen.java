@@ -85,7 +85,7 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
         final TradeOffers offers = this.menu.getTrades();
         if (!offers.isEmpty()) {
@@ -161,10 +161,10 @@ public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
     }
 
     @Override
-    public boolean mouseScrolled(double p_99127_, double p_99128_, double delta) {
+    public boolean mouseScrolled(double p_99127_, double p_99128_, double deltaX, double deltaY) {
         final int len = this.menu.getTrades().size();
         if (this.canScroll(len)) {
-            this.scrollOff = Mth.clamp((int) ((double) this.scrollOff - delta), 0, len - MAX_BUTTON_COUNT);
+            this.scrollOff = Mth.clamp((int) ((double) this.scrollOff - deltaX), 0, len - MAX_BUTTON_COUNT);
         }
         return true;
     }

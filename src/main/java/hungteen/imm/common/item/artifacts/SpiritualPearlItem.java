@@ -61,7 +61,7 @@ public class SpiritualPearlItem extends ArtifactItem {
         level.addFreshEntity(pearl);
         pearl.setCheckTarget(target);
         if(player instanceof ServerPlayer serverPlayer){
-            SpiritualPearlTrigger.INSTANCE.trigger(serverPlayer, target, EntityUtil.getSpiritualRoots(target, player).size());
+//            SpiritualPearlTrigger.INSTANCE.trigger(serverPlayer, target, EntityUtil.getSpiritualRoots(target, player).size());
         }
 
         LevelUtil.playSound(level, SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, player.position(), 0.5F, 0.4F);

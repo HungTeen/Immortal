@@ -10,10 +10,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * 是否碰到敌人直接逃跑
@@ -34,14 +32,14 @@ public abstract class Cultivator extends HumanEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(CULTIVATOR_TYPE, CultivatorTypes.SLIM_STEVE.ordinal());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CULTIVATOR_TYPE, CultivatorTypes.SLIM_STEVE.ordinal());
     }
 
     @Override
-    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType, @Nullable CompoundTag tag) {
-        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType, tag);
+    public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
+        super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         // 随机选择散修类型。
         WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
         this.setCustomName(this.getCultivatorType().getDisplayName());

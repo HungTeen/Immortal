@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class SnowGolemRender extends IMMMobRender<SnowGolem> {
 
-    private static final ResourceLocation GOLEM_LOCATION = new ResourceLocation("textures/entity/snow_golem.png");
+    private static final ResourceLocation GOLEM_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/snow_golem.png");
 
     public SnowGolemRender(EntityRendererProvider.Context rendererManager) {
         super(rendererManager, new SnowGolemModel<>(rendererManager.bakeLayer(IMMModelLayers.SNOW_GOLEM)), 0.5F);

@@ -5,9 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.client.gui.GuiUtil;
@@ -15,7 +16,6 @@ import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
@@ -91,7 +91,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
             }
             SpellHandler.changeCircleMode();
-            NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
+            NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
         }).pos(this.leftPos - BUTTON_WIDTH, this.topPos).tooltip(Tooltip.create(
                 TipUtil.gui("meditation." + (SpellHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
         )));
@@ -99,8 +99,8 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        return this.scrollComponent.mouseScrolled(delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        return this.scrollComponent.mouseScrolled(deltaX);
     }
 
     @Override
@@ -242,9 +242,9 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<I
 
     public void setSpellAt(int pos, @Nullable ISpellType spell) {
         if (spell != null && spell.canPlaceOnCircle()) {
-            NetworkHandler.sendToServer(new SpellPacket(spell, SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, pos));
+            NetworkHelper.sendToServer(new SpellPacket(spell, SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, pos));
         } else if(spell == null){
-            NetworkHandler.sendToServer(new SpellPacket(null, SpellPacket.SpellOption.REMOVE_SPELL_ON_CIRCLE, pos));
+            NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.REMOVE_SPELL_ON_CIRCLE, pos));
         }
     }
 

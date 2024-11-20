@@ -1,7 +1,7 @@
 package hungteen.imm.common.spell.spells.basic;
 
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.api.registry.IRealmType;
@@ -39,7 +39,7 @@ public class IntimidationSpell extends SpellType {
             final int gap = RealmManager.getRealmGap(realm, targetRealm);
             // 威压百分比扣血，但不会扣完。
             target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
-            target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.get(), 600, gap));
+            target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.holder(), 600, gap));
         });
         return true;
     }

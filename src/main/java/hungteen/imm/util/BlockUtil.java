@@ -1,7 +1,7 @@
 package hungteen.imm.util;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import net.minecraft.core.BlockPos;

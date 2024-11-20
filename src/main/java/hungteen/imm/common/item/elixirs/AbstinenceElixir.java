@@ -1,17 +1,5 @@
 package hungteen.imm.common.item.elixirs;
 
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.htlib.util.helper.registry.EffectHelper;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
-
-import java.util.List;
-import java.util.Optional;
-
 /**
  * @program: Immortal
  * @author: HungTeen

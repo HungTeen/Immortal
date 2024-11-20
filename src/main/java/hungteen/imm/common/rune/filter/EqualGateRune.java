@@ -1,6 +1,6 @@
 package hungteen.imm.common.rune.filter;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +14,9 @@ import net.minecraft.world.item.Item;
  **/
 public class EqualGateRune extends BaseFilterRune {
 
-    public static final Codec<EqualGateRune> CODEC = RecordCodecBuilder.<EqualGateRune>mapCodec(instance -> instance.group(
+    public static final MapCodec<EqualGateRune> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             BaseFilterRune.Info.CODEC.fieldOf(INFO).forGetter(EqualGateRune::getInfo)
-    ).apply(instance, EqualGateRune::new)).codec();
+    ).apply(instance, EqualGateRune::new));
 
     public EqualGateRune(Item item, CompoundTag tag) {
         this(new Info(item, tag));

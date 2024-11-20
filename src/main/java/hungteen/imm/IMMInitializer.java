@@ -21,7 +21,6 @@ import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.manuals.ManualTypes;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
-import hungteen.imm.common.impl.raid.IMMRaidHandler;
 import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
@@ -138,7 +137,7 @@ public class IMMInitializer {
     public static void coreRegister() {
         IMMWoods.register();
         IMMDummyEntities.init();
-        IMMRaidHandler.init();
+//        IMMRaidHandler.init();
 
         TradeTypes.TradeType.register();
         PlayerRangeFloats.registry();

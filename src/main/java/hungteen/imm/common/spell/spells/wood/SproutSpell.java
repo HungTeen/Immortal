@@ -1,7 +1,7 @@
 package hungteen.imm.common.spell.spells.wood;
 
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.spell.spells.SpellType;
@@ -61,7 +61,7 @@ public class SproutSpell extends SpellType {
     public static boolean applySprout(Level level, BlockPos pos) {
         final BlockState blockstate = level.getBlockState(pos);
         if (blockstate.getBlock() instanceof BonemealableBlock block) {
-            if (block.isValidBonemealTarget(level, pos, blockstate, level.isClientSide)) {
+            if (block.isValidBonemealTarget(level, pos, blockstate)) {
                 if (level instanceof ServerLevel) {
                     if (block.isBonemealSuccess(level, level.random, pos, blockstate)) {
                         block.performBonemeal((ServerLevel)level, level.random, pos, blockstate);

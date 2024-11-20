@@ -1,5 +1,8 @@
 package hungteen.imm.client.gui.overlay;
 
+import hungteen.imm.util.Util;
+import net.minecraft.resources.ResourceLocation;
+
 /**
  * @author PangTeen
  * @program Immortal
@@ -9,10 +12,10 @@ public class ElementOverlay {
 //        implements IGuiOverlay {
 //
 //    public static final IGuiOverlay INSTANCE = new ElementOverlay();
-//    public static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
-//    public static final int ELEMENT_INTERVAL = 10;
-//    public static final int ELEMENT_LEN = 9;
-//    private static final int ELEMENT_GUI_INTERVAL = 3;
+    public static final ResourceLocation ELEMENTS = Util.get().guiTexture("elements");
+    public static final int ELEMENT_INTERVAL = 10;
+    public static final int ELEMENT_LEN = 9;
+    private static final int ELEMENT_GUI_INTERVAL = 3;
 //
 //    /**
 //     * Above {@link Gui#renderSelectedItemName(GuiGraphics)}.

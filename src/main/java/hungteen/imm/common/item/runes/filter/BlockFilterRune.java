@@ -1,7 +1,7 @@
 package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.util.helper.registry.BlockHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.rune.ICraftableRune;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;

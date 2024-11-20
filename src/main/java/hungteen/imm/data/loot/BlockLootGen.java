@@ -1,12 +1,15 @@
 package hungteen.imm.data.loot;
 
-import hungteen.htlib.common.block.plants.HTStemBlock;
+import hungteen.htlib.common.block.HTStemBlock;
+import hungteen.htlib.common.block.plant.HTCropBlock;
 import hungteen.htlib.data.loot.HTBlockLootGen;
+import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.plants.IMMCropBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.Util;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +22,6 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -35,8 +37,8 @@ public class BlockLootGen extends HTBlockLootGen {
 
     private final Set<Block> knownBlocks = new HashSet<>();
 
-    public BlockLootGen() {
-        super(Set.of());
+    public BlockLootGen(HolderLookup.Provider provider) {
+        super(Set.of(), provider);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class BlockLootGen extends HTBlockLootGen {
         /* Tree Suits */
 
         /* Drop Self */
-        ForgeRegistries.BLOCKS.getEntries().stream().filter(entry -> {
+        BlockHelper.get().entries().stream().filter(entry -> {
             return Util.in(entry.getKey().location()) && ! this.contains(entry.getValue()) && entry.getValue().getLootTable() != BuiltInLootTables.EMPTY;
         }).map(Map.Entry::getValue).forEach(this::dropSelf);
     }
@@ -84,6 +86,7 @@ public class BlockLootGen extends HTBlockLootGen {
         return this.knownBlocks.contains(block);
     }
 
+    @Override
     protected void add(Block block, Function<Block, LootTable.Builder> function) {
         this.add(block, function.apply(block));
     }

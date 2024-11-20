@@ -1,7 +1,7 @@
 package hungteen.imm.common.item;
 
 import com.google.common.collect.Sets;
-import net.minecraftforge.common.ToolAction;
+import net.neoforged.neoforge.common.ItemAbility;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,11 +14,11 @@ import java.util.stream.Stream;
  **/
 public class IMMToolActions {
 
-    public static final ToolAction ARTIFACT_SMITHING = ToolAction.get("artifact_smithing");
+    public static final ItemAbility ARTIFACT_SMITHING = ItemAbility.get("artifact_smithing");
 
-    public static final Set<ToolAction> DEFAULT_HAMMER_ACTIONS = of(ARTIFACT_SMITHING);
+    public static final Set<ItemAbility> DEFAULT_HAMMER_ACTIONS = of(ARTIFACT_SMITHING);
 
-    private static Set<ToolAction> of(ToolAction... actions) {
+    private static Set<ItemAbility> of(ItemAbility... actions) {
         return Stream.of(actions).collect(Collectors.toCollection(Sets::newIdentityHashSet));
     }
 }

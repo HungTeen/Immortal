@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
  **/
 public class CreeperGolemRender extends IMMMobRender<CreeperGolem> {
 
-    private static final ResourceLocation LOCATION = new ResourceLocation("textures/entity/creeper/creeper.png");
+    private static final ResourceLocation LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/creeper/creeper.png");
 
     public CreeperGolemRender(EntityRendererProvider.Context context) {
         super(context, new CreeperGolemModel(context.bakeLayer(IMMModelLayers.CREEPER_GOLEM)), 0.5F);

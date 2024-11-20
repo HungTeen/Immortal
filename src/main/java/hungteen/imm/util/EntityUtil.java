@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
@@ -12,12 +12,10 @@ import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.capability.CapabilityHandler;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.network.NetworkHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -40,8 +38,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
@@ -61,7 +58,7 @@ import java.util.stream.Collectors;
 public class EntityUtil {
 
     public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
-        NetworkHandler.sendToNearByClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), sound, soundSource));
+//        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), sound, soundSource));
     }
 
     public static void knockback(LivingEntity target, double strength, double dx, double dz){
@@ -79,7 +76,7 @@ public class EntityUtil {
         T entity = entityType.create(level);
         if (entity != null && (!checkPosition || (level.isUnobstructed(entity) && level.noCollision(entity)))) {
             if (entity instanceof Mob mob) {
-                ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(BlockPos.containing(pos)), MobSpawnType.COMMAND, null, null);
+                EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(BlockPos.containing(pos)), MobSpawnType.COMMAND, null);
             }
             entity.setPos(pos);
             level.addFreshEntityWithPassengers(entity);
@@ -121,10 +118,12 @@ public class EntityUtil {
     }
 
     public static Entity ownerOrSelf(Entity entity) {
-        if (entity instanceof TraceableEntity traceableEntity && traceableEntity.getOwner() != null)
+        if (entity instanceof TraceableEntity traceableEntity && traceableEntity.getOwner() != null) {
             return traceableEntity.getOwner();
-        if (entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null)
+        }
+        if (entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null) {
             return ownableEntity.getOwner();
+        }
         return entity;
     }
 
@@ -258,9 +257,9 @@ public class EntityUtil {
 
     @Nullable
     public static IMMEntityCapability getEntityCapability(Entity entity) {
-        if (entity != null) {
-            return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
-        }
+//        if (entity != null) {
+//            return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
+//        }
         return null;
     }
 

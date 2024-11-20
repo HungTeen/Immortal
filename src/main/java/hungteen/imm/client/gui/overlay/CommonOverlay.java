@@ -1,5 +1,8 @@
 package hungteen.imm.client.gui.overlay;
 
+import hungteen.imm.util.Util;
+import net.minecraft.resources.ResourceLocation;
+
 /**
  * @author PangTeen
  * @program Immortal
@@ -8,11 +11,11 @@ package hungteen.imm.client.gui.overlay;
 public class CommonOverlay {
 
 //    public static final IGuiOverlay SPIRITUAL_MANA = CommonOverlay::renderSpiritualMana;
-//    public static final ResourceLocation OVERLAY = Util.get().overlayTexture("overlay");
-//    public static final int MANA_BAR_LEN = 182;
-//    public static final int MANA_BAR_HEIGHT = 5;
-//    private static final int SMITHING_BAR_LEN = 65;
-//    private static final int SMITHING_BAR_HEIGHT = 10;
+    public static final ResourceLocation OVERLAY = Util.get().overlayTexture("overlay");
+    public static final int MANA_BAR_LEN = 182;
+    public static final int MANA_BAR_HEIGHT = 5;
+    private static final int SMITHING_BAR_LEN = 65;
+    private static final int SMITHING_BAR_HEIGHT = 10;
 //
 //    private static void renderSpiritualMana(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
 //        if(canRenderManaBar()){

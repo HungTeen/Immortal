@@ -2,10 +2,10 @@ package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public abstract class ListGateRune implements IFilterRune {
 
     public record Info(Item item, List<IFilterRune> filters) {
         public static final Codec<Info> CODEC = RecordCodecBuilder.<Info>mapCodec(instance -> instance.group(
-                ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(Info::item),
+                ItemHelper.get().getCodec().fieldOf("item").forGetter(Info::item),
                 FilterRuneTypes.getCodec().listOf().fieldOf("filters").forGetter(Info::filters)
         ).apply(instance, Info::new)).codec();
     }

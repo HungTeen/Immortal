@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public abstract class IMMPillagerRender<T extends IMMPillager> extends VillagerLikeRender<T, PillagerModel<T>> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/illager/pillager.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/illager/pillager.png");
 
     public IMMPillagerRender(EntityRendererProvider.Context context) {
         super(context, new PillagerModel<>(context.bakeLayer(IMMModelLayers.VILLAGER)));

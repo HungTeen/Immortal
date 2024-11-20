@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.earth;
 
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.BlockUtil;

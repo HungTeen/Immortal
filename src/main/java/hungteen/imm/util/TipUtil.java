@@ -1,8 +1,8 @@
 package hungteen.imm.util;
 
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.BlockHelper;
-import hungteen.htlib.util.helper.registry.ItemHelper;
+import hungteen.htlib.util.helper.impl.BlockHelper;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

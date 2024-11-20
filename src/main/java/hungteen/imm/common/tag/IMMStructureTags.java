@@ -1,6 +1,6 @@
 package hungteen.imm.common.tag;
 
-import hungteen.htlib.util.helper.registry.StructureHelper;
+import hungteen.htlib.util.helper.impl.StructureHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.levelgen.structure.Structure;

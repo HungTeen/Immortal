@@ -1,10 +1,10 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -21,7 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 /**
  * @program: Immortal
@@ -118,7 +120,7 @@ public abstract class ElixirItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
         components.add(TipUtil.desc(this).withStyle(ChatFormatting.DARK_GRAY));
         PlayerHelper.getClientPlayer().ifPresent(player -> {
             final ICultivationType cultivationType = PlayerUtil.getCultivationType(player);
@@ -165,7 +167,7 @@ public abstract class ElixirItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity living) {
         return 30;
     }
 
@@ -175,7 +177,8 @@ public abstract class ElixirItem extends Item {
     }
 
     public static IRealmType getRealm(LivingEntity livingEntity){
-        return IMMAPI.get().getEntityRealm(livingEntity);
+//        return IMMAPI.get().getEntityRealm(livingEntity);
+        return RealmTypes.NOT_IN_REALM;
     }
 
 //    public static void setAccuracy(ItemStack stack, int accuracy){
@@ -200,10 +203,10 @@ public abstract class ElixirItem extends Item {
 //        return Accuracies.MASTER;
 //    }
 
-    @Override
-    public Rarity getRarity(ItemStack stack) {
-        return this.getElixirRarity();
-    }
+//    @Override
+//    public Rarity getRarity(ItemStack stack) {
+//        return this.getElixirRarity();
+//    }
 
     public abstract Rarity getElixirRarity();
 

@@ -1,12 +1,12 @@
 package hungteen.imm.common.rune.filter;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Predicate;
 
@@ -17,10 +17,10 @@ import java.util.function.Predicate;
  **/
 public record NotGateRune(Item item, IFilterRune filter) implements IFilterRune{
 
-    public static final Codec<NotGateRune> CODEC = RecordCodecBuilder.<NotGateRune>mapCodec(instance -> instance.group(
-            ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(NotGateRune::item),
+    public static final MapCodec<NotGateRune> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            ItemHelper.get().getCodec().fieldOf("item").forGetter(NotGateRune::item),
             FilterRuneTypes.getCodec().fieldOf("filters").forGetter(NotGateRune::filter)
-    ).apply(instance, NotGateRune::new)).codec();
+    ).apply(instance, NotGateRune::new));
 
     @Override
     public MutableComponent getFilterText() {

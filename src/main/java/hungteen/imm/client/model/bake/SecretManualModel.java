@@ -40,7 +40,17 @@ public class SecretManualModel implements BakedModel {
         this.itemHandler = new ItemOverrides(new ModelBaker() {
 
             @Override
+            public @org.jetbrains.annotations.Nullable UnbakedModel getTopLevelModel(ModelResourceLocation modelResourceLocation) {
+                return null;
+            }
+
+            @Override
             public @org.jetbrains.annotations.Nullable BakedModel bake(ResourceLocation location, ModelState state, Function<Material, TextureAtlasSprite> sprites) {
+                return null;
+            }
+
+            @Override
+            public @org.jetbrains.annotations.Nullable BakedModel bakeUncached(UnbakedModel unbakedModel, ModelState modelState, Function<Material, TextureAtlasSprite> function) {
                 return null;
             }
 

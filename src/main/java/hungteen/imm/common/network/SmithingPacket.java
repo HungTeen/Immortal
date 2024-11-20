@@ -1,14 +1,17 @@
 package hungteen.imm.common.network;
 
+import hungteen.htlib.common.network.ServerPacketContext;
+import hungteen.htlib.common.network.packet.PlayToServerPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * @program: Immortal
  * @author: HungTeen
  * @create: 2022-09-30 22:33
  **/
-public class SmithingPacket {
+public class SmithingPacket implements PlayToServerPacket {
 
     private final float progress;
     private final BlockPos pos;
@@ -30,6 +33,16 @@ public class SmithingPacket {
         buffer.writeBlockPos(this.pos);
         buffer.writeFloat(this.progress);
         buffer.writeBoolean(this.isMainHand);
+    }
+
+    @Override
+    public void process(ServerPacketContext serverPacketContext) {
+
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return null;
     }
 
 //    public static class Handler {

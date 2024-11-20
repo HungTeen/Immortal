@@ -1,14 +1,15 @@
 package hungteen.imm.common.spell;
 
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -16,12 +17,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * @program: Immortal
@@ -49,12 +48,12 @@ public class SpellManager {
      * @param position determines which spell will be selected.
      */
     public static void selectSpellOnCircle(int position) {
-        NetworkHandler.sendToServer(new SpellPacket(SpellPacket.SpellOption.SELECT_SPELL, position));
+        NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.SELECT_SPELL, position));
     }
 
     /**
      * Only on Server Side.
-     * {@link SpellPacket.Handler#onMessage(SpellPacket, Supplier)}
+     * {@link SpellPacket}
      */
     public static void selectSpellOnCircle(Player player, int position) {
         if (isValidSpellPos(position)) {
@@ -129,7 +128,7 @@ public class SpellManager {
                 if (!PlayerUtil.isSpellOnCoolDown(player, spell)) {
                     // 灵力足够。
                     if (PlayerUtil.getMana(player) >= spell.getConsumeMana()) {
-                        if (!MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
+                        if (!EventUtil.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
                             return Optional.of(new Spell(spell, level));
                         }
                     } else if (sendTip) {
@@ -149,7 +148,7 @@ public class SpellManager {
         if (entity instanceof Player player) {
             PlayerUtil.cooldownSpell(player, instance.spell(), getSpellCDTime(player, instance.spell()));
             costMana(player, instance.spell().getConsumeMana());
-            MinecraftForge.EVENT_BUS.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, instance.spell(), instance.level()));
+            EventUtil.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, instance.spell(), instance.level()));
         }
     }
 
@@ -199,7 +198,9 @@ public class SpellManager {
     }
 
     public static MutableComponent spellName(ISpellType spell, int level) {
-        if (spell.getMaxLevel() == 1) return spell.getComponent();
+        if (spell.getMaxLevel() == 1) {
+            return spell.getComponent();
+        }
         return spell.getComponent().append("(").append(TipUtil.misc("level" + level)).append(")");
     }
 

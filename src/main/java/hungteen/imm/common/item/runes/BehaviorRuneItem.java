@@ -2,7 +2,7 @@ package hungteen.imm.common.item.runes;
 
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.htlib.util.helper.registry.BrainHelper;
+import hungteen.htlib.util.helper.impl.BrainHelper;
 import hungteen.imm.common.rune.behavior.IBehaviorRune;
 import hungteen.imm.common.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.rune.filter.IFilterRune;
@@ -39,30 +39,30 @@ public class BehaviorRuneItem extends RuneItem {
             CodecHelper.encodeNbt(FilterRuneTypes.getCodec(), filterRune)
                     .result().ifPresent(tag -> {
                         CompoundTag nbt = new CompoundTag();
-                        if(stack.getOrCreateTag().contains(FILTER_MAP)){
-                            nbt = stack.getOrCreateTag().getCompound(FILTER_MAP);
-                        }
+//                        if(stack.getOrCreateTag().contains(FILTER_MAP)){
+//                            nbt = stack.getOrCreateTag().getCompound(FILTER_MAP);
+//                        }
                         nbt.put(getFilterLabel(id), tag);
-                        stack.getOrCreateTag().put(FILTER_MAP, nbt);
+//                        stack.getOrCreateTag().put(FILTER_MAP, nbt);
                     });
         }
     }
 
     public Map<Integer, IFilterRune> getFilterMap(ItemStack stack){
         final Map<Integer, IFilterRune> map = new HashMap<>();
-        if(stack.getOrCreateTag().contains(FILTER_MAP)){
-            final CompoundTag tag = stack.getOrCreateTag().getCompound(FILTER_MAP);
-            for(int i = 0; i < behaviorRune.maxSlot(); ++ i){
-                if(tag.contains(getFilterLabel(i))){
-                    final CompoundTag nbt = tag.getCompound(getFilterLabel(i));
-                    int id = i;
-                    CodecHelper.parse(FilterRuneTypes.getCodec(), nbt)
-                            .result().ifPresent(rune -> {
-                                map.put(id, rune);
-                            });
-                }
-            }
-        }
+//        if(stack.getOrCreateTag().contains(FILTER_MAP)){
+//            final CompoundTag tag = stack.getOrCreateTag().getCompound(FILTER_MAP);
+//            for(int i = 0; i < behaviorRune.maxSlot(); ++ i){
+//                if(tag.contains(getFilterLabel(i))){
+//                    final CompoundTag nbt = tag.getCompound(getFilterLabel(i));
+//                    int id = i;
+//                    CodecHelper.parse(FilterRuneTypes.getCodec(), nbt)
+//                            .result().ifPresent(rune -> {
+//                                map.put(id, rune);
+//                            });
+//                }
+//            }
+//        }
         return map;
     }
 

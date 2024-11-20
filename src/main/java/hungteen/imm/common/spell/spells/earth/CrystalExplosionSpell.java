@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.earth;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.common.spell.spells.SpellType;

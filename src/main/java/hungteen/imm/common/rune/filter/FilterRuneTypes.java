@@ -1,9 +1,9 @@
 package hungteen.imm.common.rune.filter;
 
 import com.mojang.serialization.Codec;
-import hungteen.htlib.api.interfaces.IHTSimpleRegistry;
-import hungteen.htlib.common.registry.HTRegistryManager;
-import hungteen.htlib.common.registry.HTSimpleRegistry;
+import com.mojang.serialization.MapCodec;
+import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.util.Util;
 
@@ -14,7 +14,7 @@ import hungteen.imm.util.Util;
  **/
 public class FilterRuneTypes {
 
-    private static final HTSimpleRegistry<IFilterRuneType<?>> FILTER_RUNE_TYPES = HTRegistryManager.createSimple(Util.prefix("filter_rune_types"));
+    private static final HTSimpleRegistry<IFilterRuneType<?>> FILTER_RUNE_TYPES = HTRegistryManager.simple(Util.prefix("filter_rune_types"));
 
     public static final IFilterRuneType<AndGateRune> AND = register(new DefaultRuneType<>("and", false, false, 2, Integer.MAX_VALUE, AndGateRune.CODEC));
     public static final IFilterRuneType<OrGateRune> OR = register(new DefaultRuneType<>("or", false, false, 2, Integer.MAX_VALUE, OrGateRune.CODEC));
@@ -34,7 +34,7 @@ public class FilterRuneTypes {
         return FILTER_RUNE_TYPES.register(type);
     }
 
-    public static IHTSimpleRegistry<IFilterRuneType<?>> registry(){
+    public static HTSimpleRegistry<IFilterRuneType<?>> registry(){
         return FILTER_RUNE_TYPES;
     }
 
@@ -42,12 +42,7 @@ public class FilterRuneTypes {
         return FILTER_RUNE_TYPES.byNameCodec().dispatch(IFilterRune::getType, IFilterRuneType::codec);
     }
 
-    private record DefaultRuneType<P extends IFilterRune>(String name, boolean isBaseType, boolean isNumberOperation, int requireMinEntry, int requireMaxEntry, Codec<P> codec) implements IFilterRuneType<P> {
-
-        @Override
-        public String getName() {
-            return name();
-        }
+    private record DefaultRuneType<P extends IFilterRune>(String name, boolean isBaseType, boolean isNumberOperation, int requireMinEntry, int requireMaxEntry, MapCodec<P> codec) implements IFilterRuneType<P> {
 
         @Override
         public String getModID() {

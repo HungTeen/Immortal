@@ -106,6 +106,6 @@ public interface IMMNoiseRouters {
     }
 
     private static ResourceKey<DensityFunction> createKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.parse(name));
     }
 }

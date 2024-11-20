@@ -9,7 +9,6 @@ import hungteen.imm.client.ClientData;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -53,7 +52,7 @@ public class ReactionRenderer {
 
         final float scaleToGui = 0.025f;
 
-        final float tickDelta = Minecraft.getInstance().getPartialTick();
+        final float tickDelta = 0; // TODO partial Ticks
 
         final double x = Mth.lerp(tickDelta, particle.lastPosition.x, particle.position.x);
         final double y = Mth.lerp(tickDelta, particle.lastPosition.y, particle.position.y);

@@ -2,8 +2,8 @@ package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.registry.EntityHelper;
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
@@ -15,12 +15,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
@@ -103,11 +103,13 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public static int getFlameLevel(ItemStack stack){
-        return stack.getOrCreateTag().getInt(COLLECTED_FLAME_LEVEL);
+        return 0;
+//        return stack.getOrCreateTag().getInt(COLLECTED_FLAME_LEVEL);
     }
 
     public static int getFlameAmount(ItemStack stack){
-        return stack.getOrCreateTag().getInt(COLLECTED_FLAME_AMOUNT);
+        return 0;
+//        return stack.getOrCreateTag().getInt(COLLECTED_FLAME_AMOUNT);
     }
 
     public static void addFlameAmount(ItemStack stack, int level, int amount){
@@ -136,22 +138,22 @@ public class FlameGourd extends ArtifactItem {
     }
 
     public static void setFlameAmount(ItemStack stack, int amount){
-        stack.getOrCreateTag().putInt(COLLECTED_FLAME_AMOUNT, Mth.clamp(amount, 0, MAX_FLAME_AMOUNT));
+//        stack.getOrCreateTag().putInt(COLLECTED_FLAME_AMOUNT, Mth.clamp(amount, 0, MAX_FLAME_AMOUNT));
     }
 
     public static void setFlameLevel(ItemStack stack, int level){
-        stack.getOrCreateTag().putInt(COLLECTED_FLAME_LEVEL, level);
+//        stack.getOrCreateTag().putInt(COLLECTED_FLAME_LEVEL, level);
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, level, components, tooltipFlag);
         components.add(Component.translatable("tooltip.imm.flame_gourd.flame_level", getFlameLevel(itemStack)).withStyle(ChatFormatting.YELLOW));
         components.add(Component.translatable("tooltip.imm.flame_gourd.flame_amount", getFlameAmount(itemStack)).withStyle(ChatFormatting.RED));
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity living) {
         return 1000000;
     }
 

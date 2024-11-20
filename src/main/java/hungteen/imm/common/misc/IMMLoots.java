@@ -1,11 +1,11 @@
 package hungteen.imm.common.misc;
 
-import com.google.common.collect.Sets;
+import hungteen.htlib.util.helper.impl.LootHelper;
 import hungteen.imm.util.Util;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Collections;
-import java.util.Set;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
  * @program: Immortal
@@ -14,34 +14,25 @@ import java.util.Set;
  **/
 public interface IMMLoots {
 
-    Set<ResourceLocation> LOCATIONS = Sets.newHashSet();
-
     /* Chest Loot Tables */
 
-    ResourceLocation PLAINS_TRADING_MARKET_COMMON = chest("trading_market/plains_common");
-    ResourceLocation PLAINS_TRADING_MARKET_RARE = chest("trading_market/plains_rare");
+    ResourceKey<LootTable> PLAINS_TRADING_MARKET_COMMON = chest("trading_market/plains_common");
+    ResourceKey<LootTable> PLAINS_TRADING_MARKET_RARE = chest("trading_market/plains_rare");
 
-    private static ResourceLocation entity(String name) {
+    private static ResourceKey<LootTable> entity(String name) {
         return create("entities/" + name);
     }
 
-    private static ResourceLocation chest(String name) {
+    private static ResourceKey<LootTable> chest(String name) {
         return create("chests/" + name);
     }
 
-    private static ResourceLocation create(String name) {
+    private static ResourceKey<LootTable> create(String name) {
         return create(Util.prefix(name));
     }
 
-    private static ResourceLocation create(ResourceLocation location) {
-        if (LOCATIONS.add(location)) {
-            return location;
-        } else {
-            throw new IllegalArgumentException(location + " is already a registered built-in loot table");
-        }
+    private static ResourceKey<LootTable> create(ResourceLocation location) {
+        return BuiltInLootTables.register(LootHelper.get().createKey(location));
     }
 
-    static Set<ResourceLocation> all() {
-        return Collections.unmodifiableSet(LOCATIONS);
-    }
 }

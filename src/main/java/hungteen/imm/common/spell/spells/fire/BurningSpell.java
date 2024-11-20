@@ -4,11 +4,11 @@ import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.spell.spells.SpellType;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
@@ -47,19 +47,25 @@ public class BurningSpell extends SpellType {
     }
 
     private static Optional<ItemStack> getBurningResult(Level level, ItemStack stack, int lvl){
-        if(stack.is(Items.STICK)) return Optional.of(new ItemStack(Items.TORCH));
+        if(stack.is(Items.STICK)) {
+            return Optional.of(new ItemStack(Items.TORCH));
+        }
         Optional<ItemStack> result = getBurningResult(level, RecipeType.CAMPFIRE_COOKING, stack);
-        if(result.isPresent()) return result;
+        if(result.isPresent()) {
+            return result;
+        }
         if(lvl > 1){
             result = getBurningResult(level, RecipeType.SMELTING, stack);
-            if(result.isPresent()) return result;
+            if(result.isPresent()) {
+                return result;
+            }
             return getBurningResult(level, RecipeType.BLASTING, stack);
         }
         return Optional.empty();
     }
 
-    private static <C extends Container, T extends Recipe<C>> Optional<ItemStack> getBurningResult(Level level, RecipeType<T> recipe, ItemStack stack){
-        return level.getRecipeManager().getAllRecipesFor(recipe).stream().filter(r -> r.getIngredients().get(0).test(stack)).findAny().map(r -> r.getResultItem(level.registryAccess()).copy());
+    private static <C extends RecipeInput, T extends Recipe<C>> Optional<ItemStack> getBurningResult(Level level, RecipeType<T> recipe, ItemStack stack){
+        return level.getRecipeManager().getAllRecipesFor(recipe).stream().filter(r -> r.value().getIngredients().get(0).test(stack)).findAny().map(r -> r.value().getResultItem(level.registryAccess()).copy());
     }
 
 }

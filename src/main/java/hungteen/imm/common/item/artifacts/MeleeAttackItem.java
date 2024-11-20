@@ -1,24 +1,23 @@
 package hungteen.imm.common.item.artifacts;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import hungteen.imm.api.interfaces.IArtifactTier;
+import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -28,9 +27,8 @@ import java.util.Objects;
  * @author: HungTeen
  * @create: 2022-10-19 22:37
  **/
-public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable {
+public abstract class MeleeAttackItem extends ArtifactItem {
 
-    protected final Multimap<Attribute, AttributeModifier> defaultModifiers;
     protected final IMeleeAttackType meleeAttackType;
     protected final float attackDamage;
     /**
@@ -40,22 +38,25 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
     protected final float attackRange;
 
     public MeleeAttackItem(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
-        super(new Properties().stacksTo(1).durability(tier.getUses()), tier.getArtifactRealm());
+        super(new Properties().stacksTo(1).durability(tier.getUses())
+                .attributes(create(meleeAttackType, tier)), tier.getArtifactRealm());
         this.meleeAttackType = meleeAttackType;
         this.attackDamage = tier.getAttackDamage() + this.meleeAttackType.getBaseAttackDamage();
         this.attackSpeed = tier.getAttackSpeed() + this.meleeAttackType.getBaseAttackSpeed();
         this.attackRange = tier.getAttackRange() + this.meleeAttackType.getBaseAttackRange();
+    }
 
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ARTIFACT_ATTACK_DAMAGE_UUID, "Artifact modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ARTIFACT_ATTACK_SPEED_UUID, "Artifact modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(ARTIFACT_REACH_DISTANCE_UUID, "Artifact modifier", this.attackRange, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();
+    public static ItemAttributeModifiers create(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Util.prefix("Artifact modifier"), tier.getAttackDamage() + meleeAttackType.getBaseAttackDamage(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Util.prefix("Artifact modifier"), tier.getAttackSpeed() + meleeAttackType.getBaseAttackSpeed(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(Util.prefix("Artifact modifier"), tier.getAttackRange() + meleeAttackType.getBaseAttackRange(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 
     @Override
     public @NotNull AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player, @NotNull Entity target) {
-        final double range = Objects.requireNonNull(player.getAttribute(ForgeMod.ENTITY_REACH.get())).getValue();
+        final double range = Objects.requireNonNull(player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE)).getValue();
         return target.getBoundingBox().inflate(range / 3, 0.25D, range / 3);
     }
 
@@ -66,25 +67,22 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity enemy, LivingEntity livingEntity) {
-        stack.hurtAndBreak(getHurtEnemyCost(livingEntity, stack, enemy), livingEntity, (p) -> {
-            p.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-        });
-        return true;
-    }
-
-    @Override
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos blockPos, LivingEntity livingEntity) {
-        if (!level.isClientSide && state.getDestroySpeed(level, blockPos) != 0.0F) {
-            stack.hurtAndBreak(getMineBlockCost(livingEntity, stack, state), livingEntity, (entity) -> {
-                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        if(livingEntity.level() instanceof ServerLevel serverLevel){
+            stack.hurtAndBreak(getHurtEnemyCost(livingEntity, stack, enemy), serverLevel, livingEntity, (p) -> {
+                livingEntity.onEquippedItemBroken(stack.getItem(), EquipmentSlot.MAINHAND);
             });
         }
         return true;
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos blockPos, LivingEntity livingEntity) {
+        if(livingEntity.level() instanceof ServerLevel serverLevel && state.getDestroySpeed(level, blockPos) != 0.0F){
+            stack.hurtAndBreak(getMineBlockCost(livingEntity, stack, state), serverLevel, livingEntity, (p) -> {
+                livingEntity.onEquippedItemBroken(stack.getItem(), EquipmentSlot.MAINHAND);
+            });
+        }
+        return true;
     }
 
     public int getHurtEnemyCost(LivingEntity livingEntity, ItemStack stack, LivingEntity enemy) {
@@ -96,8 +94,8 @@ public abstract class MeleeAttackItem extends ArtifactItem implements Vanishable
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return this.meleeAttackType.canSweep() && toolAction == ToolActions.SWORD_SWEEP;
+    public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
+        return this.meleeAttackType.canSweep() && ability == ItemAbilities.SWORD_SWEEP;
     }
 
     public interface IMeleeAttackType{

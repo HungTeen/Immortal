@@ -26,8 +26,8 @@ public class SharpStakeRender extends MobRenderer<SharpStake, CubeModel<SharpSta
     }
 
     @Override
-    protected void setupRotations(SharpStake stake, PoseStack stack, float blob, float yRot, float partialTicks) {
-        super.setupRotations(stake, stack, blob, Direction.fromYRot(yRot).toYRot(), partialTicks);
+    protected void setupRotations(SharpStake stake, PoseStack stack, float blob, float yRot, float partialTicks, float scale) {
+        super.setupRotations(stake, stack, blob, Direction.fromYRot(yRot).toYRot(), partialTicks, scale);
     }
 
     @Override

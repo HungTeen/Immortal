@@ -1,5 +1,6 @@
 package hungteen.imm.client;
 
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.common.IMMProxy;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.render.level.ReactionRenderer;
@@ -30,7 +31,7 @@ public class IMMClientProxy extends IMMProxy {
 
     @Override
     public void onSmithing(BlockPos blockPos, boolean isMainHand) {
-        NetworkHandler.sendToServer(new SmithingPacket(blockPos, ClientData.SmithingProgress, isMainHand));
+        NetworkHelper.sendToServer(new SmithingPacket(blockPos, ClientData.SmithingProgress, isMainHand));
     }
 
     @Override

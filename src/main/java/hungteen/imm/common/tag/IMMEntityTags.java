@@ -1,6 +1,6 @@
 package hungteen.imm.common.tag;
 
-import hungteen.htlib.util.helper.registry.EntityHelper;
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;

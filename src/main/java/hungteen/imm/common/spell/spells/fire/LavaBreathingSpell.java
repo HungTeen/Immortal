@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.fire;
 
-import hungteen.htlib.util.helper.registry.EffectHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.effect.MobEffects;

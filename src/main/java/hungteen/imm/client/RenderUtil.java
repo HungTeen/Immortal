@@ -71,7 +71,7 @@ public class RenderUtil {
     public static void renderEntityInInventory(GuiGraphics graphics, int posX, int posY, float scale, Quaternionf q1, @Nullable Quaternionf q2, Entity entity) {
         graphics.pose().pushPose();
         graphics.pose().translate(posX, posY, 50.0D);
-        graphics.pose().mulPoseMatrix((new Matrix4f()).scaling(scale, scale, -scale));
+        graphics.pose().mulPose((new Matrix4f()).scaling(scale, scale, -scale));
         graphics.pose().mulPose(q1);
         Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();

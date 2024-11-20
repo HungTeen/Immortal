@@ -29,7 +29,7 @@ public class IMMJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         Util.getProxy().getRecipeManager().ifPresent(manager -> {
-            registration.addRecipes(ElixirCategory.ELIXIR_RECIPE_TYPE, manager.getAllRecipesFor(IMMRecipes.ELIXIR.get()));
+//            registration.addRecipes(ElixirCategory.ELIXIR_RECIPE_TYPE, manager.getAllRecipesFor(IMMRecipes.ELIXIR.get()));
 //            registration.addRecipes(SmithingCategory.SMITHING_ARTIFACT_RECIPE_TYPE, manager.getAllRecipesFor(IMMRecipes.SMITHING_ARTIFACT.get()));
         });
     }

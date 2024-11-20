@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.fire;
 
-import hungteen.htlib.util.helper.registry.ParticleHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.Elements;
 import hungteen.imm.api.enums.SpellUsageCategories;
@@ -30,7 +30,7 @@ public class IgnitionSpell extends SpellType {
         if(projectile instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player){
             SpellManager.activateSpell(player, SpellTypes.IGNITION, (p, result, spell, level) -> {
                 ElementManager.addElementAmount(result.getEntity(), Elements.FIRE, false, 10);
-                arrow.setSecondsOnFire(5);
+                arrow.setRemainingFireTicks(100);
                 return true;
             });
         }
@@ -40,7 +40,7 @@ public class IgnitionSpell extends SpellType {
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(result.hasEntity() && result.getEntity() != null){
             ElementManager.addElementAmount(result.getEntity(), Elements.FIRE, false, 10);
-            result.getEntity().setSecondsOnFire(3);
+            result.getEntity().setRemainingFireTicks(60);
             ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL_MANA.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
         }

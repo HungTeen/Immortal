@@ -11,12 +11,16 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.CommonHooks;
 
 /**
  * TODO Port to HTLib.
@@ -24,7 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * @program Immortal
  * @data 2023/6/1 11:26
  */
-public abstract class IMMCropBlock extends BushBlock implements BonemealableBlock {
+public abstract class IMMCropBlock extends CropBlock implements BonemealableBlock {
 
     public IMMCropBlock(Properties properties) {
         super(properties);
@@ -41,12 +45,14 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {
-        if (!level.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+        if (!level.isAreaLoaded(pos, 1)) {
+            return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+        }
         if (this.canNaturalGrow(level, state, pos)) {
-            final float f = CropBlock.getGrowthSpeed(this, level, pos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, pos, state, randomSource.nextInt((int)(25.0F / f) + 1) == 0)) {
+            final float f = CropBlock.getGrowthSpeed(state, level, pos);
+            if (CommonHooks.canCropGrow(level, pos, state, randomSource.nextInt((int)(25.0F / f) + 1) == 0)) {
                 this.growCrops(level, pos, state, true);
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+                CommonHooks.fireCropGrowPost(level, pos, state);
             }
         }
     }
@@ -58,7 +64,7 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity instanceof Ravager && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, entity)) {
+        if (entity instanceof Ravager ravager && CommonHooks.canEntityDestroy(level, pos, ravager)) {
             level.destroyBlock(pos, true, entity);
         }
 
@@ -83,8 +89,10 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
         level.setBlock(pos, this.getStateForAge(age), 2);
     }
 
+    @Override
     public abstract IntegerProperty getAgeProperty();
 
+    @Override
     public abstract int getMaxAge();
 
     public abstract VoxelShape[] getShapes();
@@ -92,8 +100,8 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
     public abstract ItemLike getSeedItem(BlockState state);
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader p_255715_, BlockPos p_52259_, BlockState p_52260_, boolean p_52261_) {
-        return !this.isMaxAge(p_52260_);
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return !this.isMaxAge(state);
     }
 
     @Override
@@ -117,10 +125,11 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader getter, BlockPos pos, BlockState state) {
         return new ItemStack(getSeedItem(state));
     }
 
+    @Override
     public int getAge(BlockState state){
         return state.getValue(getAgeProperty());
     }
@@ -132,12 +141,9 @@ public abstract class IMMCropBlock extends BushBlock implements BonemealableBloc
         return getAge(state);
     }
 
+    @Override
     public BlockState getStateForAge(int age) {
         return this.defaultBlockState().setValue(this.getAgeProperty(), age);
-    }
-
-    public boolean isMaxAge(BlockState state) {
-        return getAge(state) >= this.getMaxAge();
     }
 
 }
