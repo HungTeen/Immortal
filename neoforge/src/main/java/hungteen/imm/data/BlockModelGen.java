@@ -8,9 +8,9 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:10
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:10
  **/
 public class BlockModelGen extends HTBlockModelGen {
 

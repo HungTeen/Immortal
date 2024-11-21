@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/28 13:04
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/28 13:04
  **/
 @Mixin(Mob.class)
 public class MixinMob {

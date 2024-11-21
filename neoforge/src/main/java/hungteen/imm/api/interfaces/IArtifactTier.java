@@ -4,9 +4,9 @@ import hungteen.imm.api.registry.IRealmType;
 import net.minecraft.world.item.Tier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-14 15:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-14 15:43
  **/
 public interface IArtifactTier extends Tier {
 

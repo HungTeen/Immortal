@@ -6,12 +6,12 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
@@ -27,24 +27,26 @@ import hungteen.imm.util.Constants;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 15:02
+ * @author HungTeen
+ * @program Immortal
+ * @create 2022-09-24 15:02
  **/
-public class PlayerDataManager {
+public class IMMPlayerData implements INBTSerializable<CompoundTag> {
 
-    private final Player player;
-    private final HashSet<ISpiritualType> spiritualRoots = new HashSet<>(); // 灵根。
+    private Player player;
+    private final HashSet<QiRootType> roots = new HashSet<>();
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>(); // 学习的法术。
     private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // 法术的冷却。
     private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // 法术轮盘。
@@ -61,7 +63,7 @@ public class PlayerDataManager {
     /* Caches */
     private RealmManager.RealmNode realmNode;
 
-    public PlayerDataManager(Player player) {
+    public IMMPlayerData(Player player) {
         this.player = player;
         PlayerRangeIntegers.registry().getValues().forEach(data -> {
             integerMap.put(data, data.defaultData());
@@ -69,6 +71,10 @@ public class PlayerDataManager {
         PlayerRangeFloats.registry().getValues().forEach(data -> {
             floatMap.put(data, data.defaultData());
         });
+    }
+
+    public IMMPlayerData() {
+
     }
 
     /**
@@ -103,13 +109,14 @@ public class PlayerDataManager {
         }
     }
 
-    public CompoundTag saveToNBT() {
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
         {
             CompoundTag nbt = new CompoundTag();
-            IMMAPI.get().spiritualRegistry().ifPresent(l -> {
+            IMMAPI.get().qiRootRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
-                    nbt.putBoolean(type.getRegistryName() + "_root", spiritualRoots.contains(type));
+                    nbt.putBoolean(type.getRegistryName() + "_root", roots.contains(type));
                 });
             });
             tag.put("SpiritualRoots", nbt);
@@ -171,14 +178,15 @@ public class PlayerDataManager {
         return tag;
     }
 
-    public void loadFromNBT(CompoundTag tag) {
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
         if (tag.contains("SpiritualRoots")) {
-            spiritualRoots.clear();
+            roots.clear();
             final CompoundTag nbt = tag.getCompound("SpiritualRoots");
-            IMMAPI.get().spiritualRegistry().ifPresent(l -> {
+            IMMAPI.get().qiRootRegistry().ifPresent(l -> {
                 l.getValues().forEach(type -> {
                     if (nbt.getBoolean(type.getRegistryName() + "_root")) {
-                        spiritualRoots.add(type);
+                        roots.add(type);
                     }
                 });
             });
@@ -259,21 +267,13 @@ public class PlayerDataManager {
     }
 
     /**
-     * copy player data when clone event happen.
-     */
-    public void cloneFromExistingPlayerData(PlayerDataManager data, boolean died) {
-        this.loadFromNBT(data.saveToNBT());
-        this.syncToClient();
-    }
-
-    /**
      * sync data to client side.
      */
     public void syncToClient() {
         Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
         this.setRealmType(this.realmType); // Must run before sync mana !
         this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
-        this.spiritualRoots.forEach(l -> {
+        this.roots.forEach(l -> {
             this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, l.getRegistryName());
         });
         this.learnSpells.forEach((spell, level) -> {
@@ -294,35 +294,35 @@ public class PlayerDataManager {
 
     /* Spiritual Roots related methods */
 
-    public void addSpiritualRoot(ISpiritualType spiritualRoot) {
-        this.spiritualRoots.add(spiritualRoot);
+    public void addRoot(QiRootType spiritualRoot) {
+        this.roots.add(spiritualRoot);
         this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, spiritualRoot.getRegistryName());
     }
 
-    public void removeSpiritualRoot(ISpiritualType spiritualRoot) {
-        this.spiritualRoots.remove(spiritualRoot);
+    public void removeRoot(QiRootType spiritualRoot) {
+        this.roots.remove(spiritualRoot);
         this.sendMiscDataPacket(MiscDataPacket.Types.REMOVE_ROOT, spiritualRoot.getRegistryName());
     }
 
     public void clearSpiritualRoot() {
-        this.spiritualRoots.clear();
+        this.roots.clear();
         this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
     }
 
-    public boolean hasSpiritualRoot(ISpiritualType spiritualRoot) {
-        return this.spiritualRoots.contains(spiritualRoot);
+    public boolean hasSpiritualRoot(QiRootType spiritualRoot) {
+        return this.roots.contains(spiritualRoot);
     }
 
     public int getSpiritualRootCount() {
-        return this.spiritualRoots.size();
+        return this.roots.size();
     }
 
-    public boolean hasRoot(ISpiritualType root) {
-        return this.spiritualRoots.contains(root);
+    public boolean hasRoot(QiRootType root) {
+        return this.roots.contains(root);
     }
 
-    public List<ISpiritualType> getSpiritualRoots() {
-        return this.spiritualRoots.stream().toList();
+    public List<QiRootType> getRoots() {
+        return this.roots.stream().toList();
     }
 
     /* Spell related methods */
@@ -330,7 +330,7 @@ public class PlayerDataManager {
     public void learnSpell(ISpellType spell, int level) {
         final int lvl = Mth.clamp(level, 0, spell.getMaxLevel());
         this.learnSpells.put(spell, lvl);
-        if(player instanceof ServerPlayer serverPlayer){
+        if (player instanceof ServerPlayer serverPlayer) {
             PlayerLearnSpellTrigger.INSTANCE.trigger(serverPlayer, spell, level);
             PlayerLearnSpellsTrigger.INSTANCE.trigger(serverPlayer, (int) this.learnSpells.values().stream().filter(l -> l > 0).count());
         }
@@ -361,7 +361,7 @@ public class PlayerDataManager {
 
     public boolean isSpellOnCircle(ISpellType spell) {
         for (ISpellType spellType : this.spellList) {
-            if(spell == spellType) {
+            if (spell == spellType) {
                 return true;
             }
         }
@@ -518,7 +518,7 @@ public class PlayerDataManager {
     }
 
     public void setRealmType(IRealmType realmType) {
-        if(player instanceof ServerPlayer serverPlayer && this.realmType != realmType){
+        if (player instanceof ServerPlayer serverPlayer && this.realmType != realmType) {
             PlayerRealmChangeTrigger.INSTANCE.trigger(serverPlayer, realmType);
         }
         this.realmType = realmType;

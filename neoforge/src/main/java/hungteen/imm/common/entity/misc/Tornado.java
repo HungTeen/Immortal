@@ -23,9 +23,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/19 21:08
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/19 21:08
  **/
 public class Tornado extends HTEntity implements TraceableEntity, IEntityWithComplexSpawn {
 

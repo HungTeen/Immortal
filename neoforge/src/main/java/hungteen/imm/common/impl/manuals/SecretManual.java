@@ -27,7 +27,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 16:52
+ * @create 2023/7/17 16:52
  */
 public record SecretManual(List<ILearnRequirement> requirements, IManualContent content, ResourceLocation model,
                            Optional<MutableComponent> title) {

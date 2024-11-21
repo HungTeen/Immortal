@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 18:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 18:41
  **/
 public class GolemStopAttackingIfTargetInvalid extends GolemOneShotBehavior{
 

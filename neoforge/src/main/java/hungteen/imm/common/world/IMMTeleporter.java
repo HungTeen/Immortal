@@ -1,9 +1,9 @@
 package hungteen.imm.common.world;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-17 22:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-17 22:44
  **/
 public class IMMTeleporter {
 //        implements ITeleporter {

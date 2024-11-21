@@ -7,9 +7,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2024/11/19 15:23
+ * @program Immortal
+ * @author PangTeen
+ * @create 2024/11/19 15:23
  **/
 public interface CodecUtil {
 

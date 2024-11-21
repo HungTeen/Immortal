@@ -6,9 +6,9 @@ import hungteen.imm.common.entity.human.villager.IMMVillager;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:21
  **/
 public abstract class IMMVillagerRender<T extends IMMVillager> extends VillagerLikeRender<T, VillagerModel<T>> {
 

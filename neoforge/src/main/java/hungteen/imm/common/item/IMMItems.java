@@ -28,9 +28,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-03 22:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-03 22:44
  **/
 public class IMMItems {
 

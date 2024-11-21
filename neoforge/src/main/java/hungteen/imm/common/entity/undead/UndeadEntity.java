@@ -10,9 +10,9 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 23:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 23:11
  **/
 public abstract class UndeadEntity extends IMMMob implements IUndead, Enemy {
 

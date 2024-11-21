@@ -6,9 +6,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-16 13:08
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-16 13:08
  **/
 public interface IMMItemTags {
 

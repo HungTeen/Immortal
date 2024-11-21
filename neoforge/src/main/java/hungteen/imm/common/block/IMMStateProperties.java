@@ -5,9 +5,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-30 20:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-30 20:21
  **/
 public class IMMStateProperties {
 

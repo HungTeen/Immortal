@@ -13,9 +13,9 @@ import java.util.function.Consumer;
 
 /**
  * Look at {@link OverworldBiomeBuilder}.
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-18 12:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-18 12:49
  **/
 public class EastWorldDimension {
 

@@ -13,9 +13,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-07 10:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-07 10:52
  **/
 public class StartFighting<E extends Mob> extends Behavior<E> {
     private final Predicate<E> canAttackPredicate;

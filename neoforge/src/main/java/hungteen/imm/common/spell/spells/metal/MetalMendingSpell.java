@@ -10,9 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-28 18:25
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-28 18:25
  **/
 public class MetalMendingSpell extends SpellType {
 

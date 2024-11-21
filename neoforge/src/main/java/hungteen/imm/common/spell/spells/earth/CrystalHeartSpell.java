@@ -13,9 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/9 22:23
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/9 22:23
  **/
 public class CrystalHeartSpell extends SpellType {
 

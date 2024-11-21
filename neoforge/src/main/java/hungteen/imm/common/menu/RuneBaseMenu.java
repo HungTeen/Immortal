@@ -18,9 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-17 22:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-17 22:36
  **/
 public abstract class RuneBaseMenu extends HTContainerMenu {
 

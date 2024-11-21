@@ -8,9 +8,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-04 22:51
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-04 22:51
  **/
 public class LessGateRune extends BaseFilterRune {
 

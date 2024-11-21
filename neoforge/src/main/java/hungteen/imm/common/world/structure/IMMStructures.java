@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-20 09:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-20 09:39
  **/
 public interface IMMStructures {
 

@@ -11,9 +11,9 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-05 21:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-05 21:59
  **/
 public class LevelUtil {
 

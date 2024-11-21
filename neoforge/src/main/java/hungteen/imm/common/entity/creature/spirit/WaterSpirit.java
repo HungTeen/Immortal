@@ -2,10 +2,10 @@ package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -33,9 +33,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/22 10:08
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/22 10:08
  **/
 public class WaterSpirit extends ElementSpirit {
 
@@ -182,8 +182,8 @@ public class WaterSpirit extends ElementSpirit {
     }
 
     @Override
-    public ISpiritualType getSpiritualRoot() {
-        return SpiritualTypes.WATER;
+    public QiRootType getSpiritualRoot() {
+        return QiRootTypes.WATER;
     }
 
     @Override

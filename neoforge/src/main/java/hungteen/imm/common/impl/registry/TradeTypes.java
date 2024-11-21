@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/18 12:39
+ * @create 2023/3/18 12:39
  */
 public class TradeTypes {
 

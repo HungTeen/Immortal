@@ -1,9 +1,9 @@
 package hungteen.imm.compat.jei.category;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 12:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 12:56
  **/
 public class ElixirCategory {
 //    implements IRecipeCategory<ElixirRecipe>

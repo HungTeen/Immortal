@@ -17,9 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-18 20:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-18 20:30
  **/
 public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
 

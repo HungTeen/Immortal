@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.Sheets;
 import org.lwjgl.opengl.GL14;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-02 20:37
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-02 20:37
  **/
 public class IMMRenderTypes extends RenderType{
 

@@ -3,9 +3,9 @@ package hungteen.imm.common.entity;
 import net.minecraft.world.entity.MobCategory;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-23 22:57
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-23 22:57
  **/
 public class IMMMobCategories {
 

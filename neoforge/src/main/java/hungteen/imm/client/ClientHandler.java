@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-23 12:35
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-23 12:35
  **/
 public class ClientHandler {
 

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/18 14:54
+ * @create 2023/7/18 14:54
  */
 public record ElixirEffect(Holder<MobEffect> effect, List<Integer> bits) {
 

@@ -11,9 +11,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-21 11:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-21 11:48
  **/
 public interface IMMProcessorLists {
 

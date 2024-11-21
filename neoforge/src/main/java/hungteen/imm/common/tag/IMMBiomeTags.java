@@ -6,9 +6,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-24 23:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-24 23:11
  **/
 public interface IMMBiomeTags {
 

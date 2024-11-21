@@ -4,9 +4,9 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 18:40
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 18:40
  **/
 public class ArtifactToolTip implements TooltipComponent {
 

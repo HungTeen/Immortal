@@ -9,7 +9,7 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/14 10:06
+ * @create 2023/6/14 10:06
  */
 public interface IMMNoiseParamLists {
 

@@ -18,9 +18,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 10:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 10:16
  **/
 public class SilkWorm extends Animal {
 

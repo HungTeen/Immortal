@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-18 14:03
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-18 14:03
  **/
 public interface IMMBiomes {
 

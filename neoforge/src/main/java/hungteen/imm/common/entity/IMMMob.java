@@ -12,10 +12,10 @@ import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -38,9 +38,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 18:37
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 18:37
  **/
 public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, IHasRoot, IHasRealm, IHasMana, IHasSpell {
 
@@ -51,7 +51,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     protected static final EntityDataAccessor<Integer> CURRENT_ANIMATION = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Long> ANIMATION_START_TICK = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.LONG);
     private final Map<ISpellType, Integer> learnedSpells = new HashMap<>();
-    private final Set<ISpiritualType> spiritualRoots = new HashSet<>();
+    private final Set<QiRootType> spiritualRoots = new HashSet<>();
     protected float spiritualMana;
     private int spellCooldown;
 
@@ -91,7 +91,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     /**
      * 随机初始化灵根。
      */
-    protected Collection<ISpiritualType> createSpiritualRoots(ServerLevelAccessor accessor){
+    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor){
         return List.of();
     }
 
@@ -205,7 +205,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
             final CompoundTag nbt = tag.getCompound("SpiritualRoots");
             final int count = nbt.getInt("Count");
             for(int i = 0; i < count; ++ i){
-                SpiritualTypes.registry().getValue(nbt.getString("Root_" + i)).ifPresent(this.spiritualRoots::add);
+                QiRootTypes.registry().getValue(nbt.getString("Root_" + i)).ifPresent(this.spiritualRoots::add);
             }
         }
         if(tag.contains("SpiritualMana")){
@@ -397,7 +397,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
+    public List<QiRootType> getSpiritualTypes() {
         return spiritualRoots.stream().toList();
     }
 

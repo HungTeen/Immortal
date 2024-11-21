@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-24 21:40
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-24 21:40
  **/
 public class SpellScreen extends MeditationScreen implements IScrollableScreen<ISpellType> {
 

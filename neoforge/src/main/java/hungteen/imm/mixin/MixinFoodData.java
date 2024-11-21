@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/2 8:50
+ * @create 2023/3/2 8:50
  */
 @Mixin(FoodData.class)
 public class MixinFoodData {

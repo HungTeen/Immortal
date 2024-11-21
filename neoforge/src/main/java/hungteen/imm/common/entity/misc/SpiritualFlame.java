@@ -41,9 +41,9 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 21:40
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 21:40
  **/
 public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, IHasRealm, IHasMana {
 

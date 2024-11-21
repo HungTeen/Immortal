@@ -7,9 +7,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 /**
  * Copy from {@link SpellParticle}
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 08:25
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 08:25
  **/
 public class MetalElementParticle extends HTMultiTextureParticle {
 

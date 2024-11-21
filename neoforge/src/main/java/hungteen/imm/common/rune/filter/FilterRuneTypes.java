@@ -8,9 +8,9 @@ import hungteen.imm.IMMInitializer;
 import hungteen.imm.util.Util;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-04 22:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-04 22:36
  **/
 public class FilterRuneTypes {
 

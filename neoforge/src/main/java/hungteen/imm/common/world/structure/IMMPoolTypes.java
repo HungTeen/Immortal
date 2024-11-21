@@ -1,9 +1,9 @@
 package hungteen.imm.common.world.structure;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-14 22:24
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-14 22:24
  **/
 public interface IMMPoolTypes {
 

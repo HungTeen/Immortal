@@ -8,9 +8,9 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-28 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-28 22:21
  **/
 public abstract class ArtifactRecipe implements Recipe<CraftingInput> {
 

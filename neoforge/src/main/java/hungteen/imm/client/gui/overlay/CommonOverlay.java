@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/27 15:31
+ * @create 2023/7/27 15:31
  */
 public class CommonOverlay {
 

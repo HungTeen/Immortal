@@ -48,9 +48,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:38
  **/
 public class GrassCarp extends Animal implements Bucketable, IShearable {
 

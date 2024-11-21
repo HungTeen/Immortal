@@ -48,9 +48,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/14 12:41
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/14 12:41
  **/
 public class BiFangAi {
 

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 16:02
+ * @create 2023/7/17 16:02
  */
 public record CultivationTypeRequirement(ICultivationType cultivationType) implements ILearnRequirement {
 

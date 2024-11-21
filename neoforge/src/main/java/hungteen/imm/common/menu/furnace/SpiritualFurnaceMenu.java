@@ -17,9 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 10:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 10:48
  **/
 public class SpiritualFurnaceMenu extends HTContainerMenu {
 

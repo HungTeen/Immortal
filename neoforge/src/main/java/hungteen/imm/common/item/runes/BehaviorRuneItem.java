@@ -20,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-02 22:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-02 22:36
  **/
 public class BehaviorRuneItem extends RuneItem {
 

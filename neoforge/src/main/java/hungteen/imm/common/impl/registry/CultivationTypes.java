@@ -9,9 +9,9 @@ import net.minecraft.network.chat.MutableComponent;
 
 /**
  * 修行的方式。
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-13 15:09
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-13 15:09
  **/
 public interface CultivationTypes {
 

@@ -8,9 +8,9 @@ import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-13 22:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-13 22:13
  **/
 public class PlayerRangeIntegers {
 

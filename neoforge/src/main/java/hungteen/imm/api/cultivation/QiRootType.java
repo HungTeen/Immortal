@@ -1,8 +1,7 @@
-package hungteen.imm.api.registry;
+package hungteen.imm.api.cultivation;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.registry.SimpleEntry;
-import hungteen.imm.api.cultivation.Element;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
@@ -10,11 +9,12 @@ import net.minecraft.util.random.WeightedEntry;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 16:03
+ * 灵根类型。
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 16:03
  **/
-public interface ISpiritualType extends SimpleEntry, WeightedEntry {
+public interface QiRootType extends SimpleEntry, WeightedEntry {
 
     /**
      * 此灵根包含哪些基本元素。
@@ -23,11 +23,16 @@ public interface ISpiritualType extends SimpleEntry, WeightedEntry {
     Set<Element> getElements();
 
     /**
-     * 默认只有只含一种五行元素的灵根为普通灵根。
+     * 五行灵根为普通灵根。
+     * @return true if this is a common root.
      */
-    default boolean isCommonRoot(){
-        return getElements().size() == 1 && ! getElements().contains(Element.SPIRIT);
-    }
+    boolean isCommonRoot();
+
+    /**
+     * 是否为特殊变异灵根，此种灵根不能和任何灵根同时存在。
+     * @return true if this is a special root.
+     */
+    boolean isSpecialRoot();
 
     /**
      * 灵根产生的权重。

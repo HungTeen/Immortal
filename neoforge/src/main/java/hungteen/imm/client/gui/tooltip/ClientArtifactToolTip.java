@@ -8,9 +8,9 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 18:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 18:39
  **/
 public class ClientArtifactToolTip  implements ClientTooltipComponent {
 

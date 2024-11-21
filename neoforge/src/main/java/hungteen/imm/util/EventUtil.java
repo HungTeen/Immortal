@@ -7,7 +7,7 @@ import net.neoforged.neoforge.common.NeoForge;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/19 15:18
+ * @create 2023/8/19 15:18
  */
 public class EventUtil {
 

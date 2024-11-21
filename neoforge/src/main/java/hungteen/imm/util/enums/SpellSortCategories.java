@@ -1,9 +1,9 @@
 package hungteen.imm.util.enums;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/30 18:31
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/30 18:31
  **/
 public enum SpellSortCategories {
 

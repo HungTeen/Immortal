@@ -11,7 +11,7 @@ import hungteen.imm.util.Util;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 15:19
+ * @create 2023/7/17 15:19
  */
 public interface RequirementTypes {
 

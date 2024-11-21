@@ -8,9 +8,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 10:50
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 10:50
  **/
 public abstract class IMMPillager extends VillagerLikeEntity {
 

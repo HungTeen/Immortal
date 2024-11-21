@@ -42,7 +42,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/15 15:04
+ * @create 2023/6/15 15:04
  */
 public class TeleportRuinStructure extends Structure {
 

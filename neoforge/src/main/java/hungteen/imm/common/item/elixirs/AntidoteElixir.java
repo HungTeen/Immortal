@@ -11,9 +11,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-29 18:40
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-29 18:40
  **/
 public class AntidoteElixir{
 //        extends ElixirItem{

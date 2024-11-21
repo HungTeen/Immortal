@@ -1,9 +1,9 @@
 package hungteen.imm.common.blockentity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 21:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 21:44
  **/
 public class SmithingArtifactBlockEntity {
 //        extends ItemHandlerBlockEntity implements MenuProvider {

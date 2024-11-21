@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:21
  **/
 public abstract class VillagerLikeRender<T extends VillagerLikeEntity, M extends EntityModel<T> & ArmedModel> extends LivingEntityRenderer<T, M> {
 

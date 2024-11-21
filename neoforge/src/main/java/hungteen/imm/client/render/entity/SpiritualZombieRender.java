@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 22:06
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 22:06
  **/
 public class SpiritualZombieRender extends HumanoidMobRenderer<SpiritualZombie, SpiritualZombieModel<SpiritualZombie>> {
 

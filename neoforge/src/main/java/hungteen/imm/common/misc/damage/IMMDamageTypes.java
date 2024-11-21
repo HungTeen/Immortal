@@ -10,9 +10,9 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DeathMessageType;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-18 20:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-18 20:41
  **/
 public interface IMMDamageTypes {
 

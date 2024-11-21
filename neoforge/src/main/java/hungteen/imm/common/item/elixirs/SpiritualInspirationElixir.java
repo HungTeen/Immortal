@@ -19,9 +19,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/1 22:48
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/1 22:48
  **/
 public class SpiritualInspirationElixir extends ElixirItem {
 

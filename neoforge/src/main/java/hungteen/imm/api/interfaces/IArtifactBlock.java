@@ -5,9 +5,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * 具有灵力的方块需要继承此接口。
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-08 09:35
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-08 09:35
  **/
 public interface IArtifactBlock extends IArtifactItem{
 

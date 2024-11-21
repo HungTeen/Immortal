@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-21 22:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-21 22:23
  **/
 public class RuneBindScreen extends RuneBaseScreen<RuneBindMenu> {
 

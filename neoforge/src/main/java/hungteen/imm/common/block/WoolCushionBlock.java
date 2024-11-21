@@ -19,9 +19,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-11 20:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-11 20:55
  **/
 public class WoolCushionBlock extends CushionBlock{
 

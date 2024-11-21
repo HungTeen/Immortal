@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 19:30
+ * @create 2023/3/6 19:30
  */
 public class PickupBlockSpell extends SpellType {
 

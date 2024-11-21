@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-03 17:04
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-03 17:04
  **/
 public abstract class CultivationElixir {
 //        extends ElixirItem{

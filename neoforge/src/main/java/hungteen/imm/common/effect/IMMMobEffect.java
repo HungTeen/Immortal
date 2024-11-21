@@ -7,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 14:57
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 14:57
  **/
 public abstract class IMMMobEffect extends MobEffect {
 

@@ -6,9 +6,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-26 18:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-26 18:48
  **/
 public class MiscDataPacket implements PlayToClientPacket {
 
@@ -54,8 +54,8 @@ public class MiscDataPacket implements PlayToClientPacket {
 //                PlayerHelper.getClientPlayer().ifPresent(player -> {
 //                    final Types type = Types.values()[message.type];
 //                    switch (type) {
-//                        case ADD_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.addSpiritualRoot(player, l));
-//                        case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeSpiritualRoot(player, l));
+//                        case ADD_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.addRoot(player, l));
+//                        case REMOVE_ROOT -> SpiritualTypes.registry().getValue(message.data).ifPresent(l -> PlayerUtil.removeRoot(player, l));
 //                        case CLEAR_ROOT -> PlayerUtil.clearSpiritualRoot(player);
 //                        case EXPERIENCE -> PlayerUtil.setExperience(player, ExperienceTypes.valueOf(message.data), message.value);
 //                        case REALM -> RealmTypes.registry().getValue(message.data).ifPresent(realm -> PlayerUtil.clientSetRealm(player, realm));

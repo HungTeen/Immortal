@@ -10,9 +10,9 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-23 23:05
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-23 23:05
  **/
 public class GolemSenseHurtBy extends GolemSensorBehavior{
 

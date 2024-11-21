@@ -1,9 +1,9 @@
 package hungteen.imm.data.recipe;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-29 12:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-29 12:34
  **/
 public class ElixirRecipeBuilder {
 //    extends

@@ -10,9 +10,9 @@ import net.minecraft.util.valueproviders.IntProvider;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-08 23:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-08 23:13
  * @param entryCount 有多少交易项。
  * @param different 交易项是否均不同。
  * @param tradeEntries 可选交易列表。

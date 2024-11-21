@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 10:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 10:17
  **/
 public class ParticleUtil {
 

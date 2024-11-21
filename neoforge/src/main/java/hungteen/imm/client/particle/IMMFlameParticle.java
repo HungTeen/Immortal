@@ -10,9 +10,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 22:00
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 22:00
  **/
 public class IMMFlameParticle extends HTTextureParticle {
 

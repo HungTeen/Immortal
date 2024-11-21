@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 15:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 15:42
  **/
 public class CubeModel<T extends Entity> extends EntityModel<T> {
 

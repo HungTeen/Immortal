@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 15:33
+ * @create 2023/7/17 15:33
  */
 public record LearnSpellManual(ISpellType spellType, int level) implements IManualContent {
     

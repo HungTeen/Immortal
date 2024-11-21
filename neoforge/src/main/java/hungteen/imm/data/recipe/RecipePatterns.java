@@ -3,9 +3,9 @@ package hungteen.imm.data.recipe;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-15 22:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-15 22:17
  **/
 public class RecipePatterns {
 

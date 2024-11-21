@@ -19,9 +19,9 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:16
  **/
 public class SpiritualBeginnerCultivator extends Cultivator {
 

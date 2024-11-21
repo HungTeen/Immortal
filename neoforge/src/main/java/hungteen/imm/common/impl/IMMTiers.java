@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.Block;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-14 15:53
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-14 15:53
  **/
 public class IMMTiers {
 

@@ -6,9 +6,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-05-25 22:20
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-05-25 22:20
  **/
 public class CommonVillagerRender extends IMMVillagerRender<CommonVillager> {
 

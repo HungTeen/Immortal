@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/28 20:41
+ * @create 2023/2/28 20:41
  */
 public abstract class SimpleArtifactBlock extends HTBlock implements IArtifactBlock {
 

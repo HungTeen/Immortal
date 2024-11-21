@@ -7,9 +7,9 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-04 15:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-04 15:45
  **/
 public abstract class TalismanEntity extends ThrowableItemProjectile implements IHasRealm {
 

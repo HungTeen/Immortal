@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,9 +19,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 12:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 12:39
  **/
 public class IronGolem extends GolemEntity{
 
@@ -119,8 +119,8 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.METAL);
+    public List<QiRootType> getSpiritualTypes() {
+        return List.of(QiRootTypes.METAL);
     }
 
 }

@@ -4,9 +4,9 @@ import hungteen.htlib.api.registry.SimpleEntry;
 
 /**
  * 跨境界体系的参考标准。
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-29 12:40
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-29 12:40
  **/
 public interface IRealmType extends SimpleEntry {
 

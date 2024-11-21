@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 25.10.2023 12:44
+ * @program Immortal
+ * @author PangTeen
+ * @create 25.10.2023 12:44
  **/
 public class FireSpiritModel<T extends FireSpirit> extends EntityModel<T> {
 

@@ -34,9 +34,9 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 16:57
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 16:57
  **/
 public class IMMBlocks {
 

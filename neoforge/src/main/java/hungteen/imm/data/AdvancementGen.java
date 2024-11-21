@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/15 16:48
+ * @create 2023/6/15 16:48
  */
 public class AdvancementGen extends HTAdvancementGen {
 

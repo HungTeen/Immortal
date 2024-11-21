@@ -4,9 +4,9 @@ import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-17 22:37
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-17 22:37
  **/
 public enum RuneCategories {
 

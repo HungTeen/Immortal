@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 10:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 10:55
  **/
 public class SilkWormRender extends IMMMobRender<SilkWorm> {
 

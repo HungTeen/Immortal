@@ -1,9 +1,9 @@
 package hungteen.imm.common.menu;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 21:51
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 21:51
  **/
 public class SmithingArtifactMenu {
 //        extends HTContainerMenu {

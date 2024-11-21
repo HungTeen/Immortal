@@ -14,13 +14,13 @@ import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMLevels;
@@ -45,9 +45,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-25 16:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-25 16:38
  **/
 public class IMMCommand {
 
@@ -58,7 +58,7 @@ public class IMMCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("imm").requires((ctx) -> ctx.hasPermission(2));
         // Command about spiritual roots.
-        SpiritualTypes.registry().getValues().forEach(root -> {
+        QiRootTypes.registry().getValues().forEach(root -> {
             builder.then(Commands.literal("root")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("add")
@@ -256,17 +256,17 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
+    private static int addSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.addSpiritualRoot(player, root);
+            PlayerUtil.setData(player, l -> l.addRoot(root));
             showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
     }
 
-    private static int removeSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpiritualType root) {
+    private static int removeSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.removeSpiritualRoot(player, root);
+            PlayerUtil.setData(player, l -> l.removeRoot(root));
             showPlayerSpiritualRoots(source, player, true);
         }
         return targets.size();
@@ -276,9 +276,9 @@ public class IMMCommand {
      * @param spread tell the target player or not.
      */
     private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread) {
-        PlayerUtil.getOptManager(player).ifPresent(l -> {
+        PlayerUtil.setData(player, l -> {
             final MutableComponent component = TipUtil.command("spiritual_root", player.getName().getString());
-            component.append(SpiritualTypes.getSpiritualRoots(l.getSpiritualRoots()));
+            component.append(QiRootTypes.getSpiritualRoots(l.getRoots()));
             if (spread) {
                 PlayerHelper.sendMsgTo(player, component);
             }

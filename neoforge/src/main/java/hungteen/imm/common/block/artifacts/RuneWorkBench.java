@@ -18,9 +18,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 22:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 22:55
  **/
 public class RuneWorkBench extends SimpleArtifactBlock {
 

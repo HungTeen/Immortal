@@ -39,9 +39,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-02 15:01
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-02 15:01
  **/
 public class IMMEntities {
 

@@ -14,9 +14,9 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 11:00
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 11:00
  **/
 public class IMMProfessions {
 

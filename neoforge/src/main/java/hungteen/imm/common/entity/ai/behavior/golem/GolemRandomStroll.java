@@ -14,9 +14,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 15:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 15:49
  **/
 public class GolemRandomStroll extends GolemOneShotBehavior{
 

@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-06 12:07
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-06 12:07
  **/
 @Deprecated
 public class RawArtifactBox extends ArtifactItem {

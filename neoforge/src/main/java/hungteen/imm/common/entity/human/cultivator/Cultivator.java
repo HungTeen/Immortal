@@ -18,9 +18,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
  * 碰到敌人先远战/近战
  * 是否喜欢留后手（藏杀手锏）
  *
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:16
  **/
 public abstract class Cultivator extends HumanEntity {
 

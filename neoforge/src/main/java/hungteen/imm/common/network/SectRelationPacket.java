@@ -7,9 +7,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-26 18:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-26 18:48
  **/
 public class SectRelationPacket implements PlayToClientPacket {
 

@@ -13,9 +13,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-12 19:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-12 19:43
  **/
 public abstract class FunctionalFurnaceMenu<T extends FunctionalFurnaceBlockEntity> extends HTContainerMenu {
 

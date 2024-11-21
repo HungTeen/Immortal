@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-18 23:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-18 23:13
  **/
 public class OrGateRune extends ListGateRune{
 

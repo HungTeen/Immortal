@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 18:02
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 18:02
  **/
 public class BehaviorRunes {
 

@@ -7,9 +7,9 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-18 20:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-18 20:39
  **/
 public class IMMDamageSources {
 

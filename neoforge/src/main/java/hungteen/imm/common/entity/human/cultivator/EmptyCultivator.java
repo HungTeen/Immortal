@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/1 14:58
+ * @create 2023/3/1 14:58
  */
 public class EmptyCultivator extends Cultivator {
 

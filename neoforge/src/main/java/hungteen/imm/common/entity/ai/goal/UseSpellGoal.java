@@ -9,9 +9,9 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import java.util.EnumSet;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 20:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 20:48
  **/
 public class UseSpellGoal extends Goal {
 

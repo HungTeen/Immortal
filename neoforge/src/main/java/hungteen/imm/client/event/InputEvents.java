@@ -12,9 +12,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 21:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 21:55
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID, value = Dist.CLIENT)
 public class InputEvents {

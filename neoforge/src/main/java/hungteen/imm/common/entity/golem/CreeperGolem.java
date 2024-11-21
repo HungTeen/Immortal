@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.golem;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,9 +22,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-25 21:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-25 21:48
  **/
 public class CreeperGolem extends GolemEntity {
 
@@ -152,8 +152,8 @@ public class CreeperGolem extends GolemEntity {
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.FIRE);
+    public List<QiRootType> getSpiritualTypes() {
+        return List.of(QiRootTypes.FIRE);
     }
 
     @Override

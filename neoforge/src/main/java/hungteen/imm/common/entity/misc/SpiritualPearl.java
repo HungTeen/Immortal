@@ -19,7 +19,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/1 10:38
+ * @create 2023/3/1 10:38
  */
 public class SpiritualPearl extends HTEntity implements ItemSupplier {
 

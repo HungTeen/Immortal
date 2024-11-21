@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/2 9:23
+ * @create 2023/6/2 9:23
  */
 public interface IMMOrePlacements {
 

@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/16 10:26
+ * @create 2023/3/16 10:26
  */
 public class IMMStats {
 

@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.RenderUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
@@ -14,7 +14,7 @@ import hungteen.imm.common.KarmaManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/27 14:42
+ * @create 2023/7/27 14:42
  */
 public class CultivationScreen extends MeditationScreen implements IScrollableScreen<CultivationScreen.CultivationEntries> {
 
@@ -96,21 +96,21 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     private void renderSpiritualRoots(GuiGraphics graphics, int posX, int posY) {
         if (SpiritEyeSpell.knowOwnSpiritRoots(ClientUtil.player())) {
-            final List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getSpiritualRoots(ClientUtil.player()));
+            final List<QiRootType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getSpiritualRoots(ClientUtil.player()));
             final int len = roots.size();
             if(len == 0){
                 RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.misc("no_spiritual_root"), posX + 32, posY + 1, 1F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
             } else {
                 final int interval = (65 - len * ElementOverlay.ELEMENT_LEN) / (len + 1);
                 posX += interval;
-                for (ISpiritualType root : roots) {
+                for (QiRootType root : roots) {
                     var pair = root.getTexturePos();
                     graphics.blit(root.getTexture(), posX, posY, pair.getFirst(), pair.getSecond(), ElementOverlay.ELEMENT_LEN, ElementOverlay.ELEMENT_LEN);
                     posX += interval + ElementOverlay.ELEMENT_LEN;
                 }
             }
         } else {
-            RenderUtil.renderCenterScaledText(graphics.pose(), SpiritualTypes.getCategory().append(" : ").append(TipUtil.UNKNOWN), posX + 32, posY + 1, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+            RenderUtil.renderCenterScaledText(graphics.pose(), QiRootTypes.getCategory().append(" : ").append(TipUtil.UNKNOWN), posX + 32, posY + 1, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
         }
     }
 

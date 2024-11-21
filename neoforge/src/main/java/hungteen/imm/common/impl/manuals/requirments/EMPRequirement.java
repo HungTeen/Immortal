@@ -14,9 +14,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-17 22:53
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-17 22:53
  **/
 public record EMPRequirement(int level) implements ILearnRequirement {
 

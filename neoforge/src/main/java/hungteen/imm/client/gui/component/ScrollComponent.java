@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/14 15:54
+ * @create 2023/7/14 15:54
  */
 public class ScrollComponent<T> {
 

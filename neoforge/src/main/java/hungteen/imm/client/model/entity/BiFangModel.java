@@ -19,9 +19,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/13 20:12
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/13 20:12
  **/
 public class BiFangModel extends AnimatedEntityModel<BiFang> {
 

@@ -29,9 +29,9 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 14:39
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 14:39
  **/
 public class BlockLootGen extends HTBlockLootGen {
 

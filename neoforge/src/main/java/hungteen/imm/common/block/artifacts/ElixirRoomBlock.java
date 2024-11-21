@@ -29,9 +29,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-27 12:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-27 12:41
  **/
 public class ElixirRoomBlock extends ArtifactEntityBlock {
 

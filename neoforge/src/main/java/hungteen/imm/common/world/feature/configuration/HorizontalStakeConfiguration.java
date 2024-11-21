@@ -7,9 +7,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-30 22:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-30 22:55
  **/
 public record HorizontalStakeConfiguration(IntProvider length, IntProvider width, BlockStateProvider logState) implements FeatureConfiguration {
 

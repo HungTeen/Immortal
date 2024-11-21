@@ -19,7 +19,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/2 18:31
+ * @create 2023/3/2 18:31
  */
 public class MobRangeAttack<E extends Mob & RangedAttackMob, T extends LivingEntity> extends Behavior<E> {
 

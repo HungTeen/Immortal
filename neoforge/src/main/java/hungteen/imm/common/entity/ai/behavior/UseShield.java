@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-12 16:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-12 16:52
  **/
 public class UseShield extends Behavior<HumanEntity> {
 

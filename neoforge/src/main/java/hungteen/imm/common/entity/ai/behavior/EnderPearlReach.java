@@ -18,9 +18,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-07 16:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-07 16:36
  **/
 public class EnderPearlReach extends Behavior<HumanEntity> {
 

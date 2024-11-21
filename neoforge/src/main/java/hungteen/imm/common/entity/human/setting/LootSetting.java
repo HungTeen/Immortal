@@ -10,9 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-08 23:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-08 23:17
  **/
 public record LootSetting(SimpleWeightedList<ItemEntry> items) {
     public static final Codec<LootSetting> CODEC = RecordCodecBuilder.<LootSetting>mapCodec(instance -> instance.group(

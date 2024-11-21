@@ -1,9 +1,9 @@
 package hungteen.imm.common.capability.entity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-02-25 22:01
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-02-25 22:01
  **/
 public class IMMEntityCapProvider {
 //        implements ICapabilitySerializable<CompoundTag> {

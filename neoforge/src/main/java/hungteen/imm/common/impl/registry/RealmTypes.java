@@ -13,9 +13,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-03 10:09
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-03 10:09
  **/
 public interface RealmTypes {
 

@@ -4,7 +4,7 @@ import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.capability.player.PlayerDataManager;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.network.EmptyClickPacket;
@@ -23,9 +23,9 @@ import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-25 15:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-25 15:52
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMPlayerEvents {
@@ -43,7 +43,7 @@ public class IMMPlayerEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerUtil.getOptManager(event.getEntity()).ifPresent(PlayerDataManager::initialize);
+            PlayerUtil.setData(event.getEntity(), IMMPlayerData::initialize);
         }
     }
 
@@ -64,8 +64,8 @@ public class IMMPlayerEvents {
         if (EntityHelper.isServer(event.getEntity())) {
             // TODO 玩家 Cap clone。
 //            event.getOriginal().reviveCaps();
-//            PlayerUtil.getOptManager(event.getOriginal()).ifPresent(r -> {
-//                PlayerUtil.getOptManager(event.getEntity()).ifPresent(l -> {
+//            PlayerUtil.getDataOpt(event.getOriginal()).ifPresent(r -> {
+//                PlayerUtil.getDataOpt(event.getEntity()).ifPresent(l -> {
 //                    l.cloneFromExistingPlayerData(r, event.isWasDeath());
 //                });
 //            });

@@ -16,9 +16,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-18 12:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-18 12:49
  **/
 public class ElementCrystal extends HTEntity {
 

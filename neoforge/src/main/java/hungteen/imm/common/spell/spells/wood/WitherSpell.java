@@ -8,9 +8,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/7 22:57
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/7 22:57
  **/
 public class WitherSpell extends SpellType {
 

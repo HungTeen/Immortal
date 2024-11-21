@@ -17,9 +17,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-06 20:05
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-06 20:05
  **/
 public class GolemFindAttackTarget extends GolemOneShotBehavior{
 

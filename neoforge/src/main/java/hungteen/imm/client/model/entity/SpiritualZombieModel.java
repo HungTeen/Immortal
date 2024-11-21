@@ -11,9 +11,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.monster.Monster;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:45
  **/
 public class SpiritualZombieModel<T extends SpiritualZombie> extends HumanoidModel<T> {
 

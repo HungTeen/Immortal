@@ -12,9 +12,9 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import java.util.Map;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/17 20:16
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/17 20:16
  **/
 public class IdleBehavior extends Behavior<IMMMob> {
 

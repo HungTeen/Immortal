@@ -30,9 +30,9 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-02 13:47
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-02 13:47
  **/
 public class FlyingItemEntity extends HTEntity implements TraceableEntity {
 

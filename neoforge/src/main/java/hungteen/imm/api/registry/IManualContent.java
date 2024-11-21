@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 15:26
+ * @create 2023/7/17 15:26
  */
 public interface IManualContent {
 

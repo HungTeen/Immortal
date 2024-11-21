@@ -11,9 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Arrays;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 13:14
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 13:14
  **/
 public class IMMSuggestions {
 

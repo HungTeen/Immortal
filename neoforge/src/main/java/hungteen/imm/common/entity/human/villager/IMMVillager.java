@@ -17,9 +17,9 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 10:50
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 10:50
  **/
 public abstract class IMMVillager extends VillagerLikeEntity {
 

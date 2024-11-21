@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 16:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 16:44
  **/
 public class WoodStakeLayer extends RenderLayer<SharpStake, CubeModel<SharpStake>> {
 

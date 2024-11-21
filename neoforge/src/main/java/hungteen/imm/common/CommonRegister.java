@@ -7,9 +7,9 @@ import hungteen.imm.common.item.IMMItems;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-12 13:18
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-12 13:18
  **/
 public class CommonRegister {
 

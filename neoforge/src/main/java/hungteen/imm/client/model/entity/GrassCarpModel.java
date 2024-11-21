@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:33
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:33
  **/
 public class GrassCarpModel<T extends GrassCarp> extends EntityModel<T> {
 

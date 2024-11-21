@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-03 20:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-03 20:11
  **/
 public class GolemBehavior extends Behavior<GolemEntity> {
 

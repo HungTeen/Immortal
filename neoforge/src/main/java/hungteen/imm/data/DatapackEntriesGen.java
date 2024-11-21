@@ -29,9 +29,9 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-20 15:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-20 15:16
  **/
 public class DatapackEntriesGen extends HTRegistriesDatapackGenerator {
 

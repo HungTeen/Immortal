@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/19 16:27
+ * @create 2023/6/19 16:27
  */
 public abstract class FormationEntity extends HTEntity {
 

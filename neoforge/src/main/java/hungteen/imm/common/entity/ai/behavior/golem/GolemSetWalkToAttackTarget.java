@@ -16,9 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 18:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 18:34
  **/
 public class GolemSetWalkToAttackTarget extends GolemOneShotBehavior {
     public GolemSetWalkToAttackTarget(ItemStack stack) {

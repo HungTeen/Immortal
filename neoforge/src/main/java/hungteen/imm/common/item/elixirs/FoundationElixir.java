@@ -10,9 +10,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 12:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 12:23
  **/
 public class FoundationElixir {
 //        extends ElixirItem{

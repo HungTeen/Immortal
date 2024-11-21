@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-29 12:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-29 12:34
  **/
 public class SmithingRecipeBuilder implements RecipeBuilder {
 

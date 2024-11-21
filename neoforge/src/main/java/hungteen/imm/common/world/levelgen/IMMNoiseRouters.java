@@ -11,9 +11,9 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import java.util.stream.Stream;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 11:00
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 11:00
  **/
 public interface IMMNoiseRouters {
 

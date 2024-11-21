@@ -26,9 +26,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-16 13:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-16 13:16
  **/
 public abstract class ElixirItem extends Item {
 

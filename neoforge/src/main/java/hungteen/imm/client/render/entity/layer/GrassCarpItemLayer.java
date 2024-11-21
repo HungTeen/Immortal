@@ -11,9 +11,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:54
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:54
  **/
 public class GrassCarpItemLayer<T extends GrassCarp> extends RenderLayer<T, GrassCarpModel<T>> {
 

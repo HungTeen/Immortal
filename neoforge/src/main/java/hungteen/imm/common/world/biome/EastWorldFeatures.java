@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/2 9:18
+ * @create 2023/6/2 9:18
  */
 public class EastWorldFeatures {
 

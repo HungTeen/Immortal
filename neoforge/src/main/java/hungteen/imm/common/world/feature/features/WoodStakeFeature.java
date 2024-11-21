@@ -10,9 +10,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-30 21:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-30 21:49
  **/
 public class WoodStakeFeature extends Feature<WoodStakeConfiguration> {
 

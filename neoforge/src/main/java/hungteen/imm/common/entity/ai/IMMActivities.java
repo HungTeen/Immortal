@@ -10,9 +10,9 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-23 22:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-23 22:59
  **/
 public class IMMActivities {
 

@@ -14,9 +14,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-04 16:15
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-04 16:15
  **/
 public class FireballTalismanItem extends DurationTalismanItem{
 

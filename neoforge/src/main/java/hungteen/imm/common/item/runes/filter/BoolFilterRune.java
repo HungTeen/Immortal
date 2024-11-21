@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-26 21:51
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-26 21:51
  **/
 public class BoolFilterRune extends FilterRuneItem<Boolean>{
 

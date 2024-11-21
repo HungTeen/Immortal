@@ -5,9 +5,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-06 22:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-06 22:48
  **/
 public class NBTUtil {
 

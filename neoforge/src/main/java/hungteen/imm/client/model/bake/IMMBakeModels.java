@@ -11,9 +11,9 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-10 19:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-10 19:39
  **/
 public class IMMBakeModels {
 

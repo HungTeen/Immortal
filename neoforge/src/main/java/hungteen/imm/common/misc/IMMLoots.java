@@ -8,9 +8,9 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 17:00
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 17:00
  **/
 public interface IMMLoots {
 

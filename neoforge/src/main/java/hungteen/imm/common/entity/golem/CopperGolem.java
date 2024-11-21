@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.golem;
 
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -11,9 +11,9 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-29 15:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-29 15:19
  **/
 public class CopperGolem extends GolemEntity{
 
@@ -30,8 +30,8 @@ public class CopperGolem extends GolemEntity{
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.METAL);
+    public List<QiRootType> getSpiritualTypes() {
+        return List.of(QiRootTypes.METAL);
     }
 
     @Override

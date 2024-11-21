@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/14 16:10
+ * @create 2023/7/14 16:10
  */
 public interface IScrollableScreen<T> {
 

@@ -33,9 +33,9 @@ import net.neoforged.neoforge.event.EventHooks;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-14 21:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-14 21:34
  **/
 public class SpawnEntityPoolElement extends StructurePoolElement {
 

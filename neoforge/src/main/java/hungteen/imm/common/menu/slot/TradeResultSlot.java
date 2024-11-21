@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/10 11:08
+ * @create 2023/6/10 11:08
  */
 public class TradeResultSlot extends Slot {
 

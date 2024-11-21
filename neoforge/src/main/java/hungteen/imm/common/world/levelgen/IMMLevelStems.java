@@ -18,9 +18,9 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-17 10:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-17 10:55
  **/
 public interface IMMLevelStems {
 

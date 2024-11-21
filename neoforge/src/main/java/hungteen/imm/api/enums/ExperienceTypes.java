@@ -3,7 +3,7 @@ package hungteen.imm.api.enums;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/20 15:48
+ * @create 2023/7/20 15:48
  */
 public enum ExperienceTypes {
 

@@ -11,7 +11,7 @@ import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
 import hungteen.imm.common.item.artifacts.FlameGourd;
@@ -38,7 +38,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/24 15:09
+ * @create 2023/2/24 15:09
  */
 public interface HumanSettings {
 
@@ -249,7 +249,7 @@ public interface HumanSettings {
                 50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
-                                List.of(SpiritualTypes.METAL)
+                                List.of(QiRootTypes.METAL)
                         )
                 ),
                 List.of(
@@ -294,7 +294,7 @@ public interface HumanSettings {
                 50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
-                                List.of(SpiritualTypes.WOOD)
+                                List.of(QiRootTypes.WOOD)
                         )
                 ),
                 List.of(
@@ -341,7 +341,7 @@ public interface HumanSettings {
                 50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
-                                List.of(SpiritualTypes.WATER)
+                                List.of(QiRootTypes.WATER)
                         )
                 ),
                 List.of(
@@ -387,7 +387,7 @@ public interface HumanSettings {
                 50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
-                                List.of(SpiritualTypes.FIRE)
+                                List.of(QiRootTypes.FIRE)
                         )
                 ),
                 List.of(
@@ -436,7 +436,7 @@ public interface HumanSettings {
                 50,
                 Optional.of(new CultivationSetting(
                                 Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
-                                List.of(SpiritualTypes.EARTH)
+                                List.of(QiRootTypes.EARTH)
                         )
                 ),
                 List.of(

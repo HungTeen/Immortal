@@ -11,9 +11,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.InteractionHand;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-30 22:33
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-30 22:33
  **/
 public record EmptyClickPacket(boolean mainHand) implements PlayToServerPacket {
 

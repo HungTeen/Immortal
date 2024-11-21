@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-27 14:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-27 14:59
  **/
 public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
 

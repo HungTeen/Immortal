@@ -20,9 +20,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/24 12:24
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/24 12:24
  **/
 public class WaterSpiritRender extends IMMMobRender<WaterSpirit> {
 

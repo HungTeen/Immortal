@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/19 14:51
+ * @create 2023/8/19 14:51
  */
 public class GuiUtil {
 

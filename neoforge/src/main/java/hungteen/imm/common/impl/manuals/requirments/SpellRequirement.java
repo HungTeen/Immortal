@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 16:28
+ * @create 2023/7/17 16:28
  */
 public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implements ILearnRequirement {
 

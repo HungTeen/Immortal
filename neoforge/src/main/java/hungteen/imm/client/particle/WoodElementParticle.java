@@ -10,9 +10,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 /**
  * Copy from {@link net.minecraft.client.particle.CherryParticle}.
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-17 11:07
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-17 11:07
  **/
 public class WoodElementParticle extends HTMultiTextureParticle {
 

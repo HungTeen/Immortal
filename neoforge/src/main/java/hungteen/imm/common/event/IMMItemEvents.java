@@ -8,7 +8,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/28 17:12
+ * @create 2023/3/28 17:12
  */
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMItemEvents {

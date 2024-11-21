@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/19 15:49
+ * @create 2023/8/19 15:49
  */
 public interface IHasSpell extends IHasMana {
 

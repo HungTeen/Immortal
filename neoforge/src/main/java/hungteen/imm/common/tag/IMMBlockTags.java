@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/2 17:06
+ * @create 2023/6/2 17:06
  */
 public interface IMMBlockTags {
 

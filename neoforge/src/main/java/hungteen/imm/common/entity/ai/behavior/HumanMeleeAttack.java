@@ -14,9 +14,9 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 /**
  * Modify from {@link net.minecraft.world.entity.ai.behavior.MeleeAttack}.
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-07 15:28
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-07 15:28
  **/
 public class HumanMeleeAttack extends Behavior<HumanEntity> {
     private final int cooldown;

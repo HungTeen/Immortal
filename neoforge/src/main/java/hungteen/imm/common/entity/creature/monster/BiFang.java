@@ -7,14 +7,14 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
@@ -63,9 +63,9 @@ import java.util.List;
 /**
  * 毕方鸟。
  *
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/12 18:35
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/12 18:35
  **/
 public class BiFang extends IMMGrowableMob implements Enemy {
 
@@ -160,8 +160,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected Collection<ISpiritualType> createSpiritualRoots(ServerLevelAccessor accessor) {
-        return List.of(SpiritualTypes.FIRE, SpiritualTypes.WOOD);
+    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+        return List.of(QiRootTypes.FIRE, QiRootTypes.WOOD);
     }
 
     @Override

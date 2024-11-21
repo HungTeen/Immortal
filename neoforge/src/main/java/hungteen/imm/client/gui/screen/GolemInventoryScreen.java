@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 12:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 12:34
  **/
 public class GolemInventoryScreen extends HTContainerScreen<GolemInventoryMenu> {
 

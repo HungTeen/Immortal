@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-12 13:09
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-12 13:09
  **/
 public interface IMMPlacements {
 

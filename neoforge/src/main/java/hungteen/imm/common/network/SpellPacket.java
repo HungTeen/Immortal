@@ -16,9 +16,9 @@ import net.minecraft.util.StringRepresentable;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-29 22:46
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-29 22:46
  **/
 public record SpellPacket(Optional<ISpellType> spell, SpellOption option, long num) implements PlayToClientPacket {
 

@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-08 23:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-08 23:16
  **/
 public record HumanSetting(EntityType<?> type, int weight, Optional<CultivationSetting> cultivationSetting, List<LootSetting> lootSettings, Optional<TradeSetting> tradeSetting) implements WeightedEntry {
     public static final Codec<HumanSetting> CODEC = RecordCodecBuilder.<HumanSetting>mapCodec(instance -> instance.group(

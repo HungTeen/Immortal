@@ -7,9 +7,9 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:19
  **/
 public class CultivatorModel<T extends Cultivator> extends PlayerModel<T> {
 

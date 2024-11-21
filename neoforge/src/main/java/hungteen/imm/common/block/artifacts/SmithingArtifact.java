@@ -1,9 +1,9 @@
 package hungteen.imm.common.block.artifacts;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 19:22
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 19:22
  **/
 public class SmithingArtifact {
 //        extends ArtifactEntityBlock {

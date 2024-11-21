@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.DamageType;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/22 11:07
+ * @create 2023/8/22 11:07
  */
 public interface IMMDamageTypeTags {
 

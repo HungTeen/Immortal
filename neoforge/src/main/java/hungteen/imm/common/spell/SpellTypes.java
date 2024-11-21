@@ -26,9 +26,9 @@ import hungteen.imm.common.spell.spells.wood.WoodHealingSpell;
 import hungteen.imm.util.Util;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-29 14:26
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-29 14:26
  **/
 public interface SpellTypes {
 

@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-26 10:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-26 10:45
  **/
 public class SpiritualPlainsVillage {
 

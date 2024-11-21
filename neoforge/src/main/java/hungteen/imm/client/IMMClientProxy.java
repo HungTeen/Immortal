@@ -17,9 +17,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-16 21:18
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-16 21:18
  **/
 public class IMMClientProxy extends IMMProxy {
 

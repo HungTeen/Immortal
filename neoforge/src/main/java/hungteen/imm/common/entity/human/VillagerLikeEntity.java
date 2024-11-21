@@ -7,9 +7,9 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-16 22:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-16 22:49
  **/
 public abstract class VillagerLikeEntity extends HumanEntity {
 

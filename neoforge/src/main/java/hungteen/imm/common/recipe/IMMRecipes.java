@@ -13,9 +13,9 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-28 22:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-28 22:19
  **/
 public class IMMRecipes {
 

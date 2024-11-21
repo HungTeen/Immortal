@@ -25,9 +25,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 22:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 22:59
  **/
 public class RuneCraftingMenu extends RuneBaseMenu {
 

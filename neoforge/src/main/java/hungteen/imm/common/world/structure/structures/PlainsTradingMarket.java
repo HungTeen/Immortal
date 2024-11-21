@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-24 22:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-24 22:43
  **/
 public class PlainsTradingMarket {
 

@@ -20,9 +20,9 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-28 18:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-28 18:17
  **/
 public class ElixirRoomScreen extends FunctionalFurnaceScreen<ElixirRoomMenu> implements IScrollableScreen<ElixirRecipe> {
 

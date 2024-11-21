@@ -12,9 +12,9 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 11:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 11:19
  **/
 public class GolemInventoryMenu extends HTContainerMenu {
 

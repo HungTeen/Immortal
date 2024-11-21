@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.resources.model.ModelManager;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-23 11:10
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-23 11:10
  **/
 public class CultivatorArmorLayer<T extends Cultivator, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
 

@@ -11,9 +11,9 @@ import net.minecraft.world.entity.EntityType;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:13
  **/
 public class EntityTagGen extends HTHolderTagsProvider<EntityType<?>> {
 

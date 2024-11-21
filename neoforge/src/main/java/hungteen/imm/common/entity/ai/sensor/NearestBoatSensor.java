@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-24 22:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-24 22:13
  **/
 public class NearestBoatSensor<T extends Mob> extends Sensor<T> {
 

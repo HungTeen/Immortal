@@ -7,9 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-18 22:55
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-18 22:55
  **/
 public class BorderFormation extends Formation{
 

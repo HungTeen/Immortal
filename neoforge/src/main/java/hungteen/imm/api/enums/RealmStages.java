@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/24 9:51
+ * @create 2023/2/24 9:51
  */
 public enum RealmStages implements StringRepresentable {
 

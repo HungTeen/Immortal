@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/11/1 18:10
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/11/1 18:10
  **/
 public class TornadoModel<T extends Tornado> extends EntityModel<T> {
 

@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-06 12:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-06 12:30
  **/
 public class RawArtifactItemRender extends BlockEntityWithoutLevelRenderer {
 

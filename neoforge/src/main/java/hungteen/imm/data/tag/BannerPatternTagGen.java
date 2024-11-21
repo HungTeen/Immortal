@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/8 20:15
+ * @create 2023/3/8 20:15
  */
 public class BannerPatternTagGen extends HTTagsProvider<BannerPattern> {
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 19:42
+ * @create 2023/3/6 19:42
  */
 public class HTHitResult {
 

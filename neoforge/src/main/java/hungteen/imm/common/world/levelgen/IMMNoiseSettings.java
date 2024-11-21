@@ -11,9 +11,9 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-12 19:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-12 19:38
  **/
 public interface IMMNoiseSettings {
 

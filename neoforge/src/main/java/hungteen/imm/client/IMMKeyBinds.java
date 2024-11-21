@@ -6,9 +6,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 21:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 21:42
  **/
 public class IMMKeyBinds {
 

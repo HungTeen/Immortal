@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 17:02
+ * @create 2023/3/6 17:02
  */
 public class StealItemSpell extends SpellType {
 

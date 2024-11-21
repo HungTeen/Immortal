@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-30 21:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-30 21:49
  **/
 public class HorizontalStakeFeature extends Feature<HorizontalStakeConfiguration> {
 

@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-20 10:20
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-20 10:20
  **/
 public interface IMMTemplatePools {
     

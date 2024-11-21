@@ -1,10 +1,10 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.misc.PoisonWind;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -23,9 +23,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/27 12:48
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/27 12:48
  **/
 public class WoodSpirit extends ElementSpirit implements RangedAttackMob {
 
@@ -97,8 +97,8 @@ public class WoodSpirit extends ElementSpirit implements RangedAttackMob {
     }
 
     @Override
-    public ISpiritualType getSpiritualRoot() {
-        return SpiritualTypes.WOOD;
+    public QiRootType getSpiritualRoot() {
+        return QiRootTypes.WOOD;
     }
 
     @Override

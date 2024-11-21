@@ -20,9 +20,9 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-18 21:47
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-18 21:47
  **/
 public class RuneGateScreen extends RuneBaseScreen<RuneGateMenu> {
 

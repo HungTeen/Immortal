@@ -27,9 +27,9 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.Arrays;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 18:32
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 18:32
  **/
 public class ItemModelGen extends HTItemModelGen {
 

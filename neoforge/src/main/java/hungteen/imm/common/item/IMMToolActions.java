@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 22:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 22:52
  **/
 public class IMMToolActions {
 

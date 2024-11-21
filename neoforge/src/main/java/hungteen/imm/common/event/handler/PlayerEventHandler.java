@@ -14,9 +14,9 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-25 15:54
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-25 15:54
  **/
 public class PlayerEventHandler {
 

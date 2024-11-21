@@ -8,9 +8,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 12:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 12:14
  **/
 public abstract class ImmortalMenuProvider implements MenuProvider {
 

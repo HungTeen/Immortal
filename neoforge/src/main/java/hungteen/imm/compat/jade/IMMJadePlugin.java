@@ -3,7 +3,7 @@ package hungteen.imm.compat.jade;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/18 15:29
+ * @create 2023/8/18 15:29
  */
 //@WailaPlugin
 public class IMMJadePlugin {

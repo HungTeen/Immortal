@@ -8,7 +8,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/28 9:37
+ * @create 2023/7/28 9:37
  */
 public interface IMMStructureTags {
 

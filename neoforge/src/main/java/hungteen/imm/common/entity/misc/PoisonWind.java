@@ -21,9 +21,9 @@ import net.minecraft.world.phys.HitResult;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/27 19:14
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/27 19:14
  **/
 public class PoisonWind extends ThrowableProjectile {
 

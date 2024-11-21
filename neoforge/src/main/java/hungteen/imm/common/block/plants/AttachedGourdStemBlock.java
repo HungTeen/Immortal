@@ -11,9 +11,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 10:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 10:52
  **/
 public class AttachedGourdStemBlock extends HTAttachedStemBlock {
 

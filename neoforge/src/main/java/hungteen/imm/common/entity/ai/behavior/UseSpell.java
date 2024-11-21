@@ -19,9 +19,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/14 21:39
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/14 21:39
  **/
 public class UseSpell {
 

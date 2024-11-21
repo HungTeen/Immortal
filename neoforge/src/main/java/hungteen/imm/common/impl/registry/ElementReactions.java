@@ -38,9 +38,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-01 19:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-01 19:49
  **/
 public class ElementReactions {
 

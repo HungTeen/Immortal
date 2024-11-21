@@ -15,9 +15,9 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:11
  **/
 public class DataGenHandler {
 

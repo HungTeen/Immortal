@@ -6,9 +6,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-02 16:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-02 16:43
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID, value = Dist.CLIENT)
 public class RenderEvents {

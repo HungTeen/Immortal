@@ -12,9 +12,9 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-25 12:35
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-25 12:35
  **/
 public class GolemMeleeAttack extends GolemOneShotBehavior {
 

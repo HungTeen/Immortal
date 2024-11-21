@@ -3,7 +3,7 @@ package hungteen.imm.client.gui.overlay;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/27 15:42
+ * @create 2023/7/27 15:42
  */
 public class MeditationOverlay {
 //        implements IGuiOverlay {

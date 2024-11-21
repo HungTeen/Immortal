@@ -7,9 +7,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-23 22:24
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-23 22:24
  **/
 public class ReactionPacket implements PlayToClientPacket {
 

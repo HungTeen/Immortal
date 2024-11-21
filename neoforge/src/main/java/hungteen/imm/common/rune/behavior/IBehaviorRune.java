@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-02 21:07
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-02 21:07
  **/
 public interface IBehaviorRune extends SimpleEntry, ICraftableRune {
 

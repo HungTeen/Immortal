@@ -7,9 +7,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-13 21:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-13 21:34
  **/
 public class FloatDataPacket implements PlayToClientPacket {
 

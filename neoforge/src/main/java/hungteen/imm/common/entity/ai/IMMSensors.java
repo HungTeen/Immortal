@@ -17,9 +17,9 @@ import net.neoforged.bus.api.IEventBus;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-24 22:10
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-24 22:10
  **/
 public class IMMSensors {
 

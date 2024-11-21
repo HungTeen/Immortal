@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/14 14:32
+ * @create 2023/7/14 14:32
  */
 public interface IMMTreePlacements {
 

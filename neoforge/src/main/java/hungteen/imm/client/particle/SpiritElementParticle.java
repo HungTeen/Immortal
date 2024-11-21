@@ -13,7 +13,7 @@ import net.minecraft.util.RandomSource;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/19 16:10
+ * @create 2023/6/19 16:10
  */
 public class SpiritElementParticle extends HTTextureParticle {
 

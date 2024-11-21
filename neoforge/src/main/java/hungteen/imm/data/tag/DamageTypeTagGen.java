@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/22 11:11
+ * @create 2023/8/22 11:11
  */
 public class DamageTypeTagGen extends DamageTypeTagsProvider {
 

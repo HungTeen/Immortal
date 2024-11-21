@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/14 18:19
+ * @create 2023/3/14 18:19
  */
 public class IMMBlockPatterns {
 

@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-29 12:26
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-29 12:26
  **/
 public class RecipeGen extends RecipeProvider {
 

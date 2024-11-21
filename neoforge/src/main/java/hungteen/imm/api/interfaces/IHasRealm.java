@@ -7,9 +7,9 @@ import hungteen.imm.api.registry.IRealmType;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 12:57
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 12:57
  **/
 public interface IHasRealm {
 

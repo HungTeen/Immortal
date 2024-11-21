@@ -15,9 +15,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-13 22:09
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-13 22:09
  **/
 public class GanodermaBlock extends SpiritualPlantBlock {
 

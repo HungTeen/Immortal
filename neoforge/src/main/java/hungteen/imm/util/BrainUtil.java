@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/1 19:38
+ * @create 2023/3/1 19:38
  */
 public class BrainUtil {
 

@@ -1,10 +1,11 @@
 package hungteen.imm.common.capability;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 14:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 14:59
  **/
+@Deprecated
 public class CapabilityHandler {
 
 //    public static Capability<PlayerCapability> PLAYER_CAP = CapabilityManager.get(new CapabilityToken<>() {});

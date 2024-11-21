@@ -14,7 +14,7 @@ import net.minecraft.world.phys.AABB;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/18 16:56
+ * @create 2023/8/18 16:56
  */
 public class IntimidationSpell extends SpellType {
 

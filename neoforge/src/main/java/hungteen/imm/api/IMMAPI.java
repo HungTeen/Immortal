@@ -1,11 +1,11 @@
 package hungteen.imm.api;
 
 import com.mojang.logging.LogUtils;
-import hungteen.htlib.api.registry.HTSimpleRegistry;
+import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.api.util.helper.ServiceHelper;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -17,9 +17,9 @@ import org.slf4j.Logger;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 22:26
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 22:26
  **/
 public interface IMMAPI {
 
@@ -61,7 +61,7 @@ public interface IMMAPI {
      *
      * @return Registry interface.
      */
-    default Optional<HTSimpleRegistry<ISpiritualType>> spiritualRegistry(){
+    default Optional<HTCustomRegistry<QiRootType>> qiRootRegistry(){
         return Optional.empty();
     }
 
@@ -71,7 +71,7 @@ public interface IMMAPI {
      *
      * @return Registry interface.
      */
-    default Optional<HTSimpleRegistry<IRealmType>> realmRegistry(){
+    default Optional<HTCustomRegistry<IRealmType>> realmRegistry(){
         return Optional.empty();
     }
 
@@ -81,7 +81,7 @@ public interface IMMAPI {
      *
      * @return Registry interface.
      */
-    default Optional<HTSimpleRegistry<ISpellType>> spellRegistry(){
+    default Optional<HTCustomRegistry<ISpellType>> spellRegistry(){
         return Optional.empty();
     }
 

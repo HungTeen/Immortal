@@ -24,7 +24,7 @@ import java.util.OptionalInt;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/14 14:31
+ * @create 2023/7/14 14:31
  */
 public interface IMMTreeFeatures {
 

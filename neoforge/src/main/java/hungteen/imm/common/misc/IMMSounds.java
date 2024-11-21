@@ -10,9 +10,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/14 19:08
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/14 19:08
  **/
 public interface IMMSounds {
 

@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 12:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 12:42
  **/
 public class IronGolemModel<T extends IronGolem> extends AnimatedEntityModel<T> {
     private final ModelPart root;

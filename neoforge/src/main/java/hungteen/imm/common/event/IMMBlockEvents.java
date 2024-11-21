@@ -14,7 +14,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/14 17:17
+ * @create 2023/3/14 17:17
  */
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMBlockEvents {

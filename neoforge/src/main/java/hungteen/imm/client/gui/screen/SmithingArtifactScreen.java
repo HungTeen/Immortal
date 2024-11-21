@@ -1,9 +1,9 @@
 package hungteen.imm.client.gui.screen;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 22:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 22:45
  **/
 public class SmithingArtifactScreen {
 //        extends HTContainerScreen<SmithingArtifactMenu> {

@@ -6,9 +6,9 @@ import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/13 20:15
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/13 20:15
  **/
 public class VillagerAnimations {
 

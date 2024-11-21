@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/7 20:20
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/7 20:20
  **/
 public class CriticalHitSpell extends SpellType {
 

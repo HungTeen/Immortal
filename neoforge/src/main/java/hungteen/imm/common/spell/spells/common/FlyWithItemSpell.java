@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 20:14
+ * @create 2023/3/6 20:14
  */
 public class FlyWithItemSpell extends SpellType {
 

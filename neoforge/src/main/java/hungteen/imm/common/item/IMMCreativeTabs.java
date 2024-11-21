@@ -33,9 +33,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-03 22:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-03 22:45
  **/
 public interface IMMCreativeTabs {
 

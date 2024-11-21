@@ -8,9 +8,9 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 22:31
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 22:31
  **/
 public class ShortSwordItem extends MeleeAttackItem {
 

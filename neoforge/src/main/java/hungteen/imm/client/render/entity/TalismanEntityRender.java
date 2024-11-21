@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-04 16:01
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-04 16:01
  **/
 public class TalismanEntityRender<T extends TalismanEntity> extends EntityRenderer<T> {
 

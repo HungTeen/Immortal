@@ -6,12 +6,12 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.goal.LookAtTargetGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.util.MathUtil;
@@ -55,7 +55,7 @@ import java.util.function.Supplier;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/6 14:19
+ * @create 2023/7/6 14:19
  */
 public class SharpStake extends IMMMob implements Enemy {
 
@@ -201,8 +201,8 @@ public class SharpStake extends IMMMob implements Enemy {
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.METAL);
+    public List<QiRootType> getSpiritualTypes() {
+        return List.of(QiRootTypes.METAL);
     }
 
     @Override

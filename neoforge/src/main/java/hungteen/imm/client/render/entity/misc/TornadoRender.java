@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/11/1 18:30
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/11/1 18:30
  **/
 public class TornadoRender extends HTEntityRender<Tornado> {
 

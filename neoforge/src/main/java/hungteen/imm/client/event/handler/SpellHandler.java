@@ -21,9 +21,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-27 11:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-27 11:16
  **/
 public class SpellHandler {
 

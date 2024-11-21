@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/6 15:14
+ * @create 2023/7/6 15:14
  */
 public class SharpStakeRender extends MobRenderer<SharpStake, CubeModel<SharpStake>> {
 

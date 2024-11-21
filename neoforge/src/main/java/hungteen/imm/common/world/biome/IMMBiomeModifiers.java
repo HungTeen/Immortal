@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/2 14:23
+ * @create 2023/6/2 14:23
  */
 public interface IMMBiomeModifiers {
 

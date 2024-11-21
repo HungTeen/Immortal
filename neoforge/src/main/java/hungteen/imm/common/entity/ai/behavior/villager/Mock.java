@@ -7,9 +7,9 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 22:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 22:52
  **/
 public class Mock extends Behavior<VillagerLikeEntity> {
 

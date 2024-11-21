@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import org.joml.Matrix4f;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-27 21:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-27 21:14
  **/
 public class ClientElementToolTip implements ClientTooltipComponent {
 

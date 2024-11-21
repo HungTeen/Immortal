@@ -14,9 +14,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-27 14:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-27 14:48
  **/
 public class SpiritualFurnaceScreen extends HTContainerScreen<SpiritualFurnaceMenu> {
 

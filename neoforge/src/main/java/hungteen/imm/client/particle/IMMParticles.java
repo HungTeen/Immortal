@@ -17,9 +17,9 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
  * Step 1. make your own particle class. <br>
  * Step 2. initialize particle type here. <br>
  * Step 3. bind your particle factory at {@link ClientRegister#registerFactories(RegisterParticleProvidersEvent)}
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 21:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 21:56
  **/
 public class IMMParticles {
 

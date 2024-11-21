@@ -18,9 +18,9 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-17 22:46
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-17 22:46
  **/
 public class RuneBaseScreen<T extends RuneBaseMenu> extends HTContainerScreen<T> {
 

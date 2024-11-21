@@ -18,9 +18,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/20 22:58
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/20 22:58
  **/
 public class SpiritualFlameAltar {
 

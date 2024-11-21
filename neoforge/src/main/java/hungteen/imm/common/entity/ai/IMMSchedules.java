@@ -12,9 +12,9 @@ import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 19:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 19:48
  **/
 public class IMMSchedules {
 

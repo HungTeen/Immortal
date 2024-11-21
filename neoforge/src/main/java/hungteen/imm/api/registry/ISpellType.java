@@ -10,9 +10,9 @@ import net.minecraft.world.level.ClipContext;
 
 /**
  * 法术。
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-29 12:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-29 12:30
  **/
 public interface ISpellType extends SimpleEntry {
 

@@ -3,9 +3,9 @@ package hungteen.imm.common.command;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-25 16:37
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-25 16:37
  **/
 public class CommandHandler {
 

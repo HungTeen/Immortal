@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-06 16:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-06 16:45
  **/
 public enum CultivatorTypes implements WeightedEntry {
 

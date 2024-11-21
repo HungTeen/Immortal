@@ -14,9 +14,9 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:21
  **/
 public class CultivatorRender extends LivingEntityRenderer<Cultivator, CultivatorModel<Cultivator>> {
 

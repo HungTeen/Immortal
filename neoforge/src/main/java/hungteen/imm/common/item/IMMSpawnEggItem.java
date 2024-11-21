@@ -8,9 +8,9 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/29 14:31
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/29 14:31
  **/
 public class IMMSpawnEggItem extends DeferredSpawnEggItem {
 

@@ -12,9 +12,9 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-12 21:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-12 21:11
  **/
 public class MeleeKeepDistance extends Behavior<HumanEntity> {
     private final float strafeSpeed;

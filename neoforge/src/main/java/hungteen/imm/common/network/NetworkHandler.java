@@ -7,9 +7,9 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-29 22:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-29 22:14
  **/
 @EventBusSubscriber(modid = IMMAPI.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NetworkHandler {

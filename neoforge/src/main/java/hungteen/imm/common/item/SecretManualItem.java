@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-18 19:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-18 19:11
  **/
 public class SecretManualItem extends Item {
 

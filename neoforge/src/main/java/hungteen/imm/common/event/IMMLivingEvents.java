@@ -20,9 +20,9 @@ import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-25 16:32
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-25 16:32
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMLivingEvents {

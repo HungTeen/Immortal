@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-23 21:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-23 21:56
  **/
 public class SnowGolemModel<T extends SnowGolem> extends HierarchicalModel<T> {
     private static final String UPPER_BODY = "upper_body";

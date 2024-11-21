@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/19 16:38
+ * @create 2023/6/19 16:38
  */
 public class TeleportFormation extends FormationEntity {
 

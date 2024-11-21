@@ -1,9 +1,9 @@
 package hungteen.imm.client;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-10 11:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-10 11:12
  **/
 public class ClientData {
 

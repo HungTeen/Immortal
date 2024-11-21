@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/3 16:20
+ * @create 2023/6/3 16:20
  */
 public abstract class ThrowableTalismanItem extends TalismanItem {
 

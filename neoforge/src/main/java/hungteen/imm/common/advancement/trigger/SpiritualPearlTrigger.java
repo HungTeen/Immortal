@@ -1,9 +1,9 @@
 package hungteen.imm.common.advancement.trigger;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-24 13:53
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-24 13:53
  **/
 public class SpiritualPearlTrigger {
 //        extends SimpleCriterionTrigger<SpiritualPearlTrigger.TriggerInstance> {

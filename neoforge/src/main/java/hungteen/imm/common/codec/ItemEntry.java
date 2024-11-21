@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-08 23:18
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-08 23:18
  **/
 public record ItemEntry(ItemStack itemStack, IntProvider count, IntProvider enchantPoint) {
     public static final Codec<ItemEntry> CODEC = RecordCodecBuilder.<ItemEntry>mapCodec(instance -> instance.group(

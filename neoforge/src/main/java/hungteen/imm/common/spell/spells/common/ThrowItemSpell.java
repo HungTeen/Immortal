@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/17 16:48
+ * @create 2023/8/17 16:48
  */
 public class ThrowItemSpell extends SpellType {
 

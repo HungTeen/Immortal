@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/18 14:56
+ * @create 2023/7/18 14:56
  */
 public interface ElixirEffects {
 

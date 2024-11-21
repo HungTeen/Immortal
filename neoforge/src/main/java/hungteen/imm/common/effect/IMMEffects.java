@@ -14,9 +14,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 14:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 14:39
  **/
 public class IMMEffects {
 

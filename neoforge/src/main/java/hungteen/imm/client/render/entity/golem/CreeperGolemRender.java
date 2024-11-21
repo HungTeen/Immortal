@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-25 23:24
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-25 23:24
  **/
 public class CreeperGolemRender extends IMMMobRender<CreeperGolem> {
 

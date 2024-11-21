@@ -24,9 +24,9 @@ import java.util.function.Consumer;
 /**
  * Look at {@link net.minecraft.data.worldgen.biome.OverworldBiomes}.
  *
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-18 14:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-18 14:11
  **/
 public class EastWorldBiomes {
 

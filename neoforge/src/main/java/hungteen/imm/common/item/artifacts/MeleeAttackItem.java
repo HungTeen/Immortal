@@ -23,9 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 22:37
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 22:37
  **/
 public abstract class MeleeAttackItem extends ArtifactItem {
 

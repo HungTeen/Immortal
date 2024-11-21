@@ -3,7 +3,7 @@ package hungteen.imm.common.advancement;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/25 10:49
+ * @create 2023/2/25 10:49
  */
 public class AdvancementHandler {
 

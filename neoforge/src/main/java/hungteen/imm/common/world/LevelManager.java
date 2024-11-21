@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-15 19:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-15 19:13
  **/
 public class LevelManager {
 

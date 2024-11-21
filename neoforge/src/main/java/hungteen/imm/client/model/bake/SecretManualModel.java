@@ -27,7 +27,7 @@ import java.util.function.Function;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/28 14:50
+ * @create 2023/7/28 14:50
  */
 public class SecretManualModel implements BakedModel {
     private final BakedModel originalModel;

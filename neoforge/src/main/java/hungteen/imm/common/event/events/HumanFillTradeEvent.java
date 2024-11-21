@@ -7,7 +7,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/28 9:22
+ * @create 2023/7/28 9:22
  */
 public class HumanFillTradeEvent extends LivingEvent {
 

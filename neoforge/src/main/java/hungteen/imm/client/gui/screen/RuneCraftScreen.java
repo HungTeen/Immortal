@@ -20,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-10 21:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-10 21:45
  **/
 public class RuneCraftScreen extends RuneBaseScreen<RuneCraftingMenu> {
 

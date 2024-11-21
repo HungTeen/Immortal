@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/18 14:15
+ * @create 2023/3/18 14:15
  */
 public class MerchantTradeScreen extends HTContainerScreen<MerchantTradeMenu> {
 

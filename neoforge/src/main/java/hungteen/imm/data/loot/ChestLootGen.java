@@ -16,9 +16,9 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.function.BiConsumer;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 16:54
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 16:54
  **/
 public class ChestLootGen implements LootTableSubProvider {
 

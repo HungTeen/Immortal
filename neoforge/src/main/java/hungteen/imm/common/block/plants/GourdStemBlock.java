@@ -29,9 +29,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 22:31
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 22:31
  **/
 public class GourdStemBlock extends HTStemBlock {
 

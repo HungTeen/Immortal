@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/28 20:17
+ * @create 2023/3/28 20:17
  */
 public interface IMMStructureSets {
 

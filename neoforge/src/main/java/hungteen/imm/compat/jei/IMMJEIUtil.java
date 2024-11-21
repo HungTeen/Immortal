@@ -4,9 +4,9 @@ import hungteen.htlib.util.helper.impl.VanillaHelper;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/3 15:46
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/3 15:46
  **/
 public class IMMJEIUtil {
 

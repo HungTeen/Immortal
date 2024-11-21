@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/8 20:45
+ * @create 2023/3/8 20:45
  */
 public interface IMMBannerPatternTags {
 

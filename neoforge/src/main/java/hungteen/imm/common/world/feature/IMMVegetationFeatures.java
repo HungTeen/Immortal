@@ -27,9 +27,9 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-29 22:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-29 22:36
  **/
 public interface IMMVegetationFeatures {
 

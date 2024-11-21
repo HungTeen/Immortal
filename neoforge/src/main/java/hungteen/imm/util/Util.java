@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 15:00
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 15:00
  **/
 public class Util {
 

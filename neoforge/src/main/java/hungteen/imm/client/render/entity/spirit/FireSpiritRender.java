@@ -24,9 +24,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 25.10.2023 12:46
+ * @program Immortal
+ * @author PangTeen
+ * @create 25.10.2023 12:46
  **/
 public class FireSpiritRender extends IMMMobRender<FireSpirit> {
 

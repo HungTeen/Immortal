@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-28 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-28 22:21
  **/
 public class ElixirRecipe implements Recipe<CraftingInput> {
 

@@ -6,9 +6,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-04 22:10
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-04 22:10
  **/
 public class MathUtil {
 

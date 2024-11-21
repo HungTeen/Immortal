@@ -19,9 +19,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/29 9:14
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/29 9:14
  **/
 public class SpiritLab {
 

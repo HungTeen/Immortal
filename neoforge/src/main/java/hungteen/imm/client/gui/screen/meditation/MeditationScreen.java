@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/21 16:56
+ * @create 2023/7/21 16:56
  */
 public abstract class MeditationScreen extends HTScreen {
 

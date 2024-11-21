@@ -11,9 +11,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 23:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 23:23
  **/
 public class SmithingArtifactRecipe extends ArtifactRecipe{
 

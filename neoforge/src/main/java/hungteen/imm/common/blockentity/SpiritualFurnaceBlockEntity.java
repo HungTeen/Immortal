@@ -31,9 +31,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 09:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 09:30
  **/
 public class SpiritualFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
 

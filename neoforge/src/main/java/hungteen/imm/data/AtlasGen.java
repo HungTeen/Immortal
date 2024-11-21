@@ -10,9 +10,9 @@ import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-29 23:22
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-29 23:22
  **/
 public class AtlasGen extends SpriteSourceProvider {
 

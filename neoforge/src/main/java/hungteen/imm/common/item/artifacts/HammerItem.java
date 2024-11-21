@@ -18,9 +18,9 @@ import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 22:31
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 22:31
  **/
 public class HammerItem extends MeleeAttackItem {
 

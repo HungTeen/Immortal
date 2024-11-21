@@ -19,9 +19,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 21:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 21:34
  **/
 public class RestingScreen extends MeditationScreen {
 

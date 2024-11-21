@@ -1,21 +1,17 @@
 package hungteen.imm.common.menu.tooltip;
 
-import com.mojang.datafixers.util.Pair;
-import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-27 21:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-27 21:17
  **/
 public class ManualToolTip implements TooltipComponent {
 

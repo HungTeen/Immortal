@@ -7,7 +7,7 @@ import net.minecraft.world.phys.Vec3;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/8 15:14
+ * @create 2023/7/8 15:14
  */
 public class RandomUtil {
 

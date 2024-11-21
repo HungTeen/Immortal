@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 25.10.2023 22:50
+ * @program Immortal
+ * @author PangTeen
+ * @create 25.10.2023 22:50
  **/
 public class MetalSpiritModel<T extends MetalSpirit> extends AnimatedEntityModel<T> {
 

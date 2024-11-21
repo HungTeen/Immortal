@@ -11,9 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 17:01
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 17:01
  **/
 public class IMMBlockEntities {
 

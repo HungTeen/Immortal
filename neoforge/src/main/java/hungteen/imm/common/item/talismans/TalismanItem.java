@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/3 15:58
+ * @create 2023/6/3 15:58
  */
 public abstract class TalismanItem extends Item implements IArtifactItem {
 

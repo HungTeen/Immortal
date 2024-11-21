@@ -8,9 +8,9 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-05 15:08
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-05 15:08
  **/
 public class GolemLookAtTarget extends GolemBehavior{
 

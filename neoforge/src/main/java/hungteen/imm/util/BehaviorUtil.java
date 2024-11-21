@@ -9,9 +9,9 @@ import net.minecraft.world.entity.schedule.Activity;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-24 22:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-24 22:44
  **/
 public class BehaviorUtil {
 

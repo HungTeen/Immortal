@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/5/31 16:28
+ * @create 2023/5/31 16:28
  */
 public class RiceBlock extends IMMCropBlock implements SimpleWaterloggedBlock {
 

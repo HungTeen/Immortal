@@ -7,9 +7,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-30 21:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-30 21:49
  **/
 public record WoodStakeConfiguration(IntProvider height, BlockStateProvider logState) implements FeatureConfiguration {
 

@@ -24,9 +24,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 /**
  * Similar to {@link net.minecraft.world.item.EnderEyeItem}.
  *
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-02-25 23:08
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-02-25 23:08
  **/
 public class SpiritualPearlItem extends ArtifactItem {
 

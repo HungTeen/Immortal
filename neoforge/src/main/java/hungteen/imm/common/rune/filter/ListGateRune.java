@@ -10,9 +10,9 @@ import net.minecraft.world.item.Item;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-18 22:48
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-18 22:48
  **/
 public abstract class ListGateRune implements IFilterRune {
 

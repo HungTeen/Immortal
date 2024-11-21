@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/17 16:52
+ * @create 2023/8/17 16:52
  */
 public class ThrowingItemEntity extends ThrowableItemProjectile {
 

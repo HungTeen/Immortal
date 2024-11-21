@@ -5,9 +5,9 @@ import hungteen.htlib.api.registry.SimpleEntry;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-16 23:35
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-16 23:35
  **/
 public interface ISpellBook extends SimpleEntry {
 

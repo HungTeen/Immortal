@@ -7,9 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-04 19:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-04 19:38
  **/
 public class DefendFormation extends Formation{
     public DefendFormation(DummyEntityType<?> entityType, ServerLevel level, Vec3 position) {

@@ -2,10 +2,10 @@ package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -19,9 +19,9 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 25.10.2023 22:39
+ * @program Immortal
+ * @author PangTeen
+ * @create 25.10.2023 22:39
  **/
 public class MetalSpirit extends ElementSpirit{
 
@@ -115,8 +115,8 @@ public class MetalSpirit extends ElementSpirit{
     }
 
     @Override
-    public ISpiritualType getSpiritualRoot() {
-        return SpiritualTypes.METAL;
+    public QiRootType getSpiritualRoot() {
+        return QiRootTypes.METAL;
     }
 
     @Override

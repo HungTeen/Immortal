@@ -11,9 +11,9 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-26 18:03
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-26 18:03
  **/
 public interface IMMAttributes {
 

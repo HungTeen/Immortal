@@ -42,9 +42,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-02 14:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-02 14:59
  **/
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientRegister {

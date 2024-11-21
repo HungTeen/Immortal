@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/24 15:09
+ * @create 2023/2/24 15:09
  */
 public interface SecretManuals {
 

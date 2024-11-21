@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-23 21:58
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-23 21:58
  **/
 public class SnowGolemRender extends IMMMobRender<SnowGolem> {
 

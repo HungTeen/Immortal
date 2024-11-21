@@ -8,9 +8,9 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/29 13:19
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/29 13:19
  **/
 public class MetalExplosionParticle extends HTMultiTextureParticle {
 

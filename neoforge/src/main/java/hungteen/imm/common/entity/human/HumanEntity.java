@@ -9,7 +9,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
@@ -21,7 +21,6 @@ import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -75,9 +74,9 @@ import java.util.function.Predicate;
 /**
  * 村民、刁民、玩家都算人类。
  *
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 18:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 18:23
  **/
 public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
@@ -127,7 +126,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     }
 
     @Override
-    protected Collection<ISpiritualType> createSpiritualRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
         return PlayerUtil.getSpiritualRoots(accessor.getRandom());
     }
 

@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-31 16:50
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-31 16:50
  **/
 public class HTButton extends Button {
 

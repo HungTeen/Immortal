@@ -13,7 +13,7 @@ import net.neoforged.bus.api.IEventBus;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/15 15:08
+ * @create 2023/6/15 15:08
  */
 public class IMMStructureTypes {
 

@@ -14,9 +14,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Chicken;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/13 20:25
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/13 20:25
  **/
 public class BiFangRender extends IMMMobRender<BiFang> {
 

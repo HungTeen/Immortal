@@ -14,9 +14,9 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import javax.annotation.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-28 18:51
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-28 18:51
  **/
 public class SharpnessSpell extends SpellType {
 

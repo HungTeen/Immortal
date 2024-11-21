@@ -9,9 +9,9 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 15:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 15:41
  **/
 public class GolemWalkToLookTarget extends GolemOneShotBehavior{
 

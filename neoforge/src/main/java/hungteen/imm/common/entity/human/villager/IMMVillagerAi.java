@@ -25,9 +25,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-05-25 22:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-05-25 22:13
  **/
 public class IMMVillagerAi {
 

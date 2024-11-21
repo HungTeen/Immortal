@@ -7,9 +7,9 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-25 23:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-25 23:23
  **/
 public class CreeperGolemModel extends CreeperModel<CreeperGolem> {
     public CreeperGolemModel(ModelPart part) {

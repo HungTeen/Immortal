@@ -10,9 +10,9 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-04 16:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-04 16:16
  **/
 public abstract class DurationTalismanItem extends TalismanItem {
 

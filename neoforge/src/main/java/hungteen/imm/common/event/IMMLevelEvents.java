@@ -9,7 +9,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/1 15:46
+ * @create 2023/7/1 15:46
  */
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMLevelEvents {

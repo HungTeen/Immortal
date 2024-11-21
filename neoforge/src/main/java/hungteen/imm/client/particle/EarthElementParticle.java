@@ -9,9 +9,9 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 08:25
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 08:25
  **/
 public class EarthElementParticle extends HTMultiTextureParticle {
 

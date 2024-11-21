@@ -38,9 +38,9 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-24 09:58
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-24 09:58
  **/
 public abstract class GolemEntity extends IMMMob implements ContainerListener {
 

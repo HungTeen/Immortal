@@ -1,9 +1,9 @@
 package hungteen.imm.common.item.elixirs;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 11:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 11:12
  **/
 public class AbstinenceElixir {
 //        extends ElixirItem{

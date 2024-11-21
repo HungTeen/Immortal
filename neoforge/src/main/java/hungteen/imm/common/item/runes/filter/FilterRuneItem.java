@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-04 21:54
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-04 21:54
  **/
 public abstract class FilterRuneItem<T> extends RuneItem {
 

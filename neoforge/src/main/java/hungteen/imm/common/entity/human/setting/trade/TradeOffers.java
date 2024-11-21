@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/9 14:42
+ * @create 2023/6/9 14:42
  */
 public class TradeOffers extends ArrayList<TradeOffer> {
 

@@ -11,9 +11,9 @@ import net.minecraft.world.item.Item;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-19 23:28
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-19 23:28
  **/
 public record NotGateRune(Item item, IFilterRune filter) implements IFilterRune{
 

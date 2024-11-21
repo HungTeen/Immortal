@@ -17,9 +17,9 @@ import net.minecraft.world.level.GameRules;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-24 22:27
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-24 22:27
  **/
 public class BreakBoat extends Behavior<LivingEntity> {
 

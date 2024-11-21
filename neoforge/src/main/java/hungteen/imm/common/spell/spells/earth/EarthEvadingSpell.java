@@ -16,9 +16,9 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * 钻入脚下的洞里（不可绕过无法破坏的方块，比如基岩）
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-28 21:11
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-28 21:11
  **/
 @Deprecated
 public class EarthEvadingSpell extends SpellType {

@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-08 09:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-08 09:42
  **/
 public abstract class ArtifactItem extends Item implements IArtifactItem {
 

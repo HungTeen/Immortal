@@ -3,7 +3,7 @@ package hungteen.imm.compat.jade;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/18 15:31
+ * @create 2023/8/18 15:31
  */
 public class IMMEntityProvider {
 //    implements

@@ -18,9 +18,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-12 12:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-12 12:38
  **/
 public interface IMMFeatures {
 

@@ -2,11 +2,11 @@ package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -31,9 +31,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 25.10.2023 12:16
+ * @program Immortal
+ * @author PangTeen
+ * @create 25.10.2023 12:16
  **/
 public class FireSpirit extends ElementSpirit{
 
@@ -173,8 +173,8 @@ public class FireSpirit extends ElementSpirit{
     }
 
     @Override
-    public ISpiritualType getSpiritualRoot() {
-        return SpiritualTypes.FIRE;
+    public QiRootType getSpiritualRoot() {
+        return QiRootTypes.FIRE;
     }
 
     @Override

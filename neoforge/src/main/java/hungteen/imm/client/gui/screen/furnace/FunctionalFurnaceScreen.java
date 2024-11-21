@@ -11,9 +11,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-12 21:04
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-12 21:04
  **/
 public class FunctionalFurnaceScreen<T extends FunctionalFurnaceMenu> extends HTContainerScreen<T> {
 

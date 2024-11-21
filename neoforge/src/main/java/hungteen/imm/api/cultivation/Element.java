@@ -3,11 +3,13 @@ package hungteen.imm.api.cultivation;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
 
+import java.util.stream.Stream;
+
 /**
  * 五行元素 & 业元素。
  * @author PangTeen
  * @program Immortal
- * @data 2023/2/25 10:30
+ * @create 2023/2/25 10:30
  */
 public enum Element implements StringRepresentable {
 
@@ -45,6 +47,10 @@ public enum Element implements StringRepresentable {
     private final boolean isPhysical;
     private final float attachFactor;
 
+    /**
+     * @param isPhysical 是否是物质元素，只有业元素师精神元素。
+     * @param attachFactor 附着系数，决定了元素衰减的快慢。
+     */
     Element(boolean isPhysical, float attachFactor) {
         this.isPhysical = isPhysical;
         this.attachFactor = attachFactor;
@@ -52,6 +58,18 @@ public enum Element implements StringRepresentable {
 
     public boolean isPhysical() {
         return isPhysical;
+    }
+
+    public boolean isSpiritual() {
+        return !isPhysical;
+    }
+
+    public static Stream<Element> getPhysicalElements() {
+        return Stream.of(values()).filter(Element::isPhysical);
+    }
+
+    public static Stream<Element> getSpiritualElements() {
+        return Stream.of(values()).filter(Element::isSpiritual);
     }
 
     public float getAttachFactor() {

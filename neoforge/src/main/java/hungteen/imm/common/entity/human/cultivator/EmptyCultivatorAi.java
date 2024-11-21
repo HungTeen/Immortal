@@ -24,9 +24,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-06 23:08
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-06 23:08
  **/
 public class EmptyCultivatorAi {
 

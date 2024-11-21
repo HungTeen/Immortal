@@ -16,9 +16,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.HitResult;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-27 19:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-27 19:30
  **/
 public class IgnitionSpell extends SpellType {
 

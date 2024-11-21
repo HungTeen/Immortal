@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-06-08 23:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-06-08 23:14
  * @param costItems 此交易需要花费的物品，请不要让costItem之间有相同物品，判断容易出bug！
  * @param resultItems 此交易购买得到的物品。
  * @param tradeCount 此交易可以进行多少次。

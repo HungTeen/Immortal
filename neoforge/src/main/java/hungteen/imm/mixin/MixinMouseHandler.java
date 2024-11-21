@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/3 15:27
+ * @create 2023/3/3 15:27
  */
 @Mixin(MouseHandler.class)
 public class MixinMouseHandler {

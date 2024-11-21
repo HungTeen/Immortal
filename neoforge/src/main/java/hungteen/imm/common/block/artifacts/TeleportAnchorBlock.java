@@ -33,9 +33,9 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-30 20:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-30 20:17
  **/
 public class TeleportAnchorBlock extends SimpleArtifactBlock {
 

@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 13:28
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 13:28
  **/
 public class ClientTrader implements Trader {
 

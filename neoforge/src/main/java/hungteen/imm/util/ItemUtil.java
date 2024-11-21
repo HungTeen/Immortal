@@ -20,9 +20,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-10 20:44
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-10 20:44
  **/
 public class ItemUtil {
 

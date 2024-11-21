@@ -10,9 +10,9 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-22 23:04
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-22 23:04
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMEntityEvents {

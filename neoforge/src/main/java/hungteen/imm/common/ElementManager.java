@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/1 15:19
+ * @create 2023/7/1 15:19
  */
 public class ElementManager {
 

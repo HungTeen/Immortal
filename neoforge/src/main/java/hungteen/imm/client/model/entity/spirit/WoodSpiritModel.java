@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/27 12:55
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/27 12:55
  **/
 public class WoodSpiritModel<T extends WoodSpirit> extends EntityModel<T> {
 

@@ -8,9 +8,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/5 20:53
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/5 20:53
  **/
 public class FeatureUtil {
 

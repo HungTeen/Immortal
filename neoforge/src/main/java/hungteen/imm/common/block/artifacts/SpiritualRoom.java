@@ -1,9 +1,9 @@
 package hungteen.imm.common.block.artifacts;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-13 20:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-13 20:59
  **/
 public class SpiritualRoom {
 //        extends ArtifactEntityBlock {

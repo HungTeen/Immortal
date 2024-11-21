@@ -10,9 +10,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-05 11:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-05 11:42
  **/
 public abstract class GolemSensorBehavior extends GolemBehavior{
 

@@ -8,7 +8,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/19 15:06
+ * @create 2023/8/19 15:06
  */
 public class PlayerLearnManualEvent extends PlayerEvent {
 

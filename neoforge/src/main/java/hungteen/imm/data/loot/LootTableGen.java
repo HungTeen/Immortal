@@ -10,9 +10,9 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 14:36
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 14:36
  **/
 public class LootTableGen extends HTLootTableGen {
 

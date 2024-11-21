@@ -5,14 +5,14 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.misc.ElementCrystal;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
@@ -40,9 +40,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/27 13:07
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/27 13:07
  **/
 public class EarthSpirit extends ElementSpirit {
 
@@ -176,8 +176,8 @@ public class EarthSpirit extends ElementSpirit {
     }
 
     @Override
-    public ISpiritualType getSpiritualRoot() {
-        return SpiritualTypes.EARTH;
+    public QiRootType getSpiritualRoot() {
+        return QiRootTypes.EARTH;
     }
 
     @Override

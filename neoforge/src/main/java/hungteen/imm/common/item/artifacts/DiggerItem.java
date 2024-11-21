@@ -11,9 +11,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-11 11:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-11 11:14
  **/
 public abstract class DiggerItem extends MeleeAttackItem{
 

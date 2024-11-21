@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 17:02
+ * @create 2023/3/6 17:02
  */
 public class PickupItemSpell extends SpellType {
 

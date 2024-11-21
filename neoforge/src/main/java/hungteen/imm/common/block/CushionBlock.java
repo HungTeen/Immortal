@@ -16,7 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/3 10:55
+ * @create 2023/3/3 10:55
  */
 public class CushionBlock extends Block {
 

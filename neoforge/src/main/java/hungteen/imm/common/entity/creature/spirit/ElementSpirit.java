@@ -4,13 +4,13 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -38,9 +38,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/8 20:59
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/8 20:59
  **/
 public abstract class ElementSpirit extends IMMMob {
 
@@ -170,11 +170,11 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     @Override
-    protected Collection<ISpiritualType> createSpiritualRoots(ServerLevelAccessor accessor) {
-        return List.of(SpiritualTypes.SPIRIT, getSpiritualRoot());
+    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+        return List.of(QiRootTypes.SPIRIT, getSpiritualRoot());
     }
 
-    public abstract ISpiritualType getSpiritualRoot();
+    public abstract QiRootType getSpiritualRoot();
 
     public abstract Element getElement();
 

@@ -28,9 +28,9 @@ import java.util.function.Consumer;
  * Lvl 3: Attach target weakly with more amount.
  * Lvl 4: Attach self strongly.
  * Lvl 5: Attach target strongly.
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-17 22:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-17 22:12
  **/
 public class ElementalMasterySpell extends SpellType {
 

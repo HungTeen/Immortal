@@ -7,9 +7,9 @@ import java.util.EnumSet;
 import java.util.Objects;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-04 21:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-04 21:49
  **/
 public class LookAtTargetGoal extends Goal {
 

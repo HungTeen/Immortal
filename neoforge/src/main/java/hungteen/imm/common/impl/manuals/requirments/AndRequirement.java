@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/17 15:50
+ * @create 2023/7/17 15:50
  */
 public record AndRequirement(List<ILearnRequirement> requirements) implements ILearnRequirement{
 

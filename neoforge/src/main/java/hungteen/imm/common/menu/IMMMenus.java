@@ -14,9 +14,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 10:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 10:19
  **/
 public class IMMMenus {
 

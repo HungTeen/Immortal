@@ -14,7 +14,7 @@ import java.util.OptionalLong;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/29 15:05
+ * @create 2023/3/29 15:05
  */
 public interface IMMDimensionTypes {
 

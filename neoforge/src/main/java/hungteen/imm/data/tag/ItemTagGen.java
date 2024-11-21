@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.Block;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:12
  **/
 public class ItemTagGen extends HTItemTagGen {
 

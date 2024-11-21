@@ -1,8 +1,8 @@
 package hungteen.imm.common.entity.golem;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -20,9 +20,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-23 21:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-23 21:49
  **/
 public class SnowGolem extends GolemEntity {
 
@@ -98,8 +98,8 @@ public class SnowGolem extends GolemEntity {
     }
 
     @Override
-    public List<ISpiritualType> getSpiritualTypes() {
-        return List.of(SpiritualTypes.WATER);
+    public List<QiRootType> getSpiritualTypes() {
+        return List.of(QiRootTypes.WATER);
     }
 
 }

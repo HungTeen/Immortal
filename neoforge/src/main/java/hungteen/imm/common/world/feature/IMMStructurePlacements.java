@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/29 9:47
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/29 9:47
  **/
 public interface IMMStructurePlacements {
 

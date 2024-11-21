@@ -14,9 +14,9 @@ import net.minecraft.world.entity.Entity;
 import java.util.*;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-02-25 21:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-02-25 21:59
  **/
 public class IMMEntityCapability implements IIMMEntityCapability {
 

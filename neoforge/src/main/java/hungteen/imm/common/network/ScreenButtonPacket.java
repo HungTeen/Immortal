@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/18 15:08
+ * @create 2023/3/18 15:08
  */
 public class ScreenButtonPacket implements PlayToServerPacket {
 

@@ -19,9 +19,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-01 15:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-01 15:56
  **/
 public class FiveFlowersElixir extends ElixirItem {
 

@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.Block;
 import java.util.function.Function;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-03 17:08
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-03 17:08
  **/
 public class TipUtil {
 

@@ -15,9 +15,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-05 11:39
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-05 11:39
  **/
 public class GolemSenseNearestLivings extends GolemSensorBehavior {
 

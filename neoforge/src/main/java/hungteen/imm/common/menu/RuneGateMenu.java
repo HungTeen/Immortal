@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-18 09:14
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-18 09:14
  **/
 public class RuneGateMenu extends RuneBaseMenu {
 

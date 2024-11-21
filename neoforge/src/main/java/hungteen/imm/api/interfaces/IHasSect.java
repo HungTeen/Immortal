@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/5/20 9:55
+ * @create 2023/5/20 9:55
  */
 public interface IHasSect {
 

@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/2 20:10
+ * @create 2023/3/2 20:10
  */
 public class EatFood extends Behavior<HumanEntity> {
 

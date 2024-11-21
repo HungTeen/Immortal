@@ -19,9 +19,9 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-09 15:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-09 15:38
  **/
 public class GolemMoveToTarget extends GolemBehavior{
 

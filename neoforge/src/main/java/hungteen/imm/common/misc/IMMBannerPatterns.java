@@ -12,7 +12,7 @@ import net.neoforged.bus.api.IEventBus;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/8 19:51
+ * @create 2023/3/8 19:51
  */
 public interface IMMBannerPatterns {
 

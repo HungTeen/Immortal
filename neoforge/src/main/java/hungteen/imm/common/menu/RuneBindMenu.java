@@ -18,9 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-21 22:22
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-21 22:22
  **/
 public class RuneBindMenu extends RuneBaseMenu{
 

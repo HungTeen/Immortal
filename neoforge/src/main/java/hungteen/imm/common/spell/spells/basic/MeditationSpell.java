@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/6 19:11
+ * @create 2023/3/6 19:11
  */
 public class MeditationSpell extends SpellType {
 

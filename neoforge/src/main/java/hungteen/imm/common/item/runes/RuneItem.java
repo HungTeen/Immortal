@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 18:27
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 18:27
  **/
 public abstract class RuneItem extends Item {
 

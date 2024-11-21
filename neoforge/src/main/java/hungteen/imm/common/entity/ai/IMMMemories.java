@@ -17,9 +17,9 @@ import net.neoforged.bus.api.IEventBus;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-24 21:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-24 21:59
  **/
 public class IMMMemories {
 

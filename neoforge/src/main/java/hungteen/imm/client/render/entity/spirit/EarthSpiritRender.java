@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/26 19:23
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/26 19:23
  **/
 public class EarthSpiritRender extends IMMMobRender<EarthSpirit> {
 

@@ -18,9 +18,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/2 10:40
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/2 10:40
  **/
 public class RefineBreathElixir extends ElixirItem {
 

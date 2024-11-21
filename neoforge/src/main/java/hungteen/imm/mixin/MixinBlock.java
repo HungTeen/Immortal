@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/14 16:35
+ * @create 2023/6/14 16:35
  */
 @Mixin(Block.class)
 public class MixinBlock {

@@ -11,9 +11,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-11 22:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-11 22:19
  **/
 public class IMMRecipeSerializers {
 

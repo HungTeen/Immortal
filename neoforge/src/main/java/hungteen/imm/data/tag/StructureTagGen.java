@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/28 9:43
+ * @create 2023/7/28 9:43
  */
 public class StructureTagGen extends HTTagsProvider<Structure> {
 

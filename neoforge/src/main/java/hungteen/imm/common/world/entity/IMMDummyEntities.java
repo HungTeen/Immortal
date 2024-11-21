@@ -1,9 +1,9 @@
 package hungteen.imm.common.world.entity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-01 17:10
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-01 17:10
  **/
 public class IMMDummyEntities {
 

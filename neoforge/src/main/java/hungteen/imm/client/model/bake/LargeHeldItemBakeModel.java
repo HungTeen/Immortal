@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-06 12:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-06 12:56
  **/
 public class LargeHeldItemBakeModel implements BakedModel {
 

@@ -8,9 +8,9 @@ import net.minecraft.client.particle.WaterDropParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-17 10:49
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-17 10:49
  **/
 public class WaterElementParticle extends WaterDropParticle {
 

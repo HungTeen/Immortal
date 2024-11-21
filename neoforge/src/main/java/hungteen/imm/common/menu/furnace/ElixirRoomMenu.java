@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-28 18:18
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-28 18:18
  **/
 public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity> {
 

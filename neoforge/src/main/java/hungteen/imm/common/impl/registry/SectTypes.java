@@ -6,9 +6,9 @@ import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.util.Util;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-24 19:46
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-24 19:46
  **/
 public class SectTypes {
 

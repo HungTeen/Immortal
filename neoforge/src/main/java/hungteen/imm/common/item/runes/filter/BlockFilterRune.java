@@ -8,9 +8,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-20 12:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-20 12:41
  **/
 public class BlockFilterRune extends FilterRuneItem<Block> {
 

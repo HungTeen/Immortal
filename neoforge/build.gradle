@@ -18,7 +18,7 @@ neoForge {
     validateAccessTransformers = true
     accessTransformers.files.setFrom("src/main/resources/META-INF/accesstransformer-nf.cfg")
 
-//    addModdingDependenciesTo(sourceSets.test)
+    addModdingDependenciesTo(sourceSets.test)
 
     parchment{
         minecraftVersion.set(libs.versions.parchment.minecraft.get())
@@ -39,6 +39,11 @@ neoForge {
         create("server") {
             server()
 //            programArgument("--nogui")
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', modId
         }
     }
 }

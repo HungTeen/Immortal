@@ -4,9 +4,9 @@ import hungteen.imm.util.Util;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:58
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:58
  **/
 public class IMMModelLayers {
 

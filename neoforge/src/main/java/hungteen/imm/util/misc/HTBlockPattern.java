@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/9/27 21:50
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/9/27 21:50
  **/
 public class HTBlockPattern {
 

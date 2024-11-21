@@ -32,9 +32,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-08 09:42
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-08 09:42
  **/
 public class FlameGourd extends ArtifactItem {
 

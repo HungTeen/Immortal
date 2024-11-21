@@ -11,9 +11,9 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-12-06 21:46
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-12-06 21:46
  **/
 public class SwitchMeleeAttackItem extends Behavior<HumanEntity> {
 

@@ -11,9 +11,9 @@ import javax.annotation.Nullable;
 /**
  * {@link net.minecraft.world.item.trading.Merchant}
  *
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-09-03 13:24
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-09-03 13:24
  **/
 public interface Trader {
 

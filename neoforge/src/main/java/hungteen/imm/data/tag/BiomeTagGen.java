@@ -16,9 +16,9 @@ import net.neoforged.neoforge.common.Tags;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-03-24 23:16
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-03-24 23:16
  **/
 public class BiomeTagGen extends HTTagsProvider<Biome> {
 

@@ -37,9 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 09:15
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 09:15
  **/
 public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
 

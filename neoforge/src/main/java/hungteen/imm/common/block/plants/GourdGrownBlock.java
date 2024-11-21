@@ -39,9 +39,9 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-06 22:31
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-06 22:31
  **/
 public class GourdGrownBlock extends HTStemGrownBlock {
 

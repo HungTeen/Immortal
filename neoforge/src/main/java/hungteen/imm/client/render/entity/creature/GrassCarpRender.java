@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:52
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:52
  **/
 public class GrassCarpRender extends IMMMobRender<GrassCarp> {
 

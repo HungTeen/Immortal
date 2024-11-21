@@ -10,7 +10,7 @@ import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.api.interfaces.IHasRealm;
 import hungteen.imm.api.registry.ICultivationType;
 import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.capability.player.PlayerDataManager;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.impl.registry.CultivationTypes;
@@ -54,9 +54,9 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-26 18:36
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-26 18:36
  **/
 public class RealmManager {
 
@@ -328,7 +328,7 @@ public class RealmManager {
             return realmEntity.getRealm();
         } else if(entity instanceof LivingEntity){
             if(entity instanceof Player player){
-                return PlayerUtil.getManagerResult(player, PlayerDataManager::getRealmType, RealmTypes.MORTALITY);
+                return PlayerUtil.getData(player, IMMPlayerData::getRealmType);
             }
             return getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
         } else {

@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-09 09:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-09 09:30
  **/
 public class MiniFurnaceBlockEntity extends SpiritualFurnaceBlockEntity {
 

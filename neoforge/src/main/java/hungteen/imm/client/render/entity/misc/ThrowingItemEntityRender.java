@@ -16,9 +16,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-02 14:45
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-02 14:45
  **/
 public class ThrowingItemEntityRender extends EntityRenderer<ThrowingItemEntity> {
 

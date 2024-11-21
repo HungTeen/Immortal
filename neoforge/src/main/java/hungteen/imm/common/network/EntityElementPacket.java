@@ -7,9 +7,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-02-25 22:23
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-02-25 22:23
  **/
 public class EntityElementPacket implements PlayToClientPacket {
 

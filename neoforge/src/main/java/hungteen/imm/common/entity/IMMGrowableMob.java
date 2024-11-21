@@ -20,9 +20,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 18:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 18:43
  **/
 public abstract class IMMGrowableMob extends IMMMob {
 

@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/22 10:09
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/22 10:09
  **/
 @Mixin(LivingEntity.class)
 public class MixinLivingEntity{

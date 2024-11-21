@@ -25,9 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:13
  **/
 public class BlockStateGen extends HTBlockStateGen {
 

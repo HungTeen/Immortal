@@ -15,9 +15,9 @@ import net.minecraft.world.level.Level;
 
 /**
  * Modify from {@link net.minecraft.world.entity.monster.Zombie}.
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-19 23:04
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-19 23:04
  **/
 public class SpiritualZombie extends UndeadEntity {
 

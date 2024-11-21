@@ -7,9 +7,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-22 22:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-22 22:21
  **/
 public abstract class IMMPillagerRender<T extends IMMPillager> extends VillagerLikeRender<T, PillagerModel<T>> {
 

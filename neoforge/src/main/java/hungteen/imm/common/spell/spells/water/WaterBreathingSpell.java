@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/18 16:20
+ * @create 2023/8/18 16:20
  */
 public class WaterBreathingSpell extends SpellType {
 

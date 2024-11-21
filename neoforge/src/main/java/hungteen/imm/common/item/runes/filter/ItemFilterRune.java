@@ -17,9 +17,9 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-05 09:35
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-05 09:35
  **/
 public class ItemFilterRune extends FilterRuneItem<Item> {
 

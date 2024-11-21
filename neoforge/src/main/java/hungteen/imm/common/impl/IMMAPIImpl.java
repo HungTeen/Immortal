@@ -1,32 +1,46 @@
 package hungteen.imm.common.impl;
 
+import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.spell.SpellTypes;
+
+import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 22:32
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 22:32
  **/
 public class IMMAPIImpl implements IMMAPI {
 
-//    @Override
-//    public Optional<IHTSimpleRegistry<ISpiritualType>> spiritualRegistry() {
-//        return Optional.of(SpiritualTypes.registry());
-//    }
-//
-//    @Override
-//    public Optional<IHTSimpleRegistry<ISpellType>> spellRegistry() {
-//        return Optional.of(SpellTypes.registry());
-//    }
-//
+    @Override
+    public int apiVersion() {
+        return 1;
+    }
+
+    @Override
+    public Optional<HTCustomRegistry<QiRootType>> qiRootRegistry() {
+        return Optional.of(QiRootTypes.registry());
+    }
+
+    @Override
+    public Optional<HTCustomRegistry<IRealmType>> realmRegistry() {
+        return Optional.of(RealmTypes.registry());
+    }
+
+    @Override
+    public Optional<HTCustomRegistry<ISpellType>> spellRegistry() {
+        return Optional.of(SpellTypes.registry());
+    }
+
 //    @Override
 //    public Optional<IHTSimpleRegistry<ISectType>> sectRegistry() {
 //        return Optional.of(SectTypes.registry());
-//    }
-//
-//    @Override
-//    public Optional<IHTSimpleRegistry<IRealmType>> realmRegistry() {
-//        return Optional.of(RealmTypes.registry());
 //    }
 //
 //    @Override

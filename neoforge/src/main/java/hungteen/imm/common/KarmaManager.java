@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
  * 业障管理。
  * @author PangTeen
  * @program Immortal
- * @data 2023/7/15 10:44
+ * @create 2023/7/15 10:44
  */
 public class KarmaManager {
 

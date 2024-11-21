@@ -7,9 +7,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-30 22:33
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-30 22:33
  **/
 public class SmithingPacket implements PlayToServerPacket {
 

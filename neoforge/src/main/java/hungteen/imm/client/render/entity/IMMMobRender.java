@@ -9,9 +9,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:56
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:56
  **/
 public abstract class IMMMobRender<T extends Mob> extends MobRenderer<T, EntityModel<T>> {
 

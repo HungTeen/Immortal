@@ -13,9 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.Predicate;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-04-05 15:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-04-05 15:12
  **/
 public class GolemFindLookTarget extends GolemOneShotBehavior {
 

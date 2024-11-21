@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
- * @program: Immortal
- * @author: PangTeen
- * @create: 2023/10/27 13:11
+ * @program Immortal
+ * @author PangTeen
+ * @create 2023/10/27 13:11
  **/
 public class EarthSpiritModel<T extends EarthSpirit> extends AnimatedEntityModel<T> {
 

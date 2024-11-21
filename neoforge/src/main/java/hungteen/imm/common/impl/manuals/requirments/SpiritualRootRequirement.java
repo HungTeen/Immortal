@@ -4,8 +4,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
-import hungteen.imm.api.registry.ISpiritualType;
-import hungteen.imm.common.impl.registry.SpiritualTypes;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,17 +15,17 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-17 21:21
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-17 21:21
  **/
-public record SpiritualRootRequirement(List<ISpiritualType> roots) implements ILearnRequirement {
+public record SpiritualRootRequirement(List<QiRootType> roots) implements ILearnRequirement {
 
     public static final MapCodec<SpiritualRootRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            SpiritualTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(SpiritualRootRequirement::roots)
+            QiRootTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(SpiritualRootRequirement::roots)
     ).apply(instance, SpiritualRootRequirement::new));
 
-    public static SpiritualRootRequirement single(ISpiritualType root){
+    public static SpiritualRootRequirement single(QiRootType root){
         return new SpiritualRootRequirement(List.of(root));
     }
 

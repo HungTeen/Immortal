@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/6/15 15:49
+ * @create 2023/6/15 15:49
  */
 public abstract class HTTemplateStructurePiece extends TemplateStructurePiece {
 

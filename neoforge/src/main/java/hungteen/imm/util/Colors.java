@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-21 12:34
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-21 12:34
  **/
 public class Colors {
 

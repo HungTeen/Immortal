@@ -9,7 +9,7 @@ import net.minecraft.world.entity.EntityType;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/2 11:26
+ * @create 2023/3/2 11:26
  */
 public interface IMMEntityTags {
 

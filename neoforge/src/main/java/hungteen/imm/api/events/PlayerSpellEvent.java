@@ -6,9 +6,9 @@ import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-02 15:06
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-02 15:06
  **/
 public class PlayerSpellEvent extends PlayerEvent {
 

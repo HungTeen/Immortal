@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-23 21:41
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-23 21:41
  **/
 public class ReactionRenderer {
 

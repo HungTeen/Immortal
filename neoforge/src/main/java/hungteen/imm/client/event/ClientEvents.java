@@ -13,9 +13,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-10 11:09
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-10 11:09
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/18 14:25
+ * @create 2023/8/18 14:25
  */
 public class SproutSpell extends SpellType {
 

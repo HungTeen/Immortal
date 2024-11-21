@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-04 10:26
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-04 10:26
  **/
 public abstract class SpiritualElixir {
 //        extends ElixirItem{

@@ -13,9 +13,9 @@ import net.neoforged.neoforge.common.Tags;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-07 12:12
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-07 12:12
  **/
 public class BlockTagGen extends HTBlockTagGen {
 

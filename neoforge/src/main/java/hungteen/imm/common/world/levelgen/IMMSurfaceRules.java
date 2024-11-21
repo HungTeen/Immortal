@@ -10,9 +10,9 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-12 19:59
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-12 19:59
  **/
 public class IMMSurfaceRules {
 

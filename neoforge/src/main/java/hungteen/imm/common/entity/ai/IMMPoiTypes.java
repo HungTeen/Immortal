@@ -14,9 +14,9 @@ import net.neoforged.bus.api.IEventBus;
 import java.util.Set;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 10:54
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 10:54
  **/
 public class IMMPoiTypes {
 

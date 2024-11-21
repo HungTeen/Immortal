@@ -1,9 +1,9 @@
 package hungteen.imm.compat.jei.category;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-16 15:19
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-16 15:19
  **/
 public class SmithingCategory {
 //    implements IRecipeCategory<SmithingArtifactRecipe>

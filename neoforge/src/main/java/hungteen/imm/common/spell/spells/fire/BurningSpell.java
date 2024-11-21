@@ -15,9 +15,9 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-27 19:30
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-27 19:30
  **/
 public class BurningSpell extends SpellType {
 

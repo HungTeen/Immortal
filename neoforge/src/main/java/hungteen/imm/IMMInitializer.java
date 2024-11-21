@@ -10,6 +10,7 @@ import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
+import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.command.CommandHandler;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMAttributes;
@@ -48,9 +49,9 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-23 23:32
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-23 23:32
  **/
 @Mod(IMMAPI.MOD_ID)
 public class IMMInitializer {
@@ -95,7 +96,7 @@ public class IMMInitializer {
         ManualTypes.registry().initialize();
         RequirementTypes.registry().initialize();
         SecretManuals.registry().initialize();
-        SpiritualTypes.registry().initialize();
+        QiRootTypes.registry().initialize();
 
         /* Deferred Registers */
         IMMItems.initialize(modBus);
@@ -122,6 +123,7 @@ public class IMMInitializer {
         IMMStructureTypes.initialize(modBus);
         IMMStructurePieces.initialize(modBus);
         IMMFeatures.initialize(modBus);
+        IMMAttachments.register(modBus);
     }
 
     public static void register(RegisterEvent event) {

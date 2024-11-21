@@ -17,9 +17,9 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-07-12 19:47
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-07-12 19:47
  **/
 public abstract class FunctionalFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
 

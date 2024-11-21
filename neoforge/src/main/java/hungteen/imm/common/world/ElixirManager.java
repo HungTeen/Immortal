@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-16 12:17
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-16 12:17
  **/
 public class ElixirManager extends SavedData {
 

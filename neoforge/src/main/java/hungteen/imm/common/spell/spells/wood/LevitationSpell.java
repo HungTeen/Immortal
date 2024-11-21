@@ -7,9 +7,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2023-08-28 20:38
+ * @program Immortal
+ * @author HungTeen
+ * @create 2023-08-28 20:38
  **/
 public class LevitationSpell extends SpellType {
 

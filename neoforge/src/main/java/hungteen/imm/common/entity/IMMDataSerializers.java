@@ -31,9 +31,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-11-17 12:06
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-11-17 12:06
  **/
 public interface IMMDataSerializers {
 

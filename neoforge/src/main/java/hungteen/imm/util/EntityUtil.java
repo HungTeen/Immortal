@@ -10,7 +10,7 @@ import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
@@ -51,9 +51,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-20 21:43
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-20 21:43
  **/
 public class EntityUtil {
 
@@ -314,7 +314,7 @@ public class EntityUtil {
         }
     }
 
-    public static List<ISpiritualType> getSpiritualRoots(Entity entity) {
+    public static List<QiRootType> getSpiritualRoots(Entity entity) {
         return getSpiritualRoots(entity, null);
     }
 
@@ -323,7 +323,7 @@ public class EntityUtil {
      *
      * @param viewPlayer 玩家的视角。
      */
-    public static List<ISpiritualType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
+    public static List<QiRootType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
         if (viewPlayer == null) {
             return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
                     : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
@@ -348,11 +348,11 @@ public class EntityUtil {
         return getRGBForSpiritual(getSpiritualRoots(entity));
     }
 
-    public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<ISpiritualType> roots) {
+    public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<QiRootType> roots) {
         int r = 0;
         int g = 0;
         int b = 0;
-        for (ISpiritualType root : roots) {
+        for (QiRootType root : roots) {
             r += ColorHelper.getRedFromRGB(root.getSpiritualColor());
             g += ColorHelper.getGreenFromRGB(root.getSpiritualColor());
             b += ColorHelper.getBlueFromRGB(root.getSpiritualColor());

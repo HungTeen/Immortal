@@ -6,7 +6,7 @@ import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ISpiritualType;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
@@ -20,15 +20,15 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-09-24 16:05
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-09-24 16:05
  **/
-public interface SpiritualTypes {
+public interface QiRootTypes {
 
-    HTCustomRegistry<ISpiritualType> SPIRITUAL_TYPES = HTRegistryManager.custom(Util.prefix("spiritual_root"));
+    HTCustomRegistry<QiRootType> SPIRITUAL_TYPES = HTRegistryManager.custom(Util.prefix("qi_root"));
 
-    ISpiritualType METAL = register(new SpiritualType(
+    QiRootType METAL = register(new QiRootTypeImpl(
             "metal",
             Set.of(Element.METAL),
             IMMConfigs::getMetalWeight,
@@ -38,7 +38,7 @@ public interface SpiritualTypes {
             ChatFormatting.GOLD
     ));
 
-    ISpiritualType WOOD = register(new SpiritualType(
+    QiRootType WOOD = register(new QiRootTypeImpl(
             "wood",
             Set.of(Element.WOOD),
             IMMConfigs::getWoodWeight,
@@ -48,7 +48,7 @@ public interface SpiritualTypes {
             ChatFormatting.GREEN
     ));
 
-    ISpiritualType WATER = register(new SpiritualType(
+    QiRootType WATER = register(new QiRootTypeImpl(
             "water",
             Set.of(Element.WATER),
             IMMConfigs::getWaterWeight,
@@ -58,7 +58,7 @@ public interface SpiritualTypes {
             ChatFormatting.DARK_BLUE
     ));
 
-    ISpiritualType FIRE = register(new SpiritualType(
+    QiRootType FIRE = register(new QiRootTypeImpl(
             "fire",
             Set.of(Element.FIRE),
             IMMConfigs::getFireWeight,
@@ -68,7 +68,7 @@ public interface SpiritualTypes {
             ChatFormatting.RED
     ));
 
-    ISpiritualType EARTH = register(new SpiritualType(
+    QiRootType EARTH = register(new QiRootTypeImpl(
             "earth",
             Set.of(Element.EARTH),
             IMMConfigs::getEarthWeight,
@@ -78,7 +78,7 @@ public interface SpiritualTypes {
             ChatFormatting.YELLOW
     ));
 
-    ISpiritualType SPIRIT = register(new SpiritualType(
+    QiRootType SPIRIT = register(new QiRootTypeImpl(
             "spirit",
             Set.of(Element.SPIRIT),
             IMMConfigs::getSpiritWeight,
@@ -92,7 +92,7 @@ public interface SpiritualTypes {
         return TipUtil.misc("spiritual_root");
     }
 
-    static MutableComponent getSpiritualRoots(List<ISpiritualType> roots) {
+    static MutableComponent getSpiritualRoots(List<QiRootType> roots) {
         if (!roots.isEmpty()) {
             final MutableComponent component = roots.get(0).getComponent();
             for (int i = 1; i < roots.size(); ++i) {
@@ -104,21 +104,16 @@ public interface SpiritualTypes {
         return TipUtil.misc("no_spiritual_root");
     }
 
-    static ISpiritualType register(ISpiritualType type) {
+    static QiRootType register(QiRootType type) {
         return registry().register(type.getLocation(), type);
     }
 
-    static HTCustomRegistry<ISpiritualType> registry() {
+    static HTCustomRegistry<QiRootType> registry() {
         return SPIRITUAL_TYPES;
     }
 
-    record SpiritualType(String name, Set<Element> elements, Supplier<Integer> weightSupplier, int priority,
-                         int spiritualColor, int id, ChatFormatting textColor) implements ISpiritualType {
-
-        @Override
-        public String getName() {
-            return name();
-        }
+    record QiRootTypeImpl(String name, Set<Element> elements, Supplier<Integer> weightSupplier, int priority,
+                          int spiritualColor, int id, ChatFormatting textColor) implements QiRootType {
 
         @Override
         public String getModID() {
@@ -127,12 +122,22 @@ public interface SpiritualTypes {
 
         @Override
         public MutableComponent getComponent() {
-            return Component.translatable("misc." + getModID() + ".root." + getName()).withStyle(textColor);
+            return Component.translatable("misc." + getModID() + ".root." + name()).withStyle(textColor);
         }
 
         @Override
         public Set<Element> getElements() {
             return elements();
+        }
+
+        @Override
+        public boolean isCommonRoot() {
+            return elements().size() == 1 && ! elements().contains(Element.SPIRIT);
+        }
+
+        @Override
+        public boolean isSpecialRoot() {
+            return false;
         }
 
         @Override

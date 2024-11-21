@@ -21,7 +21,7 @@ import java.util.List;
  * {@link net.minecraft.world.inventory.MerchantMenu}
  * @author PangTeen
  * @program Immortal
- * @data 2023/3/18 14:01
+ * @create 2023/3/18 14:01
  */
 public class MerchantTradeMenu extends HTContainerMenu {
 

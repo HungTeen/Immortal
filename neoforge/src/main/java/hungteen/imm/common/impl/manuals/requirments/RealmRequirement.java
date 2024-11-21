@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author PangTeen
  * @program Immortal
- * @data 2023/8/17 15:16
+ * @create 2023/8/17 15:16
  */
 public record RealmRequirement(IRealmType realmType, boolean lowest) implements ILearnRequirement {
 

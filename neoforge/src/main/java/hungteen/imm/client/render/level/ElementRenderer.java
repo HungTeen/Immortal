@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @program: Immortal
- * @author: HungTeen
- * @create: 2022-10-10 10:13
+ * @program Immortal
+ * @author HungTeen
+ * @create 2022-10-10 10:13
  **/
 public class ElementRenderer {
 
