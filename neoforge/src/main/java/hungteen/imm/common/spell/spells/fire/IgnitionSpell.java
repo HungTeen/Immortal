@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells.fire;
 
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
@@ -29,7 +29,7 @@ public class IgnitionSpell extends SpellType {
     public static void checkIgnitionArrow(Projectile projectile, HitResult hitResult){
         if(projectile instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player){
             SpellManager.activateSpell(player, SpellTypes.IGNITION, (p, result, spell, level) -> {
-                ElementManager.addElementAmount(result.getEntity(), Elements.FIRE, false, 10);
+                ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, 10);
                 arrow.setRemainingFireTicks(100);
                 return true;
             });
@@ -39,7 +39,7 @@ public class IgnitionSpell extends SpellType {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(result.hasEntity() && result.getEntity() != null){
-            ElementManager.addElementAmount(result.getEntity(), Elements.FIRE, false, 10);
+            ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, 10);
             result.getEntity().setRemainingFireTicks(60);
             ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.SPIRITUAL_MANA.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;

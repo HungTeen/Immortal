@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.*;
@@ -364,9 +364,9 @@ public class PlayerUtil {
         }).toList();
     }
 
-    public static List<Elements> filterElements(Player player, List<Elements> elements){
+    public static List<Element> filterElements(Player player, List<Element> elements){
         return elements.stream().filter(element -> {
-            if(element == Elements.SPIRIT) {
+            if(element == Element.SPIRIT) {
                 return knowSpiritElement(player);
             }
             return true;

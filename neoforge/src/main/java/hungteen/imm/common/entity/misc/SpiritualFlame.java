@@ -4,7 +4,7 @@ import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRealm;
@@ -132,9 +132,9 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
     public void flameTarget(LivingEntity target, float percent){
         target.setRemainingFireTicks(20 * Math.max(2, Mth.ceil (10 * percent)));
         if(percent > 0.75F){
-            ElementManager.addElementAmount(target, Elements.FIRE, true, this.flamePercent() * 15 * percent);
+            ElementManager.addElementAmount(target, Element.FIRE, true, this.flamePercent() * 15 * percent);
         } else if(percent > 0.25F){
-            ElementManager.addElementAmount(target, Elements.FIRE, false, this.flamePercent() * 10 * percent);
+            ElementManager.addElementAmount(target, Element.FIRE, false, this.flamePercent() * 10 * percent);
         }
         if(percent > 0.5F){
             target.hurt(IMMDamageSources.spiritualFlame(this), percent * 8);

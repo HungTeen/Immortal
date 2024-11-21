@@ -1,13 +1,10 @@
 package hungteen.imm.client.render.entity.misc;
 
 import hungteen.htlib.client.render.entity.HTEntityRender;
-import hungteen.imm.api.enums.Elements;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.TornadoModel;
-import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.misc.Tornado;
 import hungteen.imm.util.Util;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

@@ -1,6 +1,6 @@
 package hungteen.imm.common.world.biome;
 
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.world.feature.IMMOrePlacements;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -50,8 +50,8 @@ public class EastWorldFeatures {
         builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), 1, 1, 1));
     }
 
-    public static void addSpirit(MobSpawnSettings.Builder builder, Elements ...elements){
-        for(Elements element : elements){
+    public static void addSpirit(MobSpawnSettings.Builder builder, Element...elements){
+        for(Element element : elements){
             MobSpawnSettings.SpawnerData data = null;
             switch (element){
                 case METAL -> data = new MobSpawnSettings.SpawnerData(IMMEntities.METAL_SPIRIT.get(), 60, 1, 1);

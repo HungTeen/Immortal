@@ -5,7 +5,7 @@ import hungteen.htlib.common.entity.SeatEntity;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.interfaces.IHasMana;
 import hungteen.imm.api.interfaces.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
@@ -331,7 +331,7 @@ public class EntityUtil {
         return PlayerUtil.filterSpiritRoots(viewPlayer, getSpiritualRoots(entity));
     }
 
-    public static List<Elements> getElements(Entity entity) {
+    public static List<Element> getElements(Entity entity) {
         return getElements(entity, null);
     }
 
@@ -340,7 +340,7 @@ public class EntityUtil {
      *
      * @param viewPlayer 玩家的视角。
      */
-    public static List<Elements> getElements(Entity entity, @Nullable Player viewPlayer) {
+    public static List<Element> getElements(Entity entity, @Nullable Player viewPlayer) {
         return viewPlayer == null ? getSpiritualRoots(entity).stream().flatMap(l -> l.getElements().stream()).collect(Collectors.toList()) : PlayerUtil.filterElements(viewPlayer, getElements(entity));
     }
 

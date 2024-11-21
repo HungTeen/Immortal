@@ -2,7 +2,7 @@ package hungteen.imm.common.spell.spells.wood;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.spells.SpellType;
@@ -23,7 +23,7 @@ public class WoodHealingSpell extends SpellType {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         owner.addEffect(EffectHelper.viewEffect(MobEffects.REGENERATION, 300, 0));
-        ElementManager.addElementAmount(owner, Elements.WOOD, true, 15);
+        ElementManager.addElementAmount(owner, Element.WOOD, true, 15);
         return true;
     }
 

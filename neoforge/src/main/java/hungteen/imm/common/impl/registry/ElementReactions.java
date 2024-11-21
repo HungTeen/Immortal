@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.effect.IMMEffects;
@@ -49,19 +49,19 @@ public class ElementReactions {
     /* 特殊反应 */
 
     public static final IElementReaction METAL_GILDING = register(new GildingReaction(
-            "metal_gilding", 10, Elements.METAL, 8)
+            "metal_gilding", 10, Element.METAL, 8)
     );
 
     public static final IElementReaction WOOD_GILDING = register(new GildingReaction(
-            "wood_gilding", 10, Elements.WOOD, 8)
+            "wood_gilding", 10, Element.WOOD, 8)
     );
 
     public static final IElementReaction WATER_GILDING = register(new GildingReaction(
-            "water_gilding", 10, Elements.WATER, 10)
+            "water_gilding", 10, Element.WATER, 10)
     );
 
     public static final IElementReaction FIRE_GILDING = register(new GildingReaction(
-            "fire_gilding", 10, Elements.FIRE, 10)
+            "fire_gilding", 10, Element.FIRE, 10)
     );
 
     public static final IElementReaction BURNING = register(new FlamingReaction(
@@ -71,29 +71,29 @@ public class ElementReactions {
     /* 化灵 */
 
     public static final IElementReaction METAL_SPIRIT = register(new SummonSpiritReaction<>(
-            "metal_spirit", IMMEntities.METAL_SPIRIT, Elements.METAL, 10
+            "metal_spirit", IMMEntities.METAL_SPIRIT, Element.METAL, 10
     ));
 
     public static final IElementReaction WOOD_SPIRIT = register(new SummonSpiritReaction<>(
-            "wood_spirit", IMMEntities.WOOD_SPIRIT, Elements.WOOD, 10
+            "wood_spirit", IMMEntities.WOOD_SPIRIT, Element.WOOD, 10
     ));
 
     public static final IElementReaction WATER_SPIRIT = register(new SummonSpiritReaction<>(
-            "water_spirit", IMMEntities.WATER_SPIRIT, Elements.WATER, 10
+            "water_spirit", IMMEntities.WATER_SPIRIT, Element.WATER, 10
     ));
 
     public static final IElementReaction FIRE_SPIRIT = register(new SummonSpiritReaction<>(
-            "fire_spirit", IMMEntities.FIRE_SPIRIT, Elements.FIRE, 10
+            "fire_spirit", IMMEntities.FIRE_SPIRIT, Element.FIRE, 10
     ));
 
     public static final IElementReaction EARTH_SPIRIT = register(new SummonSpiritReaction<>(
-            "earth_spirit", IMMEntities.EARTH_SPIRIT, Elements.EARTH, 10
+            "earth_spirit", IMMEntities.EARTH_SPIRIT, Element.EARTH, 10
     ));
 
     /* 相生 */
 
     public static final IElementReaction CRYSTALLIZATION = register(new GenerationReaction(
-            "crystallization", true, Elements.EARTH, 10, Elements.METAL, 4) {
+            "crystallization", true, Element.EARTH, 10, Element.METAL, 4) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -104,7 +104,7 @@ public class ElementReactions {
     });
 
     public static final IElementReaction QUENCH_BLADE = register(new GenerationReaction(
-            "quench_blade", false, Elements.METAL, 0.5F, Elements.WATER, 0.25F) {
+            "quench_blade", false, Element.METAL, 0.5F, Element.WATER, 0.25F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -112,7 +112,7 @@ public class ElementReactions {
     });
 
     public static final IElementReaction GROWING = register(new GenerationReaction(
-            "growing", false, Elements.WATER, 0.5F, Elements.WOOD, 0.2F) {
+            "growing", false, Element.WATER, 0.5F, Element.WOOD, 0.2F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -127,7 +127,7 @@ public class ElementReactions {
     );
 
     public static final IElementReaction ASHING = register(new GenerationReaction(
-            "ashing", true, Elements.FIRE, 10, Elements.EARTH, 4) {
+            "ashing", true, Element.FIRE, 10, Element.EARTH, 4) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -144,7 +144,7 @@ public class ElementReactions {
     /* 相克 */
 
     public static final IElementReaction SOLIDIFICATION = register(new InhibitionReaction(
-            "solidification", true, Elements.EARTH, 5, Elements.WATER, 8) {
+            "solidification", true, Element.EARTH, 5, Element.WATER, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -155,7 +155,7 @@ public class ElementReactions {
     });
 
     public static final IElementReaction VAPORIZATION = register(new InhibitionReaction(
-            "vaporization", true, Elements.WATER, 3, Elements.FIRE, 8) {
+            "vaporization", true, Element.WATER, 3, Element.FIRE, 8) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -180,11 +180,11 @@ public class ElementReactions {
     });
 
     public static final IElementReaction MELTING = register(new MeltingReaction(
-            "melting", true, 5, Elements.FIRE, 4, Elements.METAL, 8)
+            "melting", true, 5, Element.FIRE, 4, Element.METAL, 8)
     );
 
     public static final IElementReaction CUTTING = register(new CuttingReaction(
-            "cutting", false, 1F, Elements.METAL, 0.15F, Elements.WOOD, 0.4F) {
+            "cutting", false, 1F, Element.METAL, 0.15F, Element.WOOD, 0.4F) {
         /**
          * See {@link hungteen.imm.common.event.IMMLivingEvents#onLivingDamage(LivingDamageEvent)}.
          */
@@ -195,7 +195,7 @@ public class ElementReactions {
     });
 
     public static final IElementReaction PARASITISM = register(new InhibitionReaction(
-            "parasitism", true, Elements.WOOD, 0.2F, Elements.EARTH, 0.4F) {
+            "parasitism", true, Element.WOOD, 0.2F, Element.EARTH, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -306,23 +306,23 @@ public class ElementReactions {
      */
     private static abstract class GenerationReaction extends ElementReaction {
 
-        private final Elements ingredient;
-        private final Elements production;
+        private final Element ingredient;
+        private final Element production;
         private final float ingredientAmount;
         private final float productionAmount;
         private final boolean spawnAmethyst;
 
-        private GenerationReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float productionAmount) {
+        private GenerationReaction(String name, boolean once, Element main, float mainAmount, Element off, float productionAmount) {
             this(name, once, 100, main, mainAmount, off, productionAmount);
         }
 
-        private GenerationReaction(String name, boolean once, int priority, Elements main, float mainAmount, Elements off, float productionAmount) {
+        private GenerationReaction(String name, boolean once, int priority, Element main, float mainAmount, Element off, float productionAmount) {
             super(name, once, priority, List.of(new ElementEntry(main, true, mainAmount), new ElementEntry(off, false, 0F)));
             this.ingredient = main;
             this.production = off;
             this.ingredientAmount = mainAmount;
             this.productionAmount = productionAmount;
-            this.spawnAmethyst = (main == Elements.EARTH || off == Elements.EARTH);
+            this.spawnAmethyst = (main == Element.EARTH || off == Element.EARTH);
         }
 
         @Override
@@ -345,19 +345,19 @@ public class ElementReactions {
      */
     private static abstract class InhibitionReaction extends ElementReaction {
 
-        private final Elements ingredient;
-        private final Elements production;
+        private final Element ingredient;
+        private final Element production;
         private final float mainAmount;
         private final float offAmount;
         private final boolean spawnAmethyst;
 
-        private InhibitionReaction(String name, boolean once, Elements main, float mainAmount, Elements off, float offAmount) {
+        private InhibitionReaction(String name, boolean once, Element main, float mainAmount, Element off, float offAmount) {
             super(name, once, 80, List.of(new ElementEntry(main, false, mainAmount), new ElementEntry(off, false, offAmount)));
             this.ingredient = main;
             this.production = off;
             this.mainAmount = mainAmount;
             this.offAmount = offAmount;
-            this.spawnAmethyst = (main == Elements.EARTH || off == Elements.EARTH);
+            this.spawnAmethyst = (main == Element.EARTH || off == Element.EARTH);
         }
 
         @Override
@@ -381,14 +381,14 @@ public class ElementReactions {
         private final boolean robustReaction;
 
         private FlamingReaction(String name, boolean once, int priority, boolean robustReaction, float woodCostAmount, float fireGenAmount) {
-            super(name, once, priority, Elements.WOOD, woodCostAmount, Elements.FIRE, fireGenAmount);
+            super(name, once, priority, Element.WOOD, woodCostAmount, Element.FIRE, fireGenAmount);
             this.robustReaction = robustReaction;
         }
 
         @Override
         protected float getMatchAmount(Entity entity, ElementEntry entry) {
-            if(entry.element() == Elements.WOOD && ! this.robustReaction){
-                return ElementManager.getElementAmount(entity, Elements.WOOD, false);
+            if(entry.element() == Element.WOOD && ! this.robustReaction){
+                return ElementManager.getElementAmount(entity, Element.WOOD, false);
             }
             return super.getMatchAmount(entity, entry);
         }
@@ -405,7 +405,7 @@ public class ElementReactions {
             }
             EntityHelper.getPredicateEntities(entity, EntityHelper.getEntityAABB(entity, 4, 3), Entity.class, JavaHelper::alwaysTrue).forEach(target -> {
                 if (target.level().getRandom().nextFloat() < 0.1F) {
-                    ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 5);
+                    ElementManager.addElementAmount(target, Element.FIRE, false, scale * 5);
                 }
             });
         }
@@ -418,7 +418,7 @@ public class ElementReactions {
 
         private final float waterAmount;
 
-        private MeltingReaction(String name, boolean once, float waterAmount, Elements main, float mainAmount, Elements off, float offAmount) {
+        private MeltingReaction(String name, boolean once, float waterAmount, Element main, float mainAmount, Element off, float offAmount) {
             super(name, once, main, mainAmount, off, offAmount);
             this.waterAmount = waterAmount;
         }
@@ -426,10 +426,10 @@ public class ElementReactions {
         @Override
         public float match(Entity entity) {
             final float scale = super.match(entity);
-            if(!ElementManager.hasElement(entity, Elements.WATER, false)){
+            if(!ElementManager.hasElement(entity, Element.WATER, false)){
                 return scale;
             } else if(entity.level().getRandom().nextFloat() < 0.05F) {
-                final float amount = Math.min(ElementManager.getAmount(entity, Elements.WATER, false), this.waterAmount * scale);
+                final float amount = Math.min(ElementManager.getAmount(entity, Element.WATER, false), this.waterAmount * scale);
                 return Math.min(scale, amount / this.waterAmount) / 5;
             }
             return 0F;
@@ -440,14 +440,14 @@ public class ElementReactions {
             super.doReaction(entity, scale);
             float seconds = 4 * scale;
             float range = 1.5F * scale;
-            if(ElementManager.hasElement(entity, Elements.FIRE, true)){
+            if(ElementManager.hasElement(entity, Element.FIRE, true)){
                 seconds *= 1.5F;
             }
-            if(ElementManager.hasElement(entity, Elements.METAL, true)){
+            if(ElementManager.hasElement(entity, Element.METAL, true)){
                 range += Math.sqrt(scale + 1) / 2;
             }
 
-            final boolean hasWater = ElementManager.hasElement(entity, Elements.WATER, false);
+            final boolean hasWater = ElementManager.hasElement(entity, Element.WATER, false);
             // 水介入反应导致爆炸被抑制。
             if(hasWater){
                 seconds *= 0.5F;
@@ -458,7 +458,7 @@ public class ElementReactions {
             // 爆炸后再附着元素。
             if(hasWater){
                 EntityUtil.forRange(entity, LivingEntity.class, range * 2, range, EntityHelper::isEntityValid, (target, factor) -> {
-                    ElementManager.addElementAmount(target, Elements.WATER, false, scale * 10F * factor);
+                    ElementManager.addElementAmount(target, Element.WATER, false, scale * 10F * factor);
                 });
             }
         }
@@ -466,8 +466,8 @@ public class ElementReactions {
         @Override
         public void consume(Entity entity, float scale) {
             super.consume(entity, scale);
-            if(ElementManager.hasElement(entity, Elements.WATER, false)){
-                ElementManager.consumeAmount(entity, Elements.WATER, false, this.waterAmount * scale);
+            if(ElementManager.hasElement(entity, Element.WATER, false)){
+                ElementManager.consumeAmount(entity, Element.WATER, false, this.waterAmount * scale);
             }
         }
     }
@@ -479,7 +479,7 @@ public class ElementReactions {
 
         private final float waterAmount;
 
-        private CuttingReaction(String name, boolean once, float waterAmount, Elements main, float mainAmount, Elements off, float offAmount) {
+        private CuttingReaction(String name, boolean once, float waterAmount, Element main, float mainAmount, Element off, float offAmount) {
             super(name, once, main, mainAmount, off, offAmount);
             this.waterAmount = waterAmount;
         }
@@ -495,11 +495,11 @@ public class ElementReactions {
     public static class GildingReaction extends ElementReaction {
 
         private static final List<GildingReaction> REACTIONS = new ArrayList<>();
-        private final Elements element;
+        private final Element element;
         private final float amount;
 
-        private GildingReaction(String name, float mainAmount, Elements off, float offAmount) {
-            super(name, false, 150, List.of(new ElementEntry(Elements.EARTH, true, mainAmount), new ElementEntry(off, false, offAmount)));
+        private GildingReaction(String name, float mainAmount, Element off, float offAmount) {
+            super(name, false, 150, List.of(new ElementEntry(Element.EARTH, true, mainAmount), new ElementEntry(off, false, offAmount)));
             this.element = off;
             this.amount = offAmount;
             REACTIONS.add(this);
@@ -526,12 +526,12 @@ public class ElementReactions {
 
         public static final int SPIRIT_COST = 10;
         private final Supplier<EntityType<T>> spiritType;
-        private final Elements element;
+        private final Element element;
         private final float amount;
 
-        private SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Elements element, float amount) {
+        private SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Element element, float amount) {
             super(name, true, 200, List.of(
-                    new ElementEntry(Elements.SPIRIT, true, SPIRIT_COST),
+                    new ElementEntry(Element.SPIRIT, true, SPIRIT_COST),
                     new ElementEntry(element, true, amount)
             ));
             this.spiritType = spiritType;
@@ -543,14 +543,14 @@ public class ElementReactions {
         public void doReaction(Entity entity, float scale) {
             if(entity.level() instanceof ServerLevel serverLevel){
                 EntityUtil.spawn(serverLevel, this.spiritType.get(), entity.position()).ifPresent(spirit -> {
-                    ElementManager.addElementAmount(spirit, Elements.SPIRIT, false, scale * SPIRIT_COST);
+                    ElementManager.addElementAmount(spirit, Element.SPIRIT, false, scale * SPIRIT_COST);
                     ElementManager.addElementAmount(spirit, element, false, scale * amount);
                 });
             }
         }
     }
 
-    record ElementEntry(Elements element, boolean mustRobust, float amount) {
+    record ElementEntry(Element element, boolean mustRobust, float amount) {
 
     }
 

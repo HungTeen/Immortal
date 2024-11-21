@@ -2,7 +2,7 @@ package hungteen.imm.common.spell;
 
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.spell.spells.basic.*;
 import hungteen.imm.common.spell.spells.common.FlyWithItemSpell;
@@ -83,12 +83,12 @@ ISpellType CRYSTAL_EXPLOSION = register(new CrystalExplosionSpell());
 
     /* 元素精通 - Element Mastery */
 
-    ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Elements.METAL));
-    ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Elements.WOOD));
-    ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Elements.WATER));
-    ISpellType FIRE_MASTERY = register(new ElementalMasterySpell(Elements.FIRE));
-    ISpellType EARTH_MASTERY = register(new ElementalMasterySpell(Elements.EARTH));
-    ISpellType SPIRIT_MASTERY = register(new ElementalMasterySpell(Elements.SPIRIT));
+    ISpellType METAL_MASTERY = register(new ElementalMasterySpell(Element.METAL));
+    ISpellType WOOD_MASTERY = register(new ElementalMasterySpell(Element.WOOD));
+    ISpellType WATER_MASTERY = register(new ElementalMasterySpell(Element.WATER));
+    ISpellType FIRE_MASTERY = register(new ElementalMasterySpell(Element.FIRE));
+    ISpellType EARTH_MASTERY = register(new ElementalMasterySpell(Element.EARTH));
+    ISpellType SPIRIT_MASTERY = register(new ElementalMasterySpell(Element.SPIRIT));
 
     //    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
 //            lvl -> {

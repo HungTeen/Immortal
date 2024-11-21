@@ -2,7 +2,7 @@ package hungteen.imm.common.network;
 
 import hungteen.htlib.common.network.ClientPacketContext;
 import hungteen.htlib.common.network.packet.PlayToClientPacket;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
@@ -18,9 +18,9 @@ public class EntityElementPacket implements PlayToClientPacket {
     private final boolean robust;
     private final float value;
 
-    public EntityElementPacket(int entityId, Elements elements, boolean robust, float value) {
+    public EntityElementPacket(int entityId, Element element, boolean robust, float value) {
         this.entityId = entityId;
-        this.type = elements.name();
+        this.type = element.name();
         this.robust = robust;
         this.value = value;
     }

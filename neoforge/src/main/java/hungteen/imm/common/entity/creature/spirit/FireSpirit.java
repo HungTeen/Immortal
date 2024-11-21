@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
@@ -76,7 +76,7 @@ public class FireSpirit extends ElementSpirit{
                 EntityUtil.forRange(this, LivingEntity.class, 2F, 2F, target -> {
                     return !(target instanceof FireSpirit) && this != target.getVehicle();
                 }, (target, factor) -> {
-                    ElementManager.addElementAmount(target, Elements.FIRE, false, 0.5F * factor, 2);
+                    ElementManager.addElementAmount(target, Element.FIRE, false, 0.5F * factor, 2);
                     target.setRemainingFireTicks(100);
                 });
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 10, 0.1);
@@ -98,21 +98,21 @@ public class FireSpirit extends ElementSpirit{
         EntityUtil.forRange(this, LivingEntity.class, 4F, 3F, target -> {
             return !(target instanceof FireSpirit);
         }, (target, factor) -> {
-            ElementManager.addElementAmount(target, Elements.FIRE, false, scale * 2 * factor);
+            ElementManager.addElementAmount(target, Element.FIRE, false, scale * 2 * factor);
             target.hurt(IMMDamageSources.fireElement(this), scale * factor * 6);
         });
         this.playSound(SoundEvents.GENERIC_EXPLODE.value());
     }
 
     protected void split(){
-        final float spiritAmount = ElementManager.getElementAmount(this, Elements.SPIRIT, false);
-        final float fireAmount = ElementManager.getElementAmount(this, Elements.FIRE, false);
+        final float spiritAmount = ElementManager.getElementAmount(this, Element.SPIRIT, false);
+        final float fireAmount = ElementManager.getElementAmount(this, Element.FIRE, false);
         if(this.level() instanceof ServerLevel serverLevel && this.getSplitChance() > 0 && Math.min(spiritAmount, fireAmount) >= SPLIT_AMOUNT){
             for(int i = 0; i < 2; ++ i){
                 EntityUtil.spawn(serverLevel, IMMEntities.FIRE_SPIRIT.get(), position()).ifPresent(spirit -> {
                     spirit.setSplitChance(this.getSplitChance() - 1);
-                    ElementManager.addElementAmount(spirit, Elements.SPIRIT, false, spiritAmount * 0.5F);
-                    ElementManager.addElementAmount(spirit, Elements.FIRE, false, fireAmount * 0.5F);
+                    ElementManager.addElementAmount(spirit, Element.SPIRIT, false, spiritAmount * 0.5F);
+                    ElementManager.addElementAmount(spirit, Element.FIRE, false, fireAmount * 0.5F);
                     spirit.setRealmLevel(this.getRealmLevel());
                     spirit.setRealm(this.getRealm());
                 });
@@ -178,8 +178,8 @@ public class FireSpirit extends ElementSpirit{
     }
 
     @Override
-    public Elements getElement() {
-        return Elements.FIRE;
+    public Element getElement() {
+        return Element.FIRE;
     }
 
     protected SoundEvent getJumpSound() {

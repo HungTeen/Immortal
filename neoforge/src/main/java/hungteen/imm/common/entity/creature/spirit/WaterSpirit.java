@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
@@ -102,7 +102,7 @@ public class WaterSpirit extends ElementSpirit {
         if(target instanceof LivingEntity living){
             this.startRiding(target);
             if(living.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value())) {
-                ElementManager.addElementAmount(target, Elements.WATER, false, 3F, 5F);
+                ElementManager.addElementAmount(target, Element.WATER, false, 3F, 5F);
             }
             if(living.getAirSupply() <= 0){
                 living.setAirSupply(living.getAirSupply() - 5);
@@ -187,8 +187,8 @@ public class WaterSpirit extends ElementSpirit {
     }
 
     @Override
-    public Elements getElement() {
-        return Elements.WATER;
+    public Element getElement() {
+        return Element.WATER;
     }
 
 }

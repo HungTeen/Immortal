@@ -16,9 +16,9 @@ neoForge {
     version = libs.versions.neoforge.asProvider().get()
 
     validateAccessTransformers = true
-    accessTransformers.files.setFrom(project(":common").file("src/main/resources/META-INF/accesstransformer-nf.cfg"))
+    accessTransformers.files.setFrom("src/main/resources/META-INF/accesstransformer-nf.cfg")
 
-    addModdingDependenciesTo(sourceSets.test)
+//    addModdingDependenciesTo(sourceSets.test)
 
     parchment{
         minecraftVersion.set(libs.versions.parchment.minecraft.get())
@@ -68,8 +68,7 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.neoforge)
-    compileOnly(project(":common"))
+//    implementation(libs.neoforge)
 
     implementation("hungteen.htlib:HTLib:${mcVersion}-${htlibVersion}-neoforge")
 //    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
@@ -90,30 +89,12 @@ tasks.named('test').configure {
     enabled(false)
 }
 
-
-tasks.withType(JavaCompile).configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
-
-tasks.withType(Javadoc).configureEach {
-    source(project(":common").sourceSets.main.allJava)
-}
-
-tasks.named("sourcesJar", Jar) {
-    from(project(":common").sourceSets.main.allSource)
-}
-
-tasks.withType(ProcessResources).configureEach {
-    from project(":common").sourceSets.main.resources
-}
-
 task apiJar(type: Jar, dependsOn: classes) {
     archiveClassifier = 'api'
 
     include "hungteen/${modId}/api/**"
 
     // Sources included because of MinecraftForge/ForgeGradle#369
-    from project(":common").sourceSets.main.allJava
     from(sourceSets.main.allJava)
     from(sourceSets.main.output)
 }

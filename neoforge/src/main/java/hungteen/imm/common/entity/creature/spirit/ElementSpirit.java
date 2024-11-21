@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
@@ -69,7 +69,7 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     public void updateRealm(){
-        final float amount = ElementManager.getElementAmount(this, Elements.SPIRIT, false);
+        final float amount = ElementManager.getElementAmount(this, Element.SPIRIT, false);
         final int level = Mth.ceil(amount / ElementReactions.SummonSpiritReaction.SPIRIT_COST);
         this.setRealmLevel(level);
         this.setRealm(getRealmByLevel(level));
@@ -119,14 +119,14 @@ public abstract class ElementSpirit extends IMMMob {
         if(EntityHelper.isServer(this)){
             if(! this.attachedElement){
                 final float amount = (float) RandomHelper.getMinMax(getRandom(), 5F, 30F);
-                ElementManager.addElementAmount(this, Elements.SPIRIT, false, amount);
+                ElementManager.addElementAmount(this, Element.SPIRIT, false, amount);
                 ElementManager.addElementAmount(this, getElement(), false, amount);
                 this.attachedElement = true;
                 this.updateRealm();
             }
             if(this.tickCount % 5 == 0){
                 // No Support Element.
-                if(! ElementManager.hasElement(this, Elements.SPIRIT, false) || ! ElementManager.hasElement(this, getElement(), false)){
+                if(! ElementManager.hasElement(this, Element.SPIRIT, false) || ! ElementManager.hasElement(this, getElement(), false)){
                     this.disappear();
                     this.discard();
                 }
@@ -176,7 +176,7 @@ public abstract class ElementSpirit extends IMMMob {
 
     public abstract ISpiritualType getSpiritualRoot();
 
-    public abstract Elements getElement();
+    public abstract Element getElement();
 
     @Nullable
     @Override

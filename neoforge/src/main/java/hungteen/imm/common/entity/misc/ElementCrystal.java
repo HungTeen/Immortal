@@ -3,7 +3,7 @@ package hungteen.imm.common.entity.misc;
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.ElementManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +31,7 @@ public class ElementCrystal extends HTEntity {
         super.tick();
         this.tickMove(0.95F, 0.8F);
         if (EntityHelper.isServer(this) && (this.tickCount & 1) == 0) {
-            if (!ElementManager.hasElement(this, Elements.EARTH, true)) {
+            if (!ElementManager.hasElement(this, Element.EARTH, true)) {
                 this.discard();
             }
         }
@@ -63,7 +63,7 @@ public class ElementCrystal extends HTEntity {
             final float percent = (float) (1 - distance / 8);
             if (percent > 0) {
                 ElementManager.getElements(this).forEach((element, value) -> {
-                    if (element != Elements.EARTH) {
+                    if (element != Element.EARTH) {
                         ElementManager.addElementAmount(target, element, false, value * percent);
                     }
                 });

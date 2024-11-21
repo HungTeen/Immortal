@@ -2,7 +2,7 @@ package hungteen.imm.api.registry;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.registry.SimpleEntry;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
@@ -20,13 +20,13 @@ public interface ISpiritualType extends SimpleEntry, WeightedEntry {
      * 此灵根包含哪些基本元素。
      * @return basic elements.
      */
-    Set<Elements> getElements();
+    Set<Element> getElements();
 
     /**
      * 默认只有只含一种五行元素的灵根为普通灵根。
      */
     default boolean isCommonRoot(){
-        return getElements().size() == 1 && ! getElements().contains(Elements.SPIRIT);
+        return getElements().size() == 1 && ! getElements().contains(Element.SPIRIT);
     }
 
     /**

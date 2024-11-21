@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.client.ClientUtil;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.ElementManager;
@@ -39,8 +39,8 @@ public class ElementRenderer {
         final Player player = PlayerHelper.getClientPlayer().get();
         if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
-            final Map<Elements, Float> elements = ElementManager.getElements(entity);
-            final List<Elements> list = PlayerUtil.filterElements(ClientUtil.player(), elements.keySet().stream().toList());
+            final Map<Element, Float> elements = ElementManager.getElements(entity);
+            final List<Element> list = PlayerUtil.filterElements(ClientUtil.player(), elements.keySet().stream().toList());
             final int cnt = list.size();
             final float barWidth = cnt + (cnt - 1) * ELEMENT_INTERVAL;
             stack.pushPose();
@@ -50,7 +50,7 @@ public class ElementRenderer {
             RenderSystem.enableBlend();
             if(! list.isEmpty()){
                 int tmp = 0;
-                for (Elements element : list) {
+                for (Element element : list) {
                     if(! elements.containsKey(element)) continue;
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);

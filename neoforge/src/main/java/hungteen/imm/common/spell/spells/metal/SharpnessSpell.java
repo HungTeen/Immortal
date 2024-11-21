@@ -1,6 +1,6 @@
 package hungteen.imm.common.spell.spells.metal;
 
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
@@ -25,7 +25,7 @@ public class SharpnessSpell extends SpellType {
     }
 
     public static void checkSharpening(@Nullable Entity owner, LivingDamageEvent.Pre event){
-        if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Elements.METAL, true)){
+        if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Element.METAL, true)){
             SpellManager.activateSpell(entity, SpellTypes.SHARPNESS, (p, result, spell, level) -> {
                 event.setNewDamage(event.getNewDamage() * 1.5F);
                 return true;

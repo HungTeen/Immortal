@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import net.minecraft.core.particles.ParticleOptions;
@@ -65,7 +65,7 @@ public class PoisonWind extends ThrowableProjectile {
                 cloud.addEffect(EffectHelper.viewEffect(MobEffects.POISON, 200, 2));
                 if (!list.isEmpty()) {
                     for(LivingEntity livingentity : list) {
-                        ElementManager.addElementAmount(livingentity, Elements.WOOD, false, 1, 2F);
+                        ElementManager.addElementAmount(livingentity, Element.WOOD, false, 1, 2F);
                         double d0 = this.distanceToSqr(livingentity);
                         if (d0 < 16.0D) {
                             cloud.setPos(livingentity.getX(), livingentity.getY(), livingentity.getZ());

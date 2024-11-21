@@ -9,7 +9,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.IRealmType;
@@ -202,7 +202,7 @@ public class IMMCommand {
         });
 
         // Command about element reactions.
-        Arrays.stream(Elements.values()).forEach(element -> {
+        Arrays.stream(Element.values()).forEach(element -> {
             builder.then(Commands.literal("element")
                     .then(Commands.literal("add")
                             .then(Commands.argument("targets", EntityArgument.entities())
@@ -451,7 +451,7 @@ public class IMMCommand {
 
     /* Element Reaction */
 
-    private static int addElementAmount(CommandSourceStack source, Collection<? extends Entity> targets, Elements element, boolean robust, float amount) {
+    private static int addElementAmount(CommandSourceStack source, Collection<? extends Entity> targets, Element element, boolean robust, float amount) {
         targets.forEach(target -> {
             ElementManager.addElementAmount(target, element, robust, amount);
         });

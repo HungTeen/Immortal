@@ -2,7 +2,7 @@ package hungteen.imm.common.capability.entity;
 
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.impl.registry.ElementReactions;
@@ -129,17 +129,17 @@ public class IMMEntityCapability implements IIMMEntityCapability {
     }
 
     public void clearElements() {
-        for (Elements element : Elements.values()) {
+        for (Element element : Element.values()) {
             setElementAmount(element, true, 0);
             setElementAmount(element, false, 0);
         }
     }
 
-    public void setElementAmount(Elements element, boolean robust, float amount) {
+    public void setElementAmount(Element element, boolean robust, float amount) {
         setElementAmount(element, robust, amount, true);
     }
 
-    public void setElementAmount(Elements element, boolean robust, float amount, boolean check) {
+    public void setElementAmount(Element element, boolean robust, float amount, boolean check) {
         final float oldAmount = getElementAmount(element, robust);
         if (check) {
             this.checkValid(element, robust);
@@ -156,17 +156,17 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         this.sendElementPacket(element, robust, getElementAmount(element, robust));
     }
 
-    public void addElementAmount(Elements element, boolean robust, float value) {
+    public void addElementAmount(Element element, boolean robust, float value) {
         this.addElementAmount(element, robust, value, Float.MAX_VALUE);
     }
 
-    public void addElementAmount(Elements element, boolean robust, float value, float maxAmount) {
+    public void addElementAmount(Element element, boolean robust, float value, float maxAmount) {
         this.checkValid(element, robust);
         final float result = Mth.clamp(getElementAmount(element, robust) + value, 0, maxAmount);
         this.setElementAmount(element, robust, result, false);
     }
 
-    public float getElementAmount(Elements element, boolean robust) {
+    public float getElementAmount(Element element, boolean robust) {
         return robust ? this.robustElementData.getAmount(element) : this.weakElementData.getAmount(element);
     }
 
@@ -174,9 +174,9 @@ public class IMMEntityCapability implements IIMMEntityCapability {
      * Negative float means weak, vise versa robust.
      * @return (Elements -> float)
      */
-    public Map<Elements, Float> getElementMap() {
-        final Map<Elements, Float> map = new EnumMap<>(Elements.class);
-        for (Elements element : Elements.values()) {
+    public Map<Element, Float> getElementMap() {
+        final Map<Element, Float> map = new EnumMap<>(Element.class);
+        for (Element element : Element.values()) {
             float amount = getElementAmount(element, true);
             if(amount > 0){
                 map.put(element, amount);
@@ -190,7 +190,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         return map;
     }
 
-    private void setLastUpdateTick(Elements element, boolean robust) {
+    private void setLastUpdateTick(Element element, boolean robust) {
         if (EntityHelper.isServer(entity)) {
             if (robust) {
                 this.robustElementData.setLastUpdateTick(element, this.getTime());
@@ -200,11 +200,11 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         }
     }
 
-    private long getLastUpdateTick(Elements element, boolean robust) {
+    private long getLastUpdateTick(Element element, boolean robust) {
         return robust ? this.robustElementData.getLastUpdateTick(element) : this.weakElementData.getLastUpdateTick(element);
     }
 
-    public boolean hasElement(Elements element, boolean robust) {
+    public boolean hasElement(Element element, boolean robust) {
         return getElementAmount(element, robust) > 0;
     }
 
@@ -224,7 +224,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         return quenchBladeDamage;
     }
 
-    public void checkValid(Elements element, boolean robust) {
+    public void checkValid(Element element, boolean robust) {
         if (EntityHelper.isServer(entity)) {
             if (this.getLastUpdateTick(element, robust) + ElementManager.ESCAPE_UPDATE_CD < this.entity.level().getGameTime()) {
                 if (this.hasElement(element, robust)) {
@@ -234,7 +234,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
         }
     }
 
-    public void sendElementPacket(Elements element, boolean robust, float amount) {
+    public void sendElementPacket(Element element, boolean robust, float amount) {
         if (EntityHelper.isServer(entity)) {
             NetworkHelper.sendToClientTrackingPlayerAndSelf(this.entity, new EntityElementPacket(this.entity.getId(), element, robust, amount));
         }
@@ -246,8 +246,8 @@ public class IMMEntityCapability implements IIMMEntityCapability {
 
     private static class ElementData {
 
-        private final EnumMap<Elements, Float> elementAmounts = new EnumMap<>(Elements.class);
-        private final EnumMap<Elements, Long> lastUpdateTicks = new EnumMap<>(Elements.class);
+        private final EnumMap<Element, Float> elementAmounts = new EnumMap<>(Element.class);
+        private final EnumMap<Element, Long> lastUpdateTicks = new EnumMap<>(Element.class);
 
         public CompoundTag serializeNBT() {
             final CompoundTag tag = new CompoundTag();
@@ -272,7 +272,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
             if (tag.contains("ElementAmounts")) {
                 this.elementAmounts.clear();
                 final CompoundTag nbt = tag.getCompound("ElementAmounts");
-                Arrays.stream(Elements.values()).forEach(type -> {
+                Arrays.stream(Element.values()).forEach(type -> {
                     if (nbt.contains(type.toString())) {
                         this.elementAmounts.put(type, nbt.getFloat(type.toString()));
                     }
@@ -281,7 +281,7 @@ public class IMMEntityCapability implements IIMMEntityCapability {
             if (tag.contains("LastUpdateTicks")) {
                 this.lastUpdateTicks.clear();
                 final CompoundTag nbt = tag.getCompound("LastUpdateTicks");
-                Arrays.stream(Elements.values()).forEach(type -> {
+                Arrays.stream(Element.values()).forEach(type -> {
                     if (nbt.contains(type.toString())) {
                         this.lastUpdateTicks.put(type, nbt.getLong(type.toString()));
                     }
@@ -289,19 +289,19 @@ public class IMMEntityCapability implements IIMMEntityCapability {
             }
         }
 
-        public float getAmount(Elements element) {
+        public float getAmount(Element element) {
             return this.elementAmounts.getOrDefault(element, 0F);
         }
 
-        public long getLastUpdateTick(Elements element) {
+        public long getLastUpdateTick(Element element) {
             return this.lastUpdateTicks.getOrDefault(element, 0L);
         }
 
-        public void setAmount(Elements element, float value) {
+        public void setAmount(Element element, float value) {
             this.elementAmounts.put(element, value);
         }
 
-        public void setLastUpdateTick(Elements element, long lastTick) {
+        public void setLastUpdateTick(Element element, long lastTick) {
             this.lastUpdateTicks.put(element, lastTick);
         }
 

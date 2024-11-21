@@ -1,4 +1,4 @@
-package hungteen.imm.api.enums;
+package hungteen.imm.api.cultivation;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
@@ -9,7 +9,7 @@ import net.minecraft.util.StringRepresentable;
  * @program Immortal
  * @data 2023/2/25 10:30
  */
-public enum Elements implements StringRepresentable {
+public enum Element implements StringRepresentable {
 
     /**
      * 金元素。
@@ -41,11 +41,11 @@ public enum Elements implements StringRepresentable {
      */
     SPIRIT(false, 1F);
 
-    public static final Codec<Elements> CODEC = StringRepresentable.fromEnum(Elements::values);
+    public static final Codec<Element> CODEC = StringRepresentable.fromEnum(Element::values);
     private final boolean isPhysical;
     private final float attachFactor;
 
-    Elements(boolean isPhysical, float attachFactor) {
+    Element(boolean isPhysical, float attachFactor) {
         this.isPhysical = isPhysical;
         this.attachFactor = attachFactor;
     }

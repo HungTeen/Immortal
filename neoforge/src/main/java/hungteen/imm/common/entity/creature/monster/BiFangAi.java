@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
@@ -254,8 +254,8 @@ public class BiFangAi {
                 instance.absent(IMMMemories.SPELL_COOLING_DOWN.get())
         ).apply(instance, (target, cd) -> (level, mob, time) -> {
             if (mob.distanceTo(instance.get(target)) < 10 && mob.getMana() >= manaCost) {
-                ElementManager.addElementAmount(mob, Elements.FIRE, false, 20);
-                ElementManager.addElementAmount(mob, Elements.WOOD, true, 20);
+                ElementManager.addElementAmount(mob, Element.FIRE, false, 20);
+                ElementManager.addElementAmount(mob, Element.WOOD, true, 20);
                 mob.addMana(-manaCost);
                 mob.getBrain().setMemoryWithExpiry(IMMMemories.SPELL_COOLING_DOWN.get(), true, cdProvider.sample(mob.getRandom()));
                 return true;
@@ -383,7 +383,7 @@ public class BiFangAi {
                     }
                     return false;
                 }).forEach(target -> {
-                    ElementManager.addElementAmount(target, Elements.WOOD, false, 6);
+                    ElementManager.addElementAmount(target, Element.WOOD, false, 6);
                 });
                 EntityUtil.playSound(biFang, IMMSounds.BI_FANG_FLAP.get(), SoundSource.HOSTILE);
             }

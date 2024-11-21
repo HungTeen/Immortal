@@ -1,6 +1,6 @@
 package hungteen.imm.common.world.biome;
 
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.world.feature.IMMVegetationPlacements;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -58,7 +58,7 @@ public class EastWorldBiomes {
             BiomeDefaultFeatures.plainsSpawns(spawnBuilder);
         }
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.WATER, Elements.EARTH);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.WATER, Element.EARTH);
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -99,7 +99,7 @@ public class EastWorldBiomes {
 //        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 1, 2)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 2, 6)).addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 2, 2, 4));
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.WATER, Elements.EARTH);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.WATER, Element.EARTH);
 
         EastWorldFeatures.globalGeneration(genBuilder);
         EastWorldFeatures.addOres(genBuilder, false, false);
@@ -122,7 +122,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.farmAnimals(spawnBuilder);
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.WOOD, Elements.FIRE);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.WOOD, Element.FIRE);
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -145,7 +145,7 @@ public class EastWorldBiomes {
         final MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.METAL, Elements.FIRE, Elements.EARTH);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.METAL, Element.FIRE, Element.EARTH);
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -171,7 +171,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.commonSpawns(spawnBuilder);
         EastWorldFeatures.addSharpStake(spawnBuilder);
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.METAL, Elements.WOOD);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.METAL, Element.WOOD);
 
         final BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);
@@ -229,7 +229,7 @@ public class EastWorldBiomes {
         BiomeDefaultFeatures.baseJungleSpawns(spawnBuilder);
         EastWorldFeatures.addSharpStake(spawnBuilder);
         EastWorldFeatures.addSpiritualCultivator(spawnBuilder);
-        EastWorldFeatures.addSpirit(spawnBuilder, Elements.METAL, Elements.WOOD);
+        EastWorldFeatures.addSpirit(spawnBuilder, Element.METAL, Element.WOOD);
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder(features, carvers);
         EastWorldFeatures.globalGeneration(genBuilder);

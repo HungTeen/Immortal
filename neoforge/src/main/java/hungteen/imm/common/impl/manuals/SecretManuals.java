@@ -3,7 +3,7 @@ package hungteen.imm.common.impl.manuals;
 import hungteen.htlib.api.registry.HTCodecRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.api.registry.ISpellType;
@@ -93,11 +93,11 @@ public interface SecretManuals {
         /* 金系法术 */
         register(context, SpellTypes.CRITICAL_HIT, 1, builder -> {
             builder.require(spiritual_level_1)
-                    .require(ElementRequirement.create(Elements.METAL));
+                    .require(ElementRequirement.create(Element.METAL));
         });
         register(context, SpellTypes.METAL_MENDING, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.METAL));
+                    .require(ElementRequirement.create(Element.METAL));
         });
         register(context, SpellTypes.SHARPNESS, 1, builder -> {
             builder.require(spiritual_level_3)
@@ -107,16 +107,16 @@ public interface SecretManuals {
         /* 木系法术 */
         register(context, SpellTypes.LEVITATION, 1, builder -> {
             builder.require(spiritual_level_1)
-                    .require(ElementRequirement.create(Elements.WOOD));
+                    .require(ElementRequirement.create(Element.WOOD));
         });
         register(context, SpellTypes.SPROUT, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.WOOD))
+                    .require(ElementRequirement.create(Element.WOOD))
                     .require(SpellRequirement.single(SpellTypes.RELEASING, 1));
         });
         register(context, SpellTypes.WITHER, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.WOOD))
+                    .require(ElementRequirement.create(Element.WOOD))
                     .require(SpellRequirement.single(SpellTypes.RELEASING, 1));
         });
         register(context, SpellTypes.WOOD_HEALING, 1, builder -> {
@@ -127,21 +127,21 @@ public interface SecretManuals {
         /* 水系法术 */
         register(context, SpellTypes.WATER_BREATHING, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.WATER));
+                    .require(ElementRequirement.create(Element.WATER));
         });
 
         /* 火系法术 */
         register(context, SpellTypes.BURNING, 1, builder -> {
             builder.require(spiritual_level_1)
-                    .require(ElementRequirement.create(Elements.FIRE));
+                    .require(ElementRequirement.create(Element.FIRE));
         });
         register(context, SpellTypes.BURNING, 2, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.FIRE));
+                    .require(ElementRequirement.create(Element.FIRE));
         });
         register(context, SpellTypes.LAVA_BREATHING, 1, builder -> {
             builder.require(spiritual_level_2)
-                    .require(ElementRequirement.create(Elements.FIRE));
+                    .require(ElementRequirement.create(Element.FIRE));
         });
         register(context, SpellTypes.IGNITION, 1, builder -> {
             builder.require(spiritual_level_2)
@@ -163,7 +163,7 @@ public interface SecretManuals {
         });
 
         /* 元素精通 */
-        for (Elements element : Elements.values()) {
+        for (Element element : Element.values()) {
             final ISpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
                 builder.require(spiritual_level_2)

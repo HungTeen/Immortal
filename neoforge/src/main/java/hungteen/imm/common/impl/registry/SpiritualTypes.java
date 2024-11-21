@@ -5,7 +5,7 @@ import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.IMMConfigs;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -30,7 +30,7 @@ public interface SpiritualTypes {
 
     ISpiritualType METAL = register(new SpiritualType(
             "metal",
-            Set.of(Elements.METAL),
+            Set.of(Element.METAL),
             IMMConfigs::getMetalWeight,
             1,
             ColorHelper.METAL_ROOT,
@@ -40,7 +40,7 @@ public interface SpiritualTypes {
 
     ISpiritualType WOOD = register(new SpiritualType(
             "wood",
-            Set.of(Elements.WOOD),
+            Set.of(Element.WOOD),
             IMMConfigs::getWoodWeight,
             2,
             ColorHelper.WOOD_ROOT,
@@ -50,7 +50,7 @@ public interface SpiritualTypes {
 
     ISpiritualType WATER = register(new SpiritualType(
             "water",
-            Set.of(Elements.WATER),
+            Set.of(Element.WATER),
             IMMConfigs::getWaterWeight,
             3,
             ColorHelper.WATER_ROOT,
@@ -60,7 +60,7 @@ public interface SpiritualTypes {
 
     ISpiritualType FIRE = register(new SpiritualType(
             "fire",
-            Set.of(Elements.FIRE),
+            Set.of(Element.FIRE),
             IMMConfigs::getFireWeight,
             4,
             ColorHelper.FIRE_ROOT,
@@ -70,7 +70,7 @@ public interface SpiritualTypes {
 
     ISpiritualType EARTH = register(new SpiritualType(
             "earth",
-            Set.of(Elements.EARTH),
+            Set.of(Element.EARTH),
             IMMConfigs::getEarthWeight,
             5,
             ColorHelper.EARTH_ROOT,
@@ -80,7 +80,7 @@ public interface SpiritualTypes {
 
     ISpiritualType SPIRIT = register(new SpiritualType(
             "spirit",
-            Set.of(Elements.SPIRIT),
+            Set.of(Element.SPIRIT),
             IMMConfigs::getSpiritWeight,
             6,
             ColorHelper.PURPLE.rgb(),
@@ -112,7 +112,7 @@ public interface SpiritualTypes {
         return SPIRITUAL_TYPES;
     }
 
-    record SpiritualType(String name, Set<Elements> elements, Supplier<Integer> weightSupplier, int priority,
+    record SpiritualType(String name, Set<Element> elements, Supplier<Integer> weightSupplier, int priority,
                          int spiritualColor, int id, ChatFormatting textColor) implements ISpiritualType {
 
         @Override
@@ -131,7 +131,7 @@ public interface SpiritualTypes {
         }
 
         @Override
-        public Set<Elements> getElements() {
+        public Set<Element> getElements() {
             return elements();
         }
 

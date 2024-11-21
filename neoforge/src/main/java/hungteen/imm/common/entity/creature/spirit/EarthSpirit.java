@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
@@ -160,9 +160,9 @@ public class EarthSpirit extends ElementSpirit {
     }
 
     public void eat(ElementCrystal amethyst){
-        final float amount = ElementManager.getElementAmount(amethyst, Elements.EARTH, false);
-        ElementManager.addElementAmount(this, Elements.EARTH, false, amount);
-        ElementManager.addElementAmount(this, Elements.SPIRIT, false, amount);
+        final float amount = ElementManager.getElementAmount(amethyst, Element.EARTH, false);
+        ElementManager.addElementAmount(this, Element.EARTH, false, amount);
+        ElementManager.addElementAmount(this, Element.SPIRIT, false, amount);
         this.heal(5);
         amethyst.breakAmethyst();
     }
@@ -181,8 +181,8 @@ public class EarthSpirit extends ElementSpirit {
     }
 
     @Override
-    public Elements getElement() {
-        return Elements.EARTH;
+    public Element getElement() {
+        return Element.EARTH;
     }
 
     public static BehaviorControl<Mob> createPath() {

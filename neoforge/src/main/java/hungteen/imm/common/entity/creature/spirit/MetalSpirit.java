@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.creature.spirit;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.ISpiritualType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
@@ -102,7 +102,7 @@ public class MetalSpirit extends ElementSpirit{
 
     @Override
     public boolean doHurtTarget(Entity target) {
-        ElementManager.addElementAmount(target, Elements.METAL, false, 3, 5);
+        ElementManager.addElementAmount(target, Element.METAL, false, 3, 5);
         return super.doHurtTarget(target);
     }
 
@@ -120,8 +120,8 @@ public class MetalSpirit extends ElementSpirit{
     }
 
     @Override
-    public Elements getElement() {
-        return Elements.METAL;
+    public Element getElement() {
+        return Element.METAL;
     }
 
     static class SpiritMeleeAttackGoal extends MeleeAttackGoal {

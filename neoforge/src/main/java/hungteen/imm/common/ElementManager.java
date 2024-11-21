@@ -3,7 +3,7 @@ package hungteen.imm.common;
 import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
@@ -50,43 +50,43 @@ public class ElementManager {
     public static final int DISPLAY_ROBUST_CD = 10;
     private static final float DECAY_SPEED = 0.03F;
     private static final float DECAY_VALUE = 0.1F;
-    private static final Map<Elements, Elements> TARGET_ELEMENTS = new EnumMap<>(Elements.class);
-    private static final Map<Elements, TagKey<Block>> ELEMENT_BLOCK_TAGS = new EnumMap<>(Elements.class);
-    private static final Map<Elements, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Elements.class);
-    private static final Map<Elements, HTColor> ELEMENT_COLOR_MAP = new EnumMap<>(Elements.class);
+    private static final Map<Element, Element> TARGET_ELEMENTS = new EnumMap<>(Element.class);
+    private static final Map<Element, TagKey<Block>> ELEMENT_BLOCK_TAGS = new EnumMap<>(Element.class);
+    private static final Map<Element, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Element.class);
+    private static final Map<Element, HTColor> ELEMENT_COLOR_MAP = new EnumMap<>(Element.class);
 
     static {
         TARGET_ELEMENTS.putAll(Map.of(
-                Elements.METAL, Elements.WOOD,
-                Elements.WOOD, Elements.EARTH,
-                Elements.WATER, Elements.FIRE,
-                Elements.FIRE, Elements.METAL,
-                Elements.EARTH, Elements.WATER,
-                Elements.SPIRIT, Elements.SPIRIT
+                Element.METAL, Element.WOOD,
+                Element.WOOD, Element.EARTH,
+                Element.WATER, Element.FIRE,
+                Element.FIRE, Element.METAL,
+                Element.EARTH, Element.WATER,
+                Element.SPIRIT, Element.SPIRIT
         ));
         ELEMENT_BLOCK_TAGS.putAll(Map.of(
-                Elements.METAL, IMMBlockTags.METAL_ELEMENT_ATTACHED_BLOCKS,
-                Elements.WOOD, IMMBlockTags.WOOD_ELEMENT_ATTACHED_BLOCKS,
-                Elements.WATER, IMMBlockTags.WATER_ELEMENT_ATTACHED_BLOCKS,
-                Elements.FIRE, IMMBlockTags.FIRE_ELEMENT_ATTACHED_BLOCKS,
-                Elements.EARTH, IMMBlockTags.EARTH_ELEMENT_ATTACHED_BLOCKS,
-                Elements.SPIRIT, IMMBlockTags.SPIRIT_ELEMENT_ATTACHED_BLOCKS
+                Element.METAL, IMMBlockTags.METAL_ELEMENT_ATTACHED_BLOCKS,
+                Element.WOOD, IMMBlockTags.WOOD_ELEMENT_ATTACHED_BLOCKS,
+                Element.WATER, IMMBlockTags.WATER_ELEMENT_ATTACHED_BLOCKS,
+                Element.FIRE, IMMBlockTags.FIRE_ELEMENT_ATTACHED_BLOCKS,
+                Element.EARTH, IMMBlockTags.EARTH_ELEMENT_ATTACHED_BLOCKS,
+                Element.SPIRIT, IMMBlockTags.SPIRIT_ELEMENT_ATTACHED_BLOCKS
         ));
         ELEMENT_PARTICLE_MAP.putAll(Map.of(
-                Elements.METAL, IMMParticles.METAL_ELEMENT,
-                Elements.WOOD, IMMParticles.WOOD_ELEMENT,
-                Elements.WATER, IMMParticles.WATER_ELEMENT,
-                Elements.FIRE, IMMParticles.FIRE_ELEMENT,
-                Elements.EARTH, IMMParticles.EARTH_ELEMENT,
-                Elements.SPIRIT, IMMParticles.SPIRIT_ELEMENT
+                Element.METAL, IMMParticles.METAL_ELEMENT,
+                Element.WOOD, IMMParticles.WOOD_ELEMENT,
+                Element.WATER, IMMParticles.WATER_ELEMENT,
+                Element.FIRE, IMMParticles.FIRE_ELEMENT,
+                Element.EARTH, IMMParticles.EARTH_ELEMENT,
+                Element.SPIRIT, IMMParticles.SPIRIT_ELEMENT
         ));
         ELEMENT_COLOR_MAP.putAll(Map.of(
-                Elements.METAL, ColorHelper.LITTLE_YELLOW1,
-                Elements.WOOD, ColorHelper.GREEN,
-                Elements.WATER, ColorHelper.DARK_BLUE,
-                Elements.FIRE, ColorHelper.RED,
-                Elements.EARTH, ColorHelper.GRAY,
-                Elements.SPIRIT, ColorHelper.PURPLE
+                Element.METAL, ColorHelper.LITTLE_YELLOW1,
+                Element.WOOD, ColorHelper.GREEN,
+                Element.WATER, ColorHelper.DARK_BLUE,
+                Element.FIRE, ColorHelper.RED,
+                Element.EARTH, ColorHelper.GRAY,
+                Element.SPIRIT, ColorHelper.PURPLE
         ));
     }
 
@@ -119,7 +119,7 @@ public class ElementManager {
                 // Decay Elements.
                 for (int i = 0; i < 2; ++i) {
                     final boolean robust = (i == 0);
-                    for (Elements element : Elements.values()) {
+                    for (Element element : Element.values()) {
                         if (cap.hasElement(element, robust)) {
                             final float decayAmount = getDecayAmount(entity, element, robust);
                             cap.addElementAmount(element, robust, -decayAmount);
@@ -130,13 +130,13 @@ public class ElementManager {
         }
     }
 
-    public static Elements getTargetElement(Elements element) {
-        return TARGET_ELEMENTS.getOrDefault(element, Elements.SPIRIT);
+    public static Element getTargetElement(Element element) {
+        return TARGET_ELEMENTS.getOrDefault(element, Element.SPIRIT);
     }
 
     public static void clientTickElements(Level level, Entity entity) {
-        for (Elements element : Elements.values()) {
-            if(element == Elements.SPIRIT) {
+        for (Element element : Element.values()) {
+            if(element == Element.SPIRIT) {
                 continue; // 业元素不显示粒子。
             }
             final float elementAmount = getAmount(entity, element, false);
@@ -155,11 +155,11 @@ public class ElementManager {
     public static void attachElement(LivingEntity entity) {
         if (entity.tickCount % 5 == 0 && entity.getRandom().nextFloat() < 0.1F) {
             if(entity.isInWaterOrRain()){
-                addElementAmount(entity, Elements.WATER, false, 1F);
+                addElementAmount(entity, Element.WATER, false, 1F);
                 return;
             }
             final BlockState state = entity.level().getBlockState(entity.getOnPos());
-            for (Map.Entry<Elements, TagKey<Block>> entry : ELEMENT_BLOCK_TAGS.entrySet()) {
+            for (Map.Entry<Element, TagKey<Block>> entry : ELEMENT_BLOCK_TAGS.entrySet()) {
                 if(state.is(entry.getValue())){
                     addElementAmount(entity, entry.getKey(), false, 1F);
                     break;
@@ -174,9 +174,9 @@ public class ElementManager {
     public static void attachDamageElement(ServerLevel level, LivingEntity entity, DamageSource source) {
         if (entity.getRandom().nextFloat() < 0.2F) {
             if (source.is(DamageTypes.IN_FIRE)) { // 篝火。
-                addElementAmount(entity, Elements.FIRE, false, 1F);
+                addElementAmount(entity, Element.FIRE, false, 1F);
             } else if (source.is(DamageTypes.LAVA)) { // 岩浆。
-                addElementAmount(entity, Elements.FIRE, false, 2F);
+                addElementAmount(entity, Element.FIRE, false, 2F);
             }
         }
     }
@@ -191,7 +191,7 @@ public class ElementManager {
         return 1F;
     }
 
-    public static float getDecayAmount(Entity entity, Elements element, boolean robust) {
+    public static float getDecayAmount(Entity entity, Element element, boolean robust) {
         return getDecayAmount(getElementAmount(entity, element, robust), getDecayFactor(entity));
     }
 
@@ -204,7 +204,7 @@ public class ElementManager {
         return an * amount - (1 - an) * DECAY_VALUE / DECAY_SPEED;
     }
 
-    public static int getLeftTick(Entity entity, Elements element, boolean robust) {
+    public static int getLeftTick(Entity entity, Element element, boolean robust) {
         return getLeftTick(getElementAmount(entity, element, robust), getDecayFactor(entity));
     }
 
@@ -263,26 +263,26 @@ public class ElementManager {
         return EntityUtil.getCapabilityResult(entity, cap -> cap.getActiveScale(reaction), 0F);
     }
 
-    public static void setElementAmount(Entity entity, Elements element, boolean robust, float value) {
+    public static void setElementAmount(Entity entity, Element element, boolean robust, float value) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> cap.setElementAmount(element, robust, value));
     }
 
-    public static void addElementAmount(Entity entity, Elements element, boolean robust, float value, float maxValue) {
+    public static void addElementAmount(Entity entity, Element element, boolean robust, float value, float maxValue) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> cap.addElementAmount(element, robust, value, maxValue));
     }
 
-    public static void addElementAmount(Entity entity, Elements element, boolean robust, float value) {
+    public static void addElementAmount(Entity entity, Element element, boolean robust, float value) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> cap.addElementAmount(element, robust, value));
     }
 
-    public static float getElementAmount(Entity entity, Elements element, boolean robust) {
+    public static float getElementAmount(Entity entity, Element element, boolean robust) {
         return EntityUtil.getCapabilityResult(entity, cap -> cap.getElementAmount(element, robust), 0F);
     }
 
     /**
      * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
      */
-    public static float getAmount(Entity entity, Elements element, boolean mustRobust) {
+    public static float getAmount(Entity entity, Element element, boolean mustRobust) {
         return EntityUtil.getCapabilityResult(entity, cap -> {
             return cap.getElementAmount(element, true) + (mustRobust ? 0 : cap.getElementAmount(element, false));
         }, 0F);
@@ -291,14 +291,14 @@ public class ElementManager {
     /**
      * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
      */
-    public static boolean hasElement(Entity entity, Elements element, boolean mustRobust) {
+    public static boolean hasElement(Entity entity, Element element, boolean mustRobust) {
         return EntityUtil.getCapabilityResult(entity, cap -> {
             return cap.hasElement(element, true) || (!mustRobust && cap.hasElement(element, false));
         }, false);
     }
 
     public static boolean hasElement(Entity entity, boolean mustRobust) {
-        for (Elements element : Elements.values()) {
+        for (Element element : Element.values()) {
             if (ElementManager.hasElement(entity, element, mustRobust)) {
                 return true;
             }
@@ -308,7 +308,7 @@ public class ElementManager {
 
     public static HTColor getElementColor(Entity entity, boolean mustRobust) {
         final Colors.ColorMixer mixer = Colors.mixer();
-        for (Elements element : Elements.values()) {
+        for (Element element : Element.values()) {
             if (hasElement(entity, element, mustRobust)) {
                 mixer.add(getElementColor(element));
             }
@@ -319,7 +319,7 @@ public class ElementManager {
     /**
      * @param mustRobust true的时候仅考虑强元素，否则为强弱元素之和。
      */
-    public static void consumeAmount(Entity entity, Elements element, boolean mustRobust, float amount) {
+    public static void consumeAmount(Entity entity, Element element, boolean mustRobust, float amount) {
         EntityUtil.getOptCapability(entity).ifPresent(cap -> {
             final float robustAmount = cap.getElementAmount(element, true);
             if (robustAmount >= amount || mustRobust) {
@@ -335,7 +335,7 @@ public class ElementManager {
         EntityUtil.getOptCapability(entity).ifPresent(IMMEntityCapability::clearElements);
     }
 
-    public static Map<Elements, Float> getElements(Entity entity) {
+    public static Map<Element, Float> getElements(Entity entity) {
         return EntityUtil.getCapabilityResult(entity, IMMEntityCapability::getElementMap, Map.of());
     }
 
@@ -353,11 +353,11 @@ public class ElementManager {
         return EntityUtil.getCapabilityResult(entity, IMMEntityCapability::getQuenchBladeDamage, 0F);
     }
 
-    public static ParticleOptions getParticle(Elements element) {
+    public static ParticleOptions getParticle(Element element) {
         return ELEMENT_PARTICLE_MAP.getOrDefault(element, IMMParticles.SPIRITUAL_MANA).get();
     }
 
-    public static HTColor getElementColor(Elements element) {
+    public static HTColor getElementColor(Element element) {
         return ELEMENT_COLOR_MAP.getOrDefault(element, ColorHelper.WHITE);
     }
 
@@ -380,7 +380,7 @@ public class ElementManager {
     /**
      * Amount need below threshold and last time is less than threshold.
      */
-    public static boolean needWarn(Entity entity, Elements element, boolean robust, float amount) {
+    public static boolean needWarn(Entity entity, Element element, boolean robust, float amount) {
         return (amount < DISAPPEAR_WARN_AMOUNT) && (amount / getDecayAmount(entity, element, robust) < DISAPPEAR_WARN_CD);
     }
 
@@ -388,11 +388,11 @@ public class ElementManager {
         return distanceSqr < 1000;
     }
 
-    public static MutableComponent name(Elements element) {
+    public static MutableComponent name(Element element) {
         return TipUtil.misc("element." + element.name().toLowerCase());
     }
 
-    public static MutableComponent getName(Elements element, boolean robust) {
+    public static MutableComponent getName(Element element, boolean robust) {
         return name(element).append("(").append(TipUtil.misc("element." + (robust ? "robust" : "weak"))).append(")");
     }
 

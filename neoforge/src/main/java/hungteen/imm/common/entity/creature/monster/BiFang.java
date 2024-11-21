@@ -4,7 +4,7 @@ import com.mojang.serialization.Dynamic;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.Elements;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.registry.ISpiritualType;
@@ -226,7 +226,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
         super.tick();
         if (EntityHelper.isServer(this)) {
             if (this.tickCount % 50 == 0 && this.getRandom().nextFloat() < 0.35F) {
-                ElementManager.addElementAmount(this, Elements.WOOD, true, 20);
+                ElementManager.addElementAmount(this, Element.WOOD, true, 20);
             }
             switch (this.getCurrentAnimation()) {
                 case ROAR -> {
