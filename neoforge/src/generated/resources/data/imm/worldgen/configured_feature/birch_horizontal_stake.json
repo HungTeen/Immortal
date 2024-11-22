@@ -3,10 +3,8 @@
   "config": {
     "length": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 9,
-        "min_inclusive": 3
-      }
+      "max_inclusive": 9,
+      "min_inclusive": 3
     },
     "log_state": {
       "type": "minecraft:simple_state_provider",
@@ -19,10 +17,8 @@
     },
     "width": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 3,
-        "min_inclusive": 1
-      }
+      "max_inclusive": 3,
+      "min_inclusive": 1
     }
   }
 }

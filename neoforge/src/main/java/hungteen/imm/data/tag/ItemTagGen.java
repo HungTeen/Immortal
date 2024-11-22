@@ -4,10 +4,12 @@ import hungteen.htlib.data.tag.HTItemTagGen;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,16 +20,13 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class ItemTagGen extends HTItemTagGen {
 
-    public ItemTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup) {
-        super(output, provider, tagLookup);
+    public ItemTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> tagLookup, ExistingFileHelper fileHelper) {
+        super(output, provider, tagLookup, Util.id(), fileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        /* Forge Tags */
-        this.tag(IMMItemTags.RICE_SEEDS).add(IMMItems.RICE_SEEDS.get());
-        this.tag(IMMItemTags.JUTE_SEEDS).add(IMMItems.JUTE_SEEDS.get());
-        this.tag(IMMItemTags.JUTE).add(IMMItems.JUTE.get());
+        this.addUniformTags();
 
         this.tag(IMMItemTags.SPIRITUAL_STONES).addTags(
                 IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE
@@ -42,11 +41,18 @@ public class ItemTagGen extends HTItemTagGen {
         this.copy(IMMBlockTags.COMMON_ARTIFACTS, IMMItemTags.COMMON_ARTIFACTS);
         this.copy(IMMBlockTags.MODERATE_ARTIFACTS, IMMItemTags.MODERATE_ARTIFACTS);
         this.copy(IMMBlockTags.ADVANCED_ARTIFACTS, IMMItemTags.ADVANCED_ARTIFACTS);
+    }
 
+    private void addUniformTags(){
+        // 矿石。
         this.tag(IMMItemTags.CINNABAR_GEMS).add(IMMItems.CINNABAR.get());
         this.copy(IMMBlockTags.CINNABAR_ORES, IMMItemTags.CINNABAR_ORES);
 
-        /* IMM Tags */
+        // 作物。
+        this.tag(IMMItemTags.RICE_SEEDS).add(IMMItems.RICE_SEEDS.get());
+        this.tag(IMMItemTags.JUTE_SEEDS).add(IMMItems.JUTE_SEEDS.get());
+        this.tag(IMMItemTags.JUTE).add(IMMItems.JUTE.get());
+
         this.tag(IMMItemTags.MELEE_ATTACK_ITEMS).add(Items.STICK);
     }
 

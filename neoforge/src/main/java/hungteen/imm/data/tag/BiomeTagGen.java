@@ -4,6 +4,7 @@ import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.impl.BiomeHelper;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.common.world.biome.IMMBiomes;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -12,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,8 +24,8 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class BiomeTagGen extends HTTagsProvider<Biome> {
 
-    public BiomeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, BiomeHelper.get());
+    public BiomeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper fileHelper) {
+        super(output, provider, BiomeHelper.get(), Util.id(), fileHelper);
     }
 
     @Override

@@ -4,9 +4,11 @@ import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.misc.IMMBannerPatterns;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,19 +19,19 @@ import java.util.concurrent.CompletableFuture;
  */
 public class BannerPatternTagGen extends HTTagsProvider<BannerPattern> {
 
-    public BannerPatternTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, BlockHelper.banner());
+    public BannerPatternTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper fileHelper) {
+        super(output, provider, BlockHelper.banner(), Util.id(), fileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.addTag(IMMBannerPatternTags.CONTINUOUS_MOUNTAIN, IMMBannerPatterns.CONTINUOUS_MOUNTAIN.getRegistryName());
-        this.addTag(IMMBannerPatternTags.FLOWING_CLOUD, IMMBannerPatterns.FLOWING_CLOUD.getRegistryName());
-        this.addTag(IMMBannerPatternTags.FOLDED_THUNDER, IMMBannerPatterns.FOLDED_THUNDER.getRegistryName());
-        this.addTag(IMMBannerPatternTags.RHOMBUS, IMMBannerPatterns.RHOMBUS.getRegistryName());
-        this.addTag(IMMBannerPatternTags.TALISMAN, IMMBannerPatterns.TALISMAN.getRegistryName());
-        this.addTag(IMMBannerPatternTags.COILED_LOONG, IMMBannerPatterns.COILED_LOONG.getRegistryName());
-        this.addTag(IMMBannerPatternTags.HOVERING_PHOENIX, IMMBannerPatterns.HOVERING_PHOENIX.getRegistryName());
+        this.tag(IMMBannerPatternTags.CONTINUOUS_MOUNTAIN).add(IMMBannerPatterns.CONTINUOUS_MOUNTAIN);
+        this.tag(IMMBannerPatternTags.FLOWING_CLOUD).add(IMMBannerPatterns.FLOWING_CLOUD);
+        this.tag(IMMBannerPatternTags.FOLDED_THUNDER).add(IMMBannerPatterns.FOLDED_THUNDER);
+        this.tag(IMMBannerPatternTags.RHOMBUS).add(IMMBannerPatterns.RHOMBUS);
+        this.tag(IMMBannerPatternTags.TALISMAN).add(IMMBannerPatterns.TALISMAN);
+        this.tag(IMMBannerPatternTags.COILED_LOONG).add(IMMBannerPatterns.COILED_LOONG);
+        this.tag(IMMBannerPatternTags.HOVERING_PHOENIX).add(IMMBannerPatterns.HOVERING_PHOENIX);
     }
 
 }

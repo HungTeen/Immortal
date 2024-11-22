@@ -6,29 +6,33 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.enums.ExperienceTypes;
 import hungteen.imm.api.enums.RealmStages;
 import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.world.data.SpiritRegionData;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.ResourceKeyArgument;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -51,6 +55,9 @@ import java.util.Optional;
  **/
 public class IMMCommand {
 
+    private static final DynamicCommandExceptionType ERROR_INVALID_LEVEL = new DynamicCommandExceptionType(
+            o -> Component.translatableEscape("commands.place.feature.invalid", o)
+    );
     private static final Component COMMAND_LEARN_ALL_SPELLS = TipUtil.command("learn_all_spells");
     private static final Component COMMAND_FORGET_ALL_SPELLS = TipUtil.command("forget_all_spells");
     private static final Component COMMAND_CULTIVATION_NOT_ENOUGH = TipUtil.command("cultivation_not_enough");
@@ -218,11 +225,8 @@ public class IMMCommand {
         // Misc Commands.
         builder.then(Commands.literal("tp")
                 .then(Commands.argument("targets", EntityArgument.players())
-                        .then(Commands.literal("east_world")
-                                .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), IMMLevels.EAST_WORLD))
-                        )
-                        .then(Commands.literal("overworld")
-                                .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), Level.OVERWORLD))
+                        .then(Commands.argument("dimension", ResourceKeyArgument.key(Registries.DIMENSION))
+                                .executes(command -> tp(command.getSource(), EntityArgument.getPlayers(command, "targets"), ResourceKeyArgument.getRegistryKey(command, "dimension", Registries.DIMENSION, ERROR_INVALID_LEVEL)))
                         )
                 )
         );
@@ -231,9 +235,13 @@ public class IMMCommand {
 
     private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey) {
         for (ServerPlayer player : targets) {
-            ServerLevel serverlevel = ((ServerLevel) player.level()).getServer().getLevel(resourceKey);
-            if (serverlevel != null) {
-                player.changeDimension(new DimensionTransition(serverlevel, player, DimensionTransition.PLAY_PORTAL_SOUND));
+            if(resourceKey.equals(IMMLevels.SPIRIT_WORLD)){
+                SpiritRegionData.teleportToSpiritRegion((source.getLevel()), player);
+            } else {
+                ServerLevel serverlevel = source.getLevel().getServer().getLevel(resourceKey);
+                if (serverlevel != null) {
+                    player.changeDimension(new DimensionTransition(serverlevel, player, DimensionTransition.PLAY_PORTAL_SOUND));
+                }
             }
         }
         return targets.size();

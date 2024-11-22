@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:sunflower"
+    },
+    {
+      "item": "minecraft:lilac"
+    },
+    {
+      "item": "minecraft:rose_bush"
+    },
+    {
+      "item": "minecraft:peony"
+    },
+    {
+      "item": "minecraft:spore_blossom"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:five_flowers_elixir"
+  }
+}

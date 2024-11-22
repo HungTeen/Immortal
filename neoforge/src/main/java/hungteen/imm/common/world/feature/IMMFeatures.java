@@ -4,6 +4,7 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
+import hungteen.htlib.util.helper.impl.FeatureHelper;
 import hungteen.imm.common.world.feature.configuration.HorizontalStakeConfiguration;
 import hungteen.imm.common.world.feature.configuration.WoodStakeConfiguration;
 import hungteen.imm.common.world.feature.features.HorizontalStakeFeature;
@@ -11,7 +12,6 @@ import hungteen.imm.common.world.feature.features.WoodStakeFeature;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -50,7 +50,7 @@ public interface IMMFeatures {
     }
 
     static ResourceKey<ConfiguredFeature<?, ?>> create(String name){
-        return FeatureUtils.createKey(Util.prefixName(name));
+        return FeatureHelper.config().createKey(Util.prefix(name));
     }
 
 

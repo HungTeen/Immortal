@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 public class IMMLevels {
 
     public static final ResourceKey<Level> EAST_WORLD = create("east_world");
+    public static final ResourceKey<Level> SPIRIT_WORLD = create("spirit_world");
 
     private static ResourceKey<Level> create(String name) {
         return LevelHelper.get().createKey(Util.prefix(name));

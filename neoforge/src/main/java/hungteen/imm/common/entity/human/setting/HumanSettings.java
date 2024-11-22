@@ -56,7 +56,7 @@ public interface HumanSettings {
     static void register(BootstrapContext<HumanSetting> context) {
         context.register(DEFAULT, new HumanSetting(
                 IMMEntities.EMPTY_CULTIVATOR.get(),
-                0,
+                1,
                 Optional.empty(),
                 List.of(),
                 Optional.empty()

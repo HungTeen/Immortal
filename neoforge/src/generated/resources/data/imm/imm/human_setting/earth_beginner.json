@@ -13,11 +13,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:shield",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:shield"
             }
           },
           "weight": 1
@@ -30,11 +27,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:stone_sword",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:stone_sword"
             }
           },
           "weight": 1
@@ -46,16 +40,7 @@
         {
           "data": {
             "count": 1,
-            "item": {
-              "Count": 1,
-              "id": "minecraft:leather_helmet",
-              "tag": {
-                "Damage": 0,
-                "display": {
-                  "color": 4673362
-                }
-              }
-            }
+            "item": {}
           },
           "weight": 1
         },
@@ -63,11 +48,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_helmet",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_helmet"
             }
           },
           "weight": 1
@@ -79,16 +61,7 @@
         {
           "data": {
             "count": 1,
-            "item": {
-              "Count": 1,
-              "id": "minecraft:leather_chestplate",
-              "tag": {
-                "Damage": 0,
-                "display": {
-                  "color": 4673362
-                }
-              }
-            }
+            "item": {}
           },
           "weight": 1
         },
@@ -96,11 +69,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_chestplate",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_chestplate"
             }
           },
           "weight": 1
@@ -112,16 +82,7 @@
         {
           "data": {
             "count": 1,
-            "item": {
-              "Count": 1,
-              "id": "minecraft:leather_leggings",
-              "tag": {
-                "Damage": 0,
-                "display": {
-                  "color": 4673362
-                }
-              }
-            }
+            "item": {}
           },
           "weight": 1
         },
@@ -129,11 +90,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_leggings",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_leggings"
             }
           },
           "weight": 1
@@ -145,16 +103,7 @@
         {
           "data": {
             "count": 1,
-            "item": {
-              "Count": 1,
-              "id": "minecraft:leather_boots",
-              "tag": {
-                "Damage": 0,
-                "display": {
-                  "color": 4673362
-                }
-              }
-            }
+            "item": {}
           },
           "weight": 1
         },
@@ -162,11 +111,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_boots",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_boots"
             }
           },
           "weight": 1
@@ -177,27 +123,22 @@
   "trade_setting": {
     "entry_count": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 6,
-        "min_inclusive": 4
-      }
+      "max_inclusive": 6,
+      "min_inclusive": 4
     },
     "trade_entries": [
       {
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:meditation_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -208,17 +149,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:dispersal_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -229,17 +167,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:releasing_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -250,17 +185,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 5,
+              "count": 5,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:intimidation_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -271,17 +203,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 6,
+              "count": 6,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:spirit_eyes_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -292,17 +221,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 8,
+              "count": 8,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:earth_mastery_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -313,17 +239,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 8,
+              "count": 8,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:earth_mastery_2"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -334,17 +257,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 16,
+              "count": 16,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:earth_mastery_3"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -355,17 +275,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 8,
+              "count": 8,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:crystal_explosion_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -376,17 +293,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 8,
+              "count": 8,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:crystal_heart_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1

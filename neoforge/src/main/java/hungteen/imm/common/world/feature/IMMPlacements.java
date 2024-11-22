@@ -1,8 +1,8 @@
 package hungteen.imm.common.world.feature;
 
+import hungteen.htlib.util.helper.impl.FeatureHelper;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
@@ -26,7 +26,7 @@ public interface IMMPlacements {
     }
 
     static ResourceKey<PlacedFeature> create(String name){
-        return PlacementUtils.createKey(Util.prefixName(name));
+        return FeatureHelper.placed().createKey(Util.prefix(name));
     }
 
 }

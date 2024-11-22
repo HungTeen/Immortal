@@ -26,7 +26,6 @@ import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
-import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,6 +45,7 @@ import java.util.*;
 public class IMMPlayerData implements INBTSerializable<CompoundTag> {
 
     private Player player;
+    private final PlayerMiscData miscData = new PlayerMiscData();
     private final HashSet<QiRootType> roots = new HashSet<>();
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>(); // 学习的法术。
     private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // 法术的冷却。
@@ -58,7 +58,6 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
     private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
     private ISpellType preparingSpell = null; // 当前选好的法术。
     private long nextRefreshTick;
-    private boolean initialized = false;
 
     /* Caches */
     private RealmManager.RealmNode realmNode;
@@ -81,11 +80,11 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
      * //TODO HTLib
      */
     public void initialize() {
-        if (!this.initialized) {
-            // 初始化玩家的灵根
-            PlayerUtil.resetSpiritualRoots(player);
-            this.initialized = true;
-        }
+//        if (!this.initialized) {
+//            // 初始化玩家的灵根
+//            PlayerUtil.resetSpiritualRoots(player);
+//            this.initialized = true;
+//        }
     }
 
     public void tick() {
@@ -166,7 +165,6 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
         }
         {
             final CompoundTag nbt = new CompoundTag();
-            nbt.putBoolean("Initialized", this.initialized);
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
             nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
             nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
@@ -175,6 +173,7 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
             }
             tag.put("MiscData", nbt);
         }
+        tag.put("PlayerMiscData", miscData.serializeNBT(provider));
         return tag;
     }
 
@@ -248,9 +247,6 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
         }
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
-            if (nbt.contains("Initialized")) {
-                this.initialized = nbt.getBoolean("Initialized");
-            }
             if (nbt.contains("NextRefreshTick")) {
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }
@@ -263,6 +259,9 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
             if (nbt.contains("PreparingSpell")) {
                 SpellTypes.registry().getValue(nbt.getString("PreparingSpell")).ifPresent(l -> this.preparingSpell = l);
             }
+        }
+        if (tag.contains("PlayerMiscData")) {
+            this.miscData.deserializeNBT(provider, tag.getCompound("PlayerMiscData"));
         }
     }
 
@@ -512,6 +511,10 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
     }
 
     /* Misc methods */
+
+    public PlayerMiscData getMiscData() {
+        return miscData;
+    }
 
     public IRealmType getRealmType() {
         return this.realmType;

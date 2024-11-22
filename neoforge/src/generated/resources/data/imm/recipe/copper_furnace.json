@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:emerald"
+    },
+    "B": {
+      "tag": "c:ingots/copper"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BAB",
+    "BBB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:copper_furnace"
+  }
+}

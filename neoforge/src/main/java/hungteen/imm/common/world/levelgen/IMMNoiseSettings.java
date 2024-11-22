@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.levelgen;
 
 import hungteen.htlib.util.helper.impl.LevelHelper;
-import hungteen.imm.common.world.levelgen.dimension.EastWorldDimension;
+import hungteen.imm.common.world.levelgen.eastworld.EastWorldDimension;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;

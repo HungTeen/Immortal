@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "dyed_wool_cushion",
+  "ingredients": [
+    {
+      "item": "imm:white_wool_cushion"
+    },
+    {
+      "item": "minecraft:green_dye"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:green_wool_cushion"
+  }
+}

@@ -5,7 +5,7 @@ import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.common.recipe.IMMRecipes;
-import hungteen.imm.common.world.ElixirManager;
+import hungteen.imm.common.world.data.ElixirManager;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;

@@ -11,7 +11,7 @@ import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.IMMAttachments;
-import hungteen.imm.common.command.CommandHandler;
+import hungteen.imm.common.command.IMMCommandHandler;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMDataSerializers;
@@ -26,7 +26,6 @@ import hungteen.imm.common.impl.registry.*;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
-import hungteen.imm.common.misc.IMMBannerPatterns;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
@@ -73,7 +72,7 @@ public class IMMInitializer {
         final IEventBus forgeBus = NeoForge.EVENT_BUS;
 //        forgeBus.addListener(Entity.class, CapabilityHandler::attachEntityCapabilities);
 //        forgeBus.addListener(LevelChunk.class, CapabilityHandler::attachChunkCapabilities);
-        forgeBus.addListener(EventPriority.NORMAL, CommandHandler::init);
+        forgeBus.addListener(EventPriority.NORMAL, IMMCommandHandler::init);
 //        forgeBus.addListener(EventPriority.NORMAL, IMMDataPacks::addDataPack);
         forgeBus.addListener(EventPriority.NORMAL, IMMInitializer::serverStarted);
 //        forgeBus.addListener(EventPriority.LOWEST, RealmManager::realmAttackGap);
@@ -110,7 +109,6 @@ public class IMMInitializer {
         IMMRecipes.initialize(modBus);
         IMMRecipeSerializers.initialize(modBus);
         IMMMenus.initialize(modBus);
-        IMMBannerPatterns.initialize(modBus);
         IMMParticles.initialize(modBus);
         IMMDataSerializers.initialize(modBus);
         IMMMemories.initialize(modBus);
@@ -138,7 +136,7 @@ public class IMMInitializer {
 
     public static void coreRegister() {
         IMMWoods.register();
-        IMMDummyEntities.init();
+        IMMDummyEntities.initialize();
 //        IMMRaidHandler.init();
 
         TradeTypes.TradeType.register();

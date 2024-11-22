@@ -6,7 +6,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 /**
  * @program Immortal
@@ -15,7 +14,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
  **/
 public record ItemEntry(ItemStack itemStack, IntProvider count, IntProvider enchantPoint) {
     public static final Codec<ItemEntry> CODEC = RecordCodecBuilder.<ItemEntry>mapCodec(instance -> instance.group(
-            ItemStack.CODEC.fieldOf("item").forGetter(ItemEntry::itemStack),
+            ItemStack.OPTIONAL_CODEC.fieldOf("item").forGetter(ItemEntry::itemStack),
             IntProvider.codec(0, Integer.MAX_VALUE).optionalFieldOf("count", ConstantInt.of(1)).forGetter(ItemEntry::count),
             IntProvider.codec(0, Integer.MAX_VALUE).optionalFieldOf("enchant_point", ConstantInt.of(0)).forGetter(ItemEntry::enchantPoint)
     ).apply(instance, ItemEntry::new)).codec();

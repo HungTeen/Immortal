@@ -3,7 +3,7 @@ package hungteen.imm.common.codec;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.impl.EffectHelper;
-import hungteen.imm.common.world.ElixirManager;
+import hungteen.imm.common.world.data.ElixirManager;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 

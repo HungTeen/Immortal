@@ -1,8 +1,0 @@
-{
-  "type": "htlib:once",
-  "setting": {
-    "enable_default_spawn": false,
-    "entity_type": "minecraft:skeleton"
-  },
-  "spawn_count": 1
-}

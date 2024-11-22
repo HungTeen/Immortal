@@ -19,8 +19,8 @@ import java.util.List;
  **/
 public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount, float xp) {
     public static final Codec<TradeEntry> CODEC = RecordCodecBuilder.<TradeEntry>mapCodec(instance -> instance.group(
-            ItemStack.CODEC.listOf().fieldOf("cost_items").forGetter(TradeEntry::costItems),
-            ItemStack.CODEC.listOf().fieldOf("result_items").forGetter(TradeEntry::resultItems),
+            ItemStack.OPTIONAL_CODEC.listOf().fieldOf("cost_items").forGetter(TradeEntry::costItems),
+            ItemStack.OPTIONAL_CODEC.listOf().fieldOf("result_items").forGetter(TradeEntry::resultItems),
             IntProvider.NON_NEGATIVE_CODEC.fieldOf("trade_count").forGetter(TradeEntry::tradeCount),
             Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("xp", 0F).forGetter(TradeEntry::xp)
     ).apply(instance, TradeEntry::new)).codec();
@@ -41,9 +41,13 @@ public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems,
      * @param payItems 付款。
      */
     public boolean match(List<ItemStack> payItems){
-        if(this.costItems().size() > payItems.size()) return false;
+        if(this.costItems().size() > payItems.size()) {
+            return false;
+        }
         for(int i = 0; i < Math.min(payItems.size(), this.costItems().size()); i++){
-            if(! this.isRequiredItem(payItems.get(i), this.costItems().get(i)) || payItems.get(i).getCount() < this.costItems().get(i).getCount()) return false;
+            if(! this.isRequiredItem(payItems.get(i), this.costItems().get(i)) || payItems.get(i).getCount() < this.costItems().get(i).getCount()) {
+                return false;
+            }
         }
         return true;
     }

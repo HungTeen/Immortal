@@ -2,7 +2,6 @@ package hungteen.imm.common.tag;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.util.Util;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
@@ -13,37 +12,33 @@ import net.minecraft.world.entity.EntityType;
  */
 public interface IMMEntityTags {
 
-    /* Forge */
+    /* Uniform */
 
-    TagKey<EntityType<?>> VILLAGERS = forgeTag("villagers");
-    TagKey<EntityType<?>> PILLAGERS = forgeTag("pillagers");
-    TagKey<EntityType<?>> REALM_FOLLOW_OWNER_ENTITIES = forgeTag("realm_follow_owner_entities");
-    TagKey<EntityType<?>> COMMON_ARTIFACTS = forgeTag("artifacts/common");
-    TagKey<EntityType<?>> MODERATE_ARTIFACTS = forgeTag("artifacts/moderate");
-    TagKey<EntityType<?>> ADVANCED_ARTIFACTS = forgeTag("artifacts/advanced");
+    TagKey<EntityType<?>> VILLAGERS = uniformTag("villagers");
+    TagKey<EntityType<?>> PILLAGERS = uniformTag("pillagers");
 
-    /* Immortal */
+    /* IMM */
 
     TagKey<EntityType<?>> NO_ELEMENT_REACTIONS = tag("no_element_reactions");
     TagKey<EntityType<?>> CULTIVATORS = tag("cultivators");
     TagKey<EntityType<?>> HUMAN_BEINGS = tag("human_beings");
 
+    TagKey<EntityType<?>> COMMON_ARTIFACTS = tag("artifacts/common");
+    TagKey<EntityType<?>> MODERATE_ARTIFACTS = tag("artifacts/moderate");
+    TagKey<EntityType<?>> ADVANCED_ARTIFACTS = tag("artifacts/advanced");
 
+    TagKey<EntityType<?>> REALM_FOLLOW_OWNER_ENTITIES = uniformTag("realm_follow_owner_entities");
 
     private static TagKey<EntityType<?>> tag(String name){
-        return create(Util.prefix(name));
+        return EntityHelper.get().tag(Util.prefix(name));
     }
 
-    private static TagKey<EntityType<?>> forgeTag(String name){
-        return create(Util.neo().prefix(name));
+    private static TagKey<EntityType<?>> uniformTag(String name){
+        return EntityHelper.get().uniformTag(name);
     }
 
     private static TagKey<EntityType<?>> mcTag(String name){
-        return create(Util.mc().prefix(name));
-    }
-
-    private static TagKey<EntityType<?>> create(ResourceLocation location) {
-        return EntityHelper.get().tag(location);
+        return EntityHelper.get().vanillaTag(name);
     }
 
 }

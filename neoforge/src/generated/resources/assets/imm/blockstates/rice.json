@@ -7,45 +7,21 @@
       "model": "imm:block/rice_0"
     },
     "age=1,waterlogged=false": {
-      "model": "imm:block/rice_0"
+      "model": "imm:block/rice_1"
     },
     "age=1,waterlogged=true": {
-      "model": "imm:block/rice_0"
+      "model": "imm:block/rice_1"
     },
     "age=2,waterlogged=false": {
-      "model": "imm:block/rice_1"
+      "model": "imm:block/rice_2"
     },
     "age=2,waterlogged=true": {
-      "model": "imm:block/rice_1"
+      "model": "imm:block/rice_2"
     },
     "age=3,waterlogged=false": {
-      "model": "imm:block/rice_1"
+      "model": "imm:block/rice_3"
     },
     "age=3,waterlogged=true": {
-      "model": "imm:block/rice_1"
-    },
-    "age=4,waterlogged=false": {
-      "model": "imm:block/rice_2"
-    },
-    "age=4,waterlogged=true": {
-      "model": "imm:block/rice_2"
-    },
-    "age=5,waterlogged=false": {
-      "model": "imm:block/rice_2"
-    },
-    "age=5,waterlogged=true": {
-      "model": "imm:block/rice_2"
-    },
-    "age=6,waterlogged=false": {
-      "model": "imm:block/rice_3"
-    },
-    "age=6,waterlogged=true": {
-      "model": "imm:block/rice_3"
-    },
-    "age=7,waterlogged=false": {
-      "model": "imm:block/rice_3"
-    },
-    "age=7,waterlogged=true": {
       "model": "imm:block/rice_3"
     }
   }

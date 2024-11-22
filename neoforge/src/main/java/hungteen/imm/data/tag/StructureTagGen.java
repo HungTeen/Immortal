@@ -4,9 +4,11 @@ import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.impl.StructureHelper;
 import hungteen.imm.common.tag.IMMStructureTags;
 import hungteen.imm.common.world.structure.IMMStructures;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,8 +19,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public class StructureTagGen extends HTTagsProvider<Structure> {
 
-    public StructureTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, StructureHelper.get());
+    public StructureTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper fileHelper) {
+        super(output, provider, StructureHelper.get(), Util.id(), fileHelper);
     }
 
     @Override

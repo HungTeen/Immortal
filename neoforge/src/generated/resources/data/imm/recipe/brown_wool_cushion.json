@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wool_cushion",
+  "key": {
+    "#": {
+      "item": "minecraft:brown_wool"
+    },
+    "X": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "##",
+    "XX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:brown_wool_cushion"
+  }
+}

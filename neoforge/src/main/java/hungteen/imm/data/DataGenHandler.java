@@ -2,10 +2,7 @@ package hungteen.imm.data;
 
 import hungteen.imm.data.loot.LootTableGen;
 import hungteen.imm.data.recipe.RecipeGen;
-import hungteen.imm.data.tag.BannerPatternTagGen;
-import hungteen.imm.data.tag.BlockTagGen;
-import hungteen.imm.data.tag.EntityTagGen;
-import hungteen.imm.data.tag.ItemTagGen;
+import hungteen.imm.data.tag.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -24,15 +21,22 @@ public class DataGenHandler {
     public static void dataGen(GatherDataEvent event) {
         final DataGenerator generators = event.getGenerator();
         final PackOutput output = event.getGenerator().getPackOutput();
-        final CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
         final ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
+        /* Datapack */
+        DatapackEntriesGen datapackProvider = new DatapackEntriesGen(output, event.getLookupProvider());
+        final CompletableFuture<HolderLookup.Provider> provider = datapackProvider.getFullRegistries();
+        generators.addProvider(event.includeServer(), datapackProvider);
+        generators.addProvider(event.includeServer(), new BannerPatternTagGen(output, provider, fileHelper));
+        generators.addProvider(event.includeServer(), new BiomeTagGen(output, provider, fileHelper));
+        generators.addProvider(event.includeServer(), new StructureTagGen(output, provider, fileHelper));
+        generators.addProvider(event.includeServer(), new DamageTypeTagGen(output, provider, fileHelper));
+
         /* Tags */
-        final BlockTagGen generator = new BlockTagGen(output, provider);
+        final BlockTagGen generator = new BlockTagGen(output, provider, fileHelper);
         generators.addProvider(event.includeServer(), generator);
-        generators.addProvider(event.includeServer(), new ItemTagGen(output, provider, generator.contentsGetter()));
-        generators.addProvider(event.includeServer(), new EntityTagGen(output, provider));
-        generators.addProvider(event.includeServer(), new BannerPatternTagGen(output, provider));
+        generators.addProvider(event.includeServer(), new ItemTagGen(output, provider, generator.contentsGetter(), fileHelper));
+        generators.addProvider(event.includeServer(), new EntityTagGen(output, provider, fileHelper));
 
         /* Recipes */
         generators.addProvider(event.includeServer(), new RecipeGen(output, provider));
@@ -41,7 +45,7 @@ public class DataGenHandler {
         generators.addProvider(event.includeServer(), new LootTableGen(output, provider));
 
         /* Advancements */
-        generators.addProvider(event.includeServer(), new AdvancementGen(output, provider, fileHelper));
+//        generators.addProvider(event.includeServer(), new AdvancementGen(output, provider, fileHelper));
 
         /* Block States */
         generators.addProvider(event.includeClient(), new BlockStateGen(output, fileHelper));
@@ -51,8 +55,6 @@ public class DataGenHandler {
         generators.addProvider(event.includeClient(), new BlockModelGen(output, fileHelper));
         generators.addProvider(event.includeClient(), new ItemModelGen(output, fileHelper));
 
-        /* Datapack */
-        DatapackEntriesGen.addProviders(event.includeServer(), generators, output, provider, fileHelper);
     }
 
 }

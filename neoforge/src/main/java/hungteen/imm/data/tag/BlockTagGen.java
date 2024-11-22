@@ -4,11 +4,13 @@ import hungteen.htlib.data.tag.HTBlockTagGen;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.BlockUtil;
+import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,15 +21,16 @@ import java.util.concurrent.CompletableFuture;
  **/
 public class BlockTagGen extends HTBlockTagGen {
 
-    public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider);
+    public BlockTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper fileHelper) {
+        super(output, provider, Util.id(), fileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.addMCTags();
+        this.addUniformTags();
 
-        /* Forge */
+        // 元素相关的方块。
         this.tag(IMMBlockTags.METAL_ELEMENT_ATTACHED_BLOCKS)
                 .addTags(Tags.Blocks.ORES_GOLD, Tags.Blocks.STORAGE_BLOCKS_GOLD, Tags.Blocks.STORAGE_BLOCKS_RAW_GOLD);
         this.tag(IMMBlockTags.WOOD_ELEMENT_ATTACHED_BLOCKS)
@@ -41,20 +44,12 @@ public class BlockTagGen extends HTBlockTagGen {
         this.tag(IMMBlockTags.SPIRIT_ELEMENT_ATTACHED_BLOCKS)
                 .add(Blocks.CRYING_OBSIDIAN, Blocks.SOUL_SAND);
 
-        this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
-        this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
-
+        // 法器。
         this.tag(IMMBlockTags.COMMON_ARTIFACTS).add(Blocks.ENDER_CHEST, Blocks.RESPAWN_ANCHOR);
         this.tag(IMMBlockTags.MODERATE_ARTIFACTS).add(Blocks.CONDUIT);
         this.tag(IMMBlockTags.ADVANCED_ARTIFACTS).add(Blocks.ENCHANTING_TABLE, Blocks.BEACON);
 
-        /* IMM */
-        BlockUtil.getGourds().forEach(p -> this.tag(IMMBlockTags.GOURDS).add(p.getSecond()));
-        this.tag(IMMBlockTags.COPPER_BLOCKS)
-                .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
-                .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);
-        this.tag(IMMBlockTags.COPPER_SLABS)
-                .add(Blocks.CUT_COPPER_SLAB, Blocks.EXPOSED_CUT_COPPER_SLAB, Blocks.WEATHERED_CUT_COPPER_SLAB, Blocks.OXIDIZED_CUT_COPPER_SLAB);
+        // 炼丹炉相关。
         this.tag(IMMBlockTags.FUNCTIONAL_COPPERS)
                 .add(IMMBlocks.COPPER_ELIXIR_ROOM.get());
         this.tag(IMMBlockTags.FURNACE_BLOCKS)
@@ -87,6 +82,22 @@ public class BlockTagGen extends HTBlockTagGen {
 //        this.tag(BlockTags.CROPS).add(PVZBlocks.PEA.get(), PVZBlocks.CABBAGE.get(), PVZBlocks.CORN.get());
 
         this.tag(BlockTags.CLIMBABLE).add(IMMBlocks.GOURD_SCAFFOLD.get());
+    }
+
+    private void addUniformTags(){
+        // 矿石相关。
+        this.tag(IMMBlockTags.SPIRITUAL_ORES).addTag(BlockTags.EMERALD_ORES);
+        this.tag(IMMBlockTags.CINNABAR_ORES).add(IMMBlocks.CINNABAR_ORE.get());
+
+        // 作物相关。
+        BlockUtil.getGourds().forEach(p -> this.tag(IMMBlockTags.GOURDS).add(p.getSecond()));
+
+        this.tag(IMMBlockTags.COPPER_BLOCKS)
+                .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
+                .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);
+        this.tag(IMMBlockTags.COPPER_SLABS)
+                .add(Blocks.CUT_COPPER_SLAB, Blocks.EXPOSED_CUT_COPPER_SLAB, Blocks.WEATHERED_CUT_COPPER_SLAB, Blocks.OXIDIZED_CUT_COPPER_SLAB);
+
     }
 
 }

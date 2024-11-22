@@ -30,15 +30,19 @@ neoForge {
             logLevel = org.slf4j.event.Level.DEBUG
         }
 
-        mods.create("${modId}").sourceSet(project.sourceSets.getByName("main"))
-
-        create("client") {
+        client {
             client()
         }
 
-        create("server") {
+        server {
             server()
 //            programArgument("--nogui")
+        }
+
+        data {
+            data()
+//            programArguments.addAll '--mod', modId, '--all', '--output', project(":common").file('src/generated/resources/')
+            programArguments.addAll '--mod', modId, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
         gameTestServer {
@@ -46,7 +50,15 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', modId
         }
     }
+
+    mods {
+        "${modId}" {
+            sourceSet sourceSets.main
+        }
+    }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenLocal()

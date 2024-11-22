@@ -7,13 +7,11 @@
           "data": {
             "count": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 48,
-                "min_inclusive": 24
-              }
+              "max_inclusive": 48,
+              "min_inclusive": 24
             },
             "item": {
-              "Count": 1,
+              "count": 1,
               "id": "minecraft:bread"
             }
           },
@@ -27,13 +25,11 @@
           "data": {
             "count": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 3,
-                "min_inclusive": 1
-              }
+              "max_inclusive": 3,
+              "min_inclusive": 1
             },
             "item": {
-              "Count": 1,
+              "count": 1,
               "id": "minecraft:golden_apple"
             }
           },
@@ -47,13 +43,11 @@
           "data": {
             "count": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 48,
-                "min_inclusive": 24
-              }
+              "max_inclusive": 48,
+              "min_inclusive": 24
             },
             "item": {
-              "Count": 1,
+              "count": 1,
               "id": "minecraft:arrow"
             }
           },
@@ -67,13 +61,11 @@
           "data": {
             "count": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 2,
-                "min_inclusive": 1
-              }
+              "max_inclusive": 2,
+              "min_inclusive": 1
             },
             "item": {
-              "Count": 1,
+              "count": 1,
               "id": "minecraft:ender_pearl"
             }
           },
@@ -87,11 +79,8 @@
           "data": {
             "count": 1,
             "item": {
-              "Count": 1,
-              "id": "minecraft:shield",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:shield"
             }
           },
           "weight": 1
@@ -105,17 +94,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 8,
-                "min_inclusive": 4
-              }
+              "max_inclusive": 8,
+              "min_inclusive": 4
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:bow",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:bow"
             }
           },
           "weight": 1
@@ -129,17 +113,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 10,
-                "min_inclusive": 5
-              }
+              "max_inclusive": 10,
+              "min_inclusive": 5
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_sword",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_sword"
             }
           },
           "weight": 1
@@ -149,17 +128,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              }
+              "max_inclusive": 5,
+              "min_inclusive": 2
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_sword",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_sword"
             }
           },
           "weight": 1
@@ -173,17 +147,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 10,
-                "min_inclusive": 5
-              }
+              "max_inclusive": 10,
+              "min_inclusive": 5
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_chestplate",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_chestplate"
             }
           },
           "weight": 1
@@ -193,17 +162,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              }
+              "max_inclusive": 5,
+              "min_inclusive": 2
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_chestplate",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_chestplate"
             }
           },
           "weight": 1
@@ -217,17 +181,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 10,
-                "min_inclusive": 5
-              }
+              "max_inclusive": 10,
+              "min_inclusive": 5
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_leggings",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_leggings"
             }
           },
           "weight": 1
@@ -237,17 +196,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              }
+              "max_inclusive": 5,
+              "min_inclusive": 2
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_leggings",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_leggings"
             }
           },
           "weight": 1
@@ -261,17 +215,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 10,
-                "min_inclusive": 5
-              }
+              "max_inclusive": 10,
+              "min_inclusive": 5
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_helmet",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_helmet"
             }
           },
           "weight": 1
@@ -281,17 +230,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 15,
-                "min_inclusive": 10
-              }
+              "max_inclusive": 15,
+              "min_inclusive": 10
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:golden_helmet",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:golden_helmet"
             }
           },
           "weight": 1
@@ -305,17 +249,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 10,
-                "min_inclusive": 5
-              }
+              "max_inclusive": 10,
+              "min_inclusive": 5
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:iron_boots",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:iron_boots"
             }
           },
           "weight": 1
@@ -325,17 +264,12 @@
             "count": 1,
             "enchant_point": {
               "type": "minecraft:uniform",
-              "value": {
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              }
+              "max_inclusive": 5,
+              "min_inclusive": 2
             },
             "item": {
-              "Count": 1,
-              "id": "minecraft:diamond_boots",
-              "tag": {
-                "Damage": 0
-              }
+              "count": 1,
+              "id": "minecraft:diamond_boots"
             }
           },
           "weight": 1
@@ -346,27 +280,22 @@
   "trade_setting": {
     "entry_count": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 10,
-        "min_inclusive": 6
-      }
+      "max_inclusive": 10,
+      "min_inclusive": 6
     },
     "trade_entries": [
       {
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:meditation_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -377,17 +306,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:dispersal_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -398,17 +324,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:releasing_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -419,17 +342,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 5,
+              "count": 5,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:intimidation_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -440,17 +360,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 6,
+              "count": 6,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:spirit_eyes_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -461,17 +378,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 10,
+              "count": 10,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:spirit_eyes_2"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -482,17 +396,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:pickup_item_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -503,17 +414,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 6,
+              "count": 6,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:pickup_item_2"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -524,17 +432,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 10,
+              "count": 10,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:throw_item_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -545,17 +450,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 6,
+              "count": 6,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:pickup_block_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -566,17 +468,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 8,
+              "count": 8,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:pickup_block_2"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -587,17 +486,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 12,
+              "count": 12,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:fly_with_item_1"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -608,17 +504,14 @@
         "data": {
           "cost_items": [
             {
-              "Count": 16,
+              "count": 16,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:secret_manual",
-              "tag": {
-                "SecretManual": "imm:fly_with_item_2"
-              }
+              "count": 1,
+              "id": "imm:secret_manual"
             }
           ],
           "trade_count": 1
@@ -629,22 +522,20 @@
         "data": {
           "cost_items": [
             {
-              "Count": 2,
+              "count": 2,
               "id": "minecraft:emerald"
             }
           ],
           "result_items": [
             {
-              "Count": 4,
+              "count": 4,
               "id": "imm:gourd_seeds"
             }
           ],
           "trade_count": {
             "type": "minecraft:uniform",
-            "value": {
-              "max_inclusive": 4,
-              "min_inclusive": 2
-            }
+            "max_inclusive": 4,
+            "min_inclusive": 2
           }
         },
         "weight": 12
@@ -653,22 +544,18 @@
         "data": {
           "cost_items": [
             {
-              "Count": 32,
+              "count": 32,
               "id": "minecraft:emerald"
             },
             {
-              "Count": 1,
+              "count": 1,
               "id": "imm:green_gourd"
             }
           ],
           "result_items": [
             {
-              "Count": 1,
-              "id": "imm:flame_gourd",
-              "tag": {
-                "CollectedFlameAmount": 100,
-                "CollectedFlameLevel": 1
-              }
+              "count": 1,
+              "id": "imm:flame_gourd"
             }
           ],
           "trade_count": 1

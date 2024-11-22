@@ -8,7 +8,7 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.world.ElixirManager;
+import hungteen.imm.common.world.data.ElixirManager;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.structure.IMMStructures;
 import hungteen.imm.util.Util;

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "imm:green_gourd"
+    },
+    "B": {
+      "item": "minecraft:blaze_powder"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BAB",
+    "BBB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:flame_gourd"
+  }
+}

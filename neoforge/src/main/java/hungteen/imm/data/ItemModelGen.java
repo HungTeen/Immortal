@@ -12,7 +12,7 @@ import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
-import hungteen.imm.common.world.ElixirManager;
+import hungteen.imm.common.world.data.ElixirManager;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;

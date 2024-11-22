@@ -1,6 +1,0 @@
-{
-  "type": "htlib:center_area",
-  "exclude_radius": 20.0,
-  "on_surface": true,
-  "radius": 24.0
-}
