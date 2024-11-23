@@ -1,7 +1,7 @@
 package hungteen.imm.client.event;
 
 import hungteen.imm.client.ClientHandler;
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;

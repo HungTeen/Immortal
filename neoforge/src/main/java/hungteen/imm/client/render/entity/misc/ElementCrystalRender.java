@@ -2,7 +2,7 @@ package hungteen.imm.client.render.entity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.util.HTColor;
-import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.ElementCrystalModel;
 import hungteen.imm.common.ElementManager;

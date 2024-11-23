@@ -1,6 +1,7 @@
-package hungteen.imm.client;
+package hungteen.imm.client.util;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import hungteen.imm.client.IMMClientProxy;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;

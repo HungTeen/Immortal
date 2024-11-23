@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.util.PlayerUtil;

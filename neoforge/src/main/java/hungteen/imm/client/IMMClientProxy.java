@@ -1,10 +1,10 @@
 package hungteen.imm.client;
 
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
 import hungteen.imm.api.registry.IElementReaction;
 import hungteen.imm.client.render.level.ReactionRenderer;
-import hungteen.imm.common.network.NetworkHandler;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

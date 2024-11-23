@@ -3,7 +3,7 @@ package hungteen.imm.client.gui.screen;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.StringHelper;
-import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.menu.RuneBaseMenu;
 import hungteen.imm.common.rune.RuneCategories;
 import hungteen.imm.util.Util;

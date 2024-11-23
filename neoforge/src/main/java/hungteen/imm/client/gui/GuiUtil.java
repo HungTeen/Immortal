@@ -1,6 +1,6 @@
 package hungteen.imm.client.gui;
 
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;

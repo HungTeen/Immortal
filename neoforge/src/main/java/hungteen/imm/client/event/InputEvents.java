@@ -2,7 +2,7 @@ package hungteen.imm.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.event.handler.SpellHandler;
 import hungteen.imm.util.TipUtil;

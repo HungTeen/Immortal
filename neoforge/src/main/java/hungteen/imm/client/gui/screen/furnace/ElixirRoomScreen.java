@@ -2,7 +2,7 @@ package hungteen.imm.client.gui.screen.furnace;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;

@@ -1,6 +1,6 @@
 package hungteen.imm.client.model.bake;
 
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.ItemUtil;

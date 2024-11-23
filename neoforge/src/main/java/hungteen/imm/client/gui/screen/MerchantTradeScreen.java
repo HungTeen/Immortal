@@ -5,7 +5,7 @@ import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.client.util.ClientHelper;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;

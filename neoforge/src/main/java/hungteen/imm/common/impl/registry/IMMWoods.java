@@ -1,6 +1,6 @@
 package hungteen.imm.common.impl.registry;
 
-import hungteen.htlib.common.registry.suit.HTWoodSuit;
+import hungteen.htlib.common.registry.suit.HTWoodSet;
 import hungteen.imm.IMMInitializer;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class IMMWoods {
 //        woods().forEach(TreeSuits::registerWoodIntegration);
     }
 
-    public static List<HTWoodSuit> woods(){
+    public static List<HTWoodSet> woods(){
         return List.of();
 //        return Arrays.asList(MULBERRY);
     }

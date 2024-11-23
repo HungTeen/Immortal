@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.ClientUtil;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.IMMKeyBinds;
 import hungteen.imm.common.network.SpellPacket;

@@ -2,8 +2,8 @@ package hungteen.imm.client.gui.screen.meditation;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
-import hungteen.imm.client.ClientUtil;
-import hungteen.imm.client.RenderUtil;
+import hungteen.imm.client.util.ClientUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.common.RealmManager;

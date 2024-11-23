@@ -97,6 +97,12 @@ public class BlockStateGen extends HTBlockStateGen {
                 IMMBlocks.MULBERRY_SAPLING.get()
         ).forEach(block -> this.gen(block, this::cross));
 
+        List.of(
+                IMMBlocks.SPIRIT_BEDROCK.get()
+        ).forEach(block -> {
+            this.gen(block, b -> simpleBlock(b, translucent()));
+        });
+
         /* Horizontal Blocks. */
         Arrays.asList(
                 IMMBlocks.GOURD_ATTACHED_STEM.get()

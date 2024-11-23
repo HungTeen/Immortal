@@ -1,6 +1,8 @@
 package hungteen.imm.client;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
+import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
@@ -25,10 +27,13 @@ import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.TornadoRender;
 import hungteen.imm.client.render.entity.spirit.*;
+import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
+import hungteen.imm.util.BlockUtil;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -200,12 +205,12 @@ public class ClientRegister {
         ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
             event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
         });
-//        event.initialize((stack, id) -> {
-//            if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
-//                return gourdBlockItem.getGourdType().getColor();
-//            }
-//            return ColorHelper.BLACK.rgb();
-//        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
+        event.register((stack, id) -> {
+            if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
+                return gourdBlockItem.getGourdType().getColor();
+            }
+            return ColorHelper.BLACK.rgb();
+        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
     }
 
     @SubscribeEvent
