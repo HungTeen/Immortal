@@ -1,18 +1,10 @@
 package hungteen.imm.common.world.data;
 
-import hungteen.htlib.common.world.entity.DummyEntityManager;
-import hungteen.imm.common.world.entity.SpiritRegion;
-import hungteen.imm.common.world.levelgen.IMMLevels;
-import hungteen.imm.util.PlayerUtil;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.Vec3;
 
@@ -41,19 +33,6 @@ public class SpiritRegionData extends SavedData {
 
     public SpiritRegionData(ServerLevel level) {
         this.level = level;
-    }
-
-    public static void teleportToSpiritRegion(ServerLevel level, Player player) {
-        if (!level.dimension().equals(IMMLevels.SPIRIT_WORLD)) {
-            Vec3 spiritRegionPos = getPlayerSpiritRegionPosition(level, player);
-            ServerLevel spiritWorld = level.getServer().getLevel(IMMLevels.SPIRIT_WORLD);
-            if (spiritWorld != null) {
-                PlayerUtil.setData(player, data -> {
-                    data.getMiscData().setLastPosBeforeSpiritWorld(level.dimension(), player.position());
-                });
-                player.changeDimension(new DimensionTransition(spiritWorld, spiritRegionPos, Vec3.ZERO, 0, 0, false, new EnterSpiritRegionTransition()));
-            }
-        }
     }
 
     /**
@@ -162,25 +141,4 @@ public class SpiritRegionData extends SavedData {
         return tag;
     }
 
-    public static class EnterSpiritRegionTransition implements DimensionTransition.PostDimensionTransition {
-
-        @Override
-        public void onTransition(Entity entity) {
-            if (entity.level() instanceof ServerLevel serverLevel && entity instanceof Player player) {
-                Vec3 position = getPlayerSpiritRegionPosition(serverLevel, player);
-                SpiritRegion spiritRegion = DummyEntityManager.addEntity(serverLevel, new SpiritRegion(serverLevel, position.add(0.5, 0, 0.5), REGION_RADIUS << 1));
-                if (spiritRegion != null) {
-                    spiritRegion.setOwner(player);
-                } else {
-                    throw new RuntimeException("Failed to create spirit region.");
-                }
-                for (BlockPos blockpos : BlockPos.betweenClosed(
-                        (int)position.x() - REGION_RADIUS, REGION_HEIGHT, (int) position.z() - REGION_RADIUS, (int)position.x() + REGION_RADIUS, REGION_HEIGHT, (int) position.z() + REGION_RADIUS
-                )) {
-                    serverLevel.setBlock(blockpos, Blocks.END_STONE.defaultBlockState(), 3);
-                }
-                entity.teleportTo(position.x(), position.y() + 1, position.z());
-            }
-        }
-    }
 }

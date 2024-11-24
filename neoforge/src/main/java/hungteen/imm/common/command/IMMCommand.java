@@ -24,8 +24,8 @@ import hungteen.imm.common.impl.registry.QiRootTypes;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.world.data.SpiritRegionData;
 import hungteen.imm.common.world.levelgen.IMMLevels;
+import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.commands.CommandSourceStack;
@@ -236,7 +236,7 @@ public class IMMCommand {
     private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey) {
         for (ServerPlayer player : targets) {
             if(resourceKey.equals(IMMLevels.SPIRIT_WORLD)){
-                SpiritRegionData.teleportToSpiritRegion((source.getLevel()), player);
+                SpiritWorldDimension.teleportToSpiritRegion((source.getLevel()), player);
             } else {
                 ServerLevel serverlevel = source.getLevel().getServer().getLevel(resourceKey);
                 if (serverlevel != null) {

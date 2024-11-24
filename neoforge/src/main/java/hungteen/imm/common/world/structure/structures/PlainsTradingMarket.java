@@ -3,7 +3,7 @@ package hungteen.imm.common.world.structure.structures;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
-import hungteen.imm.common.world.structure.IMMTemplatePools;
+import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -73,21 +73,21 @@ public class PlainsTradingMarket {
         final Holder<StructureProcessorList> none = processors.getOrThrow(IMMProcessorLists.EMPTY);
         final Holder<StructureProcessorList> streetRot = processors.getOrThrow(IMMProcessorLists.PLAINS_TRADING_MARKET_STREET_ROT);
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_START, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_START, new StructureTemplatePool(
                 empty,
                 pools(
                         getPoolElements("town_centers/meeting_point", moss, StructureTemplatePool.Projection.RIGID, List.of(10))
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_END, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_END, new StructureTemplatePool(
                 empty,
                 pools(
                         getPoolElements("town_centers/meeting_point", moss, StructureTemplatePool.Projection.RIGID, List.of(10))
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_STREET, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_STREET, new StructureTemplatePool(
                 empty,
                 pools(
                         getPoolElements("streets/straight", streetRot, StructureTemplatePool.Projection.TERRAIN_MATCHING, List.of(4, 4, 7, 7)),
@@ -96,7 +96,7 @@ public class PlainsTradingMarket {
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_HOUSE, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_HOUSE, new StructureTemplatePool(
                 empty,
                 pools(
                         getPoolElements("houses/decor", none, StructureTemplatePool.Projection.RIGID, List.of(5, 6, 7, 7, 7, 4, 4, 6)),
@@ -104,7 +104,7 @@ public class PlainsTradingMarket {
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_DECOR, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_DECOR, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -125,7 +125,7 @@ public class PlainsTradingMarket {
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_TREES, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_TREES, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -135,7 +135,7 @@ public class PlainsTradingMarket {
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_CULTIVATORS, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_CULTIVATORS, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -144,7 +144,7 @@ public class PlainsTradingMarket {
                 )
         ));
 
-        context.register(IMMTemplatePools.PLAINS_TRADING_MARKET_ANIMALS, new StructureTemplatePool(
+        context.register(IMMPools.PLAINS_TRADING_MARKET_ANIMALS, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(

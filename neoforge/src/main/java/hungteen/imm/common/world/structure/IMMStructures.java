@@ -37,6 +37,7 @@ public interface IMMStructures {
     ResourceKey<Structure> PLAINS_TRADING_MARKET = create("plains_trading_market");
     ResourceKey<Structure> SPIRITUAL_FLAME_ALTAR = create("spiritual_flame_altar");
     ResourceKey<Structure> SPIRIT_LAB = create("spirit_lab");
+    ResourceKey<Structure> SPIRIT_PAGODA = create("spirit_pagoda");
 
     static void register(BootstrapContext<Structure> context) {
 //        SpiritualPlainsVillage.initStructures(context);
@@ -70,7 +71,7 @@ public interface IMMStructures {
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BEARD_THIN
                 ),
-                pools.getOrThrow(IMMTemplatePools.PLAINS_TRADING_MARKET_START),
+                pools.getOrThrow(IMMPools.PLAINS_TRADING_MARKET_START),
                 Optional.empty(),
                 6,
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
@@ -88,7 +89,7 @@ public interface IMMStructures {
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BEARD_THIN
                 ),
-                pools.getOrThrow(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_CENTER),
+                pools.getOrThrow(IMMPools.SPIRITUAL_FLAME_ALTAR_CENTER),
                 Optional.empty(),
                 5,
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),
@@ -106,7 +107,7 @@ public interface IMMStructures {
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BEARD_THIN
                 ),
-                pools.getOrThrow(IMMTemplatePools.SPIRIT_LAB_CENTER),
+                pools.getOrThrow(IMMPools.SPIRIT_LAB_CENTER),
                 Optional.empty(),
                 4,
                 ConstantHeight.of(new VerticalAnchor.Absolute(0)),

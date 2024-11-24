@@ -3,7 +3,7 @@ package hungteen.imm.common.world.structure.structures;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
-import hungteen.imm.common.world.structure.IMMTemplatePools;
+import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -45,7 +45,7 @@ public class SpiritualFlameAltar {
         final Holder<StructureProcessorList> none = processors.getOrThrow(IMMProcessorLists.EMPTY);
         final Holder<StructureProcessorList> brickCrack = processors.getOrThrow(IMMProcessorLists.FLAME_ALTAR_CRACKED);
 
-        context.register(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_CENTER, new StructureTemplatePool(
+        context.register(IMMPools.SPIRITUAL_FLAME_ALTAR_CENTER, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -55,7 +55,7 @@ public class SpiritualFlameAltar {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_SIDE_PLATES, new StructureTemplatePool(
+        context.register(IMMPools.SPIRITUAL_FLAME_ALTAR_SIDE_PLATES, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -77,7 +77,7 @@ public class SpiritualFlameAltar {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_COLUMNS, new StructureTemplatePool(
+        context.register(IMMPools.SPIRITUAL_FLAME_ALTAR_COLUMNS, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -98,7 +98,7 @@ public class SpiritualFlameAltar {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_WALLS, new StructureTemplatePool(
+        context.register(IMMPools.SPIRITUAL_FLAME_ALTAR_WALLS, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -119,7 +119,7 @@ public class SpiritualFlameAltar {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRITUAL_FLAME_ALTAR_BI_FANG, new StructureTemplatePool(
+        context.register(IMMPools.SPIRITUAL_FLAME_ALTAR_BI_FANG, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(

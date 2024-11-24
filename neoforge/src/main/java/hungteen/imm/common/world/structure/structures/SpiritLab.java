@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.impl.FeatureHelper;
 import hungteen.imm.common.world.feature.IMMStructurePlacements;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
-import hungteen.imm.common.world.structure.IMMTemplatePools;
+import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -33,7 +33,7 @@ public class SpiritLab {
         final Holder<StructureProcessorList> none = processors.getOrThrow(IMMProcessorLists.EMPTY);
         final Holder<PlacedFeature> cherry = features.getOrThrow(IMMStructurePlacements.LAB_CHERRY_CHECKED);
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_CENTER, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_CENTER, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -43,7 +43,7 @@ public class SpiritLab {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_MAIN, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_MAIN, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -53,7 +53,7 @@ public class SpiritLab {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_SIDE, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_SIDE, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -63,7 +63,7 @@ public class SpiritLab {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_HOUSES, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_HOUSES, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -80,7 +80,7 @@ public class SpiritLab {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_DECORS, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_DECORS, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(
@@ -90,7 +90,7 @@ public class SpiritLab {
                 )
         ));
 
-        context.register(IMMTemplatePools.SPIRIT_LAB_TREES, new StructureTemplatePool(
+        context.register(IMMPools.SPIRIT_LAB_TREES, new StructureTemplatePool(
                 empty,
                 List.of(
                         Pair.of(

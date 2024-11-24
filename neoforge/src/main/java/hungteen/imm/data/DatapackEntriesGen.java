@@ -17,7 +17,7 @@ import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
 import hungteen.imm.common.world.structure.IMMStructureSets;
 import hungteen.imm.common.world.structure.IMMStructures;
-import hungteen.imm.common.world.structure.IMMTemplatePools;
+import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -41,7 +41,7 @@ public class DatapackEntriesGen extends HTRegistriesDatapackGenerator {
             .add(Registries.DIMENSION_TYPE, IMMDimensionTypes::register)
             .add(Registries.BIOME, IMMBiomes::register)
             .add(Registries.PROCESSOR_LIST, IMMProcessorLists::register)
-            .add(Registries.TEMPLATE_POOL, IMMTemplatePools::register)
+            .add(Registries.TEMPLATE_POOL, IMMPools::register)
             .add(Registries.CONFIGURED_FEATURE, IMMFeatures::register)
             .add(Registries.PLACED_FEATURE, IMMPlacements::register)
             .add(Registries.STRUCTURE, IMMStructures::register)

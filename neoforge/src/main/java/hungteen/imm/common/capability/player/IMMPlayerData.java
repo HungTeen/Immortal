@@ -1,7 +1,6 @@
 package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.api.registry.RangeNumber;
-import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
@@ -21,7 +20,9 @@ import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.impl.registry.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
-import hungteen.imm.common.network.*;
+import hungteen.imm.common.network.MiscDataPacket;
+import hungteen.imm.common.network.SectRelationPacket;
+import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.EntityUtil;
@@ -500,13 +501,13 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
 
     public void sendIntegerDataPacket(RangeNumber<Integer> rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer) {
-            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
+//            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
         }
     }
 
     public void sendFloatDataPacket(RangeNumber<Float> rangeData, float value) {
         if (getPlayer() instanceof ServerPlayer) {
-            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
+//            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
         }
     }
 
@@ -566,7 +567,7 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
 
     public void sendMiscDataPacket(MiscDataPacket.Types type, String data, float value) {
         if (getPlayer() instanceof ServerPlayer) {
-            NetworkHelper.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
+//            NetworkHelper.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
         }
     }
 

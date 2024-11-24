@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
  * @author HungTeen
  * @create 2022-11-20 10:20
  **/
-public interface IMMTemplatePools {
+public interface IMMPools {
     
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_START = create("trading_market/plains/town_centers");
     ResourceKey<StructureTemplatePool> PLAINS_TRADING_MARKET_END = create("trading_market/plains/end");
@@ -42,7 +42,7 @@ public interface IMMTemplatePools {
         SpiritLab.initPools(context);
     }
 
-    private static ResourceKey<StructureTemplatePool> create(String name) {
+    static ResourceKey<StructureTemplatePool> create(String name) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, Util.prefix(name));
     }
     
