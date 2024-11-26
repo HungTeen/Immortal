@@ -9,12 +9,12 @@ import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.IMMInitializer;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.util.Util;
@@ -39,7 +39,7 @@ public interface IMMDataSerializers {
 
     HTVanillaRegistry<EntityDataSerializer<?>> DATA_SERIALIZERS = HTRegistryManager.vanilla(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
-    HTHolder<EntityDataSerializer<IRealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
+    HTHolder<EntityDataSerializer<RealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
     HTHolder<EntityDataSerializer<ISpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
     HTHolder<EntityDataSerializer<Optional<ISpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
 

@@ -9,7 +9,7 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.item.artifacts.SpiritualPearlItem;
 import hungteen.imm.common.item.elixirs.*;

@@ -4,24 +4,17 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.QiRootTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.spell.SpellManager;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMLevels;
@@ -46,11 +39,10 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-09-25 16:38
  **/
 public class IMMCommand {
@@ -70,21 +62,21 @@ public class IMMCommand {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("add")
                                     .then(Commands.literal(root.getRegistryName())
-                                            .executes(command -> addSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
+                                            .executes(command -> addRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
                                     ))
                             .then(Commands.literal("remove")
                                     .then(Commands.literal(root.getRegistryName())
-                                            .executes(command -> removeSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
+                                            .executes(command -> removeRoot(command.getSource(), EntityArgument.getPlayers(command, "targets"), root))
                                     ))
                     ));
         });
         builder.then(Commands.literal("root")
                 .then(Commands.argument("targets", EntityArgument.players())
                         .then(Commands.literal("reset")
-                                .executes(command -> resetSpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                                .executes(command -> resetRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
                         )
                         .then(Commands.literal("query")
-                                .executes(command -> querySpiritualRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                                .executes(command -> queryRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
                         )
                 ));
 
@@ -128,7 +120,7 @@ public class IMMCommand {
                 ));
 
         // Command about cultivation.
-        for (ExperienceTypes experienceType : ExperienceTypes.values()) {
+        for (ExperienceType experienceType : ExperienceType.values()) {
             builder.then(Commands.literal("experience")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
@@ -154,18 +146,15 @@ public class IMMCommand {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(realm.getRegistryName())
-                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, null, false))
-                                            .then(Commands.argument("stage", StringArgumentType.string())
-                                                    .suggests(IMMSuggestions.ALL_REALM_STAGES)
-                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage"), false))
+                                            .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, false))
                                             .then(Commands.literal("force")
-                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, StringArgumentType.getString(command, "stage"), true))
+                                                    .executes(command -> setRealm(command.getSource(), EntityArgument.getPlayers(command, "targets"), realm, true))
                                             )))
-                            )
-                            .then(Commands.literal("show")
-                                    .executes(command -> showRealm(command.getSource(), EntityArgument.getPlayers(command, "targets")))
-                            )
-                    ));
+                    )
+                    .then(Commands.literal("show")
+                            .executes(command -> showRealm(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                    )
+            );
         });
 
         // Command about player number data.
@@ -235,7 +224,7 @@ public class IMMCommand {
 
     private static int tp(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ResourceKey<Level> resourceKey) {
         for (ServerPlayer player : targets) {
-            if(resourceKey.equals(IMMLevels.SPIRIT_WORLD)){
+            if (resourceKey.equals(IMMLevels.SPIRIT_WORLD)) {
                 SpiritWorldDimension.teleportToSpiritRegion((source.getLevel()), player);
             } else {
                 ServerLevel serverlevel = source.getLevel().getServer().getLevel(resourceKey);
@@ -249,33 +238,33 @@ public class IMMCommand {
 
     /* Spiritual Roots */
 
-    private static int resetSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
+    private static int resetRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.resetSpiritualRoots(player);
-            showPlayerSpiritualRoots(source, player, true);
+            PlayerUtil.resetRoots(player);
+            showPlayerRoots(source, player, true);
         }
         return targets.size();
     }
 
-    private static int querySpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
+    private static int queryRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            showPlayerSpiritualRoots(source, player, false);
+            showPlayerRoots(source, player, false);
         }
         return targets.size();
     }
 
-    private static int addSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
+    private static int addRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.setData(player, l -> l.addRoot(root));
-            showPlayerSpiritualRoots(source, player, true);
+            PlayerUtil.setData(player, l -> l.getCultivationData().addRoot(root));
+            showPlayerRoots(source, player, true);
         }
         return targets.size();
     }
 
-    private static int removeSpiritualRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
+    private static int removeRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets, QiRootType root) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.setData(player, l -> l.removeRoot(root));
-            showPlayerSpiritualRoots(source, player, true);
+            PlayerUtil.setData(player, l -> l.getCultivationData().removeRoot(root));
+            showPlayerRoots(source, player, true);
         }
         return targets.size();
     }
@@ -283,10 +272,10 @@ public class IMMCommand {
     /**
      * @param spread tell the target player or not.
      */
-    private static void showPlayerSpiritualRoots(CommandSourceStack source, Player player, boolean spread) {
+    private static void showPlayerRoots(CommandSourceStack source, Player player, boolean spread) {
         PlayerUtil.setData(player, l -> {
-            final MutableComponent component = TipUtil.command("spiritual_root", player.getName().getString());
-            component.append(QiRootTypes.getSpiritualRoots(l.getRoots()));
+            final MutableComponent component = TipUtil.command("qi_root", player.getName().getString());
+            component.append(QiRootTypes.getSpiritualRoots(l.getCultivationData().getRoots()));
             if (spread) {
                 PlayerHelper.sendMsgTo(player, component);
             }
@@ -356,7 +345,7 @@ public class IMMCommand {
 
     /* Cultivation */
 
-    private static int setExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type, float value) {
+    private static int setExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceType type, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setExperience(player, type, value);
             final Component info = getExperienceComponent(type, value);
@@ -366,7 +355,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type, float value) {
+    private static int addExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceType type, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addExperience(player, type, value);
             final Component info = getExperienceComponent(type, PlayerUtil.getExperience(player, type));
@@ -376,7 +365,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int showExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceTypes type) {
+    private static int showExperience(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ExperienceType type) {
         for (ServerPlayer player : targets) {
             source.sendSuccess(() -> getPlayerInfo(player, getExperienceComponent(type, PlayerUtil.getExperience(player, type))), true);
         }
@@ -385,11 +374,10 @@ public class IMMCommand {
 
     /* Realm */
 
-    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IRealmType realm, @Nullable String stageString, boolean force) {
-        RealmStages stage = Optional.ofNullable(stageString).map(String::toUpperCase).map(RealmStages::valueOf).orElse(RealmStages.PRELIMINARY);
+    private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RealmType realm, boolean force) {
         for (ServerPlayer player : targets) {
-            final boolean result = PlayerUtil.checkAndSetRealm(player, realm, stage, force);
-            final Component info = result ? RealmManager.getRealmInfo(realm, stage) : COMMAND_CULTIVATION_NOT_ENOUGH;
+            final boolean result = CultivationManager.checkAndSetRealm(player, realm, force);
+            final Component info = result ? RealmTypes.getRealmInfo(realm) : COMMAND_CULTIVATION_NOT_ENOUGH;
             PlayerHelper.sendMsgTo(player, info);
             source.sendSuccess(() -> getPlayerInfo(player, info), true);
         }
@@ -398,9 +386,8 @@ public class IMMCommand {
 
     private static int showRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            final IRealmType realm = PlayerUtil.getPlayerRealm(player);
-            final RealmStages stage = PlayerUtil.getPlayerRealmStage(player);
-            source.sendSuccess(() -> getPlayerInfo(player, RealmManager.getRealmInfo(realm, stage)), true);
+            final RealmType realm = PlayerUtil.getPlayerRealm(player);
+            source.sendSuccess(() -> getPlayerInfo(player, RealmTypes.getRealmInfo(realm)), true);
         }
         return targets.size();
     }
@@ -480,12 +467,12 @@ public class IMMCommand {
         return Component.literal(data.getComponent().getString() + " : " + value);
     }
 
-    private static Component getExperienceComponent(ExperienceTypes type, float value) {
-        return RealmManager.getExperienceComponent().append(" - ").append(RealmManager.getExperienceComponent(type).append(" : " + value));
+    private static Component getExperienceComponent(ExperienceType type, float value) {
+        return CultivationManager.getExperienceComponent().append(" - ").append(CultivationManager.getExperienceComponent(type).append(" : " + value));
     }
 
-    private static Component getRealmStageComponent(RealmStages stage) {
-        return RealmManager.getStageComponent().append(" - ").append(RealmManager.getStageComponent(stage));
+    private static Component getRealmStageComponent(RealmStage stage) {
+        return RealmTypes.getStageComponent().append(" - ").append(RealmTypes.getStageComponent(stage));
     }
 
 }

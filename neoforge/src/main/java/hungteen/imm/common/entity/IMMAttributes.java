@@ -19,6 +19,10 @@ public interface IMMAttributes {
 
     HTVanillaRegistry<Attribute> ATTRIBUTES = HTRegistryManager.vanilla(Registries.ATTRIBUTE, Util.id());
 
+    PTHolder<Attribute> MAX_QI_AMOUNT = ATTRIBUTES.registerForHolder("max_qi_amount", () -> {
+        return new RangedAttribute("attribute.name.imm.max_qi_amount", 0.0D, 0.0D, Double.MAX_VALUE);
+    });
+
     PTHolder<Attribute> ELEMENT_DECAY_FACTOR = ATTRIBUTES.registerForHolder("element_decay_factor", () -> {
         return new RangedAttribute("attribute.name.imm.element_decay_factor", 1.0D, 0.0D, 2.0D);
     });

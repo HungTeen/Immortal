@@ -3,14 +3,14 @@ package hungteen.imm.common.entity.creature.spirit;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.impl.registry.ElementReactions;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -83,16 +83,16 @@ public abstract class ElementSpirit extends IMMMob {
                 ;
     }
 
-    private static IRealmType getRealmByLevel(int level) {
+    private static RealmType getRealmByLevel(int level) {
         switch (level) {
             case 1 -> {
-                return RealmTypes.MONSTER_LEVEL_1;
+                return RealmTypes.YAOGUAI_LEVEL_1;
             }
             case 2 -> {
-                return RealmTypes.MONSTER_LEVEL_2;
+                return RealmTypes.YAOGUAI_LEVEL_2;
             }
             default -> {
-                return RealmTypes.MONSTER_LEVEL_3;
+                return RealmTypes.YAOGUAI_LEVEL_3;
             }
         }
     }

@@ -1,8 +1,8 @@
 package hungteen.imm.common.impl;
 
 import hungteen.imm.api.interfaces.IArtifactTier;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.RealmTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -27,15 +27,15 @@ public class IMMTiers {
         private final float attackDamage;
         private final float attackSpeed;
         private final float attackRange;
-        private final IRealmType realmType;
+        private final RealmType realmType;
         private final int durability;
         private final Supplier<Ingredient> repairIngredient;
 
-        public ArtifactTier(float attackDamage, IRealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
+        public ArtifactTier(float attackDamage, RealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
             this(attackDamage, 0, 0, realmType, durability, repairIngredient);
         }
 
-        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, IRealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
+        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, RealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
             this.attackDamage = attackDamage;
             this.attackSpeed = attackSpeed;
             this.attackRange = attackRange;
@@ -60,7 +60,7 @@ public class IMMTiers {
         }
 
         @Override
-        public IRealmType getArtifactRealm() {
+        public RealmType getArtifactRealm() {
             return realmType;
         }
 

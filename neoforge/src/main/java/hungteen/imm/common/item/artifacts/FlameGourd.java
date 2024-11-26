@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.item.IMMItems;
@@ -42,7 +42,7 @@ public class FlameGourd extends ArtifactItem {
     private static final String COLLECTED_FLAME_LEVEL = "CollectedFlameLevel";
     private static final int MAX_FLAME_AMOUNT = 500;
 
-    public FlameGourd(IRealmType artifactType) {
+    public FlameGourd(RealmType artifactType) {
         super(artifactType);
     }
 
@@ -129,7 +129,7 @@ public class FlameGourd extends ArtifactItem {
         return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRealm());
     }
 
-    public static boolean canStoreFlame(IRealmType artifactType, IRealmType realmType){
+    public static boolean canStoreFlame(RealmType artifactType, RealmType realmType){
         return artifactType.getRealmValue() >= realmType.getRealmValue();
     }
 

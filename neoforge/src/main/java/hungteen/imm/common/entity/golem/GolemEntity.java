@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
-import hungteen.imm.api.registry.ICultivationType;
+import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
-import hungteen.imm.common.impl.registry.CultivationTypes;
+import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.GolemInventoryMenu;
 import hungteen.imm.common.menu.ImmortalMenuProvider;
@@ -281,7 +281,7 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
     }
 
     @Override
-    public ICultivationType getCultivationType() {
+    public CultivationType getCultivationType() {
         return CultivationTypes.SPIRITUAL;
     }
 

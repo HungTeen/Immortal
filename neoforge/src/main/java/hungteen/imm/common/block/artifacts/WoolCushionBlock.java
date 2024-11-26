@@ -1,5 +1,6 @@
-package hungteen.imm.common.block;
+package hungteen.imm.common.block.artifacts;
 
+import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author HungTeen
  * @create 2023-03-11 20:55
  **/
-public class WoolCushionBlock extends CushionBlock{
+public class WoolCushionBlock extends CushionBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Map<DyeColor, WoolCushionBlock> COLOR_TO_CUSHION = new EnumMap<>(DyeColor.class);

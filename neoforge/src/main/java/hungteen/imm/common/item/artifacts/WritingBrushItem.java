@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifacts;
 
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 
 /**
  * @program Immortal
@@ -9,7 +9,7 @@ import hungteen.imm.api.registry.IRealmType;
  **/
 public class WritingBrushItem extends ArtifactItem {
 
-    public WritingBrushItem(Properties properties, IRealmType realmType) {
+    public WritingBrushItem(Properties properties, RealmType realmType) {
         super(properties.stacksTo(1), realmType);
     }
 

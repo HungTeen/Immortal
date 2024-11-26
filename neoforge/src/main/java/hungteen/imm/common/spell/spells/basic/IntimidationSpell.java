@@ -4,8 +4,8 @@ import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.enums.SpellUsageCategories;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.RealmManager;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.spell.spells.SpellType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,20 +23,20 @@ public class IntimidationSpell extends SpellType {
     }
 
     public static boolean canUseOn(LivingEntity owner, LivingEntity target){
-        final double range = RealmManager.getSpiritRange(owner);
-        return EntityHelper.isEntityValid(target) && owner.closerThan(target, range) && RealmManager.hasRealmGapAndLarger(owner, target);
+        final double range = CultivationManager.getSpiritRange(owner);
+        return EntityHelper.isEntityValid(target) && owner.closerThan(target, range) && CultivationManager.hasRealmGapAndLarger(owner, target);
     }
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        final double range = RealmManager.getSpiritRange(owner);
+        final double range = CultivationManager.getSpiritRange(owner);
         final AABB aabb = EntityHelper.getEntityAABB(owner, range, range / 2);
-        final IRealmType realm = RealmManager.getRealm(owner);
+        final RealmType realm = CultivationManager.getRealm(owner);
         EntityHelper.getPredicateEntities(owner, aabb, LivingEntity.class, entity -> {
-            return RealmManager.hasRealmGapAndLarger(owner, entity);
+            return CultivationManager.hasRealmGapAndLarger(owner, entity);
         }).forEach(target -> { //TODO 防止误伤队友。
-            final IRealmType targetRealm = RealmManager.getRealm(target);
-            final int gap = RealmManager.getRealmGap(realm, targetRealm);
+            final RealmType targetRealm = CultivationManager.getRealm(target);
+            final int gap = CultivationManager.getRealmGap(realm, targetRealm);
             // 威压百分比扣血，但不会扣完。
             target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
             target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.holder(), 600, gap));

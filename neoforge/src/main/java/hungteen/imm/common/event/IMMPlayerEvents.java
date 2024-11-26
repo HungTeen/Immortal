@@ -2,15 +2,11 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
-import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
 import net.neoforged.bus.api.EventPriority;
@@ -36,14 +32,13 @@ public class IMMPlayerEvents {
             if(PlayerUtil.isSitInMeditation(event.getEntity())){
                 PlayerUtil.addIntegerData(event.getEntity(), PlayerRangeIntegers.MEDITATE_TICK, 1);
             }
-            RealmManager.limitEnchantments(event.getEntity());
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerUtil.setData(event.getEntity(), IMMPlayerData::initialize);
+//            PlayerUtil.setData(event.getEntity(), IMMPlayerData::initialize);
         }
     }
 
@@ -60,26 +55,12 @@ public class IMMPlayerEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (EntityHelper.isServer(event.getEntity())) {
-            // TODO 玩家 Cap clone。
-//            event.getOriginal().reviveCaps();
-//            PlayerUtil.getDataOpt(event.getOriginal()).ifPresent(r -> {
-//                PlayerUtil.getDataOpt(event.getEntity()).ifPresent(l -> {
-//                    l.cloneFromExistingPlayerData(r, event.isWasDeath());
-//                });
-//            });
-//            event.getOriginal().invalidateCaps();
-        }
-    }
-
-    @SubscribeEvent
     public static void onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
-        if(RealmManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
-            EntityUtil.addMana(event.getEntity(), event.getOrb().getValue() * 0.4F);
-            event.getOrb().discard();
-            event.setCanceled(true);
-        }
+//        if(CultivationManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
+//            EntityUtil.addMana(event.getEntity(), event.getOrb().getValue() * 0.4F);
+//            event.getOrb().discard();
+//            event.setCanceled(true);
+//        }
     }
 
 //    @SubscribeEvent

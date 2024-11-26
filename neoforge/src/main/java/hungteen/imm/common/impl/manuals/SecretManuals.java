@@ -11,8 +11,8 @@ import hungteen.imm.common.impl.manuals.requirments.CultivationTypeRequirement;
 import hungteen.imm.common.impl.manuals.requirments.ElementRequirement;
 import hungteen.imm.common.impl.manuals.requirments.RealmRequirement;
 import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
-import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.Util;
@@ -36,9 +36,9 @@ public interface SecretManuals {
 
     static void register(BootstrapContext<SecretManual> context){
         final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.SPIRITUAL);
-        final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.SPIRITUAL_LEVEL_1, true);
-        final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.SPIRITUAL_LEVEL_2, true);
-        final ILearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.SPIRITUAL_LEVEL_3, true);
+        final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING, true);
+        final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION, true);
+        final ILearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.CORE_SHAPING, true);
 
         /* 基本法术 */
         register(context, SpellTypes.MEDITATION, 1, builder -> {

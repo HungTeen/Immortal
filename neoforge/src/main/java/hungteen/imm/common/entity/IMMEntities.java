@@ -7,7 +7,6 @@ import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.entity.creature.monster.BiFang;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
 import hungteen.imm.common.entity.creature.spirit.*;
@@ -214,9 +213,6 @@ public class IMMEntities {
         return ENTITY_TYPES;
     }
 
-    /**
-     * {@link IMMInitializer#defferRegister(IEventBus)}
-     */
     public static void initialize(IEventBus event) {
         NeoHelper.initRegistry(registry(), event);
     }

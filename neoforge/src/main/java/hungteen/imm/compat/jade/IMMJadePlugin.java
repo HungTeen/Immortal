@@ -11,7 +11,7 @@ public class IMMJadePlugin {
 // IWailaPlugin {
 //
 //    @Override
-//    public void register(IWailaCommonRegistration registration) {
+//    public void initialize(IWailaCommonRegistration registration) {
 //        //TODO initialize data providers
 //        registration.registerEntityDataProvider(IMMEntityProvider.INSTANCE, Entity.class);
 //

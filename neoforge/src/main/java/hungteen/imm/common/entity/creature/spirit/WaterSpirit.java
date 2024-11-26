@@ -5,7 +5,7 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

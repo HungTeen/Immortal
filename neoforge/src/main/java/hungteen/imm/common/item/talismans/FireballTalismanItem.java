@@ -1,8 +1,8 @@
 package hungteen.imm.common.item.talismans;
 
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.MathUtil;
 import net.minecraft.sounds.SoundEvents;
@@ -41,7 +41,7 @@ public class FireballTalismanItem extends DurationTalismanItem{
     }
 
     @Override
-    public IRealmType getArtifactRealm(ItemStack stack) {
+    public RealmType getArtifactRealm(ItemStack stack) {
         return RealmTypes.MODERATE_ARTIFACT;
     }
 }

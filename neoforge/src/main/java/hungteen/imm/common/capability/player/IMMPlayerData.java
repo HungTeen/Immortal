@@ -1,110 +1,83 @@
 package hungteen.imm.common.capability.player;
 
-import hungteen.htlib.api.registry.RangeNumber;
+import com.mojang.serialization.Codec;
+import hungteen.htlib.api.registry.EnumEntry;
+import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.NetworkHelper;
-import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.registry.IRealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
-import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
-import hungteen.imm.common.effect.IMMEffects;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.network.MiscDataPacket;
 import hungteen.imm.common.network.SectRelationPacket;
 import hungteen.imm.common.network.SpellPacket;
+import hungteen.imm.common.network.client.FloatDataPacket;
+import hungteen.imm.common.network.client.IntegerDataPacket;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.util.Constants;
-import hungteen.imm.util.EntityUtil;
-import hungteen.imm.util.LevelUtil;
+import hungteen.imm.util.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
 
 /**
  * @author HungTeen
  * @program Immortal
  * @create 2022-09-24 15:02
  **/
-public class IMMPlayerData implements INBTSerializable<CompoundTag> {
+public class IMMPlayerData implements HTPlayerData {
 
     private Player player;
     private final PlayerMiscData miscData = new PlayerMiscData();
-    private final HashSet<QiRootType> roots = new HashSet<>();
+    private final CultivationData cultivationData;
     private final HashMap<ISpellType, Integer> learnSpells = new HashMap<>(); // 学习的法术。
     private final HashMap<ISpellType, Long> spellCDs = new HashMap<>(); // 法术的冷却。
     private final ISpellType[] spellList = new ISpellType[Constants.SPELL_CIRCLE_SIZE]; // 法术轮盘。
     private final HashMap<ISectType, Float> sectRelations = new HashMap<>(); // 宗门关系。
-    private final EnumMap<ExperienceTypes, Float> experienceMap = new EnumMap<>(ExperienceTypes.class); // 修为。
-    private final HashMap<RangeNumber<Integer>, Integer> integerMap = new HashMap<>(); // 其他整数数据。
-    private final HashMap<RangeNumber<Float>, Float> floatMap = new HashMap<>(); // 其他小数数据。
-    private IRealmType realmType = RealmTypes.MORTALITY; // 当前境界。
-    private RealmStages realmStage = RealmStages.PRELIMINARY; // 当前境界阶段。
+    private final EnumMap<IntegerData, Integer> integerMap = new EnumMap<>(IntegerData.class);
+    private final EnumMap<FloatData, Float> floatMap = new EnumMap<>(FloatData.class);
     private ISpellType preparingSpell = null; // 当前选好的法术。
     private long nextRefreshTick;
 
-    /* Caches */
-    private RealmManager.RealmNode realmNode;
-
     public IMMPlayerData(Player player) {
         this.player = player;
-        PlayerRangeIntegers.registry().getValues().forEach(data -> {
-            integerMap.put(data, data.defaultData());
-        });
-        PlayerRangeFloats.registry().getValues().forEach(data -> {
-            floatMap.put(data, data.defaultData());
-        });
+        this.cultivationData = new CultivationData(this);
+        for (IntegerData data : IntegerData.values()) {
+            integerMap.computeIfAbsent(data, k -> 0);
+        }
+        for (FloatData data : FloatData.values()) {
+            floatMap.computeIfAbsent(data, k -> 0F);
+        }
     }
 
     public IMMPlayerData() {
-
-    }
-
-    /**
-     * //TODO HTLib
-     */
-    public void initialize() {
-//        if (!this.initialized) {
-//            // 初始化玩家的灵根
-//            PlayerUtil.resetSpiritualRoots(player);
-//            this.initialized = true;
-//        }
+        this(null);
     }
 
     public void tick() {
         if (EntityHelper.isServer(player)) {
             // 灵气自然增长。
-            if (EntityUtil.canManaIncrease(player)) {
-                final float value = getFloatData(PlayerRangeFloats.SPIRITUAL_MANA);
-                final float fullValue = getFullManaValue();
-                if (value < fullValue) {
-                    final float incValue = Math.min(fullValue - value, LevelUtil.getSpiritualRate(player.level(), player.blockPosition()));
-                    this.addFloatData(PlayerRangeFloats.SPIRITUAL_MANA, incValue);
-                }
-            }
-            // 突破检测。
-            if (this.getFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS) >= 1) {
-                if ((player.tickCount & 1) == 0) {
-                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.holder(), 200, 0));
-                }
-            }
+//            if (EntityUtil.canManaIncrease(player)) {
+//                final float incValue = LevelUtil.getSpiritualRate(player.level(), player.blockPosition());
+//                this.addFloatData(FloatData.QI_AMOUNT, incValue);
+//            }
+//            // 突破检测。
+//            if (this.getFloatData(FloatData.BREAK_THROUGH_PROGRESS) >= 1) {
+//                if ((player.tickCount & 1) == 0) {
+//                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.holder(), 200, 0));
+//                }
+//            }
             //TODO 随时间更新Sect
         }
     }
@@ -112,15 +85,6 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
-        {
-            CompoundTag nbt = new CompoundTag();
-            IMMAPI.get().qiRootRegistry().ifPresent(l -> {
-                l.getValues().forEach(type -> {
-                    nbt.putBoolean(type.getRegistryName() + "_root", roots.contains(type));
-                });
-            });
-            tag.put("SpiritualRoots", nbt);
-        }
         {
             CompoundTag nbt = new CompoundTag();
             this.learnSpells.forEach((spell, level) -> {
@@ -149,48 +113,33 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
         }
         {
             CompoundTag nbt = new CompoundTag();
-            this.experienceMap.forEach((type, value) -> {
-                nbt.putFloat(type.toString(), value);
-            });
-            tag.put("ExperienceMap", nbt);
-        }
-        {
-            CompoundTag nbt = new CompoundTag();
-            PlayerRangeIntegers.registry().getValues().forEach(data -> {
-                nbt.putInt(data.getRegistryName(), integerMap.getOrDefault(data, data.defaultData()));
-            });
-            PlayerRangeFloats.registry().getValues().forEach(data -> {
-                nbt.putFloat(data.getRegistryName(), floatMap.getOrDefault(data, data.defaultData()));
-            });
+            for(IntegerData data : IntegerData.values()){
+                if(integerMap.containsKey(data)) {
+                    nbt.putInt(data.getRegistryName(), integerMap.get(data));
+                }
+            }
+            for (FloatData data : FloatData.values()) {
+                if(floatMap.containsKey(data)) {
+                    nbt.putFloat(data.getRegistryName(), floatMap.get(data));
+                }
+            }
             tag.put("PlayerRangeData", nbt);
         }
         {
             final CompoundTag nbt = new CompoundTag();
             nbt.putLong("NextRefreshTick", this.nextRefreshTick);
-            nbt.putString("PlayerRealmType", this.realmType.getRegistryName());
-            nbt.putInt("PlayerRealmStage", this.realmStage.ordinal());
             if (this.preparingSpell != null) {
                 nbt.putString("PreparingSpell", this.preparingSpell.getRegistryName());
             }
             tag.put("MiscData", nbt);
         }
+        tag.put("PlayerCultureData", cultivationData.serializeNBT(provider));
         tag.put("PlayerMiscData", miscData.serializeNBT(provider));
         return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-        if (tag.contains("SpiritualRoots")) {
-            roots.clear();
-            final CompoundTag nbt = tag.getCompound("SpiritualRoots");
-            IMMAPI.get().qiRootRegistry().ifPresent(l -> {
-                l.getValues().forEach(type -> {
-                    if (nbt.getBoolean(type.getRegistryName() + "_root")) {
-                        roots.add(type);
-                    }
-                });
-            });
-        }
         if (tag.contains("Spells")) {
             learnSpells.clear();
             spellCDs.clear();
@@ -223,43 +172,32 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
                 }
             });
         }
-        if (tag.contains("ExperienceMap")) {
-            final CompoundTag nbt = tag.getCompound("ExperienceMap");
-            for (ExperienceTypes type : ExperienceTypes.values()) {
-                if (nbt.contains(type.toString())) {
-                    this.experienceMap.put(type, nbt.getFloat(type.toString()));
-                }
-            }
-        }
         if (tag.contains("PlayerRangeData")) {
             integerMap.clear();
             floatMap.clear();
             final CompoundTag nbt = tag.getCompound("PlayerRangeData");
-            PlayerRangeIntegers.registry().getValues().forEach(type -> {
-                if (nbt.contains(type.getRegistryName())) {
-                    integerMap.put(type, nbt.getInt(type.getRegistryName()));
+            for(IntegerData data : IntegerData.values()){
+                if (nbt.contains(data.getRegistryName())) {
+                    integerMap.put(data, nbt.getInt(data.getRegistryName()));
                 }
-            });
-            PlayerRangeFloats.registry().getValues().forEach(type -> {
-                if (nbt.contains(type.getRegistryName())) {
-                    floatMap.put(type, nbt.getFloat(type.getRegistryName()));
+            }
+            for (FloatData data : FloatData.values()) {
+                if (nbt.contains(data.getRegistryName())) {
+                    this.floatMap.put(data, nbt.getFloat(data.getRegistryName()));
                 }
-            });
+            }
         }
         if (tag.contains("MiscData")) {
             CompoundTag nbt = tag.getCompound("MiscData");
             if (nbt.contains("NextRefreshTick")) {
                 this.nextRefreshTick = nbt.getLong("NextRefreshTick");
             }
-            if (nbt.contains("PlayerRealmType")) {
-                RealmTypes.registry().getValue(nbt.getString("PlayerRealmType")).ifPresent(r -> this.realmType = r);
-            }
-            if (nbt.contains("PlayerRealmStage")) {
-                this.realmStage = RealmStages.values()[nbt.getInt("PlayerRealmStage")];
-            }
             if (nbt.contains("PreparingSpell")) {
                 SpellTypes.registry().getValue(nbt.getString("PreparingSpell")).ifPresent(l -> this.preparingSpell = l);
             }
+        }
+        if(tag.contains("PlayerCultureData")){
+            this.cultivationData.deserializeNBT(provider, tag.getCompound("PlayerCultureData"));
         }
         if (tag.contains("PlayerMiscData")) {
             this.miscData.deserializeNBT(provider, tag.getCompound("PlayerMiscData"));
@@ -270,12 +208,8 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
      * sync data to client side.
      */
     public void syncToClient() {
-        Arrays.stream(ExperienceTypes.values()).forEach(type -> this.addExperience(type, 0));
-        this.setRealmType(this.realmType); // Must run before sync mana !
-        this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
-        this.roots.forEach(l -> {
-            this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, l.getRegistryName());
-        });
+        this.cultivationData.syncToClient();
+        this.miscData.syncToClient();
         this.learnSpells.forEach((spell, level) -> {
             this.sendSpellPacket(SpellPacket.SpellOption.LEARN, spell, level);
         });
@@ -284,45 +218,21 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
                 this.sendSpellPacket(SpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, this.spellList[i], i);
             }
         }
-        this.integerMap.forEach(this::sendIntegerDataPacket);
-        this.floatMap.forEach(this::sendFloatDataPacket);
+        for(IntegerData data : IntegerData.values()){
+            this.sendIntegerDataPacket(data, this.getIntegerData(data));
+        }
+        for(FloatData data : FloatData.values()){
+            this.sendFloatDataPacket(data, this.getFloatData(data));
+        }
 
         if (this.preparingSpell != null) {
             this.setPreparingSpell(this.preparingSpell);
         }
     }
 
-    /* Spiritual Roots related methods */
-
-    public void addRoot(QiRootType spiritualRoot) {
-        this.roots.add(spiritualRoot);
-        this.sendMiscDataPacket(MiscDataPacket.Types.ADD_ROOT, spiritualRoot.getRegistryName());
-    }
-
-    public void removeRoot(QiRootType spiritualRoot) {
-        this.roots.remove(spiritualRoot);
-        this.sendMiscDataPacket(MiscDataPacket.Types.REMOVE_ROOT, spiritualRoot.getRegistryName());
-    }
-
-    public void clearSpiritualRoot() {
-        this.roots.clear();
-        this.sendMiscDataPacket(MiscDataPacket.Types.CLEAR_ROOT);
-    }
-
-    public boolean hasSpiritualRoot(QiRootType spiritualRoot) {
-        return this.roots.contains(spiritualRoot);
-    }
-
-    public int getSpiritualRootCount() {
-        return this.roots.size();
-    }
-
-    public boolean hasRoot(QiRootType root) {
-        return this.roots.contains(root);
-    }
-
-    public List<QiRootType> getRoots() {
-        return this.roots.stream().toList();
+    @Override
+    public boolean isServer() {
+        return player instanceof ServerPlayer;
     }
 
     /* Spell related methods */
@@ -416,131 +326,68 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
         }
     }
 
-    /* Experience Related Methods */
-
-    public void setExperience(ExperienceTypes type, float value) {
-        this.experienceMap.put(type, value);
-        if (EntityHelper.isServer(getPlayer())) {
-            final RealmStages currentStage = this.getRealmStage();
-            // 没有门槛时，自动进到下一个阶段。
-            if (!currentStage.hasThreshold() && currentStage.hasNextStage()) {
-                final RealmStages nextStage = RealmStages.next(currentStage);
-                if (this.getCultivation() >= RealmManager.getStageRequiredCultivation(this.getRealmType(), nextStage)) {
-                    this.setRealmStage(nextStage);
-                }
-            }
-        }
-        this.sendMiscDataPacket(MiscDataPacket.Types.EXPERIENCE, type.toString(), value);
-    }
-
-    public void addExperience(ExperienceTypes type, float value) {
-        this.setExperience(type, this.getExperience(type) + value);
-    }
-
-    public float getExperience(ExperienceTypes type) {
-        return this.experienceMap.getOrDefault(type, 0F);
-    }
-
-    public float getCultivation() {
-        return Arrays.stream(ExperienceTypes.values()).map(xp -> Math.min(RealmManager.getEachCultivation(this.realmType), getExperience(xp))).reduce(0F, Float::sum);
-    }
-
     /* Player Number Data Related Methods */
 
-    public int getIntegerData(RangeNumber<Integer> rangeData) {
-        return integerMap.getOrDefault(rangeData, rangeData.defaultData());
+    public int getIntegerData(IntegerData rangeData) {
+        return integerMap.computeIfAbsent(rangeData, k -> 0);
     }
 
-    public float getFloatData(RangeNumber<Float> rangeData) {
-        return floatMap.getOrDefault(rangeData, rangeData.defaultData());
+    public float getFloatData(FloatData rangeData) {
+        return floatMap.computeIfAbsent(rangeData, k -> 0F);
     }
 
-    public void setIntegerData(RangeNumber<Integer> rangeData, int value) {
-        value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+    public void setIntegerData(IntegerData rangeData, int value) {
         integerMap.put(rangeData, value);
         sendIntegerDataPacket(rangeData, value);
     }
 
-    public void setFloatData(RangeNumber<Float> rangeData, float value) {
-        if (rangeData == PlayerRangeFloats.SPIRITUAL_MANA) {
-            value = Mth.clamp(value, rangeData.getMinData(), getFullManaValue());
-        } else {
-            value = Mth.clamp(value, rangeData.getMinData(), rangeData.getMaxData());
+    public void setFloatData(FloatData rangeData, float value) {
+        if (rangeData == FloatData.QI_AMOUNT) {
+            value = Mth.clamp(value, 0, PlayerUtil.getMaxQi(player));
         }
         floatMap.put(rangeData, value);
         sendFloatDataPacket(rangeData, value);
     }
 
-    public void addIntegerData(RangeNumber<Integer> rangeData, int value) {
+    public void addIntegerData(IntegerData rangeData, int value) {
         setIntegerData(rangeData, getIntegerData(rangeData) + value);
     }
 
-    public void addFloatData(RangeNumber<Float> rangeData, float value) {
+    public void addFloatData(FloatData rangeData, float value) {
         setFloatData(rangeData, getFloatData(rangeData) + value);
-    }
-
-    /**
-     * 灵力条的极限。
-     *
-     * @return Natural increasing point.
-     */
-    public float getFullManaValue() {
-        return getFloatData(PlayerRangeFloats.MAX_SPIRITUAL_MANA) + getRealmType().getSpiritualValue();
     }
 
     /**
      * 待客户端配置文件更新该值。
      */
     public boolean requireSyncCircle() {
-        return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 0;
+        return getIntegerData(IntegerData.SPELL_CIRCLE_MODE) == 0;
     }
 
     public boolean useDefaultCircle() {
-        return getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE) == 1;
+        return getIntegerData(IntegerData.SPELL_CIRCLE_MODE) == 1;
     }
 
-    public void sendIntegerDataPacket(RangeNumber<Integer> rangeData, int value) {
-        if (getPlayer() instanceof ServerPlayer) {
-//            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new IntegerDataPacket(rangeData, value));
+    public void sendIntegerDataPacket(IntegerData rangeData, int value) {
+        if (getPlayer() instanceof ServerPlayer serverPlayer) {
+            HTLibPlatformAPI.get().sendToClient(serverPlayer, new IntegerDataPacket(rangeData, value));
         }
     }
 
-    public void sendFloatDataPacket(RangeNumber<Float> rangeData, float value) {
-        if (getPlayer() instanceof ServerPlayer) {
-//            HTLibPlatformAPI.get().sendToClient((ServerPlayer) getPlayer(), new FloatDataPacket(rangeData, value));
+    public void sendFloatDataPacket(FloatData data, float value) {
+        if (getPlayer() instanceof ServerPlayer serverPlayer) {
+            NetworkHelper.sendToClient(serverPlayer, new FloatDataPacket(data, value));
         }
     }
 
     /* Misc methods */
 
+    public CultivationData getCultivationData() {
+        return cultivationData;
+    }
+
     public PlayerMiscData getMiscData() {
         return miscData;
-    }
-
-    public IRealmType getRealmType() {
-        return this.realmType;
-    }
-
-    public void setRealmType(IRealmType realmType) {
-        if (player instanceof ServerPlayer serverPlayer && this.realmType != realmType) {
-            PlayerRealmChangeTrigger.INSTANCE.trigger(serverPlayer, realmType);
-        }
-        this.realmType = realmType;
-        this.getRealmNode(true); // Update realm node manually.
-        this.sendMiscDataPacket(MiscDataPacket.Types.REALM, realmType.getRegistryName());
-    }
-
-    public RealmStages getRealmStage() {
-        return this.realmStage;
-    }
-
-    public void setRealmStage(RealmStages stage) {
-        this.realmStage = stage;
-        // 突破次数重设。
-        this.setIntegerData(PlayerRangeIntegers.BREAK_THROUGH_TRIES, 0);
-        // 突破进度重设。
-        this.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
-        this.sendMiscDataPacket(MiscDataPacket.Types.REALM_STAGE, this.realmStage.toString());
     }
 
     @Nullable
@@ -571,17 +418,6 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
         }
     }
 
-    public RealmManager.RealmNode getRealmNode() {
-        return getRealmNode(false);
-    }
-
-    public RealmManager.RealmNode getRealmNode(boolean update) {
-        if (this.realmNode == null || update) {
-            this.realmNode = RealmManager.findRealmNode(this.realmType);
-        }
-        return this.realmNode;
-    }
-
     public Player getPlayer() {
         return this.player;
     }
@@ -592,6 +428,79 @@ public class IMMPlayerData implements INBTSerializable<CompoundTag> {
 
     public long getGameTime() {
         return getPlayer().level().getGameTime();
+    }
+
+    public enum FloatData implements EnumEntry {
+
+        QI_AMOUNT,
+
+        BREAK_THROUGH_PROGRESS,
+
+        /**
+         * 精神力 or 神识。
+         */
+        CONSCIOUSNESS,
+
+        /**
+         * 业障。
+         */
+        KARMA,
+
+        ;
+
+        public static final Codec<FloatData> CODEC = StringRepresentable.fromEnum(FloatData::values);
+
+        @Override
+        public String getModID() {
+            return Util.id();
+        }
+
+        @Override
+        public MutableComponent getComponent() {
+            return TipUtil.misc("player_data." + name().toLowerCase());
+        }
+    }
+
+    public enum IntegerData implements EnumEntry {
+
+        /**
+         * 元素精通点。
+         */
+        ELEMENTAL_MASTERY_POINTS,
+
+        /**
+         * 打坐冥想tick。
+         */
+        MEDITATE_TICK,
+
+        /**
+         * 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮
+         */
+        SPELL_CIRCLE_MODE,
+
+        /**
+         * 突破尝试次数。
+         */
+        BREAK_THROUGH_TRIES,
+
+        /**
+         * 是否知道自身灵根。
+         */
+        KNOW_SPIRITUAL_ROOTS
+
+        ;
+
+        public static final Codec<IntegerData> CODEC = StringRepresentable.fromEnum(IntegerData::values);
+
+        @Override
+        public String getModID() {
+            return Util.id();
+        }
+
+        @Override
+        public MutableComponent getComponent() {
+            return TipUtil.misc("player_data." + name().toLowerCase());
+        }
     }
 
 }

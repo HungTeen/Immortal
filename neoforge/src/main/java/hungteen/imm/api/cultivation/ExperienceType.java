@@ -1,16 +1,19 @@
-package hungteen.imm.api.enums;
+package hungteen.imm.api.cultivation;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * @author PangTeen
  * @program Immortal
  * @create 2023/7/20 15:48
  */
-public enum ExperienceTypes {
+public enum ExperienceType implements StringRepresentable {
 
     /**
      * Eat elixir to gain experience.
      */
-//    ELIXIR,
+    ELIXIR,
 
     /**
      * Fight with mobs to gain experience.
@@ -32,4 +35,11 @@ public enum ExperienceTypes {
      */
     PERSONALITY
     ;
+
+    public static final Codec<ExperienceType> CODEC = StringRepresentable.fromEnum(ExperienceType::values);
+
+    @Override
+    public String getSerializedName() {
+        return name();
+    }
 }

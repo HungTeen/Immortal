@@ -1,6 +1,6 @@
 package hungteen.imm.common.menu.slot;
 
-import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.menu.container.TradeContainer;
 import hungteen.imm.util.PlayerUtil;
@@ -62,7 +62,7 @@ public class TradeResultSlot extends Slot {
             if (activeOffer.take(tradeContainer.getCostStacks())) {
                 this.trader.notifyTrade(activeOffer);
                 if(! player.level().isClientSide){
-                    PlayerUtil.addExperience(player, ExperienceTypes.PERSONALITY, 2);
+                    PlayerUtil.addExperience(player, ExperienceType.PERSONALITY, 2);
                 }
 //                player.awardStat(Stats.TRADED_WITH_VILLAGER);
 //                this.tradeContainer.setItem(0, itemstack);

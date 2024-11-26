@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.enums.RealmStages;
+import hungteen.imm.api.cultivation.RealmStage;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.RandomUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -97,7 +97,7 @@ public abstract class IMMGrowableMob extends IMMMob {
         if(EntityHelper.isServer(this)){
             this.updateRealmByAge(age);
             if(! firstSpawn){
-                this.setRealmStage(RealmStages.PRELIMINARY);
+                this.setRealmStage(RealmStage.PRELIMINARY);
             }
         }
         this.setAge(age);

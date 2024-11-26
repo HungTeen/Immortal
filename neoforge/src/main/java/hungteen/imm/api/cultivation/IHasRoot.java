@@ -1,6 +1,4 @@
-package hungteen.imm.api.interfaces;
-
-import hungteen.imm.api.cultivation.QiRootType;
+package hungteen.imm.api.cultivation;
 
 import java.util.List;
 

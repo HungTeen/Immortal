@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.misc.talisman;
 
-import hungteen.imm.api.interfaces.IHasRealm;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.ICultivatable;
+import hungteen.imm.api.cultivation.RealmType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.level.Level;
@@ -11,14 +11,14 @@ import net.minecraft.world.level.Level;
  * @author HungTeen
  * @create 2023-06-04 15:45
  **/
-public abstract class TalismanEntity extends ThrowableItemProjectile implements IHasRealm {
+public abstract class TalismanEntity extends ThrowableItemProjectile implements ICultivatable {
 
     public TalismanEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
         super(type, level);
     }
 
     @Override
-    public IRealmType getRealm() {
+    public RealmType getRealm() {
         return null;
     }
 

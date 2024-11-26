@@ -5,12 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.LevelHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.common.capability.HTPlayerData;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
 /**
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.UnknownNullability;
  * @program Immortal
  * @create 2024/11/22 20:19
  **/
-public class PlayerMiscData implements INBTSerializable<CompoundTag> {
+public class PlayerMiscData implements HTPlayerData {
 
     private IMMPosition lastPosBeforeSpiritWorld;
 
@@ -48,6 +48,16 @@ public class PlayerMiscData implements INBTSerializable<CompoundTag> {
                     .resultOrPartial(msg -> IMMAPI.logger().error(msg))
                     .ifPresent(pos -> lastPosBeforeSpiritWorld = pos);
         }
+    }
+
+    @Override
+    public void syncToClient() {
+
+    }
+
+    @Override
+    public boolean isServer() {
+        return false;
     }
 
 

@@ -1,4 +1,4 @@
-package hungteen.imm.api.registry;
+package hungteen.imm.api.cultivation;
 
 import hungteen.htlib.api.registry.SimpleEntry;
 
@@ -8,7 +8,7 @@ import hungteen.htlib.api.registry.SimpleEntry;
  * @author HungTeen
  * @create 2022-09-29 12:40
  **/
-public interface IRealmType extends SimpleEntry {
+public interface RealmType extends SimpleEntry {
 
     /**
      * 此境界的最大修为。
@@ -22,18 +22,18 @@ public interface IRealmType extends SimpleEntry {
      */
     int getRealmValue();
 
-    /**
-     * 根本的灵力值（不考虑后天加成）。
-     * @return the base spiritual value.
-     */
-    int getSpiritualValue();
+//    /**
+//     * 根本的灵力值（不考虑后天加成）。
+//     * @return the base spiritual value.
+//     */
+//    int getSpiritualValue();
 
-    int getBaseConsciousness();
+    RealmStage getStage();
 
     /**
      * 修炼的类型。
      * @return Which way does living go.
      */
-    ICultivationType getCultivationType();
+    CultivationType getCultivationType();
 
 }

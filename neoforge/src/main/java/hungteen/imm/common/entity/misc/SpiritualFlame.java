@@ -5,14 +5,14 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.interfaces.IHasMana;
-import hungteen.imm.api.interfaces.IHasRealm;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.IHasMana;
+import hungteen.imm.api.cultivation.ICultivatable;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.api.cultivation.RealmStage;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.LevelUtil;
@@ -45,7 +45,7 @@ import java.util.Optional;
  * @author HungTeen
  * @create 2022-10-07 21:40
  **/
-public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, IHasRealm, IHasMana {
+public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, ICultivatable, IHasMana {
 
     public static final float MAX_AMOUNT = Constants.MAX_SPIRITUAL_FLAME_AMOUNT;
     private static final int RECOVER_CD = 50;
@@ -243,12 +243,12 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
     }
 
     @Override
-    public IRealmType getRealm() {
+    public RealmType getRealm() {
         return RealmTypes.SPIRITUAL_FLAME_1;
     }
 
     @Override
-    public Optional<RealmStages> getRealmStageOpt() {
+    public Optional<RealmStage> getRealmStageOpt() {
         return Optional.empty();
     }
 

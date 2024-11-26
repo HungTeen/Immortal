@@ -5,7 +5,7 @@ import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMStateProperties;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ParticleUtil;

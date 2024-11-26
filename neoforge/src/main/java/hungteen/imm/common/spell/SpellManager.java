@@ -6,7 +6,6 @@ import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.events.PlayerSpellEvent;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.common.network.SpellPacket;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.EventUtil;

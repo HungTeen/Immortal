@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.golem;
 
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

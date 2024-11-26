@@ -9,8 +9,8 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.block.CushionBlock;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
@@ -113,9 +113,9 @@ public interface IMMCreativeTabs {
                     .withTabsBefore(SECRET_MANUALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
-                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
+                            return CultivationManager.notCommon(CultivationManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
                         }).stream().map(ItemStack::new)
-                                .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
+//                                .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
                                 .forEach(output::accept);
                     })
     );

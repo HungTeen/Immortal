@@ -6,7 +6,7 @@ import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
-import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.network.ScreenButtonPacket;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
@@ -50,7 +50,7 @@ public class RestingScreen extends MeditationScreen {
         }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.break_through_button")))){
             @Override
             public boolean isActive() {
-                return RealmManager.canBreakThrough(ClientUtil.player());
+                return CultivationManager.canBreakThrough(ClientUtil.player());
             }
         };
         this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
@@ -74,7 +74,7 @@ public class RestingScreen extends MeditationScreen {
         if (PlayerUtil.reachThreshold(ClientUtil.player())) {
             y -= 20;
             graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
-            final float progress = RealmManager.getBreakThroughProgress(ClientUtil.player());
+            final float progress = CultivationManager.getBreakThroughProgress(ClientUtil.player());
             final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);
             graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, backManaLen, MANA_BAR_HEIGHT);
             final float scale = 1;

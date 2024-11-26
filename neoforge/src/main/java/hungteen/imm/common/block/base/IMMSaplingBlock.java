@@ -1,4 +1,4 @@
-package hungteen.imm.common.block;
+package hungteen.imm.common.block.base;
 
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;

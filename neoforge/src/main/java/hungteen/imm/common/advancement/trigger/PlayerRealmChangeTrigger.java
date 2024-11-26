@@ -2,8 +2,8 @@ package hungteen.imm.common.advancement.trigger;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -27,7 +27,7 @@ public class PlayerRealmChangeTrigger extends SimpleCriterionTrigger<PlayerRealm
         return ID;
     }
 
-    public void trigger(ServerPlayer player, IRealmType realm) {
+    public void trigger(ServerPlayer player, RealmType realm) {
         this.trigger(player, (instance) -> instance.matches(player, realm));
     }
 
@@ -36,22 +36,22 @@ public class PlayerRealmChangeTrigger extends SimpleCriterionTrigger<PlayerRealm
         return TriggerInstance.CODEC;
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, IRealmType realm) implements SimpleCriterionTrigger.SimpleInstance  {
+    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, RealmType realm) implements SimpleCriterionTrigger.SimpleInstance  {
 
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::playerPredicate),
                 RealmTypes.registry().byNameCodec().fieldOf("realm").forGetter(TriggerInstance::realm)
         ).apply(instance, TriggerInstance::new));
 
-        public static PlayerRealmChangeTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, IRealmType realm) {
+        public static PlayerRealmChangeTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, RealmType realm) {
             return new PlayerRealmChangeTrigger.TriggerInstance(playerPredicate, realm);
         }
 
-        public static PlayerRealmChangeTrigger.TriggerInstance test(IRealmType realm) {
+        public static PlayerRealmChangeTrigger.TriggerInstance test(RealmType realm) {
             return test(Optional.empty(), realm);
         }
 
-        public boolean matches(ServerPlayer player, IRealmType realm) {
+        public boolean matches(ServerPlayer player, RealmType realm) {
             return this.realm.equals(realm);
         }
 

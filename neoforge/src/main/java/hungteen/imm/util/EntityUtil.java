@@ -6,16 +6,16 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.interfaces.IHasMana;
-import hungteen.imm.api.interfaces.IHasRoot;
+import hungteen.imm.api.cultivation.IHasMana;
+import hungteen.imm.api.cultivation.IHasRoot;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.capability.entity.IMMEntityCapability;
+import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -26,6 +26,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -59,6 +60,11 @@ public class EntityUtil {
 
     public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
 //        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), sound, soundSource));
+    }
+
+    public static double getMaxQi(LivingEntity living){
+        AttributeInstance attribute = living.getAttribute(IMMAttributes.MAX_QI_AMOUNT.holder());
+        return attribute == null ? 0 : attribute.getValue();
     }
 
     public static void knockback(LivingEntity target, double strength, double dx, double dz){
@@ -325,7 +331,7 @@ public class EntityUtil {
      */
     public static List<QiRootType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
         if (viewPlayer == null) {
-            return entity instanceof Player player ? PlayerUtil.getSpiritualRoots(player)
+            return entity instanceof Player player ? PlayerUtil.getRoots(player)
                     : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
         }
         return PlayerUtil.filterSpiritRoots(viewPlayer, getSpiritualRoots(entity));

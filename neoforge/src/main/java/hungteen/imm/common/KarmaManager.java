@@ -1,6 +1,5 @@
 package hungteen.imm.common;
 
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.player.Player;
 

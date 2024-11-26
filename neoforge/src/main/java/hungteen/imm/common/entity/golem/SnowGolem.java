@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.golem;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;

@@ -1,4 +1,4 @@
-package hungteen.imm.common.block;
+package hungteen.imm.common.block.ambient;
 
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HalfTransparentBlock;
@@ -11,7 +11,11 @@ import net.minecraft.world.level.block.HalfTransparentBlock;
 public class SpiritBedrock extends HalfTransparentBlock {
 
     public SpiritBedrock() {
-        super(Properties.ofFullCopy(Blocks.BEDROCK).lightLevel(state -> 15).noOcclusion());
+        super(Properties.ofFullCopy(Blocks.BEDROCK)
+                .lightLevel(state -> 15)
+                .noOcclusion()
+                .noLootTable()
+        );
     }
 
 }

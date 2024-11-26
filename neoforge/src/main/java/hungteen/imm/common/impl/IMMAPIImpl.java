@@ -3,10 +3,10 @@ package hungteen.imm.common.impl;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.impl.registry.QiRootTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.spell.SpellTypes;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class IMMAPIImpl implements IMMAPI {
     }
 
     @Override
-    public Optional<HTCustomRegistry<IRealmType>> realmRegistry() {
+    public Optional<HTCustomRegistry<RealmType>> realmRegistry() {
         return Optional.of(RealmTypes.registry());
     }
 

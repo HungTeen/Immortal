@@ -3,7 +3,7 @@ package hungteen.imm.client.gui.screen.meditation;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
@@ -11,10 +11,9 @@ import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.KarmaManager;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
@@ -91,12 +90,12 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         int posY = this.topPos + 83;
         this.renderSpiritualRoots(graphics, posX, posY);
         posY += 12;
-        RenderUtil.renderCenterScaledText(graphics.pose(), RealmManager.getRealmInfo(PlayerUtil.getPlayerRealm(ClientUtil.player()), PlayerUtil.getPlayerRealmStage(ClientUtil.player())), posX + 32, posY, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        RenderUtil.renderCenterScaledText(graphics.pose(), RealmTypes.getRealmInfo(PlayerUtil.getPlayerRealm(ClientUtil.player())), posX + 32, posY, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
     private void renderSpiritualRoots(GuiGraphics graphics, int posX, int posY) {
         if (SpiritEyeSpell.knowOwnSpiritRoots(ClientUtil.player())) {
-            final List<QiRootType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getSpiritualRoots(ClientUtil.player()));
+            final List<QiRootType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getRoots(ClientUtil.player()));
             final int len = roots.size();
             if(len == 0){
                 RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.misc("no_spiritual_root"), posX + 32, posY + 1, 1F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
@@ -134,19 +133,19 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 //                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
 //            }
             case FIGHT_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceTypes.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceType.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case LEARN_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceTypes.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceType.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
             }
 //            case MISSION_CULTIVATION -> {
 //                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
 //            }
             case PERSONALITY_CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceTypes.PERSONALITY), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceType.PERSONALITY), PlayerUtil.getEachMaxCultivation(player), false);
             }
             case CULTIVATION -> {
-                this.renderProgressWithText(graphics, RealmManager.getCultivation(), x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getCultivation(), x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
             }
             case KARMA -> {
                 final float value = KarmaManager.calculateKarma(ClientUtil.player());
@@ -162,7 +161,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 this.renderProgressWithText(graphics, PlayerRangeIntegers.KARMA.getComponent(), x, y, value, KarmaManager.MAX_KARMA_VALUE, true);
             }
             case SPIRITUAL_MANA -> {
-                this.renderProgressWithText(graphics, PlayerRangeFloats.SPIRITUAL_MANA.getComponent(), x, y, PlayerUtil.getMana(player), PlayerUtil.getMaxMana(player), false);
+                this.renderProgressWithText(graphics, PlayerRangeFloats.SPIRITUAL_MANA.getComponent(), x, y, PlayerUtil.getMana(player), (float) PlayerUtil.getMaxQi(player), false);
             }
             case BREAK_THROUGH_PROGRESS -> {
                 this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS), false);
@@ -198,7 +197,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     }
 
     private static boolean isSpiritual(Player player){
-        return PlayerUtil.getPlayerRealm(player).getCultivationType().isSpiritual();
+        return PlayerUtil.getPlayerRealm(player).getCultivationType().requireQi();
     }
 
     public enum CultivationEntries {

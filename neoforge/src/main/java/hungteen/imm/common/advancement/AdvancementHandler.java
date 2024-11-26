@@ -8,10 +8,10 @@ package hungteen.imm.common.advancement;
 public class AdvancementHandler {
 
     public static void init() {
-//        CriteriaTriggers.register(Util.prefixName("spiritual_pearl"), SpiritualPearlTrigger.INSTANCE);
-//        CriteriaTriggers.register(Util.prefixName("realm"), PlayerRealmChangeTrigger.INSTANCE);
-//        CriteriaTriggers.register(Util.prefixName("learn_spell"), PlayerLearnSpellTrigger.INSTANCE);
-//        CriteriaTriggers.register(Util.prefixName("learn_spells"), PlayerLearnSpellsTrigger.INSTANCE);
+//        CriteriaTriggers.initialize(Util.prefixName("spiritual_pearl"), SpiritualPearlTrigger.INSTANCE);
+//        CriteriaTriggers.initialize(Util.prefixName("realm"), PlayerRealmChangeTrigger.INSTANCE);
+//        CriteriaTriggers.initialize(Util.prefixName("learn_spell"), PlayerLearnSpellTrigger.INSTANCE);
+//        CriteriaTriggers.initialize(Util.prefixName("learn_spells"), PlayerLearnSpellsTrigger.INSTANCE);
     }
 
 }

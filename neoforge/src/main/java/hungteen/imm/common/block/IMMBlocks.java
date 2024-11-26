@@ -11,12 +11,10 @@ import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.IMMInitializer;
-import hungteen.imm.common.block.artifacts.ElixirRoomBlock;
-import hungteen.imm.common.block.artifacts.RuneWorkBench;
-import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
+import hungteen.imm.common.block.ambient.SpiritBedrock;
+import hungteen.imm.common.block.artifacts.*;
 import hungteen.imm.common.block.plants.*;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -52,7 +50,7 @@ public interface IMMBlocks {
     HTHolder<GourdStemBlock> GOURD_STEM = BLOCKS.register("gourd_stem", GourdStemBlock::new);
     HTHolder<Block> GOURD_SCAFFOLD = BLOCKS.register("gourd_scaffold", GourdScaffoldBlock::new);
     HTHolder<HTAttachedStemBlock> GOURD_ATTACHED_STEM = BLOCKS.register("gourd_attached_stem", AttachedGourdStemBlock::new);
-//    HTHolder<Block> GANODERMA = BLOCKS.register("ganoderma", GanodermaBlock::new);
+//    HTHolder<Block> GANODERMA = BLOCKS.initialize("ganoderma", GanodermaBlock::new);
     HTBlockSuit<Block> GANODERMA = register("ganoderma", GanodermaBlock::new);
 
     /* Natural Blocks */
@@ -62,6 +60,7 @@ public interface IMMBlocks {
 
     /* Special Blocks */
 
+    HTBlockSuit<Block> SPIRIT_ANCHOR = register("spirit_anchor", SpiritAnchorBlock::new);
     HTBlockSuit<Block> TELEPORT_ANCHOR = register("teleport_anchor", TeleportAnchorBlock::new);
     HTBlockSuit<Block> RUNE_WORK_BENCH = register("rune_work_bench", RuneWorkBench::new);
 

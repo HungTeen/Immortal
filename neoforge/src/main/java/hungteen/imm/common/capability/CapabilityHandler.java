@@ -16,7 +16,7 @@ public class CapabilityHandler {
 //     * {@link IMMInitializer#ImmortalMod()}
 //     */
 //    public static void registerCapabilities(RegisterCapabilitiesEvent event){
-//        event.register(PlayerCapability.class);
+//        event.initialize(PlayerCapability.class);
 //    }
 //
 //    /**
@@ -40,7 +40,7 @@ public class CapabilityHandler {
 //     * {@link IMMInitializer#setUp(FMLCommonSetupEvent)}
 //     */
 //    public static void init(){
-//        PlayerCapabilityManager.register(PLAYER_CAP);
+//        PlayerCapabilityManager.initialize(PLAYER_CAP);
 //    }
 
 }

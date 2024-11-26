@@ -29,7 +29,7 @@ public record ElementRequirement(Element element) implements ILearnRequirement {
 
     @Override
     public boolean check(Level level, Player player) {
-        return PlayerUtil.getSpiritualRoots(player).stream().anyMatch(root -> root.getElements().contains(element()));
+        return PlayerUtil.getRoots(player).stream().anyMatch(root -> root.getElements().contains(element()));
     }
 
     @Override

@@ -8,7 +8,7 @@ import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.util.RenderUtil;
-import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.network.ScreenButtonPacket;
 import hungteen.imm.util.Colors;

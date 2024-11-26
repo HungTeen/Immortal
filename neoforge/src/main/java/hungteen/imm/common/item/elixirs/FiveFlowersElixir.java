@@ -3,11 +3,11 @@ package hungteen.imm.common.item.elixirs;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.CultivationType;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,22 +32,22 @@ public class FiveFlowersElixir extends ElixirItem {
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
-            final int len = PlayerUtil.getSpiritualRoots(player).size();
+            final int len = PlayerUtil.getRoots(player).size();
             if (len == 0 || player.getRandom().nextFloat() < 0.5F) {
                 player.addEffect(EffectHelper.viewEffect(MobEffects.HARM, 10, 1));
             } else {
-                RealmManager.checkAndAddBreakThroughProgress(player, player.getRandom().nextFloat() * 0.8F);
+                CultivationManager.checkAndAddBreakThroughProgress(player, player.getRandom().nextFloat() * 0.8F);
             }
         }
     }
 
     @Override
-    public Optional<IRealmType> getLowestRealm(ICultivationType cultivationType) {
-        return cultivationType == CultivationTypes.MORTAL ? Optional.of(RealmTypes.MORTALITY) : Optional.empty();
+    public Optional<RealmType> getLowestRealm(CultivationType cultivationType) {
+        return cultivationType == CultivationTypes.NONE ? Optional.of(RealmTypes.MORTALITY) : Optional.empty();
     }
 
     @Override
-    public Optional<IRealmType> getHighestRealm(ICultivationType cultivationType) {
+    public Optional<RealmType> getHighestRealm(CultivationType cultivationType) {
         return getLowestRealm(cultivationType);
     }
 

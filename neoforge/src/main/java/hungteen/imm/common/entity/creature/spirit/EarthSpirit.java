@@ -12,7 +12,7 @@ import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
 import hungteen.imm.common.entity.misc.ElementCrystal;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;

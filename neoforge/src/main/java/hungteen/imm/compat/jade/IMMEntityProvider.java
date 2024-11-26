@@ -18,8 +18,8 @@ public class IMMEntityProvider {
 ////            final IElementHelper helper = iTooltip.getElementHelper();
 ////            if(PlayerUtil.isSpellOnCircle(player, SpellTypes.SPIRIT_EYES)) {
 ////                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && RealmManager.mayHaveRoots(entityAccessor.getEntity())) {
-////                    List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getSpiritualRoots(entityAccessor.getEntity()));
-////                    iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getSpiritualRoots(roots))));
+////                    List<ISpiritualType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getRoots(entityAccessor.getEntity()));
+////                    iTooltip.add(helper.text(SpiritualTypes.getCategory().append(": ").append(SpiritualTypes.getRoots(roots))));
 ////                }
 ////                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)) {
 ////                    final IRealmType playerRealm = RealmManager.getRealm(player);
@@ -73,7 +73,7 @@ public class IMMEntityProvider {
 //        // 除了玩家外的实体并没有同步mana到客户端。
 //        if(entityAccessor.getEntity() instanceof IHasMana manaEntity){
 //            compoundTag.putFloat("Mana", manaEntity.getMana());
-//            compoundTag.putFloat("MaxMana", manaEntity.getMaxMana());
+//            compoundTag.putFloat("MaxMana", manaEntity.getMaxQi());
 //        }
 //    }
 //

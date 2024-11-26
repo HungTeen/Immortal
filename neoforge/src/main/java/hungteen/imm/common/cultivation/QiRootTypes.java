@@ -1,4 +1,4 @@
-package hungteen.imm.common.impl.registry;
+package hungteen.imm.common.cultivation;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.registry.HTCustomRegistry;

@@ -1,6 +1,7 @@
 package hungteen.imm.api.interfaces;
 
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.cultivation.IHasMana;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.registry.ISpellType;

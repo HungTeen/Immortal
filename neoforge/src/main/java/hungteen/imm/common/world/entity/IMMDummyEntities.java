@@ -12,7 +12,7 @@ import hungteen.imm.util.Util;
  **/
 public interface IMMDummyEntities {
 
-//    public static final DummyEntityType<BreakThroughTrial> BREAK_THROUGH_TRIAL = register("break_through_trial", BreakThroughTrial::new);
+//    public static final DummyEntityType<BreakThroughTrial> BREAK_THROUGH_TRIAL = initialize("break_through_trial", BreakThroughTrial::new);
     DummyEntityType<SpiritRegion> SPIRIT_REGION = register("spirit_region", SpiritRegion::new);
 
     /**

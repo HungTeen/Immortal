@@ -1,10 +1,10 @@
 package hungteen.imm.common.item.elixirs;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.CultivationType;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -104,8 +104,8 @@ public abstract class ElixirItem extends Item {
      * @return False to explode, True to successfully eat elixir, absent to pass.
      */
     public Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack){
-        final IRealmType realm = RealmManager.getRealm( livingEntity);
-        final ICultivationType cultivationType = realm.getCultivationType();
+        final RealmType realm = CultivationManager.getRealm( livingEntity);
+        final CultivationType cultivationType = realm.getCultivationType();
         var lowRealm = getLowestRealm(cultivationType);
         var highRealm = getHighestRealm(cultivationType);
         if(lowRealm.isEmpty() && highRealm.isEmpty()){
@@ -123,7 +123,7 @@ public abstract class ElixirItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
         components.add(TipUtil.desc(this).withStyle(ChatFormatting.DARK_GRAY));
         PlayerHelper.getClientPlayer().ifPresent(player -> {
-            final ICultivationType cultivationType = PlayerUtil.getCultivationType(player);
+            final CultivationType cultivationType = PlayerUtil.getCultivationType(player);
             var low = getLowestRealm(cultivationType);
             var high = getHighestRealm(cultivationType);
             if(low.isPresent() && high.isPresent()){
@@ -150,15 +150,15 @@ public abstract class ElixirItem extends Item {
 //        );
     }
 
-    public boolean validCultivationType(ICultivationType cultivationType){
+    public boolean validCultivationType(CultivationType cultivationType){
         return getLowestRealm(cultivationType).isPresent() || getHighestRealm(cultivationType).isPresent();
     }
 
-    public Optional<IRealmType> getLowestRealm(ICultivationType cultivationType){
+    public Optional<RealmType> getLowestRealm(CultivationType cultivationType){
         return Optional.empty();
     }
 
-    public Optional<IRealmType> getHighestRealm(ICultivationType cultivationType){
+    public Optional<RealmType> getHighestRealm(CultivationType cultivationType){
         return getLowestRealm(cultivationType);
     }
 
@@ -176,7 +176,7 @@ public abstract class ElixirItem extends Item {
         return UseAnim.EAT;
     }
 
-    public static IRealmType getRealm(LivingEntity livingEntity){
+    public static RealmType getRealm(LivingEntity livingEntity){
 //        return IMMAPI.get().getEntityRealm(livingEntity);
         return RealmTypes.NOT_IN_REALM;
     }

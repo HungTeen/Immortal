@@ -7,9 +7,10 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.interfaces.IHuman;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
@@ -23,7 +24,6 @@ import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
 import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
-import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -127,7 +127,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
     @Override
     protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
-        return PlayerUtil.getSpiritualRoots(accessor.getRandom());
+        return CultivationManager.getQiRoots(accessor.getRandom());
     }
 
     @Override

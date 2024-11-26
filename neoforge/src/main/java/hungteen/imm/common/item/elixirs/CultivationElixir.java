@@ -1,19 +1,5 @@
 package hungteen.imm.common.item.elixirs;
 
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.api.IMMAPI;
-import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.util.PlayerUtil;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
-
-import java.util.List;
-import java.util.Optional;
-
 /**
  * @program Immortal
  * @author HungTeen

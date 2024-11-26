@@ -1,6 +1,6 @@
 package hungteen.imm.common.block.artifacts;
 
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

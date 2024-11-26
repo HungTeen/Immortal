@@ -1,11 +1,8 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.common.advancement.trigger.SpiritualPearlTrigger;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.util.EntityUtil;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -61,7 +58,7 @@ public class SpiritualPearlItem extends ArtifactItem {
         level.addFreshEntity(pearl);
         pearl.setCheckTarget(target);
         if(player instanceof ServerPlayer serverPlayer){
-//            SpiritualPearlTrigger.INSTANCE.trigger(serverPlayer, target, EntityUtil.getSpiritualRoots(target, player).size());
+//            SpiritualPearlTrigger.INSTANCE.trigger(serverPlayer, target, EntityUtil.getRoots(target, player).size());
         }
 
         LevelUtil.playSound(level, SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, player.position(), 0.5F, 0.4F);

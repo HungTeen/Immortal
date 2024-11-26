@@ -1,9 +1,9 @@
 package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.interfaces.IHasMana;
+import hungteen.imm.api.cultivation.IHasMana;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.RealmManager;
+import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.impl.registry.ElementReactions;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
@@ -48,7 +48,6 @@ public class IMMLivingEvents {
                     }
                 }
             });
-            RealmManager.limitEnchantments(living);
         }
     }
 
@@ -144,7 +143,7 @@ public class IMMLivingEvents {
         }
         // Cause by player.
         if(ev.getSource().getEntity() instanceof ServerPlayer player) {
-            RealmManager.onPlayerKillLiving(player, ev.getEntity());
+            CultivationManager.onPlayerKillLiving(player, ev.getEntity());
         }
     }
 

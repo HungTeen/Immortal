@@ -1,32 +1,21 @@
 package hungteen.imm.util;
 
 import hungteen.htlib.api.registry.RangeNumber;
-import hungteen.htlib.util.WeightedList;
-import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.IMMConfigs;
-import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.enums.ExperienceTypes;
-import hungteen.imm.api.enums.RealmStages;
-import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.RealmManager;
 import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.player.IMMPlayerData;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
-import hungteen.imm.common.impl.registry.PlayerRangeIntegers;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.capability.player.CultivationData;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -35,15 +24,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @author HungTeen
@@ -123,50 +109,6 @@ public class PlayerUtil {
         return player.getCooldowns().isOnCooldown(item);
     }
 
-    /**
-     * 玩家灵根的生成规则： <br>
-     * 1. 首先依据概率选择是几个灵根（0 - 5）。 <br>
-     * 2. 如果是1个灵根，那么依据权重在普通灵根和异灵根中选择一个。 <br>
-     * 3. 否则依据权重在普通五行灵根中选择若干个。 <br>
-     *
-     * @return 随机生成的灵根。
-     */
-    public static List<QiRootType> getSpiritualRoots(RandomSource random) {
-        final double[] rootChances = {IMMConfigs.getNoRootChance(), IMMConfigs.getOneRootChance(), IMMConfigs.getTwoRootChance(), IMMConfigs.getThreeRootChance(), IMMConfigs.getFourRootChance()};
-        return getSpiritualRoots(random, rootChances);
-    }
-
-    /**
-     * @param rootChances 每个灵根数量的概率，建议数组长度为 5。
-     */
-    public static List<QiRootType> getSpiritualRoots(RandomSource random, double[] rootChances) {
-        double chance = random.nextDouble();
-        for (int i = 0; i < Math.max(Constants.MAX_ROOT_AMOUNT, rootChances.length); ++i) {
-            if (chance < rootChances[i]) {
-                return randomSpawnRoots(random, i);
-            }
-            chance -= rootChances[i];
-        }
-        return randomSpawnRoots(random, 5);
-    }
-
-    /**
-     * 只有灵根数量为 1 时，才需要考虑变异灵根。
-     * {@link #getSpiritualRoots(RandomSource)}
-     */
-    private static List<QiRootType> randomSpawnRoots(RandomSource random, int rootCount) {
-        final List<QiRootType> rootChosen = new ArrayList<>();
-        if (rootCount == 1) {
-            rootChosen.addAll(WeightedList.create(QiRootTypes.registry().getValues().stream().toList()).getRandomItems(random, 1, true));
-        } else if (rootCount > 1) {
-            rootChosen.addAll(WeightedList.create(QiRootTypes.registry().getValues().stream()
-                    .filter(JavaHelper.not(QiRootType::isSpecialRoot))
-                    .collect(Collectors.toList())
-            ).getRandomItems(random, rootCount, true));
-        }
-        return rootChosen;
-    }
-
     @Deprecated(forRemoval = true)
     public static Optional<IMMPlayerData> getDataOpt(Player player) {
         return Optional.of(getData(player));
@@ -189,11 +131,49 @@ public class PlayerUtil {
     /**
      * 重置玩家的灵根。
      */
-    public static void resetSpiritualRoots(Player player) {
+    public static void resetRoots(Player player) {
         setData(player, l -> {
-            l.clearSpiritualRoot();
-            getSpiritualRoots(player.getRandom()).forEach(l::addRoot);
+            CultivationData cultivationData = l.getCultivationData();
+            cultivationData.clearSpiritualRoot();
+            CultivationManager.getQiRoots(player.getRandom()).forEach(cultivationData::addRoot);
         });
+    }
+
+    public static boolean hasRoot(Player player, QiRootType root) {
+        return getData(player, l -> l.getCultivationData().hasRoot(root));
+    }
+
+    public static List<QiRootType> getRoots(Player player) {
+        return getData(player, l -> l.getCultivationData().getRoots());
+    }
+
+    public static boolean knowRoots(Player player) {
+        return getData(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1);
+    }
+
+    /**
+     * 学习了业元素精通=知道了业元素的存在。
+     */
+    public static boolean knowSpiritElement(Player player) {
+        return getData(player, l -> l.hasLearnedSpell(SpellTypes.SPIRIT_MASTERY, 1));
+    }
+
+    public static List<QiRootType> filterSpiritRoots(Player player, List<QiRootType> roots) {
+        return roots.stream().filter(root -> {
+            if (root == QiRootTypes.SPIRIT) {
+                return knowSpiritElement(player);
+            }
+            return true;
+        }).toList();
+    }
+
+    public static List<Element> filterElements(Player player, List<Element> elements) {
+        return elements.stream().filter(element -> {
+            if (element == Element.SPIRIT) {
+                return knowSpiritElement(player);
+            }
+            return true;
+        }).toList();
     }
 
     /* Operations About Spells */
@@ -281,20 +261,32 @@ public class PlayerUtil {
 
     /* Experience Related Methods */
 
-    public static void setExperience(Player player, ExperienceTypes type, float value) {
-        getData(player).setExperience(type, value);
+    public static void setExperience(Player player, ExperienceType type, float value) {
+        setData(player, data -> data.getCultivationData().setExperience(type, value));
     }
 
-    public static void addExperience(Player player, ExperienceTypes type, float value) {
-        getData(player).addExperience(type, value);
+    public static void addExperience(Player player, ExperienceType type, float value) {
+        setData(player, data -> data.getCultivationData().addExperience(type, value));
     }
 
-    public static float getExperience(Player player, ExperienceTypes type) {
-        return getData(player, l -> l.getExperience(type));
+    public static float getExperience(Player player, ExperienceType type) {
+        return getData(player, l -> l.getCultivationData().getExperience(type));
     }
 
     public static float getCultivation(Player player) {
-        return getData(player, IMMPlayerData::getCultivation);
+        return getData(player, l -> l.getCultivationData().getCultivation());
+    }
+
+    public static float getEachMaxCultivation(Player player) {
+        return getData(player, l -> CultivationManager.getEachCultivation(player, l.getCultivationData().getRealmType()));
+    }
+
+    public static float getMaxCultivation(Player player) {
+        return getData(player, l -> CultivationManager.getRequiredCultivation(player, l.getCultivationData().getRealmType()));
+    }
+
+    public static boolean reachThreshold(Player player) {
+        return getPlayerRealmStage(player).canLevelUp() || getCultivation(player) >= getMaxCultivation(player);
     }
 
     /* Operations about Player Range Data */
@@ -327,8 +319,8 @@ public class PlayerUtil {
         return getFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA);
     }
 
-    public static float getMaxMana(Player player) {
-        return getData(player, IMMPlayerData::getFullManaValue);
+    public static float getMaxQi(Player player) {
+        return (float) EntityUtil.getMaxQi(player);
     }
 
     public static boolean isManaFull(Player player) {
@@ -343,130 +335,16 @@ public class PlayerUtil {
         getData(player).setIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE, mode);
     }
 
-    public static boolean knowSpiritualRoots(Player player) {
-        return getData(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1);
+    public static RealmType getPlayerRealm(Player player) {
+        return getData(player, data -> data.getCultivationData().getRealmType());
     }
 
-    /**
-     * 学习了业元素精通=知道了业元素的存在。
-     */
-    public static boolean knowSpiritElement(Player player) {
-        return getData(player, l -> l.hasLearnedSpell(SpellTypes.SPIRIT_MASTERY, 1));
+    public static RealmStage getPlayerRealmStage(Player player) {
+        return getPlayerRealm(player).getStage();
     }
 
-    /* Misc Operations */
-
-    public static List<QiRootType> filterSpiritRoots(Player player, List<QiRootType> roots) {
-        return roots.stream().filter(root -> {
-            if (root == QiRootTypes.SPIRIT) {
-                return knowSpiritElement(player);
-            }
-            return true;
-        }).toList();
-    }
-
-    public static List<Element> filterElements(Player player, List<Element> elements) {
-        return elements.stream().filter(element -> {
-            if (element == Element.SPIRIT) {
-                return knowSpiritElement(player);
-            }
-            return true;
-        }).toList();
-    }
-
-    public static boolean hasRoot(Player player, QiRootType root) {
-        return getData(player, l -> l.hasRoot(root));
-    }
-
-    public static List<QiRootType> getSpiritualRoots(Player player) {
-        return getData(player, IMMPlayerData::getRoots);
-    }
-
-    public static IRealmType getPlayerRealm(Player player) {
-        return getData(player, IMMPlayerData::getRealmType);
-    }
-
-    public static RealmStages getPlayerRealmStage(Player player) {
-        return getData(player, IMMPlayerData::getRealmStage);
-    }
-
-    /**
-     * Only used on client side.
-     */
-    public static void clientSetRealm(Player player, IRealmType realm) {
-        checkAndSetRealm(player, realm, RealmStages.PRELIMINARY, false);
-    }
-
-    /**
-     * 尝试直接改变境界。
-     *
-     * @return 是否改变成功。
-     */
-    public static boolean checkAndSetRealm(Player player, IRealmType realm, @NotNull RealmStages stage, boolean force) {
-        // 自身修为达到了此境界的要求。
-        return Boolean.TRUE.equals(getData(player, m -> {
-            if (EntityHelper.isServer(player)) {
-                // 自身修为达到了此境界的要求。
-                if (m.getCultivation() >= RealmManager.getStageRequiredCultivation(realm, stage)) {
-                    m.setRealmType(realm);
-                    m.setRealmStage(stage);
-                } else {
-                    if (force) {
-                        final float requiredXp = RealmManager.getStageRequiredCultivation(realm, stage) / ExperienceTypes.values().length;
-                        for (ExperienceTypes type : ExperienceTypes.values()) {
-                            m.setExperience(type, requiredXp);
-                        }
-                        m.setRealmType(realm);
-                        m.setRealmStage(stage);
-                    }
-                    return force;
-                }
-            } else {
-                m.setRealmType(realm);
-            }
-            return true;
-        }));
-    }
-
-    /**
-     * 直接改变境界阶段。
-     *
-     * @return 是否改变成功。
-     */
-    public static boolean checkAndSetRealmStage(Player player, RealmStages stage) {
-        boolean success = true;
-        IMMPlayerData data = getData(player);
-        if (EntityHelper.isServer(player)) {
-            // 自身修为达到了此境界阶段的要求。
-            if (data.getCultivation() >= RealmManager.getStageRequiredCultivation(data.getRealmType(), stage)) {
-                data.setRealmStage(stage);
-            } else {
-                data.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
-                success = false;
-            }
-        } else {
-            data.setRealmStage(stage);
-        }
-        return success;
-    }
-
-    public static float getEachMaxCultivation(Player player) {
-        return getData(player, l -> RealmManager.getEachCultivation(l.getRealmType()));
-    }
-
-    public static float getMaxCultivation(Player player) {
-        return getData(player, l -> {
-            final RealmStages nextStage = RealmStages.next(l.getRealmStage());
-            return RealmManager.getStageRequiredCultivation(l.getRealmType(), nextStage);
-        });
-    }
-
-    public static boolean reachThreshold(Player player) {
-        return getPlayerRealmStage(player).canLevelUp() || getCultivation(player) >= getMaxCultivation(player);
-    }
-
-    public static ICultivationType getCultivationType(Player player) {
-        return getData(player, l -> l.getRealmType().getCultivationType());
+    public static CultivationType getCultivationType(Player player) {
+        return getPlayerRealm(player).getCultivationType();
     }
 
     @Nullable

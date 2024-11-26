@@ -1,6 +1,7 @@
-package hungteen.imm.common.entity.ai;
+package hungteen.imm.common.block;
 
 import com.google.common.collect.ImmutableSet;
+import hungteen.htlib.api.registry.PTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
@@ -14,24 +15,28 @@ import net.neoforged.bus.api.IEventBus;
 import java.util.Set;
 
 /**
+ * @author PangTeen
  * @program Immortal
- * @author HungTeen
- * @create 2022-11-17 10:54
+ * @create 2024/11/25 10:06
  **/
-public class IMMPoiTypes {
+public interface IMMPoiTypes {
 
-    private static final HTVanillaRegistry<PoiType> POI_TYPES = HTRegistryManager.vanilla(Registries.POINT_OF_INTEREST_TYPE, Util.id());
+    HTVanillaRegistry<PoiType> POI_TYPES = HTRegistryManager.vanilla(Registries.POINT_OF_INTEREST_TYPE, Util.id());
 
-//    public static final RegistryObject<PoiType> ELIXIR_ROOM = POI_TYPES.initialize("elixir_room", () -> new PoiType(
+    PTHolder<PoiType> SPIRIT_ANCHOR = POI_TYPES.registerForHolder("spirit_anchor", () -> new PoiType(
+            getBlockStates(IMMBlocks.SPIRIT_ANCHOR.get()), 1, 1
+    ));
+
+    //    public static final RegistryObject<PoiType> ELIXIR_ROOM = POI_TYPES.initialize("elixir_room", () -> new PoiType(
 //            getBlockStates(ImmortalBlocks.COPPER_ELIXIR_ROOM.get()), 1, 1
 //    ));
-
-    public static void initialize(IEventBus event){
-        NeoHelper.initRegistry(POI_TYPES, event);
-    }
 
     private static Set<BlockState> getBlockStates(Block block) {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
-}
 
+    static void initialize(IEventBus modBus){
+        NeoHelper.initRegistry(POI_TYPES, modBus);
+    }
+
+}

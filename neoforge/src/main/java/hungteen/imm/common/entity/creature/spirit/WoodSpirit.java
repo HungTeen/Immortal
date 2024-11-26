@@ -4,7 +4,7 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.misc.PoisonWind;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;

@@ -1,6 +1,11 @@
 package hungteen.imm.common.network;
 
+import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.common.network.client.ExperienceChangePacket;
+import hungteen.imm.common.network.client.FloatDataPacket;
+import hungteen.imm.common.network.client.IntegerDataPacket;
+import hungteen.imm.common.network.client.QiRootAndRealmPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -17,6 +22,26 @@ public class NetworkHandler {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToClient(
+                QiRootAndRealmPacket.TYPE,
+                QiRootAndRealmPacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(QiRootAndRealmPacket::process)
+        );
+        registrar.playToClient(
+                ExperienceChangePacket.TYPE,
+                ExperienceChangePacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(ExperienceChangePacket::process)
+        );
+        registrar.playToClient(
+                FloatDataPacket.TYPE,
+                FloatDataPacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(FloatDataPacket::process)
+        );
+        registrar.playToClient(
+                IntegerDataPacket.TYPE,
+                IntegerDataPacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(IntegerDataPacket::process)
+        );
 //        registrar.playToClient(
 //                SpellPacket.TYPE,
 //                SpellPacket.STREAM_CODEC,

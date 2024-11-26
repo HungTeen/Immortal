@@ -2,7 +2,7 @@ package hungteen.imm.data.recipe;
 
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.Util;

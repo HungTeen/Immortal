@@ -1,4 +1,4 @@
-package hungteen.imm.api.interfaces;
+package hungteen.imm.api.cultivation;
 
 /**
  * @author PangTeen

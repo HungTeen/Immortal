@@ -3,11 +3,11 @@ package hungteen.imm.common.item.elixirs;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.registry.ICultivationType;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.RealmManager;
-import hungteen.imm.common.impl.registry.CultivationTypes;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.CultivationType;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,8 +32,8 @@ public class SpiritualInspirationElixir extends ElixirItem {
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
-            if (!PlayerUtil.getSpiritualRoots(player).isEmpty()) {
-                RealmManager.checkAndAddBreakThroughProgress(player, 1F);
+            if (!PlayerUtil.getRoots(player).isEmpty()) {
+                CultivationManager.checkAndAddBreakThroughProgress(player, 1F);
             } else {
                 PlayerHelper.sendTipTo(player, TipUtil.info("no_root"));
             }
@@ -41,12 +41,12 @@ public class SpiritualInspirationElixir extends ElixirItem {
     }
 
     @Override
-    public Optional<IRealmType> getLowestRealm(ICultivationType cultivationType) {
-        return cultivationType == CultivationTypes.MORTAL ? Optional.of(RealmTypes.MORTALITY) : Optional.empty();
+    public Optional<RealmType> getLowestRealm(CultivationType cultivationType) {
+        return cultivationType == CultivationTypes.NONE ? Optional.of(RealmTypes.MORTALITY) : Optional.empty();
     }
 
     @Override
-    public Optional<IRealmType> getHighestRealm(ICultivationType cultivationType) {
+    public Optional<RealmType> getHighestRealm(CultivationType cultivationType) {
         return getLowestRealm(cultivationType);
     }
 

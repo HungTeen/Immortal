@@ -1,7 +1,7 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.imm.api.interfaces.IArtifactItem;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -24,13 +24,13 @@ public abstract class ArtifactItem extends Item implements IArtifactItem {
     protected static final UUID ARTIFACT_ATTACK_DAMAGE_UUID = UUID.fromString("a0c2228c-6166-11ed-9b6a-0242ac120002");
     protected static final UUID ARTIFACT_ATTACK_SPEED_UUID = UUID.fromString("a0c22552-6166-11ed-9b6a-0242ac120002");
     protected static final UUID ARTIFACT_REACH_DISTANCE_UUID = UUID.fromString("a0c2296c-6166-11ed-9b6a-0242ac120002");
-    private final IRealmType realmType;
+    private final RealmType realmType;
 
-    public ArtifactItem(IRealmType realmType) {
+    public ArtifactItem(RealmType realmType) {
         this(new Properties().stacksTo(1), realmType);
     }
 
-    public ArtifactItem(Properties properties, IRealmType realmType) {
+    public ArtifactItem(Properties properties, RealmType realmType) {
         super(properties);
         this.realmType = realmType;
     }
@@ -45,7 +45,7 @@ public abstract class ArtifactItem extends Item implements IArtifactItem {
     }
 
     @Override
-    public IRealmType getArtifactRealm(ItemStack stack) {
+    public RealmType getArtifactRealm(ItemStack stack) {
         return this.realmType;
     }
 }

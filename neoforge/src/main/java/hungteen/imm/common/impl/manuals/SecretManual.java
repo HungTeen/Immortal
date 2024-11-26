@@ -4,11 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.ExperienceTypes;
+import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IManualContent;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
-import hungteen.imm.common.impl.registry.PlayerRangeFloats;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -52,7 +51,7 @@ public record SecretManual(List<ILearnRequirement> requirements, IManualContent 
         content().learn(player);
         requirements().forEach(l -> l.consume(level, player));
         PlayerHelper.playClientSound(player, SoundEvents.ENCHANTMENT_TABLE_USE);
-        PlayerUtil.addExperience(player, ExperienceTypes.SPELL, 5);
+        PlayerUtil.addExperience(player, ExperienceType.SPELL, 5);
         PlayerUtil.setFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, 0);
     }
 

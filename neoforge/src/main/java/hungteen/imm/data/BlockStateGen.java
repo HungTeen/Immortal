@@ -4,7 +4,7 @@ import hungteen.htlib.data.HTBlockStateGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.block.WoolCushionBlock;
+import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
@@ -98,7 +98,7 @@ public class BlockStateGen extends HTBlockStateGen {
         ).forEach(block -> this.gen(block, this::cross));
 
         List.of(
-                IMMBlocks.SPIRIT_BEDROCK.get()
+                IMMBlocks.SPIRIT_BEDROCK.get(), IMMBlocks.SPIRIT_ANCHOR.get()
         ).forEach(block -> {
             this.gen(block, b -> simpleBlock(b, translucent()));
         });

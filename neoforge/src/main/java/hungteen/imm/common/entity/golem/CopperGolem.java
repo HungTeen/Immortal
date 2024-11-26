@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.golem;
 
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;

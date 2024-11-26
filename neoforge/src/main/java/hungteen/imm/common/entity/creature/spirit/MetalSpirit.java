@@ -5,7 +5,7 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;

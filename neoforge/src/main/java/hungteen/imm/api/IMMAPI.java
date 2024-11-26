@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.api.util.helper.ServiceHelper;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.registry.ISpellType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -71,7 +71,7 @@ public interface IMMAPI {
      *
      * @return Registry interface.
      */
-    default Optional<HTCustomRegistry<IRealmType>> realmRegistry(){
+    default Optional<HTCustomRegistry<RealmType>> realmRegistry(){
         return Optional.empty();
     }
 
@@ -115,7 +115,7 @@ public interface IMMAPI {
      * @param entity the entity that wants to know its realm type.
      * @return the realm type of the given entity.
      */
-    default Optional<IRealmType> getEntityRealm(Entity entity){
+    default Optional<RealmType> getEntityRealm(Entity entity){
         return Optional.empty();
     }
 

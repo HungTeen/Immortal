@@ -1,4 +1,4 @@
-package hungteen.imm.common.block;
+package hungteen.imm.common.block.base;
 
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.BlockPos;

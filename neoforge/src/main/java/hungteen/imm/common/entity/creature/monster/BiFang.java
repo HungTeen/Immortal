@@ -13,8 +13,8 @@ import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
@@ -172,8 +172,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     public void updateRealmByAge(int age) {
         switch (age) {
-            case 1 -> this.setRealm(RealmTypes.MONSTER_LEVEL_2);
-            default -> this.setRealm(RealmTypes.MONSTER_LEVEL_3);
+            case 1 -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_2);
+            default -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_3);
         }
         this.addMana(this.getMaxMana());
     }

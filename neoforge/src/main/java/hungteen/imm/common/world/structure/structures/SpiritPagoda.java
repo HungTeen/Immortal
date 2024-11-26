@@ -1,10 +1,20 @@
 package hungteen.imm.common.world.structure.structures;
 
+import hungteen.imm.common.block.IMMPoiTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -16,70 +26,72 @@ import java.util.List;
  **/
 public class SpiritPagoda {
 
-//    ResourceKey<StructureTemplatePool> SPIRIT_PAGODA_LEVEL_1 = create("level_1");
-//    ResourceKey<StructureTemplatePool> SPIRIT_PAGODA_LEVEL_2 = create("level_2");
-//    ResourceKey<StructureTemplatePool> SPIRIT_PAGODA_LEVEL_3 = create("level_3");
-//    ResourceKey<StructureTemplatePool> SPIRIT_PAGODA_LEVEL_4 = create("level_4");
-//    ResourceKey<StructureTemplatePool>[] SPIRIT_PAGODA_LEVEL_5 = create("level_5", 4);
-//    ResourceKey<StructureTemplatePool>[] SPIRIT_PAGODA_LEVEL_6 = create("level_6", 4);
-//    ResourceKey<StructureTemplatePool>[] SPIRIT_PAGODA_LEVEL_7 = create("level_7", 4);
-//
-//    static void initPools(BootstrapContext<StructureTemplatePool> context) {
-//        final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
-//        final Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
-//
-//        context.register(SPIRIT_PAGODA_LEVEL_1, new StructureTemplatePool(
-//                empty, List.of(Pair.of(StructurePoolElement.legacy(name("level_1"))
-//                                        .apply(StructureTemplatePool.Projection.RIGID), 2
-//        ))));
-//
-//        context.register(SPIRIT_PAGODA_LEVEL_2, new StructureTemplatePool(
-//                empty, List.of(Pair.of(StructurePoolElement.legacy(name("level_2"))
-//                .apply(StructureTemplatePool.Projection.RIGID), 2
-//        ))));
-//
-//        context.register(SPIRIT_PAGODA_LEVEL_3, new StructureTemplatePool(
-//                empty, List.of(Pair.of(StructurePoolElement.legacy(name("level_3"))
-//                .apply(StructureTemplatePool.Projection.RIGID), 2
-//        ))));
-//
-//        context.register(SPIRIT_PAGODA_LEVEL_4, new StructureTemplatePool(
-//                empty, List.of(Pair.of(StructurePoolElement.legacy(name("level_4"))
-//                .apply(StructureTemplatePool.Projection.RIGID), 2
-//        ))));
-//
-//        register(context, SPIRIT_PAGODA_LEVEL_5, "level_5", empty);
-//
-//        register(context, SPIRIT_PAGODA_LEVEL_6, "level_6", empty);
-//
-//        register(context, SPIRIT_PAGODA_LEVEL_7, "level_7", empty);
-//    }
-//
-//    private static void register(BootstrapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool>[] keys, String name, Holder<StructureTemplatePool> empty) {
-//        for (int i = 0; i < keys.length; i++) {
-//            context.register(keys[i], new StructureTemplatePool(
-//                    empty, List.of(Pair.of(StructurePoolElement.legacy(name(name + "_" + (i + 1)))
-//                    .apply(StructureTemplatePool.Projection.RIGID), 2
-//            ))));
-//        }
-//    }
-//
-//
-//    private static ResourceKey<StructureTemplatePool>[] create(String name, int count) {
-//        ResourceKey<StructureTemplatePool>[] keys = new ResourceKey[count];
-//        for (int i = 0; i < count; i++) {
-//            keys[i] = create(name + "_" + (i + 1));
-//        }
-//        return keys;
-//    }
-//
-//    private static ResourceKey<StructureTemplatePool> create(String name) {
-//        return IMMPools.create("spirit_pagoda/" + name);
-//    }
-//
-//    private static String name(String name) {
-//        return Util.prefixName("spirit_pagoda/spirit_pagoda_" + name);
-//    }
+    public static final int BASE_HEIGHT = 77;
+    public static final int LEVEL_COUNT = 7;
+
+    /**
+     * 通过检查七个锚点的存在情况来判断是否已经生成了浮屠塔。
+     * @return 是否已经生成了浮屠塔。
+     */
+    private static boolean hasFullPagoda(ServerLevel level, BlockPos center) {
+        return getAnchors(level, center).size() == LEVEL_COUNT;
+    }
+
+    /**
+     * 获取浮屠塔的锚点。
+     * @return 锚点列表，按照从下到上的顺序排序。
+     */
+    public static List<BlockPos> getAnchors(ServerLevel level, BlockPos center) {
+        List<PoiRecord> list = level.getPoiManager().getInChunk(IMMPoiTypes.SPIRIT_ANCHOR.holder()::equals, new ChunkPos(center), PoiManager.Occupancy.ANY).toList();
+        return level.getPoiManager().getInChunk(IMMPoiTypes.SPIRIT_ANCHOR.holder()::equals, new ChunkPos(center), PoiManager.Occupancy.ANY)
+                .map(PoiRecord::getPos)
+                .sorted(Comparator.comparingInt(Vec3i::getY))
+                .toList();
+    }
+
+    /**
+     * 在指定位置生成浮屠塔。
+     * @param level 在哪个世界生成。
+     * @param center 浮屠塔第一层的中心位置。
+     */
+    public static List<BlockPos> placeSpiritPagoda(ServerLevel level, BlockPos center) {
+        BlockPos pos = new BlockPos(center.getX(), BASE_HEIGHT, center.getZ());
+        if(! hasFullPagoda(level, pos)) {
+            int yOffset = 0;
+            for (SpiritPagoda.PagodaPart part : SpiritPagoda.getParts()) {
+                for (SpiritPagoda.PartType type : part.getTypes()) {
+                    BlockPos offset = part.getOffset(type);
+                    placeStructure(level, part.getTemplate(type), pos.offset(offset.getX(), offset.getY() + yOffset, offset.getZ()));
+                }
+                yOffset += part.height();
+            }
+        }
+        return getAnchors(level, pos);
+    }
+
+    private static void placeStructure(ServerLevel level, ResourceLocation structureName, BlockPos pos) {
+        StructureTemplate structureTemplate = getStructureTemplate(level, structureName);
+        if (structureTemplate != null) {
+            StructurePlaceSettings settings = new StructurePlaceSettings();
+
+            structureTemplate.placeInWorld(level, pos, pos, settings, level.random, 3);
+        }
+    }
+
+    @Nullable
+    public static StructureTemplate getStructureTemplate(ServerLevel level, ResourceLocation structureName) {
+        return structureName == null ? null : level.getStructureManager().get(structureName).orElse(null);
+    }
+
+
+    private static void checkLoaded(ServerLevel level, ChunkPos start, ChunkPos end) {
+        ChunkPos.rangeClosed(start, end).forEach(pos -> {
+            level.getChunkSource().getChunk(pos.x, pos.z, true);
+        });
+        if (ChunkPos.rangeClosed(start, end).anyMatch(pos -> !level.isLoaded(pos.getWorldPosition()))) {
+            throw new RuntimeException("Cannot place structure " + " because the chunk is not loaded.");
+        }
+    }
 
     public static List<PagodaPart> getParts(){
         List<PagodaPart> parts = new ArrayList<>();
@@ -112,7 +124,7 @@ public class SpiritPagoda {
         }
 
         public BlockPos getOffset(PartType type){
-            BlockPos offset = new BlockPos(-length() >> 1, 0, -length() >> 1);
+            BlockPos offset = new BlockPos(-(length() >> 1), 0, -(length() >> 1));
             switch (type){
                 case LEFT -> offset = offset.offset(singleCoverSize(), 0, 0);
                 case RIGHT -> offset = offset.offset(0, 0, singleCoverSize());

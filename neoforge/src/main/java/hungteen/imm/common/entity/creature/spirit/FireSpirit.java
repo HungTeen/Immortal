@@ -6,7 +6,7 @@ import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;

@@ -1,8 +1,8 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.client.util.RenderHelper;
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.util.Colors;
 import net.minecraft.network.chat.Component;
@@ -83,7 +83,7 @@ public class RawArtifactBox extends ArtifactItem {
     }
 
     @Override
-    public IRealmType getArtifactRealm(ItemStack stack) {
+    public RealmType getArtifactRealm(ItemStack stack) {
         return super.getArtifactRealm(stack);
     }
 

@@ -27,7 +27,7 @@ public class CommonOverlay {
 //
 //    public static void renderSpiritualMana(GuiGraphics graphics, int screenWidth, int screenHeight, int x, int y) {
 //        final float currentMana = PlayerUtil.getMana(ClientProxy.MC.player);
-//        final float maxMana = PlayerUtil.getMaxMana(ClientProxy.MC.player);
+//        final float maxMana = PlayerUtil.getMaxQi(ClientProxy.MC.player);
 //        graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
 //        if (maxMana > 0) {
 //            final int backManaLen = MathUtil.getBarLen(currentMana, maxMana, MANA_BAR_LEN - 2);
@@ -39,7 +39,7 @@ public class CommonOverlay {
 //    }
 //
 //    public static boolean canRenderManaBar() {
-//        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMaxMana(ClientUtil.player()) > 0 || ClientData.ShowSpellCircle);
+//        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMaxQi(ClientUtil.player()) > 0 || ClientData.ShowSpellCircle);
 //    }
 
 }

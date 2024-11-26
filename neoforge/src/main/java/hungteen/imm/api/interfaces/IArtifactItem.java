@@ -1,6 +1,6 @@
 package hungteen.imm.api.interfaces;
 
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -16,6 +16,6 @@ public interface IArtifactItem {
      *
      * @return type.
      */
-    IRealmType getArtifactRealm(ItemStack stack);
+    RealmType getArtifactRealm(ItemStack stack);
 
 }

@@ -21,8 +21,8 @@ public class IMMPlayerDataTest {
     @GameTest(template = TestUtil.TEMPLATE_EMPTY)
     public static void test(GameTestHelper helper) {
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
-        PlayerUtil.resetSpiritualRoots(player);
-        helper.assertFalse(PlayerUtil.getSpiritualRoots(player).isEmpty(), "SpiritualRoots is empty");
+        PlayerUtil.resetRoots(player);
+        helper.assertFalse(PlayerUtil.getRoots(player).isEmpty(), "SpiritualRoots is empty");
         helper.succeed();
     }
 

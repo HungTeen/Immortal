@@ -1,7 +1,7 @@
 package hungteen.imm.common.world;
 
-import hungteen.imm.api.registry.IRealmType;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.RealmTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -25,7 +25,7 @@ public class LevelManager {
     private static final Map<ResourceKey<Biome>, BiomeRealmSetting> BIOME_REALM_SETTING_MAP = new ConcurrentHashMap<>();
 
     static {
-        registerLevelRealmSetting(Level.END, new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.SPIRITUAL_LEVEL_2));
+        registerLevelRealmSetting(Level.END, new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.FOUNDATION));
         registerBiomeRealmSetting(Biomes.LUSH_CAVES, new BiomeRealmSetting(1F, 2F));
     }
 
@@ -56,9 +56,9 @@ public class LevelManager {
 
     public record LevelRealmSetting(float lowestRealm, float highestRealm){
 
-        public static final LevelRealmSetting DEFAULT = new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.SPIRITUAL_LEVEL_1);
+        public static final LevelRealmSetting DEFAULT = new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.QI_REFINING);
 
-        public LevelRealmSetting(IRealmType lowestRealmType, IRealmType highestRealmType){
+        public LevelRealmSetting(RealmType lowestRealmType, RealmType highestRealmType){
             this(lowestRealmType.getRealmValue(), highestRealmType.getRealmValue());
         }
 

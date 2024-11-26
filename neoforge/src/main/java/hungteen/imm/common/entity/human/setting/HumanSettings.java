@@ -10,8 +10,8 @@ import hungteen.imm.common.codec.ItemEntry;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
 import hungteen.imm.common.item.artifacts.FlameGourd;
@@ -248,7 +248,7 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 50,
                 Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
+                                Optional.of(RealmTypes.CORE_SHAPING),
                                 List.of(QiRootTypes.METAL)
                         )
                 ),
@@ -293,7 +293,7 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 50,
                 Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
+                                Optional.of(RealmTypes.CORE_SHAPING),
                                 List.of(QiRootTypes.WOOD)
                         )
                 ),
@@ -340,7 +340,7 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 50,
                 Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
+                                Optional.of(RealmTypes.CORE_SHAPING),
                                 List.of(QiRootTypes.WATER)
                         )
                 ),
@@ -386,7 +386,7 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 50,
                 Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
+                                Optional.of(RealmTypes.CORE_SHAPING),
                                 List.of(QiRootTypes.FIRE)
                         )
                 ),
@@ -435,7 +435,7 @@ public interface HumanSettings {
                 IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
                 50,
                 Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.SPIRITUAL_LEVEL_3),
+                                Optional.of(RealmTypes.CORE_SHAPING),
                                 List.of(QiRootTypes.EARTH)
                         )
                 ),

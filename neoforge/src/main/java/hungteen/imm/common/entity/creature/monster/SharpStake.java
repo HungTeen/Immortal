@@ -5,13 +5,13 @@ import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.records.Spell;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.goal.LookAtTargetGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
-import hungteen.imm.common.impl.registry.RealmTypes;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.spell.SpellTypes;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.util.MathUtil;
@@ -196,8 +196,8 @@ public class SharpStake extends IMMMob implements Enemy {
     }
 
     @Override
-    public IRealmType getDefaultRealm() {
-        return RealmTypes.MONSTER_LEVEL_1;
+    public RealmType getDefaultRealm() {
+        return RealmTypes.YAOGUAI_LEVEL_1;
     }
 
     @Override

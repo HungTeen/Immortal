@@ -2,10 +2,10 @@ package hungteen.imm.common.block.artifacts;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.registry.IRealmType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
-import hungteen.imm.common.impl.registry.RealmTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -42,7 +42,7 @@ public class ElixirRoomBlock extends ArtifactEntityBlock {
 
     private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 6, 15);
 
-    public ElixirRoomBlock(BlockBehaviour.Properties properties, IRealmType realmType) {
+    public ElixirRoomBlock(BlockBehaviour.Properties properties, RealmType realmType) {
         super(properties, realmType);
     }
 

@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.impl.registry.QiRootTypes;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;

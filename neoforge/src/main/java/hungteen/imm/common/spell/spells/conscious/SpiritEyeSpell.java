@@ -17,7 +17,7 @@ public class SpiritEyeSpell extends SpellType {
     }
 
     public static boolean knowOwnSpiritRoots(Player player){
-        return PlayerUtil.knowSpiritualRoots(player) || PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES);
+        return PlayerUtil.knowRoots(player) || PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES);
     }
 
 }
