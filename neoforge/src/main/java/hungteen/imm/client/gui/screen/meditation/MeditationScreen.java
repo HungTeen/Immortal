@@ -5,17 +5,18 @@ import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
+import hungteen.imm.client.event.ClientEventHandler;
 import hungteen.imm.client.util.ClientUtil;
-import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.network.ScreenButtonPacket;
+import hungteen.imm.common.network.server.ScreenOperationPacket;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -53,29 +54,30 @@ public abstract class MeditationScreen extends HTScreen {
     }
 
     /**
-     * {@link hungteen.imm.client.event.ClientEvents#tick(ClientTickEvent.Post)}
+     * 当玩家在打坐时，打开对应的打坐界面。当玩家不在打坐时，关闭打坐界面。
+     * {@link ClientEventHandler#tick(ClientTickEvent.Post)}
      */
-    public static void tickMeditation(){
-        if (ClientUtil.screen() == null && ClientUtil.player() != null) {
-            if(PlayerUtil.isSitInMeditation(ClientUtil.player())){
-                IMMClientProxy.mc().setScreen(new RestingScreen());
+    public static void tickMeditation(LocalPlayer player){
+        if (ClientUtil.screen() == null) {
+            if(PlayerUtil.isSitInMeditation(player)){
+                ClientUtil.mc().setScreen(new RestingScreen());
             }
         }
         if(ClientUtil.screen() instanceof MeditationScreen){
             if(! PlayerUtil.isSitInMeditation(ClientUtil.player())){
-                IMMClientProxy.mc().setScreen(null);
+                ClientUtil.mc().setScreen(null);
             }
         }
     }
 
     public static boolean canRenderMeditation() {
-        return IMMClientProxy.MC.screen instanceof MeditationScreen;
+        return ClientUtil.screen() instanceof MeditationScreen;
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBg(graphics, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
+        this.renderBg(graphics, partialTicks);
     }
 
     protected void renderBg(GuiGraphics graphics, float partialTicks){
@@ -135,7 +137,7 @@ public abstract class MeditationScreen extends HTScreen {
     }
 
     protected void sendWakeUp() {
-        NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.QUIT_MEDITATION));
+        NetworkHelper.sendToServer(new ScreenOperationPacket(ScreenOperationPacket.OperationType.QUIT_RESTING));
     }
 
     protected void switchScreen(int val){

@@ -56,15 +56,6 @@ public enum RealmPeriod implements RealmStage {
     }
 
     @Override
-    public boolean hasNextStage() {
-        return this != PERFECTION;
-    }
-
-//    public static RealmStage next(RealmStage stage) {
-//        return RealmStage.values()[Math.min(stage.ordinal() + 1, RealmStage.values().length - 1)];
-//    }
-
-    @Override
     public String getModID() {
         return Util.id();
     }

@@ -41,7 +41,7 @@ public class RefineBreathElixir extends ElixirItem {
 
     @Override
     public Optional<RealmType> getLowestRealm(CultivationType cultivationType) {
-        return cultivationType == CultivationTypes.SPIRITUAL ? Optional.of(RealmTypes.FOUNDATION) : Optional.empty();
+        return cultivationType == CultivationTypes.SPIRITUAL ? Optional.of(RealmTypes.FOUNDATION.pre()) : Optional.empty();
     }
 
     @Override

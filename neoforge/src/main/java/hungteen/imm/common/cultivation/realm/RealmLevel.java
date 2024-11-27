@@ -30,11 +30,6 @@ public enum RealmLevel implements RealmStage {
     }
 
     @Override
-    public boolean hasNextStage() {
-        return false;
-    }
-
-    @Override
     public String getModID() {
         return Util.id();
     }

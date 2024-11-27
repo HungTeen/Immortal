@@ -233,12 +233,12 @@ public class EntityUtil {
     }
 
     public static float getMana(Entity entity) {
-        return entity instanceof Player player ? PlayerUtil.getMana(player) : entity instanceof IHasMana manaEntity ? manaEntity.getMana() : 0;
+        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof IHasMana manaEntity ? manaEntity.getMana() : 0;
     }
 
     public static void addMana(Entity entity, float amount) {
         if (entity instanceof Player player) {
-            PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, amount);
+            PlayerUtil.addQiAmount(player, amount);
         } else if (entity instanceof IHasMana manaEntity) {
             manaEntity.addMana(amount);
         }
@@ -250,7 +250,7 @@ public class EntityUtil {
 
     public static boolean isManaFull(Entity entity) {
         if (entity instanceof Player player) {
-            return PlayerUtil.isManaFull(player);
+            return PlayerUtil.isQiFull(player);
         } else if (entity instanceof IHasMana manaEntity) {
             return manaEntity.isManaFull();
         }

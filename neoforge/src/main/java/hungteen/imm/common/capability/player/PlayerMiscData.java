@@ -51,6 +51,11 @@ public class PlayerMiscData implements HTPlayerData {
     }
 
     @Override
+    public void initialize() {
+
+    }
+
+    @Override
     public void syncToClient() {
 
     }

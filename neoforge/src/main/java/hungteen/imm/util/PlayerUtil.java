@@ -1,14 +1,13 @@
 package hungteen.imm.util;
 
-import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.capability.IMMAttachments;
-import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.capability.player.CultivationData;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.spell.SpellTypes;
@@ -50,35 +49,6 @@ public class PlayerUtil {
         player.getCooldowns().addCooldown(item, coolDown);
     }
 
-    public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {
-        if (!isSitInMeditation(player)) {
-            final Vec3 vec = MathHelper.toVec3(pos);
-            List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(MathHelper.toVec3(pos), 8F, 5F), (entity) -> {
-                return entity.isPreventingPlayerRest(player);
-            });
-            if (list.isEmpty()) {
-                if (EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock)) {
-                    setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 1);
-                    return true;
-                }
-            } else {
-                PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround").withStyle(ChatFormatting.RED));
-            }
-        }
-        return false;
-    }
-
-    public static void quitMeditate(Player player) {
-        if (isSitInMeditation(player)) {
-            setIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK, 0);
-            player.stopRiding();
-        }
-    }
-
-    public static boolean isSitInMeditation(Player player) {
-        return getIntegerData(player, PlayerRangeIntegers.MEDITATE_TICK) > 0;
-    }
-
     /**
      * Add distance parameter.
      */
@@ -108,6 +78,8 @@ public class PlayerUtil {
     public static boolean isInCD(Player player, Item item) {
         return player.getCooldowns().isOnCooldown(item);
     }
+
+    /* Data Operations */
 
     @Deprecated(forRemoval = true)
     public static Optional<IMMPlayerData> getDataOpt(Player player) {
@@ -148,7 +120,7 @@ public class PlayerUtil {
     }
 
     public static boolean knowRoots(Player player) {
-        return getData(player, l -> l.getIntegerData(PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS) == 1);
+        return getIntegerData(player, IMMPlayerData.IntegerData.KNOW_SPIRITUAL_ROOTS) > 0;
     }
 
     /**
@@ -291,48 +263,96 @@ public class PlayerUtil {
 
     /* Operations about Player Range Data */
 
-    public static void setIntegerData(Player player, RangeNumber<Integer> rangeData, int value) {
+    public static void setIntegerData(Player player, IMMPlayerData.IntegerData rangeData, int value) {
         getData(player).setIntegerData(rangeData, value);
     }
 
-    public static void addIntegerData(Player player, RangeNumber<Integer> rangeData, int value) {
+    public static void addIntegerData(Player player, IMMPlayerData.IntegerData rangeData, int value) {
         getData(player).addIntegerData(rangeData, value);
     }
 
-    public static int getIntegerData(Player player, RangeNumber<Integer> rangeData) {
+    public static int getIntegerData(Player player, IMMPlayerData.IntegerData rangeData) {
         return getData(player, m -> m.getIntegerData(rangeData));
     }
 
-    public static void setFloatData(Player player, RangeNumber<Float> rangeData, float value) {
+    public static void setFloatData(Player player, IMMPlayerData.FloatData rangeData, float value) {
         getData(player).setFloatData(rangeData, value);
     }
 
-    public static void addFloatData(Player player, RangeNumber<Float> rangeData, float value) {
+    public static void addFloatData(Player player, IMMPlayerData.FloatData rangeData, float value) {
         getData(player).addFloatData(rangeData, value);
     }
 
-    public static float getFloatData(Player player, RangeNumber<Float> rangeData) {
+    public static float getFloatData(Player player, IMMPlayerData.FloatData rangeData) {
         return getData(player, m -> m.getFloatData(rangeData));
     }
 
-    public static float getMana(Player player) {
-        return getFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA);
+    public static void addQiAmount(Player player, float amount) {
+        addFloatData(player, IMMPlayerData.FloatData.QI_AMOUNT, amount);
+    }
+
+    public static void setQiAmount(Player player, float amount) {
+        setFloatData(player, IMMPlayerData.FloatData.QI_AMOUNT, amount);
+    }
+
+    public static float getQiAmount(Player player) {
+        return getFloatData(player, IMMPlayerData.FloatData.QI_AMOUNT);
     }
 
     public static float getMaxQi(Player player) {
         return (float) EntityUtil.getMaxQi(player);
     }
 
-    public static boolean isManaFull(Player player) {
-        return getData(player, l -> l.getFloatData(PlayerRangeFloats.SPIRITUAL_MANA) >= l.getFullManaValue());
+    public static boolean isQiFull(Player player) {
+        return getQiAmount(player) >= getMaxQi(player);
+    }
+
+    /**
+     * 待客户端配置文件更新该值。
+     */
+    public static boolean requireSyncCircle(Player player) {
+        return getSpellCircleMode(player) == 0;
+    }
+
+    public static boolean useDefaultCircle(Player player) {
+        return getSpellCircleMode(player) == 1;
     }
 
     public static int getSpellCircleMode(Player player) {
-        return getData(player, l -> l.getIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE));
+        return getIntegerData(player, IMMPlayerData.IntegerData.SPELL_CIRCLE_MODE);
     }
 
     public static void setSpellCircleMode(Player player, int mode) {
-        getData(player).setIntegerData(PlayerRangeIntegers.SPELL_CIRCLE_MODE, mode);
+        setIntegerData(player, IMMPlayerData.IntegerData.SPELL_CIRCLE_MODE, mode);
+    }
+
+    public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {
+        if (!isSitInMeditation(player)) {
+            final Vec3 vec = MathHelper.toVec3(pos);
+            List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(MathHelper.toVec3(pos), 8F, 5F), (entity) -> {
+                return entity.isPreventingPlayerRest(player);
+            });
+            if (list.isEmpty()) {
+                if (EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock)) {
+                    setIntegerData(player, IMMPlayerData.IntegerData.IS_MEDITATING, 1);
+                    return true;
+                }
+            } else {
+                PlayerHelper.sendTipTo(player, TipUtil.info("unsafe_surround").withStyle(ChatFormatting.RED));
+            }
+        }
+        return false;
+    }
+
+    public static void quitResting(Player player) {
+        if (isSitInMeditation(player)) {
+            setIntegerData(player, IMMPlayerData.IntegerData.IS_MEDITATING, 0);
+            player.stopRiding();
+        }
+    }
+
+    public static boolean isSitInMeditation(Player player) {
+        return getIntegerData(player, IMMPlayerData.IntegerData.IS_MEDITATING) > 0;
     }
 
     public static RealmType getPlayerRealm(Player player) {

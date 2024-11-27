@@ -52,7 +52,7 @@ public record SecretManual(List<ILearnRequirement> requirements, IManualContent 
         requirements().forEach(l -> l.consume(level, player));
         PlayerHelper.playClientSound(player, SoundEvents.ENCHANTMENT_TABLE_USE);
         PlayerUtil.addExperience(player, ExperienceType.SPELL, 5);
-        PlayerUtil.setFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, 0);
+        PlayerUtil.setQiAmount(player, 0);
     }
 
     public List<Component> getRequirementInfo(Player player) {

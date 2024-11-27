@@ -1,16 +1,17 @@
 package hungteen.imm.common.event;
 
-import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
-import hungteen.imm.common.network.EmptyClickPacket;
 import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -23,22 +24,18 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  * @author HungTeen
  * @create 2022-09-25 15:52
  **/
-//@EventBusSubscriber(modid = IMMAPI.MOD_ID)
+@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMPlayerEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (EntityHelper.isServer(event.getEntity())) {
-            if(PlayerUtil.isSitInMeditation(event.getEntity())){
-                PlayerUtil.addIntegerData(event.getEntity(), PlayerRangeIntegers.MEDITATE_TICK, 1);
-            }
-        }
+
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-//            PlayerUtil.setData(event.getEntity(), IMMPlayerData::initialize);
+            PlayerUtil.setData(event.getEntity(), IMMPlayerData::initialize);
         }
     }
 
@@ -106,7 +103,7 @@ public class IMMPlayerEvents {
      */
     @SubscribeEvent
     public static void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
-        HTLibPlatformAPI.get().sendToServer(new EmptyClickPacket(event.getHand()));
+//        HTLibPlatformAPI.get().sendToServer(new EmptyClickPacket(event.getHand()));
     }
 
     @SubscribeEvent

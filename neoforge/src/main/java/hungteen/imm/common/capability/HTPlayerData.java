@@ -10,6 +10,8 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
  **/
 public interface HTPlayerData extends INBTSerializable<CompoundTag> {
 
+    void initialize();
+
     void syncToClient();
 
     boolean isServer();

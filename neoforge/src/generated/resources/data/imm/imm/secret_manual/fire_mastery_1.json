@@ -7,7 +7,7 @@
   "requirements": [
     {
       "type": "imm:realm",
-      "realm_type": "imm:spiritual_level_2"
+      "realm_type": "imm:foundation_preliminary"
     },
     {
       "type": "imm:spell",

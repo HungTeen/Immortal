@@ -98,8 +98,6 @@ public class IMMRegistryHandler {
         SecretManuals.registry().initialize();
         QiRootTypes.registry().initialize();
         TradeTypes.TradeType.register();
-        PlayerRangeFloats.registry();
-        PlayerRangeIntegers.registry();
         ElementReactions.registry();
         BehaviorRunes.register();
         FilterRuneTypes.register();

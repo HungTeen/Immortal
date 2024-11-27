@@ -1,5 +1,6 @@
 package hungteen.imm.common;
 
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.player.Player;
 
@@ -20,8 +21,8 @@ public class KarmaManager {
         return (float) (10 * Math.log10(1 + getKarma(player)));
     }
 
-    public static int getKarma(Player player){
-        return PlayerUtil.getIntegerData(player, PlayerRangeIntegers.KARMA);
+    public static float getKarma(Player player){
+        return PlayerUtil.getFloatData(player, IMMPlayerData.FloatData.KARMA);
     }
 
 }

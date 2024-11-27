@@ -126,7 +126,7 @@ public class SpellManager {
                 // 冷却结束。
                 if (!PlayerUtil.isSpellOnCoolDown(player, spell)) {
                     // 灵力足够。
-                    if (PlayerUtil.getMana(player) >= spell.getConsumeMana()) {
+                    if (PlayerUtil.getQiAmount(player) >= spell.getConsumeMana()) {
                         if (!EventUtil.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
                             return Optional.of(new Spell(spell, level));
                         }
@@ -160,7 +160,7 @@ public class SpellManager {
     }
 
     public static void costMana(Player player, int cost) {
-        PlayerUtil.addFloatData(player, PlayerRangeFloats.SPIRITUAL_MANA, -cost);
+        PlayerUtil.addQiAmount(player, -cost);
     }
 
     /**

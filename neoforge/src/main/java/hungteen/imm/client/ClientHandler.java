@@ -1,18 +1,8 @@
 package hungteen.imm.client;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.GameProfileRepository;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import hungteen.imm.common.blockentity.SmithingArtifactBlockEntity;
-import hungteen.imm.common.entity.human.cultivator.CultivatorTypes;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @program Immortal
@@ -25,20 +15,20 @@ public class ClientHandler {
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
      */
     public static void registerCultivatorTypes() {
-        Arrays.stream(CultivatorTypes.values()).filter((cultivatorTypes -> cultivatorTypes.getProfileUUID().isPresent() && cultivatorTypes.getProfileName().isPresent())).forEach(value -> {
-            AtomicReference<GameProfile> profile = new AtomicReference<>(new GameProfile(value.getProfileUUID().get(), value.getProfileName().get()));
-
-            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(IMMClientProxy.MC.getProxy());
-            GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
-            GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(IMMClientProxy.MC.gameDirectory, MinecraftServer.ANONYMOUS_PLAYER_PROFILE.getName()));
-            gameprofilecache.setExecutor(IMMClientProxy.MC);
-
-//            ClientHandler.updateGameProfile(gameprofilecache, ClientProxy.MC.getMinecraftSessionService(), profile.get(), value::setGameProfile);
-        });
+//        Arrays.stream(CultivatorTypes.values()).filter((cultivatorTypes -> cultivatorTypes.getProfileUUID().isPresent() && cultivatorTypes.getProfileName().isPresent())).forEach(value -> {
+//            AtomicReference<GameProfile> profile = new AtomicReference<>(new GameProfile(value.getProfileUUID().get(), value.getProfileName().get()));
+//
+//            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(IMMClientProxy.MC.getProxy());
+//            GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
+//            GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(IMMClientProxy.MC.gameDirectory, MinecraftServer.ANONYMOUS_PLAYER_PROFILE.getName()));
+//            gameprofilecache.setExecutor(IMMClientProxy.MC);
+//
+//            ClientHandler.updateGameProfile(gameprofilecache, ClientUtil.mc().getMinecraftSessionService(), profile.get(), value::setGameProfile);
+//        });
     }
 
 //    /**
-//     * Similar with {@link net.minecraft.world.level.block.entity.SkullBlockEntity#updateGameprofile(GameProfile, Consumer)}
+//     * Similar with {@link SkullBlockEntity#updateOwnerProfile()}
 //     */
 //    public static void updateGameProfile(GameProfileCache profileCache, MinecraftSessionService sessionService, @Nullable GameProfile gameProfile, Consumer<GameProfile> consumer) {
 //        if (gameProfile != null && !StringUtil.isNullOrEmpty(gameProfile.getName()) && (!gameProfile.isComplete() || !gameProfile.getProperties().containsKey("textures")) && profileCache != null && sessionService != null) {

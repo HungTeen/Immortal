@@ -6,12 +6,12 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import hungteen.htlib.api.registry.RangeNumber;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
@@ -158,12 +158,12 @@ public class IMMCommand {
         });
 
         // Command about player number data.
-        PlayerRangeIntegers.registry().getValues().forEach(data -> {
+        for (IMMPlayerData.IntegerData data : IMMPlayerData.IntegerData.values()) {
             builder.then(Commands.literal("data")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(data.getRegistryName())
-                                            .then(Commands.argument("value", IntegerArgumentType.integer(data.getMinData(), data.getMaxData()))
+                                            .then(Commands.argument("value", IntegerArgumentType.integer())
                                                     .executes(command -> setIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, IntegerArgumentType.getInteger(command, "value")))
                                             )))
                             .then(Commands.literal("add")
@@ -176,13 +176,13 @@ public class IMMCommand {
                                             .executes(command -> showIntegerData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
                                     ))
                     ));
-        });
-        PlayerRangeFloats.registry().getValues().forEach(data -> {
+        }
+        for (IMMPlayerData.FloatData data : IMMPlayerData.FloatData.values()) {
             builder.then(Commands.literal("data")
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.literal("set")
                                     .then(Commands.literal(data.getRegistryName())
-                                            .then(Commands.argument("value", FloatArgumentType.floatArg(data.getMinData(), data.getMaxData()))
+                                            .then(Commands.argument("value", FloatArgumentType.floatArg())
                                                     .executes(command -> setFloatData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data, FloatArgumentType.getFloat(command, "value")))
                                             )))
                             .then(Commands.literal("add")
@@ -195,7 +195,7 @@ public class IMMCommand {
                                             .executes(command -> showFloatData(command.getSource(), EntityArgument.getPlayers(command, "targets"), data))
                                     ))
                     ));
-        });
+        }
 
         // Command about element reactions.
         Arrays.stream(Element.values()).forEach(element -> {
@@ -394,7 +394,7 @@ public class IMMCommand {
 
     /* Numbers */
 
-    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data, int value) {
+    private static int setIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.IntegerData data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
@@ -403,7 +403,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data, int value) {
+    private static int addIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.IntegerData data, int value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addIntegerData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getIntegerData(player, data)));
@@ -412,14 +412,14 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Integer> data) {
+    private static int showIntegerData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.IntegerData data) {
         for (ServerPlayer player : targets) {
             source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getIntegerData(player, data)), true);
         }
         return targets.size();
     }
 
-    private static int setFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data, float value) {
+    private static int setFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.FloatData data, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setFloatData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, value));
@@ -428,7 +428,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int addFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data, float value) {
+    private static int addFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.FloatData data, float value) {
         for (ServerPlayer player : targets) {
             PlayerUtil.addFloatData(player, data, value);
             PlayerHelper.sendMsgTo(player, getNumberComponent(data, PlayerUtil.getFloatData(player, data)));
@@ -437,7 +437,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int showFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RangeNumber<Float> data) {
+    private static int showFloatData(CommandSourceStack source, Collection<? extends ServerPlayer> targets, IMMPlayerData.FloatData data) {
         for (ServerPlayer player : targets) {
             source.sendSuccess(() -> getNumberComponent(player, data, PlayerUtil.getFloatData(player, data)), true);
         }

@@ -29,28 +29,28 @@ public interface RealmTypes {
     /**
      * 无境界。
      */
-    RealmType NOT_IN_REALM = create("not_in_realm", 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
+    RealmType NOT_IN_REALM = create("not_in_realm", 0, 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
 
     /**
      * Default Player Realm.
      */
-    RealmType MORTALITY = create("mortality", 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
+    RealmType MORTALITY = create("mortality", 0, 0, 1, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
 
     /* 灵修 */
 
-    MultiPeriodRealm QI_REFINING = multiPeriod("qi_refining", 50, 100, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
+    MultiPeriodRealm QI_REFINING = multiPeriod("qi_refining", 50, 100, 2, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
 
-    MultiPeriodRealm FOUNDATION = multiPeriod("foundation", 50, 100, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
+    MultiPeriodRealm FOUNDATION = multiPeriod("foundation", 50, 100, 3, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
 
-    MultiPeriodRealm CORE_SHAPING = multiPeriod("core_shaping", 50, 100, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
+    MultiPeriodRealm CORE_SHAPING = multiPeriod("core_shaping", 50, 100, 4, RealmPeriod.values(), CultivationTypes.SPIRITUAL, Style.EMPTY);
 
     /* 妖修 */
 
-    RealmType MONSTER_LEVEL_1 = create("monster_level_1", 50, 120, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
+    RealmType YAOGUAI_LEVEL_1 = create("yaoguai_level_1", 50, 120, 2, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
 
-    RealmType MONSTER_LEVEL_2 = create("monster_level_2", 120, 225, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
+    RealmType YAOGUAI_LEVEL_2 = create("yaoguai_level_2", 120, 225, 3, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
 
-    RealmType MONSTER_LEVEL_3 = create("monster_level_3", 240, 325, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
+    RealmType YAOGUAI_LEVEL_3 = create("yaoguai_level_3", 240, 325, 3, DummyPeriod.DUMMY, CultivationTypes.YAOGUAI, Style.EMPTY);
 
     /* 亡灵 */
 
@@ -101,24 +101,24 @@ public interface RealmTypes {
     }
 
     static RealmType artifact(String name, int realmValue, Style style){
-        return create(name, 0, realmValue, DummyPeriod.DUMMY, CultivationTypes.ARTIFACT, style);
+        return create(name, 0, realmValue, 0, DummyPeriod.DUMMY, CultivationTypes.ARTIFACT, style);
     }
 
     static RealmType nonLiving(String name, int realmValue, CultivationType cultivationType){
-        return create(name, 0, realmValue, DummyPeriod.DUMMY, cultivationType, Style.EMPTY);
+        return create(name, 0, realmValue, 0, DummyPeriod.DUMMY, cultivationType, Style.EMPTY);
     }
 
-    static MultiPeriodRealm multiPeriod(String name, int maxCultivation, int realmValue, RealmStage[] stages, CultivationType type, Style style){
+    static MultiPeriodRealm multiPeriod(String name, int maxCultivation, int realmValue, int realmRegionLevel, RealmStage[] stages, CultivationType type, Style style){
         return new MultiPeriodRealm(Stream.of(stages).map(stage -> {
-            return create(name + "_" + stage.name().toLowerCase(), maxCultivation, realmValue, stage, type, style);
+            return create(name + "_" + stage.name().toLowerCase(), maxCultivation, realmValue, realmRegionLevel, stage, type, style);
         }).toArray(RealmType[]::new));
     }
 
-    static RealmType create(String name, int maxCultivation, int realmValue, RealmStage stage, CultivationType type, Style style){
-        return register(new RealmTypeImpl(name, maxCultivation, realmValue, stage, type, style));
+    static RealmType create(String name, int maxCultivation, int realmValue, int realmRegionLevel, RealmStage stage, CultivationType type, Style style){
+        return register(new RealmTypeImpl(name, maxCultivation, realmValue, realmRegionLevel, stage, type, style));
     }
 
-    record RealmTypeImpl(String name, int maxCultivation, int realmValue, RealmStage stage, CultivationType cultivationType, Style style) implements RealmType {
+    record RealmTypeImpl(String name, int maxCultivation, int realmValue, int realmRegionLevel, RealmStage stage, CultivationType cultivationType, Style style) implements RealmType {
 
         @Override
         public RealmStage getStage() {
@@ -143,6 +143,11 @@ public interface RealmTypes {
         @Override
         public int getRealmValue() {
             return realmValue();
+        }
+
+        @Override
+        public int getRealmRegionLevel() {
+            return realmRegionLevel();
         }
 
     }

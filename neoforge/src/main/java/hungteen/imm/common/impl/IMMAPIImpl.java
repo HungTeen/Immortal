@@ -60,7 +60,7 @@ public class IMMAPIImpl implements IMMAPI {
 //
 //    @Override
 //    public float getSpiritualMana(Player player) {
-//        return PlayerUtil.getMana(player);
+//        return PlayerUtil.getQiAmount(player);
 //    }
 //
 //    @Override

@@ -2,6 +2,8 @@ package hungteen.imm.client.gui.component;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import hungteen.htlib.client.util.ClientHelper;
+import hungteen.imm.client.util.RenderUtil;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.resources.ResourceLocation;
@@ -29,18 +31,30 @@ public class HTButton extends Button {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         graphics.blit(this.textureLocation, this.getX(), this.getY(), this.getTextureX(), this.getTextureY(), this.getWidth(), this.getHeight());
-        int i = getFGColor();
-        this.renderString(graphics, ClientHelper.font(), i | Mth.ceil(this.alpha * 255.0F) << 24);
+        int color = getFGColor();
+        this.renderString(graphics, ClientHelper.font(), color | Mth.ceil(this.alpha * 255.0F) << 24);
+    }
+
+    @Override
+    protected void renderScrollingString(GuiGraphics guiGraphics, Font font, int width, int color) {
+        int i = this.getX() + width;
+        int j = this.getX() + this.getWidth() - width;
+        RenderUtil.renderScrollingString(guiGraphics, font, this.getMessage(), i, this.getY(), j, this.getY() + this.getHeight(), color, false);
     }
 
     @Override
     public int getFGColor() {
-        if (packedFGColor != UNSET_FG_COLOR) return packedFGColor;
+        if (packedFGColor != UNSET_FG_COLOR) {
+            return packedFGColor;
+        }
         return getColor(this.active);
     }
 
+    /**
+     * White : Light Gray.
+     */
     protected int getColor(boolean active){
-        return active ? 16777215 : 10526880; // White : Light Grey
+        return active ? 16777215 : 10526880;
     }
 
     protected int getTextureX() {

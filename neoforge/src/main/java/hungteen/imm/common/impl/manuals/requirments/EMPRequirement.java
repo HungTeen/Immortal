@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.registry.ILearnRequirement;
 import hungteen.imm.api.registry.IRequirementType;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -25,12 +26,12 @@ public record EMPRequirement(int level) implements ILearnRequirement {
 
     @Override
     public boolean check(Level level, Player player) {
-        return PlayerUtil.getIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS) >= ElementalMasterySpell.requireEMP(player, level());
+        return PlayerUtil.getIntegerData(player, IMMPlayerData.IntegerData.ELEMENTAL_MASTERY_POINTS) >= ElementalMasterySpell.requireEMP(player, level());
     }
 
     @Override
     public void consume(Level level, Player player) {
-        PlayerUtil.addIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS, - ElementalMasterySpell.requireEMP(player, level()));
+        PlayerUtil.addIntegerData(player, IMMPlayerData.IntegerData.ELEMENTAL_MASTERY_POINTS, - ElementalMasterySpell.requireEMP(player, level()));
     }
 
     @Override

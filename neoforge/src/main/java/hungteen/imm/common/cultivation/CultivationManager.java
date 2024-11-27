@@ -11,11 +11,13 @@ import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.KarmaManager;
 import hungteen.imm.common.capability.player.CultivationData;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
+import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
@@ -182,8 +184,11 @@ public class CultivationManager {
         player.removeEffect(IMMEffects.BREAK_THROUGH.holder());
     }
 
-    public static void tryBreakThrough(ServerPlayer player){
-//        final RealmType currentRealm = PlayerUtil.getPlayerRealm(player);
+    /**
+     * 玩家点击修行界面的突破按钮，将玩家传送到对应的精神领域的位置。
+     */
+    public static void meditate(ServerPlayer player){
+        SpiritWorldDimension.teleportToSpiritRegion(player.serverLevel(), player);
 //        final RealmStage currentStage = PlayerUtil.getPlayerRealmStage(player);
 //        getNextRealmStatus(currentRealm, currentStage).ifPresent(status -> {
 //            final RealmType nextRealm = status.realm();
@@ -258,11 +263,11 @@ public class CultivationManager {
     }
 
     public static boolean canBreakThrough(Player player){
-        return PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS) >= 1;
+        return PlayerUtil.getFloatData(player, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS) >= 1;
     }
 
     public static float getBreakThroughProgress(Player player){
-        return PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS);
+        return PlayerUtil.getFloatData(player, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS);
     }
 
     public static int getConsciousness(Entity entity){

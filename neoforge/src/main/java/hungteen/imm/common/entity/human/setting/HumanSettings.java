@@ -10,13 +10,10 @@ import hungteen.imm.common.codec.ItemEntry;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -25,7 +22,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -244,238 +240,238 @@ public interface HumanSettings {
                         )
                 )
         ));
-        context.register(METAL_BEGINNER, new HumanSetting(
-                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                50,
-                Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.CORE_SHAPING),
-                                List.of(QiRootTypes.METAL)
-                        )
-                ),
-                List.of(
-                        single(new ItemEntry(stack(Items.NETHERITE_SWORD))),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.YELLOW))),
-                                new ItemEntry(stack(Items.IRON_HELMET)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.YELLOW))),
-                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.YELLOW))),
-                                new ItemEntry(stack(Items.IRON_LEGGINGS)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.YELLOW))),
-                                new ItemEntry(stack(Items.IRON_BOOTS)
-                                ))
-                ),
-                Optional.of(new TradeSetting(
-                        range(4, 6),
-                        true,
-                        SimpleWeightedList.<TradeEntry>builder()
-                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
-                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
-                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
-                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
-                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
-                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 1), 10)
-                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 2), 8)
-                                .add(spellTrade(16, SpellTypes.METAL_MASTERY, 3), 6)
-                                .add(spellTrade(6, SpellTypes.CRITICAL_HIT, 1), 7)
-                                .add(spellTrade(12, SpellTypes.METAL_MENDING, 1), 4)
-                                .add(spellTrade(8, SpellTypes.SHARPNESS, 1), 6)
-                                .build()
-                ))
-        ));
-        context.register(WOOD_BEGINNER, new HumanSetting(
-                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                50,
-                Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.CORE_SHAPING),
-                                List.of(QiRootTypes.WOOD)
-                        )
-                ),
-                List.of(
-                        single(new ItemEntry(stack(Items.BOW))),
-                        single(new ItemEntry(stack(Items.WOODEN_SWORD))),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.GREEN))),
-                                new ItemEntry(stack(Items.IRON_HELMET)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.GREEN))),
-                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.GREEN))),
-                                new ItemEntry(stack(Items.IRON_LEGGINGS)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.GREEN))),
-                                new ItemEntry(stack(Items.IRON_BOOTS)
-                                ))
-                ),
-                Optional.of(new TradeSetting(
-                        range(4, 6),
-                        true,
-                        SimpleWeightedList.<TradeEntry>builder()
-                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
-                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
-                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
-                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
-                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
-                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 1), 10)
-                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 2), 8)
-                                .add(spellTrade(16, SpellTypes.WOOD_MASTERY, 3), 6)
-                                .add(spellTrade(6, SpellTypes.LEVITATION, 1), 8)
-                                .add(spellTrade(8, SpellTypes.SPROUT, 1), 7)
-                                .add(spellTrade(10, SpellTypes.WITHER, 1), 6)
-                                .add(spellTrade(10, SpellTypes.WOOD_HEALING, 1), 6)
-                                .build()
-                ))
-        ));
-        context.register(WATER_BEGINNER, new HumanSetting(
-                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                50,
-                Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.CORE_SHAPING),
-                                List.of(QiRootTypes.WATER)
-                        )
-                ),
-                List.of(
-                        pair(
-                                new ItemEntry(stack(Items.IRON_SWORD)),
-                                new ItemEntry(stack(Items.DIAMOND_SWORD)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.BLUE))),
-                                new ItemEntry(stack(Items.IRON_HELMET)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.BLUE))),
-                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.BLUE))),
-                                new ItemEntry(stack(Items.IRON_LEGGINGS)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.BLUE))),
-                                new ItemEntry(stack(Items.IRON_BOOTS)
-                                ))
-                ),
-                Optional.of(new TradeSetting(
-                        range(4, 6),
-                        true,
-                        SimpleWeightedList.<TradeEntry>builder()
-                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
-                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
-                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
-                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
-                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
-                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 1), 10)
-                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 2), 8)
-                                .add(spellTrade(16, SpellTypes.WATER_MASTERY, 3), 6)
-                                .add(spellTrade(6, SpellTypes.WATER_BREATHING, 1), 8)
-                                .build()
-                ))
-        ));
-        context.register(FIRE_BEGINNER, new HumanSetting(
-                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                50,
-                Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.CORE_SHAPING),
-                                List.of(QiRootTypes.FIRE)
-                        )
-                ),
-                List.of(
-                        pair(
-                                new ItemEntry(stack(Items.IRON_SWORD)),
-                                new ItemEntry(stack(Items.NETHERITE_SWORD)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.RED))),
-                                new ItemEntry(stack(Items.IRON_HELMET)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.RED))),
-                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.RED))),
-                                new ItemEntry(stack(Items.IRON_LEGGINGS)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.RED))),
-                                new ItemEntry(stack(Items.IRON_BOOTS)
-                                ))
-                ),
-                Optional.of(new TradeSetting(
-                        range(4, 6),
-                        true,
-                        SimpleWeightedList.<TradeEntry>builder()
-                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
-                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
-                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
-                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
-                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
-                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 1), 10)
-                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 2), 8)
-                                .add(spellTrade(16, SpellTypes.FIRE_MASTERY, 3), 6)
-                                .add(spellTrade(8, SpellTypes.BURNING, 1), 8)
-                                .add(spellTrade(8, SpellTypes.BURNING, 2), 6)
-                                .add(spellTrade(7, SpellTypes.LAVA_BREATHING, 1), 8)
-                                .add(spellTrade(10, SpellTypes.IGNITION, 1), 7)
-                                .build()
-                ))
-        ));
-        context.register(EARTH_BEGINNER, new HumanSetting(
-                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
-                50,
-                Optional.of(new CultivationSetting(
-                                Optional.of(RealmTypes.CORE_SHAPING),
-                                List.of(QiRootTypes.EARTH)
-                        )
-                ),
-                List.of(
-                        single(new ItemEntry(stack(Items.SHIELD))),
-                        single(new ItemEntry(stack(Items.STONE_SWORD))),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.GRAY))),
-                                new ItemEntry(stack(Items.DIAMOND_HELMET)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.GRAY))),
-                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.GRAY))),
-                                new ItemEntry(stack(Items.IRON_LEGGINGS)
-                                )),
-                        pair(
-                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.GRAY))),
-                                new ItemEntry(stack(Items.DIAMOND_BOOTS)
-                                ))
-                ),
-                Optional.of(new TradeSetting(
-                        range(4, 6),
-                        true,
-                        SimpleWeightedList.<TradeEntry>builder()
-                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
-                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
-                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
-                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
-                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
-                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 1), 10)
-                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 2), 8)
-                                .add(spellTrade(16, SpellTypes.EARTH_MASTERY, 3), 6)
-                                .add(spellTrade(8, SpellTypes.CRYSTAL_EXPLOSION, 1), 7)
-                                .add(spellTrade(8, SpellTypes.CRYSTAL_HEART, 1), 5)
-                                .build()
-                ))
-        ));
+//        context.register(METAL_BEGINNER, new HumanSetting(
+//                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
+//                50,
+//                Optional.of(new CultivationSetting(
+//                                Optional.of(RealmTypes.CORE_SHAPING),
+//                                List.of(QiRootTypes.METAL)
+//                        )
+//                ),
+//                List.of(
+//                        single(new ItemEntry(stack(Items.NETHERITE_SWORD))),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.YELLOW))),
+//                                new ItemEntry(stack(Items.IRON_HELMET)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.YELLOW))),
+//                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.YELLOW))),
+//                                new ItemEntry(stack(Items.IRON_LEGGINGS)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.YELLOW))),
+//                                new ItemEntry(stack(Items.IRON_BOOTS)
+//                                ))
+//                ),
+//                Optional.of(new TradeSetting(
+//                        range(4, 6),
+//                        true,
+//                        SimpleWeightedList.<TradeEntry>builder()
+//                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+//                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+//                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.METAL_MASTERY, 2), 8)
+//                                .add(spellTrade(16, SpellTypes.METAL_MASTERY, 3), 6)
+//                                .add(spellTrade(6, SpellTypes.CRITICAL_HIT, 1), 7)
+//                                .add(spellTrade(12, SpellTypes.METAL_MENDING, 1), 4)
+//                                .add(spellTrade(8, SpellTypes.SHARPNESS, 1), 6)
+//                                .build()
+//                ))
+//        ));
+//        context.register(WOOD_BEGINNER, new HumanSetting(
+//                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
+//                50,
+//                Optional.of(new CultivationSetting(
+//                                Optional.of(RealmTypes.CORE_SHAPING),
+//                                List.of(QiRootTypes.WOOD)
+//                        )
+//                ),
+//                List.of(
+//                        single(new ItemEntry(stack(Items.BOW))),
+//                        single(new ItemEntry(stack(Items.WOODEN_SWORD))),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.GREEN))),
+//                                new ItemEntry(stack(Items.IRON_HELMET)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.GREEN))),
+//                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.GREEN))),
+//                                new ItemEntry(stack(Items.IRON_LEGGINGS)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.GREEN))),
+//                                new ItemEntry(stack(Items.IRON_BOOTS)
+//                                ))
+//                ),
+//                Optional.of(new TradeSetting(
+//                        range(4, 6),
+//                        true,
+//                        SimpleWeightedList.<TradeEntry>builder()
+//                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+//                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+//                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.WOOD_MASTERY, 2), 8)
+//                                .add(spellTrade(16, SpellTypes.WOOD_MASTERY, 3), 6)
+//                                .add(spellTrade(6, SpellTypes.LEVITATION, 1), 8)
+//                                .add(spellTrade(8, SpellTypes.SPROUT, 1), 7)
+//                                .add(spellTrade(10, SpellTypes.WITHER, 1), 6)
+//                                .add(spellTrade(10, SpellTypes.WOOD_HEALING, 1), 6)
+//                                .build()
+//                ))
+//        ));
+//        context.register(WATER_BEGINNER, new HumanSetting(
+//                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
+//                50,
+//                Optional.of(new CultivationSetting(
+//                                Optional.of(RealmTypes.CORE_SHAPING),
+//                                List.of(QiRootTypes.WATER)
+//                        )
+//                ),
+//                List.of(
+//                        pair(
+//                                new ItemEntry(stack(Items.IRON_SWORD)),
+//                                new ItemEntry(stack(Items.DIAMOND_SWORD)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.BLUE))),
+//                                new ItemEntry(stack(Items.IRON_HELMET)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.BLUE))),
+//                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.BLUE))),
+//                                new ItemEntry(stack(Items.IRON_LEGGINGS)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.BLUE))),
+//                                new ItemEntry(stack(Items.IRON_BOOTS)
+//                                ))
+//                ),
+//                Optional.of(new TradeSetting(
+//                        range(4, 6),
+//                        true,
+//                        SimpleWeightedList.<TradeEntry>builder()
+//                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+//                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+//                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.WATER_MASTERY, 2), 8)
+//                                .add(spellTrade(16, SpellTypes.WATER_MASTERY, 3), 6)
+//                                .add(spellTrade(6, SpellTypes.WATER_BREATHING, 1), 8)
+//                                .build()
+//                ))
+//        ));
+//        context.register(FIRE_BEGINNER, new HumanSetting(
+//                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
+//                50,
+//                Optional.of(new CultivationSetting(
+//                                Optional.of(RealmTypes.CORE_SHAPING),
+//                                List.of(QiRootTypes.FIRE)
+//                        )
+//                ),
+//                List.of(
+//                        pair(
+//                                new ItemEntry(stack(Items.IRON_SWORD)),
+//                                new ItemEntry(stack(Items.NETHERITE_SWORD)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.RED))),
+//                                new ItemEntry(stack(Items.IRON_HELMET)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.RED))),
+//                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.RED))),
+//                                new ItemEntry(stack(Items.IRON_LEGGINGS)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.RED))),
+//                                new ItemEntry(stack(Items.IRON_BOOTS)
+//                                ))
+//                ),
+//                Optional.of(new TradeSetting(
+//                        range(4, 6),
+//                        true,
+//                        SimpleWeightedList.<TradeEntry>builder()
+//                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+//                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+//                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.FIRE_MASTERY, 2), 8)
+//                                .add(spellTrade(16, SpellTypes.FIRE_MASTERY, 3), 6)
+//                                .add(spellTrade(8, SpellTypes.BURNING, 1), 8)
+//                                .add(spellTrade(8, SpellTypes.BURNING, 2), 6)
+//                                .add(spellTrade(7, SpellTypes.LAVA_BREATHING, 1), 8)
+//                                .add(spellTrade(10, SpellTypes.IGNITION, 1), 7)
+//                                .build()
+//                ))
+//        ));
+//        context.register(EARTH_BEGINNER, new HumanSetting(
+//                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
+//                50,
+//                Optional.of(new CultivationSetting(
+//                                Optional.of(RealmTypes.CORE_SHAPING),
+//                                List.of(QiRootTypes.EARTH)
+//                        )
+//                ),
+//                List.of(
+//                        single(new ItemEntry(stack(Items.SHIELD))),
+//                        single(new ItemEntry(stack(Items.STONE_SWORD))),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_HELMET, List.of(DyeColor.GRAY))),
+//                                new ItemEntry(stack(Items.DIAMOND_HELMET)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_CHESTPLATE, List.of(DyeColor.GRAY))),
+//                                new ItemEntry(stack(Items.IRON_CHESTPLATE)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.GRAY))),
+//                                new ItemEntry(stack(Items.IRON_LEGGINGS)
+//                                )),
+//                        pair(
+//                                new ItemEntry(ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.GRAY))),
+//                                new ItemEntry(stack(Items.DIAMOND_BOOTS)
+//                                ))
+//                ),
+//                Optional.of(new TradeSetting(
+//                        range(4, 6),
+//                        true,
+//                        SimpleWeightedList.<TradeEntry>builder()
+//                                .add(spellTrade(4, SpellTypes.MEDITATION, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.DISPERSAL, 1), 10)
+//                                .add(spellTrade(4, SpellTypes.RELEASING, 1), 10)
+//                                .add(spellTrade(5, SpellTypes.INTIMIDATION, 1), 10)
+//                                .add(spellTrade(6, SpellTypes.SPIRIT_EYES, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 1), 10)
+//                                .add(spellTrade(8, SpellTypes.EARTH_MASTERY, 2), 8)
+//                                .add(spellTrade(16, SpellTypes.EARTH_MASTERY, 3), 6)
+//                                .add(spellTrade(8, SpellTypes.CRYSTAL_EXPLOSION, 1), 7)
+//                                .add(spellTrade(8, SpellTypes.CRYSTAL_HEART, 1), 5)
+//                                .build()
+//                ))
+//        ));
     }
 
 //    public static HTRegistryHolder<HumanSetting> RICH_VANILLA = LOOTS.innerRegister(

@@ -6,6 +6,7 @@ import hungteen.imm.common.network.client.ExperienceChangePacket;
 import hungteen.imm.common.network.client.FloatDataPacket;
 import hungteen.imm.common.network.client.IntegerDataPacket;
 import hungteen.imm.common.network.client.QiRootAndRealmPacket;
+import hungteen.imm.common.network.server.ScreenOperationPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -22,6 +23,7 @@ public class NetworkHandler {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
+        // To Client.
         registrar.playToClient(
                 QiRootAndRealmPacket.TYPE,
                 QiRootAndRealmPacket.STREAM_CODEC,
@@ -42,6 +44,13 @@ public class NetworkHandler {
                 IntegerDataPacket.STREAM_CODEC,
                 NeoHelper.wrapClientHandler(IntegerDataPacket::process)
         );
+
+        // To Server.
+        registrar.playToServer(
+                ScreenOperationPacket.TYPE,
+                ScreenOperationPacket.STREAM_CODEC,
+                NeoHelper.wrapServerHandler(ScreenOperationPacket::process)
+        );
 //        registrar.playToClient(
 //                SpellPacket.TYPE,
 //                SpellPacket.STREAM_CODEC,
@@ -55,15 +64,12 @@ public class NetworkHandler {
     }
 
     public static void init() {
-//        CHANNEL.registerMessage(getId(), IntegerDataPacket.class, IntegerDataPacket::encode, IntegerDataPacket::new, IntegerDataPacket.Handler::onMessage);
-//        CHANNEL.registerMessage(getId(), FloatDataPacket.class, FloatDataPacket::encode, FloatDataPacket::new, FloatDataPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), MiscDataPacket.class, MiscDataPacket::encode, MiscDataPacket::new, MiscDataPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), TradeOffersPacket.class, TradeOffersPacket::encode, TradeOffersPacket::new, TradeOffersPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), SectRelationPacket.class, SectRelationPacket::encode, SectRelationPacket::new, SectRelationPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), EntityElementPacket.class, EntityElementPacket::encode, EntityElementPacket::new, EntityElementPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), ReactionPacket.class, ReactionPacket::encode, ReactionPacket::new, ReactionPacket.Handler::onMessage);
 //        CHANNEL.registerMessage(getId(), SmithingPacket.class, SmithingPacket::encode, SmithingPacket::new, SmithingPacket.Handler::onMessage);
-//        CHANNEL.registerMessage(getId(), ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket.Handler::onMessage);
 
     }
 

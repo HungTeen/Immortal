@@ -1,6 +1,7 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.LevelUtil;
@@ -45,7 +46,7 @@ public class SpiritualPearlItem extends ArtifactItem {
         final ItemStack itemstack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             spawnSpiritualPearl(level, player, player, itemstack, hand);
-            PlayerUtil.setIntegerData(player, PlayerRangeIntegers.KNOW_SPIRITUAL_ROOTS, 1);
+            PlayerUtil.setIntegerData(player, IMMPlayerData.IntegerData.KNOW_SPIRITUAL_ROOTS, 1);
             return InteractionResultHolder.success(itemstack);
         }
         return InteractionResultHolder.consume(itemstack);

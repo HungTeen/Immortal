@@ -22,6 +22,11 @@ public interface RealmType extends SimpleEntry {
      */
     int getRealmValue();
 
+    /**
+     * @return 精神领域对应的层数。
+     */
+    int getRealmRegionLevel();
+
 //    /**
 //     * 根本的灵力值（不考虑后天加成）。
 //     * @return the base spiritual value.

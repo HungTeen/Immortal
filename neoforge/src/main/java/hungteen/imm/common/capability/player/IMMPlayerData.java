@@ -204,6 +204,12 @@ public class IMMPlayerData implements HTPlayerData {
         }
     }
 
+    @Override
+    public void initialize() {
+        // 防止强制退出导致无法坐上坐垫。
+        setIntegerData(IntegerData.IS_MEDITATING, 0);
+    }
+
     /**
      * sync data to client side.
      */
@@ -357,17 +363,6 @@ public class IMMPlayerData implements HTPlayerData {
         setFloatData(rangeData, getFloatData(rangeData) + value);
     }
 
-    /**
-     * 待客户端配置文件更新该值。
-     */
-    public boolean requireSyncCircle() {
-        return getIntegerData(IntegerData.SPELL_CIRCLE_MODE) == 0;
-    }
-
-    public boolean useDefaultCircle() {
-        return getIntegerData(IntegerData.SPELL_CIRCLE_MODE) == 1;
-    }
-
     public void sendIntegerDataPacket(IntegerData rangeData, int value) {
         if (getPlayer() instanceof ServerPlayer serverPlayer) {
             HTLibPlatformAPI.get().sendToClient(serverPlayer, new IntegerDataPacket(rangeData, value));
@@ -457,7 +452,7 @@ public class IMMPlayerData implements HTPlayerData {
 
         @Override
         public MutableComponent getComponent() {
-            return TipUtil.misc("player_data." + name().toLowerCase());
+            return TipUtil.misc("player_data." + getName());
         }
     }
 
@@ -469,9 +464,9 @@ public class IMMPlayerData implements HTPlayerData {
         ELEMENTAL_MASTERY_POINTS,
 
         /**
-         * 打坐冥想tick。
+         * 是否正在打坐，0表示没有，1表示正在打坐。
          */
-        MEDITATE_TICK,
+        IS_MEDITATING,
 
         /**
          * 是否开启默认轮盘，0代表需要客户端配置文件更新选项，1表示默认，2表示滚轮
@@ -499,7 +494,7 @@ public class IMMPlayerData implements HTPlayerData {
 
         @Override
         public MutableComponent getComponent() {
-            return TipUtil.misc("player_data." + name().toLowerCase());
+            return TipUtil.misc("player_data." + getName());
         }
     }
 

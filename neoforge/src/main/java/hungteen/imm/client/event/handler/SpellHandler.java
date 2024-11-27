@@ -7,6 +7,7 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.client.ClientData;
+import hungteen.imm.client.event.ClientEventHandler;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.IMMKeyBinds;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpellHandler {
 
     /**
-     * {@link hungteen.imm.client.event.ClientEvents#tick(ClientTickEvent.Post)}
+     * {@link ClientEventHandler#tick(ClientTickEvent.Post)}
      */
     public static void tick(@NotNull Player player) {
         // 不能使用轮盘时，强制关闭。

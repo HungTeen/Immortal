@@ -1,11 +1,8 @@
 package hungteen.imm.common.world;
 
-import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.common.cultivation.RealmTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -21,24 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 public class LevelManager {
 
-    private static final Map<ResourceKey<Level>, LevelRealmSetting> LEVEL_REALM_SETTING_MAP = new ConcurrentHashMap<>();
     private static final Map<ResourceKey<Biome>, BiomeRealmSetting> BIOME_REALM_SETTING_MAP = new ConcurrentHashMap<>();
 
     static {
-        registerLevelRealmSetting(Level.END, new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.FOUNDATION));
         registerBiomeRealmSetting(Biomes.LUSH_CAVES, new BiomeRealmSetting(1F, 2F));
-    }
-
-    public static void registerLevelRealmSetting(ResourceKey<Level> levelResourceKey, LevelRealmSetting setting) {
-        LEVEL_REALM_SETTING_MAP.put(levelResourceKey, setting);
     }
 
     public static void registerBiomeRealmSetting(ResourceKey<Biome> biomeResourceKey, BiomeRealmSetting setting) {
         BIOME_REALM_SETTING_MAP.put(biomeResourceKey, setting);
-    }
-
-    public static LevelRealmSetting getLevelRealmSetting(ResourceKey<Level> levelResourceKey) {
-        return LEVEL_REALM_SETTING_MAP.getOrDefault(levelResourceKey, LevelRealmSetting.DEFAULT);
     }
 
     public static BiomeRealmSetting getBiomeRealmSetting(ResourceKey<Biome> biomeResourceKey) {
@@ -52,16 +39,6 @@ public class LevelManager {
             return Optional.of(setting.getChangeRate(chunk.getLevel().getRandom()));
         }
         return Optional.empty();
-    }
-
-    public record LevelRealmSetting(float lowestRealm, float highestRealm){
-
-        public static final LevelRealmSetting DEFAULT = new LevelRealmSetting(RealmTypes.MORTALITY, RealmTypes.QI_REFINING);
-
-        public LevelRealmSetting(RealmType lowestRealmType, RealmType highestRealmType){
-            this(lowestRealmType.getRealmValue(), highestRealmType.getRealmValue());
-        }
-
     }
 
     public record BiomeRealmSetting(float minChange, float maxChange){

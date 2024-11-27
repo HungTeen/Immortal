@@ -5,14 +5,13 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.IHasMana;
 import hungteen.imm.api.cultivation.ICultivatable;
+import hungteen.imm.api.cultivation.IHasMana;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.ElementManager;
-import hungteen.imm.api.cultivation.RealmStage;
-import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.LevelUtil;
@@ -37,8 +36,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-
-import java.util.Optional;
 
 /**
  * @program Immortal
@@ -245,11 +242,6 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
     @Override
     public RealmType getRealm() {
         return RealmTypes.SPIRITUAL_FLAME_1;
-    }
-
-    @Override
-    public Optional<RealmStage> getRealmStageOpt() {
-        return Optional.empty();
     }
 
     @Override

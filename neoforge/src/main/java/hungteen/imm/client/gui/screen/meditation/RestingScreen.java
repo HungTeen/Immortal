@@ -2,12 +2,13 @@ package hungteen.imm.client.gui.screen.meditation;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
-import hungteen.imm.client.util.ClientUtil;
-import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.component.HTButton;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.client.util.ClientUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.network.ScreenButtonPacket;
+import hungteen.imm.common.network.server.ScreenOperationPacket;
+import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -19,8 +20,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-10-09 21:34
  **/
 public class RestingScreen extends MeditationScreen {
@@ -31,8 +32,8 @@ public class RestingScreen extends MeditationScreen {
     private static final int BUTTON_WIDTH = 106;
     private static final int BUTTON_HEIGHT = 28;
     private static final int BUTTON_DISTANCE = 40;
-    private MeditationButton breakThroughButton;
-    private MeditationButton spawnPointButton;
+    private MeditationButton breakThroughOrMeditationButton;
+    private MeditationButton spawnPointOrQuitButton;
     private MeditationButton quitButton;
 
     public RestingScreen() {
@@ -44,24 +45,38 @@ public class RestingScreen extends MeditationScreen {
         super.init();
         final int x = (this.width - BUTTON_WIDTH) >> 1;
         final int y = (this.height - BUTTON_HEIGHT) >> 1;
-        this.breakThroughButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.break_through"), (button) -> {
-            NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.BREAK_THROUGH));
-            this.sendWakeUp();
-        }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.break_through_button")))){
+        this.breakThroughOrMeditationButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.meditation"), (button) -> {
+            NetworkHelper.sendToServer(new ScreenOperationPacket(isInSpiritWorld() ? ScreenOperationPacket.OperationType.BREAK_THROUGH : ScreenOperationPacket.OperationType.MEDITATE));
+        }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.meditation_button")))) {
             @Override
             public boolean isActive() {
-                return CultivationManager.canBreakThrough(ClientUtil.player());
+                return isInSpiritWorld() || CultivationManager.canBreakThrough(ClientUtil.player());
+            }
+
+            @Override
+            public Component getMessage() {
+                return isInSpiritWorld() ? TipUtil.gui("meditation.break_through") : super.getMessage();
+            }
+
+        };
+        this.spawnPointOrQuitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit_meditation"), (button) -> {
+            NetworkHelper.sendToServer(new ScreenOperationPacket(isInSpiritWorld() ? ScreenOperationPacket.OperationType.QUIT_MEDITATION : ScreenOperationPacket.OperationType.SET_SPAWN_POINT));
+        }).pos(x, y).tooltip(Tooltip.create(TipUtil.gui("meditation.set_spawn_point_button")))){
+            @Override
+            public Component getMessage() {
+                return isInSpiritWorld() ? super.getMessage() : TipUtil.gui("meditation.set_spawn_point");
             }
         };
-        this.spawnPointButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.set_spawn_point"), (button) -> {
-            NetworkHelper.sendToServer(new ScreenButtonPacket(ScreenButtonPacket.Types.SET_SPAWN_POINT));
-        }).pos(x, y).tooltip(Tooltip.create(TipUtil.gui("meditation.set_spawn_point_button"))));
-        this.quitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit"), (button) -> {
+        this.quitButton = new MeditationButton(Button.builder(TipUtil.gui("meditation.quit_resting"), (button) -> {
             this.sendWakeUp();
-        }).pos(x, y + BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.quit_button"))));
-        this.addRenderableWidget(this.breakThroughButton);
-        this.addRenderableWidget(this.spawnPointButton);
+        }).pos(x, y + BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.quit_resting_button"))));
+        this.addRenderableWidget(this.breakThroughOrMeditationButton);
+        this.addRenderableWidget(this.spawnPointOrQuitButton);
         this.addRenderableWidget(this.quitButton);
+        if(isInSpiritWorld()){
+            this.breakThroughOrMeditationButton.setTooltip(Tooltip.create(TipUtil.gui("meditation.break_through_button")));
+            this.spawnPointOrQuitButton.setTooltip(Tooltip.create(TipUtil.gui("meditation.quit_meditation_button")));
+        }
     }
 
     @Override
@@ -83,6 +98,10 @@ public class RestingScreen extends MeditationScreen {
         }
     }
 
+    public boolean isInSpiritWorld() {
+        return ClientUtil.playerOpt().map(player -> player.level().dimension().equals(IMMLevels.SPIRIT_WORLD)).orElse(false);
+    }
+
     static class MeditationButton extends HTButton {
 
         protected MeditationButton(Builder builder) {
@@ -96,10 +115,8 @@ public class RestingScreen extends MeditationScreen {
 
         @Override
         protected int getTextureY() {
-            return ! this.isActive() ? 228 : this.isHovered() ? 199 : 170;
+            return !this.isActive() ? 228 : this.isHovered() ? 199 : 170;
         }
     }
-
-
 
 }

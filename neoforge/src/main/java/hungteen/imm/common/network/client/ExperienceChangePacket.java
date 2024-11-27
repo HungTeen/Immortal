@@ -22,7 +22,7 @@ import java.util.Map;
  **/
 public record ExperienceChangePacket(Map<ExperienceType, Float> xpMap) implements PlayToClientPacket {
 
-    public static final Type<ExperienceChangePacket> TYPE = new Type<>(Util.prefix("root_and_realm"));
+    public static final Type<ExperienceChangePacket> TYPE = new Type<>(Util.prefix("experience_change"));
     public static final Codec<ExperienceChangePacket> CODEC = RecordCodecBuilder.<ExperienceChangePacket>mapCodec(instance -> instance.group(
             ExtraCodecs.strictUnboundedMap(ExperienceType.CODEC, Codec.floatRange(0, Float.MAX_VALUE)).fieldOf("xpMap").forGetter(ExperienceChangePacket::xpMap)
     ).apply(instance, ExperienceChangePacket::new)).codec();
@@ -42,4 +42,5 @@ public record ExperienceChangePacket(Map<ExperienceType, Float> xpMap) implement
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
+
 }

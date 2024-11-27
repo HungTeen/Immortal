@@ -11,6 +11,7 @@ import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.common.KarmaManager;
+import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.QiRootTypes;
@@ -158,13 +159,13 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
                 if(now < width){
                     graphics.blit(TEXTURE, x + now, y + 1, 133, 150, width - now, KARMA_HEIGHT);
                 }
-                this.renderProgressWithText(graphics, PlayerRangeIntegers.KARMA.getComponent(), x, y, value, KarmaManager.MAX_KARMA_VALUE, true);
+                this.renderProgressWithText(graphics, IMMPlayerData.FloatData.KARMA.getComponent(), x, y, value, KarmaManager.MAX_KARMA_VALUE, true);
             }
             case SPIRITUAL_MANA -> {
-                this.renderProgressWithText(graphics, PlayerRangeFloats.SPIRITUAL_MANA.getComponent(), x, y, PlayerUtil.getMana(player), (float) PlayerUtil.getMaxQi(player), false);
+                this.renderProgressWithText(graphics, IMMPlayerData.FloatData.QI_AMOUNT.getComponent(), x, y, PlayerUtil.getQiAmount(player), (float) PlayerUtil.getMaxQi(player), false);
             }
             case BREAK_THROUGH_PROGRESS -> {
-                this.renderProgressWithText(graphics, PlayerRangeFloats.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, PlayerRangeFloats.BREAK_THROUGH_PROGRESS), false);
+                this.renderProgressWithText(graphics, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS.getComponent(), x, y, PlayerUtil.getFloatData(player, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS), false);
             }
 //            case EMP -> {
 //                final int emp = PlayerUtil.getIntegerData(player, PlayerRangeIntegers.ELEMENTAL_MASTERY_POINTS);

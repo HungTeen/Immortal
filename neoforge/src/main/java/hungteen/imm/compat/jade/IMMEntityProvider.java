@@ -72,7 +72,7 @@ public class IMMEntityProvider {
 //    public void appendServerData(CompoundTag compoundTag, EntityAccessor entityAccessor) {
 //        // 除了玩家外的实体并没有同步mana到客户端。
 //        if(entityAccessor.getEntity() instanceof IHasMana manaEntity){
-//            compoundTag.putFloat("Mana", manaEntity.getMana());
+//            compoundTag.putFloat("Mana", manaEntity.getQiAmount());
 //            compoundTag.putFloat("MaxMana", manaEntity.getMaxQi());
 //        }
 //    }

@@ -88,6 +88,11 @@ public class CultivationData implements HTPlayerData {
     }
 
     @Override
+    public void initialize() {
+
+    }
+
+    @Override
     public void syncToClient() {
         sendExperienceUpdatePacket();
         sendRootAndRealmUpdatePacket();
