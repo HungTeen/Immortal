@@ -76,20 +76,8 @@ public interface RealmTypes {
         return TipUtil.misc("realm");
     }
 
-    static MutableComponent getRealmInfo(RealmType realm){
-        RealmStage stage = realm.getStage();
-        if(realm == RealmTypes.NOT_IN_REALM || realm == RealmTypes.MORTALITY || stage == null) {
-            return realm.getComponent();
-        }
-        return realm.getComponent().append("-").append(getStageComponent(stage));
-    }
-
     static MutableComponent getStageComponent(){
         return TipUtil.misc("realm_stage");
-    }
-
-    static MutableComponent getStageComponent(RealmStage stage){
-        return TipUtil.misc("realm_stage." + stage.name().toLowerCase());
     }
 
     static HTCustomRegistry<RealmType> registry() {
@@ -137,7 +125,10 @@ public interface RealmTypes {
 
         @Override
         public MutableComponent getComponent() {
-            return TipUtil.misc("realm." + name()).withStyle(style());
+            // 从注册名中截取出阶段名。
+            String replace = name().replace(getStage().getName(), "");
+            String substring = replace.substring(0, replace.length() - 1);
+            return TipUtil.misc("realm." + substring, stage().getComponent()).withStyle(style());
         }
 
         @Override

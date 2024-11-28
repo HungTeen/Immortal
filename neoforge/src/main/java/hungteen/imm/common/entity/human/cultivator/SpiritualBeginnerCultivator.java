@@ -2,10 +2,10 @@ package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.records.Spell;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.spell.basic.IntimidationSpell;
 import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -38,7 +38,7 @@ public class SpiritualBeginnerCultivator extends Cultivator {
     }
 
     @Override
-    public boolean canUseSpell(ISpellType spell) {
+    public boolean canUseSpell(SpellType spell) {
         if(spell == SpellTypes.INTIMIDATION){
             return IntimidationSpell.canUseOn(this, this.getTarget());
         }

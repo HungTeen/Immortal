@@ -1,10 +1,10 @@
 package hungteen.imm.api.interfaces;
 
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.cultivation.IHasMana;
+import hungteen.imm.api.cultivation.IHasQi;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.api.records.Spell;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ import java.util.Set;
  * @program Immortal
  * @create 2023/8/19 15:49
  */
-public interface IHasSpell extends IHasMana {
+public interface IHasSpell extends IHasQi {
 
     boolean isOnCoolDown();
 
@@ -25,7 +25,7 @@ public interface IHasSpell extends IHasMana {
 
     void trigger(@NotNull Spell spell);
 
-    int getSpellLevel(ISpellType spell);
+    int getSpellLevel(SpellType spell);
 
     /**
      * 获取当前法术使用优先级。
@@ -49,19 +49,19 @@ public interface IHasSpell extends IHasMana {
     /**
      * 同优先级下更倾向于使用哪个。
      */
-    default int prefer(ISpellType spell1, ISpellType spell2){
+    default int prefer(SpellType spell1, SpellType spell2){
         return 0;
     }
 
-    default boolean canUseSpell(ISpellType spell){
-        return getMana() >= spell.getConsumeMana();
+    default boolean canUseSpell(SpellType spell){
+        return getQiAmount() >= spell.getConsumeMana();
     }
 
-    default boolean hasLearnedSpell(ISpellType spell, int level){
+    default boolean hasLearnedSpell(SpellType spell, int level){
         return getSpellLevel(spell) >= level;
     }
 
-    Set<ISpellType> getLearnedSpellTypes();
+    Set<SpellType> getLearnedSpellTypes();
 
     HTHitResult createHitResult();
 

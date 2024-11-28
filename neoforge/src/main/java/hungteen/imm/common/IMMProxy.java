@@ -1,7 +1,7 @@
 package hungteen.imm.common;
 
 import hungteen.htlib.platform.HTLibPlatformAPI;
-import hungteen.imm.api.registry.IElementReaction;
+import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.IMMClientProxy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
@@ -41,7 +41,7 @@ public class IMMProxy {
 
     }
 
-    public void addReaction(Entity entity, IElementReaction reaction){
+    public void addReaction(Entity entity, ElementReaction reaction){
 
     }
 

@@ -1,11 +1,10 @@
 package hungteen.imm;
 
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.common.CommonRegister;
-import hungteen.imm.common.IMMRegistryHandler;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.RegistryHandler;
 import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.command.IMMCommandHandler;
+import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.network.NetworkHandler;
@@ -32,11 +31,10 @@ public class IMMInitializer {
         /* Mod Bus Events */
         modBus.addListener(EventPriority.NORMAL, IMMInitializer::setUp);
         modBus.addListener(EventPriority.NORMAL, DataGenHandler::dataGen);
-        modBus.addListener(EventPriority.NORMAL, IMMRegistryHandler::register);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::addEntityAttributes);
         modBus.addListener(EventPriority.NORMAL, IMMEntities::registerPlacements);
         modBus.addListener(EventPriority.NORMAL, IMMCreativeTabs::fillCreativeTabs);
-        IMMRegistryHandler.defferRegister(modBus);
+        RegistryHandler.defferRegister(modBus);
 
         /* Forge Bus Events */
         final IEventBus forgeBus = NeoForge.EVENT_BUS;
@@ -50,13 +48,13 @@ public class IMMInitializer {
         AdvancementHandler.init();
 
         /* Custom Registry */
-        IMMRegistryHandler.initialize();
+        RegistryHandler.initialize();
     }
 
     public static void setUp(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
 ////            PotionRecipeHandler.registerPotionRecipes();
-            CommonRegister.registerCompostable();
+            RegistryHandler.registerCompostable();
             CultivationManager.init();
         });
         NetworkHandler.init();

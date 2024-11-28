@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
-import hungteen.imm.api.registry.ILearnRequirement;
-import hungteen.imm.api.registry.IRequirementType;
+import hungteen.imm.api.spell.ILearnRequirement;
+import hungteen.imm.api.spell.IRequirementType;
 import hungteen.imm.util.Util;
 
 /**

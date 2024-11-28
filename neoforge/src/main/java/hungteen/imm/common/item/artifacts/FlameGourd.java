@@ -88,7 +88,7 @@ public class FlameGourd extends ArtifactItem {
     public static void absorbFlame(LivingEntity livingEntity, SpiritualFlame flame, ItemStack stack, FlameGourd flameGourd){
         if(EntityHelper.isServer(livingEntity)){
             addFlameAmount(stack, flame.getFlameLevel(), 5);
-            flame.addMana(-5);
+            flame.addQiAmount(-5);
             LevelUtil.playSound(livingEntity.level(), SoundEvents.LAVA_POP, SoundSource.AMBIENT, livingEntity.position());
         } else {
             ParticleHelper.spawnLineMovingParticle(livingEntity.level(), SpiritualFlame.getFlameParticleType(flame.getFlameLevel()), flame.getEyePosition(), livingEntity.getEyePosition(), 2, 0.1, 0.1);

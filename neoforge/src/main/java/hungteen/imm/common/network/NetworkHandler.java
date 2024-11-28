@@ -2,11 +2,9 @@ package hungteen.imm.common.network;
 
 import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.common.network.client.ExperienceChangePacket;
-import hungteen.imm.common.network.client.FloatDataPacket;
-import hungteen.imm.common.network.client.IntegerDataPacket;
-import hungteen.imm.common.network.client.QiRootAndRealmPacket;
+import hungteen.imm.common.network.client.*;
 import hungteen.imm.common.network.server.ScreenOperationPacket;
+import hungteen.imm.common.network.server.ServerSpellPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -44,6 +42,16 @@ public class NetworkHandler {
                 IntegerDataPacket.STREAM_CODEC,
                 NeoHelper.wrapClientHandler(IntegerDataPacket::process)
         );
+        registrar.playToClient(
+                ClientSpellPacket.TYPE,
+                ClientSpellPacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(ClientSpellPacket::process)
+        );
+        registrar.playToClient(
+                EntityElementPacket.TYPE,
+                EntityElementPacket.STREAM_CODEC,
+                NeoHelper.wrapClientHandler(EntityElementPacket::process)
+        );
 
         // To Server.
         registrar.playToServer(
@@ -51,11 +59,11 @@ public class NetworkHandler {
                 ScreenOperationPacket.STREAM_CODEC,
                 NeoHelper.wrapServerHandler(ScreenOperationPacket::process)
         );
-//        registrar.playToClient(
-//                SpellPacket.TYPE,
-//                SpellPacket.STREAM_CODEC,
-//                NeoHelper.wrapClientHandler(SpellPacket::process)
-//        );
+        registrar.playToServer(
+                ServerSpellPacket.TYPE,
+                ServerSpellPacket.STREAM_CODEC,
+                NeoHelper.wrapServerHandler(ServerSpellPacket::process)
+        );
 //        registrar.playToServer(
 //                EmptyClickPacket.TYPE,
 //                EmptyClickPacket.STREAM_CODEC,

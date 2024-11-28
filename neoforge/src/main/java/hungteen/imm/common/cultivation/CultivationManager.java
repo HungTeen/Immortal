@@ -9,7 +9,6 @@ import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
-import hungteen.imm.common.KarmaManager;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.realm.RealmNode;

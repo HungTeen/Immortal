@@ -5,14 +5,14 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.IMMConfigs;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.client.ClientData;
-import hungteen.imm.client.event.ClientEventHandler;
-import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.IMMKeyBinds;
-import hungteen.imm.common.network.SpellPacket;
-import hungteen.imm.common.spell.SpellManager;
+import hungteen.imm.client.event.ClientEvents;
+import hungteen.imm.client.util.ClientUtil;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.network.server.ServerSpellPacket;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpellHandler {
 
     /**
-     * {@link ClientEventHandler#tick(ClientTickEvent.Post)}
+     * {@link ClientEvents#tick(ClientTickEvent.Post)}
      */
     public static void tick(@NotNull Player player) {
         // 不能使用轮盘时，强制关闭。
@@ -47,10 +47,10 @@ public class SpellHandler {
         // 长按以检测法术释放。
         if (IMMClientProxy.MC.isWindowActive() && ClientUtil.screen() == null) {
             if (IMMKeyBinds.ACTIVATE_SPELL.isDown()) {
-                final ISpellType spell = PlayerUtil.getPreparingSpell(player);
+                final SpellType spell = PlayerUtil.getPreparingSpell(player);
                 if (EntityHelper.isEntityValid(player) && spell != null) {
                     if (! PlayerUtil.isSpellOnCoolDown(player, spell)) {
-                        NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.ACTIVATE));
+                        NetworkHelper.sendToServer(new ServerSpellPacket(ServerSpellPacket.SpellOption.ACTIVATE));
                     } else {
                         // 冷却提醒。
                         if(! ClientData.sendOnCoolDown){
@@ -70,7 +70,8 @@ public class SpellHandler {
      * {@link hungteen.imm.mixin.MixinMouseHandler}
      */
     public static void chooseByVector(double x, double y) {
-        final double scale = 0.65D; // 灵敏度。
+        // 灵敏度。
+        final double scale = 0.65D;
         ClientData.SpellMousePositionX += x * scale;
         ClientData.SpellMousePositionY -= y * scale;
         if (ClientData.SpellMousePositionX != 0 && ClientData.SpellMousePositionY != 0) {
@@ -100,7 +101,7 @@ public class SpellHandler {
         // Check whether there need sync config file or not.
         final int mode = PlayerUtil.getSpellCircleMode(ClientUtil.player());
         if (mode == 0) {
-            NetworkHelper.sendToServer(new SpellPacket(SpellPacket.SpellOption.SYNC_CIRCLE_OP));
+            NetworkHelper.sendToServer(new ServerSpellPacket(ServerSpellPacket.SpellOption.SYNC_CIRCLE_OP));
             return IMMConfigs.defaultSpellCircle();
         }
         return mode == 1;

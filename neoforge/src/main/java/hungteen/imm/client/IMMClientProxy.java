@@ -3,7 +3,7 @@ package hungteen.imm.client;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
-import hungteen.imm.api.registry.IElementReaction;
+import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
@@ -35,7 +35,7 @@ public class IMMClientProxy extends IMMProxy {
     }
 
     @Override
-    public void addReaction(Entity entity, IElementReaction reaction) {
+    public void addReaction(Entity entity, ElementReaction reaction) {
         ReactionRenderer.addReaction(entity, reaction);
     }
 

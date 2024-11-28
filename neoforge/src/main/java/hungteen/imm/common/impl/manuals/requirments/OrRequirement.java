@@ -2,8 +2,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.registry.ILearnRequirement;
-import hungteen.imm.api.registry.IRequirementType;
+import hungteen.imm.api.spell.ILearnRequirement;
+import hungteen.imm.api.spell.IRequirementType;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

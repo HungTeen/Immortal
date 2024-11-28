@@ -7,10 +7,10 @@ import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.enums.SpellUsageCategories;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.records.Spell;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -36,14 +36,14 @@ import java.util.*;
  * @program Immortal
  * @create 2022-10-21 18:37
  **/
-public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, IHasRoot, ICultivatable, IHasMana, IHasSpell {
+public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, IHasRoot, ICultivatable, IHasQi, IHasSpell {
 
     protected static final int MELEE_ATTACK_ID = 4;
     private static final EntityDataAccessor<RealmType> REALM = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.REALM.get());
-    private static final EntityDataAccessor<Optional<ISpellType>> USING_SPELL = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.OPT_SPELL.get());
+    private static final EntityDataAccessor<Optional<SpellType>> USING_SPELL = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.OPT_SPELL.get());
     protected static final EntityDataAccessor<Integer> CURRENT_ANIMATION = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Long> ANIMATION_START_TICK = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.LONG);
-    private final Map<ISpellType, Integer> learnedSpells = new HashMap<>();
+    private final Map<SpellType, Integer> learnedSpells = new HashMap<>();
     private final Set<QiRootType> spiritualRoots = new HashSet<>();
     protected float spiritualMana;
     private int spellCooldown;
@@ -120,7 +120,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public boolean canUseSpell(ISpellType spell) {
+    public boolean canUseSpell(SpellType spell) {
         if (spell.getCategory() == SpellUsageCategories.PLAYER_ONLY) {
             return false;
         }
@@ -133,7 +133,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     @Override
     public void trigger(@NotNull Spell spell) {
         this.setUsingSpell(spell.spell());
-        this.addMana(-spell.spell().getConsumeMana());
+        this.addQiAmount(-spell.spell().getConsumeMana());
         this.setCoolDown(spell.spell().getCooldown());
         this.usedSpell(spell);
     }
@@ -297,11 +297,11 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         this.setCurrentAnimation(AnimationTypes.IDLING);
     }
 
-    public void setUsingSpell(@javax.annotation.Nullable ISpellType spell) {
+    public void setUsingSpell(@javax.annotation.Nullable SpellType spell) {
         entityData.set(USING_SPELL, Optional.ofNullable(spell));
     }
 
-    public Optional<ISpellType> getUsingSpell() {
+    public Optional<SpellType> getUsingSpell() {
         return entityData.get(USING_SPELL);
     }
 
@@ -318,22 +318,22 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public float getMana() {
+    public float getQiAmount() {
         return this.spiritualMana;
     }
 
     @Override
-    public void addMana(float amount) {
-        this.spiritualMana = Mth.clamp(this.spiritualMana + amount, 0, this.getMaxMana());
+    public void addQiAmount(float amount) {
+        this.spiritualMana = Mth.clamp(this.spiritualMana + amount, 0, this.getMaxQiAmount());
     }
 
     @Override
-    public boolean isManaFull() {
-        return this.getMana() >= this.getMaxMana();
+    public boolean isQiFull() {
+        return this.getQiAmount() >= this.getMaxQiAmount();
     }
 
     @Override
-    public float getMaxMana() {
+    public float getMaxQiAmount() {
         return (float) EntityUtil.getMaxQi(this);
     }
 
@@ -348,12 +348,12 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public int getSpellLevel(ISpellType spell) {
+    public int getSpellLevel(SpellType spell) {
         return learnedSpells.getOrDefault(spell, 0);
     }
 
     @Override
-    public Set<ISpellType> getLearnedSpellTypes() {
+    public Set<SpellType> getLearnedSpellTypes() {
         return learnedSpells.keySet();
     }
 

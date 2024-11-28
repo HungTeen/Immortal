@@ -37,7 +37,7 @@ public class RestingScreen extends MeditationScreen {
     private MeditationButton quitButton;
 
     public RestingScreen() {
-        super(MeditationTypes.RESTING);
+        super(MeditationType.RESTING);
     }
 
     @Override

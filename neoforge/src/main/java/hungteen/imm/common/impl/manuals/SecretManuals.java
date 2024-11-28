@@ -4,17 +4,17 @@ import hungteen.htlib.api.registry.HTCodecRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.registry.ILearnRequirement;
-import hungteen.imm.api.registry.IManualContent;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.ILearnRequirement;
+import hungteen.imm.api.spell.IManualContent;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
 import hungteen.imm.common.impl.manuals.requirments.CultivationTypeRequirement;
 import hungteen.imm.common.impl.manuals.requirments.ElementRequirement;
 import hungteen.imm.common.impl.manuals.requirments.RealmRequirement;
 import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
-import hungteen.imm.common.cultivation.CultivationTypes;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.spell.spells.basic.ElementalMasterySpell;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -164,7 +164,7 @@ public interface SecretManuals {
 
         /* 元素精通 */
         for (Element element : Element.values()) {
-            final ISpellType spell = ElementalMasterySpell.getSpell(element);
+            final SpellType spell = ElementalMasterySpell.getSpell(element);
             register(context, spell, 1, builder -> {
                 builder.require(spiritual_level_2)
 //                        .require(new EMPRequirement(1))
@@ -183,7 +183,7 @@ public interface SecretManuals {
         }
     }
 
-    static void register(BootstrapContext<SecretManual> context, ISpellType spell, int level, Consumer<Builder> consumer){
+    static void register(BootstrapContext<SecretManual> context, SpellType spell, int level, Consumer<Builder> consumer){
         if(level > 0 && level <= spell.getMaxLevel()){
             final Builder builder = builder(spell, level);
             if(level > 1){
@@ -200,11 +200,11 @@ public interface SecretManuals {
         return TUTORIALS;
     }
 
-    static Builder builder(ISpellType spell){
+    static Builder builder(SpellType spell){
         return builder(spell, 1);
     }
 
-    static Builder builder(ISpellType spell, int level){
+    static Builder builder(SpellType spell, int level){
         return builder(new LearnSpellManual(spell, level));
     }
 
@@ -212,11 +212,11 @@ public interface SecretManuals {
         return new Builder(content);
     }
 
-    static ResourceKey<SecretManual> spellManual(ISpellType spell) {
+    static ResourceKey<SecretManual> spellManual(SpellType spell) {
         return spellManual(spell, 1);
     }
 
-    static ResourceKey<SecretManual> spellManual(ISpellType spell, int level) {
+    static ResourceKey<SecretManual> spellManual(SpellType spell, int level) {
         return registry().createKey(StringHelper.suffix(spell.getLocation(), String.valueOf(level)));
     }
 

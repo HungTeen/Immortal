@@ -3,7 +3,7 @@ package hungteen.imm.common.entity.creature.spirit;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;

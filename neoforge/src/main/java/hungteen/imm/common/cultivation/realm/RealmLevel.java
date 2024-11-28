@@ -1,7 +1,9 @@
 package hungteen.imm.common.cultivation.realm;
 
 import hungteen.imm.api.cultivation.RealmStage;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.network.chat.MutableComponent;
 
 /**
  * @author PangTeen
@@ -27,6 +29,11 @@ public enum RealmLevel implements RealmStage {
     @Override
     public boolean canLevelUp() {
         return false;
+    }
+
+    @Override
+    public MutableComponent getComponent() {
+        return TipUtil.misc("realm_stage." + name().toLowerCase());
     }
 
     @Override

@@ -2,8 +2,8 @@ package hungteen.imm.common.advancement.trigger;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -27,7 +27,7 @@ public class PlayerLearnSpellTrigger extends SimpleCriterionTrigger<PlayerLearnS
         return ID;
     }
 
-    public void trigger(ServerPlayer player, ISpellType spell, int level) {
+    public void trigger(ServerPlayer player, SpellType spell, int level) {
         this.trigger(player, (instance) -> instance.matches(player, spell, level));
     }
 
@@ -36,7 +36,7 @@ public class PlayerLearnSpellTrigger extends SimpleCriterionTrigger<PlayerLearnS
         return TriggerInstance.CODEC;
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, ISpellType spell, int level) implements SimpleCriterionTrigger.SimpleInstance {
+    public record TriggerInstance(Optional<ContextAwarePredicate> playerPredicate, SpellType spell, int level) implements SimpleCriterionTrigger.SimpleInstance {
 
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::playerPredicate),
@@ -44,15 +44,15 @@ public class PlayerLearnSpellTrigger extends SimpleCriterionTrigger<PlayerLearnS
                 Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("level", 0).forGetter(TriggerInstance::level)
         ).apply(instance, TriggerInstance::new));
 
-        public static PlayerLearnSpellTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, ISpellType spell, int level) {
+        public static PlayerLearnSpellTrigger.TriggerInstance test(Optional<ContextAwarePredicate> playerPredicate, SpellType spell, int level) {
             return new PlayerLearnSpellTrigger.TriggerInstance(playerPredicate, spell, level);
         }
 
-        public static PlayerLearnSpellTrigger.TriggerInstance test(ISpellType spell, int level) {
+        public static PlayerLearnSpellTrigger.TriggerInstance test(SpellType spell, int level) {
             return test(Optional.empty(), spell, level);
         }
 
-        public boolean matches(ServerPlayer player, ISpellType spell, int level) {
+        public boolean matches(ServerPlayer player, SpellType spell, int level) {
             return this.spell().equals(spell) && level == this.level;
         }
 

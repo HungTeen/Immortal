@@ -5,7 +5,7 @@ import hungteen.htlib.client.gui.screen.HTScreen;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
-import hungteen.imm.client.event.ClientEventHandler;
+import hungteen.imm.client.event.ClientEvents;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.block.artifacts.WoolCushionBlock;
@@ -38,9 +38,9 @@ public abstract class MeditationScreen extends HTScreen {
     private static final int SWITCH_BAR_Y_OFFSET = 5;
     private static final int QUIT_BUTTON_WIDTH = 200;
     private static final int QUIT_TEXT_HEIGHT = 20;
-    private MeditationTypes type;
+    private final MeditationType type;
 
-    public MeditationScreen(MeditationTypes type) {
+    public MeditationScreen(MeditationType type) {
         this.type = type;
     }
 
@@ -55,7 +55,7 @@ public abstract class MeditationScreen extends HTScreen {
 
     /**
      * 当玩家在打坐时，打开对应的打坐界面。当玩家不在打坐时，关闭打坐界面。
-     * {@link ClientEventHandler#tick(ClientTickEvent.Post)}
+     * {@link ClientEvents#tick(ClientTickEvent.Post)}
      */
     public static void tickMeditation(LocalPlayer player){
         if (ClientUtil.screen() == null) {
@@ -88,7 +88,7 @@ public abstract class MeditationScreen extends HTScreen {
         int x = left + 14;
         final int y = SWITCH_BAR_Y_OFFSET + 19;
         // Render Switch Slots.
-        for (MeditationTypes type : MeditationTypes.values()) {
+        for (MeditationType type : MeditationType.values()) {
             graphics.renderItem(type.getItem(), x, y);
             if(this.type == type){
                 graphics.blit(TEXTURE, x - 3, y - 3, 110, 150, 22, 22);
@@ -143,10 +143,10 @@ public abstract class MeditationScreen extends HTScreen {
     protected void switchScreen(int val){
         final int id = this.type.ordinal();
         final int nextId = (id + val + getLen()) % getLen();
-        switchScreen(MeditationTypes.values()[nextId]);
+        switchScreen(MeditationType.values()[nextId]);
     }
 
-    protected void switchScreen(MeditationTypes type){
+    protected void switchScreen(MeditationType type){
         switch (type){
             case CULTIVATION -> getMinecraft().setScreen(new CultivationScreen());
             case RESTING -> getMinecraft().setScreen(new RestingScreen());
@@ -155,10 +155,10 @@ public abstract class MeditationScreen extends HTScreen {
     }
 
     protected int getLen(){
-        return MeditationTypes.values().length;
+        return MeditationType.values().length;
     }
 
-    public enum MeditationTypes {
+    public enum MeditationType {
 
         CULTIVATION(() -> new ItemStack(IMMItems.FIVE_FLOWERS_ELIXIR.get())),
 
@@ -170,7 +170,7 @@ public abstract class MeditationScreen extends HTScreen {
 
         private final Supplier<ItemStack> supplier;
 
-        MeditationTypes(Supplier<ItemStack> supplier) {
+        MeditationType(Supplier<ItemStack> supplier) {
             this.supplier = supplier;
         }
 

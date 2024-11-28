@@ -4,13 +4,14 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
+import hungteen.imm.common.capability.player.SpellData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -127,7 +128,7 @@ public class PlayerUtil {
      * 学习了业元素精通=知道了业元素的存在。
      */
     public static boolean knowSpiritElement(Player player) {
-        return getData(player, l -> l.hasLearnedSpell(SpellTypes.SPIRIT_MASTERY, 1));
+        return getData(player, l -> l.getSpellData().hasLearnedSpell(SpellTypes.SPIRIT_MASTERY, 1));
     }
 
     public static List<QiRootType> filterSpiritRoots(Player player, List<QiRootType> roots) {
@@ -150,71 +151,77 @@ public class PlayerUtil {
 
     /* Operations About Spells */
 
-    public static void learnSpell(Player player, ISpellType spell, int level) {
-        setData(player, l -> l.learnSpell(spell, level));
+    public static void learnSpell(Player player, SpellType spell, int level) {
+        setData(player, data -> data.getSpellData().learnSpell(spell, level));
     }
 
-    public static void forgetSpell(Player player, ISpellType spell) {
-        setData(player, l -> l.forgetSpell(spell));
+    public static void forgetSpell(Player player, SpellType spell) {
+        setData(player, data -> data.getSpellData().forgetSpell(spell));
     }
 
-    public static void learnAllSpell(Player player, int level) {
-        setData(player, data -> SpellTypes.registry().getValues().forEach(spell -> data.learnSpell(spell, level)));
-    }
-
-    public static void forgetAllSpell(Player player) {
-        setData(player, IMMPlayerData::forgetAllSpells);
-    }
-
-    public static void setSpellAt(Player player, int pos, @Nullable ISpellType spell) {
+    /**
+     * @param pos 法术轮盘的位置。
+     * @param spell 安装的法术。
+     */
+    public static void setSpellAt(Player player, int pos, @Nullable SpellType spell) {
         setData(player, data -> {
+            SpellData spellData = data.getSpellData();
             if (spell == null) {
-                data.removeSpellAt(pos);
+                spellData.removeSpellAt(pos);
             } else {
                 // 没有学会则先学。
-                if (!data.hasLearnedSpell(spell, 1)) {
-                    data.learnSpell(spell, 1);
+                if (!spellData.hasLearnedSpell(spell, 1)) {
+                    spellData.learnSpell(spell, 1);
                 }
-                data.setSpellAt(pos, spell);
+                spellData.setSpellAt(pos, spell);
             }
         });
     }
 
     public static void removeSpellAt(Player player, int pos) {
-        getData(player).removeSpellAt(pos);
+        setData(player, data -> data.getSpellData().removeSpellAt(pos));
     }
 
-    public static void cooldownSpell(Player player, ISpellType spell, long num) {
-        getData(player).cooldownSpell(spell, num);
+    public static void cooldownSpell(Player player, SpellType spell, long num) {
+        setData(player, data -> data.getSpellData().cooldownSpell(spell, num));
     }
 
     @Nullable
-    public static ISpellType getSpellAt(Player player, int pos) {
-        return getData(player, m -> m.getSpellAt(pos));
+    public static SpellType getSpellAt(Player player, int pos) {
+        return getData(player, data -> data.getSpellData().getSpellAt(pos));
     }
 
-    public static boolean isSpellOnCircle(Player player, ISpellType spell) {
-        return getData(player, m -> m.isSpellOnCircle(spell));
+    public static boolean isSpellOnCircle(Player player, SpellType spell) {
+        return getData(player, data -> data.getSpellData().isSpellOnCircle(spell));
     }
 
-    public static boolean isSpellOnCoolDown(Player player, ISpellType spell) {
-        return getData(player, m -> m.isSpellOnCoolDown(spell));
+    public static boolean isSpellOnCoolDown(Player player, SpellType spell) {
+        return getData(player, data -> data.getSpellData().isSpellOnCoolDown(spell));
     }
 
-    public static float getSpellCDValue(Player player, ISpellType spell) {
-        return getData(player, m -> m.getSpellCoolDown(spell));
+    public static float getSpellCooldownValue(Player player, SpellType spell) {
+        return getData(player, data -> data.getSpellData().getSpellCoolDown(spell));
     }
 
-    public static boolean hasLearnedSpell(Player player, ISpellType spell) {
+    public static boolean hasLearnedSpell(Player player, SpellType spell) {
         return hasLearnedSpell(player, spell, 1);
     }
 
-    public static boolean hasLearnedSpell(Player player, ISpellType spell, int level) {
-        return getData(player, m -> m.hasLearnedSpell(spell, level));
+    public static boolean hasLearnedSpell(Player player, SpellType spell, int level) {
+        return getData(player, data -> data.getSpellData().hasLearnedSpell(spell, level));
     }
 
-    public static int getSpellLevel(Player player, ISpellType spell) {
-        return getData(player, m -> m.getSpellLevel(spell));
+    public static int getSpellLevel(Player player, SpellType spell) {
+        return getData(player, data -> data.getSpellData().getSpellLevel(spell));
+    }
+
+    @Nullable
+    public static SpellType getPreparingSpell(Player player) {
+        return getData(player, data -> data.getSpellData().getPreparingSpell());
+    }
+
+    public static void setPreparingSpell(Player player, @Nullable SpellType type) {
+        setData(player, data -> data.getSpellData().setPreparingSpell(type));
     }
 
     /* Sect Related Methods */
@@ -365,15 +372,6 @@ public class PlayerUtil {
 
     public static CultivationType getCultivationType(Player player) {
         return getPlayerRealm(player).getCultivationType();
-    }
-
-    @Nullable
-    public static ISpellType getPreparingSpell(Player player) {
-        return getData(player, IMMPlayerData::getPreparingSpell);
-    }
-
-    public static void setPreparingSpell(Player player, @Nullable ISpellType type) {
-        getData(player).setPreparingSpell(type);
     }
 
 }

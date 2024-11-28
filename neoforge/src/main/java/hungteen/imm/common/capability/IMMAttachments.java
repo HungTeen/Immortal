@@ -4,6 +4,7 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
+import hungteen.imm.common.capability.entity.IMMEntityData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.capability.player.PlayerDataProvider;
 import hungteen.imm.util.Util;
@@ -26,6 +27,11 @@ public interface IMMAttachments {
         return AttachmentType.serializable(PlayerDataProvider::create)
                 .copyOnDeath()
                 .copyHandler(new PlayerDataProvider())
+                .build();
+    });
+
+    HTHolder<AttachmentType<IMMEntityData>> ENTITY_DATA = register("entity_data", () -> {
+        return AttachmentType.serializable(IMMEntityData::create)
                 .build();
     });
 

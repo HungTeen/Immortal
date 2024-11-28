@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;

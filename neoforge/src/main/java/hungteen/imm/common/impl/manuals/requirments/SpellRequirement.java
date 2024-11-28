@@ -4,11 +4,11 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.registry.ILearnRequirement;
-import hungteen.imm.api.registry.IRequirementType;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.api.spell.ILearnRequirement;
+import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,7 +22,7 @@ import java.util.List;
  * @program Immortal
  * @create 2023/7/17 16:28
  */
-public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implements ILearnRequirement {
+public record SpellRequirement(List<Pair<SpellType, Integer>> spells) implements ILearnRequirement {
 
     public static final MapCodec<SpellRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.mapPair(
@@ -31,11 +31,11 @@ public record SpellRequirement(List<Pair<ISpellType, Integer>> spells) implement
             ).codec().listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
     ).apply(instance, SpellRequirement::new));
 
-    public static SpellRequirement single(ISpellType spell, int level) {
+    public static SpellRequirement single(SpellType spell, int level) {
         return new SpellRequirement(List.of(Pair.of(spell, level)));
     }
 
-    public static SpellRequirement pair(ISpellType spell1, int level1, ISpellType spell2, int level2) {
+    public static SpellRequirement pair(SpellType spell1, int level1, SpellType spell2, int level2) {
         return new SpellRequirement(List.of(Pair.of(spell1, level1), Pair.of(spell2, level2)));
     }
 

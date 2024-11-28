@@ -20,7 +20,7 @@ public interface IMMBiomeModifiers {
 
     static void register(BootstrapContext<BiomeModifier> context){
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
-//        context.register(SPAWN_CULTIVATOR, new BiomeModifiers.AddSpawnsBiomeModifier(
+//        context.postRegister(SPAWN_CULTIVATOR, new BiomeModifiers.AddSpawnsBiomeModifier(
 //                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
 //                List.of(
 //                        new MobSpawnSettings.SpawnerData(IMMEntities.EMPTY_CULTIVATOR.get(), 1, 1, 1)

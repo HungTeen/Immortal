@@ -12,7 +12,7 @@ import hungteen.imm.common.entity.ai.goal.LookAtTargetGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.ParticleUtil;

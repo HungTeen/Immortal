@@ -6,16 +6,14 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.IHasMana;
+import hungteen.imm.api.cultivation.IHasQi;
 import hungteen.imm.api.cultivation.IHasRoot;
-import hungteen.imm.api.interfaces.IHasSpell;
-import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.ElementManager;
-import hungteen.imm.common.capability.entity.IMMEntityCapability;
+import hungteen.imm.api.interfaces.IHasSpell;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.capability.IMMAttachments;
+import hungteen.imm.common.capability.entity.IMMEntityData;
 import hungteen.imm.common.entity.IMMAttributes;
-import hungteen.imm.common.entity.misc.FlyingItemEntity;
-import hungteen.imm.common.impl.registry.ElementReactions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -47,6 +45,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -187,7 +186,8 @@ public class EntityUtil {
     }
 
     public static HitResult getHitResult(Entity entity, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
-        final double range = 20; //TODO 神识决定距离。
+        final double range = 20;
+        //TODO 神识决定距离。
         return getHitResult(entity, blockMode, fluidMode, range);
     }
 
@@ -214,33 +214,27 @@ public class EntityUtil {
         return !living.getMainHandItem().isEmpty() || !living.getOffhandItem().isEmpty();
     }
 
-    public static boolean canManaIncrease(Entity entity) {
-        return !(entity.getVehicle() instanceof FlyingItemEntity)
-                && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0
-                && !ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
-    }
-
-    public static int getSpellLevel(Entity entity, ISpellType spell) {
+    public static int getSpellLevel(Entity entity, SpellType spell) {
         return entity instanceof Player player ? PlayerUtil.getSpellLevel(player, spell) : entity instanceof IHasSpell e ? e.getSpellLevel(spell) : 0;
     }
 
-    public static boolean hasLearnedSpell(Entity entity, ISpellType spell, int level) {
+    public static boolean hasLearnedSpell(Entity entity, SpellType spell, int level) {
         return entity instanceof Player player ? PlayerUtil.hasLearnedSpell(player, spell, level) : entity instanceof IHasSpell e && e.hasLearnedSpell(spell, level);
     }
 
-    public static boolean hasLearnedSpell(Entity entity, ISpellType spell) {
+    public static boolean hasLearnedSpell(Entity entity, SpellType spell) {
         return hasLearnedSpell(entity, spell, 1);
     }
 
     public static float getMana(Entity entity) {
-        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof IHasMana manaEntity ? manaEntity.getMana() : 0;
+        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof IHasQi manaEntity ? manaEntity.getQiAmount() : 0;
     }
 
     public static void addMana(Entity entity, float amount) {
         if (entity instanceof Player player) {
             PlayerUtil.addQiAmount(player, amount);
-        } else if (entity instanceof IHasMana manaEntity) {
-            manaEntity.addMana(amount);
+        } else if (entity instanceof IHasQi manaEntity) {
+            manaEntity.addQiAmount(amount);
         }
     }
 
@@ -251,8 +245,8 @@ public class EntityUtil {
     public static boolean isManaFull(Entity entity) {
         if (entity instanceof Player player) {
             return PlayerUtil.isQiFull(player);
-        } else if (entity instanceof IHasMana manaEntity) {
-            return manaEntity.isManaFull();
+        } else if (entity instanceof IHasQi manaEntity) {
+            return manaEntity.isQiFull();
         }
         return true;
     }
@@ -261,20 +255,23 @@ public class EntityUtil {
         return predicate.test(living.getMainHandItem()) ? living.getMainHandItem() : predicate.test(living.getOffhandItem()) ? living.getOffhandItem() : ItemStack.EMPTY;
     }
 
-    @Nullable
-    public static IMMEntityCapability getEntityCapability(Entity entity) {
-//        if (entity != null) {
-//            return entity.getCapability(CapabilityHandler.ENTITY_CAP).resolve().orElse(null);
-//        }
-        return null;
+    /* Data Operations */
+
+    public static IMMEntityData getData(Entity entity) {
+        return entity.getData(IMMAttachments.ENTITY_DATA);
     }
 
-    public static Optional<IMMEntityCapability> getOptCapability(Entity entity) {
-        return Optional.ofNullable(getEntityCapability(entity));
+    @Deprecated(since = "0.2.0", forRemoval = true)
+    public static Optional<IMMEntityData> getDataOpt(Entity entity) {
+        return Optional.of(getData(entity));
     }
 
-    public static <U> U getCapabilityResult(Entity entity, Function<IMMEntityCapability, U> function, U defaultValue) {
-        return getOptCapability(entity).map(function).orElse(defaultValue);
+    public static <U> U getData(Entity entity, Function<IMMEntityData, U> function) {
+        return function.apply(getData(entity));
+    }
+
+    public static void setData(Entity entity, Consumer<IMMEntityData> consumer) {
+        consumer.accept(getData(entity));
     }
 
     public static boolean notConsume(Entity entity) {

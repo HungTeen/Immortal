@@ -4,6 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
+import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.client.gui.overlay.ElementOverlay;
+import hungteen.imm.client.gui.overlay.MeditationOverlay;
+import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.*;
@@ -34,6 +38,7 @@ import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
+import hungteen.imm.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -158,36 +163,17 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
-    public static void registerFactories(RegisterParticleProvidersEvent event) {
-//        event.registerSpriteSet(IMMParticles.SPIRITUAL_MANA.get(), SpiritualManaParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
-//        event.registerSpriteSet(IMMParticles.METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
-    }
-
-//    @SubscribeEvent
-//    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event){
-//        event.registerAboveAll("spiritual_mana_bar", CommonOverlay.SPIRITUAL_MANA);
-//        event.registerAboveAll("spell_circle", SpellOverlay.SPELL_CIRCLE);
-//        event.registerAboveAll("prepared_spell", SpellOverlay.PREPARE_SPELL);
-//        event.registerAboveAll("elements", ElementOverlay.INSTANCE);
-//        event.registerAboveAll("meditation", MeditationOverlay.INSTANCE);
-////        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
-////            if(RenderEventHandler.canRenderOverlay()){
-////                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
-////            }
-////        });
-//    }
-
-    @SubscribeEvent
-    public static void registerKeyBinds(RegisterKeyMappingsEvent event){
-//        IMMKeyBinds.initialize(event);
+    public static void registerGuiOverlays(RegisterGuiLayersEvent event){
+        event.registerAboveAll(Util.prefix("qi_bar"), CommonOverlay::renderQiBar);
+        event.registerAboveAll(Util.prefix("spell_circle"), SpellOverlay::renderSpellCircle);
+        event.registerAboveAll(Util.prefix("prepared_spell"), SpellOverlay::renderPreparedSpell);
+        event.registerAboveAll(Util.prefix("elements"), ElementOverlay::renderElementOverBar);
+        event.registerAboveAll(Util.prefix("meditation"), MeditationOverlay::renderMeditation);
+//        event.registerAboveAll("smithing_progress_bar", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+//            if(RenderEventHandler.canRenderOverlay()){
+//                RenderEventHandler.renderSmithingBar(graphics, screenHeight, screenWidth);
+//            }
+//        });
     }
 
 //    @SubscribeEvent

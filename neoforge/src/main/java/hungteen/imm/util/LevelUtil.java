@@ -26,9 +26,13 @@ public class LevelUtil {
     }
 
     public static float getSpiritualRate(Level level, BlockPos pos) {
-        return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
+        return 1F;
+//        return LevelUtil.getChunkCapOpt(level, pos).map(ChunkCapability::getSpiritualRate).orElse(0F);
     }
 
+    /**
+     * TODO Chunk save different spiritual rate.
+     */
     public static Optional<ChunkCapability> getChunkCapOpt(Level level, BlockPos pos) {
         return Optional.ofNullable(getChunkCapability(level, pos));
     }

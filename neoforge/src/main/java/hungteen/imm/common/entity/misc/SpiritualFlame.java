@@ -6,10 +6,10 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.ICultivatable;
-import hungteen.imm.api.cultivation.IHasMana;
+import hungteen.imm.api.cultivation.IHasQi;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
@@ -42,7 +42,7 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
  * @author HungTeen
  * @create 2022-10-07 21:40
  **/
-public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, ICultivatable, IHasMana {
+public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, ICultivatable, IHasQi {
 
     public static final float MAX_AMOUNT = Constants.MAX_SPIRITUAL_FLAME_AMOUNT;
     private static final int RECOVER_CD = 50;
@@ -107,7 +107,7 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
                 this.discard();
             } else {
                 if(this.tickCount % RECOVER_CD == 10){
-                    this.addMana(this.getFlameAmount() * RECOVER_RATE);
+                    this.addQiAmount(this.getFlameAmount() * RECOVER_RATE);
                     if(this.random.nextFloat() < 0.1F){
                         this.playSound(SoundEvents.LAVA_POP);
                     }
@@ -137,14 +137,14 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
             target.hurt(IMMDamageSources.spiritualFlame(this), percent * 8);
         }
         LevelUtil.playSound(level(), SoundEvents.FIRE_EXTINGUISH, SoundSource.AMBIENT, target.position());
-        this.addMana(-50 * percent);
+        this.addQiAmount(-50 * percent);
     }
 
     public void flameTarget(BlockState state, BlockPos pos){
         if(! state.isAir()){
             if(state.getFluidState().is(FluidTags.WATER)){
                 level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                this.addMana(- 100F / this.flameLevel);
+                this.addQiAmount(- 100F / this.flameLevel);
                 LevelUtil.playSound(level(), SoundEvents.LAVA_EXTINGUISH, SoundSource.AMBIENT, MathHelper.toVec3(pos));
             }
         }
@@ -245,17 +245,17 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
     }
 
     @Override
-    public float getMana() {
+    public float getQiAmount() {
         return this.getFlameAmount();
     }
 
     @Override
-    public void addMana(float amount) {
+    public void addQiAmount(float amount) {
         this.setFlameAmount(this.getFlameAmount() + amount);
     }
 
     @Override
-    public float getMaxMana() {
+    public float getMaxQiAmount() {
         return MAX_AMOUNT;
     }
 

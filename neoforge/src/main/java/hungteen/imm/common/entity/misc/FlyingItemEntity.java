@@ -4,7 +4,7 @@ import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.common.spell.spells.common.FlyWithItemSpell;
+import hungteen.imm.common.cultivation.spell.common.FlyWithItemSpell;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -123,7 +123,7 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
             }
         }
         if(this.flyingTick % 5 == 0){
-            ParticleHelper.spawnParticles(entity.level(), IMMParticles.SPIRITUAL_MANA.get(), position(), 1, 0, 0);
+            ParticleHelper.spawnParticles(entity.level(), IMMParticles.QI.get(), position(), 1, 0, 0);
         }
         final double speed = 1;
         final Vec3 lookVec = entity.getLookAngle();
