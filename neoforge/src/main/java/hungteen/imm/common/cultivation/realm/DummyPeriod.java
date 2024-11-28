@@ -12,6 +12,8 @@ public enum DummyPeriod implements RealmStage {
 
     DUMMY,
 
+    COMMON,
+
     ;
 
 
@@ -22,7 +24,7 @@ public enum DummyPeriod implements RealmStage {
 
     @Override
     public boolean canLevelUp() {
-        return false;
+        return this == COMMON;
     }
 
     @Override

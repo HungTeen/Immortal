@@ -1,6 +1,6 @@
 package hungteen.imm.api.events;
 
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -12,16 +12,16 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
  **/
 public class PlayerSpellEvent extends PlayerEvent {
 
-    private final ISpellType spell;
+    private final SpellType spell;
     private final int level;
 
-    public PlayerSpellEvent(Player player, ISpellType spell, int level) {
+    public PlayerSpellEvent(Player player, SpellType spell, int level) {
         super(player);
         this.spell = spell;
         this.level = level;
     }
 
-    public ISpellType getSpell() {
+    public SpellType getSpell() {
         return spell;
     }
 
@@ -34,7 +34,7 @@ public class PlayerSpellEvent extends PlayerEvent {
      */
     public static class ActivateSpellEvent extends PlayerSpellEvent {
 
-        public ActivateSpellEvent(Player player, ISpellType spell, int level) {
+        public ActivateSpellEvent(Player player, SpellType spell, int level) {
             super(player, spell, level);
         }
 
@@ -43,7 +43,7 @@ public class PlayerSpellEvent extends PlayerEvent {
          */
         public static final class Pre extends ActivateSpellEvent implements ICancellableEvent {
 
-            public Pre(Player player, ISpellType spell, int level) {
+            public Pre(Player player, SpellType spell, int level) {
                 super(player, spell, level);
             }
 
@@ -55,7 +55,7 @@ public class PlayerSpellEvent extends PlayerEvent {
         public static final class Post extends ActivateSpellEvent {
 
 
-            public Post(Player player, ISpellType spell, int level) {
+            public Post(Player player, SpellType spell, int level) {
                 super(player, spell, level);
             }
 

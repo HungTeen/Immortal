@@ -5,17 +5,16 @@ import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.client.util.ClientUtil;
-import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
-import hungteen.imm.common.KarmaManager;
+import hungteen.imm.client.util.ClientUtil;
+import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.KarmaManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.spell.spells.conscious.SpiritEyeSpell;
+import hungteen.imm.common.cultivation.spell.conscious.SpiritEyeSpell;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -45,7 +44,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     private final ScrollComponent<CultivationEntries> scrollComponent;
 
     public CultivationScreen() {
-        super(MeditationTypes.CULTIVATION);
+        super(MeditationType.CULTIVATION);
         this.imageWidth = 214;
         this.imageHeight = 129;
         this.scrollComponent = new ScrollComponent<>(this, 100, 20, 5, 1);
@@ -88,10 +87,10 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     private void renderInfo(GuiGraphics graphics) {
         final int posX = this.leftPos + 11;
-        int posY = this.topPos + 83;
+        int posY = this.topPos + 84;
         this.renderSpiritualRoots(graphics, posX, posY);
         posY += 12;
-        RenderUtil.renderCenterScaledText(graphics.pose(), RealmTypes.getRealmInfo(PlayerUtil.getPlayerRealm(ClientUtil.player())), posX + 32, posY, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        RenderUtil.renderCenterScaledText(graphics.pose(), PlayerUtil.getPlayerRealm(ClientUtil.player()).getComponent(), posX + 32, posY, 0.6F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
     private void renderSpiritualRoots(GuiGraphics graphics, int posX, int posY) {
@@ -130,9 +129,9 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     public void renderItem(Level level, GuiGraphics graphics, CultivationEntries item, int slotId, int x, int y) {
         final Player player = ClientUtil.player();
         switch (item) {
-//            case ELIXIR_CULTIVATION -> {
-//                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceTypes.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
-//            }
+            case ELIXIR_CULTIVATION -> {
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceType.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
+            }
             case FIGHT_CULTIVATION -> {
                 this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceType.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
             }
@@ -176,12 +175,12 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float value, float maxValue, boolean karma) {
         this.renderProgress(graphics, x, y, value, maxValue, karma);
-        RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        RenderUtil.renderScaledText(graphics.pose(), title.append(": ").append(String.format("%.1f / %.1f", Math.min(maxValue, value), maxValue)), x, y + 4, 0.8F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
     private void renderProgressWithText(GuiGraphics graphics, MutableComponent title, int x, int y, float percent, boolean karma) {
         this.renderProgress(graphics, x, y, percent, karma);
-        RenderUtil.renderScaledText(graphics.pose(), title.append(" : ").append(TipUtil.PERCENT.apply(percent)), x, y + 2, 1F, Colors.WORD, ColorHelper.BLACK.rgb());
+        RenderUtil.renderScaledText(graphics.pose(), title.append(": ").append(TipUtil.PERCENT.apply(percent)), x, y + 4, 0.8F, Colors.WORD, ColorHelper.BLACK.rgb());
     }
 
     private void renderProgress(GuiGraphics graphics, int x, int y, float value, float maxValue, boolean karma) {
@@ -203,7 +202,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
     public enum CultivationEntries {
 
-//        ELIXIR_CULTIVATION,
+        ELIXIR_CULTIVATION,
 
         FIGHT_CULTIVATION(CultivationScreen::isSpiritual),
 

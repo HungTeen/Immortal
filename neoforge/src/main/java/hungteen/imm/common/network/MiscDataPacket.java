@@ -71,14 +71,8 @@ public class MiscDataPacket implements PlayToClientPacket {
 
     public enum Types{
 
-        ADD_ROOT,
-        REMOVE_ROOT,
-        CLEAR_ROOT,
-        EXPERIENCE,
         REALM,
         REALM_STAGE,
-        PREPARING_SPELL,
-        CLEAR_PREPARING_SPELL,
         ;
     }
 

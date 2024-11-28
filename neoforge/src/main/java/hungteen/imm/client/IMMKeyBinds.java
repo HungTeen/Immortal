@@ -2,7 +2,9 @@ package hungteen.imm.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 /**
@@ -10,14 +12,13 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
  * @author HungTeen
  * @create 2022-10-09 21:42
  **/
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class IMMKeyBinds {
 
     public static final KeyMapping SPELL_CIRCLE = new KeyMapping("key.imm.spell_circle", InputConstants.KEY_Z, "key.categories.imm");
     public static final KeyMapping ACTIVATE_SPELL = new KeyMapping("key.imm.activate_spell", InputConstants.KEY_X, "key.categories.imm");
 
-    /**
-     * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
-     */
+    @SubscribeEvent
     public static void register(RegisterKeyMappingsEvent event){
         event.register(SPELL_CIRCLE);
         event.register(ACTIVATE_SPELL);

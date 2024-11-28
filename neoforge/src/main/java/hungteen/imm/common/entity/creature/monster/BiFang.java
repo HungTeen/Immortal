@@ -5,19 +5,19 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.records.Spell;
-import hungteen.imm.api.registry.ISpellType;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.spell.basic.IntimidationSpell;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.misc.IMMSounds;
-import hungteen.imm.common.spell.SpellTypes;
-import hungteen.imm.common.spell.spells.basic.IntimidationSpell;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
 import hungteen.imm.util.Util;
@@ -175,7 +175,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
             case 1 -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_2);
             default -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_3);
         }
-        this.addMana(this.getMaxMana());
+        this.addQiAmount(this.getMaxQiAmount());
     }
 
     @Override
@@ -250,7 +250,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
                     }
                 }
             }
-            if (this.getMana() / this.getMaxMana() >= 0.5F) {
+            if (this.getQiAmount() / this.getMaxQiAmount() >= 0.5F) {
                 ParticleUtil.spawnEntityParticle(this, ParticleTypes.FLAME, 5, 0.15F);
             }
         }
@@ -267,7 +267,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    public boolean canUseSpell(ISpellType spell) {
+    public boolean canUseSpell(SpellType spell) {
         if(spell == SpellTypes.INTIMIDATION){
             return IntimidationSpell.canUseOn(this, this.getTarget());
         } else if(spell == SpellTypes.WOOD_HEALING){
@@ -294,7 +294,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.serverChange(MELEE_ATTACK_ID);
-        this.addMana(this.getRandom().nextFloat() * 5);
+        this.addQiAmount(this.getRandom().nextFloat() * 5);
         return super.doHurtTarget(entity);
     }
 

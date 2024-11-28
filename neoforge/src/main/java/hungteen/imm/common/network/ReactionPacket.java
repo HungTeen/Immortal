@@ -2,7 +2,7 @@ package hungteen.imm.common.network;
 
 import hungteen.htlib.common.network.ClientPacketContext;
 import hungteen.htlib.common.network.packet.PlayToClientPacket;
-import hungteen.imm.api.registry.IElementReaction;
+import hungteen.imm.api.spell.ElementReaction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
@@ -16,7 +16,7 @@ public class ReactionPacket implements PlayToClientPacket {
     private final int entityId;
     private final String type;
 
-    public ReactionPacket(int entityId, IElementReaction reaction) {
+    public ReactionPacket(int entityId, ElementReaction reaction) {
         this.entityId = entityId;
         this.type = reaction.getRegistryName();
     }

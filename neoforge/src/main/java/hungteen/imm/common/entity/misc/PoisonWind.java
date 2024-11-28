@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

@@ -3,7 +3,7 @@ package hungteen.imm.util;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +38,7 @@ public class TipUtil {
         return Component.translatable("command." + Util.id() + "." + name, objects);
     }
 
-    public static MutableComponent spell(ISpellType spell, int level, Object... objects){
+    public static MutableComponent spell(SpellType spell, int level, Object... objects){
         return Component.translatable("spell." + spell.getModID() + "." + spell.getName() + "_" + level, objects);
     }
 

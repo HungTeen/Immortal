@@ -3,14 +3,14 @@ package hungteen.imm.common.entity.creature.spirit;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.reaction.SummonSpiritReaction;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMMob;
-import hungteen.imm.common.impl.registry.ElementReactions;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -70,7 +70,7 @@ public abstract class ElementSpirit extends IMMMob {
 
     public void updateRealm(){
         final float amount = ElementManager.getElementAmount(this, Element.SPIRIT, false);
-        final int level = Mth.ceil(amount / ElementReactions.SummonSpiritReaction.SPIRIT_COST);
+        final int level = Mth.ceil(amount / SummonSpiritReaction.SPIRIT_COST);
         this.setRealmLevel(level);
         this.setRealm(getRealmByLevel(level));
     }

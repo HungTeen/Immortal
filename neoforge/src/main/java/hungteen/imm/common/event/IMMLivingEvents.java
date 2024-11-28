@@ -1,14 +1,11 @@
 package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.cultivation.IHasMana;
-import hungteen.imm.common.ElementManager;
 import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.ElementReactions;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
-import hungteen.imm.common.impl.registry.ElementReactions;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
-import hungteen.imm.util.LevelUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +14,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 /**
  * @program Immortal
@@ -26,30 +22,6 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
  **/
 //@EventBusSubscriber(modid = IMMAPI.MOD_ID)
 public class IMMLivingEvents {
-
-    @SubscribeEvent
-    public static void tick(EntityTickEvent.Post event) {
-        if(EntityHelper.isServer(event.getEntity()) && event.getEntity() instanceof LivingEntity living){
-            // 灵气自然增长。
-            if(event.getEntity() instanceof IHasMana entity && EntityUtil.canManaIncrease(event.getEntity())) {
-                if(! entity.isManaFull()){
-                    entity.addMana(LevelUtil.getSpiritualRate(event.getEntity().level(), event.getEntity().blockPosition()));
-                }
-            }
-            // 附加元素。
-            ElementManager.attachElement(living);
-            // 元素反应：寄生。
-            ElementManager.ifActiveReaction(event.getEntity(), ElementReactions.PARASITISM, (reaction, scale) -> {
-                if(EntityUtil.hasMana(event.getEntity())){
-                    EntityUtil.addMana(event.getEntity(), - scale * 2.5F);
-                } else {
-                    if(event.getEntity().getRandom().nextFloat() < 0.2F){
-                        event.getEntity().hurt(IMMDamageSources.elementReaction(event.getEntity()), scale * 2F);
-                    }
-                }
-            });
-        }
-    }
 
 //    @SubscribeEvent
 //    public static void onLivingJump(LivingEvent.LivingJumpEvent event) {

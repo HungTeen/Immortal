@@ -4,8 +4,8 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.capability.player.IMMPlayerData;
+import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
-import hungteen.imm.common.spell.spells.metal.CriticalHitSpell;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +29,9 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-
+        if(! event.getEntity().level().isClientSide()){
+            PlayerUtil.setData(event.getEntity(), IMMPlayerData::tick);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -48,13 +50,14 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if(EntityHelper.isServer(event.getEntity())) {
+            PlayerUtil.setData(event.getEntity(), IMMPlayerData::syncToClient);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
 //        if(CultivationManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
-//            EntityUtil.addMana(event.getEntity(), event.getOrb().getValue() * 0.4F);
+//            EntityUtil.addQiAmount(event.getEntity(), event.getOrb().getValue() * 0.4F);
 //            event.getOrb().discard();
 //            event.setCanceled(true);
 //        }

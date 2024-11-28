@@ -4,7 +4,7 @@ import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.misc.damage.IMMDamageSources;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;

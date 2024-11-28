@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;

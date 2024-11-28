@@ -4,11 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.registry.IManualContent;
-import hungteen.imm.api.registry.IManualType;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.api.spell.IManualContent;
+import hungteen.imm.api.spell.IManualType;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 15:33
  */
-public record LearnSpellManual(ISpellType spellType, int level) implements IManualContent {
+public record LearnSpellManual(SpellType spellType, int level) implements IManualContent {
     
     public static final MapCodec<LearnSpellManual> CODEC = RecordCodecBuilder.<LearnSpellManual>mapCodec(instance -> instance.group(
             SpellTypes.registry().byNameCodec().fieldOf("spell").forGetter(LearnSpellManual::spellType),

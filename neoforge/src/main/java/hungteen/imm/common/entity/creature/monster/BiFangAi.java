@@ -7,7 +7,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
@@ -86,7 +86,7 @@ public class BiFangAi {
             }
             targetOpt.ifPresentOrElse(target -> {
                 final double distance = biFang.distanceTo(target);
-                final float percent = biFang.getMana() / biFang.getMaxMana();
+                final float percent = biFang.getQiAmount() / biFang.getMaxQiAmount();
                 if (biFang.getBrain().isActive(IMMActivities.MELEE_FIGHT.get()) && !biFang.getBrain().hasMemoryValue(IMMMemories.UNABLE_RANGE_ATTACK.get())) {
                     // 当前正在近战，可以考虑切换为远程攻击。
                     int cd = 0;
@@ -253,10 +253,10 @@ public class BiFangAi {
                 instance.present(MemoryModuleType.ATTACK_TARGET),
                 instance.absent(IMMMemories.SPELL_COOLING_DOWN.get())
         ).apply(instance, (target, cd) -> (level, mob, time) -> {
-            if (mob.distanceTo(instance.get(target)) < 10 && mob.getMana() >= manaCost) {
+            if (mob.distanceTo(instance.get(target)) < 10 && mob.getQiAmount() >= manaCost) {
                 ElementManager.addElementAmount(mob, Element.FIRE, false, 20);
                 ElementManager.addElementAmount(mob, Element.WOOD, true, 20);
-                mob.addMana(-manaCost);
+                mob.addQiAmount(-manaCost);
                 mob.getBrain().setMemoryWithExpiry(IMMMemories.SPELL_COOLING_DOWN.get(), true, cdProvider.sample(mob.getRandom()));
                 return true;
             }
@@ -288,7 +288,7 @@ public class BiFangAi {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < chance;
+            return biFang.isIdle() && biFang.getQiAmount() >= CONSUME_MANA && biFang.getRandom().nextFloat() < chance;
         }
 
         @Override
@@ -303,8 +303,8 @@ public class BiFangAi {
 
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
-            if (biFang.atAnimationTick(15) && biFang.getMana() >= CONSUME_MANA) {
-                biFang.addMana(-CONSUME_MANA);
+            if (biFang.atAnimationTick(15) && biFang.getQiAmount() >= CONSUME_MANA) {
+                biFang.addQiAmount(-CONSUME_MANA);
                 for (int i = -1; i <= 1; ++i) {
                     if (i == 0) {
                         continue; // 中间的龙卷风不要了。
@@ -409,7 +409,7 @@ public class BiFangAi {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < chance;
+            return biFang.isIdle() && biFang.getQiAmount() >= CONSUME_MANA && biFang.getRandom().nextFloat() < chance;
         }
 
         @Override
@@ -425,8 +425,8 @@ public class BiFangAi {
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
             BehaviorUtil.getAttackTarget(biFang).ifPresent(target -> {
-                if (biFang.atAnimationTick(10) && biFang.getMana() >= CONSUME_MANA) {
-                    biFang.addMana(-CONSUME_MANA);
+                if (biFang.atAnimationTick(10) && biFang.getQiAmount() >= CONSUME_MANA) {
+                    biFang.addQiAmount(-CONSUME_MANA);
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
                     final double distance = target.distanceTo(biFang);
                     final double d = Math.sqrt(Math.sqrt(distance)) * 0.5;
@@ -460,7 +460,7 @@ public class BiFangAi {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, BiFang biFang) {
-            return biFang.isIdle() && biFang.getMana() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.5F;
+            return biFang.isIdle() && biFang.getQiAmount() >= CONSUME_MANA && biFang.getRandom().nextFloat() < 0.5F;
         }
 
         @Override
@@ -476,8 +476,8 @@ public class BiFangAi {
         @Override
         protected void tick(ServerLevel level, BiFang biFang, long time) {
             BehaviorUtil.getAttackTarget(biFang).ifPresent(target -> {
-                if (biFang.atAnimationTick(5) && biFang.getMana() >= CONSUME_MANA) {
-                    biFang.addMana(-CONSUME_MANA);
+                if (biFang.atAnimationTick(5) && biFang.getQiAmount() >= CONSUME_MANA) {
+                    biFang.addQiAmount(-CONSUME_MANA);
                     final Vec3 vec = target.getEyePosition().subtract(biFang.getEyePosition());
                     LargeFireball largeFireball = new LargeFireball(biFang.level(), biFang, vec, biFang.getAge() + biFang.getPhase());
                     largeFireball.setPos(largeFireball.getX(), biFang.getEyeY(), largeFireball.getZ());

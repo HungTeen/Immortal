@@ -5,7 +5,7 @@ import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.api.util.helper.ServiceHelper;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -81,26 +81,10 @@ public interface IMMAPI {
      *
      * @return Registry interface.
      */
-    default Optional<HTCustomRegistry<ISpellType>> spellRegistry(){
+    default Optional<HTCustomRegistry<SpellType>> spellRegistry(){
         return Optional.empty();
     }
 
-//
-//    /**
-//     * 注册玩家Int数据类型。<br>
-//     * Stored in player capabilities.
-//     *
-//     * @return Registry interface.
-//     */
-//    Optional<IHTSimpleRegistry<IRangeNumber<Integer>>> integerDataRegistry();
-//
-//    /**
-//     * 注册玩家Float数据类型。<br>
-//     * Stored in player capabilities.
-//     *
-//     * @return Registry interface.
-//     */
-//    Optional<IHTSimpleRegistry<IRangeNumber<Float>>> floatDataRegistry();
 //
 //    /**
 //     * 注册宗门类型。 <br>

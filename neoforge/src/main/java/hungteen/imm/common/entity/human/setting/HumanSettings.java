@@ -4,7 +4,7 @@ import hungteen.htlib.api.registry.HTCodecRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.codec.ItemEntry;
 import hungteen.imm.common.entity.IMMEntities;
@@ -13,7 +13,7 @@ import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
 import hungteen.imm.common.item.artifacts.FlameGourd;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -240,7 +240,7 @@ public interface HumanSettings {
                         )
                 )
         ));
-//        context.register(METAL_BEGINNER, new HumanSetting(
+//        context.postRegister(METAL_BEGINNER, new HumanSetting(
 //                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
 //                50,
 //                Optional.of(new CultivationSetting(
@@ -285,7 +285,7 @@ public interface HumanSettings {
 //                                .build()
 //                ))
 //        ));
-//        context.register(WOOD_BEGINNER, new HumanSetting(
+//        context.postRegister(WOOD_BEGINNER, new HumanSetting(
 //                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
 //                50,
 //                Optional.of(new CultivationSetting(
@@ -332,7 +332,7 @@ public interface HumanSettings {
 //                                .build()
 //                ))
 //        ));
-//        context.register(WATER_BEGINNER, new HumanSetting(
+//        context.postRegister(WATER_BEGINNER, new HumanSetting(
 //                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
 //                50,
 //                Optional.of(new CultivationSetting(
@@ -378,7 +378,7 @@ public interface HumanSettings {
 //                                .build()
 //                ))
 //        ));
-//        context.register(FIRE_BEGINNER, new HumanSetting(
+//        context.postRegister(FIRE_BEGINNER, new HumanSetting(
 //                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
 //                50,
 //                Optional.of(new CultivationSetting(
@@ -427,7 +427,7 @@ public interface HumanSettings {
 //                                .build()
 //                ))
 //        ));
-//        context.register(EARTH_BEGINNER, new HumanSetting(
+//        context.postRegister(EARTH_BEGINNER, new HumanSetting(
 //                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(),
 //                50,
 //                Optional.of(new CultivationSetting(
@@ -646,7 +646,7 @@ public interface HumanSettings {
 //            )
 //    );
 
-    static TradeEntry spellTrade(int emerald, ISpellType spell, int level){
+    static TradeEntry spellTrade(int emerald, SpellType spell, int level){
         return new TradeEntry(
                 List.of(new ItemStack(Items.EMERALD, emerald)),
                 List.of(SecretManualItem.create(spell, level)),

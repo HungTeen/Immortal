@@ -11,12 +11,12 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.registry.ISectType;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.entity.human.HumanEntity;
 import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -40,8 +40,8 @@ public interface IMMDataSerializers {
     HTVanillaRegistry<EntityDataSerializer<?>> DATA_SERIALIZERS = HTRegistryManager.vanilla(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Util.id());
 
     HTHolder<EntityDataSerializer<RealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
-    HTHolder<EntityDataSerializer<ISpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
-    HTHolder<EntityDataSerializer<Optional<ISpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
+    HTHolder<EntityDataSerializer<SpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
+    HTHolder<EntityDataSerializer<Optional<SpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
 
     HTHolder<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
     HTHolder<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));

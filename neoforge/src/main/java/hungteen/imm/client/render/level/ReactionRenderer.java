@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.api.registry.IElementReaction;
+import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.ClientData;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
@@ -32,7 +32,7 @@ public class ReactionRenderer {
         PARTICLES.removeIf(ReactionParticle::expired);
     }
 
-    public static void addReaction(Entity entity, IElementReaction reaction){
+    public static void addReaction(Entity entity, ElementReaction reaction){
         if(ClientData.isDebugMode){
             PARTICLES.add(new ReactionParticle(entity, reaction));
         }
@@ -52,7 +52,8 @@ public class ReactionRenderer {
 
         final float scaleToGui = 0.025f;
 
-        final float tickDelta = 0; // TODO partial Ticks
+        // TODO partial Ticks
+        final float tickDelta = 0;
 
         final double x = Mth.lerp(tickDelta, particle.lastPosition.x, particle.position.x);
         final double y = Mth.lerp(tickDelta, particle.lastPosition.y, particle.position.y);
@@ -79,13 +80,13 @@ public class ReactionRenderer {
 
     public static class ReactionParticle {
 
-        private final IElementReaction reaction;
+        private final ElementReaction reaction;
         private Vec3 position;
         private Vec3 lastPosition;
         private Vec3 speed;
         private int age = 0;
 
-        public ReactionParticle(Entity entity, IElementReaction reaction) {
+        public ReactionParticle(Entity entity, ElementReaction reaction) {
             this.reaction = reaction;
             final Vec3 entityLocation = entity.getEyePosition();
             final Vec3 cameraLocation = ClientUtil.camera().getPosition();

@@ -2,7 +2,7 @@ package hungteen.imm.common.item;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.registry.ISpellType;
+import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.event.events.PlayerLearnManualEvent;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
@@ -110,7 +110,7 @@ public class SecretManualItem extends Item {
         return PlayerHelper.getClientPlayer().flatMap(p -> getSecretManualPair(p.level(), stack).map(Pair::getSecond).map(ManualToolTip::new));
     }
 
-    public static ItemStack create(ISpellType spell, int level) {
+    public static ItemStack create(SpellType spell, int level) {
         return create(SecretManuals.spellManual(spell, level));
     }
 

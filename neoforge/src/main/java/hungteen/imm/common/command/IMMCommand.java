@@ -9,14 +9,14 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
-import hungteen.imm.api.registry.ISpellType;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.spell.SpellManager;
-import hungteen.imm.common.spell.SpellTypes;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.util.PlayerUtil;
@@ -285,7 +285,7 @@ public class IMMCommand {
 
     /* Spells */
 
-    private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell, int level) {
+    private static int learnSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, SpellType spell, int level) {
         for (ServerPlayer player : targets) {
             PlayerUtil.learnSpell(player, spell, level);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
@@ -294,7 +294,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int forgetSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell) {
+    private static int forgetSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, SpellType spell) {
         for (ServerPlayer player : targets) {
             PlayerUtil.forgetSpell(player, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
@@ -303,7 +303,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int selectSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, @Nullable ISpellType spell) {
+    private static int selectSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, @Nullable SpellType spell) {
         for (ServerPlayer player : targets) {
             SpellManager.selectSpellOnCircle(player, spell);
             if (spell != null) {
@@ -316,7 +316,7 @@ public class IMMCommand {
         return targets.size();
     }
 
-    private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, ISpellType spell, int pos) {
+    private static int setSpellAt(CommandSourceStack source, Collection<? extends ServerPlayer> targets, SpellType spell, int pos) {
         for (ServerPlayer player : targets) {
             PlayerUtil.setSpellAt(player, pos, spell);
             PlayerHelper.sendMsgTo(player, spell.getComponent());
@@ -327,7 +327,9 @@ public class IMMCommand {
 
     private static int learnAllSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets, int level) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.learnAllSpell(player, level);
+            SpellTypes.registry().getValues().forEach(spell -> {
+                PlayerUtil.learnSpell(player, spell, level);
+            });
             PlayerHelper.sendMsgTo(player, COMMAND_LEARN_ALL_SPELLS);
         }
         source.sendSuccess(() -> COMMAND_LEARN_ALL_SPELLS, true);
@@ -336,7 +338,9 @@ public class IMMCommand {
 
     private static int forgetAllSpell(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
-            PlayerUtil.forgetAllSpell(player);
+            SpellTypes.registry().getValues().forEach(spell -> {
+                PlayerUtil.forgetSpell(player, spell);
+            });
             PlayerHelper.sendMsgTo(player, COMMAND_FORGET_ALL_SPELLS);
         }
         source.sendSuccess(() -> COMMAND_FORGET_ALL_SPELLS, true);
@@ -377,7 +381,7 @@ public class IMMCommand {
     private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RealmType realm, boolean force) {
         for (ServerPlayer player : targets) {
             final boolean result = CultivationManager.checkAndSetRealm(player, realm, force);
-            final Component info = result ? RealmTypes.getRealmInfo(realm) : COMMAND_CULTIVATION_NOT_ENOUGH;
+            final Component info = result ?realm.getComponent() : COMMAND_CULTIVATION_NOT_ENOUGH;
             PlayerHelper.sendMsgTo(player, info);
             source.sendSuccess(() -> getPlayerInfo(player, info), true);
         }
@@ -387,7 +391,7 @@ public class IMMCommand {
     private static int showRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
         for (ServerPlayer player : targets) {
             final RealmType realm = PlayerUtil.getPlayerRealm(player);
-            source.sendSuccess(() -> getPlayerInfo(player, RealmTypes.getRealmInfo(realm)), true);
+            source.sendSuccess(() -> getPlayerInfo(player, realm.getComponent()), true);
         }
         return targets.size();
     }
@@ -469,10 +473,6 @@ public class IMMCommand {
 
     private static Component getExperienceComponent(ExperienceType type, float value) {
         return CultivationManager.getExperienceComponent().append(" - ").append(CultivationManager.getExperienceComponent(type).append(" : " + value));
-    }
-
-    private static Component getRealmStageComponent(RealmStage stage) {
-        return RealmTypes.getStageComponent().append(" - ").append(RealmTypes.getStageComponent(stage));
     }
 
 }

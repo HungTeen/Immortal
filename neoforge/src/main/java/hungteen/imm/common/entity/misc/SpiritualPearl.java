@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.common.ElementManager;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.EntityUtil;
