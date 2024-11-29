@@ -7,13 +7,11 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.capability.HTPlayerData;
-import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.network.MiscDataPacket;
 import hungteen.imm.common.network.SectRelationPacket;
 import hungteen.imm.common.network.client.FloatDataPacket;
 import hungteen.imm.common.network.client.IntegerDataPacket;
-import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -63,11 +61,6 @@ public class IMMPlayerData implements HTPlayerData {
 
     public void tick() {
         if (EntityHelper.isServer(player)) {
-            // 灵气自然增长。
-            if (QiManager.canManaIncrease(player)) {
-                final float incValue = LevelUtil.getSpiritualRate(player.level(), player.blockPosition());
-                this.addFloatData(FloatData.QI_AMOUNT, incValue);
-            }
 //            // 突破检测。
 //            if (this.getFloatData(FloatData.BREAK_THROUGH_PROGRESS) >= 1) {
 //                if ((player.tickCount & 1) == 0) {

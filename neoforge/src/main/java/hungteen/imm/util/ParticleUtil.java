@@ -45,12 +45,12 @@ public class ParticleUtil {
 //        }
 //    }
 
-    public static void spawnParticles(ServerLevel level, ParticleOptions particle, Vec3 vec, int amount, double dst, double speed) {
-        ParticleHelper.spawnParticles(level, particle, vec.x(), vec.y(), vec.z(), amount, dst, dst, dst, speed);
+    public static void spawnClientParticles(ServerLevel level, ParticleOptions particle, Vec3 vec, int amount, double dst, double speed) {
+        ParticleHelper.spawnClientParticles(level, particle, vec.x(), vec.y(), vec.z(), amount, dst, dst, dst, speed);
     }
 
-    public static void spawnParticles(ServerLevel level, ParticleOptions particle, double x, double y, double z, int amount, double dst, double speed) {
-        ParticleHelper.spawnParticles(level, particle, x, y, z, amount, dst, dst, dst, speed);
+    public static void spawnClientParticles(ServerLevel level, ParticleOptions particle, double x, double y, double z, int amount, double dst, double speed) {
+        ParticleHelper.spawnClientParticles(level, particle, x, y, z, amount, dst, dst, dst, speed);
     }
 
     public static void spawnParticlesOnBlockFaces(Level level, BlockPos blockPos, ParticleOptions particleOptions, IntProvider cntProvider) {
@@ -76,7 +76,7 @@ public class ParticleUtil {
         final int i = dir.getStepX();
         final int j = dir.getStepY();
         final int k = dir.getStepZ();
-        ParticleHelper.spawnParticles(
+        ParticleHelper.spawnClientParticles(
                 level,
                 particle,
                 pos.x,

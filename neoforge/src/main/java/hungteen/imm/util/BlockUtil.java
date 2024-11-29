@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
+import hungteen.imm.common.tag.IMMBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -36,6 +37,10 @@ public class BlockUtil {
 
     public static boolean canDestroy(Level level, BlockPos pos){
         return level.getBlockState(pos).getDestroySpeed(level, pos) >= 0;
+    }
+
+    public static boolean isCushion(Level level, BlockPos pos){
+        return level.getBlockState(pos).is(IMMBlockTags.CUSHIONS);
     }
 
     /**

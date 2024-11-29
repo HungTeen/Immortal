@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.*;
-import hungteen.imm.api.enums.SpellUsageCategories;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.api.interfaces.IHasSpell;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.spell.SpellType;
@@ -121,7 +121,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public boolean canUseSpell(SpellType spell) {
-        if (spell.getCategory() == SpellUsageCategories.PLAYER_ONLY) {
+        if (spell.getCategory() == SpellUsageCategory.PLAYER_ONLY) {
             return false;
         }
         if (spell.getCategory().requireEntityTarget()) {

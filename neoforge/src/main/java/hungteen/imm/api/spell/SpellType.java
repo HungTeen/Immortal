@@ -2,7 +2,6 @@ package hungteen.imm.api.spell;
 
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.enums.SpellUsageCategories;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -80,7 +79,7 @@ public interface SpellType extends SimpleEntry {
      * 此法术是否为玩家专属，其他生物不需要学。
      * @return Whether can the spell be learned by non-player entities.
      */
-    SpellUsageCategories getCategory();
+    SpellUsageCategory getCategory();
 
     MutableComponent getSpellDesc(int level);
 

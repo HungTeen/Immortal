@@ -41,12 +41,11 @@ public abstract class ElementReactionImpl implements ElementReaction {
     }
 
     protected float getMatchAmount(Entity entity, ElementEntry entry) {
-        //相生反应后一元素的特判。
+        // 相生反应后一元素的特判。
         if (entry.amount() == 0) {
             return ElementManager.hasElement(entity, entry.element(), entry.mustRobust()) ? 10000000F : 0F;
         }
         return ElementManager.getAmount(entity, entry.element(), entry.mustRobust()) / entry.amount();
-
     }
 
     @Override

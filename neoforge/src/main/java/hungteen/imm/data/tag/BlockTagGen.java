@@ -92,6 +92,9 @@ public class BlockTagGen extends HTBlockTagGen {
         // 作物相关。
         BlockUtil.getGourds().forEach(p -> this.tag(IMMBlockTags.GOURDS).add(p.getSecond()));
 
+        // 其他。
+        BlockUtil.getWoolCushions().forEach(p -> this.tag(IMMBlockTags.CUSHIONS).add(p.getSecond()));
+
         this.tag(IMMBlockTags.COPPER_BLOCKS)
                 .addTags(Tags.Blocks.STORAGE_BLOCKS_COPPER)
                 .add(Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER);

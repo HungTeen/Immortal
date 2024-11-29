@@ -281,6 +281,7 @@
   "info.imm.spell.no_enough_mana": "灵力不足，此法术需要%d灵力",
   "info.imm.spell.no_empty_hand": "没有空闲的手",
   "info.imm.spell.has_item_in_hand": "双手不能持有物品",
+  "info.imm.spell.throw_failed": "扔出失败，未知错误",
   "info.imm.spell.no_item_in_hands": "没有持有任何物品",
   "info.imm.spell.can_not_burn": "手中的物品不能被燃烧",
   "info.imm.spell.can_not_repair": "手中的物品不能被任意锭修复",

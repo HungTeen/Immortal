@@ -333,6 +333,13 @@ public class PlayerUtil {
         setIntegerData(player, IMMPlayerData.IntegerData.SPELL_CIRCLE_MODE, mode);
     }
 
+    /**
+     * @return 玩家是否坐在坐垫上。
+     */
+    public static boolean sitOnCushion(Player player){
+        return BlockUtil.isCushion(player.level(), player.blockPosition());
+    }
+
     public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {
         if (!isSitInMeditation(player)) {
             final Vec3 vec = MathHelper.toVec3(pos);

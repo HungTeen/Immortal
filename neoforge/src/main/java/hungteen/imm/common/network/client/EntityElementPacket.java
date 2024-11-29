@@ -44,22 +44,4 @@ public record EntityElementPacket(int entityId, Element element, boolean robust,
         return TYPE;
     }
 
-//    public static class Handler {
-//
-//        /**
-//         * Only Server sync to Client.
-//         */
-//        public static void onMessage(EntityElementPacket message, Supplier<NetworkEvent.Context> ctx) {
-//            ctx.get().enqueueWork(() -> {
-//                PlayerHelper.getClientPlayer().map(Entity::level).ifPresent(level -> {
-//                    final Entity entity = level.getEntity(message.entityId);
-//                    final Elements element = Elements.valueOf(message.type);
-//                    if(entity != null){
-//                        ElementManager.setElementAmount(entity, element, message.robust, message.value);
-//                    }
-//                });
-//            });
-//            ctx.get().setPacketHandled(true);
-//        }
-//    }
 }

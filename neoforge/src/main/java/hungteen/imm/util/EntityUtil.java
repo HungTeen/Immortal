@@ -206,12 +206,24 @@ public class EntityUtil {
         return entityHitResult != null ? entityHitResult : blockHitResult;
     }
 
+    public static Optional<InteractionHand> getEmptyHand(LivingEntity living) {
+        return living.getMainHandItem().isEmpty() ? Optional.of(InteractionHand.MAIN_HAND) : living.getOffhandItem().isEmpty() ? Optional.of(InteractionHand.OFF_HAND) : Optional.empty();
+    }
+
     public static boolean hasEmptyHand(LivingEntity living) {
         return living.getMainHandItem().isEmpty() || living.getOffhandItem().isEmpty();
     }
 
     public static boolean hasItemInHand(LivingEntity living) {
         return !living.getMainHandItem().isEmpty() || !living.getOffhandItem().isEmpty();
+    }
+
+    public static Optional<InteractionHand> getHandOpt(LivingEntity living, Predicate<ItemStack> predicate) {
+        return predicate.test(living.getMainHandItem()) ? Optional.of(InteractionHand.MAIN_HAND) : predicate.test(living.getOffhandItem()) ? Optional.of(InteractionHand.OFF_HAND) : Optional.empty();
+    }
+
+    public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
+        return getHandOpt(living, predicate).map(living::getItemInHand).orElse(ItemStack.EMPTY);
     }
 
     public static int getSpellLevel(Entity entity, SpellType spell) {
@@ -249,10 +261,6 @@ public class EntityUtil {
             return manaEntity.isQiFull();
         }
         return true;
-    }
-
-    public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
-        return predicate.test(living.getMainHandItem()) ? living.getMainHandItem() : predicate.test(living.getOffhandItem()) ? living.getOffhandItem() : ItemStack.EMPTY;
     }
 
     /* Data Operations */
@@ -317,8 +325,8 @@ public class EntityUtil {
         }
     }
 
-    public static List<QiRootType> getSpiritualRoots(Entity entity) {
-        return getSpiritualRoots(entity, null);
+    public static List<QiRootType> getRoots(Entity entity) {
+        return getRoots(entity, null);
     }
 
     /**
@@ -326,12 +334,12 @@ public class EntityUtil {
      *
      * @param viewPlayer 玩家的视角。
      */
-    public static List<QiRootType> getSpiritualRoots(Entity entity, @Nullable Player viewPlayer) {
+    public static List<QiRootType> getRoots(Entity entity, @Nullable Player viewPlayer) {
         if (viewPlayer == null) {
             return entity instanceof Player player ? PlayerUtil.getRoots(player)
                     : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
         }
-        return PlayerUtil.filterSpiritRoots(viewPlayer, getSpiritualRoots(entity));
+        return PlayerUtil.filterSpiritRoots(viewPlayer, getRoots(entity));
     }
 
     public static List<Element> getElements(Entity entity) {
@@ -344,11 +352,11 @@ public class EntityUtil {
      * @param viewPlayer 玩家的视角。
      */
     public static List<Element> getElements(Entity entity, @Nullable Player viewPlayer) {
-        return viewPlayer == null ? getSpiritualRoots(entity).stream().flatMap(l -> l.getElements().stream()).collect(Collectors.toList()) : PlayerUtil.filterElements(viewPlayer, getElements(entity));
+        return viewPlayer == null ? getRoots(entity).stream().flatMap(l -> l.getElements().stream()).collect(Collectors.toList()) : PlayerUtil.filterElements(viewPlayer, getElements(entity));
     }
 
     public static Triple<Float, Float, Float> getRGBForSpiritual(Entity entity) {
-        return getRGBForSpiritual(getSpiritualRoots(entity));
+        return getRGBForSpiritual(getRoots(entity));
     }
 
     public static Triple<Float, Float, Float> getRGBForSpiritual(Collection<QiRootType> roots) {

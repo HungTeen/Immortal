@@ -41,7 +41,7 @@ public class FlamingReaction extends GenerationReaction {
             entity.hurt(IMMDamageSources.elementReaction(entity), scale * 2);
         }
         if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
-            ParticleHelper.spawnParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
+            ParticleHelper.sendParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);
         }
         EntityHelper.getPredicateEntities(entity, EntityHelper.getEntityAABB(entity, 4, 3), Entity.class, JavaHelper::alwaysTrue).forEach(target -> {
             if (target.level().getRandom().nextFloat() < 0.1F) {

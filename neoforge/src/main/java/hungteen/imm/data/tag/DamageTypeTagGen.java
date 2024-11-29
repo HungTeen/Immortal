@@ -44,7 +44,7 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
                 .add(DamageTypes.LAVA, DamageTypes.DROWN, DamageTypes.STARVE, DamageTypes.WITHER);
 
         // IMM Tags.
-        this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.SPIRITUAL_MANA);
+        this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.QI);
         this.tag(IMMDamageTypeTags.ELEMENTS)
                 .add(IMMDamageTypes.WOOD_ELEMENT, IMMDamageTypes.WATER_ELEMENT, IMMDamageTypes.FIRE_ELEMENT);
 

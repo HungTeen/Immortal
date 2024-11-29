@@ -50,6 +50,9 @@ public class RestingScreen extends MeditationScreen {
         }).pos(x, y - BUTTON_DISTANCE).tooltip(Tooltip.create(TipUtil.gui("meditation.meditation_button")))) {
             @Override
             public boolean isActive() {
+                if(! PlayerUtil.sitOnCushion(ClientUtil.player())){
+                    return false;
+                }
                 return isInSpiritWorld() || CultivationManager.canBreakThrough(ClientUtil.player());
             }
 

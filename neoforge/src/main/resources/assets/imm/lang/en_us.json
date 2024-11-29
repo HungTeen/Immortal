@@ -281,6 +281,7 @@
   "info.imm.spell.no_enough_mana": "Mana is not enough, requires %d mana",
   "info.imm.spell.no_empty_hand": "No empty hand",
   "info.imm.spell.has_item_in_hand": "Can not holding any item in hand",
+  "info.imm.spell.throw_failed": "Throw failed, Unknown error",
   "info.imm.spell.no_item_in_hands": "No item in hands",
   "info.imm.spell.can_not_burn": "No holding item can be burned",
   "info.imm.spell.can_not_repair": "No holding item can be repaired by ingots",

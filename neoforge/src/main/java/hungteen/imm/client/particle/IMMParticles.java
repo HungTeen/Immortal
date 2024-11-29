@@ -25,7 +25,6 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class IMMParticles {
 
-    // Don't forget initialize particle factory in client initialize.
     public static final HTVanillaRegistry<ParticleType<?>> TYPES =  HTRegistryManager.vanilla(Registries.PARTICLE_TYPE, Util.id());
 
     public static final HTHolder<SimpleParticleType> QI = TYPES.register("qi", () -> new SimpleParticleType(false));
@@ -38,6 +37,7 @@ public class IMMParticles {
     public static final HTHolder<SimpleParticleType> SPIRITUAL_FLAME = TYPES.register("spiritual_flame", () -> new SimpleParticleType(false));
     public static final HTHolder<SimpleParticleType> METAL_EXPLOSION = TYPES.register("metal_explosion", () -> new SimpleParticleType(false));
     public static final HTHolder<SimpleParticleType> METAL_DAMAGE = TYPES.register("metal_damage", () -> new SimpleParticleType(false));
+    public static final HTHolder<SimpleParticleType> INTIMIDATION = TYPES.register("intimidation", () -> new SimpleParticleType(true));
 
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
@@ -51,6 +51,8 @@ public class IMMParticles {
         event.registerSpriteSet(SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
         event.registerSpriteSet(METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
         event.registerSpriteSet(METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
+
+        event.registerSpecial(INTIMIDATION.get(), new IntimidationParticle.Factory());
     }
     
     public static void initialize(IEventBus event){

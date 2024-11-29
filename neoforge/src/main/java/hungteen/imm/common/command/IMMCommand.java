@@ -275,7 +275,7 @@ public class IMMCommand {
     private static void showPlayerRoots(CommandSourceStack source, Player player, boolean spread) {
         PlayerUtil.setData(player, l -> {
             final MutableComponent component = TipUtil.command("qi_root", player.getName().getString());
-            component.append(QiRootTypes.getSpiritualRoots(l.getCultivationData().getRoots()));
+            component.append(QiRootTypes.getRoots(l.getCultivationData().getRoots()));
             if (spread) {
                 PlayerHelper.sendMsgTo(player, component);
             }

@@ -2,12 +2,15 @@ package hungteen.imm.common.cultivation.reaction;
 
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.ElementReactions;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
 
 /**
  * 相生反应。
+ *
  * @author PangTeen
  * @program Immortal
  * @create 2024/11/28 22:29
@@ -44,6 +47,26 @@ public abstract class GenerationReaction extends ElementReactionImpl {
             });
         }
         ElementManager.addElementAmount(entity, this.production, false, this.productionAmount * scale);
+    }
+
+    /**
+     * 发生淬刃的被攻击者，会记录最大的受伤害值。
+     */
+    public static void markDamage(Entity entity, float damage) {
+        // 发生淬刃的被攻击者，会记录最大的受伤害值。
+        ElementManager.ifActiveReaction(entity, ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
+            ElementManager.setQuenchBladeDamage(entity, damage, true);
+        }, () -> {
+            ElementManager.setQuenchBladeDamage(entity, 0, true);
+        });
+    }
+
+    public static void quenchBlade(LivingIncomingDamageEvent event){
+        ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
+            final float damage = event.getOriginalAmount() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
+            event.setAmount(damage);
+            ElementManager.addElementAmount(event.getEntity(), Element.WATER, false, scale * 5);
+        });
     }
 
 }

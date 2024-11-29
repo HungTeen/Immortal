@@ -7,9 +7,12 @@ import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.Optional;
 
 /**
  * @author PangTeen
@@ -24,11 +27,14 @@ public class FlyWithItemSpell extends SpellTypeImpl {
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        final ItemStack stack = EntityUtil.getItemInHand(owner, itemStack -> {
-            if(level == 1) return itemStack.is(ItemTags.SWORDS);
+        final Optional<InteractionHand> handOpt = EntityUtil.getHandOpt(owner, itemStack -> {
+            if(level == 1) {
+                return itemStack.is(ItemTags.SWORDS);
+            }
             return true;
         });
-        if(! stack.isEmpty()){
+        if(handOpt.isPresent()){
+            final ItemStack stack = owner.getItemInHand(handOpt.get());
             final FlyingItemEntity flyingEntity = IMMEntities.FLYING_ITEM.get().create(owner.level());
             final ItemStack flyingItem = stack.copy();
             flyingItem.setCount(1);
@@ -39,6 +45,7 @@ public class FlyWithItemSpell extends SpellTypeImpl {
                 owner.startRiding(flyingEntity);
                 owner.level().addFreshEntity(flyingEntity);
                 stack.shrink(1);
+                owner.swing(handOpt.get());
                 return true;
             }
         }

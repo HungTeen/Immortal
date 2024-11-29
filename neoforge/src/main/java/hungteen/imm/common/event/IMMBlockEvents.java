@@ -34,7 +34,7 @@ public class IMMBlockEvents {
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event){
         if(event.getState().is(IMMBlockTags.SPIRITUAL_ORES) && event.getLevel() instanceof Level level){
-            ParticleHelper.spawnParticles(level, ParticleTypes.GLOW, MathHelper.toVec3(event.getPos()), 5, 0F, 0.1F);
+            ParticleHelper.spawnClientParticles(level, ParticleTypes.GLOW, MathHelper.toVec3(event.getPos()), 5, 0F, 0.1F);
         }
     }
 

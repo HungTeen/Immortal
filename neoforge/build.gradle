@@ -88,14 +88,14 @@ dependencies {
 //    implementation(libs.neoforge)
 
     implementation("hungteen.htlib:HTLib:${mcVersion}-${htlibVersion}-neoforge")
-//    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-//    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-//    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${mcVersion}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${mcVersion}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${mcVersion}-neoforge:${jei_version}"
 
 //    compileOnly "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-NEOFORGE:api"
 //    localRuntime "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-NEOFORGE"
 
-//    implementation "curse.maven:jade-324717:${jade_version}"
+    implementation "curse.maven:jade-324717:${jade_version}"
     implementation "curse.maven:worldedit-225608:${worldedit_version}"
 
 //    implementation "curse.maven:configured-457570:${configured_version}"

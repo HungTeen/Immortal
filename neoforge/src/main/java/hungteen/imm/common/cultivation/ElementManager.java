@@ -142,7 +142,7 @@ public class ElementManager {
     /**
      * 受到伤害之前，附着元素。
      */
-    public static void attachDamageElement(ServerLevel level, LivingEntity entity, DamageSource source) {
+    public static void attachDamageElement(ServerLevel level, Entity entity, DamageSource source) {
         if (entity.getRandom().nextFloat() < 0.2F) {
             if (source.is(DamageTypes.IN_FIRE)) { // 篝火。
                 addElementAmount(entity, Element.FIRE, false, 1F);

@@ -2,7 +2,7 @@ package hungteen.imm.api.interfaces;
 
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.IHasQi;
-import hungteen.imm.api.enums.SpellUsageCategories;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.api.records.Spell;
 import hungteen.imm.api.spell.SpellType;
 import net.minecraft.world.entity.Mob;
@@ -30,7 +30,7 @@ public interface IHasSpell extends IHasQi {
     /**
      * 获取当前法术使用优先级。
      */
-    default Map<SpellUsageCategories, Integer> getCategoryPriority(){
+    default Map<SpellUsageCategory, Integer> getCategoryPriority(){
         return Map.of();
     }
 
@@ -38,7 +38,7 @@ public interface IHasSpell extends IHasQi {
      * 获取优先级排序后的可用法术。
      */
     default List<Spell> getSortedSpells(){
-        final Map<SpellUsageCategories, Integer> priorityMap = getCategoryPriority();
+        final Map<SpellUsageCategory, Integer> priorityMap = getCategoryPriority();
         return getLearnedSpellTypes().stream().filter(this::canUseSpell).sorted((spell1, spell2) -> {
             final int result = priorityMap.getOrDefault(spell1.getCategory(), 0) - priorityMap.getOrDefault(spell2.getCategory(), 0);
             if(result != 0) return result;

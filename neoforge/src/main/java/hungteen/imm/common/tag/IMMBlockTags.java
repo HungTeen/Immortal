@@ -21,6 +21,7 @@ public interface IMMBlockTags {
     TagKey<Block> CINNABAR_ORES = uniformTag("ores/cinnabar");
 
     TagKey<Block> GOURDS = uniformTag("gourds");
+    TagKey<Block> CUSHIONS = uniformTag("cushions");
     TagKey<Block> COPPER_BLOCKS = uniformTag("copper_blocks");
     TagKey<Block> COPPER_SLABS = uniformTag("copper_slabs");
 

@@ -74,7 +74,7 @@ public class ElementCrystal extends HTEntity {
 
     public void breakAmethyst() {
         if (this.level() instanceof ServerLevel serverLevel) {
-            ParticleHelper.spawnParticles(serverLevel, ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 2, 0);
+            ParticleHelper.sendParticles(serverLevel, ParticleTypes.EXPLOSION, getX(), getY(0.5), getZ(), 2, 0);
             this.playSound(SoundEvents.AMETHYST_BLOCK_BREAK);
             this.discard();
         }

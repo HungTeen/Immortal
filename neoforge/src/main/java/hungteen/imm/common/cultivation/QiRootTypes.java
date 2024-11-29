@@ -92,7 +92,7 @@ public interface QiRootTypes {
         return TipUtil.misc("spiritual_root");
     }
 
-    static MutableComponent getSpiritualRoots(List<QiRootType> roots) {
+    static MutableComponent getRoots(List<QiRootType> roots) {
         if (!roots.isEmpty()) {
             final MutableComponent component = roots.get(0).getComponent();
             for (int i = 1; i < roots.size(); ++i) {

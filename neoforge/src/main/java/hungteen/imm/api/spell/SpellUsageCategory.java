@@ -1,11 +1,11 @@
-package hungteen.imm.api.enums;
+package hungteen.imm.api.spell;
 
 /**
  * @program Immortal
  * @author HungTeen
  * @create 2023-09-03 19:26
  **/
-public enum SpellUsageCategories {
+public enum SpellUsageCategory {
 
     /**
      * 只有玩家可用。
@@ -35,11 +35,11 @@ public enum SpellUsageCategories {
 
     private final boolean requireEntityTarget;
 
-    SpellUsageCategories(){
+    SpellUsageCategory(){
         this(false);
     }
 
-    SpellUsageCategories(boolean requireEntityTarget){
+    SpellUsageCategory(boolean requireEntityTarget){
         this.requireEntityTarget = requireEntityTarget;
     }
 

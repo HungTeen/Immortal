@@ -119,7 +119,7 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
             if(random.nextFloat() * 2 < getFlameAmount() / MAX_AMOUNT){
                 final float width = getCoverWidth();
                 final float height = getCoverHeight();
-                ParticleHelper.spawnParticles(level(), particleType, getX(), getY() + height / 2, getZ(), getFlameCnt(), width, height, (random.nextFloat() - 0.5) / 3, 0.2F, (random.nextFloat() - 0.5) / 3);
+                ParticleHelper.spawnClientParticles(level(), particleType, getX(), getY() + height / 2, getZ(), getFlameCnt(), width, height, (random.nextFloat() - 0.5) / 3, 0.2F, (random.nextFloat() - 0.5) / 3);
             } else {
                 ParticleHelper.spawnParticles(level(), particleType, position(), this.flameLevel, (random.nextFloat() - 0.5) / 3, 0.2F, (random.nextFloat() - 0.5) / 3);
             }

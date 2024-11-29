@@ -1,17 +1,23 @@
 package hungteen.imm.common.cultivation.spell.basic;
 
+import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.api.enums.SpellUsageCategories;
+import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.common.effect.IMMEffects;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 
 /**
+ * 威压法术。
  * @author PangTeen
  * @program Immortal
  * @create 2023/8/18 16:56
@@ -19,7 +25,7 @@ import net.minecraft.world.phys.AABB;
 public class IntimidationSpell extends SpellTypeImpl {
 
     public IntimidationSpell() {
-        super("intimidation", properties(SpellUsageCategories.CUSTOM).maxLevel(1).cd(300).mana(20));
+        super("intimidation", properties(SpellUsageCategory.CUSTOM).maxLevel(1).cd(300).mana(20));
     }
 
     public static boolean canUseOn(LivingEntity owner, LivingEntity target){
@@ -34,12 +40,17 @@ public class IntimidationSpell extends SpellTypeImpl {
         final RealmType realm = CultivationManager.getRealm(owner);
         EntityHelper.getPredicateEntities(owner, aabb, LivingEntity.class, entity -> {
             return CultivationManager.hasRealmGapAndLarger(owner, entity);
-        }).forEach(target -> { //TODO 防止误伤队友。
+        }).forEach(target -> {
+            //TODO 防止误伤队友。
             final RealmType targetRealm = CultivationManager.getRealm(target);
             final int gap = CultivationManager.getRealmGap(realm, targetRealm);
             // 威压百分比扣血，但不会扣完。
             target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
             target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.holder(), 600, gap));
+            if(target instanceof ServerPlayer player){
+                PlayerHelper.playClientSound(player, SoundEvents.ELDER_GUARDIAN_CURSE);
+                ParticleHelper.sendParticles(player.serverLevel(), IMMParticles.INTIMIDATION.get(), player.getX(), player.getY(), player.getZ(), 1, 0);
+            }
         });
         return true;
     }

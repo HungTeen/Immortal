@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 /**
+ * 无需坐垫的打坐法术，但是局限是不能突破。
  * @author PangTeen
  * @program Immortal
  * @create 2023/3/6 19:11

@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import javax.annotation.Nullable;
 
@@ -24,10 +24,14 @@ public class SharpnessSpell extends SpellTypeImpl {
         super("sharpness", properties().mana(25).cd(50).maxLevel(1));
     }
 
-    public static void checkSharpening(@Nullable Entity owner, LivingDamageEvent.Pre event){
+    /**
+     * 受到的伤害变成原来的 1.5 倍。
+     * @param owner 造成伤害的实体。
+     */
+    public static void checkSharpening(@Nullable Entity owner, LivingIncomingDamageEvent event){
         if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Element.METAL, true)){
             SpellManager.activateSpell(entity, SpellTypes.SHARPNESS, (p, result, spell, level) -> {
-                event.setNewDamage(event.getNewDamage() * 1.5F);
+                event.setAmount(event.getOriginalAmount() * 1.5F);
                 return true;
             });
         }

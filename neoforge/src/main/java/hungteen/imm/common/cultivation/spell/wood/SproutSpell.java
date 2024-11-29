@@ -4,9 +4,10 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
+import hungteen.imm.common.cultivation.spell.RequireEmptyHandSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @program Immortal
  * @create 2023/8/18 14:25
  */
-public class SproutSpell extends SpellTypeImpl {
+public class SproutSpell extends RequireEmptyHandSpell {
 
     public SproutSpell() {
         super("sprout", properties().maxLevel(1).mana(50).cd(400));
@@ -30,7 +31,7 @@ public class SproutSpell extends SpellTypeImpl {
      * {@link BoneMealItem#useOn(UseOnContext)}.
      */
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
+    public boolean checkActivate(LivingEntity owner, HTHitResult result, InteractionHand hand, int level) {
         boolean success = false;
         if (result.hasBlock() && result.getBlockPos() != null && result.getDirection() != null) {
             final BlockPos blockpos = result.getBlockPos();

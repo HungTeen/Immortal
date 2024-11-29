@@ -1,4 +1,4 @@
-package hungteen.imm.common.cultivation.spell.spells.common;
+package hungteen.imm.common.cultivation.spell.common;
 
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
@@ -29,7 +29,9 @@ public class StealItemSpell extends SpellTypeImpl {
                         .map(living::getItemBySlot)
                         .filter(s -> ! s.isEmpty())
                         .toList();
-                if(items.size() == 0) return false;
+                if(items.isEmpty()) {
+                    return false;
+                }
                 ItemStack oldStack = items.get(owner.getRandom().nextInt(items.size()));
                 ItemStack stack = oldStack.copy();
                 PlayerUtil.addItem(player, stack);

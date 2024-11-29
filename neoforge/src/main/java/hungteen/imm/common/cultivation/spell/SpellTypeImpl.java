@@ -1,7 +1,7 @@
 package hungteen.imm.common.cultivation.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.enums.SpellUsageCategories;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -27,14 +27,14 @@ public abstract class SpellTypeImpl implements SpellType {
     private final boolean canTrigger;
     private final boolean canPlaceOnCircle;
     private final int priority;
-    private final SpellUsageCategories category;
+    private final SpellUsageCategory category;
     private final ResourceLocation resourceLocation;
 
     public SpellTypeImpl(String name, SpellProperties properties) {
         this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger, properties.canPlaceOnCircle, id ++, properties.usageCategory);
     }
 
-    private SpellTypeImpl(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, boolean canPlaceOnCircle, int priority, SpellUsageCategories category) {
+    private SpellTypeImpl(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, boolean canPlaceOnCircle, int priority, SpellUsageCategory category) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.consumeMana = consumeMana;
@@ -93,7 +93,7 @@ public abstract class SpellTypeImpl implements SpellType {
     }
 
     @Override
-    public SpellUsageCategories getCategory() {
+    public SpellUsageCategory getCategory() {
         return category;
     }
 
@@ -123,16 +123,16 @@ public abstract class SpellTypeImpl implements SpellType {
     }
 
     public static SpellProperties properties(){
-        return properties(SpellUsageCategories.PLAYER_ONLY);
+        return properties(SpellUsageCategory.PLAYER_ONLY);
     }
 
-    public static SpellProperties properties(SpellUsageCategories category){
+    public static SpellProperties properties(SpellUsageCategory category){
         return new SpellProperties(category);
     }
 
     public static class SpellProperties {
 
-        private final SpellUsageCategories usageCategory;
+        private final SpellUsageCategory usageCategory;
         private int maxLevel = 1;
         private int consumeMana = 0;
         private int cooldown = 0;
@@ -140,7 +140,7 @@ public abstract class SpellTypeImpl implements SpellType {
         private boolean canPlaceOnCircle = true;
         private SpellSortCategories sortCategory = SpellSortCategories.MISC;
 
-        public SpellProperties(SpellUsageCategories category) {
+        public SpellProperties(SpellUsageCategory category) {
             this.usageCategory = category;
         }
 

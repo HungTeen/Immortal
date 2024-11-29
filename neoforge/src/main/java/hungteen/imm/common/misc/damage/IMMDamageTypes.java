@@ -16,16 +16,16 @@ import net.minecraft.world.damagesource.DeathMessageType;
  **/
 public interface IMMDamageTypes {
 
+    ResourceKey<DamageType> QI = create("qi");
     ResourceKey<DamageType> SPIRITUAL_FLAME = create("spiritual_flame");
-    ResourceKey<DamageType> SPIRITUAL_MANA = create("spiritual_mana");
     ResourceKey<DamageType> ELEMENT_REACTION = create("element_reaction");
     ResourceKey<DamageType> WOOD_ELEMENT = create("wood_element");
     ResourceKey<DamageType> WATER_ELEMENT = create("water_element");
     ResourceKey<DamageType> FIRE_ELEMENT = create("fire_element");
 
     static void register(BootstrapContext<DamageType> context) {
+        register(context, QI, 0.05F);
         register(context, SPIRITUAL_FLAME, 0.06F);
-        register(context, SPIRITUAL_MANA, 0.05F);
         register(context, ELEMENT_REACTION, 0F);
         register(context, WOOD_ELEMENT, 0.03F);
         register(context, WATER_ELEMENT, 0.04F);
