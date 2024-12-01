@@ -36,7 +36,7 @@ public interface SecretManuals {
 
     static void register(BootstrapContext<SecretManual> context){
         final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.SPIRITUAL);
-        final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.pre(), true);
+        final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.first(), true);
         final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION.pre(), true);
         final ILearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.CORE_SHAPING.pre(), true);
 

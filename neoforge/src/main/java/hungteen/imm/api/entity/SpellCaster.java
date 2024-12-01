@@ -1,9 +1,8 @@
-package hungteen.imm.api.interfaces;
+package hungteen.imm.api.entity;
 
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.cultivation.IHasQi;
 import hungteen.imm.api.spell.SpellUsageCategory;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +12,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 使用法术的生物。
  * @author PangTeen
  * @program Immortal
  * @create 2023/8/19 15:49
  */
-public interface IHasSpell extends IHasQi {
+public interface SpellCaster extends HasQi {
 
     boolean isOnCoolDown();
 

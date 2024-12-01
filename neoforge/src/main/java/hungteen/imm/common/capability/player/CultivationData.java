@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
@@ -13,6 +14,7 @@ import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.network.client.ExperienceChangePacket;
 import hungteen.imm.common.network.client.QiRootAndRealmPacket;
+import hungteen.imm.util.EventUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -183,18 +185,27 @@ public class CultivationData implements HTPlayerData {
     }
 
     public void setRealmType(RealmType realmType) {
-        // trigger realm change.
-        if (playerData.getPlayer() instanceof ServerPlayer serverPlayer && this.realmType != realmType) {
-            PlayerRealmChangeTrigger.INSTANCE.trigger(serverPlayer, realmType);
+        if (this.realmType != realmType) {
+            EntityRealmEvent.Pre preEvent = new EntityRealmEvent.Pre(playerData.getPlayer(), this.realmType, realmType);
+            if (EventUtil.post(preEvent)) {
+                return;
+            }
+            realmType = preEvent.getAfterRealm();
+            // trigger realm change.
+            if (playerData.getPlayer() instanceof ServerPlayer serverPlayer && this.realmType != realmType) {
+                PlayerRealmChangeTrigger.INSTANCE.trigger(serverPlayer, realmType);
+            }
+            // 突破次数重设。
+            this.playerData.setIntegerData(IMMPlayerData.IntegerData.BREAK_THROUGH_TRIES, 0);
+            // 突破进度重设。
+            this.playerData.setFloatData(IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS, 0F);
+            this.realmType = realmType;
+            // Update realm node manually.
+            this.getRealmNode(true);
+            this.sendRootAndRealmUpdatePacket();
+            EventUtil.post(new EntityRealmEvent.Post(playerData.getPlayer(), this.realmType, realmType));
         }
-//        // 突破次数重设。
-//        this.setIntegerData(PlayerRangeIntegers.BREAK_THROUGH_TRIES, 0);
-//        // 突破进度重设。
-//        this.setFloatData(PlayerRangeFloats.BREAK_THROUGH_PROGRESS, 0F);
-        this.realmType = realmType;
-        // Update realm node manually.
-        this.getRealmNode(true);
-        this.sendRootAndRealmUpdatePacket();
+
     }
 
     public void sendRootAndRealmUpdatePacket() {

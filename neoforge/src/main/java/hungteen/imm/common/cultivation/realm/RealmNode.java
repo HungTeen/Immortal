@@ -25,24 +25,24 @@ public class RealmNode {
      * 构建整个修行体系的树。
      */
     public static void updateRealmTree() {
-        ROOT.add(RealmTypes.QI_REFINING.pre());
-        List<RealmNode> qiRefiningNodes = addMultiPeriod(RealmTypes.QI_REFINING.getRealms());
+        ROOT.add(RealmTypes.QI_REFINING.first());
+        List<RealmNode> qiRefiningNodes = addMultiStage(RealmTypes.QI_REFINING.getRealms());
         qiRefiningNodes.forEach(node -> node.add(RealmTypes.FOUNDATION.pre()));
-        List<RealmNode> foundationNodes = addMultiPeriod(RealmTypes.FOUNDATION.getRealms());
+        List<RealmNode> foundationNodes = addMultiStage(RealmTypes.FOUNDATION.getRealms());
         foundationNodes.forEach(node -> node.add(RealmTypes.CORE_SHAPING.pre()));
-        List<RealmNode> coreShapingNodes = addMultiPeriod(RealmTypes.CORE_SHAPING.getRealms());
+        List<RealmNode> coreShapingNodes = addMultiStage(RealmTypes.CORE_SHAPING.getRealms());
     }
 
     /**
      * Add a hierarchy list.
      * @return realm nodes that can break through to next realm.
      */
-    public static List<RealmNode> addMultiPeriod(RealmType[] realmTypes){
+    public static List<RealmNode> addMultiStage(RealmType[] realmTypes){
         List<RealmNode> nodes = new ArrayList<>();
         RealmNode prev = null;
         for (RealmType realmType : realmTypes) {
             RealmNode now = new RealmNode(realmType);
-            if (realmType.getStage().canLevelUp()) {
+            if (realmType.canLevelUp()) {
                 nodes.add(now);
             }
             if (prev != null) {

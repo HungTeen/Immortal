@@ -8,7 +8,6 @@ import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +30,7 @@ public class GatherBreathElixir extends ElixirItem {
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
-            if (PlayerUtil.getPlayerRealmStage(player).canLevelUp()) {
+            if (CultivationManager.canLevelUp(player)) {
                 CultivationManager.checkAndAddBreakThroughProgress(player, (float) RandomHelper.getMinMax(player.getRandom(), 0.35F, 0.55F));
             } else {
                 CultivationManager.checkAndAddBreakThroughProgress(player, 1F);
@@ -41,7 +40,7 @@ public class GatherBreathElixir extends ElixirItem {
 
     @Override
     public Optional<RealmType> getLowestRealm(CultivationType cultivationType) {
-        return cultivationType == CultivationTypes.SPIRITUAL ? Optional.of(RealmTypes.QI_REFINING.pre()) : Optional.empty();
+        return cultivationType == CultivationTypes.SPIRITUAL ? Optional.of(RealmTypes.QI_REFINING.first()) : Optional.empty();
     }
 
     @Override

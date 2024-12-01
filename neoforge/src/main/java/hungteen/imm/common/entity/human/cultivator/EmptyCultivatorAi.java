@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-12-06 23:08
  **/
 public class EmptyCultivatorAi {
@@ -57,7 +57,7 @@ public class EmptyCultivatorAi {
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
                 } else if (BrainUtil.healthBelow(cultivator, 0.3D) || cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_MELEE_ATTACK.get())) {
                     cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.ESCAPE.get());
-                } else if(cultivator.distanceToSqr(opt.get()) > 300 && cultivator.getRandom().nextFloat() < 0.05F){
+                } else if (cultivator.distanceToSqr(opt.get()) > 300 && cultivator.getRandom().nextFloat() < 0.05F) {
                     cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.RANGE_FIGHT.get());
                 }
             } else if (activity.equals(IMMActivities.RANGE_FIGHT.get())) {
@@ -71,7 +71,7 @@ public class EmptyCultivatorAi {
             } else if (activity.equals(IMMActivities.ESCAPE.get())) {
                 if (opt.isEmpty()) {
                     cultivator.getBrain().setActiveActivityIfPossible(Activity.IDLE);
-                } else if(cultivator.distanceToSqr(opt.get()) > 300 && ! BrainUtil.healthBelow(cultivator, 0.5)){
+                } else if (cultivator.distanceToSqr(opt.get()) > 300 && !BrainUtil.healthBelow(cultivator, 0.5)) {
                     cultivator.getBrain().setActiveActivityIfPossible(IMMActivities.RANGE_FIGHT.get());
                 }
             } else {
@@ -82,8 +82,8 @@ public class EmptyCultivatorAi {
             }
         });
         // Refresh inventory check.
-        if(cultivator.tickCount % 40 == 5){
-            if(cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_MELEE_ATTACK.get()) && cultivator.hasItemStack(ItemUtil::isMeleeWeapon)){
+        if (cultivator.tickCount % 40 == 5) {
+            if (cultivator.getBrain().hasMemoryValue(IMMMemories.UNABLE_MELEE_ATTACK.get()) && cultivator.hasItemStack(ItemUtil::isMeleeWeapon)) {
                 cultivator.getBrain().eraseMemory(IMMMemories.UNABLE_MELEE_ATTACK.get());
             }
         }
@@ -112,11 +112,11 @@ public class EmptyCultivatorAi {
      */
     public static void initIdleBehaviors(Brain<EmptyCultivator> brain, float speed) {
         brain.addActivity(Activity.IDLE, 10, ImmutableList.of(
-                //寻找目标
+                //寻找目标。
 //                new StartFighting<>(EmptyCultivatorAi::findNearestValidAttackTarget),
-                //吃东西
+                //吃东西。
                 new EatFood(),
-                //四处逛逛
+                //四处逛逛。
                 new RunOne<>(ImmutableList.of(
                         Pair.of(RandomStroll.stroll(speed), 1),
                         Pair.of(SetWalkTargetFromLookTarget.create(speed, 3), 1),
@@ -124,7 +124,7 @@ public class EmptyCultivatorAi {
                         Pair.of(InteractWith.of(EntityType.WOLF, 8, MemoryModuleType.INTERACTION_TARGET, speed, 2), 1),
                         Pair.of(new DoNothing(30, 60), 1)
                 )),
-                //瞅你咋地
+                //瞅你咋地。
                 new RunOne<>(ImmutableList.of(
                         Pair.of(SetEntityLookTarget.create(EntityType.PLAYER, 12.0F), 1),
                         Pair.of(SetEntityLookTarget.create(type -> type.getType().is(IMMEntityTags.HUMAN_BEINGS), 8.0F), 1),
@@ -216,11 +216,11 @@ public class EmptyCultivatorAi {
         });
     }
 
-    public static boolean lowLevelLiving(LivingEntity livingEntity){
-        return ((! livingEntity.getAttributes().hasAttribute(Attributes.ARMOR) || livingEntity.getArmorValue() < 8) && livingEntity.getHealth() < 20) || livingEntity.getHealth() < 5;
+    public static boolean lowLevelLiving(LivingEntity livingEntity) {
+        return ((!livingEntity.getAttributes().hasAttribute(Attributes.ARMOR) || livingEntity.getArmorValue() < 8) && livingEntity.getHealth() < 20) || livingEntity.getHealth() < 5;
     }
 
-    public static boolean highLevelLiving(LivingEntity livingEntity){
+    public static boolean highLevelLiving(LivingEntity livingEntity) {
         return (livingEntity.getAttributes().hasAttribute(Attributes.ARMOR) && livingEntity.getArmorValue() > 16) || livingEntity.getHealth() > 30;
     }
 

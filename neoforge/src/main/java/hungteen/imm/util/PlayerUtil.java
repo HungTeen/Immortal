@@ -265,7 +265,7 @@ public class PlayerUtil {
     }
 
     public static boolean reachThreshold(Player player) {
-        return getPlayerRealmStage(player).canLevelUp() || getCultivation(player) >= getMaxCultivation(player);
+        return CultivationManager.hasThreshold(player) || getCultivation(player) >= getMaxCultivation(player);
     }
 
     /* Operations about Player Range Data */

@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.entity.IMMMob;
@@ -46,10 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -197,12 +194,12 @@ public class SharpStake extends IMMMob implements Enemy {
 
     @Override
     public RealmType getDefaultRealm() {
-        return RealmTypes.YAOGUAI_LEVEL_1;
+        return RealmTypes.YAOGUAI_LEVEL_1.first();
     }
 
     @Override
-    public List<QiRootType> getSpiritualTypes() {
-        return List.of(QiRootTypes.METAL);
+    public Set<QiRootType> getRoots() {
+        return Set.of(QiRootTypes.METAL);
     }
 
     @Override

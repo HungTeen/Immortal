@@ -1,6 +1,6 @@
 package hungteen.imm.common.cultivation;
 
-import hungteen.imm.api.cultivation.IHasQi;
+import hungteen.imm.api.entity.HasQi;
 import hungteen.imm.common.entity.misc.FlyingItemEntity;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.LevelUtil;
@@ -18,7 +18,7 @@ public class QiManager {
     public static void addQi(Entity entity, float amount){
         if(entity instanceof Player player){
             PlayerUtil.addQiAmount(player, amount);
-        } else if (entity instanceof IHasQi qiEntity) {
+        } else if (entity instanceof HasQi qiEntity) {
             if(! qiEntity.isQiFull()){
                 qiEntity.addQiAmount(amount);
             }

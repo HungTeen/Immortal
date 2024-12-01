@@ -6,10 +6,10 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.IHasQi;
-import hungteen.imm.api.cultivation.IHasRoot;
+import hungteen.imm.api.entity.HasQi;
+import hungteen.imm.api.entity.HasRoot;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.interfaces.IHasSpell;
+import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.entity.IMMEntityData;
@@ -227,11 +227,11 @@ public class EntityUtil {
     }
 
     public static int getSpellLevel(Entity entity, SpellType spell) {
-        return entity instanceof Player player ? PlayerUtil.getSpellLevel(player, spell) : entity instanceof IHasSpell e ? e.getSpellLevel(spell) : 0;
+        return entity instanceof Player player ? PlayerUtil.getSpellLevel(player, spell) : entity instanceof SpellCaster e ? e.getSpellLevel(spell) : 0;
     }
 
     public static boolean hasLearnedSpell(Entity entity, SpellType spell, int level) {
-        return entity instanceof Player player ? PlayerUtil.hasLearnedSpell(player, spell, level) : entity instanceof IHasSpell e && e.hasLearnedSpell(spell, level);
+        return entity instanceof Player player ? PlayerUtil.hasLearnedSpell(player, spell, level) : entity instanceof SpellCaster e && e.hasLearnedSpell(spell, level);
     }
 
     public static boolean hasLearnedSpell(Entity entity, SpellType spell) {
@@ -239,13 +239,13 @@ public class EntityUtil {
     }
 
     public static float getMana(Entity entity) {
-        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof IHasQi manaEntity ? manaEntity.getQiAmount() : 0;
+        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof HasQi manaEntity ? manaEntity.getQiAmount() : 0;
     }
 
     public static void addMana(Entity entity, float amount) {
         if (entity instanceof Player player) {
             PlayerUtil.addQiAmount(player, amount);
-        } else if (entity instanceof IHasQi manaEntity) {
+        } else if (entity instanceof HasQi manaEntity) {
             manaEntity.addQiAmount(amount);
         }
     }
@@ -257,7 +257,7 @@ public class EntityUtil {
     public static boolean isManaFull(Entity entity) {
         if (entity instanceof Player player) {
             return PlayerUtil.isQiFull(player);
-        } else if (entity instanceof IHasQi manaEntity) {
+        } else if (entity instanceof HasQi manaEntity) {
             return manaEntity.isQiFull();
         }
         return true;
@@ -337,7 +337,7 @@ public class EntityUtil {
     public static List<QiRootType> getRoots(Entity entity, @Nullable Player viewPlayer) {
         if (viewPlayer == null) {
             return entity instanceof Player player ? PlayerUtil.getRoots(player)
-                    : entity instanceof IHasRoot iHasRoot ? iHasRoot.getSpiritualTypes() : List.of();
+                    : entity instanceof HasRoot iHasRoot ? iHasRoot.getRoots().stream().toList() : List.of();
         }
         return PlayerUtil.filterSpiritRoots(viewPlayer, getRoots(entity));
     }

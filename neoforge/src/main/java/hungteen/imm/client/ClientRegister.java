@@ -151,9 +151,9 @@ public class ClientRegister {
         event.registerLayerDefinition(IMMModelLayers.EARTH_SPIRIT, EarthSpiritModel::createBodyLayer);
 
         /* Zombie */
-        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE, SpiritualZombieModel::createBodyLayer);
-        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(IMMModelLayers.SPIRITUAL_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE, QiZombieModel::createBodyLayer);
+        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
+        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* Golem */
         event.registerLayerDefinition(IMMModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);

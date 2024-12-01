@@ -8,7 +8,7 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.interfaces.IHuman;
+import hungteen.imm.api.entity.HumanLike;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.entity.IMMDataSerializers;
@@ -24,6 +24,7 @@ import hungteen.imm.common.menu.ImmortalMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
 import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
+import hungteen.imm.util.interfaces.InventorySwitcher;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -65,9 +66,7 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import net.neoforged.neoforge.common.CommonHooks;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -78,7 +77,7 @@ import java.util.function.Predicate;
  * @author HungTeen
  * @create 2022-10-21 18:23
  **/
-public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
+public abstract class HumanEntity extends IMMGrowableMob implements HumanLike, InventorySwitcher {
 
     private static final EntityDataAccessor<HumanSetting> HUMAN_SETTING = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SETTING.get());
     private static final EntityDataAccessor<HumanSectData> SECT_DATA = SynchedEntityData.defineId(HumanEntity.class, IMMDataSerializers.HUMAN_SECT_DATA.get());
@@ -126,7 +125,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     }
 
     @Override
-    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
         return CultivationManager.getQiRoots(accessor.getRandom());
     }
 
@@ -183,47 +182,6 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
 
     public void fillSpecialTrade(TradeOffers offers, RandomSource random){
 
-    }
-
-    public boolean hasItemStack(Predicate<ItemStack> predicate) {
-        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
-            if (predicate.test(this.getInventory().getItem(i))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<ItemStack> filterFromInventory(Predicate<ItemStack> predicate) {
-        List<ItemStack> list = new ArrayList<>();
-        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
-            if (predicate.test(this.getInventory().getItem(i))) {
-                list.add(this.getInventory().getItem(i));
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Switch one predicate item from inventory to equipment slot.
-     */
-    public boolean switchInventory(EquipmentSlot equipmentSlot, Predicate<ItemStack> predicate) {
-        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
-            if (predicate.test(this.getInventory().getItem(i))) {
-                ItemStack stack = this.getItemBySlot(equipmentSlot).copy();
-                this.setItemSlot(equipmentSlot, this.getInventory().getItem(i).copy());
-                this.getInventory().setItem(i, stack);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Switch one predicate item from inventory to hand.
-     */
-    public boolean switchInventory(InteractionHand hand, Predicate<ItemStack> predicate) {
-        return switchInventory(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, predicate);
     }
 
     @Override
@@ -491,6 +449,11 @@ public abstract class HumanEntity extends IMMGrowableMob implements IHuman {
     @Override
     public SoundEvent getNotifyTradeSound() {
         return SoundEvents.VILLAGER_TRADE;
+    }
+
+    @Override
+    public Mob self() {
+        return this;
     }
 
     @Override

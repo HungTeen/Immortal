@@ -46,9 +46,9 @@ public class IMMModelLayers {
 
     /* Zombie */
 
-    public static final ModelLayerLocation SPIRITUAL_ZOMBIE = register("spiritual_zombie");
-    public static final ModelLayerLocation SPIRITUAL_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
-    public static final ModelLayerLocation SPIRITUAL_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
+    public static final ModelLayerLocation QI_ZOMBIE = register("spiritual_zombie");
+    public static final ModelLayerLocation QI_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
+    public static final ModelLayerLocation QI_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
 
     /* Golem */
 

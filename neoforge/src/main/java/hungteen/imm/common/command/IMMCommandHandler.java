@@ -11,7 +11,7 @@ public class IMMCommandHandler {
 
 //    public static final SuggestionProvider<CommandSourceStack> ALL_ROOTS = SuggestionProviders.initialize(
 //            Util.prefix("roots"), ((context, builder) -> {
-//                return SharedSuggestionProvider.suggest(ImmortalAPI.get().getSpiritualTypes().stream().map(IComponentEntry::getName).collect(Collectors.toList()), builder);
+//                return SharedSuggestionProvider.suggest(ImmortalAPI.get().getRoots().stream().map(IComponentEntry::getName).collect(Collectors.toList()), builder);
 //            }));
 //
 //    public static final SuggestionProvider<CommandSourceStack> ALL_SPELLS = SuggestionProviders.initialize(

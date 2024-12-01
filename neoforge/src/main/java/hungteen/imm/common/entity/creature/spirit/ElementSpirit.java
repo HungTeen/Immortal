@@ -86,13 +86,13 @@ public abstract class ElementSpirit extends IMMMob {
     private static RealmType getRealmByLevel(int level) {
         switch (level) {
             case 1 -> {
-                return RealmTypes.YAOGUAI_LEVEL_1;
+                return RealmTypes.YAOGUAI_LEVEL_1.first();
             }
             case 2 -> {
-                return RealmTypes.YAOGUAI_LEVEL_2;
+                return RealmTypes.YAOGUAI_LEVEL_2.pre();
             }
             default -> {
-                return RealmTypes.YAOGUAI_LEVEL_3;
+                return RealmTypes.YAOGUAI_LEVEL_3.pre();
             }
         }
     }
@@ -170,7 +170,7 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     @Override
-    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
         return List.of(QiRootTypes.SPIRIT, getSpiritualRoot());
     }
 

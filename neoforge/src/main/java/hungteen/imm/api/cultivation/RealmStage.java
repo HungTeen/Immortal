@@ -10,13 +10,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface RealmStage extends EnumEntry {
 
-    float getPercent();
+    /**
+     * @return 此阶段能否升级到下一大境界。
+     */
+    boolean canLevelUp(RealmType type);
 
-    boolean canLevelUp();
-
-    default boolean hasThreshold() {
-        return !canLevelUp();
-    }
+    /**
+     * @return 此阶段是否需要突破瓶颈。
+     */
+    boolean hasThreshold(RealmType type);
 
     @Override
     @NotNull

@@ -1,4 +1,4 @@
-package hungteen.imm.api.events;
+package hungteen.imm.api.event;
 
 import hungteen.imm.api.spell.SpellType;
 import net.minecraft.world.entity.player.Player;

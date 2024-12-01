@@ -1,11 +1,12 @@
-package hungteen.imm.api.cultivation;
+package hungteen.imm.api.entity;
 
 /**
+ * 能够容纳灵力的实体。
  * @author PangTeen
  * @program Immortal
  * @create 2023/8/19 15:45
  */
-public interface IHasQi {
+public interface HasQi {
 
     /**
      * @return 灵力含量。

@@ -61,6 +61,17 @@ public class Util {
         return resourceKey.registry() + ":" + resourceKey.location();
     }
 
+    /**
+     * @return 变成首字母大写。
+     */
+    public static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+
     public static boolean isDebugMode(){
         return getProxy().isDebugMode();
     }

@@ -7,14 +7,10 @@ import hungteen.imm.IMMConfigs;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.*;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.effect.IMMEffects;
-import hungteen.imm.common.tag.IMMBlockTags;
-import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
@@ -32,10 +28,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
@@ -78,8 +71,7 @@ public class CultivationManager {
      * @return 随机生成的灵根。
      */
     public static List<QiRootType> getQiRoots(RandomSource random) {
-        final double[] rootChances = {IMMConfigs.getNoRootChance(), IMMConfigs.getOneRootChance(), IMMConfigs.getTwoRootChance(), IMMConfigs.getThreeRootChance(), IMMConfigs.getFourRootChance()};
-        return getQiRoots(random, rootChances);
+        return getQiRoots(random, IMMConfigs.getRootChances());
     }
 
     /**
@@ -141,14 +133,21 @@ public class CultivationManager {
         }
     }
 
+    public static boolean hasThreshold(Entity entity){
+        return RealmManager.getRealm(entity).hasThreshold();
+    }
+
+    public static boolean canLevelUp(Entity entity){
+        return RealmManager.getRealm(entity).canLevelUp();
+    }
+
     /**
      * 尝试直接改变境界。
      *
      * @return 是否改变成功。
      */
     public static boolean checkAndSetRealm(Player player, RealmType realm, boolean force) {
-        // 自身修为达到了此境界的要求。
-        return Boolean.TRUE.equals(PlayerUtil.getData(player, m -> {
+        return PlayerUtil.getData(player, m -> {
             CultivationData cultivationData = m.getCultivationData();
             if (EntityHelper.isServer(player)) {
                 // 自身修为达到了此境界的要求。
@@ -168,7 +167,7 @@ public class CultivationManager {
                 cultivationData.setRealmType(realm);
             }
             return true;
-        }));
+        });
     }
 
     public static void breakThrough(ServerPlayer player, RealmType realm, RealmStage stage){
@@ -283,81 +282,8 @@ public class CultivationManager {
         return getConsciousness(entity) / 10D;
     }
 
-    /**
-     * 有大境界差距并且左边的大。
-     */
-    public static boolean hasRealmGapAndLarger(Entity entity1, Entity entity2) {
-        final RealmType realm1 = getRealm(entity1);
-        final RealmType realm2 = getRealm(entity2);
-        return hasRealmGap(realm1, realm2) && compare(realm1, realm2);
-    }
-
-    public static int getRealmGap(Entity entity1, Entity entity2) {
-        return getRealmGap(getRealm(entity1), getRealm(entity2));
-    }
-
-    public static int getRealmGap(RealmType realm1, RealmType realm2) {
-        return realm1.getRealmValue() / 100 - realm2.getRealmValue() / 100;
-    }
-
-    /**
-     * 有大境界差距。
-     */
-    public static boolean hasRealmGap(RealmType realm1, RealmType realm2) {
-        return getRealmGap(realm1, realm2) != 0;
-    }
-
-    public static boolean compare(RealmType realm1, RealmType realm2) {
-        return realm1.getRealmValue() > realm2.getRealmValue();
-    }
-
-    public static RealmType getRealm(Entity entity) {
-        if(entity instanceof ICultivatable realmEntity){
-            return realmEntity.getRealm();
-        } else if(entity instanceof LivingEntity){
-            if(entity instanceof Player player){
-                return PlayerUtil.getPlayerRealm(player);
-            }
-            return VanillaCultivationCompat.getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
-        } else {
-            return VanillaCultivationCompat.getDefaultRealm(entity.getType(), RealmTypes.NOT_IN_REALM);
-        }
-    }
-
-    public static RealmType getRealm(ItemStack stack){
-        if(stack.is(IMMItemTags.COMMON_ARTIFACTS)) {
-            return RealmTypes.COMMON_ARTIFACT;
-        } else if(stack.is(IMMItemTags.MODERATE_ARTIFACTS)) {
-            return RealmTypes.MODERATE_ARTIFACT;
-        } else if(stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) {
-            return RealmTypes.ADVANCED_ARTIFACT;
-        } else if(stack.getItem() instanceof IArtifactItem artifactItem) {
-            return artifactItem.getArtifactRealm(stack);
-        } else if(stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) {
-            return artifactBlock.getArtifactRealm(stack);
-        }
-        return RealmTypes.NOT_IN_REALM;
-    }
-
-    public static RealmType getRealm(BlockState state){
-        if(state.is(IMMBlockTags.COMMON_ARTIFACTS)) {
-            return RealmTypes.COMMON_ARTIFACT;
-        } else if(state.is(IMMBlockTags.MODERATE_ARTIFACTS)) {
-            return RealmTypes.MODERATE_ARTIFACT;
-        } else if(state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) {
-            return RealmTypes.ADVANCED_ARTIFACT;
-        } else if(state.getBlock() instanceof IArtifactBlock artifactBlock) {
-            return artifactBlock.getRealm(state);
-        }
-        return RealmTypes.NOT_IN_REALM;
-    }
-
-    public static boolean notCommon(RealmType type) {
-        return type != RealmTypes.NOT_IN_REALM && type != RealmTypes.MORTALITY;
-    }
-
     public static CultivationType getCultivationType(Entity entity) {
-        return getRealm(entity).getCultivationType();
+        return RealmManager.getRealm(entity).getCultivationType();
     }
 
     /**

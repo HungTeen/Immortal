@@ -1,6 +1,4 @@
-package hungteen.imm.api.records;
-
-import hungteen.imm.api.spell.SpellType;
+package hungteen.imm.api.spell;
 
 /**
  * @program Immortal

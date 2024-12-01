@@ -5,12 +5,64 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @program Immortal
  * @author HungTeen
  * @create 2023-06-04 22:10
  **/
 public class MathUtil {
+
+    /**
+     * 用于生成一个平滑的数组，数组值从 [min, max] 之间均匀分布。
+     * @param i 当前索引，[0, len)。
+     * @param len 数组长度。
+     * @param min 最小值。
+     * @param max 最大值。
+     * @return 第 i 个元素的值。
+     */
+    public static int uniformArrayValue(int i, int len, int min, int max){
+        return min + (max - min) * i / (len - 1);
+    }
+
+    public static int[] uniformArray(int len, int min, int max){
+        return uniformArray(len, min, max, false);
+    }
+
+    public static int[] uniformArray(int len, int min, int max, boolean check){
+        if(check) {
+            assert (max - min) % (len - 1) == 0;
+        }
+        int[] array = new int[len];
+        for(int i = 0; i < len; i++){
+            array[i] = uniformArrayValue(i, len, min, max);
+        }
+        return array;
+    }
+
+    public static int[] sameArray(int len, int value){
+        int[] array = new int[len];
+        Arrays.fill(array, value);
+        return array;
+    }
+
+    /**
+     * 生成一个动态权重数组，用于调整难度。
+     * @param factor 值越大，数组后面也越大。
+     * @param n 数组的长度。
+     * @param baseWeight 基础权重。
+     */
+    public static List<Integer> genWeights(float factor, int n, int baseWeight) {
+        List<Integer> weights = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            float proportion = (float) i / (n - 1);
+            weights.add(baseWeight + (int)(factor * proportion * 100));
+        }
+        return weights;
+    }
 
     public static boolean inSlotArea(double x, double y, int posX, int posY, int lenX, int lenY){
         return x >= posX && x <= posX + lenX && y >= posY && y <= posY + lenY;

@@ -1,4 +1,4 @@
-package hungteen.imm.api.interfaces;
+package hungteen.imm.api.entity;
 
 import hungteen.imm.api.registry.ISectType;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
  * @program Immortal
  * @create 2023/5/20 9:55
  */
-public interface IHasSect {
+public interface SectMember {
 
     /**
      * The sect everyone knows about it, maybe not real.

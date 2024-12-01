@@ -6,7 +6,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
@@ -160,7 +160,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
         return List.of(QiRootTypes.FIRE, QiRootTypes.WOOD);
     }
 
@@ -172,8 +172,8 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     @Override
     public void updateRealmByAge(int age) {
         switch (age) {
-            case 1 -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_2);
-            default -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_3);
+            case 1 -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_2.pre());
+            default -> this.setRealm(RealmTypes.YAOGUAI_LEVEL_3.pre());
         }
         this.addQiAmount(this.getMaxQiAmount());
     }

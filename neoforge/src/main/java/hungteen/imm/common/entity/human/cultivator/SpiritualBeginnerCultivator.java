@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.basic.IntimidationSpell;

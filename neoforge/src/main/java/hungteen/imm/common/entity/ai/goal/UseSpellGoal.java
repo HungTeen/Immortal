@@ -1,9 +1,8 @@
 package hungteen.imm.common.entity.ai.goal;
 
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.interfaces.IHasSpell;
-import hungteen.imm.api.records.Spell;
-import net.minecraft.world.entity.ai.behavior.StartAttacking;
+import hungteen.imm.api.entity.SpellCaster;
+import hungteen.imm.api.spell.Spell;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
@@ -15,9 +14,9 @@ import java.util.EnumSet;
  **/
 public class UseSpellGoal extends Goal {
 
-    private final IHasSpell spellEntity;
+    private final SpellCaster spellEntity;
 
-    public UseSpellGoal(IHasSpell spellEntity) {
+    public UseSpellGoal(SpellCaster spellEntity) {
         this.spellEntity = spellEntity;
         this.setFlags(EnumSet.of(Flag.MOVE));
     }

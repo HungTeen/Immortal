@@ -2,6 +2,7 @@ package hungteen.imm.compat.jade;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
+import hungteen.imm.api.entity.HasQi;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -36,6 +37,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         PlayerHelper.getClientPlayer().ifPresent(player -> {
+            // 灵眼的作用。
             if(PlayerUtil.isSpellOnCircle(player, SpellTypes.SPIRIT_EYES)) {
                 if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && CultivationManager.mayHaveRoots(entityAccessor.getEntity())) {
                     List<QiRootType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getRoots(entityAccessor.getEntity()));
@@ -43,10 +45,11 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                 }
                 if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 2)) {
                     final RealmType playerRealm = PlayerUtil.getPlayerRealm(player);
-                    final RealmType realm = CultivationManager.getRealm(entityAccessor.getEntity());
+                    final RealmType realm = RealmManager.getRealm(entityAccessor.getEntity());
                     final MutableComponent component = RealmTypes.getCategory().append(": ");
-                    if (CultivationManager.hasRealmGap(playerRealm, realm) && !CultivationManager.compare(playerRealm, realm)) {
-                        final int gap = CultivationManager.getRealmGap(playerRealm, realm);
+                    if (RealmManager.hasRealmGap(playerRealm, realm) && !RealmManager.compare(playerRealm, realm)) {
+                        final int gap = RealmManager.getRealmGap(playerRealm, realm);
+                        // 只有一个大境界的差距也是可以显示的。
                         if (gap == 1) {
                             iTooltip.add(component.append(realm.getComponent()));
                         } else {
@@ -92,7 +95,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
     @Override
     public void appendServerData(CompoundTag compoundTag, EntityAccessor entityAccessor) {
         // 除了玩家外的实体并没有同步mana到客户端。
-        if(entityAccessor.getEntity() instanceof IHasQi manaEntity){
+        if(entityAccessor.getEntity() instanceof HasQi manaEntity){
             compoundTag.putFloat("Mana", manaEntity.getQiAmount());
             compoundTag.putFloat("MaxMana", manaEntity.getMaxQiAmount());
         }

@@ -48,9 +48,6 @@ public interface IMMDataSerializers {
 
     HTHolder<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new CodecEntityDataSerializer<>("HumanSetting", HumanSetting.CODEC));
 
-    /**
-     * {@link IMMInitializer#defferRegister(IEventBus)}
-     */
     static void initialize(IEventBus event){
         NeoHelper.initRegistry(DATA_SERIALIZERS, event);
     }

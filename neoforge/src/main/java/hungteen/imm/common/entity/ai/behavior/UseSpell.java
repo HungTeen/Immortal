@@ -1,21 +1,14 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.interfaces.IHasSpell;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**

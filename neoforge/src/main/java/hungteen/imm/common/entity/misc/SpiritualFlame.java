@@ -5,9 +5,9 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.cultivation.ICultivatable;
-import hungteen.imm.api.cultivation.IHasQi;
 import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.entity.HasQi;
+import hungteen.imm.api.entity.HasRealm;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.RealmTypes;
@@ -42,7 +42,7 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
  * @author HungTeen
  * @create 2022-10-07 21:40
  **/
-public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, ICultivatable, IHasQi {
+public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn, HasRealm, HasQi {
 
     public static final float MAX_AMOUNT = Constants.MAX_SPIRITUAL_FLAME_AMOUNT;
     private static final int RECOVER_CD = 50;

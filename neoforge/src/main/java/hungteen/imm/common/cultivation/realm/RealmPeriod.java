@@ -1,6 +1,7 @@
 package hungteen.imm.common.cultivation.realm;
 
 import hungteen.imm.api.cultivation.RealmStage;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,46 +16,44 @@ public enum RealmPeriod implements RealmStage {
     /**
      * 前期。
      */
-    PRELIMINARY(0F, false),
+    PRELIMINARY(false),
 
     /**
      * 中期。
      */
-    MIDTERM(0.35F, false),
+    MIDTERM(false),
 
     /**
      * 后期。
      */
-    SOPHISTICATION(0.7F, false),
+    SOPHISTICATION(false),
 
     /**
      * 小圆满。
      */
-    CLOSE_TO_PERFECTION(0.9F, true),
+    CLOSE_TO_PERFECTION(true),
 
     /**
      * 大圆满。
      */
-    PERFECTION(1F, true),
+    PERFECTION(true),
 
     ;
 
-    private final float percent;
     private final boolean canLevelUp;
 
-    RealmPeriod(float percent, boolean canLevelUp) {
-        this.percent = percent;
+    RealmPeriod(boolean canLevelUp) {
         this.canLevelUp = canLevelUp;
     }
 
     @Override
-    public float getPercent() {
-        return percent;
+    public boolean canLevelUp(RealmType type) {
+        return canLevelUp;
     }
 
     @Override
-    public boolean canLevelUp() {
-        return canLevelUp;
+    public boolean hasThreshold(RealmType type) {
+        return this != CLOSE_TO_PERFECTION;
     }
 
     @Override

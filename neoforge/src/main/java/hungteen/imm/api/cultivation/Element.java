@@ -1,6 +1,7 @@
 package hungteen.imm.api.cultivation;
 
 import com.mojang.serialization.Codec;
+import hungteen.imm.util.Util;
 import net.minecraft.util.StringRepresentable;
 
 import java.util.stream.Stream;
@@ -78,6 +79,6 @@ public enum Element implements StringRepresentable {
 
     @Override
     public String getSerializedName() {
-        return name().toLowerCase();
+        return Util.capitalize(name().toLowerCase());
     }
 }

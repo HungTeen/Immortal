@@ -23,6 +23,15 @@ public interface QiRootType extends SimpleEntry, WeightedEntry {
     Set<Element> getElements();
 
     /**
+     * 是否包含某个元素。
+     * @param element the element.
+     * @return true if this root contains the element.
+     */
+    default boolean containsElement(Element element){
+        return getElements().contains(element);
+    }
+
+    /**
      * 五行灵根为普通灵根。
      * @return true if this is a common root.
      */

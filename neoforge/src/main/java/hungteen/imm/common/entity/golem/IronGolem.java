@@ -119,7 +119,7 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
-    public List<QiRootType> getSpiritualTypes() {
+    public List<QiRootType> getRoots() {
         return List.of(QiRootTypes.METAL);
     }
 

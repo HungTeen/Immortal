@@ -17,7 +17,6 @@ import net.minecraft.util.random.Weight;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 /**
  * @program Immortal
@@ -30,8 +29,7 @@ public interface QiRootTypes {
 
     QiRootType METAL = register(new QiRootTypeImpl(
             "metal",
-            Set.of(Element.METAL),
-            IMMConfigs::getMetalWeight,
+            Element.METAL,
             1,
             ColorHelper.METAL_ROOT,
             0,
@@ -40,8 +38,7 @@ public interface QiRootTypes {
 
     QiRootType WOOD = register(new QiRootTypeImpl(
             "wood",
-            Set.of(Element.WOOD),
-            IMMConfigs::getWoodWeight,
+            Element.WOOD,
             2,
             ColorHelper.WOOD_ROOT,
             1,
@@ -50,8 +47,7 @@ public interface QiRootTypes {
 
     QiRootType WATER = register(new QiRootTypeImpl(
             "water",
-            Set.of(Element.WATER),
-            IMMConfigs::getWaterWeight,
+            Element.WATER,
             3,
             ColorHelper.WATER_ROOT,
             2,
@@ -60,8 +56,7 @@ public interface QiRootTypes {
 
     QiRootType FIRE = register(new QiRootTypeImpl(
             "fire",
-            Set.of(Element.FIRE),
-            IMMConfigs::getFireWeight,
+            Element.FIRE,
             4,
             ColorHelper.FIRE_ROOT,
             3,
@@ -70,8 +65,7 @@ public interface QiRootTypes {
 
     QiRootType EARTH = register(new QiRootTypeImpl(
             "earth",
-            Set.of(Element.EARTH),
-            IMMConfigs::getEarthWeight,
+            Element.EARTH,
             5,
             ColorHelper.EARTH_ROOT,
             4,
@@ -80,8 +74,7 @@ public interface QiRootTypes {
 
     QiRootType SPIRIT = register(new QiRootTypeImpl(
             "spirit",
-            Set.of(Element.SPIRIT),
-            IMMConfigs::getSpiritWeight,
+            Element.SPIRIT,
             6,
             ColorHelper.PURPLE.rgb(),
             5,
@@ -112,7 +105,10 @@ public interface QiRootTypes {
         return SPIRITUAL_TYPES;
     }
 
-    record QiRootTypeImpl(String name, Set<Element> elements, Supplier<Integer> weightSupplier, int priority,
+    /**
+     * 仅支持单元素灵根，多元素灵根请另外继承。
+     */
+    record QiRootTypeImpl(String name, Element element, int priority,
                           int spiritualColor, int id, ChatFormatting textColor) implements QiRootType {
 
         @Override
@@ -127,12 +123,12 @@ public interface QiRootTypes {
 
         @Override
         public Set<Element> getElements() {
-            return elements();
+            return Set.of(element());
         }
 
         @Override
         public boolean isCommonRoot() {
-            return elements().size() == 1 && ! elements().contains(Element.SPIRIT);
+            return !(element() == Element.SPIRIT);
         }
 
         @Override
@@ -142,9 +138,8 @@ public interface QiRootTypes {
 
         @Override
         public Weight getWeight() {
-            return Weight.of(this.weightSupplier.get());
+            return Weight.of(IMMConfigs.getRootWeight(element()));
         }
-
 
         @Override
         public int getSpiritualColor() {

@@ -1,20 +1,23 @@
 package hungteen.imm.common.entity;
 
-import hungteen.htlib.util.helper.CodecHelper;
+import com.mojang.serialization.Codec;
+import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.cultivation.*;
-import hungteen.imm.api.spell.SpellUsageCategory;
-import hungteen.imm.api.interfaces.IHasSpell;
-import hungteen.imm.api.records.Spell;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.entity.Cultivatable;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,6 +26,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
@@ -36,7 +41,7 @@ import java.util.*;
  * @program Immortal
  * @create 2022-10-21 18:37
  **/
-public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, IHasRoot, ICultivatable, IHasQi, IHasSpell {
+public abstract class IMMMob extends PathfinderMob implements IEntityWithComplexSpawn, Cultivatable {
 
     protected static final int MELEE_ATTACK_ID = 4;
     private static final EntityDataAccessor<RealmType> REALM = SynchedEntityData.defineId(IMMMob.class, IMMDataSerializers.REALM.get());
@@ -44,8 +49,8 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     protected static final EntityDataAccessor<Integer> CURRENT_ANIMATION = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Long> ANIMATION_START_TICK = SynchedEntityData.defineId(IMMMob.class, EntityDataSerializers.LONG);
     private final Map<SpellType, Integer> learnedSpells = new HashMap<>();
-    private final Set<QiRootType> spiritualRoots = new HashSet<>();
-    protected float spiritualMana;
+    private final Set<QiRootType> qiRoots = new HashSet<>();
+    protected float qiAmount;
     private int spellCooldown;
 
     public IMMMob(EntityType<? extends IMMMob> type, Level level) {
@@ -56,10 +61,17 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(REALM, getDefaultRealm())
+        builder.define(REALM, RealmTypes.MORTALITY)
                 .define(USING_SPELL, Optional.empty())
                 .define(CURRENT_ANIMATION, AnimationTypes.IDLING.ordinal())
                 .define(ANIMATION_START_TICK, 0L);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.ATTACK_DAMAGE)
+                .add(IMMAttributes.MAX_QI_AMOUNT.holder())
+                ;
     }
 
     @Nullable
@@ -76,14 +88,34 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
      * 加入世界前的最后处理。
      */
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
-        this.spiritualRoots.addAll(this.createSpiritualRoots(accessor));
+        this.qiRoots.addAll(this.createRoots(accessor));
+        this.setRealm(this.getInitialRealm(accessor, difficultyInstance));
         createLearnSpells().forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
+        getRealm().onReachRealm(this);
     }
 
     /**
      * 随机初始化灵根。
      */
-    protected Collection<QiRootType> createSpiritualRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
+        return List.of();
+    }
+
+    /**
+     * 默认的境界随机实现，首先根据难度和权重随机选择一个初始大境界，小境界均匀随机。
+     */
+    public RealmType getInitialRealm(ServerLevelAccessor accessor, DifficultyInstance difficulty) {
+        List<MultiRealm> multiRealms = getMultiRealms();
+        List<Integer> weights = MathUtil.genWeights(difficulty.getEffectiveDifficulty(), multiRealms.size(), 1);
+        MultiRealm multiRealm = SimpleWeightedList.list(multiRealms, weights).getItem(accessor.getRandom()).orElseThrow();
+        RealmType[] realms = multiRealm.getRealms();
+        return realms[accessor.getRandom().nextInt(realms.length)];
+    }
+
+    /**
+     * @return 获取可能的大境界。
+     */
+    public List<MultiRealm> getMultiRealms() {
         return List.of();
     }
 
@@ -93,20 +125,19 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-//        final int count = additionalData.readInt();
-//        this.spiritualRoots.clear();
-//        for (int i = 0; i < count; ++i) {
-//            Holder<ISpiritualType> root = SpiritualTypes.registry().helper().getStreamCodec().decode(additionalData);
-//            this.spiritualRoots.add(root.value());
-//        }
+        this.qiRoots.clear();
+        final int size = additionalData.readInt();
+        for (int i = 0; i < size; ++i) {
+            QiRootTypes.registry().getValue(additionalData.readResourceLocation()).ifPresent(this.qiRoots::add);
+        }
     }
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-//        buffer.writeInt(this.spiritualRoots.size());
-//        this.spiritualRoots.forEach(type -> {
-//            buffer.writeRegistryIdUnsafe(SpiritualTypes.registry().getRegistry(), type);
-//        });
+        buffer.writeInt(this.qiRoots.size());
+        this.qiRoots.forEach(root -> {
+            buffer.writeResourceLocation(root.getLocation());
+        });
     }
 
     @Override
@@ -143,16 +174,6 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public boolean canAttack(LivingEntity living) {
-        if (super.canAttack(living)) {
-            //TODO 不攻击高境界。
-//            return RealmManager.getRealm(living);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public HTHitResult createHitResult() {
         return new HTHitResult(this.getTarget());
     }
@@ -161,83 +182,35 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         this.level().broadcastEntityEvent(this, (byte) id);
     }
 
-//    @Override
-//    public int getBaseExperienceReward() {
-//        final float realmXp = CultivationManager.getStageRequiredCultivation(getRealm(), getRealmStage()) * 0.05F;
-//        return (int) (realmXp + this.xpReward);
-//    }
-
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("EntityRealm")) {
-            CodecHelper.parse(RealmTypes.registry().byNameCodec(), tag.get("EntityRealm"))
-                    .result().ifPresentOrElse(this::setRealm, () -> this.setRealm(this.getDefaultRealm()));
-        }
-        if (tag.contains("UsingSpell")) {
-            SpellTypes.registry().getValue(tag.getString("UsingSpell")).ifPresent(this::setUsingSpell);
-        }
-        if (tag.contains("LearnedSpells")) {
+        NBTUtil.read(tag, RealmTypes.registry().byNameCodec(), "EntityRealm", this::setRealm);
+        NBTUtil.read(tag, SpellTypes.registry().byNameCodec(), "UsingSpell", this::setUsingSpell);
+        NBTUtil.readMap(tag, SpellTypes.registry().byNameCodec(), Codec.INT, "LearnedSpells", map -> {
             this.learnedSpells.clear();
-            final ListTag list = NBTUtil.list(tag, "LearnedSpells");
-            for (int i = 0; i < list.size(); ++i) {
-                final CompoundTag nbt = list.getCompound(i);
-                if (nbt.contains("Spell") && nbt.contains("Level")) {
-                    SpellTypes.registry().getValue(nbt.getString("Spell")).ifPresent(type -> {
-                        this.learnedSpells.put(type, nbt.getInt("Level"));
-                    });
-                }
-            }
-        }
-        if (tag.contains("SpiritualRoots")) {
-            this.spiritualRoots.clear();
-            final CompoundTag nbt = tag.getCompound("SpiritualRoots");
-            final int count = nbt.getInt("Count");
-            for (int i = 0; i < count; ++i) {
-                QiRootTypes.registry().getValue(nbt.getString("Root_" + i)).ifPresent(this.spiritualRoots::add);
-            }
-        }
-        if (tag.contains("SpiritualMana")) {
-            this.spiritualMana = tag.getFloat("SpiritualMana");
-        }
-        if (tag.contains("SpellCooldown")) {
-            this.spellCooldown = tag.getInt("SpellCooldown");
-        }
-        if (tag.contains("CurrentAnimation")) {
-            this.setCurrentAnimation(tag.getInt("CurrentAnimation"));
-        }
-        if (tag.contains("AnimationStartTick")) {
-            this.setAnimationStartTick(tag.getLong("AnimationStartTick"));
-        }
+            this.learnedSpells.putAll(map);
+        });
+        NBTUtil.readList(tag, QiRootTypes.registry().byNameCodec(), "Roots", list -> {
+            this.qiRoots.clear();
+            this.qiRoots.addAll(list);
+        });
+        NBTUtil.read(tag, tag::getFloat, "QiAmount", l -> this.qiAmount = l);
+        NBTUtil.read(tag, tag::getInt, "SpellCooldown", this::setCoolDown);
+        NBTUtil.read(tag, tag::getInt, "CurrentAnimation", this::setCurrentAnimation);
+        NBTUtil.read(tag, tag::getLong, "AnimationStartTick", this::setAnimationStartTick);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (this.getRealm() != null) {
-            CodecHelper.encodeNbt(RealmTypes.registry().byNameCodec(), this.getRealm())
-                    .result().ifPresent(nbt -> tag.put("EntityRealm", nbt));
-        }
-        this.getUsingSpell().ifPresent(spell -> tag.putString("UsingSpell", spell.getRegistryName()));
-        {
-            final ListTag list = new ListTag();
-            this.learnedSpells.forEach((spell, level) -> {
-                final CompoundTag nbt = new CompoundTag();
-                nbt.putString("Spell", spell.getRegistryName());
-                nbt.putInt("Level", level);
-                list.add(nbt);
-            });
-            tag.put("LearnedSpells", list);
-        }
-        {
-            final CompoundTag nbt = new CompoundTag();
-            nbt.putInt("Count", this.spiritualRoots.size());
-            for (int i = 0; i < this.spiritualRoots.size(); ++i) {
-                nbt.putString("Root_" + i, this.getSpiritualTypes().get(i).getRegistryName());
-            }
-            tag.put("SpiritualRoots", nbt);
-        }
-        tag.putFloat("SpiritualMana", this.spiritualMana);
+        NBTUtil.write(tag, RealmTypes.registry().byNameCodec(), "EntityRealm", this.getRealm());
+        this.getUsingSpell().ifPresent(spell -> {
+            NBTUtil.write(tag, SpellTypes.registry().byNameCodec(), "UsingSpell", spell);
+        });
+        NBTUtil.writeMap(tag, SpellTypes.registry().byNameCodec(), Codec.INT, "LearnedSpells", this.learnedSpells);
+        NBTUtil.writeList(tag, QiRootTypes.registry().byNameCodec(), "Roots", this.qiRoots);
+        NBTUtil.write(tag::putFloat, "QiAmount", this.qiAmount);
         tag.putInt("SpellCooldown", this.spellCooldown);
         tag.putInt("CurrentAnimation", this.getAnimationIndex());
         tag.putLong("AnimationStartTick", this.getAnimationStartTick());
@@ -305,13 +278,6 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         return entityData.get(USING_SPELL);
     }
 
-    /**
-     * 初始境界。
-     */
-    public RealmType getDefaultRealm() {
-        return RealmTypes.MORTALITY;
-    }
-
     @Nullable
     protected SoundEvent getSpawnSound() {
         return null;
@@ -319,12 +285,12 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public float getQiAmount() {
-        return this.spiritualMana;
+        return this.qiAmount;
     }
 
     @Override
     public void addQiAmount(float amount) {
-        this.spiritualMana = Mth.clamp(this.spiritualMana + amount, 0, this.getMaxQiAmount());
+        this.qiAmount = Mth.clamp(this.qiAmount + amount, 0, this.getMaxQiAmount());
     }
 
     @Override
@@ -363,8 +329,8 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public List<QiRootType> getSpiritualTypes() {
-        return spiritualRoots.stream().toList();
+    public Set<QiRootType> getRoots() {
+        return qiRoots;
     }
 
     public enum AnimationTypes {

@@ -1,21 +1,17 @@
 package hungteen.imm.client.model.entity;
 
-import hungteen.imm.common.entity.undead.SpiritualZombie;
+import hungteen.imm.common.entity.undead.QiZombie;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.ZombieModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.monster.Monster;
 
 /**
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-20 21:45
  **/
-public class SpiritualZombieModel<T extends SpiritualZombie> extends HumanoidModel<T> {
+public class QiZombieModel<T extends QiZombie> extends HumanoidModel<T> {
 
     public static LayerDefinition createBodyLayer(){
         return createBodyLayer(64, 64);
@@ -29,7 +25,7 @@ public class SpiritualZombieModel<T extends SpiritualZombie> extends HumanoidMod
         return LayerDefinition.create(meshDefinition, width, height);
     }
 
-    public SpiritualZombieModel(ModelPart modelPart) {
+    public QiZombieModel(ModelPart modelPart) {
         super(modelPart);
     }
 

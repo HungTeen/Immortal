@@ -1,6 +1,7 @@
 package hungteen.imm.common.cultivation.realm;
 
 import hungteen.imm.api.cultivation.RealmStage;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.util.Util;
 
 /**
@@ -16,15 +17,14 @@ public enum DummyPeriod implements RealmStage {
 
     ;
 
-
     @Override
-    public float getPercent() {
-        return 0;
+    public boolean canLevelUp(RealmType type) {
+        return this == COMMON;
     }
 
     @Override
-    public boolean canLevelUp() {
-        return this == COMMON;
+    public boolean hasThreshold(RealmType type) {
+        return true;
     }
 
     @Override

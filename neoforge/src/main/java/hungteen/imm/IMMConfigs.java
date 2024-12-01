@@ -1,5 +1,7 @@
 package hungteen.imm;
 
+import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.util.Constants;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -37,65 +39,21 @@ public class IMMConfigs {
 
                 builder.comment("Settings about spiritual roots.").push("Spiritual Roots Settings");
                 {
-                    ruleSettings.noRootChance = builder
-                            .translation("config.immortal.no_root_chance")
-                            .comment("The chance that players have no spiritual root.")
-                            .defineInRange("NoRootChance", 0.0, 0, 1);
+                    final float[] chances = new float[]{0, 0.1F, 0.2F, 0.3F, 0.3F};
+                    for (int i = 0; i < Constants.MAX_ROOT_AMOUNT; i++) {
+                        ruleSettings.rootChances[i] = builder
+                                .translation("config.immortal.root_chance_" + i)
+                                .comment("The chance that players have " + i + " spiritual roots.")
+                                .defineInRange("RootChance" + i, chances[i], 0, 1);
+                    }
 
-                    ruleSettings.oneRootChance = builder
-                            .translation("config.immortal.one_root_chance")
-                            .comment("The chance that players have one spiritual root.")
-                            .defineInRange("OneRootChance", 0.1, 0, 1);
-
-                    ruleSettings.twoRootChance = builder
-                            .translation("config.immortal.two_root_chance")
-                            .comment("The chance that players have two spiritual roots.")
-                            .defineInRange("TwoRootChance", 0.2, 0, 1);
-
-                    ruleSettings.threeRootChance = builder
-                            .translation("config.immortal.three_root_chance")
-                            .comment("The chance that players have three spiritual roots.")
-                            .defineInRange("ThreeRootChance", 0.3, 0, 1);
-
-                    ruleSettings.fourRootChance = builder
-                            .translation("config.immortal.four_root_chance")
-                            .comment("The chance that players have four spiritual roots.")
-                            .defineInRange("FourRootChance", 0.3, 0, 1);
-
-                    ruleSettings.metalRootWeight = builder
-                            .translation("config.immortal.metal_root_weight")
-                            .comment("The weight that players have metal spiritual root.")
-                            .defineInRange("MetalRootChance", 100, 0, 1000000);
-
-                    ruleSettings.woodRootWeight = builder
-                            .translation("config.immortal.wood_root_weight")
-                            .comment("The weight that players have wood spiritual root.")
-                            .defineInRange("WoodRootChance", 100, 0, 1000000);
-
-                    ruleSettings.waterRootWeight = builder
-                            .translation("config.immortal.water_root_weight")
-                            .comment("The weight that players have water spiritual root.")
-                            .defineInRange("WaterRootChance", 100, 0, 1000000);
-
-                    ruleSettings.fireRootWeight = builder
-                            .translation("config.immortal.fire_root_weight")
-                            .comment("The weight that players have fire spiritual root.")
-                            .defineInRange("FireRootChance", 100, 0, 1000000);
-
-                    ruleSettings.earthRootWeight = builder
-                            .translation("config.immortal.earth_root_weight")
-                            .comment("The weight that players have earth spiritual root.")
-                            .defineInRange("EarthRootChance", 100, 0, 1000000);
-
-                    ruleSettings.spiritRootWeight = builder
-                            .translation("config.immortal.spirit_root_weight")
-                            .comment("The weight that players have spirit spiritual root.")
-                            .defineInRange("SpiritRootChance", 40, 0, 1000000);
-
-//                    RuleSettings.windRootWeight = builder
-//                            .translation("config.immortal.wind_root_weight")
-//                            .comment("The weight that players have wind spiritual root (valid only when one spirit root).")
-//                            .defineInRange("WindRootChance", 30, 0, 1000000);
+                    final int[] weights = new int[]{100, 100, 100, 100, 100, 40};
+                    for (int i = 0; i < Element.values().length; i++) {
+                        ruleSettings.rootWeights[i] = builder
+                                .translation("config.immortal." + Element.values()[i].name().toLowerCase() + "_root_weight")
+                                .comment("The weight that players have " + Element.values()[i].name().toLowerCase() + " spiritual root.")
+                                .defineInRange(Element.values()[i].getSerializedName() + "RootChance", weights[i], 0, 1000000);
+                    }
 
 
                 }
@@ -123,17 +81,8 @@ public class IMMConfigs {
         public BlockSettings blockSettings = new BlockSettings();
 
         public static class RuleSettings {
-            public ModConfigSpec.DoubleValue noRootChance;
-            public ModConfigSpec.DoubleValue oneRootChance;
-            public ModConfigSpec.DoubleValue twoRootChance;
-            public ModConfigSpec.DoubleValue threeRootChance;
-            public ModConfigSpec.DoubleValue fourRootChance;
-            public ModConfigSpec.IntValue metalRootWeight;
-            public ModConfigSpec.IntValue woodRootWeight;
-            public ModConfigSpec.IntValue waterRootWeight;
-            public ModConfigSpec.IntValue fireRootWeight;
-            public ModConfigSpec.IntValue earthRootWeight;
-            public ModConfigSpec.IntValue spiritRootWeight;
+            public final ModConfigSpec.DoubleValue[] rootChances = new ModConfigSpec.DoubleValue[Constants.MAX_ROOT_AMOUNT];
+            public final ModConfigSpec.IntValue[] rootWeights = new ModConfigSpec.IntValue[Element.values().length];
         }
 
         public static class BlockSettings {
@@ -157,48 +106,20 @@ public class IMMConfigs {
 
     /* Common */
 
-    public static double getNoRootChance() {
-        return ruleSettings().noRootChance.get();
+    public static double getRootCountChance(int count){
+        return ruleSettings().rootChances[count].get();
     }
 
-    public static double getOneRootChance() {
-        return ruleSettings().oneRootChance.get();
+    public static double[] getRootChances(){
+        double[] chances = new double[Constants.MAX_ROOT_AMOUNT];
+        for (int i = 0; i < Constants.MAX_ROOT_AMOUNT; i++) {
+            chances[i] = getRootCountChance(i);
+        }
+        return chances;
     }
 
-    public static double getTwoRootChance() {
-        return ruleSettings().twoRootChance.get();
-    }
-
-    public static double getThreeRootChance() {
-        return ruleSettings().threeRootChance.get();
-    }
-
-    public static double getFourRootChance() {
-        return ruleSettings().fourRootChance.get();
-    }
-
-    public static int getMetalWeight() {
-        return ruleSettings().metalRootWeight.get();
-    }
-
-    public static int getWoodWeight() {
-        return ruleSettings().woodRootWeight.get();
-    }
-
-    public static int getWaterWeight() {
-        return ruleSettings().waterRootWeight.get();
-    }
-
-    public static int getFireWeight() {
-        return ruleSettings().fireRootWeight.get();
-    }
-
-    public static int getEarthWeight() {
-        return ruleSettings().earthRootWeight.get();
-    }
-
-    public static int getSpiritWeight() {
-        return ruleSettings().spiritRootWeight.get();
+    public static int getRootWeight(Element element){
+        return ruleSettings().rootWeights[element.ordinal()].get();
     }
 
     public static Common.RuleSettings ruleSettings(){

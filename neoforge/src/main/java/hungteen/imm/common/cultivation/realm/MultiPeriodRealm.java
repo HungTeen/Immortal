@@ -7,7 +7,7 @@ import hungteen.imm.api.cultivation.RealmType;
  * @program Immortal
  * @create 2024/11/26 15:19
  **/
-public class MultiPeriodRealm {
+public class MultiPeriodRealm implements MultiRealm {
 
     private final RealmType[] realmTypes = new RealmType[RealmPeriod.values().length];
 
@@ -38,6 +38,7 @@ public class MultiPeriodRealm {
         return realmTypes[realmTypes.length - 1];
     }
 
+    @Override
     public RealmType[] getRealms() {
         return realmTypes;
     }
