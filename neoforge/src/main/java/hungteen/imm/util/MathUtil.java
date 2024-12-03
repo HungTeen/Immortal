@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,17 +49,42 @@ public class MathUtil {
     }
 
     /**
-     * 生成一个动态权重数组，用于调整难度。
+     * 生成一个动态权重数组，用于调整难度。<br>
+     * 以高斯函数为例，截取其中一个长度为 n 的区间，对其采样可以得到一个动态权重数组。<br>
+     * 更偏向于高斯函数中心的位置具有更大的权重。<br>
+     * factor 值越大，高斯函数的中心会逐渐偏向数组右边。<br>
      * @param factor 值越大，数组后面也越大。
      * @param n 数组的长度。
-     * @param baseWeight 基础权重。
      */
-    public static List<Integer> genWeights(float factor, int n, int baseWeight) {
-        List<Integer> weights = new ArrayList<>();
+    public static List<Integer> genLinearWeights(int n, float factor, double std) {
+        return Arrays.stream(generateGaussianArray(n, n * factor, std))
+                .boxed()
+                .map(x -> (int) (x * 100))
+                .toList();
+    }
+
+    /**
+     * 生成一个高斯数组。
+     * @param n 数组长度。
+     * @param mean 均值，中心位置，取值于[0,n]。
+     * @param std 标准差，越大数组之间的差距越小。
+     */
+    public static double[] generateGaussianArray(int n, double mean, double std) {
+        double[] weights = new double[n];
+        double sum = 0;
+
         for (int i = 0; i < n; i++) {
-            float proportion = (float) i / (n - 1);
-            weights.add(baseWeight + (int)(factor * proportion * 100));
+            double x = i;
+            weights[i] = (1 / (std * Math.sqrt(2 * Math.PI)))
+                    * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(std, 2)));
+            sum += weights[i];
         }
+
+        // 归一化权重数组（可选，确保总和为 1）。
+        for (int i = 0; i < n; i++) {
+            weights[i] /= sum;
+        }
+
         return weights;
     }
 

@@ -4,15 +4,15 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.spell.Spell;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.spell.Spell;
+import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.goal.LookAtTargetGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -23,6 +23,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -128,7 +129,7 @@ public class SharpStake extends IMMMob implements Enemy {
     }
 
     @Override
-    protected List<Spell> createLearnSpells() {
+    public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
         return List.of(Spell.create(SpellTypes.THROW_ITEM));
     }
 
@@ -190,11 +191,6 @@ public class SharpStake extends IMMMob implements Enemy {
 
     public void setStakeState(BlockState state) {
         entityData.set(STAKE, state);
-    }
-
-    @Override
-    public RealmType getDefaultRealm() {
-        return RealmTypes.YAOGUAI_LEVEL_1.first();
     }
 
     @Override

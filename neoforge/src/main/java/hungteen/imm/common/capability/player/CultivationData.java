@@ -10,6 +10,7 @@ import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.network.client.ExperienceChangePacket;
@@ -20,10 +21,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author PangTeen
@@ -161,9 +159,7 @@ public class CultivationData implements HTPlayerData {
     }
 
     public float getCultivation() {
-        // TODO 玩家修为计算。
-        return 0;
-//        return Arrays.stream(ExperienceType.values()).map(xp -> Math.min(CultivationManager.getEachCultivation(this.realmType), getExperience(xp))).reduce(0F, Float::sum);
+        return Arrays.stream(ExperienceType.values()).map(xp -> Math.min(CultivationManager.getEachCultivation(playerData.getPlayer(), this.realmType), getExperience(xp))).reduce(0F, Float::sum);
     }
 
     public void sendExperienceUpdatePacket(ExperienceType type, float value) {
@@ -199,6 +195,8 @@ public class CultivationData implements HTPlayerData {
             this.playerData.setIntegerData(IMMPlayerData.IntegerData.BREAK_THROUGH_TRIES, 0);
             // 突破进度重设。
             this.playerData.setFloatData(IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS, 0F);
+            // 更新玩家属性。
+            RealmManager.updateRealmAttributes(playerData.getPlayer(), this.realmType, realmType);
             this.realmType = realmType;
             // Update realm node manually.
             this.getRealmNode(true);

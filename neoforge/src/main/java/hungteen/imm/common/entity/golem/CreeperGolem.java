@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @program Immortal
@@ -46,11 +46,11 @@ public class CreeperGolem extends GolemEntity {
         builder.define(IS_IGNITED, false);
     }
 
-    public static AttributeSupplier createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
-                .build();
+                ;
     }
 
     @Override
@@ -152,8 +152,8 @@ public class CreeperGolem extends GolemEntity {
     }
 
     @Override
-    public List<QiRootType> getRoots() {
-        return List.of(QiRootTypes.FIRE);
+    public Set<QiRootType> getRoots() {
+        return Set.of(QiRootTypes.FIRE);
     }
 
     @Override

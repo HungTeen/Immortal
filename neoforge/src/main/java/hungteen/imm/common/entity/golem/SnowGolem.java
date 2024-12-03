@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @program Immortal
@@ -30,11 +30,11 @@ public class SnowGolem extends GolemEntity {
         super(type, level);
     }
 
-    public static AttributeSupplier createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 24.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
-                .build();
+                ;
     }
 
     @Override
@@ -98,8 +98,8 @@ public class SnowGolem extends GolemEntity {
     }
 
     @Override
-    public List<QiRootType> getRoots() {
-        return List.of(QiRootTypes.WATER);
+    public Set<QiRootType> getRoots() {
+        return Set.of(QiRootTypes.WATER);
     }
 
 }

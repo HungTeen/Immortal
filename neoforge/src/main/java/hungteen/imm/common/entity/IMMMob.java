@@ -4,17 +4,22 @@ import com.mojang.serialization.Codec;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.Cultivatable;
+import hungteen.imm.api.event.EntityRandomSpellEvent;
+import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.QiRootTypes;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +29,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -88,16 +94,15 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
      * 加入世界前的最后处理。
      */
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
-        this.qiRoots.addAll(this.createRoots(accessor));
-        this.setRealm(this.getInitialRealm(accessor, difficultyInstance));
-        createLearnSpells().forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
-        getRealm().onReachRealm(this);
+        this.qiRoots.addAll(this.getInitialRoots(accessor));
+        this.updateRealm(this.getInitialRealm(accessor, difficultyInstance));
+        getInitialSpells(accessor, difficultyInstance, this.getRealm()).forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
     }
 
     /**
      * 随机初始化灵根。
      */
-    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
         return List.of();
     }
 
@@ -106,10 +111,15 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
      */
     public RealmType getInitialRealm(ServerLevelAccessor accessor, DifficultyInstance difficulty) {
         List<MultiRealm> multiRealms = getMultiRealms();
-        List<Integer> weights = MathUtil.genWeights(difficulty.getEffectiveDifficulty(), multiRealms.size(), 1);
+        List<Integer> weights = MathUtil.genLinearWeights(multiRealms.size(), calculateDifficulty(difficulty), 1.2);
         MultiRealm multiRealm = SimpleWeightedList.list(multiRealms, weights).getItem(accessor.getRandom()).orElseThrow();
         RealmType[] realms = multiRealm.getRealms();
         return realms[accessor.getRandom().nextInt(realms.length)];
+    }
+
+    public float calculateDifficulty(DifficultyInstance difficulty) {
+        // TODO 更合理的难度设置。
+        return (difficulty.getDifficulty().ordinal() - 1) * 1.0F / 2;
     }
 
     /**
@@ -119,7 +129,22 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         return List.of();
     }
 
-    protected List<Spell> createLearnSpells() {
+    public List<Spell> getInitialSpells(ServerLevelAccessor accessor, DifficultyInstance difficulty, RealmType realm) {
+        List<Spell> spells = new ArrayList<>();
+        Set<Element> elements = getElements();
+        for (Element element : elements) {
+            spells.addAll(getRandomSpells(accessor.getRandom(), element, realm));
+        }
+        spells.addAll(getSpecialSpells(accessor.getRandom(), elements, realm));
+        EventUtil.post(new EntityRandomSpellEvent(this, spells, elements, realm, random));
+        return spells;
+    }
+
+    public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm){
+        return List.of();
+    }
+
+    public List<Spell> getSpecialSpells(RandomSource random, Set<Element> elements, RealmType realm){
         return List.of();
     }
 
@@ -214,6 +239,22 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         tag.putInt("SpellCooldown", this.spellCooldown);
         tag.putInt("CurrentAnimation", this.getAnimationIndex());
         tag.putLong("AnimationStartTick", this.getAnimationStartTick());
+    }
+
+    @Override
+    public final void updateRealm(RealmType newRealm) {
+        EntityRealmEvent.Pre preEvent = new EntityRealmEvent.Pre(this, getRealm(), newRealm);
+        if (!EventUtil.post(preEvent)) {
+            newRealm = preEvent.getAfterRealm();
+            RealmManager.updateRealmAttributes(this, getRealm(), newRealm);
+            onUpdateRealm(newRealm);
+            this.setRealm(newRealm);
+            EventUtil.post(new EntityRealmEvent.Post(this, getRealm(), newRealm));
+        }
+    }
+
+    protected void onUpdateRealm(RealmType realm){
+
     }
 
     public void setRealm(RealmType realm) {

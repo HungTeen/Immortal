@@ -3,9 +3,12 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.api.event.PlayerSpellEvent;
+import hungteen.imm.api.entity.SpellCaster;
+import hungteen.imm.api.event.ActivateSpellEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.common.cultivation.spell.SpellResult;
 import hungteen.imm.common.network.client.ClientSpellPacket;
 import hungteen.imm.common.network.server.ServerSpellPacket;
 import hungteen.imm.util.Constants;
@@ -23,8 +26,8 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-10-14 10:28
  **/
 public class SpellManager {
@@ -77,9 +80,14 @@ public class SpellManager {
         final Optional<Spell> instance = canActivateSpell(entity, spell, false);
         if (instance.isPresent()) {
             final HTHitResult result = createHitResult(entity, instance.get());
-            if (trigger.checkActivate(entity, result, instance.get().spell(), instance.get().level())) {
+            final SpellResult spellResult = trigger.checkActivate(entity, result, instance.get().spell(), instance.get().level());
+            if (spellResult.isSuccess()) {
+                // 当法术有触发声音时，先按法术结果保存的目标播放声音。
+                instance.get().spell().getTriggerSound().ifPresent(sound -> {
+                    spellResult.getAffectedTarget().orElse(entity).playSound(sound);
+                });
                 postActivateSpell(entity, instance.get());
-            } else if(entity instanceof Player player){
+            } else if (entity instanceof Player player) {
                 PlayerUtil.cooldownSpell(player, instance.get().spell(), FAIL_CD);
             }
         }
@@ -101,12 +109,11 @@ public class SpellManager {
         }
     }
 
-    /**
-     * TODO 支持生物的法术释放。
-     */
     public static Optional<Spell> canActivateSpell(LivingEntity entity, @Nullable SpellType targetSpell, boolean sendTip) {
         if (entity instanceof Player player) {
             return canActivateSpell(player, targetSpell, sendTip);
+        } else if (targetSpell != null) {
+            return canActivateSpell(entity, targetSpell);
         }
         return Optional.empty();
     }
@@ -128,7 +135,7 @@ public class SpellManager {
                 if (!PlayerUtil.isSpellOnCoolDown(player, spell)) {
                     // 灵力足够。
                     if (PlayerUtil.getQiAmount(player) >= spell.getConsumeMana()) {
-                        if (!EventUtil.post(new PlayerSpellEvent.ActivateSpellEvent.Pre(player, spell, level))) {
+                        if (!EventUtil.post(new ActivateSpellEvent.Pre(player, spell, level))) {
                             return Optional.of(new Spell(spell, level));
                         }
                     } else if (sendTip) {
@@ -144,16 +151,42 @@ public class SpellManager {
         return Optional.empty();
     }
 
+    /**
+     * 是否能够触发法术。
+     *
+     * @param living 释放法术的生物。
+     * @param spell  能否触发某个法术。
+     * @return empty 表示不能触发。
+     */
+    public static Optional<Spell> canActivateSpell(LivingEntity living, SpellType spell) {
+        if (living instanceof SpellCaster caster) {
+            final int level = caster.getSpellLevel(spell);
+            if (level > 0 && !caster.isOnCoolDown() && caster.canUseSpell(spell)) {
+                if (!EventUtil.post(new ActivateSpellEvent.Pre(living, spell, level))) {
+                    return Optional.of(new Spell(spell, level));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     public static void postActivateSpell(LivingEntity entity, Spell instance) {
         if (entity instanceof Player player) {
             PlayerUtil.cooldownSpell(player, instance.spell(), getSpellCDTime(player, instance.spell()));
             costMana(player, instance.spell().getConsumeMana());
-            EventUtil.post(new PlayerSpellEvent.ActivateSpellEvent.Post(player, instance.spell(), instance.level()));
+        } else if (entity instanceof SpellCaster caster) {
+            caster.setCoolDown(instance.spell().getCooldown());
+            caster.addQiAmount(-instance.spell().getConsumeMana());
         }
+        EventUtil.post(new ActivateSpellEvent.Post(entity, instance.spell(), instance.level()));
     }
 
-    public static HTHitResult createHitResult(LivingEntity entity, @NotNull Spell spell){
+    public static HTHitResult createHitResult(LivingEntity entity, @NotNull Spell spell) {
         return HTHitResult.create(entity, spell.spell().getBlockClipMode(spell.level()), spell.spell().getFluidClipMode(spell.level()));
+    }
+
+    public static boolean canMobTrigger(SpellType spellType){
+        return spellType.getCategory() != SpellUsageCategory.PLAYER_ONLY && spellType.getCategory() != SpellUsageCategory.TRIGGERED_PASSIVE;
     }
 
     public static long getSpellCDTime(Player player, SpellType spell) {
@@ -207,7 +240,7 @@ public class SpellManager {
     @FunctionalInterface
     public interface ISpellTrigger {
 
-        boolean checkActivate(LivingEntity owner, HTHitResult result, SpellType spell, int level);
+        SpellResult checkActivate(LivingEntity owner, HTHitResult result, SpellType spell, int level);
 
     }
 

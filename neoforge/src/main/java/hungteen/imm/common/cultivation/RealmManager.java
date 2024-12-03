@@ -2,14 +2,17 @@ package hungteen.imm.common.cultivation;
 
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.Cultivatable;
+import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
+import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +24,38 @@ import net.minecraft.world.level.block.state.BlockState;
  * @create 2024/11/30 15:13
  **/
 public class RealmManager {
+
+    /**
+     * 更新生物的境界。
+     */
+    public static void updateRealm(LivingEntity living, RealmType oldRealm, RealmType newRealm) {
+        EntityRealmEvent.Pre preEvent = new EntityRealmEvent.Pre(living, oldRealm, newRealm);
+        if (!EventUtil.post(preEvent)) {
+            newRealm = preEvent.getAfterRealm();
+            updateRealmAttributes(living, oldRealm, newRealm);
+            EventUtil.post(new EntityRealmEvent.Post(living, oldRealm, newRealm));
+        }
+    }
+
+    /**
+     * 更新生物的境界属性。
+     */
+    public static void updateRealmAttributes(LivingEntity living, RealmType oldRealm, RealmType newRealm) {
+        // 移除旧的属性。
+        oldRealm.getAttributeModifiers().forEach((holder, modifier) -> {
+            AttributeInstance instance = living.getAttribute(holder);
+            if (instance != null) {
+                instance.removeModifier(modifier);
+            }
+        });
+        // 添加新的属性。
+        newRealm.getAttributeModifiers().forEach((holder, modifier) -> {
+            AttributeInstance instance = living.getAttribute(holder);
+            if (instance != null) {
+                instance.addOrReplacePermanentModifier(modifier);
+            }
+        });
+    }
 
     /**
      * 有大境界差距并且左边的大。
@@ -57,10 +92,10 @@ public class RealmManager {
     }
 
     public static RealmType getRealm(Entity entity) {
-        if(entity instanceof Cultivatable realmEntity){
+        if (entity instanceof Cultivatable realmEntity) {
             return realmEntity.getRealm();
-        } else if(entity instanceof LivingEntity){
-            if(entity instanceof Player player){
+        } else if (entity instanceof LivingEntity) {
+            if (entity instanceof Player player) {
                 return PlayerUtil.getPlayerRealm(player);
             }
             return VanillaCultivationCompat.getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
@@ -69,29 +104,29 @@ public class RealmManager {
         }
     }
 
-    public static RealmType getRealm(ItemStack stack){
-        if(stack.is(IMMItemTags.COMMON_ARTIFACTS)) {
+    public static RealmType getRealm(ItemStack stack) {
+        if (stack.is(IMMItemTags.COMMON_ARTIFACTS)) {
             return RealmTypes.COMMON_ARTIFACT;
-        } else if(stack.is(IMMItemTags.MODERATE_ARTIFACTS)) {
+        } else if (stack.is(IMMItemTags.MODERATE_ARTIFACTS)) {
             return RealmTypes.MODERATE_ARTIFACT;
-        } else if(stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) {
+        } else if (stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) {
             return RealmTypes.ADVANCED_ARTIFACT;
-        } else if(stack.getItem() instanceof IArtifactItem artifactItem) {
+        } else if (stack.getItem() instanceof IArtifactItem artifactItem) {
             return artifactItem.getArtifactRealm(stack);
-        } else if(stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) {
+        } else if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) {
             return artifactBlock.getArtifactRealm(stack);
         }
         return RealmTypes.NOT_IN_REALM;
     }
 
-    public static RealmType getRealm(BlockState state){
-        if(state.is(IMMBlockTags.COMMON_ARTIFACTS)) {
+    public static RealmType getRealm(BlockState state) {
+        if (state.is(IMMBlockTags.COMMON_ARTIFACTS)) {
             return RealmTypes.COMMON_ARTIFACT;
-        } else if(state.is(IMMBlockTags.MODERATE_ARTIFACTS)) {
+        } else if (state.is(IMMBlockTags.MODERATE_ARTIFACTS)) {
             return RealmTypes.MODERATE_ARTIFACT;
-        } else if(state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) {
+        } else if (state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) {
             return RealmTypes.ADVANCED_ARTIFACT;
-        } else if(state.getBlock() instanceof IArtifactBlock artifactBlock) {
+        } else if (state.getBlock() instanceof IArtifactBlock artifactBlock) {
             return artifactBlock.getRealm(state);
         }
         return RealmTypes.NOT_IN_REALM;

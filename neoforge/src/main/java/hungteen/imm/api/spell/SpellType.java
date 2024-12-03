@@ -4,8 +4,11 @@ import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.api.HTHitResult;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
+
+import java.util.Optional;
 
 /**
  * 法术。
@@ -56,6 +59,14 @@ public interface SpellType extends SimpleEntry {
      * @return Whether can the spell be triggered.
      */
     boolean canTrigger();
+
+    /**
+     * 获取触发法术时的音效。
+     * @return Get the effectOn when the spell is triggered.
+     */
+    default Optional<SoundEvent> getTriggerSound(){
+        return Optional.empty();
+    }
 
     /**
      * 法术是否能被放置在法术轮盘上。

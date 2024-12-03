@@ -12,7 +12,7 @@ import net.minecraft.network.chat.MutableComponent;
  * @program Immortal
  * @create 2024/11/26 15:17
  **/
-public enum RealmLevel implements RealmStage {
+public enum RealmStep implements RealmStage {
 
     LEVEL_1,
 
@@ -42,8 +42,8 @@ public enum RealmLevel implements RealmStage {
 
     ;
 
-    public static RealmLevel[] values(int maxLevel) {
-        RealmLevel[] levels = new RealmLevel[maxLevel];
+    public static RealmStep[] values(int maxLevel) {
+        RealmStep[] levels = new RealmStep[maxLevel];
         System.arraycopy(values(), 0, levels, 0, maxLevel);
         return levels;
     }

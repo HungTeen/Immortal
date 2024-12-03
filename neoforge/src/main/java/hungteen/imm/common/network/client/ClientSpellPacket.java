@@ -8,12 +8,12 @@ import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * @author HungTeen
@@ -37,7 +37,7 @@ public record ClientSpellPacket(SpellType spell, SpellOption option, long num) i
 
     @Override
     public void process(ClientPacketContext clientPacketContext) {
-        LocalPlayer player = clientPacketContext.player();
+        Player player = clientPacketContext.player();
         switch (option()) {
             case LEARN -> PlayerUtil.learnSpell(player, spell(), (int) num());
             case SET_SPELL_ON_CIRCLE -> PlayerUtil.setSpellAt(player, (int) num(), spell());

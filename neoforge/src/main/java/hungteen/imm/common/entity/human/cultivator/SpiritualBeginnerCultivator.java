@@ -1,12 +1,15 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import com.mojang.serialization.Dynamic;
+import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.basic.IntimidationSpell;
 import hungteen.imm.common.entity.human.HumanEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -33,7 +36,7 @@ public class SpiritualBeginnerCultivator extends Cultivator {
     }
 
     @Override
-    protected List<Spell> createLearnSpells() {
+    public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
         return List.of(Spell.create(SpellTypes.INTIMIDATION));
     }
 

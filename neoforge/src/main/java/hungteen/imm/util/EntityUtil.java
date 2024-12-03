@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 public class EntityUtil {
 
     public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
-//        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), sound, soundSource));
+//        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), effectOn, soundSource));
     }
 
     public static double getMaxQi(LivingEntity living){

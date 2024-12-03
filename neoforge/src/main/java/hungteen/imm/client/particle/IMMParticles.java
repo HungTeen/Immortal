@@ -22,7 +22,6 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
  * @author HungTeen
  * @create 2022-10-07 21:56
  **/
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class IMMParticles {
 
     public static final HTVanillaRegistry<ParticleType<?>> TYPES =  HTRegistryManager.vanilla(Registries.PARTICLE_TYPE, Util.id());
@@ -39,20 +38,23 @@ public class IMMParticles {
     public static final HTHolder<SimpleParticleType> METAL_DAMAGE = TYPES.register("metal_damage", () -> new SimpleParticleType(false));
     public static final HTHolder<SimpleParticleType> INTIMIDATION = TYPES.register("intimidation", () -> new SimpleParticleType(true));
 
-    @SubscribeEvent
-    public static void registerFactories(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(QI.get(), QiParticle.Factory::new);
-        event.registerSpriteSet(METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
-        event.registerSpriteSet(WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
-        event.registerSpriteSet(WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
-        event.registerSpriteSet(FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
-        event.registerSpriteSet(EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
-        event.registerSpriteSet(SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
-        event.registerSpriteSet(SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
-        event.registerSpriteSet(METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
-        event.registerSpriteSet(METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
+    @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ParticleFactoryRegister {
+        @SubscribeEvent
+        public static void registerFactories(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(QI.get(), QiParticle.Factory::new);
+            event.registerSpriteSet(METAL_ELEMENT.get(), MetalElementParticle.Factory::new);
+            event.registerSpriteSet(WOOD_ELEMENT.get(), WoodElementParticle.Factory::new);
+            event.registerSpriteSet(WATER_ELEMENT.get(), WaterElementParticle.Factory::new);
+            event.registerSpriteSet(FIRE_ELEMENT.get(), FireElementParticle.Factory::new);
+            event.registerSpriteSet(EARTH_ELEMENT.get(), EarthElementParticle.Factory::new);
+            event.registerSpriteSet(SPIRIT_ELEMENT.get(), SpiritElementParticle.Factory::new);
+            event.registerSpriteSet(SPIRITUAL_FLAME.get(), IMMFlameParticle.Factory::new);
+            event.registerSpriteSet(METAL_EXPLOSION.get(), MetalExplosionParticle.Factory::new);
+            event.registerSpriteSet(METAL_DAMAGE.get(), MetalDamageParticle.Factory::new);
 
-        event.registerSpecial(INTIMIDATION.get(), new IntimidationParticle.Factory());
+            event.registerSpecial(INTIMIDATION.get(), new IntimidationParticle.Factory());
+        }
     }
     
     public static void initialize(IEventBus event){

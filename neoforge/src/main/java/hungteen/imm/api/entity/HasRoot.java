@@ -3,6 +3,7 @@ package hungteen.imm.api.entity;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,9 +15,18 @@ import java.util.Set;
 public interface HasRoot {
 
     /**
-     * 生物的灵根种类。
+     * @return 生物的灵根种类。
      */
     Set<QiRootType> getRoots();
+
+    /**
+     * @return 生物所涵盖的元素。
+     */
+    default Set<Element> getElements(){
+        Set<Element> elements = new HashSet<>();
+        getRoots().forEach(root -> elements.addAll(root.getElements()));
+        return elements;
+    }
 
     /**
      * @return 是否具有指定的灵根。

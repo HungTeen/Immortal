@@ -7,11 +7,11 @@
   "requirements": [
     {
       "type": "imm:realm",
-      "realm_type": "imm:qi_refining_preliminary"
+      "realm_type": "imm:qi_refining_level_1"
     },
     {
       "type": "imm:element",
-      "element": "wood"
+      "element": "Wood"
     }
   ]
 }

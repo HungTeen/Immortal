@@ -15,9 +15,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
@@ -38,21 +36,20 @@ public interface RealmTypes {
     /**
      * 无境界。
      */
-    RealmType NOT_IN_REALM = create("not_in_realm", 0, 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
+    RealmType NOT_IN_REALM = create("not_in_realm", 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
 
     /**
      * Default Player Realm.
      */
-    RealmType MORTALITY = create("mortality", 0, 0, 1, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
+    RealmType MORTALITY = create("mortality", 0, 0, DummyPeriod.DUMMY, CultivationTypes.NONE, Style.EMPTY);
 
     /* 灵修 */
 
-    MultiLevelRealm QI_REFINING = builder("qi_refining", RealmLevel.values(13))
+    MultiLevelRealm QI_REFINING = builder("qi_refining", RealmStep.values(13))
             .cultivation(5, 10, 20, 30, 45, 60, 80, 100, 125, 150, 180, 210, 250)
             .realmValue(15, 75)
             .health(MathUtil.sameArray(13, 2))
             .qi(MathUtil.uniformArray(13, 15, 75, true))
-            .level(2)
             .type(CultivationTypes.SPIRITUAL)
             .multiLevel();
 
@@ -61,7 +58,6 @@ public interface RealmTypes {
             .health(MathUtil.sameArray(5, 5))
             .qi(100, 110, 120, 125, 125)
             .realmValue(115, 175)
-            .level(3)
             .type(CultivationTypes.SPIRITUAL)
             .multiPeriod();
 
@@ -70,18 +66,16 @@ public interface RealmTypes {
             .health(MathUtil.sameArray(5, 8))
             .qi(100, 110, 120, 125, 125)
             .realmValue(215, 275)
-            .level(4)
             .type(CultivationTypes.SPIRITUAL)
             .multiPeriod();
 
     /* 妖修 */
 
-    MultiLevelRealm YAOGUAI_LEVEL_1 = builder("yaoguai_level_1", RealmLevel.values(10))
+    MultiLevelRealm YAOGUAI_LEVEL_1 = builder("yaoguai_level_1", RealmStep.values(10))
             .cultivation(10, 20, 40, 60, 80, 105, 135, 175, 205, 275)
             .realmValue(8, 80)
             .qi(MathUtil.uniformArray(10, 24, 60, true))
             .armor(MathUtil.sameArray(10, 2))
-            .level(2)
             .type(CultivationTypes.YAOGUAI)
             .multiLevel();
 
@@ -90,7 +84,6 @@ public interface RealmTypes {
             .realmValue(120, 150)
             .qi(70, 75, 80)
             .armor(MathUtil.sameArray(10, 4))
-            .level(3)
             .type(CultivationTypes.YAOGUAI)
             .multiPeriod();
 
@@ -99,7 +92,6 @@ public interface RealmTypes {
             .realmValue(160, 190)
             .qi(95, 100, 110)
             .armor(MathUtil.sameArray(10, 6))
-            .level(3)
             .type(CultivationTypes.YAOGUAI)
             .multiPeriod();
 
@@ -109,7 +101,6 @@ public interface RealmTypes {
             .emptyCultivation()
             .realmValue(25, 65)
             .qi(25, 30, 35, 40, 45)
-            .level(2)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
@@ -117,7 +108,6 @@ public interface RealmTypes {
             .emptyCultivation()
             .realmValue(105, 145)
             .qi(60, 65, 70, 75, 80)
-            .level(3)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
@@ -125,7 +115,6 @@ public interface RealmTypes {
             .emptyCultivation()
             .realmValue(160, 188)
             .qi(100, 105, 110, 115, 120)
-            .level(3)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
@@ -160,26 +149,26 @@ public interface RealmTypes {
     }
 
     static RealmType artifact(String name, int realmValue, Style style) {
-        return create(name, 0, realmValue, 0, DummyPeriod.DUMMY, CultivationTypes.ARTIFACT, style);
+        return create(name, 0, realmValue, DummyPeriod.DUMMY, CultivationTypes.ARTIFACT, style);
     }
 
     static RealmType nonLiving(String name, int realmValue, CultivationType cultivationType) {
-        return create(name, 0, realmValue, 0, DummyPeriod.DUMMY, cultivationType, Style.EMPTY);
+        return create(name, 0, realmValue, DummyPeriod.DUMMY, cultivationType, Style.EMPTY);
     }
 
     static RealmBuilder builder(String name, RealmStage[] stages) {
         return new RealmBuilder(name, stages);
     }
 
-    static RealmType create(String name, int maxCultivation, int realmValue, int realmRegionLevel, RealmStage stage, CultivationType type, Style style) {
-        return register(new RealmTypeImpl(name, maxCultivation, realmValue, realmRegionLevel, Map.of(), stage, type, style));
+    static RealmType create(String name, int maxCultivation, int realmValue, RealmStage stage, CultivationType type, Style style) {
+        return register(new RealmTypeImpl(name, maxCultivation, realmValue, Map.of(), stage, type, style));
     }
 
-    static RealmType create(String name, int maxCultivation, int realmValue, int realmRegionLevel, Map<Holder<Attribute>, AttributeModifier> modifierMap, RealmStage stage, CultivationType type, Style style) {
-        return register(new RealmTypeImpl(name, maxCultivation, realmValue, realmRegionLevel, modifierMap, stage, type, style));
+    static RealmType create(String name, int maxCultivation, int realmValue, Map<Holder<Attribute>, AttributeModifier> modifierMap, RealmStage stage, CultivationType type, Style style) {
+        return register(new RealmTypeImpl(name, maxCultivation, realmValue, modifierMap, stage, type, style));
     }
 
-    record RealmTypeImpl(String name, int maxCultivation, int realmValue, int realmRegionLevel,
+    record RealmTypeImpl(String name, int maxCultivation, int realmValue,
                          Map<Holder<Attribute>, AttributeModifier> modifierMap, RealmStage stage,
                          CultivationType cultivationType, Style style) implements RealmType {
 
@@ -212,18 +201,8 @@ public interface RealmTypes {
         }
 
         @Override
-        public int getRealmRegionLevel() {
-            return realmRegionLevel();
-        }
-
-        @Override
-        public void onReachRealm(Mob mob) {
-            modifierMap().forEach((holder, modifier) -> {
-                AttributeInstance instance = mob.getAttribute(holder);
-                if (instance != null) {
-                    instance.addOrReplacePermanentModifier(modifier);
-                }
-            });
+        public Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
+            return modifierMap();
         }
 
     }
@@ -238,7 +217,6 @@ public interface RealmTypes {
         private int[] armors;
         private int minRealm = 0;
         private int maxRealm = 0;
-        private int realmRegionLevel = 1;
 
         private CultivationType type = CultivationTypes.UNKNOWN;
         private Style style = Style.EMPTY;
@@ -271,11 +249,6 @@ public interface RealmTypes {
         public RealmBuilder realmValue(int minRealm, int maxRealm) {
             this.minRealm = minRealm;
             this.maxRealm = maxRealm;
-            return this;
-        }
-
-        public RealmBuilder level(int realmRegionLevel) {
-            this.realmRegionLevel = realmRegionLevel;
             return this;
         }
 
@@ -321,7 +294,7 @@ public interface RealmTypes {
                 if(armors != null) {
                     modifierMap.put(Attributes.ARMOR, new AttributeModifier(RealmType.ARMOR_MODIFIER, armors[i], AttributeModifier.Operation.ADD_VALUE));
                 }
-                types[i] = create(name + "_" + stages[i].name().toLowerCase(), cultivations[i], realmValues[i], realmRegionLevel, modifierMap, stages[i], type, style);
+                types[i] = create(name + "_" + stages[i].name().toLowerCase(), cultivations[i], realmValues[i], modifierMap, stages[i], type, style);
             }
             return constructor.apply(types);
         }

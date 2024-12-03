@@ -9,12 +9,10 @@ import hungteen.imm.api.cultivation.RealmType;
  **/
 public class MultiPeriodRealm implements MultiRealm {
 
-    private final RealmType[] realmTypes = new RealmType[RealmPeriod.values().length];
+    private final RealmType[] realmTypes;
 
     public MultiPeriodRealm(RealmType[] realmTypes) {
-        if(realmTypes.length != RealmPeriod.values().length){
-            throw new IllegalArgumentException("The length of realmTypes must be equal to the length of RealmPeriod.values().");
-        }
+        this.realmTypes = new RealmType[realmTypes.length];
         System.arraycopy(realmTypes, 0, this.realmTypes, 0, realmTypes.length);
     }
 

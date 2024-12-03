@@ -1,7 +1,7 @@
 package hungteen.imm.common.blockentity;
 
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import hungteen.imm.common.recipe.IMMRecipes;
@@ -216,7 +216,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public RealmType getArtifactType() {
-        return CultivationManager.getRealm(getBlockState());
+        return RealmManager.getRealm(getBlockState());
     }
 
     @Override

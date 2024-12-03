@@ -13,6 +13,11 @@ public enum SpellUsageCategory {
     PLAYER_ONLY,
 
     /**
+     * 被动法术。
+     */
+    TRIGGERED_PASSIVE,
+
+    /**
      * 攻击敌人。
      */
     ATTACK_TARGET(true),

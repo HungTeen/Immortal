@@ -1,75 +1,75 @@
 package hungteen.imm.client.model;
 
 import hungteen.imm.util.Util;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 
 /**
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-20 21:58
  **/
-public class IMMModelLayers {
+public interface IMMModelLayers {
+
+    LayerDefinition INNER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+    LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
 
     /* Misc */
 
-    public static final ModelLayerLocation ELEMENT_CRYSTAL = register("element_crystal");
-    public static final ModelLayerLocation TORNADO = register("tornado");
+    ModelLayerLocation ELEMENT_CRYSTAL = create("element_crystal");
+    ModelLayerLocation TORNADO = create("tornado");
 
     /* Human */
 
-    public static final ModelLayerLocation CULTIVATOR = register("cultivator");
-    public static final ModelLayerLocation CULTIVATOR_INNER_ARMOR = registerInnerArmor("cultivator");
-    public static final ModelLayerLocation CULTIVATOR_OUTER_ARMOR = registerOuterArmor("cultivator");
-    public static final ModelLayerLocation CULTIVATOR_SLIM = register("cultivator_slim");
-    public static final ModelLayerLocation CULTIVATOR_SLIM_INNER_ARMOR = registerInnerArmor("cultivator_slim");
-    public static final ModelLayerLocation CULTIVATOR_SLIM_OUTER_ARMOR = registerOuterArmor("cultivator_slim");
-    public static final ModelLayerLocation VILLAGER = register("villager");
-    public static final ModelLayerLocation PILLAGER = register("pillager");
+    ModelLayerLocation CULTIVATOR = create("cultivator");
+    ModelLayerLocation CULTIVATOR_INNER_ARMOR = createInnerArmor("cultivator");
+    ModelLayerLocation CULTIVATOR_OUTER_ARMOR = createOuterArmor("cultivator");
+    ModelLayerLocation CULTIVATOR_SLIM = create("cultivator_slim");
+    ModelLayerLocation CULTIVATOR_SLIM_INNER_ARMOR = createInnerArmor("cultivator_slim");
+    ModelLayerLocation CULTIVATOR_SLIM_OUTER_ARMOR = createOuterArmor("cultivator_slim");
+    ModelLayerLocation VILLAGER = create("villager");
+    ModelLayerLocation PILLAGER = create("pillager");
 
     /* Creature */
 
-    public static final ModelLayerLocation GRASS_CARP = register("grass_carp");
-    public static final ModelLayerLocation SILK_WORM = register("silk_worm");
+    ModelLayerLocation GRASS_CARP = create("grass_carp");
+    ModelLayerLocation SILK_WORM = create("silk_worm");
 
     /* Monster */
 
-    public static final ModelLayerLocation SHARP_STAKE = register("sharp_stake");
-    public static final ModelLayerLocation BI_FANG = register("bi_fang");
+    ModelLayerLocation SHARP_STAKE = create("sharp_stake");
+    ModelLayerLocation BI_FANG = create("bi_fang");
 
     /* Spirit */
 
-    public static final ModelLayerLocation METAL_SPIRIT = register("metal_spirit");
-    public static final ModelLayerLocation WOOD_SPIRIT = register("wood_spirit");
-    public static final ModelLayerLocation WATER_SPIRIT = register("water_spirit");
-    public static final ModelLayerLocation FIRE_SPIRIT = register("fire_spirit");
-    public static final ModelLayerLocation EARTH_SPIRIT = register("earth_spirit");
-
-    /* Zombie */
-
-    public static final ModelLayerLocation QI_ZOMBIE = register("spiritual_zombie");
-    public static final ModelLayerLocation QI_ZOMBIE_INNER_ARMOR = registerInnerArmor("spiritual_zombie");
-    public static final ModelLayerLocation QI_ZOMBIE_OUTER_ARMOR = registerOuterArmor("spiritual_zombie");
+    ModelLayerLocation METAL_SPIRIT = create("metal_spirit");
+    ModelLayerLocation WOOD_SPIRIT = create("wood_spirit");
+    ModelLayerLocation WATER_SPIRIT = create("water_spirit");
+    ModelLayerLocation FIRE_SPIRIT = create("fire_spirit");
+    ModelLayerLocation EARTH_SPIRIT = create("earth_spirit");
 
     /* Golem */
 
-    public static final ModelLayerLocation IRON_GOLEM = register("iron_golem");
-    public static final ModelLayerLocation SNOW_GOLEM = register("snow_golem");
-    public static final ModelLayerLocation CREEPER_GOLEM = register("creeper_golem");
-    public static final ModelLayerLocation COPPER_GOLEM = register("copper_golem");
+    ModelLayerLocation IRON_GOLEM = create("iron_golem");
+    ModelLayerLocation SNOW_GOLEM = create("snow_golem");
+    ModelLayerLocation CREEPER_GOLEM = create("creeper_golem");
+    ModelLayerLocation COPPER_GOLEM = create("copper_golem");
 
-    private static ModelLayerLocation register(String name) {
+    static ModelLayerLocation create(String name) {
         return createLocation(name, "main");
     }
 
-    private static ModelLayerLocation registerInnerArmor(String name) {
+    static ModelLayerLocation createInnerArmor(String name) {
         return createLocation(name, "inner_armor");
     }
 
-    private static ModelLayerLocation registerOuterArmor(String name) {
+    static ModelLayerLocation createOuterArmor(String name) {
         return createLocation(name, "outer_armor");
     }
 
-    private static ModelLayerLocation createLocation(String name, String type) {
+    static ModelLayerLocation createLocation(String name, String type) {
         return new ModelLayerLocation(Util.prefix(name), type);
     }
 }

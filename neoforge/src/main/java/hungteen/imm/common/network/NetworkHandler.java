@@ -21,7 +21,6 @@ public class NetworkHandler {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
-        // To Client.
         registrar.playToClient(
                 QiRootAndRealmPacket.TYPE,
                 QiRootAndRealmPacket.STREAM_CODEC,
@@ -53,7 +52,6 @@ public class NetworkHandler {
                 NeoHelper.wrapClientHandler(EntityElementPacket::process)
         );
 
-        // To Server.
         registrar.playToServer(
                 ScreenOperationPacket.TYPE,
                 ScreenOperationPacket.STREAM_CODEC,

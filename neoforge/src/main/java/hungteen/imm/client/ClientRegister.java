@@ -100,9 +100,6 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.FIRE_SPIRIT.get(), FireSpiritRender::new);
         event.registerEntityRenderer(IMMEntities.EARTH_SPIRIT.get(), EarthSpiritRender::new);
 
-//        /* undead */
-//        event.registerEntityRenderer(ImmortalEntities.SPIRITUAL_ZOMBIE.get(), SpiritualZombieRender::new);
-
         /* Golem */
         event.registerEntityRenderer(IMMEntities.IRON_GOLEM.get(), IronGolemRender::new);
         event.registerEntityRenderer(IMMEntities.SNOW_GOLEM.get(), SnowGolemRender::new);
@@ -149,11 +146,6 @@ public class ClientRegister {
         event.registerLayerDefinition(IMMModelLayers.WATER_SPIRIT, WaterSpiritModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.FIRE_SPIRIT, FireSpiritModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.EARTH_SPIRIT, EarthSpiritModel::createBodyLayer);
-
-        /* Zombie */
-        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE, QiZombieModel::createBodyLayer);
-        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(IMMModelLayers.QI_ZOMBIE_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* Golem */
         event.registerLayerDefinition(IMMModelLayers.IRON_GOLEM, IronGolemModel::createBodyLayer);

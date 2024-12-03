@@ -26,14 +26,9 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Vanilla Tags.
-        this.tag(DamageTypeTags.BYPASSES_ARMOR)
-                .addTag(IMMDamageTypeTags.SPIRITUALS)
-                .add(IMMDamageTypes.ELEMENT_REACTION)
-        ;
-        this.tag(DamageTypeTags.BYPASSES_SHIELD).addTag(IMMDamageTypeTags.ELEMENTS);
+        vanilla();
+        uniform();
 
-        // Forge Tags.
         this.tag(IMMDamageTypeTags.IGNORE_REALM)
                 .add(DamageTypes.LIGHTNING_BOLT, DamageTypes.IN_WALL, DamageTypes.CRAMMING, DamageTypes.FELL_OUT_OF_WORLD, DamageTypes.OUTSIDE_BORDER, DamageTypes.GENERIC_KILL, IMMDamageTypes.ELEMENT_REACTION);
         this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_1)
@@ -43,10 +38,22 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
         this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_3)
                 .add(DamageTypes.LAVA, DamageTypes.DROWN, DamageTypes.STARVE, DamageTypes.WITHER);
 
-        // IMM Tags.
         this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.QI);
         this.tag(IMMDamageTypeTags.ELEMENTS)
                 .add(IMMDamageTypes.WOOD_ELEMENT, IMMDamageTypes.WATER_ELEMENT, IMMDamageTypes.FIRE_ELEMENT);
 
+    }
+
+    private void vanilla(){
+        this.tag(DamageTypeTags.BYPASSES_ARMOR)
+                .addTag(IMMDamageTypeTags.SPIRITUALS)
+                .add(IMMDamageTypes.ELEMENT_REACTION)
+        ;
+        this.tag(DamageTypeTags.BYPASSES_SHIELD).addTag(IMMDamageTypeTags.ELEMENTS);
+    }
+
+    private void uniform(){
+        this.tag(IMMDamageTypeTags.MELEE_DAMAGES)
+                .add(DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.PLAYER_ATTACK);
     }
 }

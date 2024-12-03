@@ -125,7 +125,7 @@ public abstract class HumanEntity extends IMMGrowableMob implements HumanLike, I
     }
 
     @Override
-    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
         return CultivationManager.getQiRoots(accessor.getRandom());
     }
 

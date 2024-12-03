@@ -7,12 +7,13 @@ import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.reaction.GenerationReaction;
 import hungteen.imm.common.cultivation.reaction.GildingReaction;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
+import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,7 +37,8 @@ public class IMMLivingEvents {
     public static void incomeDamage(LivingIncomingDamageEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
             SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
-            if(event.getSource().is(DamageTypes.MOB_ATTACK) || event.getSource().is(DamageTypes.PLAYER_ATTACK)){
+            if(DamageUtil.isMeleeDamage(event.getSource())){
+                CriticalHitSpell.checkCriticalHit(event.getSource().getEntity(), event);
                 GildingReaction.ifGlidingActive(event.getSource().getEntity(), event.getEntity());
                 GenerationReaction.quenchBlade(event);
             }

@@ -19,33 +19,33 @@ import net.neoforged.neoforge.common.NeoForgeMod;
  * @author HungTeen
  * @create 2022-10-20 14:39
  **/
-public class IMMEffects {
+public interface IMMEffects {
 
-    private static final HTVanillaRegistry<MobEffect> EFFECTS = HTRegistryManager.vanilla(Registries.MOB_EFFECT, Util.id());
+    HTVanillaRegistry<MobEffect> EFFECTS = HTRegistryManager.vanilla(Registries.MOB_EFFECT, Util.id());
 
-    public static final PTHolder<MobEffect> BREAK_THROUGH = EFFECTS.registerForHolder("break_through", () -> new NoCureMobEffect(MobEffectCategory.BENEFICIAL, ColorHelper.AQUA.rgb()));
+    PTHolder<MobEffect> BREAK_THROUGH = EFFECTS.registerForHolder("break_through", () -> new HTMobEffect(MobEffectCategory.BENEFICIAL, ColorHelper.AQUA.rgb()));
 
-    public static final PTHolder<MobEffect> OPPRESSION = EFFECTS.registerForHolder("oppression", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb())
+    PTHolder<MobEffect> OPPRESSION = EFFECTS.registerForHolder("oppression", () -> new HTMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb())
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Util.prefix("effect.oppression"), -0.15F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.ATTACK_DAMAGE, Util.prefix("effect.oppression"), -0.1F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.ATTACK_SPEED, Util.prefix("effect.oppression"), -0.2F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.FLYING_SPEED, Util.prefix("effect.oppression"), -0.2F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
     );
 
-    public static final PTHolder<MobEffect> SOLIDIFICATION = EFFECTS.registerForHolder("solidification", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DYE_BROWN.rgb())
+    PTHolder<MobEffect> SOLIDIFICATION = EFFECTS.registerForHolder("solidification", () -> new HTMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DYE_BROWN.rgb())
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Util.prefix("effect.solidification"), -0.15F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.FLYING_SPEED, Util.prefix("effect.solidification"), -0.25F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.SNEAKING_SPEED, Util.prefix("effect.solidification"), -0.15F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(NeoForgeMod.SWIM_SPEED, Util.prefix("effect.solidification"), -0.2F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
     );
 
-    public static final PTHolder<MobEffect> CUTTING = EFFECTS.registerForHolder("cutting", () -> new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb()));
+    PTHolder<MobEffect> CUTTING = EFFECTS.registerForHolder("cutting", () -> new HTMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_RED.rgb()));
 
-//    public static final RegistryObject<MobEffect> CORPSE_POISON_EFFECT = EFFECTS.initialize("corpse_poison", () -> {
-//        return new NoCureMobEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_GREEN.rgb());
-//    });
+    PTHolder<MobEffect> CORPSE_POISON = EFFECTS.registerForHolder("corpse_poison", () -> new CorpsePoisonEffect(MobEffectCategory.HARMFUL, ColorHelper.DARK_GREEN.rgb())
+            .addAttributeModifier(Attributes.MAX_HEALTH, Util.prefix("effect.corpse_poison"), -1F, AttributeModifier.Operation.ADD_VALUE)
+    );
 
-    public static void initialize(IEventBus event) {
+    static void initialize(IEventBus event) {
         NeoHelper.initRegistry(EFFECTS, event);
     }
 

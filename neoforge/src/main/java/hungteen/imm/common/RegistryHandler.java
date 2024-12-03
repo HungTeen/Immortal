@@ -1,11 +1,13 @@
 package hungteen.imm.common;
 
+import hungteen.htlib.common.HTLibProxy;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.client.render.IMMEntityRenderers;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMPoiTypes;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
@@ -125,6 +127,11 @@ public class RegistryHandler {
         FilterRuneTypes.register();
         SectTypes.register();
 //        ItemUtil.registerLargeHeldItems();
+
+        /* Client */
+        HTLibProxy.get().runOnClient(() -> () -> {
+            IMMEntityRenderers.initialize();
+        });
     }
 
     /**

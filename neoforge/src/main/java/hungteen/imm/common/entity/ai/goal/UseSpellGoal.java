@@ -15,9 +15,15 @@ import java.util.EnumSet;
 public class UseSpellGoal extends Goal {
 
     private final SpellCaster spellEntity;
+    private final int failedCooldown;
 
-    public UseSpellGoal(SpellCaster spellEntity) {
+    public UseSpellGoal(SpellCaster spellEntity){
+        this(spellEntity, 20);
+    }
+
+    public UseSpellGoal(SpellCaster spellEntity, int failedCooldown) {
         this.spellEntity = spellEntity;
+        this.failedCooldown = failedCooldown;
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
@@ -33,7 +39,7 @@ public class UseSpellGoal extends Goal {
                 }
             }
             if(usingSpell == null){
-                this.spellEntity.setCoolDown(20);
+                this.spellEntity.setCoolDown(failedCooldown);
             } else {
                 this.spellEntity.trigger(usingSpell);
             }

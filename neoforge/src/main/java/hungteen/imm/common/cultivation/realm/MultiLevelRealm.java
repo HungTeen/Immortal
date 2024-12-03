@@ -16,7 +16,7 @@ public class MultiLevelRealm implements MultiRealm {
         System.arraycopy(realmTypes, 0, this.realmTypes, 0, realmTypes.length);
     }
 
-    public RealmType getRealmType(RealmLevel period){
+    public RealmType getRealmType(RealmStep period){
         return level(period.ordinal());
     }
 

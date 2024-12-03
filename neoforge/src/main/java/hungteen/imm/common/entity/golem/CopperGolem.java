@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @program Immortal
@@ -21,17 +21,17 @@ public class CopperGolem extends GolemEntity{
         super(type, level);
     }
 
-    public static AttributeSupplier createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.24D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
-                .build();
+                ;
     }
 
     @Override
-    public List<QiRootType> getRoots() {
-        return List.of(QiRootTypes.METAL);
+    public Set<QiRootType> getRoots() {
+        return Set.of(QiRootTypes.METAL);
     }
 
     @Override

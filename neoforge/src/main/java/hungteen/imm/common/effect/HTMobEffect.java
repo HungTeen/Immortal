@@ -1,5 +1,6 @@
 package hungteen.imm.common.effect;
 
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
 /**
@@ -7,9 +8,9 @@ import net.minecraft.world.effect.MobEffectCategory;
  * @author HungTeen
  * @create 2022-10-20 14:57
  **/
-public class NoCureMobEffect extends IMMMobEffect {
+public class HTMobEffect extends MobEffect {
 
-    public NoCureMobEffect(MobEffectCategory category, int color) {
+    public HTMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 

@@ -2,8 +2,12 @@ package hungteen.imm.api.cultivation;
 
 import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.imm.api.IMMAPI;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+import java.util.Map;
 
 /**
  * 跨境界体系的参考标准。
@@ -31,15 +35,25 @@ public interface RealmType extends SimpleEntry {
     int getRealmValue();
 
     /**
+     * 根据境界值，计算当前的大境界。
+     * @return 大境界的等级。
+     */
+    default RealmLevel getRealmLevel(){
+        return RealmLevel.of(getRealmValue());
+    }
+
+    /**
      * @return 精神领域对应的层数。
      */
-    int getRealmRegionLevel();
+    default int getRealmRegionLevel(){
+        return getRealmLevel().getRealmRegionLevel();
+    }
 
     /**
      * 到达该境界时，更新该生物的属性。
-     * @param mob The mob that reach the realm.
+     * @return 更新的属性。
      */
-    void onReachRealm(Mob mob);
+    Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers();
 
     /**
      * @return 是否需要突破瓶颈。

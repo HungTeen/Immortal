@@ -8,6 +8,7 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.spell.SpellResult;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +37,7 @@ public class IgnitionSpell extends SpellTypeImpl {
             SpellManager.activateSpell(player, SpellTypes.IGNITION, (p, result, spell, level) -> {
                 ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, 10);
                 arrow.setRemainingFireTicks(100);
-                return true;
+                return SpellResult.success();
             });
         }
     }

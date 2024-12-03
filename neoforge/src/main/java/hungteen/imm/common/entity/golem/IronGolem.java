@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @program Immortal
@@ -31,13 +31,13 @@ public class IronGolem extends GolemEntity{
         super(type, level);
     }
 
-    public static AttributeSupplier createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0D)
-                .build();
+                ;
     }
 
     @Override
@@ -119,8 +119,8 @@ public class IronGolem extends GolemEntity{
     }
 
     @Override
-    public List<QiRootType> getRoots() {
-        return List.of(QiRootTypes.METAL);
+    public Set<QiRootType> getRoots() {
+        return Set.of(QiRootTypes.METAL);
     }
 
 }

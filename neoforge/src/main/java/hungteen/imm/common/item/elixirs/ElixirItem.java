@@ -3,7 +3,7 @@ package hungteen.imm.common.item.elixirs;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -104,7 +104,7 @@ public abstract class ElixirItem extends Item {
      * @return False to explode, True to successfully eat elixir, absent to pass.
      */
     public Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack){
-        final RealmType realm = CultivationManager.getRealm( livingEntity);
+        final RealmType realm = RealmManager.getRealm(livingEntity);
         final CultivationType cultivationType = realm.getCultivationType();
         var lowRealm = getLowestRealm(cultivationType);
         var highRealm = getHighestRealm(cultivationType);

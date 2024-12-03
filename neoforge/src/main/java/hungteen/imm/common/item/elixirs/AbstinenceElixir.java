@@ -15,7 +15,7 @@ public class AbstinenceElixir {
 //    @Override
 //    protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack, Accuracies accuracy) {
 //        if(! level.isClientSide){
-//            livingEntity.addEffect(EffectHelper.effect(MobEffects.SATURATION, getDuration(accuracy), 2));
+//            livingEntity.addEffect(EffectHelper.effectOn(MobEffects.SATURATION, getDuration(accuracy), 2));
 //        }
 //    }
 //

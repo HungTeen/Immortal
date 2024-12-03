@@ -6,6 +6,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.ElementManager;
@@ -31,6 +32,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -160,12 +162,12 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
         return List.of(QiRootTypes.FIRE, QiRootTypes.WOOD);
     }
 
     @Override
-    protected List<Spell> createLearnSpells() {
+    public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
         return List.of(Spell.create(SpellTypes.INTIMIDATION), Spell.create(SpellTypes.WOOD_HEALING));
     }
 

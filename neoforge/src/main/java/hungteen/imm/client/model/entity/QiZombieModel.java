@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.*;
 
 /**
+ * {@link net.minecraft.client.model.AbstractZombieModel}.
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-20 21:45

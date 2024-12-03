@@ -170,7 +170,7 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     @Override
-    protected Collection<QiRootType> createRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
         return List.of(QiRootTypes.SPIRIT, getSpiritualRoot());
     }
 

@@ -9,9 +9,9 @@ import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.api.interfaces.IArtifactBlock;
 import hungteen.imm.api.interfaces.IArtifactItem;
-import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.block.base.CushionBlock;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.item.elixirs.CustomElixirItem;
@@ -28,7 +28,10 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -113,7 +116,7 @@ public interface IMMCreativeTabs {
                     .withTabsBefore(SECRET_MANUALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
-                            return CultivationManager.notCommon(CultivationManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
+                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
                         }).stream().map(ItemStack::new)
 //                                .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
                                 .forEach(output::accept);
