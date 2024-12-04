@@ -98,9 +98,15 @@ public class IMMConfigs {
                         .translation("config.immortal.default_spell_circle")
                         .comment("Use the default setting to control spell circle.")
                         .define("DefaultSpellCircle", true);
+
+                displayElementIconAboveHead = builder
+                        .translation("config.immortal.display_element_icon_above_head")
+                        .comment("Display the element icon above the player's head.")
+                        .define("DisplayElementIconAboveHead", true);
         }
 
         public ModConfigSpec.BooleanValue defaultSpellCircle;
+        public ModConfigSpec.BooleanValue displayElementIconAboveHead;
 
     }
 
@@ -123,13 +129,26 @@ public class IMMConfigs {
     }
 
     public static Common.RuleSettings ruleSettings(){
-        return COMMON_CONFIG.ruleSettings;
+        return common().ruleSettings;
+    }
+
+
+    public static Common common(){
+        return COMMON_CONFIG;
     }
 
     /* Client */
 
     public static boolean defaultSpellCircle() {
-        return CLIENT_CONFIG.defaultSpellCircle.get();
+        return client().defaultSpellCircle.get();
+    }
+
+    public static boolean displayElementIconAboveHead() {
+        return client().displayElementIconAboveHead.get();
+    }
+
+    public static Client client(){
+        return CLIENT_CONFIG;
     }
 
 }

@@ -1,9 +1,9 @@
 package hungteen.imm.common.item.artifacts;
 
 import hungteen.htlib.util.helper.RandomHelper;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,10 +26,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
  * @author HungTeen
  * @create 2023-02-25 23:08
  **/
-public class SpiritualPearlItem extends ArtifactItem {
+public class SpiritualPearlItem extends ArtifactItemImpl {
 
     public SpiritualPearlItem() {
-        super(RealmTypes.COMMON_ARTIFACT);
+        super(ArtifactRank.COMMON);
     }
 
     @Override

@@ -4,19 +4,15 @@ import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.SpellTypes;
-import hungteen.imm.common.cultivation.spell.SpellResult;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
-
-import java.util.Optional;
 
 /**
  * @program Immortal
@@ -34,9 +30,10 @@ public class CriticalHitSpell extends SpellTypeImpl {
             if(! event.isVanillaCritical()){
                 event.setDamageMultiplier(1.5F);
                 spawnCriticalParticles(event.getTarget());
-                return SpellResult.success();
+                playSoundAround(event.getTarget(), SoundEvents.PLAYER_ATTACK_CRIT);
+                return true;
             }
-            return SpellResult.fail();
+            return false;
         });
     }
 
@@ -50,7 +47,8 @@ public class CriticalHitSpell extends SpellTypeImpl {
             SpellManager.activateSpell(owner, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
                 event.setAmount(event.getOriginalAmount() * 1.5F);
                 spawnCriticalParticles(event.getEntity());
-                return SpellResult.success().effectOn(event.getEntity());
+                playSoundAround(event.getEntity(), SoundEvents.PLAYER_ATTACK_CRIT);
+                return true;
             });
         }
     }
@@ -61,8 +59,4 @@ public class CriticalHitSpell extends SpellTypeImpl {
         }
     }
 
-    @Override
-    public Optional<SoundEvent> getTriggerSound() {
-        return Optional.of(SoundEvents.PLAYER_ATTACK_CRIT);
-    }
 }

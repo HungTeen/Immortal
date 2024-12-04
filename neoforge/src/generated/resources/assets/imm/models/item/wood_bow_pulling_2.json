@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/wood_bow",
+  "textures": {
+    "layer0": "imm:item/wood_bow_pulling_2"
+  }
+}

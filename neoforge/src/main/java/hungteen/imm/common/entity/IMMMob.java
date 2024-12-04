@@ -13,10 +13,7 @@ import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
-import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.cultivation.RealmManager;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.EventUtil;
@@ -41,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author HungTeen
@@ -131,7 +129,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     public List<Spell> getInitialSpells(ServerLevelAccessor accessor, DifficultyInstance difficulty, RealmType realm) {
         List<Spell> spells = new ArrayList<>();
-        Set<Element> elements = getElements();
+        Set<Element> elements = CultivationManager.getElements(this).collect(Collectors.toSet());
         for (Element element : elements) {
             spells.addAll(getRandomSpells(accessor.getRandom(), element, realm));
         }

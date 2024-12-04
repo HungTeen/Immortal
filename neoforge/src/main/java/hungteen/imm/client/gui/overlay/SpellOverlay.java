@@ -5,8 +5,8 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.client.ClientData;
 import hungteen.imm.client.IMMClientProxy;
+import hungteen.imm.client.data.SpellClientData;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.cultivation.SpellManager;
@@ -57,13 +57,13 @@ public class SpellOverlay {
     }
     
     public static void renderSpellCircle(GuiGraphics graphics, DeltaTracker tracker) {
-        if(ClientUtil.canRenderOverlay() && ClientData.ShowSpellCircle){
+        if(ClientUtil.canRenderOverlay() && SpellClientData.showSpellCircle){
             ClientUtil.push("renderSpellCircle");
             final int width = graphics.guiWidth();
             final int height = graphics.guiHeight();
             final int leftPos = (width - CIRCLE_LEN) >> 1;
             final int topPos = (height - CIRCLE_LEN) >> 1;
-            final int selectPos = ClientData.LastSelectedPosition;
+            final int selectPos = SpellClientData.lastSelectedPosition;
             RenderHelper.push(graphics);
             RenderSystem.enableBlend();
             graphics.blit(TEXTURE, leftPos, topPos, 0, 0, CIRCLE_LEN, CIRCLE_LEN);

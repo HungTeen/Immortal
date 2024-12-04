@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * @author HungTeen
@@ -189,6 +190,10 @@ public class PlayerUtil {
     @Nullable
     public static SpellType getSpellAt(Player player, int pos) {
         return getData(player, data -> data.getSpellData().getSpellAt(pos));
+    }
+
+    public static Stream<SpellType> getCircleSpells(Player player) {
+        return getData(player, data -> data.getSpellData().getSpellList());
     }
 
     public static boolean isSpellOnCircle(Player player, SpellType spell) {

@@ -85,7 +85,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                     }
                 }
                 if(! debugComponents.isEmpty()){
-                    iTooltip.add(TipUtil.info("debug").withStyle(ChatFormatting.BOLD));
+                    iTooltip.add(TipUtil.info("debug").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
                     debugComponents.forEach(iTooltip::add);
                 }
             }

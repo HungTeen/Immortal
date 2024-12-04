@@ -1,6 +1,5 @@
-package hungteen.imm.api.interfaces;
+package hungteen.imm.api.artifact;
 
-import hungteen.imm.api.cultivation.RealmType;
 import net.minecraft.world.item.Tier;
 
 /**
@@ -32,7 +31,7 @@ public interface IArtifactTier extends Tier {
      * Level of the artifact tier.
      * @return level.
      */
-    RealmType getArtifactRealm();
+    ArtifactRank getArtifactRealm();
 
     /**
      * Replace this method with {@link IArtifactTier#getAttackSpeed()} ()}

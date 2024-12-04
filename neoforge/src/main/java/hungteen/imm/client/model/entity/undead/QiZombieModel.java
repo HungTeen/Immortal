@@ -1,4 +1,4 @@
-package hungteen.imm.client.model.entity;
+package hungteen.imm.client.model.entity.undead;
 
 import hungteen.imm.common.entity.undead.QiZombie;
 import net.minecraft.client.model.AnimationUtils;

@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifacts;
 
-import hungteen.imm.api.interfaces.IArtifactTier;
+import hungteen.imm.api.artifact.IArtifactTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;

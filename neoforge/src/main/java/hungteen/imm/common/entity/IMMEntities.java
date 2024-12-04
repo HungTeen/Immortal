@@ -23,6 +23,7 @@ import hungteen.imm.common.entity.human.villager.CommonVillager;
 import hungteen.imm.common.entity.human.villager.IMMVillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
+import hungteen.imm.common.entity.undead.QiSkeleton;
 import hungteen.imm.common.entity.undead.QiZombie;
 import hungteen.imm.common.item.IMMSpawnEggItem;
 import hungteen.imm.util.Colors;
@@ -90,11 +91,20 @@ public class IMMEntities {
     /* Undead */
 
     public static final HTEntitySuit<QiZombie> QI_ZOMBIE = registerLiving("qi_zombie", () -> {
-        return EntityType.Builder.of(QiZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F);
+        return EntityType.Builder.of(QiZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
+                .eyeHeight(1.74F).passengerAttachments(2.0125F).ridingOffset(-0.7F).clientTrackingRange(8);
     }, builder -> builder
             .attribute(() -> QiZombie.createAttributes().build())
             .spawnEgg(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN)
             .spawn(SpawnPlacementTypes.ON_GROUND)
+    );
+    public static final HTEntitySuit<QiSkeleton> QI_SKELETON = registerLiving("lingerer", () -> {
+                return EntityType.Builder.of(QiSkeleton::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
+                        .eyeHeight(1.74F).ridingOffset(-0.7F).clientTrackingRange(8);
+            }, builder -> builder
+                    .attribute(() -> QiSkeleton.createAttributes().build())
+                    .spawnEgg(12698049, 4802889)
+                    .spawn(SpawnPlacementTypes.ON_GROUND)
     );
 
     /* Golem */

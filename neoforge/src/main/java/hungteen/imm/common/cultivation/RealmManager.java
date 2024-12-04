@@ -1,10 +1,11 @@
 package hungteen.imm.common.cultivation;
 
+import hungteen.imm.api.artifact.ArtifactBlock;
+import hungteen.imm.api.artifact.ArtifactItem;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.Cultivatable;
 import hungteen.imm.api.event.EntityRealmEvent;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.interfaces.IArtifactItem;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -104,35 +104,33 @@ public class RealmManager {
         }
     }
 
-    public static RealmType getRealm(ItemStack stack) {
+    public static ArtifactRank getRealm(ItemStack stack) {
         if (stack.is(IMMItemTags.COMMON_ARTIFACTS)) {
-            return RealmTypes.COMMON_ARTIFACT;
+            return ArtifactRank.COMMON;
         } else if (stack.is(IMMItemTags.MODERATE_ARTIFACTS)) {
-            return RealmTypes.MODERATE_ARTIFACT;
+            return ArtifactRank.MODERATE;
         } else if (stack.is(IMMItemTags.ADVANCED_ARTIFACTS)) {
-            return RealmTypes.ADVANCED_ARTIFACT;
-        } else if (stack.getItem() instanceof IArtifactItem artifactItem) {
+            return ArtifactRank.ADVANCED;
+        } else if (stack.getItem() instanceof ArtifactItem artifactItem) {
             return artifactItem.getArtifactRealm(stack);
-        } else if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IArtifactBlock artifactBlock) {
-            return artifactBlock.getArtifactRealm(stack);
         }
-        return RealmTypes.NOT_IN_REALM;
+        return ArtifactRank.UNKNOWN;
     }
 
-    public static RealmType getRealm(BlockState state) {
+    public static ArtifactRank getRealm(BlockState state) {
         if (state.is(IMMBlockTags.COMMON_ARTIFACTS)) {
-            return RealmTypes.COMMON_ARTIFACT;
+            return ArtifactRank.COMMON;
         } else if (state.is(IMMBlockTags.MODERATE_ARTIFACTS)) {
-            return RealmTypes.MODERATE_ARTIFACT;
+            return ArtifactRank.MODERATE;
         } else if (state.is(IMMBlockTags.ADVANCED_ARTIFACTS)) {
-            return RealmTypes.ADVANCED_ARTIFACT;
-        } else if (state.getBlock() instanceof IArtifactBlock artifactBlock) {
+            return ArtifactRank.ADVANCED;
+        } else if (state.getBlock() instanceof ArtifactBlock artifactBlock) {
             return artifactBlock.getRealm(state);
         }
-        return RealmTypes.NOT_IN_REALM;
+        return ArtifactRank.UNKNOWN;
     }
 
-    public static boolean notCommon(RealmType type) {
-        return type != RealmTypes.NOT_IN_REALM && type != RealmTypes.MORTALITY;
+    public static boolean notCommon(ArtifactRank type) {
+        return type != ArtifactRank.UNKNOWN;
     }
 }

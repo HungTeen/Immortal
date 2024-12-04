@@ -1,6 +1,6 @@
 package hungteen.imm.common.block.artifacts;
 
-import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.menu.RuneCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 public class RuneWorkBench extends SimpleArtifactBlock {
 
     public RuneWorkBench() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE), RealmTypes.MODERATE_ARTIFACT);
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE), ArtifactRank.MODERATE);
     }
 
     @Override

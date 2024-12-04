@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 /**
+ * 燃烧手中的物品。
  * @program Immortal
  * @author HungTeen
  * @create 2023-08-27 19:30

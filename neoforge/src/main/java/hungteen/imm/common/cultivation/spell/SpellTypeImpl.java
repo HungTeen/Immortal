@@ -1,14 +1,16 @@
 package hungteen.imm.common.cultivation.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import hungteen.imm.util.enums.SpellSortCategories;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -46,10 +48,24 @@ public abstract class SpellTypeImpl implements SpellType {
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
 
-    public void sendTip(LivingEntity owner, String msg){
+    public static void sendTip(LivingEntity owner, String msg){
         if(owner instanceof Player player){
             PlayerHelper.sendTipTo(player, TipUtil.info("spell." + msg).withStyle(ChatFormatting.RED));
         }
+    }
+
+    public static void playSound(Entity entity, SoundEvent sound){
+        entity.playSound(sound);
+    }
+
+    public static void playClientSound(Entity entity, SoundEvent sound){
+        if(entity instanceof Player player){
+            PlayerHelper.playClientSound(player, sound);
+        }
+    }
+
+    public static void playSoundAround(Entity entity, SoundEvent sound){
+        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, entity.getSoundSource(), 1.0F, 1.0F);
     }
 
     @Override

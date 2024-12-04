@@ -1,8 +1,8 @@
 package hungteen.imm.common.block.artifacts;
 
 import hungteen.htlib.common.block.HTBlock;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.artifact.ArtifactBlock;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,13 +20,13 @@ import java.util.List;
  * @program Immortal
  * @create 2023/2/28 20:41
  */
-public abstract class SimpleArtifactBlock extends HTBlock implements IArtifactBlock {
+public abstract class SimpleArtifactBlock extends HTBlock implements ArtifactBlock {
 
-    private final RealmType realmType;
+    private final ArtifactRank rank;
 
-    protected SimpleArtifactBlock(Properties properties, RealmType realmType) {
+    protected SimpleArtifactBlock(Properties properties, ArtifactRank rank) {
         super(properties);
-        this.realmType = realmType;
+        this.rank = rank;
     }
 
     @Override
@@ -39,12 +39,8 @@ public abstract class SimpleArtifactBlock extends HTBlock implements IArtifactBl
     }
 
     @Override
-    public RealmType getRealm(BlockState state) {
-        return this.realmType;
+    public ArtifactRank getRealm(BlockState state) {
+        return this.rank;
     }
 
-    @Override
-    public RealmType getArtifactRealm(ItemStack stack) {
-        return this.realmType;
-    }
 }

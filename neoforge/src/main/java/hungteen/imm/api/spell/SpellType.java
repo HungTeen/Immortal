@@ -20,9 +20,10 @@ public interface SpellType extends SimpleEntry {
 
     /**
      * 法术被触发。
-     * @param owner who activated this spell.
+     *
+     * @param owner  who activated this spell.
      * @param result target.
-     * @param level spell level.
+     * @param level  spell level.
      * @return activate successfully.
      */
     default boolean checkActivate(LivingEntity owner, HTHitResult result, int level){
@@ -61,18 +62,18 @@ public interface SpellType extends SimpleEntry {
     boolean canTrigger();
 
     /**
-     * 获取触发法术时的音效。
-     * @return Get the effectOn when the spell is triggered.
-     */
-    default Optional<SoundEvent> getTriggerSound(){
-        return Optional.empty();
-    }
-
-    /**
      * 法术是否能被放置在法术轮盘上。
      * @return Whether can the spell be place on circle.
      */
     boolean canPlaceOnCircle();
+
+    /**
+     * 法术触发时的音效。
+     * @return The sound when the spell is triggered.
+     */
+    default Optional<SoundEvent> getTriggerSound(){
+        return Optional.empty();
+    }
 
     int getPriority();
 

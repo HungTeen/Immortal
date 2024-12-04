@@ -33,6 +33,8 @@ public class EntityTagGen extends HTHolderTagsProvider<EntityType<?>> {
                 .add(IMMEntities.TORNADO.get());
 
         this.tag(IMMEntityTags.NO_ELEMENT_REACTIONS).add(IMMEntities.SPIRITUAL_PEARL.get(), IMMEntities.ELEMENT_AMETHYST.get());
+        this.tag(IMMEntityTags.REQUIRE_ELEMENT_DISPLAY_ENTITIES).add(IMMEntities.ELEMENT_AMETHYST.get());
+
         this.tag(IMMEntityTags.CULTIVATORS).add(EntityType.PLAYER, IMMEntities.EMPTY_CULTIVATOR.get(), IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get());
         this.tag(IMMEntityTags.HUMAN_BEINGS).addTags(IMMEntityTags.CULTIVATORS, IMMEntityTags.VILLAGERS, IMMEntityTags.PILLAGERS);
     }

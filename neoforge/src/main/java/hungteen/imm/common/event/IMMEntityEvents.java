@@ -6,9 +6,7 @@ import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.raid.Raider;
+import hungteen.imm.common.event.handler.EntityEventHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -38,10 +36,10 @@ public class IMMEntityEvents {
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent event){
         if(! event.getLevel().isClientSide()){
-            if(event.getEntity() instanceof Raider raider){
-                raider.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(raider, Creeper.class, true));
-            } else if(event.getEntity() instanceof Creeper creeper){
-                creeper.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(creeper, Raider.class, true));
+            EntityEventHandler.compatTargetGoal(event.getEntity());
+            // 只考虑第一次生成。
+            if(! event.loadedFromDisk()){
+                IgnitionSpell.checkIgnitionArrow(event.getEntity());
             }
         }
     }
@@ -49,7 +47,7 @@ public class IMMEntityEvents {
     @SubscribeEvent
     public static void onProjectileImpact(ProjectileImpactEvent event){
         if(EntityHelper.isServer(event.getProjectile())){
-            IgnitionSpell.checkIgnitionArrow(event.getProjectile(), event.getRayTraceResult());
+            EntityEventHandler.attachElementWhenImpact(event.getProjectile(), event.getRayTraceResult());
         }
     }
 

@@ -1,8 +1,7 @@
-package hungteen.imm.client.render.entity;
+package hungteen.imm.client.render.entity.undead;
 
 import hungteen.htlib.client.util.ModelLayer;
-import hungteen.imm.api.cultivation.RealmLevel;
-import hungteen.imm.client.model.entity.QiZombieModel;
+import hungteen.imm.client.model.entity.undead.QiZombieModel;
 import hungteen.imm.client.render.IMMEntityRenderers;
 import hungteen.imm.common.entity.undead.QiZombie;
 import hungteen.imm.util.Util;
@@ -18,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
  **/
 public class QiZombieRender extends HumanoidMobRenderer<QiZombie, QiZombieModel<QiZombie>> {
 
-    private static final ResourceLocation VANILLA_ZOMBIE_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png");
     private static final ResourceLocation RED_ZOMBIE_LOCATION = Util.get().entityTexture("undead/zombie/red_zombie");
     private static final ResourceLocation PVZ_ZOMBIE_LOCATION = Util.get().entityTexture("undead/zombie/pvz_zombie");
 
@@ -38,9 +36,6 @@ public class QiZombieRender extends HumanoidMobRenderer<QiZombie, QiZombieModel<
         if (entity.hasCustomName() && "pvz_zombie".equals(entity.getName().getString())){
             return PVZ_ZOMBIE_LOCATION;
         }
-        if(entity.getRealm().getRealmLevel().atLeast(RealmLevel.FOUNDATION)){
-            return RED_ZOMBIE_LOCATION;
-        }
-        return VANILLA_ZOMBIE_LOCATION;
+        return RED_ZOMBIE_LOCATION;
     }
 }

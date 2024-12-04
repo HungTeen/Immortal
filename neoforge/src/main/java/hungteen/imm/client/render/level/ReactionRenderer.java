@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.imm.api.spell.ElementReaction;
-import hungteen.imm.client.ClientData;
+import hungteen.imm.client.data.ClientData;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
 import net.minecraft.client.Camera;

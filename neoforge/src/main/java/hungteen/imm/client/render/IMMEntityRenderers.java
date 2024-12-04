@@ -5,9 +5,12 @@ import hungteen.htlib.client.render.HTClientEntitySuit;
 import hungteen.htlib.client.util.ModelLayer;
 import hungteen.htlib.common.registry.suit.HTEntitySuit;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.QiZombieModel;
-import hungteen.imm.client.render.entity.QiZombieRender;
+import hungteen.imm.client.model.entity.undead.QiSkeletonModel;
+import hungteen.imm.client.model.entity.undead.QiZombieModel;
+import hungteen.imm.client.render.entity.undead.QiSkeletonRender;
+import hungteen.imm.client.render.entity.undead.QiZombieRender;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.undead.QiSkeleton;
 import hungteen.imm.common.entity.undead.QiZombie;
 import net.minecraft.world.entity.Entity;
 
@@ -23,6 +26,13 @@ public interface IMMEntityRenderers {
     HTClientEntitySuit<QiZombie> QI_ZOMBIE = register(IMMEntities.QI_ZOMBIE, builder -> builder
             .renderer(QiZombieRender::new)
             .mainLayer(QiZombieModel::createBodyLayer)
+            .layer(ModelLayer.INNER_ARMOR, () -> IMMModelLayers.INNER_ARMOR)
+            .layer(ModelLayer.OUTER_ARMOR, () -> IMMModelLayers.OUTER_ARMOR)
+    );
+
+    HTClientEntitySuit<QiSkeleton> QI_SKELETON = register(IMMEntities.QI_SKELETON, builder -> builder
+            .renderer(QiSkeletonRender::new)
+            .mainLayer(QiSkeletonModel::createBodyLayer)
             .layer(ModelLayer.INNER_ARMOR, () -> IMMModelLayers.INNER_ARMOR)
             .layer(ModelLayer.OUTER_ARMOR, () -> IMMModelLayers.OUTER_ARMOR)
     );

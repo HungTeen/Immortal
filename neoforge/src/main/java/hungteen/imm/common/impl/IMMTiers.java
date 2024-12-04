@@ -1,8 +1,7 @@
 package hungteen.imm.common.impl;
 
-import hungteen.imm.api.interfaces.IArtifactTier;
-import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.api.artifact.ArtifactRank;
+import hungteen.imm.api.artifact.IArtifactTier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -19,27 +18,27 @@ import java.util.function.Supplier;
  **/
 public class IMMTiers {
 
-    public static final IArtifactTier STONE = new ArtifactTier(-5, RealmTypes.COMMON_ARTIFACT, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
-    public static final IArtifactTier BRONZE = new ArtifactTier(0F, RealmTypes.COMMON_ARTIFACT, 300, () -> Ingredient.of(Items.COPPER_INGOT));
+    public static final IArtifactTier STONE = new ArtifactTier(-5, ArtifactRank.COMMON, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
+    public static final IArtifactTier BRONZE = new ArtifactTier(0F, ArtifactRank.COMMON, 300, () -> Ingredient.of(Items.COPPER_INGOT));
 
     public static class ArtifactTier implements IArtifactTier {
 
         private final float attackDamage;
         private final float attackSpeed;
         private final float attackRange;
-        private final RealmType realmType;
+        private final ArtifactRank rank;
         private final int durability;
         private final Supplier<Ingredient> repairIngredient;
 
-        public ArtifactTier(float attackDamage, RealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
-            this(attackDamage, 0, 0, realmType, durability, repairIngredient);
+        public ArtifactTier(float attackDamage, ArtifactRank rank, int durability, Supplier<Ingredient> repairIngredient) {
+            this(attackDamage, 0, 0, rank, durability, repairIngredient);
         }
 
-        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, RealmType realmType, int durability, Supplier<Ingredient> repairIngredient) {
+        public ArtifactTier(float attackDamage, float attackSpeed, float attackRange, ArtifactRank rank, int durability, Supplier<Ingredient> repairIngredient) {
             this.attackDamage = attackDamage;
             this.attackSpeed = attackSpeed;
             this.attackRange = attackRange;
-            this.realmType = realmType;
+            this.rank = rank;
             this.durability = durability;
             this.repairIngredient = repairIngredient;
         }
@@ -60,8 +59,8 @@ public class IMMTiers {
         }
 
         @Override
-        public RealmType getArtifactRealm() {
-            return realmType;
+        public ArtifactRank getArtifactRealm() {
+            return rank;
         }
 
         @Override

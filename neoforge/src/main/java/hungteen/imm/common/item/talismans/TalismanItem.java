@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.talismans;
 
-import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
@@ -20,7 +20,7 @@ import java.util.List;
  * @program Immortal
  * @create 2023/6/3 15:58
  */
-public abstract class TalismanItem extends Item implements IArtifactItem {
+public abstract class TalismanItem extends Item implements ArtifactItem {
 
     public static final String ACTIVATED = "activated";
     public static final ResourceLocation ACTIVATE_PROPERTY = Util.prefix(ACTIVATED);

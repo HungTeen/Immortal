@@ -33,6 +33,8 @@ import hungteen.imm.client.render.entity.misc.TornadoRender;
 import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.artifacts.WoodBowItem;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.talismans.TalismanItem;
@@ -231,5 +233,15 @@ public class ClientRegister {
                 return TalismanItem.isActivated(stack) ? 1F : 0F;
             });
         });
+        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULL, (stack, level, entity, val) -> {
+            if (entity == null) {
+                return 0.0F;
+            } else {
+                return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        });
+        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULLING,
+                (stack, level, entity, val) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+        );
     }
 }

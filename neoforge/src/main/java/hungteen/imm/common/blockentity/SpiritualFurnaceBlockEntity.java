@@ -1,10 +1,9 @@
 package hungteen.imm.common.blockentity;
 
 import hungteen.htlib.common.blockentity.ContainerBlockEntity;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.artifact.ArtifactBlock;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.item.artifacts.FlameGourd;
 import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.common.tag.IMMItemTags;
@@ -250,8 +249,8 @@ public class SpiritualFurnaceBlockEntity extends ContainerBlockEntity implements
         return new SpiritualFurnaceMenu(id, inventory, this.accessData, this.getBlockPos());
     }
 
-    public RealmType getArtifactType() {
-        return this.getBlockState().getBlock() instanceof IArtifactBlock ? ((IArtifactBlock) this.getBlockState().getBlock()).getRealm(this.getBlockState()) : RealmTypes.NOT_IN_REALM;
+    public ArtifactRank getArtifactType() {
+        return this.getBlockState().getBlock() instanceof ArtifactBlock ? ((ArtifactBlock) this.getBlockState().getBlock()).getRealm(this.getBlockState()) : ArtifactRank.COMMON;
     }
 
     @Override

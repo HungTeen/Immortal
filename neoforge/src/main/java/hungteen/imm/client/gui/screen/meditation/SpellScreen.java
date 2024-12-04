@@ -8,7 +8,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.client.IMMClientProxy;
-import hungteen.imm.client.event.handler.SpellHandler;
+import hungteen.imm.client.data.SpellClientData;
 import hungteen.imm.client.gui.GuiUtil;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.HTButton;
@@ -88,15 +88,15 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<S
         this.scrollComponent.setOffset(this.leftPos + 15, this.topPos + 13);
         this.scrollComponent.setInterval(2);
         this.modeButton = new ModeButton(Button.builder(TipUtil.gui("meditation.mode"), (button) -> {
-            if (SpellHandler.useDefaultCircle()) {
+            if (SpellClientData.useDefaultCircle()) {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_move_mode")));
             } else {
                 button.setTooltip(Tooltip.create(TipUtil.gui("meditation.to_scroll_mode")));
             }
-            SpellHandler.changeCircleMode();
+            SpellClientData.changeCircleMode();
             NetworkHelper.sendToServer(new ServerSpellPacket(ServerSpellPacket.SpellOption.CHANGE_CIRCLE_MODE, PlayerUtil.getSpellCircleMode(ClientUtil.player())));
         }).pos(this.leftPos - BUTTON_WIDTH, this.topPos).tooltip(Tooltip.create(
-                TipUtil.gui("meditation." + (SpellHandler.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
+                TipUtil.gui("meditation." + (SpellClientData.useDefaultCircle() ? "to_scroll_mode" : "to_move_mode"))
         )));
         this.addRenderableWidget(this.modeButton);
     }

@@ -1,25 +1,25 @@
 package hungteen.imm.common.entity.undead;
 
+import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.spell.Spell;
+import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.effect.CorpsePoisonEffect;
+import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.goal.AggressiveAttackGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
 import hungteen.imm.util.ItemUtil;
-import hungteen.imm.util.NBTUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -33,16 +33,15 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
 
@@ -56,7 +55,6 @@ import java.util.List;
 public class QiZombie extends UndeadEntity {
 
     private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(Util.prefix("baby"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-    private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(QiZombie.class, EntityDataSerializers.BOOLEAN);
 
     public QiZombie(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);
@@ -64,33 +62,24 @@ public class QiZombie extends UndeadEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return IMMMob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 24D)
                 .add(Attributes.FOLLOW_RANGE, 40.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.MOVEMENT_SPEED, 0.24F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
                 .add(Attributes.ARMOR, 2.0D)
-                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE)
                 ;
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_BABY_ID, false);
+    protected void addTargetGoals() {
+        super.addTargetGoals();
     }
 
     @Override
-    protected void registerGoals() {
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.addBehaviourGoals();
-    }
-
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(2, new UseSpellGoal(this));
         this.goalSelector.addGoal(2, new AggressiveAttackGoal(this, 1.0, false));
         this.goalSelector.addGoal(2, new FloatGoal(this));
-//        this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0, true, 4, this::canBreakDoors));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -99,14 +88,14 @@ public class QiZombie extends UndeadEntity {
     @Override
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
-        if(accessor.getRandom().nextFloat() < 0.05F){
+        if (accessor.getRandom().nextFloat() < 0.05F) {
             this.setBaby(true);
         }
     }
 
     @Override
     public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
-        return switch (element){
+        return switch (element) {
             case METAL -> List.of(Spell.create(SpellTypes.CRITICAL_HIT));
             default -> List.of();
         };
@@ -133,18 +122,70 @@ public class QiZombie extends UndeadEntity {
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean flag = super.hurt(source, amount);
+        if (flag && this.level() instanceof ServerLevel serverLevel) {
+            LivingEntity target = this.getTarget();
+            if (target == null && source.getEntity() instanceof LivingEntity) {
+                target = (LivingEntity) source.getEntity();
+            }
+
+            if (target != null && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+                // 业灵根或者高境界可以召唤援军。
+                if ((this.hasElement(Element.SPIRIT) && this.getRandom().nextFloat() < 0.2)
+                        || (RealmTypes.MID_RANK_UNDEAD.hasRealm(getRealm()) && this.getRandom().nextFloat() < 0.05)) {
+                    spawnReinforcements(serverLevel, target, 25);
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    /**
+     * 召唤僵尸援军。
+     */
+    protected void spawnReinforcements(ServerLevel serverLevel, LivingEntity target, int tries) {
+        int i = Mth.floor(this.getX());
+        int j = Mth.floor(this.getY());
+        int k = Mth.floor(this.getZ());
+        QiZombie zombie = new QiZombie(IMMEntities.QI_ZOMBIE.get(), this.level());
+
+        for (int l = 0; l < tries; l++) {
+            int i1 = i + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
+            int j1 = j + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
+            int k1 = k + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
+            BlockPos blockpos = new BlockPos(i1, j1, k1);
+            EntityType<?> entitytype = zombie.getType();
+            if (SpawnPlacements.isSpawnPositionOk(entitytype, this.level(), blockpos) && SpawnPlacements.checkSpawnRules(entitytype, serverLevel, MobSpawnType.REINFORCEMENT, blockpos, this.level().random)) {
+                zombie.setPos(i1, j1, k1);
+                if (!serverLevel.hasNearbyAlivePlayer(i1, j1, k1, 7.0)
+                        && serverLevel.isUnobstructed(zombie)
+                        && serverLevel.noCollision(zombie)
+                        && !serverLevel.containsAnyLiquid(zombie.getBoundingBox())) {
+                    zombie.setTarget(target);
+                    EventHooks.finalizeMobSpawn(zombie, serverLevel, serverLevel.getCurrentDifficultyAt(zombie.blockPosition()), MobSpawnType.REINFORCEMENT, null);
+                    serverLevel.addFreshEntityWithPassengers(zombie);
+                    ParticleHelper.sendParticles(serverLevel, IMMParticles.SPIRIT_ELEMENT.get(), getX(), getEyeY(), getZ(), 15, 0.2, 0.2, 0.2, 0.05);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     public boolean doHurtTarget(Entity entity) {
         boolean flag = super.doHurtTarget(entity);
         if (flag) {
             // 蔓延火焰。
             float f = this.level().getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
             if (this.getMainHandItem().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                entity.igniteForSeconds((float)(2 * (int)f));
+                entity.igniteForSeconds((float) (2 * (int) f));
             }
 
             // 附加尸毒。
-            if(entity instanceof LivingEntity target && this.hasElement(Element.WOOD)){
-                if(this.getRandom().nextFloat() < 0.5F / this.getRoots().size()){
+            if (entity instanceof LivingEntity target && this.hasElement(Element.WOOD)) {
+                if (this.getRandom().nextFloat() < 0.5F / this.getRoots().size()) {
                     CorpsePoisonEffect.attachPoison(target, 1, getRoots().size() == 1 ? 1200 : 600);
                 }
             }
@@ -155,7 +196,7 @@ public class QiZombie extends UndeadEntity {
 
     @Override
     public List<MultiRealm> getMultiRealms() {
-        return List.of(RealmTypes.LOW_RANK_UNDEAD, RealmTypes.MID_RANK_UNDEAD, RealmTypes.HIGH_RANK_UNDEAD);
+        return List.of(RealmTypes.LOW_RANK_UNDEAD, RealmTypes.MID_RANK_UNDEAD);
     }
 
     @Override
@@ -179,47 +220,12 @@ public class QiZombie extends UndeadEntity {
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        if (DATA_BABY_ID.equals(key)) {
-            this.refreshDimensions();
-        }
-
-        super.onSyncedDataUpdated(key);
-    }
-
-    @Override
-    protected int getBaseExperienceReward() {
-        if (this.isBaby()) {
-            this.xpReward = (int)((double)this.xpReward * 2.5);
-        }
-
-        return super.getBaseExperienceReward();
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        NBTUtil.read(tag, tag::getBoolean, "IsBaby", this::setBaby);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        NBTUtil.write(tag::putBoolean, "IsBaby", this.isBaby());
-    }
-
-    @Override
-    public boolean isBaby() {
-        return this.getEntityData().get(DATA_BABY_ID);
-    }
-
-    @Override
-    public void setBaby(boolean childZombie) {
-        this.getEntityData().set(DATA_BABY_ID, childZombie);
+    public void setBaby(boolean baby) {
+        super.setBaby(baby);
         if (!this.level().isClientSide) {
             AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
-            if(attributeinstance != null){
-                if (childZombie) {
+            if (attributeinstance != null) {
+                if (baby) {
                     attributeinstance.addOrUpdateTransientModifier(SPEED_MODIFIER_BABY);
                 } else {
                     attributeinstance.removeModifier(SPEED_MODIFIER_BABY);

@@ -8,6 +8,7 @@ import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifacts.MeleeAttackItem;
+import hungteen.imm.common.item.artifacts.WoodBowItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
@@ -103,6 +104,9 @@ public class ItemModelGen extends HTItemModelGen {
             this.genNormal(entry.getKey().location().getPath(), StringHelper.itemTexture(Util.prefix("filter_rune")));
         });
 
+        bowLike(IMMItems.WOOD_BOW.get());
+
+
         /* For mostly common items. */
         for (Item item : ItemHelper.get().values()) {
             if (!Util.in(key(item)) || addedItems.contains(item)){
@@ -157,6 +161,21 @@ public class ItemModelGen extends HTItemModelGen {
         baseBuilder.override()
                 .model(staticBuilder)
                 .predicate(TalismanItem.ACTIVATE_PROPERTY, 0F);
+        this.add(item);
+    }
+
+    protected void bowLike(Item item) {
+        final String parent = ItemHelper.itemTexture(item).toString();
+        ItemModelBuilder baseBuilder = this.gen(name(item), "item/bow", Util.prefix("item/" + name(item)));
+        float[] pullArray = new float[]{0, 0.65F, 0.9F};
+        for(int i = 0; i < 3; ++ i) {
+            String suffix = "_pulling_" + i;
+            ItemModelBuilder pullingBuilder = this.gen(name(item) + suffix, parent, ItemHelper.itemTexture(item, suffix));
+            baseBuilder.override()
+                    .model(pullingBuilder)
+                    .predicate(WoodBowItem.PULL, pullArray[i])
+                    .predicate(WoodBowItem.PULLING, 1);
+        }
         this.add(item);
     }
 

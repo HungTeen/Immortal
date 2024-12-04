@@ -7,6 +7,7 @@ import hungteen.imm.IMMConfigs;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.*;
+import hungteen.imm.api.entity.HasRoot;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
@@ -32,9 +33,12 @@ import net.minecraft.world.level.Level;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @program Immortal
@@ -103,6 +107,29 @@ public class CultivationManager {
             ).getRandomItems(random, rootCount, true));
         }
         return rootChosen;
+    }
+
+    /**
+     * @return 获取实体的灵根。
+     */
+    public static List<QiRootType> getRoots(Entity entity){
+        if(entity instanceof Player player){
+            return PlayerUtil.getRoots(player);
+        } else if(entity instanceof HasRoot hasRoot){
+            return hasRoot.getRoots().stream().toList();
+        }
+        return List.of();
+    }
+
+    /**
+     * @return 获取实体的元素。
+     */
+    public static Stream<Element> getElements(Entity entity){
+        Set<Element> elements = new HashSet<>();
+        getRoots(entity).forEach(root -> {
+            elements.addAll(root.getElements());
+        });
+        return elements.stream();
     }
 
     /**

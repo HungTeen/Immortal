@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifacts;
 
-import hungteen.imm.api.interfaces.IArtifactTier;
+import hungteen.imm.api.artifact.IArtifactTier;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author HungTeen
  * @create 2022-10-19 22:37
  **/
-public abstract class MeleeAttackItem extends ArtifactItem {
+public abstract class MeleeAttackItem extends ArtifactItemImpl {
 
     protected final IMeleeAttackType meleeAttackType;
     protected final float attackDamage;

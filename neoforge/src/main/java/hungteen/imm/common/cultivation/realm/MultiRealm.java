@@ -10,5 +10,21 @@ import hungteen.imm.api.cultivation.RealmType;
  **/
 public interface MultiRealm {
 
+    /**
+     * @return 所有的小境界。
+     */
     RealmType[] getRealms();
+
+    /**
+     * @param realm 小境界。
+     * @return 是否包含该小境界。
+     */
+    default boolean hasRealm(RealmType realm){
+        for(RealmType type : getRealms()){
+            if(type == realm){
+                return true;
+            }
+        }
+        return false;
+    }
 }

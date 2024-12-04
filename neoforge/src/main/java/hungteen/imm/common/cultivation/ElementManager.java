@@ -3,6 +3,7 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
+import hungteen.imm.IMMConfigs;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
@@ -25,6 +26,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -152,9 +154,16 @@ public class ElementManager {
         }
     }
 
+    /**
+     * 获取每个实体的衰减系数。
+     * @return 越大衰减越快。
+     */
     public static float getDecayFactor(Entity entity) {
         if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.holder())) {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.holder());
+        }
+        if(entity instanceof Projectile){
+            return 0.5F;
         }
         if (entity instanceof ElementCrystal) {
             return 0.25F;
@@ -197,6 +206,24 @@ public class ElementManager {
             }
         }
         return res;
+    }
+
+    /**
+     * 在实体之间传递元素。
+     * @param source 源实体。
+     * @param target 目标实体。
+     */
+    public static void transferElement(Entity source, Entity target){
+        for (Element element : Element.values()) {
+            for(int i = 0; i < 2; ++ i){
+                final boolean robust = (i == 0);
+                final float amount = getElementAmount(source, element, robust);
+                if (amount > 0) {
+                    addElementAmount(target, element, robust, amount);
+                    setElementAmount(source, element, robust, 0);
+                }
+            }
+        }
     }
 
     /**
@@ -338,6 +365,14 @@ public class ElementManager {
 
     public static boolean canReactionOn(Entity entity) {
         return !entity.getType().is(IMMEntityTags.NO_ELEMENT_REACTIONS);
+    }
+
+    /**
+     * @param entity 如果是生物 或者 在显示标签（如元素水晶）之中。
+     * @return 是否在头顶显示元素图标。
+     */
+    public static boolean displayElementAboveHead(Entity entity) {
+        return IMMConfigs.displayElementIconAboveHead() && (entity instanceof LivingEntity || entity.getType().is(IMMEntityTags.REQUIRE_ELEMENT_DISPLAY_ENTITIES));
     }
 
     public static boolean displayRobust(Entity entity) {

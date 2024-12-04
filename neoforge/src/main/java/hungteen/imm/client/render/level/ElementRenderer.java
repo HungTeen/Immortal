@@ -5,18 +5,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
+import hungteen.imm.client.render.IMMRenderType;
+import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import java.util.List;
@@ -31,10 +32,14 @@ public class ElementRenderer {
 
     private static final ResourceLocation ELEMENTS = ElementOverlay.ELEMENTS;
     private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;
+    private static final RenderType ELEMENTS_RENDER_TYPE2 = IMMRenderType.elementIcon(ELEMENTS, 0, 0);;
     private static final int ELEMENT_LEN = ElementOverlay.ELEMENT_LEN;
     private static final float ELEMENT_INTERVAL = 0.2F;
 
     public static void renderEntityElements(Entity entity, EntityRenderer<?> renderer, PoseStack stack, MultiBufferSource bufferSource, int packedLight) {
+        if(! ElementManager.displayElementAboveHead(entity)){
+            return;
+        }
         final double distance = renderer.entityRenderDispatcher.distanceToSqr(entity);
         final Player player = PlayerHelper.getClientPlayer().get();
         if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
@@ -51,7 +56,9 @@ public class ElementRenderer {
             if(! list.isEmpty()){
                 int tmp = 0;
                 for (Element element : list) {
-                    if(! elements.containsKey(element)) continue;
+                    if(! elements.containsKey(element)) {
+                        continue;
+                    }
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);
                     final boolean warn = ElementManager.needWarn(entity, element, robust, Math.abs(amount));
@@ -77,21 +84,27 @@ public class ElementRenderer {
         final float sy = offsetY / 256F;
         final float dx = (offsetX + ELEMENT_LEN) / 256F;
         final float dy = (offsetY + ELEMENT_LEN) / 256F;
-        final PoseStack.Pose posestack$pose = stack.last();
-        final Matrix4f matrix4f = posestack$pose.pose();
-        final Matrix3f matrix3f = posestack$pose.normal();
-//        RenderType  type = RenderType.itemEntityTranslucentCull(ELEMENTS);
-//        final VertexConsumer vertexconsumer = bufferSource.getBuffer(type);
-        final VertexConsumer vertexconsumer = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE);
-//        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, sx, sy, packedLight);
-//        vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, sx, dy, packedLight);
-//        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, dx, dy, packedLight);
-//        vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, dx, sy, packedLight);
+        final PoseStack.Pose pose = stack.last();
+        final Matrix4f matrix4f = pose.pose();
+
+//        final VertexConsumer builder = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE);
+        final VertexConsumer builder = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE2);
+        vertex(builder, matrix4f, pose, -0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, sx, sy, packedLight);
+        vertex(builder, matrix4f, pose, -0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, sx, dy, packedLight);
+        vertex(builder, matrix4f, pose, 0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, dx, dy, packedLight);
+        vertex(builder, matrix4f, pose, 0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, dx, sy, packedLight);
+
         stack.popPose();
     }
 
-    private static void vertex(VertexConsumer consumer, Matrix4f matrix4f, Matrix3f matrix3f, float x, float y, float z, float r, float g, float b, float a, float u, float v, int packedLight) {
-//        consumer.addVertex(matrix4f, x, y, z).setColor(r, g, b, a).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(matrix3f.pose, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void vertex(VertexConsumer consumer, Matrix4f matrix4f, PoseStack.Pose pose, float x, float y, float z, float r, float g, float b, float a, float u, float v, int packedLight) {
+        consumer.addVertex(matrix4f, x, y, z)
+                .setColor(r, g, b, a)
+                .setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(packedLight)
+                .setNormal(pose, 0.0F, 0.5F, 0.0F)
+        ;
     }
 
     public static void renderSmithingBar(GuiGraphics graphics, int screenHeight, int screenWidth) {

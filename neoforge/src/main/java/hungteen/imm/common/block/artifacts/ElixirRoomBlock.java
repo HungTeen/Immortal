@@ -2,10 +2,9 @@ package hungteen.imm.common.block.artifacts;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
-import hungteen.imm.common.cultivation.RealmTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -37,13 +36,13 @@ public class ElixirRoomBlock extends ArtifactEntityBlock {
 
     public static final MapCodec<ElixirRoomBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             propertiesCodec(),
-            RealmTypes.registry().byNameCodec().fieldOf("realm").forGetter(ElixirRoomBlock::getRealmType)
+            ArtifactRank.CODEC.fieldOf("realm").forGetter(ElixirRoomBlock::getRank)
     ).apply(instance, ElixirRoomBlock::new));
 
     private static final VoxelShape AABB = Block.box(1, 0, 1, 15, 6, 15);
 
-    public ElixirRoomBlock(BlockBehaviour.Properties properties, RealmType realmType) {
-        super(properties, realmType);
+    public ElixirRoomBlock(BlockBehaviour.Properties properties, ArtifactRank rank) {
+        super(properties, rank);
     }
 
     @Override

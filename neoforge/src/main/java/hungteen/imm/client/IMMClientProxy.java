@@ -1,6 +1,7 @@
 package hungteen.imm.client;
 
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.client.data.ClientData;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
 import hungteen.imm.api.spell.ElementReaction;

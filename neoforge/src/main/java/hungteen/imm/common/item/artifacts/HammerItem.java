@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifacts;
 
-import hungteen.imm.api.interfaces.IArtifactTier;
+import hungteen.imm.api.artifact.IArtifactTier;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.IMMToolActions;
 import hungteen.imm.util.PlayerUtil;

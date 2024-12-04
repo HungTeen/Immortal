@@ -10,6 +10,7 @@ import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
+import hungteen.imm.common.event.handler.LivingEventHandler;
 import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
@@ -33,6 +34,16 @@ public class IMMLivingEvents {
         InhibitionReaction.blockSolidificationJump(event.getEntity());
     }
 
+    /**
+     * 被攻击（先触发）。
+     */
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void firstIncomeDamage(LivingIncomingDamageEvent event){
+        if(event.getEntity().level() instanceof ServerLevel level) {
+            LivingEventHandler.attachElementWhenImpact(event.getEntity(), event.getSource());
+        }
+    }
+
     @SubscribeEvent
     public static void incomeDamage(LivingIncomingDamageEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
@@ -46,7 +57,7 @@ public class IMMLivingEvents {
     }
 
     /**
-     * 被攻击（最晚触发）。
+     * 被攻击（晚触发）。
      */
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void lastIncomeDamage(LivingIncomingDamageEvent event){

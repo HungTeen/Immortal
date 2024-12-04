@@ -4,6 +4,8 @@ import hungteen.htlib.util.helper.RandomHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+
 /**
  * @author PangTeen
  * @program Immortal
@@ -17,6 +19,10 @@ public class RandomUtil {
 
     public static float getTriangle(RandomSource source){
         return source.nextFloat() - source.nextFloat();
+    }
+
+    public static <T> T choose(RandomSource random, List<T> list){
+        return list.get(random.nextInt(list.size()));
     }
 
 }

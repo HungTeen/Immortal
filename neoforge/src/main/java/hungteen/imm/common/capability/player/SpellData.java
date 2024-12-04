@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * @author PangTeen
@@ -148,6 +150,10 @@ public class SpellData implements HTPlayerData {
 
     public SpellType getSpellAt(int pos) {
         return this.spellList[Mth.clamp(pos, 0, Constants.SPELL_CIRCLE_SIZE - 1)];
+    }
+
+    public Stream<SpellType> getSpellList() {
+        return Stream.of(this.spellList).filter(Objects::nonNull);
     }
 
     public boolean isSpellOnCircle(SpellType spell) {

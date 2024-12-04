@@ -8,36 +8,39 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.SpellTypes;
-import hungteen.imm.common.cultivation.spell.SpellResult;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.phys.HitResult;
+
+import java.util.Optional;
 
 /**
+ * 引燃目标。
  * @program Immortal
  * @author HungTeen
  * @create 2023-08-27 19:30
  **/
 public class IgnitionSpell extends SpellTypeImpl {
 
+    private static final float MAX_FIRE_AMOUNT = 15;
+    private static final float FIRE_AMOUNT = 10;
+
     public IgnitionSpell() {
         super("ignition", properties(SpellUsageCategory.DEBUFF_TARGET).mana(5).cd(60).maxLevel(1));
     }
 
     /**
-     * 投掷物碰撞瞬间判断燃烧。
-     * @param projectile
-     * @param hitResult
+     * 实体加入世界时，判断是否是被发出的箭，如果是则激活引燃。
      */
-    public static void checkIgnitionArrow(Projectile projectile, HitResult hitResult){
-        if(projectile instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player){
-            SpellManager.activateSpell(player, SpellTypes.IGNITION, (p, result, spell, level) -> {
-                ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, 10);
+    public static void checkIgnitionArrow(Entity projectile){
+        if(projectile instanceof AbstractArrow arrow && arrow.getOwner() instanceof LivingEntity living){
+            SpellManager.activateSpell(living, SpellTypes.IGNITION, (p, result, spell, level) -> {
+                ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, FIRE_AMOUNT, MAX_FIRE_AMOUNT);
                 arrow.setRemainingFireTicks(100);
-                return SpellResult.success();
+                return true;
             });
         }
     }
@@ -45,7 +48,7 @@ public class IgnitionSpell extends SpellTypeImpl {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(result.hasEntity() && result.getEntity() != null){
-            ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, 10);
+            ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, FIRE_AMOUNT, MAX_FIRE_AMOUNT);
             result.getEntity().setRemainingFireTicks(60);
             ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
@@ -53,4 +56,8 @@ public class IgnitionSpell extends SpellTypeImpl {
         return false;
     }
 
+    @Override
+    public Optional<SoundEvent> getTriggerSound() {
+        return Optional.of(SoundEvents.BLAZE_BURN);
+    }
 }

@@ -39,7 +39,7 @@ public interface IMMAttachments {
         return registry().register(name, supplier);
     }
 
-    static void register(IEventBus eventBus){
+    static void initialize(IEventBus eventBus){
         NeoHelper.initRegistry(registry(), eventBus);
     }
 

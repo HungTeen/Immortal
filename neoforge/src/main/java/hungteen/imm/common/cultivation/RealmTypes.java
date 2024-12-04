@@ -2,7 +2,6 @@ package hungteen.imm.common.cultivation;
 
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
-import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.RealmStage;
 import hungteen.imm.api.cultivation.RealmType;
@@ -11,7 +10,6 @@ import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -64,7 +62,7 @@ public interface RealmTypes {
     MultiPeriodRealm CORE_SHAPING = builder("core_shaping", RealmPeriod.values())
             .cultivation(750, 900, 1050, 1200, 1350)
             .health(MathUtil.sameArray(5, 8))
-            .qi(100, 110, 120, 125, 125)
+            .qi(150, 160, 170, 175, 175)
             .realmValue(215, 275)
             .type(CultivationTypes.SPIRITUAL)
             .multiPeriod();
@@ -100,21 +98,21 @@ public interface RealmTypes {
     MultiPeriodRealm LOW_RANK_UNDEAD = builder("low_rank_undead", RealmPeriod.values())
             .emptyCultivation()
             .realmValue(25, 65)
-            .qi(25, 30, 35, 40, 45)
+            .qi(25, 35, 45, 50, 50)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
     MultiPeriodRealm MID_RANK_UNDEAD = builder("mid_rank_undead", RealmPeriod.values())
             .emptyCultivation()
             .realmValue(105, 145)
-            .qi(60, 65, 70, 75, 80)
+            .qi(65, 75, 85, 90, 90)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
     MultiPeriodRealm HIGH_RANK_UNDEAD = builder("high_rank_undead", RealmPeriod.values())
             .emptyCultivation()
             .realmValue(160, 188)
-            .qi(100, 105, 110, 115, 120)
+            .qi(105, 115, 125, 130, 130)
             .type(CultivationTypes.UNDEAD)
             .multiPeriod();
 
@@ -125,12 +123,6 @@ public interface RealmTypes {
 //    RealmType SPIRITUAL_FLAME_2 = initialize(new RealmType("spiritual_flame_2", 100, 200, 125, 120, CultivationTypes.SPIRITUAL));
 //
 //    RealmType SPIRITUAL_FLAME_3 = initialize(new RealmType("spiritual_flame_3", 200, 300, 160, 150, CultivationTypes.SPIRITUAL));
-
-    /* 法器 */
-
-    RealmType COMMON_ARTIFACT = artifact("common_artifact", 110, StringHelper.style().applyFormat(ChatFormatting.GREEN));
-    RealmType MODERATE_ARTIFACT = artifact("moderate_artifact", 220, StringHelper.style().applyFormat(ChatFormatting.AQUA));
-    RealmType ADVANCED_ARTIFACT = artifact("advanced_artifact", 330, StringHelper.style().applyFormat(ChatFormatting.BLUE));
 
     static MutableComponent getCategory() {
         return TipUtil.misc("realm");

@@ -10,11 +10,10 @@ import hungteen.htlib.common.registry.suit.HTBlockSuit;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.IMMInitializer;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.block.ambient.SpiritBedrock;
 import hungteen.imm.common.block.artifacts.*;
 import hungteen.imm.common.block.plants.*;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -66,8 +65,8 @@ public interface IMMBlocks {
 
     /* Entity Blocks */
 
-    HTBlockSuit<Block> COPPER_FURNACE = register("copper_furnace", () -> new SpiritualFurnaceBlock(Block.Properties.ofFullCopy(Blocks.COPPER_BLOCK), RealmTypes.COMMON_ARTIFACT));
-    HTBlockSuit<Block> COPPER_ELIXIR_ROOM = register("copper_elixir_room", () -> new ElixirRoomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL), RealmTypes.COMMON_ARTIFACT));
+    HTBlockSuit<Block> COPPER_FURNACE = register("copper_furnace", () -> new SpiritualFurnaceBlock(Block.Properties.ofFullCopy(Blocks.COPPER_BLOCK), ArtifactRank.COMMON));
+    HTBlockSuit<Block> COPPER_ELIXIR_ROOM = register("copper_elixir_room", () -> new ElixirRoomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL), ArtifactRank.COMMON));
 //    public static final HTHolder<Block> COPPER_SPIRITUAL_ROOM = BLOCKS.initialize("copper_spiritual_room", () -> new SpiritualRoom(ArtifactTypes.COMMON_ARTIFACT));
 //    public static final HTHolder<Block> COPPER_SMITHING_ARTIFACT = BLOCKS.initialize("copper_smithing_artifact", () -> new SmithingArtifact(ArtifactTypes.COMMON_ARTIFACT));
 
@@ -109,9 +108,6 @@ public interface IMMBlocks {
         });
     }
 
-    /**
-     * {@link IMMInitializer#defferRegister(IEventBus)}
-     */
     static void initialize(IEventBus event){
         NeoHelper.initRegistry(BLOCKS, event);
     }

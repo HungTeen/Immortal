@@ -4,7 +4,6 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.SpellTypes;
-import hungteen.imm.common.cultivation.spell.SpellResult;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -33,7 +32,7 @@ public class SharpnessSpell extends SpellTypeImpl {
         if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Element.METAL, true)){
             SpellManager.activateSpell(entity, SpellTypes.SHARPNESS, (p, result, spell, level) -> {
                 event.setAmount(event.getOriginalAmount() * 1.5F);
-                return SpellResult.success();
+                return true;
             });
         }
     }

@@ -1,11 +1,11 @@
 package hungteen.imm.common.block.artifacts;
 
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMStateProperties;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ParticleUtil;
@@ -49,7 +49,7 @@ public class TeleportAnchorBlock extends SimpleArtifactBlock {
     }
 
     public TeleportAnchorBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.REINFORCED_DEEPSLATE), RealmTypes.ADVANCED_ARTIFACT);
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.REINFORCED_DEEPSLATE), ArtifactRank.ADVANCED);
         this.registerDefaultState(this.stateDefinition.any().setValue(CHARGE, 0));
     }
 

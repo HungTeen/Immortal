@@ -1,5 +1,6 @@
 package hungteen.imm.client;
 
+import hungteen.imm.client.data.ClientData;
 import hungteen.imm.common.blockentity.SmithingArtifactBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;

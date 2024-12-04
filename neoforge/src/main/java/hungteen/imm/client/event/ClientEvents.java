@@ -1,7 +1,7 @@
 package hungteen.imm.client.event;
 
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.client.event.handler.SpellHandler;
+import hungteen.imm.client.data.SpellClientData;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.client.util.ClientUtil;
@@ -26,7 +26,7 @@ public class ClientEvents {
     public static void tick(ClientTickEvent.Post event) {
         ClientUtil.playerOpt().ifPresent(player -> {
 //            ClientHandler.onSmithing();
-            SpellHandler.tick(player);
+            SpellClientData.tick(player);
             MeditationScreen.tickMeditation(player);
             ReactionRenderer.tick();
         });

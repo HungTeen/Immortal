@@ -1,7 +1,7 @@
 package hungteen.imm.client.gui.overlay;
 
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.client.ClientData;
+import hungteen.imm.client.data.SpellClientData;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.util.Colors;
@@ -51,7 +51,7 @@ public class CommonOverlay {
     }
 
     public static boolean canRenderManaBar(Player player) {
-        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMaxQi(player) > 0 || ClientData.ShowSpellCircle);
+        return ClientUtil.canRenderOverlay() && (PlayerUtil.getMaxQi(player) > 0 || SpellClientData.showSpellCircle);
     }
 
 }

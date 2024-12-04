@@ -3,7 +3,7 @@ package hungteen.imm.client.render.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import hungteen.htlib.client.render.blockentity.HTBlockEntityRender;
-import hungteen.imm.client.render.IMMRenderTypes;
+import hungteen.imm.client.render.IMMRenderType;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,7 +25,7 @@ public class FurnaceBlockEntityRender extends HTBlockEntityRender<SpiritualFurna
         super.render(furnace, partialTicks, stack, bufferIn, combinedLightIn, combinedOverlayIn);
         if(furnace.displayBlockPattern()){
             BlockPos pos = furnace.getBlockPos();
-            VertexConsumer builder = bufferIn.getBuffer(IMMRenderTypes.DUMMY_BLOCK);
+            VertexConsumer builder = bufferIn.getBuffer(IMMRenderType.DUMMY_BLOCK);
 
             stack.pushPose();
             stack.translate(-pos.getX(), -pos.getY(), -pos.getZ());

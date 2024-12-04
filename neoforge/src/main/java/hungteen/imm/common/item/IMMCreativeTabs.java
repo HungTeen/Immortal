@@ -7,8 +7,8 @@ import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.api.interfaces.IArtifactBlock;
-import hungteen.imm.api.interfaces.IArtifactItem;
+import hungteen.imm.api.artifact.ArtifactBlock;
+import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.common.cultivation.RealmManager;
@@ -80,9 +80,9 @@ public interface IMMCreativeTabs {
                             if(itemSet.contains(item)) return false; // 已经被添加，不再考虑。
                             if(item instanceof ElixirItem) return false; // 排除丹药。
                             if(item instanceof SecretManualItem) return false; // 排除秘籍。
-                            if(item instanceof IArtifactItem) return false; // 排除物品法器。
+                            if(item instanceof ArtifactItem) return false; // 排除物品法器。
                             if(item instanceof BlockItem blockItem) {
-                                if (blockItem.getBlock() instanceof IArtifactBlock) return false; // 排除方块法器。
+                                if (blockItem.getBlock() instanceof ArtifactBlock) return false; // 排除方块法器。
                                 if(blockItem.getBlock() instanceof CushionBlock) return false; // 排除坐垫。
                             }
                             if(item instanceof RuneItem) return false;

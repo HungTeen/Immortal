@@ -3,12 +3,11 @@ package hungteen.imm.common.block.artifacts;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.block.IMMBlockPatterns;
 import hungteen.imm.common.blockentity.FunctionalFurnaceBlockEntity;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
@@ -45,12 +44,12 @@ public class SpiritualFurnaceBlock extends ArtifactEntityBlock {
 
     public static final MapCodec<SpiritualFurnaceBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             propertiesCodec(),
-            RealmTypes.registry().byNameCodec().fieldOf("realm").forGetter(SpiritualFurnaceBlock::getRealmType)
+            ArtifactRank.CODEC.fieldOf("realm").forGetter(SpiritualFurnaceBlock::getRank)
     ).apply(instance, SpiritualFurnaceBlock::new));
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    public SpiritualFurnaceBlock(BlockBehaviour.Properties properties, RealmType realmType) {
+    public SpiritualFurnaceBlock(BlockBehaviour.Properties properties, ArtifactRank realmType) {
         super(properties.requiresCorrectToolForDrops().lightLevel(state -> {
             return state.getValue(LIT) ? 15 : 0;
         }), realmType);

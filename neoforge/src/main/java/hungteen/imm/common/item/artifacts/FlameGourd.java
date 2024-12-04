@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
+import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.entity.misc.SpiritualFlame;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
@@ -36,13 +37,13 @@ import java.util.List;
  * @author HungTeen
  * @create 2022-10-08 09:42
  **/
-public class FlameGourd extends ArtifactItem {
+public class FlameGourd extends ArtifactItemImpl {
 
     private static final String COLLECTED_FLAME_AMOUNT = "CollectedFlameAmount";
     private static final String COLLECTED_FLAME_LEVEL = "CollectedFlameLevel";
     private static final int MAX_FLAME_AMOUNT = 500;
 
-    public FlameGourd(RealmType artifactType) {
+    public FlameGourd(ArtifactRank artifactType) {
         super(artifactType);
     }
 
@@ -126,7 +127,8 @@ public class FlameGourd extends ArtifactItem {
      * 火葫芦的等级不能低于灵火等级。
      */
     public static boolean canStoreFlame(ItemStack stack, FlameGourd gourd, SpiritualFlame flame){
-        return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRealm());
+        return false;
+//        return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRealm());
     }
 
     public static boolean canStoreFlame(RealmType artifactType, RealmType realmType){

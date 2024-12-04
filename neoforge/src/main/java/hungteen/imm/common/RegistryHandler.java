@@ -28,6 +28,7 @@ import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
 import hungteen.imm.common.cultivation.ElementReactions;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.impl.registry.TradeTypes;
+import hungteen.imm.common.item.IMMComponents;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.menu.IMMMenus;
@@ -103,7 +104,8 @@ public class RegistryHandler {
         IMMStructureTypes.initialize(modBus);
         IMMStructurePieces.initialize(modBus);
         IMMFeatures.initialize(modBus);
-        IMMAttachments.register(modBus);
+        IMMComponents.initialize(modBus);
+        IMMAttachments.initialize(modBus);
     }
 
     public static void initialize() {
