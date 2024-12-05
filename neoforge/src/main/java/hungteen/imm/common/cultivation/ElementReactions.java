@@ -29,45 +29,45 @@ public interface ElementReactions {
     /* 特殊反应 */
 
     ElementReaction METAL_GILDING = register(new GildingReaction(
-            "metal_gilding", 10, Element.METAL, 8)
+            "metal_gilding", ElementManager.ONCE_COST_BASELINE, Element.METAL, 0.8F)
     );
 
     ElementReaction WOOD_GILDING = register(new GildingReaction(
-            "wood_gilding", 10, Element.WOOD, 8)
+            "wood_gilding", ElementManager.ONCE_COST_BASELINE, Element.WOOD, 0.8F)
     );
 
     ElementReaction WATER_GILDING = register(new GildingReaction(
-            "water_gilding", 10, Element.WATER, 10)
+            "water_gilding", ElementManager.ONCE_COST_BASELINE, Element.WATER, 1)
     );
 
     ElementReaction FIRE_GILDING = register(new GildingReaction(
-            "fire_gilding", 10, Element.FIRE, 10)
+            "fire_gilding", ElementManager.ONCE_COST_BASELINE, Element.FIRE, 1)
     );
 
     ElementReaction BURNING = register(new FlamingReaction(
-            "burning", false, 120, false, 0.5F, 0.25F)
+            "burning", false, 120, false, ElementManager.DURATION_COST_BASELINE, 0.5F)
     );
 
     /* 化灵 */
 
     ElementReaction METAL_SPIRIT = register(new SummonSpiritReaction<>(
-            "metal_spirit", IMMEntities.METAL_SPIRIT, Element.METAL, 10
+            "metal_spirit", IMMEntities.METAL_SPIRIT, Element.METAL, ElementManager.ONCE_COST_BASELINE
     ));
 
     ElementReaction WOOD_SPIRIT = register(new SummonSpiritReaction<>(
-            "wood_spirit", IMMEntities.WOOD_SPIRIT, Element.WOOD, 10
+            "wood_spirit", IMMEntities.WOOD_SPIRIT, Element.WOOD, ElementManager.ONCE_COST_BASELINE
     ));
 
     ElementReaction WATER_SPIRIT = register(new SummonSpiritReaction<>(
-            "water_spirit", IMMEntities.WATER_SPIRIT, Element.WATER, 10
+            "water_spirit", IMMEntities.WATER_SPIRIT, Element.WATER, ElementManager.ONCE_COST_BASELINE
     ));
 
     ElementReaction FIRE_SPIRIT = register(new SummonSpiritReaction<>(
-            "fire_spirit", IMMEntities.FIRE_SPIRIT, Element.FIRE, 10
+            "fire_spirit", IMMEntities.FIRE_SPIRIT, Element.FIRE, ElementManager.ONCE_COST_BASELINE
     ));
 
     ElementReaction EARTH_SPIRIT = register(new SummonSpiritReaction<>(
-            "earth_spirit", IMMEntities.EARTH_SPIRIT, Element.EARTH, 10
+            "earth_spirit", IMMEntities.EARTH_SPIRIT, Element.EARTH, ElementManager.ONCE_COST_BASELINE
     ));
 
     /* 相生 */
@@ -76,7 +76,7 @@ public interface ElementReactions {
      * 结晶。
      */
     ElementReaction CRYSTALLIZATION = register(new GenerationReaction(
-            "crystallization", true, Element.EARTH, 10, Element.METAL, 4) {
+            "crystallization", true, Element.EARTH, ElementManager.ONCE_COST_BASELINE, Element.METAL, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -90,7 +90,7 @@ public interface ElementReactions {
      * 淬刃。
      */
     ElementReaction QUENCH_BLADE = register(new GenerationReaction(
-            "quench_blade", false, Element.METAL, 0.5F, Element.WATER, 0.25F) {
+            "quench_blade", false, Element.METAL, ElementManager.DURATION_COST_BASELINE, Element.WATER, 0.5F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -101,7 +101,7 @@ public interface ElementReactions {
      * 生长。
      */
     ElementReaction GROWING = register(new GenerationReaction(
-            "growing", false, Element.WATER, 0.5F, Element.WOOD, 0.2F) {
+            "growing", false, Element.WATER, ElementManager.DURATION_COST_BASELINE, Element.WOOD, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -115,14 +115,14 @@ public interface ElementReactions {
      * 燃烧。
      */
     ElementReaction FLAMING = register(new FlamingReaction(
-            "flaming", false, 100, true, 0.5F, 0.25F)
+            "flaming", false, 100, true, ElementManager.DURATION_COST_BASELINE, 0.5F)
     );
 
     /**
      * 化灰。
      */
     ElementReaction ASHING = register(new GenerationReaction(
-            "ashing", true, Element.FIRE, 10, Element.EARTH, 4) {
+            "ashing", true, Element.FIRE, ElementManager.ONCE_COST_BASELINE, Element.EARTH, 0.4F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -142,7 +142,7 @@ public interface ElementReactions {
      * 固化。
      */
     ElementReaction SOLIDIFICATION = register(new InhibitionReaction(
-            "solidification", true, Element.EARTH, 5, Element.WATER, 8) {
+            "solidification", true, Element.EARTH, ElementManager.ONCE_COST_BASELINE, Element.WATER, 1.6F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -156,7 +156,7 @@ public interface ElementReactions {
      * 升腾。
      */
     ElementReaction VAPORIZATION = register(new InhibitionReaction(
-            "vaporization", true, Element.WATER, 3, Element.FIRE, 8) {
+            "vaporization", true, Element.WATER, ElementManager.ONCE_COST_BASELINE, Element.FIRE, 2F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -171,14 +171,14 @@ public interface ElementReactions {
      * 熔融。
      */
     ElementReaction MELTING = register(new MeltingReaction(
-            "melting", true, 5, Element.FIRE, 4, Element.METAL, 8)
+            "melting", true, 1F, Element.FIRE, ElementManager.ONCE_COST_BASELINE, Element.METAL, 2F)
     );
 
     /**
      * 切裂。
      */
     ElementReaction CUTTING = register(new CuttingReaction(
-            "cutting", false, 1F, Element.METAL, 0.15F, Element.WOOD, 0.4F) {
+            "cutting", false, 1F, Element.METAL, ElementManager.DURATION_COST_BASELINE, Element.WOOD, 2F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
@@ -189,7 +189,7 @@ public interface ElementReactions {
      * 寄生。
      */
     ElementReaction PARASITISM = register(new InhibitionReaction(
-            "parasitism", true, Element.WOOD, 0.2F, Element.EARTH, 0.4F) {
+            "parasitism", false, Element.WOOD, ElementManager.DURATION_COST_BASELINE, Element.EARTH, 2F) {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);

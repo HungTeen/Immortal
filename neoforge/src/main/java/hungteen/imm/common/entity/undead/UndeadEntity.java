@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,6 +35,7 @@ import java.util.Collection;
 public abstract class UndeadEntity extends IMMMob implements Enemy {
 
     private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(UndeadEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final double[] ROOT_COUNT_WEIGHT = new double[]{0, 0.25, 0.45, 0.15, 0.1};
 
     public UndeadEntity(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);
@@ -56,7 +58,6 @@ public abstract class UndeadEntity extends IMMMob implements Enemy {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-
     }
 
     protected void addBehaviourGoals(){
@@ -67,11 +68,23 @@ public abstract class UndeadEntity extends IMMMob implements Enemy {
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         this.populateDefaultEquipmentSlots(accessor.getRandom(), difficultyInstance);
+        this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficultyInstance);
+    }
+
+    @Override
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        super.populateDefaultEquipmentSlots(random, difficulty);
+        // 必定生成一个头盔。
+        int id = Math.clamp(random.nextInt(5) + difficulty.getDifficulty().ordinal() - 1, 0, 4);
+        Item helmetItem = getEquipmentForSlot(EquipmentSlot.HEAD, id);
+        if(helmetItem != null){
+            this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(helmetItem));
+        }
     }
 
     @Override
     protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
-        return CultivationManager.getQiRoots(accessor.getRandom());
+        return CultivationManager.getQiRoots(accessor.getRandom(), ROOT_COUNT_WEIGHT);
     }
 
     @Override

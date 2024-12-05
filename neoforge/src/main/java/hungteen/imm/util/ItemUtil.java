@@ -10,11 +10,14 @@ import hungteen.imm.common.item.IMMComponents;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,10 @@ public class ItemUtil {
         return stack.getOrDefault(IMMComponents.ARTIFACT_RANK.get(), ArtifactRank.COMMON);
     }
 
+    public static MutableComponent desc(ItemStack stack, Object... args){
+        return TipUtil.desc(stack.getItem(), args).withStyle(ChatFormatting.GRAY);
+    }
+
     public static boolean hasEnchantment(ItemStack stack){
         return false;
 //        return ! (stack.is(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantments(stack) : stack.getEnchantmentTags()).isEmpty();
@@ -61,8 +68,8 @@ public class ItemUtil {
         return isArmor(stack) && ((ArmorItem) stack.getItem()).getEquipmentSlot() == slot;
     }
 
-    public static boolean isShield(ItemStack stack) {
-        return stack.getItem() instanceof ShieldItem;
+    public static boolean canShieldBlock(ItemStack stack) {
+        return stack.canPerformAction(ItemAbilities.SHIELD_BLOCK);
     }
 
     public static boolean isMeleeWeapon(ItemStack stack) {

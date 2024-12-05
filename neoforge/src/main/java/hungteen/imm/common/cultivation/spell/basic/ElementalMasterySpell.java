@@ -5,8 +5,12 @@ import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.api.cultivation.RealmLevel;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
@@ -23,17 +27,18 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * Lvl 1: Attach target weakly.
- * Lvl 2: Attach self weakly.
- * Lvl 3: Attach target weakly with more amount.
- * Lvl 4: Attach self strongly.
- * Lvl 5: Attach target strongly.
+ * Lvl 1: Attach weak element. <br>
+ * Lvl 2: Attach more weak element, have chance to attach robust element. <br>
+ * Lvl 3: Attach strong element. <br>
+ * Lvl 4: ??? <br>
+ * Lvl 5: ??? <br>
  * @program Immortal
  * @author HungTeen
  * @create 2023-08-17 22:12
  **/
 public class ElementalMasterySpell extends SpellTypeImpl {
 
+    private static final float AMOUNT = 20;
     private static final int ELEMENTAL_MASTERY_MAX_LEVEL = 5;
     private static final Map<Element, ElementalMasterySpell> MASTERY_MAP = new EnumMap<>(Element.class);
     private final Element element;
@@ -47,17 +52,30 @@ public class ElementalMasterySpell extends SpellTypeImpl {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         if(result.getEntity() != null){
-            addElement(owner, result.getEntity(), element, false, true, 10);
+            addElement(owner, result.getEntity(), element, false, true, AMOUNT);
             ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
             return true;
         } else {
             if(level >= 2 && owner.level() instanceof ServerLevel serverLevel){
-                addElement(owner, owner, element, true, true, 10);
+                addElement(owner, owner, element, true, true, AMOUNT);
                 ParticleHelper.spawnParticles(serverLevel, IMMParticles.QI.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * 近战攻击有概率附着金元素。
+     */
+    public static void checkActivateMetal(LivingEntity attacker, LivingEntity target){
+        SpellManager.activateSpell(attacker, SpellTypes.METAL_MASTERY, (owner, result, spell, level) -> {
+            if(owner.getRandom().nextFloat() < 0.2F){
+                addElement(owner, target, Element.METAL, false, true, AMOUNT);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
@@ -179,6 +197,10 @@ public class ElementalMasterySpell extends SpellTypeImpl {
 
     public static ElementalMasterySpell getSpell(Element element){
         return MASTERY_MAP.get(element);
+    }
+
+    public static Spell create(Element element, RealmLevel level){
+        return Spell.create(getSpell(element), Math.min(level.getRealmRegionLevel(), level.level()));
     }
 
     public static List<ElementalMasterySpell> getSpells(){

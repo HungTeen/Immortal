@@ -4,10 +4,11 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.artifacts.WoodBowItem;
+import hungteen.imm.common.item.artifact.WoodBowItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -44,7 +45,7 @@ import java.util.List;
  **/
 public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
 
-    private final RangedBowAttackGoal<QiSkeleton> bowGoal = new RangedBowAttackGoal<>(this, 1.0, 20, 15.0F);
+    private final RangedBowAttackGoal<QiSkeleton> bowGoal = new RangedBowAttackGoal<>(this, 1.0, 20, 25.0F);
     private final MeleeAttackGoal meleeGoal = new MeleeAttackGoal(this, 1.2, false) {
         @Override
         public void stop() {
@@ -68,7 +69,7 @@ public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
         return IMMMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 24D)
                 .add(Attributes.FOLLOW_RANGE, 40.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.26F)
+                .add(Attributes.MOVEMENT_SPEED, 0.27F)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
                 ;
     }
@@ -77,6 +78,7 @@ public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
     protected void addBehaviourGoals() {
         super.addBehaviourGoals();
         this.goalSelector.addGoal(2, new RestrictSunGoal(this));
+        this.goalSelector.addGoal(2, new FloatGoal(this));
         this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0));
 //        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.0, 1.2));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -96,7 +98,8 @@ public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
     @Override
     public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
         return switch (element) {
-//            case FIRE -> List.of(Spell.create(SpellTypes.CRITICAL_HIT));
+            case WOOD -> List.of(Spell.create(SpellTypes.WITHER));
+            case FIRE -> List.of(Spell.create(SpellTypes.IGNITION));
             default -> List.of();
         };
     }
@@ -141,10 +144,9 @@ public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(abstractarrow);
 
-        if((this.hasElement(Element.WOOD) && this.getRandom().nextFloat() < 0.5F)
-                || (RealmTypes.LOW_RANK_UNDEAD.hasRealm(this.getRealm()) && this.getRandom().nextFloat() < 0.2F)
+        if((RealmTypes.LOW_RANK_UNDEAD.hasRealm(this.getRealm()) && this.getRandom().nextFloat() < 0.2F)
                 || (RealmTypes.MID_RANK_UNDEAD.hasRealm(this.getRealm()) && this.getRandom().nextFloat() < 0.35F)){
-            WoodBowItem.attachElementOnArrow(this, abstractarrow, 5, 10);
+            WoodBowItem.attachElementOnArrow(this, abstractarrow, 1, 2);
         }
     }
 
@@ -154,7 +156,8 @@ public class QiSkeleton extends UndeadEntity implements RangedAttackMob {
     }
 
     protected AbstractArrow getArrow(ItemStack arrow, float velocity, @Nullable ItemStack weapon) {
-        return ProjectileUtil.getMobArrow(this, arrow, velocity, weapon);
+        AbstractArrow abstractArrow = ProjectileUtil.getMobArrow(this, arrow, velocity, weapon);
+        return abstractArrow;
     }
 
     @Override

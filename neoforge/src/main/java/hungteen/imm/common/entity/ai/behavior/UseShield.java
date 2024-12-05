@@ -37,7 +37,7 @@ public class UseShield extends Behavior<Mob> {
 
     @Override
     protected boolean canStillUse(ServerLevel level, Mob entity, long time) {
-        return EntityUtil.isOffHolding(entity, ItemUtil::isShield);
+        return EntityUtil.isOffHolding(entity, ItemUtil::canShieldBlock);
     }
 
     /**
@@ -46,7 +46,7 @@ public class UseShield extends Behavior<Mob> {
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Mob entity) {
         if(entity instanceof InventorySwitcher switcher){
-            return ! entity.isUsingItem() && (EntityHelper.isOffHolding(entity, ItemStack::isEmpty) && switcher.hasItemStack(ItemUtil::isShield)) && (BehaviorUtil.getAttackTarget(entity).isPresent() && entity.getRandom().nextFloat() < 0.35F || getProjectile(entity).isPresent());
+            return ! entity.isUsingItem() && (EntityHelper.isOffHolding(entity, ItemStack::isEmpty) && switcher.hasItemStack(ItemUtil::canShieldBlock)) && (BehaviorUtil.getAttackTarget(entity).isPresent() && entity.getRandom().nextFloat() < 0.35F || getProjectile(entity).isPresent());
         }
         return false;
     }
@@ -54,7 +54,7 @@ public class UseShield extends Behavior<Mob> {
     @Override
     protected void start(ServerLevel level, Mob entity, long time) {
         if(entity instanceof InventorySwitcher switcher){
-            switcher.switchInventory(InteractionHand.OFF_HAND, ItemUtil::isShield);
+            switcher.switchInventory(InteractionHand.OFF_HAND, ItemUtil::canShieldBlock);
             entity.startUsingItem(InteractionHand.OFF_HAND);
         }
     }

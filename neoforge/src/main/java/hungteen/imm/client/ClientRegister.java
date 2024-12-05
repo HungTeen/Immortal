@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.render.entity.EmptyEffectRender;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
+import hungteen.imm.client.extension.TalismanExtension;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.client.gui.overlay.MeditationOverlay;
@@ -33,11 +34,9 @@ import hungteen.imm.client.render.entity.misc.TornadoRender;
 import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.artifacts.WoodBowItem;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
-import hungteen.imm.common.item.talismans.TalismanItem;
+import hungteen.imm.common.item.talisman.DurationTalismanItem;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -46,12 +45,13 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 /**
  * @program Immortal
@@ -65,8 +65,8 @@ public class ClientRegister {
     public static void setUpClient(FMLClientSetupEvent ev){
         ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
-            registerScreen();
-            registerItemProperties();
+            ClientHandler.registerScreen();
+            ClientHandler.registerItemProperties();
         });
     }
 
@@ -157,6 +157,11 @@ public class ClientRegister {
     }
 
     @SubscribeEvent
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event){
+        event.registerItem(new TalismanExtension(), ItemHelper.get().filterValues(DurationTalismanItem.class::isInstance).toArray(Item[]::new));
+    }
+
+    @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiLayersEvent event){
         event.registerAboveAll(Util.prefix("qi_bar"), CommonOverlay::renderQiBar);
         event.registerAboveAll(Util.prefix("spell_circle"), SpellOverlay::renderSpellCircle);
@@ -215,33 +220,4 @@ public class ClientRegister {
 //        IMMBakeModels.registerBakeModels(event);
     }
 
-
-    public static void registerScreen() {
-//        MenuScreens.initialize(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
-//        MenuScreens.initialize(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
-//        MenuScreens.initialize(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
-////        MenuScreens.initialize(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
-//        MenuScreens.initialize(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
-    }
-
-    public static void registerItemProperties(){
-        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(talisman -> {
-            ItemProperties.register(talisman, TalismanItem.ACTIVATE_PROPERTY, (stack, level, entity, val) -> {
-                return TalismanItem.isActivated(stack) ? 1F : 0F;
-            });
-        });
-        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULL, (stack, level, entity, val) -> {
-            if (entity == null) {
-                return 0.0F;
-            } else {
-                return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-            }
-        });
-        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULLING,
-                (stack, level, entity, val) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
-        );
-    }
 }

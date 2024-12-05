@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.artifacts;
+package hungteen.imm.common.item.artifact;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;

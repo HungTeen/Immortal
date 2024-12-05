@@ -25,7 +25,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -43,13 +42,11 @@ import java.util.function.Supplier;
  */
 public class ElementManager {
 
-    public static final int ESCAPE_UPDATE_CD = 20;
-    public static final int DISAPPEAR_WARN_CD = 50;
-    public static final int DISAPPEAR_WARN_AMOUNT = 5;
-    public static final int DISAPPEAR_CD = 5;
-    public static final int DISPLAY_ROBUST_CD = 10;
-    private static final float DECAY_SPEED = 0.03F;
-    private static final float DECAY_VALUE = 0.1F;
+    public static final int SYNC_UPDATE_CD = 20;
+    public static final float ONCE_COST_BASELINE = 20F;
+    public static final float DURATION_COST_BASELINE = 0.25F;
+    public static final double DECAY_SPEED = 0.02;
+    public static final double DECAY_VALUE = 0.05;
     private static final Map<Element, Element> TARGET_ELEMENTS = new EnumMap<>(Element.class);
     private static final Map<Element, TagKey<Block>> ELEMENT_BLOCK_TAGS = new EnumMap<>(Element.class);
     private static final Map<Element, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Element.class);
@@ -146,10 +143,12 @@ public class ElementManager {
      */
     public static void attachDamageElement(ServerLevel level, Entity entity, DamageSource source) {
         if (entity.getRandom().nextFloat() < 0.2F) {
-            if (source.is(DamageTypes.IN_FIRE)) { // 篝火。
-                addElementAmount(entity, Element.FIRE, false, 1F);
-            } else if (source.is(DamageTypes.LAVA)) { // 岩浆。
-                addElementAmount(entity, Element.FIRE, false, 2F);
+            if (source.is(DamageTypes.IN_FIRE)) {
+                // 篝火。
+                addElementAmount(entity, Element.FIRE, false, 1F, 2F);
+            } else if (source.is(DamageTypes.LAVA)) {
+                // 岩浆。
+                addElementAmount(entity, Element.FIRE, false, 2F, 4F);
             }
         }
     }
@@ -163,7 +162,7 @@ public class ElementManager {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.holder());
         }
         if(entity instanceof Projectile){
-            return 0.5F;
+            return 0.4F;
         }
         if (entity instanceof ElementCrystal) {
             return 0.25F;
@@ -176,16 +175,26 @@ public class ElementManager {
     }
 
     public static float getDecayAmount(float amount, float factor) {
-        return factor * (amount * DECAY_SPEED + DECAY_VALUE);
+        return factor * (amount * getDecaySpeed() + getDecayValue());
     }
 
     public static float getDecayAmount(int tick, float amount, float factor) {
-        final float an = (float) Math.pow(1 - factor * DECAY_SPEED, tick);
-        return an * amount - (1 - an) * DECAY_VALUE / DECAY_SPEED;
+        final float an = (float) Math.pow(1 - factor * getDecaySpeed(), tick);
+        return an * amount - (1 - an) * getDecayValue() / getDecaySpeed();
     }
 
     public static int getLeftTick(Entity entity, Element element, boolean robust) {
         return getLeftTick(getElementAmount(entity, element, robust), getDecayFactor(entity));
+    }
+    
+    public static float getDecaySpeed(){
+        return 0.02F;
+//        return IMMConfigs.elementSettings().elementDecaySpeed.get().floatValue();
+    }
+    
+    public static float getDecayValue(){
+        return 0.05F;
+//        return IMMConfigs.elementSettings().elementDecayValue.get().floatValue();
     }
 
     /**
@@ -269,8 +278,16 @@ public class ElementManager {
         EntityUtil.setData(entity, cap -> cap.addElementAmount(element, robust, value, maxValue));
     }
 
+    public static void addPercentElement(Entity entity, Element element, boolean robust, float percent, float maxPercent) {
+        addElementAmount(entity, element, robust, ONCE_COST_BASELINE * percent, ONCE_COST_BASELINE * maxPercent);
+    }
+
     public static void addElementAmount(Entity entity, Element element, boolean robust, float value) {
         EntityUtil.setData(entity, cap -> cap.addElementAmount(element, robust, value));
+    }
+
+    public static void addPercentElement(Entity entity, Element element, boolean robust, float percent) {
+        addElementAmount(entity, element, robust, percent * ONCE_COST_BASELINE);
     }
 
     public static float getElementAmount(Entity entity, Element element, boolean robust) {
@@ -373,25 +390,6 @@ public class ElementManager {
      */
     public static boolean displayElementAboveHead(Entity entity) {
         return IMMConfigs.displayElementIconAboveHead() && (entity instanceof LivingEntity || entity.getType().is(IMMEntityTags.REQUIRE_ELEMENT_DISPLAY_ENTITIES));
-    }
-
-    public static boolean displayRobust(Entity entity) {
-        return (entity.tickCount % (DISPLAY_ROBUST_CD << 1)) < DISPLAY_ROBUST_CD;
-    }
-
-    public static boolean notDisappear(Entity entity) {
-        return (entity.tickCount % (DISAPPEAR_CD << 1)) < DISAPPEAR_CD;
-    }
-
-    /**
-     * Amount need below threshold and last time is less than threshold.
-     */
-    public static boolean needWarn(Entity entity, Element element, boolean robust, float amount) {
-        return (amount < DISAPPEAR_WARN_AMOUNT) && (amount / getDecayAmount(entity, element, robust) < DISAPPEAR_WARN_CD);
-    }
-
-    public static boolean canSeeElements(Player player, Entity entity, double distanceSqr) {
-        return distanceSqr < 1000;
     }
 
     public static MutableComponent name(Element element) {

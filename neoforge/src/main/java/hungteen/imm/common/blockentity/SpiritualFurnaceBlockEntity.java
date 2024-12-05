@@ -4,7 +4,7 @@ import hungteen.htlib.common.blockentity.ContainerBlockEntity;
 import hungteen.imm.api.artifact.ArtifactBlock;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
-import hungteen.imm.common.item.artifacts.FlameGourd;
+import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.BlockUtil;

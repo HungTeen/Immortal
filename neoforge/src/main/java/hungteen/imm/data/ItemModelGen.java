@@ -7,12 +7,12 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.artifacts.MeleeAttackItem;
-import hungteen.imm.common.item.artifacts.WoodBowItem;
+import hungteen.imm.common.item.artifact.MeleeAttackItem;
+import hungteen.imm.common.item.artifact.WoodBowItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
-import hungteen.imm.common.item.talismans.TalismanItem;
+import hungteen.imm.common.item.talisman.TalismanItem;
 import hungteen.imm.common.world.data.ElixirManager;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
@@ -86,7 +86,7 @@ public class ItemModelGen extends HTItemModelGen {
         });
 
         /* Talismans */
-        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(this::talisman);
+        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(this::talismanAnimated);
 
         /* Banner patterns */
         ItemUtil.getBannerPatterns().forEach(entry -> {
@@ -149,18 +149,14 @@ public class ItemModelGen extends HTItemModelGen {
     }
 
     protected void talismanAnimated(Item item) {
-        final String staticSuffix = "_static";
-        final String activateSuffix = "_" + TalismanItem.ACTIVATED;
+        final String activateSuffix = "_" + TalismanItem.ACTIVATED.getPath();
         final String parent = ItemHelper.itemTexture(item).toString();
-        ItemModelBuilder baseBuilder = this.genNormal(name(item));
-        ItemModelBuilder staticBuilder = this.gen(name(item) + staticSuffix, parent, ItemHelper.itemTexture(item, staticSuffix));
-        ItemModelBuilder activatedBuilder = this.gen(name(item) + activateSuffix, parent, ItemHelper.itemTexture(item, activateSuffix));
+        final ResourceLocation texture = StringHelper.itemTexture(Util.prefix("talisman"));
+        ItemModelBuilder baseBuilder = this.genNormal(name(item), texture);
+        ItemModelBuilder activatedBuilder = this.gen(name(item) + activateSuffix, parent, texture);
         baseBuilder.override()
                 .model(activatedBuilder)
-                .predicate(TalismanItem.ACTIVATE_PROPERTY, 1F);
-        baseBuilder.override()
-                .model(staticBuilder)
-                .predicate(TalismanItem.ACTIVATE_PROPERTY, 0F);
+                .predicate(TalismanItem.ACTIVATED, 1F);
         this.add(item);
     }
 

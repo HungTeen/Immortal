@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.artifacts;
+package hungteen.imm.common.item.artifact;
 
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.imm.api.artifact.ArtifactRank;

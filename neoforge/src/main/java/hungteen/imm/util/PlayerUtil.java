@@ -10,6 +10,7 @@ import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.capability.player.SpellData;
 import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import net.minecraft.ChatFormatting;
@@ -312,7 +313,7 @@ public class PlayerUtil {
     }
 
     public static float getMaxQi(Player player) {
-        return (float) EntityUtil.getMaxQi(player);
+        return (float) QiManager.getMaxQi(player);
     }
 
     public static boolean isQiFull(Player player) {

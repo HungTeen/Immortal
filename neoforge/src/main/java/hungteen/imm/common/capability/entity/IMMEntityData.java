@@ -277,9 +277,12 @@ public class IMMEntityData implements INBTSerializable<CompoundTag> {
         return quenchBladeDamage;
     }
 
+    /**
+     * 如果玩家一段时间不在该实体的区块内，可能会丢失对于这个元素的客户端信息。
+     */
     public void checkValid(Element element, boolean robust) {
         if (EntityHelper.isServer(entity)) {
-            if (this.getLastUpdateTick(element, robust) + ElementManager.ESCAPE_UPDATE_CD < this.entity.level().getGameTime()) {
+            if (this.getLastUpdateTick(element, robust) + ElementManager.SYNC_UPDATE_CD < this.entity.level().getGameTime()) {
                 if (this.hasElement(element, robust)) {
                     this.setElementAmount(element, robust, 0, false);
                 }

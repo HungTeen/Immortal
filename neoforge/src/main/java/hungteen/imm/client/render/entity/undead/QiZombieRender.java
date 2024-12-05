@@ -33,7 +33,7 @@ public class QiZombieRender extends HumanoidMobRenderer<QiZombie, QiZombieModel<
 
     @Override
     public ResourceLocation getTextureLocation(QiZombie entity) {
-        if (entity.hasCustomName() && "pvz_zombie".equals(entity.getName().getString())){
+        if (entity.isPVZType()){
             return PVZ_ZOMBIE_LOCATION;
         }
         return RED_ZOMBIE_LOCATION;

@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.talismans;
+package hungteen.imm.common.item.talisman;
 
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
@@ -10,6 +10,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 /**
+ * 用于实现蓄力法术。
  * @program Immortal
  * @author HungTeen
  * @create 2023-06-04 16:16
@@ -25,7 +26,6 @@ public abstract class DurationTalismanItem extends TalismanItem {
         ItemStack stack = player.getItemInHand(hand);
         if (this.canUse(stack, player)) {
             player.startUsingItem(hand);
-            setActivated(stack, true);
             return InteractionResultHolder.consume(stack);
         }
         return InteractionResultHolder.fail(stack);
@@ -37,11 +37,6 @@ public abstract class DurationTalismanItem extends TalismanItem {
             stack.shrink(1);
         }
         return stack;
-    }
-
-    @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int tick) {
-        setActivated(stack, false);
     }
 
     @Override

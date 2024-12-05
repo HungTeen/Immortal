@@ -29,7 +29,7 @@ public class IgnitionSpell extends SpellTypeImpl {
     private static final float FIRE_AMOUNT = 10;
 
     public IgnitionSpell() {
-        super("ignition", properties(SpellUsageCategory.DEBUFF_TARGET).mana(5).cd(60).maxLevel(1));
+        super("ignition", properties(SpellUsageCategory.DEBUFF_TARGET).mana(15).cd(60).maxLevel(1));
     }
 
     /**
@@ -38,7 +38,7 @@ public class IgnitionSpell extends SpellTypeImpl {
     public static void checkIgnitionArrow(Entity projectile){
         if(projectile instanceof AbstractArrow arrow && arrow.getOwner() instanceof LivingEntity living){
             SpellManager.activateSpell(living, SpellTypes.IGNITION, (p, result, spell, level) -> {
-                ElementManager.addElementAmount(result.getEntity(), Element.FIRE, false, FIRE_AMOUNT, MAX_FIRE_AMOUNT);
+                ElementManager.addElementAmount(arrow, Element.FIRE, false, FIRE_AMOUNT, MAX_FIRE_AMOUNT);
                 arrow.setRemainingFireTicks(100);
                 return true;
             });

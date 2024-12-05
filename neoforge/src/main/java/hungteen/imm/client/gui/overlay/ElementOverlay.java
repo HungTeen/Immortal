@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.client.render.level.ElementRenderer;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.util.PlayerUtil;
@@ -50,10 +51,10 @@ public class ElementOverlay {
                     if (!elements.containsKey(element)) continue;
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);
-                    final boolean warn = ElementManager.needWarn(entity, element, robust, Math.abs(amount));
-                    if (!warn || ElementManager.notDisappear(entity)) {
+                    final boolean warn = ElementRenderer.needWarn(entity, element, robust, Math.abs(amount));
+                    if (!warn || ElementRenderer.notDisappear(entity)) {
                         graphics.blit(ELEMENTS, startX, topPos, ELEMENT_INTERVAL * element.ordinal(), 0, ELEMENT_LEN, ELEMENT_LEN);
-                        if (robust && ElementManager.displayRobust(entity)) {
+                        if (robust && ElementRenderer.displayRobust(entity)) {
                             graphics.blit(ELEMENTS, startX, topPos, ELEMENT_INTERVAL * element.ordinal(), 10, ELEMENT_LEN, ELEMENT_LEN);
                         }
                     }

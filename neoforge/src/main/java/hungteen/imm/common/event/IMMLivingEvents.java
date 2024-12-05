@@ -7,6 +7,7 @@ import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.reaction.GenerationReaction;
 import hungteen.imm.common.cultivation.reaction.GildingReaction;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
+import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
@@ -15,6 +16,7 @@ import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -47,11 +49,15 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void incomeDamage(LivingIncomingDamageEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
-            SharpnessSpell.checkSharpening(event.getSource().getEntity(), event);
-            if(DamageUtil.isMeleeDamage(event.getSource())){
-                CriticalHitSpell.checkCriticalHit(event.getSource().getEntity(), event);
-                GildingReaction.ifGlidingActive(event.getSource().getEntity(), event.getEntity());
-                GenerationReaction.quenchBlade(event);
+            Entity attacker = event.getSource().getEntity();
+            SharpnessSpell.checkSharpening(attacker, event);
+            if(DamageUtil.isMeleeDamage(event.getSource()) && attacker != null){
+                if(attacker instanceof LivingEntity livingAttacker){
+                    CriticalHitSpell.checkCriticalHit(livingAttacker, event);
+                    ElementalMasterySpell.checkActivateMetal(livingAttacker, event.getEntity());
+                }
+                GildingReaction.ifGlidingActive(attacker, event.getEntity());
+                GenerationReaction.quenchBlade(event, attacker);
             }
         }
     }

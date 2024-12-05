@@ -21,6 +21,14 @@ import java.util.stream.Stream;
  */
 public interface SpellCaster extends HasQi {
 
+    int VERY_HIGH = 100;
+    int HIGH = 50;
+    int LITTLE_HIGH = 10;
+    int DEFAULT = 0;
+    int LITTLE_LOW = -10;
+    int LOW = -50;
+    int VERY_LOW = -100;
+
     /**
      * @return 法术是否在冷却之中。
      */
@@ -52,20 +60,15 @@ public interface SpellCaster extends HasQi {
      * 获取优先级排序后的可用法术。
      */
     default List<Spell> getSortedSpells(){
-        final Map<SpellUsageCategory, Integer> priorityMap = getCategoryPriority();
         return getNonPassiveSpells().filter(this::canUseSpell).sorted((spell1, spell2) -> {
-            final int result = priorityMap.getOrDefault(spell1.getCategory(), 0) - priorityMap.getOrDefault(spell2.getCategory(), 0);
-            if(result != 0) return result;
-            return prefer(spell1, spell2);
+            return getSpellUsePriority(spell2) - getSpellUsePriority(spell1);
         }).map(type -> new Spell(type, getSpellLevel(type))).toList();
     }
 
     /**
-     * 同优先级下更倾向于使用哪个。
+     * 优先级大的在前。
      */
-    default int prefer(SpellType spell1, SpellType spell2){
-        return 0;
-    }
+    int getSpellUsePriority(SpellType spell);
 
     /**
      * @return 是否有足够的灵气使用法术。

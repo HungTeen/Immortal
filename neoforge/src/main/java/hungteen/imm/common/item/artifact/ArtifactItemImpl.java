@@ -1,12 +1,10 @@
-package hungteen.imm.common.item.artifacts;
+package hungteen.imm.common.item.artifact;
 
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.item.IMMComponents;
-import hungteen.imm.util.TipUtil;
-import net.minecraft.ChatFormatting;
+import hungteen.imm.util.ItemUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -36,11 +34,7 @@ public abstract class ArtifactItemImpl extends Item implements ArtifactItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(this.getDesc(itemStack));
-    }
-
-    protected MutableComponent getDesc(ItemStack stack){
-        return TipUtil.desc(this).withStyle(ChatFormatting.GRAY);
+        components.add(ItemUtil.desc(itemStack));
     }
 
     @Override

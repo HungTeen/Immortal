@@ -19,26 +19,31 @@ import java.util.function.Supplier;
  **/
 public class SummonSpiritReaction<T extends ElementSpirit> extends ElementReactionImpl {
 
-    public static final int SPIRIT_COST = 10;
     private final Supplier<EntityType<T>> spiritType;
     private final Element element;
     private final float amount;
+    private final float spiritAmount;
 
-    public SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Element element, float amount) {
+    public SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Element element, float amount){
+        this(name, spiritType, element, amount, 0.5F);
+    }
+
+    public SummonSpiritReaction(String name, Supplier<EntityType<T>> spiritType, Element element, float amount, float percent) {
         super(name, true, 200, List.of(
-                new ElementEntry(Element.SPIRIT, true, SPIRIT_COST),
+                new ElementEntry(Element.SPIRIT, true, amount * percent),
                 new ElementEntry(element, true, amount)
         ));
         this.spiritType = spiritType;
         this.element = element;
         this.amount = amount;
+        this.spiritAmount = amount * percent;
     }
 
     @Override
     public void doReaction(Entity entity, float scale) {
         if(entity.level() instanceof ServerLevel serverLevel){
             EntityUtil.spawn(serverLevel, this.spiritType.get(), entity.position()).ifPresent(spirit -> {
-                ElementManager.addElementAmount(spirit, Element.SPIRIT, false, scale * SPIRIT_COST);
+                ElementManager.addElementAmount(spirit, Element.SPIRIT, false, scale * spiritAmount);
                 ElementManager.addElementAmount(spirit, element, false, scale * amount);
             });
         }

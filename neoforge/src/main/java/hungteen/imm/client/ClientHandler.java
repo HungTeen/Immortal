@@ -1,7 +1,13 @@
 package hungteen.imm.client;
 
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.client.data.ClientData;
 import hungteen.imm.common.blockentity.SmithingArtifactBlockEntity;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.artifact.WoodBowItem;
+import hungteen.imm.common.item.talisman.TalismanItem;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -11,6 +17,35 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
  * @create 2022-10-23 12:35
  **/
 public class ClientHandler {
+
+    private static final ItemPropertyFunction USED = (stack, level, entity, val) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+    private static final ItemPropertyFunction USING = (stack, level, entity, val) -> {
+        if (entity == null) {
+            return 0.0F;
+        } else {
+            return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+        }
+    };
+
+    public static void registerItemProperties(){
+        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(talisman -> {
+            ItemProperties.register(talisman, TalismanItem.ACTIVATED, USED);
+            ItemProperties.register(talisman, TalismanItem.ACTIVATING, USING);
+        });
+        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULL, USED);
+        ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULLING, USING);
+    }
+
+    public static void registerScreen() {
+//        MenuScreens.initialize(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
+//        MenuScreens.initialize(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
+//        MenuScreens.initialize(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+////        MenuScreens.initialize(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
+//        MenuScreens.initialize(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
+    }
 
     /**
      * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}

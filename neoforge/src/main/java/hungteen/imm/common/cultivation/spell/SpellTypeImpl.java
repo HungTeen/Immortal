@@ -3,6 +3,7 @@ package hungteen.imm.common.cultivation.spell;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import hungteen.imm.util.enums.SpellSortCategories;
@@ -13,6 +14,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.Optional;
 
 /**
  * @author PangTeen
@@ -66,6 +69,11 @@ public abstract class SpellTypeImpl implements SpellType {
 
     public static void playSoundAround(Entity entity, SoundEvent sound){
         entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), sound, entity.getSoundSource(), 1.0F, 1.0F);
+    }
+
+    @Override
+    public Optional<SoundEvent> getTriggerSound() {
+        return Optional.of(IMMSounds.RELEASING.get());
     }
 
     @Override

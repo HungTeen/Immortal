@@ -1,18 +1,21 @@
-package hungteen.imm.common.item.artifacts;
+package hungteen.imm.common.item.artifact;
 
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.RandomUtil;
 import hungteen.imm.util.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,6 +29,7 @@ public class WoodBowItem extends BowItem implements ArtifactItem {
 
     public static final ResourceLocation PULL = Util.prefix("pull");
     public static final ResourceLocation PULLING = Util.prefix("pulling");
+    private static final float QI_COST = 10;
 
     public WoodBowItem() {
         super(ItemUtil.artifact(ArtifactRank.MODERATE).durability(500));
@@ -40,15 +44,24 @@ public class WoodBowItem extends BowItem implements ArtifactItem {
         super.shootProjectile(shooter, projectile, index, velocity, inaccuracy, angle, target);
         // 有概率根据灵根附着元素到箭矢上。
         if(shooter.getRandom().nextFloat() < 0.5F){
-            attachElementOnArrow(shooter, projectile, 5, 10);
+            attachElementOnArrow(shooter, projectile, 1, 2);
         }
     }
 
-    public static void attachElementOnArrow(LivingEntity shooter, Projectile projectile, float value, float maxValue){
-        List<Element> elements = CultivationManager.getElements(shooter).toList();
-        if(! elements.isEmpty()){
-            Element element = RandomUtil.choose(shooter.getRandom(), elements);
-            ElementManager.addElementAmount(projectile, element, false, value, maxValue);
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        tooltipComponents.add(ItemUtil.desc(stack, QI_COST));
+    }
+
+    public static void attachElementOnArrow(LivingEntity shooter, Projectile projectile, float percent, float maxPercent){
+        if(QiManager.hasEnoughQi(shooter, QI_COST)) {
+            List<Element> elements = CultivationManager.getElements(shooter).toList();
+            if (!elements.isEmpty()) {
+                Element element = RandomUtil.choose(shooter.getRandom(), elements);
+                ElementManager.addPercentElement(projectile, element, false, percent, maxPercent);
+                QiManager.addQi(shooter, -QI_COST);
+            }
         }
     }
 

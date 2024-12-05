@@ -18,6 +18,14 @@ public interface IMMSounds {
 
     HTVanillaRegistry<SoundEvent> SOUNDS = HTRegistryManager.vanilla(Registries.SOUND_EVENT, Util.id());
 
+    /* Spell */
+
+    HTHolder<SoundEvent> RELEASING = create("releasing");
+
+    /* Entity */
+
+    HTHolder<SoundEvent> PVZ_ZOMBIE_AMBIENT = create("pvz_zombie_ambient");
+
     HTHolder<SoundEvent> BI_FANG_AMBIENT = create("bi_fang_ambient");
     HTHolder<SoundEvent> BI_FANG_ROAR = create("bi_fang_roar");
     HTHolder<SoundEvent> BI_FANG_FLAP = create("bi_fang_flap");

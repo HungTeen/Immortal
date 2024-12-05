@@ -18,9 +18,9 @@ public class MeltingReaction extends InhibitionReaction {
 
     private final float waterAmount;
 
-    public MeltingReaction(String name, boolean once, float waterAmount, Element main, float mainAmount, Element off, float offAmount) {
-        super(name, once, main, mainAmount, off, offAmount);
-        this.waterAmount = waterAmount;
+    public MeltingReaction(String name, boolean once, float waterPercent, Element main, float mainAmount, Element off, float percent) {
+        super(name, once, main, mainAmount, off, percent);
+        this.waterAmount = waterPercent * mainAmount;
     }
 
     @Override

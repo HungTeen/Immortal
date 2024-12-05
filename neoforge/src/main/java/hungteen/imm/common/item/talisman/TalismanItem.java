@@ -1,11 +1,9 @@
-package hungteen.imm.common.item.talismans;
+package hungteen.imm.common.item.talisman;
 
 import hungteen.imm.api.artifact.ArtifactItem;
-import hungteen.imm.util.TipUtil;
+import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -22,8 +20,8 @@ import java.util.List;
  */
 public abstract class TalismanItem extends Item implements ArtifactItem {
 
-    public static final String ACTIVATED = "activated";
-    public static final ResourceLocation ACTIVATE_PROPERTY = Util.prefix(ACTIVATED);
+    public static final ResourceLocation ACTIVATED = Util.prefix("activated");
+    public static final ResourceLocation ACTIVATING = Util.prefix("activating");
 
     public TalismanItem(Properties properties) {
         super(properties);
@@ -31,24 +29,11 @@ public abstract class TalismanItem extends Item implements ArtifactItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Item.TooltipContext level, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(this.getDesc(itemStack));
-    }
-
-    protected MutableComponent getDesc(ItemStack stack){
-        return TipUtil.desc(this).withStyle(ChatFormatting.GRAY);
+        components.add(ItemUtil.desc(itemStack));
     }
 
     public boolean canUse(ItemStack stack, Entity entity){
         return true;
-    }
-
-    public static void setActivated(ItemStack stack, boolean activated){
-//        stack.getOrCreateTag().putBoolean(ACTIVATED, activated);
-    }
-
-    public static boolean isActivated(ItemStack stack){
-//        return stack.getOrCreateTag().getBoolean(ACTIVATED);
-        return false;
     }
 
 }

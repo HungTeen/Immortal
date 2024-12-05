@@ -19,10 +19,10 @@ public class GildingReaction extends ElementReactionImpl {
     private final Element element;
     private final float amount;
 
-    public GildingReaction(String name, float mainAmount, Element off, float offAmount) {
-        super(name, false, 150, List.of(new ElementEntry(Element.EARTH, true, mainAmount), new ElementEntry(off, false, offAmount)));
+    public GildingReaction(String name, float mainAmount, Element off, float percent) {
+        super(name, false, 150, List.of(new ElementEntry(Element.EARTH, true, mainAmount), new ElementEntry(off, false, mainAmount * percent)));
         this.element = off;
-        this.amount = offAmount;
+        this.amount = mainAmount * percent;
         REACTIONS.add(this);
     }
 

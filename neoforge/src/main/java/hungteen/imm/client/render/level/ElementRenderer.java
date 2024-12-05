@@ -30,9 +30,12 @@ import java.util.Map;
  **/
 public class ElementRenderer {
 
+    private static final int DISAPPEAR_WARN_CD = 50;
+    private static final int DISAPPEAR_WARN_AMOUNT = 5;
+    private static final int DISAPPEAR_CD = 5;
+    private static final int DISPLAY_ROBUST_CD = 10;
     private static final ResourceLocation ELEMENTS = ElementOverlay.ELEMENTS;
-    private static final RenderType ELEMENTS_RENDER_TYPE = RenderType.energySwirl(ELEMENTS, 0, 0);;
-    private static final RenderType ELEMENTS_RENDER_TYPE2 = IMMRenderType.elementIcon(ELEMENTS, 0, 0);;
+    private static final RenderType ELEMENTS_RENDER_TYPE = IMMRenderType.elementIcon(ELEMENTS, 0, 0);;
     private static final int ELEMENT_LEN = ElementOverlay.ELEMENT_LEN;
     private static final float ELEMENT_INTERVAL = 0.2F;
 
@@ -42,7 +45,7 @@ public class ElementRenderer {
         }
         final double distance = renderer.entityRenderDispatcher.distanceToSqr(entity);
         final Player player = PlayerHelper.getClientPlayer().get();
-        if (player != entity && ElementManager.canSeeElements(player, entity, distance)) {
+        if (player != entity && canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
             final Map<Element, Float> elements = ElementManager.getElements(entity);
             final List<Element> list = PlayerUtil.filterElements(ClientUtil.player(), elements.keySet().stream().toList());
@@ -61,11 +64,11 @@ public class ElementRenderer {
                     }
                     final float amount = elements.get(element);
                     final boolean robust = (elements.get(element) > 0);
-                    final boolean warn = ElementManager.needWarn(entity, element, robust, Math.abs(amount));
+                    final boolean warn = needWarn(entity, element, robust, Math.abs(amount));
                     stack.pushPose();
                     stack.translate(- barWidth / 2 + 0.5F + (1 + ELEMENT_INTERVAL) * tmp, 0, 0);
-                    if(! warn || ElementManager.notDisappear(entity)){
-                        final int offsetY = (robust && ElementManager.displayRobust(entity)) ? 10 : 0;
+                    if(! warn || notDisappear(entity)){
+                        final int offsetY = (robust && displayRobust(entity)) ? 10 : 0;
                         float alpha = (float) Math.sin(entity.tickCount * 0.02 % Math.PI);
                         alpha = 1F;
                         renderIcon(stack, bufferSource, 10 * element.ordinal(), offsetY, packedLight, alpha);
@@ -88,7 +91,7 @@ public class ElementRenderer {
         final Matrix4f matrix4f = pose.pose();
 
 //        final VertexConsumer builder = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE);
-        final VertexConsumer builder = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE2);
+        final VertexConsumer builder = bufferSource.getBuffer(ELEMENTS_RENDER_TYPE);
         vertex(builder, matrix4f, pose, -0.5F, -0.5F, 0, 1F, 1F, 1F, alpha, sx, sy, packedLight);
         vertex(builder, matrix4f, pose, -0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, sx, dy, packedLight);
         vertex(builder, matrix4f, pose, 0.5F, 0.5F, 0, 1F, 1F, 1F, alpha, dx, dy, packedLight);
@@ -144,6 +147,25 @@ public class ElementRenderer {
 //        if(quit){
 //            ClientHandler.quitSmithing();
 //        }
+    }
+
+    public static boolean displayRobust(Entity entity) {
+        return (entity.tickCount % (DISPLAY_ROBUST_CD << 1)) < DISPLAY_ROBUST_CD;
+    }
+
+    public static boolean notDisappear(Entity entity) {
+        return (entity.tickCount % (DISAPPEAR_CD << 1)) < DISAPPEAR_CD;
+    }
+
+    /**
+     * Amount need below threshold and last time is less than threshold.
+     */
+    public static boolean needWarn(Entity entity, Element element, boolean robust, float amount) {
+        return (amount < DISAPPEAR_WARN_AMOUNT) && (amount / ElementManager.getDecayAmount(entity, element, robust) < DISAPPEAR_WARN_CD);
+    }
+
+    public static boolean canSeeElements(Player player, Entity entity, double distanceSqr) {
+        return distanceSqr < 1000;
     }
 
 }

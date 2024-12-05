@@ -6,14 +6,13 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.entity.HasQi;
 import hungteen.imm.api.entity.HasRoot;
-import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.entity.IMMEntityData;
-import hungteen.imm.common.entity.IMMAttributes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -24,7 +23,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -59,11 +57,6 @@ public class EntityUtil {
 
     public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
 //        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), effectOn, soundSource));
-    }
-
-    public static double getMaxQi(LivingEntity living){
-        AttributeInstance attribute = living.getAttribute(IMMAttributes.MAX_QI_AMOUNT.holder());
-        return attribute == null ? 0 : attribute.getValue();
     }
 
     public static void knockback(LivingEntity target, double strength, double dx, double dz){
@@ -115,7 +108,7 @@ public class EntityUtil {
      * @param time   破盾作用时间。
      */
     public static void disableShield(Level level, Entity entity, int time) {
-        if (entity instanceof Player player && ItemUtil.isShield(player.getUseItem())) {
+        if (entity instanceof Player player && ItemUtil.canShieldBlock(player.getUseItem())) {
             player.getCooldowns().addCooldown(player.getUseItem().getItem(), time);
             player.stopUsingItem();
             level.broadcastEntityEvent(entity, (byte) 30);
@@ -218,12 +211,20 @@ public class EntityUtil {
         return !living.getMainHandItem().isEmpty() || !living.getOffhandItem().isEmpty();
     }
 
+    public static boolean checkHand(LivingEntity living, InteractionHand hand, Predicate<ItemStack> predicate) {
+        return predicate.test(living.getItemInHand(hand));
+    }
+
     public static Optional<InteractionHand> getHandOpt(LivingEntity living, Predicate<ItemStack> predicate) {
         return predicate.test(living.getMainHandItem()) ? Optional.of(InteractionHand.MAIN_HAND) : predicate.test(living.getOffhandItem()) ? Optional.of(InteractionHand.OFF_HAND) : Optional.empty();
     }
 
     public static ItemStack getItemInHand(LivingEntity living, Predicate<ItemStack> predicate) {
-        return getHandOpt(living, predicate).map(living::getItemInHand).orElse(ItemStack.EMPTY);
+        return getHandItemOpt(living, predicate).orElse(ItemStack.EMPTY);
+    }
+
+    public static Optional<ItemStack> getHandItemOpt(LivingEntity living, Predicate<ItemStack> predicate) {
+        return getHandOpt(living, predicate).map(living::getItemInHand);
     }
 
     public static int getSpellLevel(Entity entity, SpellType spell) {

@@ -52,7 +52,11 @@ public enum RealmLevel implements StringRepresentable {
      * @return 精神领域对应的层数。
      */
     public int getRealmRegionLevel(){
-        return ordinal() + 1;
+        return level() + 1;
+    }
+
+    public int level(){
+        return ordinal();
     }
 
     @Override

@@ -20,4 +20,5 @@ public class LivingEventHandler {
             ElementManager.transferElement(projectile, living);
         }
     }
+
 }

@@ -18,15 +18,15 @@ public class MathUtilTest {
     @PrefixGameTestTemplate(false)
     @GameTest(template = TestUtil.TEMPLATE_EMPTY)
     public static void testGaussian(GameTestHelper helper) {
-        System.out.println("MathUtilTest.test");
-        for(int i = 0; i < 3; ++ i){
-            System.out.println("n = 3, std = 1, i = " + i);
-            printArray(MathUtil.generateGaussianArray(3, i, 1));
-        }
-        for(int i = 0; i < 3; ++ i){
-            System.out.println("n = 3, std = 10, i = " + i);
-            printArray(MathUtil.generateGaussianArray(3, i, 0.1));
-        }
+//        System.out.println("MathUtilTest.test");
+//        for(int i = 0; i < 3; ++ i){
+//            System.out.println("n = 3, std = 1, i = " + i);
+//            printArray(MathUtil.generateGaussianArray(3, i, 1));
+//        }
+//        for(int i = 0; i < 3; ++ i){
+//            System.out.println("n = 3, std = 10, i = " + i);
+//            printArray(MathUtil.generateGaussianArray(3, i, 0.1));
+//        }
 //        for(int i = 0; i < 10; ++ i) {
 //            System.out.println("n = 3, std = 1, i = " + i);
 //            printArray(MathUtil.generateGaussianArray(10, i, 1));

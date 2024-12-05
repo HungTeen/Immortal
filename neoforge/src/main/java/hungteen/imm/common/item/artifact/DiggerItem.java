@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.artifacts;
+package hungteen.imm.common.item.artifact;
 
 import hungteen.imm.api.artifact.IArtifactTier;
 import net.minecraft.core.BlockPos;

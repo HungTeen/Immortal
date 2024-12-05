@@ -8,14 +8,12 @@ import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.reaction.SummonSpiritReaction;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,10 +67,11 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     public void updateRealm(){
-        final float amount = ElementManager.getElementAmount(this, Element.SPIRIT, false);
-        final int level = Mth.ceil(amount / SummonSpiritReaction.SPIRIT_COST);
-        this.setRealmLevel(level);
-        this.setRealm(getRealmByLevel(level));
+        // TODO spirit realm.
+//        final float amount = ElementManager.getElementAmount(this, Element.SPIRIT, false);
+//        final int level = Mth.ceil(amount / SummonSpiritReaction.SPIRIT_COST);
+//        this.setRealmLevel(level);
+//        this.setRealm(getRealmByLevel(level));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

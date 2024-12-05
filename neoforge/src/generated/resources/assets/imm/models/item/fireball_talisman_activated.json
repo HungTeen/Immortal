@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "imm:item/fireball_talisman",
   "textures": {
     "layer0": "imm:item/talisman"
   }

@@ -23,8 +23,8 @@ public abstract class GenerationReaction extends ElementReactionImpl {
     private final float productionAmount;
     private final boolean spawnAmethyst;
 
-    public GenerationReaction(String name, boolean once, Element main, float mainAmount, Element off, float productionAmount) {
-        this(name, once, 100, main, mainAmount, off, productionAmount);
+    public GenerationReaction(String name, boolean once, Element main, float mainAmount, Element off, float percent) {
+        this(name, once, 100, main, mainAmount, off, mainAmount * percent);
     }
 
     public GenerationReaction(String name, boolean once, int priority, Element main, float mainAmount, Element off, float productionAmount) {
@@ -61,11 +61,11 @@ public abstract class GenerationReaction extends ElementReactionImpl {
         });
     }
 
-    public static void quenchBlade(LivingIncomingDamageEvent event){
-        ElementManager.ifActiveReaction(event.getSource().getEntity(), ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
+    public static void quenchBlade(LivingIncomingDamageEvent event, Entity attacker){
+        ElementManager.ifActiveReaction(attacker, ElementReactions.QUENCH_BLADE, (reaction, scale) -> {
             final float damage = event.getOriginalAmount() + ElementManager.getQuenchBladeDamage(event.getSource().getEntity());
             event.setAmount(damage);
-            ElementManager.addElementAmount(event.getEntity(), Element.WATER, false, scale * 5);
+            ElementManager.addPercentElement(event.getEntity(), Element.WATER, false, scale * 0.5F);
         });
     }
 

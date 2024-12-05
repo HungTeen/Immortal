@@ -20,8 +20,8 @@ public class FlamingReaction extends GenerationReaction {
 
     private final boolean robustReaction;
 
-    public FlamingReaction(String name, boolean once, int priority, boolean robustReaction, float woodCostAmount, float fireGenAmount) {
-        super(name, once, priority, Element.WOOD, woodCostAmount, Element.FIRE, fireGenAmount);
+    public FlamingReaction(String name, boolean once, int priority, boolean robustReaction, float woodCostAmount, float percent) {
+        super(name, once, priority, Element.WOOD, woodCostAmount, Element.FIRE, percent * woodCostAmount);
         this.robustReaction = robustReaction;
     }
 

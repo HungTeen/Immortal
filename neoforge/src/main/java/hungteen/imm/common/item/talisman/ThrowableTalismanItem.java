@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.talismans;
+package hungteen.imm.common.item.talisman;
 
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.sounds.SoundEvents;

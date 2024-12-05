@@ -6,6 +6,7 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.cultivation.RealmLevel;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.Cultivatable;
 import hungteen.imm.api.event.EntityRandomSpellEvent;
@@ -15,7 +16,7 @@ import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
-import hungteen.imm.util.EntityUtil;
+import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
 import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.MathUtil;
 import hungteen.imm.util.NBTUtil;
@@ -31,6 +32,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
@@ -133,7 +135,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         for (Element element : elements) {
             spells.addAll(getRandomSpells(accessor.getRandom(), element, realm));
         }
-        spells.addAll(getSpecialSpells(accessor.getRandom(), elements, realm));
+        addSpecialSpells(accessor.getRandom(), elements, realm, spells);
         EventUtil.post(new EntityRandomSpellEvent(this, spells, elements, realm, random));
         return spells;
     }
@@ -142,8 +144,15 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         return List.of();
     }
 
-    public List<Spell> getSpecialSpells(RandomSource random, Set<Element> elements, RealmType realm){
-        return List.of();
+    public void addSpecialSpells(RandomSource random, Set<Element> elements, RealmType realm, List<Spell> spells){
+        // 威压。
+        if(realm.getRealmLevel() == RealmLevel.FOUNDATION){
+            spells.add(Spell.create(SpellTypes.INTIMIDATION));
+        }
+        // 元素精通。
+        for(Element element : elements){
+            spells.add(ElementalMasterySpell.create(element, realm.getRealmLevel()));
+        }
     }
 
     @Override
@@ -185,6 +194,14 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
+    public int getSpellUsePriority(SpellType spell) {
+        if(spell.equals(SpellTypes.LAVA_BREATHING)){
+            return this.isOnFire() ? VERY_HIGH : VERY_LOW;
+        }
+        return getCategoryPriority().getOrDefault(spell.getCategory(), 0);
+    }
+
+    @Override
     public void trigger(@NotNull Spell spell) {
         this.setUsingSpell(spell.spell());
         this.addQiAmount(-spell.spell().getConsumeMana());
@@ -199,6 +216,14 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     @Override
     public HTHitResult createHitResult() {
         return new HTHitResult(this.getTarget());
+    }
+
+    /**
+     * 没有敌对目标时才能骑乘载具。
+     */
+    @Override
+    protected boolean canRide(Entity vehicle) {
+        return super.canRide(vehicle) && (!(vehicle instanceof VehicleEntity) || this.getTarget() == null);
     }
 
     public void serverChange(int id) {
@@ -339,7 +364,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public float getMaxQiAmount() {
-        return (float) EntityUtil.getMaxQi(this);
+        return (float) QiManager.getMaxQi(this);
     }
 
     @Override

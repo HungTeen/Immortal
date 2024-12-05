@@ -39,8 +39,12 @@ public abstract class InhibitionReaction extends ElementReactionImpl {
     private final float offAmount;
     private final boolean spawnAmethyst;
 
-    public InhibitionReaction(String name, boolean once, Element main, float mainAmount, Element off, float offAmount) {
-        super(name, once, 80, List.of(new ElementEntry(main, false, mainAmount), new ElementEntry(off, false, offAmount)));
+    public InhibitionReaction(String name, boolean once, Element main, float mainAmount, Element off, float percent) {
+        this(name, once, 80, main, mainAmount, off, mainAmount * percent);
+    }
+
+    public InhibitionReaction(String name, boolean once, int priority, Element main, float mainAmount, Element off, float offAmount) {
+        super(name, once, priority, List.of(new ElementEntry(main, false, mainAmount), new ElementEntry(off, false, offAmount)));
         this.ingredient = main;
         this.production = off;
         this.mainAmount = mainAmount;

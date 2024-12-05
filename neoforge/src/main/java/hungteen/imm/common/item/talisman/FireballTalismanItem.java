@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.talismans;
+package hungteen.imm.common.item.talisman;
 
 import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.artifact.ArtifactRank;

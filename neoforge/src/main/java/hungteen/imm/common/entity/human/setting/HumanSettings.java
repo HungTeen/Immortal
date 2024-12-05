@@ -12,7 +12,7 @@ import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
 import hungteen.imm.common.entity.human.setting.trade.TradeSetting;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.SecretManualItem;
-import hungteen.imm.common.item.artifacts.FlameGourd;
+import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;

@@ -12,16 +12,20 @@ import hungteen.imm.common.effect.CorpsePoisonEffect;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.goal.AggressiveAttackGoal;
+import hungteen.imm.common.entity.ai.goal.UseShieldGoal;
 import hungteen.imm.common.entity.ai.goal.UseSpellGoal;
+import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.util.ItemUtil;
+import hungteen.imm.util.NBTUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -44,6 +48,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Modify from {@link net.minecraft.world.entity.monster.Zombie}.
@@ -55,6 +60,11 @@ import java.util.List;
 public class QiZombie extends UndeadEntity {
 
     private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(Util.prefix("baby"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    private boolean isPVZType;
+    /**
+     * 使用完盾牌再切换到近战攻击会等待一段 CD，此方法零帧起手。
+     */
+    public int lastBlockTick;
 
     public QiZombie(EntityType<? extends UndeadEntity> type, Level level) {
         super(type, level);
@@ -67,6 +77,7 @@ public class QiZombie extends UndeadEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.24F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
                 .add(Attributes.ARMOR, 2.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25D)
                 ;
     }
 
@@ -77,8 +88,9 @@ public class QiZombie extends UndeadEntity {
 
     @Override
     protected void addBehaviourGoals() {
+        this.goalSelector.addGoal(1, new QiZombieUseShieldGoal(this));
         this.goalSelector.addGoal(2, new UseSpellGoal(this));
-        this.goalSelector.addGoal(2, new AggressiveAttackGoal(this, 1.0, false));
+        this.goalSelector.addGoal(3, new QiZombieAttackGoal(this, 1.0, false));
         this.goalSelector.addGoal(2, new FloatGoal(this));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -91,14 +103,24 @@ public class QiZombie extends UndeadEntity {
         if (accessor.getRandom().nextFloat() < 0.05F) {
             this.setBaby(true);
         }
+        this.isPVZType = accessor.getRandom().nextFloat() < 0.01F;
     }
 
     @Override
     public List<Spell> getRandomSpells(RandomSource random, Element element, RealmType realm) {
         return switch (element) {
             case METAL -> List.of(Spell.create(SpellTypes.CRITICAL_HIT));
+            case FIRE -> List.of(Spell.create(SpellTypes.LAVA_BREATHING));
             default -> List.of();
         };
+    }
+
+    @Override
+    public void addSpecialSpells(RandomSource random, Set<Element> elements, RealmType realm, List<Spell> spells) {
+        super.addSpecialSpells(random, elements, realm, spells);
+        if (random.nextFloat() < 0.25) {
+            spells.add(Spell.create(SpellTypes.SPEED));
+        }
     }
 
     @Override
@@ -111,14 +133,31 @@ public class QiZombie extends UndeadEntity {
             this.setItemSlot(EquipmentSlot.LEGS, ItemUtil.dyeArmor(Items.LEATHER_LEGGINGS, List.of(DyeColor.PINK)));
             this.setItemSlot(EquipmentSlot.FEET, ItemUtil.dyeArmor(Items.LEATHER_BOOTS, List.of(DyeColor.PINK)));
         }
-        if (random.nextFloat() < (difficulty.getDifficulty() == Difficulty.HARD ? 0.05F : 0.01F)) {
+        if (random.nextFloat() < (difficulty.getDifficulty().ordinal() * 0.05F)) {
             int i = random.nextInt(3);
             if (i == 0) {
-                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_AXE));
             } else {
-                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SHOVEL));
+                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
             }
         }
+        if(RealmTypes.MID_RANK_UNDEAD.hasRealm(this.getRealm())){
+            if(random.nextFloat() < 0.35){
+                this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+            }
+        }
+    }
+
+    @Override
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
+        super.readSpawnData(additionalData);
+        this.isPVZType = additionalData.readBoolean();
+    }
+
+    @Override
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+        super.writeSpawnData(buffer);
+        buffer.writeBoolean(this.isPVZType);
     }
 
     @Override
@@ -166,7 +205,7 @@ public class QiZombie extends UndeadEntity {
                     zombie.setTarget(target);
                     EventHooks.finalizeMobSpawn(zombie, serverLevel, serverLevel.getCurrentDifficultyAt(zombie.blockPosition()), MobSpawnType.REINFORCEMENT, null);
                     serverLevel.addFreshEntityWithPassengers(zombie);
-                    ParticleHelper.sendParticles(serverLevel, IMMParticles.SPIRIT_ELEMENT.get(), getX(), getEyeY(), getZ(), 15, 0.2, 0.2, 0.2, 0.05);
+                    ParticleHelper.sendParticles(serverLevel, IMMParticles.SPIRIT_ELEMENT.get(), getX(), getY(), getZ(), 15, 0.2, 0.2, 0.2, 0.1);
                     break;
                 }
             }
@@ -195,13 +234,28 @@ public class QiZombie extends UndeadEntity {
     }
 
     @Override
+    protected void blockUsingShield(LivingEntity attacker) {
+        super.blockUsingShield(attacker);
+        if(attacker.canDisableShield()){
+            this.stopUsingItem();
+            this.level().broadcastEntityEvent(this, (byte)30);
+        }
+    }
+
+    @Override
+    protected void hurtCurrentlyUsedShield(float damageAmount) {
+        super.hurtCurrentlyUsedShield(damageAmount);
+        this.playSound(SoundEvents.SHIELD_BLOCK, 0.5F, 0.8F + this.getRandom().nextFloat() * 0.4F);
+    }
+
+    @Override
     public List<MultiRealm> getMultiRealms() {
         return List.of(RealmTypes.LOW_RANK_UNDEAD, RealmTypes.MID_RANK_UNDEAD);
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ZOMBIE_AMBIENT;
+        return this.isPVZType() ? IMMSounds.PVZ_ZOMBIE_AMBIENT.get() : SoundEvents.ZOMBIE_AMBIENT;
     }
 
     @Override
@@ -220,6 +274,26 @@ public class QiZombie extends UndeadEntity {
     }
 
     @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        NBTUtil.read(tag, tag::getBoolean, "IsPVZType", this::setPVZType);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        NBTUtil.write(tag::putBoolean, "IsPVZType", this.isPVZType);
+    }
+
+    public void setPVZType(boolean PVZType) {
+        isPVZType = PVZType;
+    }
+
+    public boolean isPVZType() {
+        return isPVZType;
+    }
+
+    @Override
     public void setBaby(boolean baby) {
         super.setBaby(baby);
         if (!this.level().isClientSide) {
@@ -231,6 +305,40 @@ public class QiZombie extends UndeadEntity {
                     attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
                 }
             }
+        }
+    }
+
+    private static class QiZombieAttackGoal extends AggressiveAttackGoal {
+
+        private final QiZombie zombie;
+
+        public QiZombieAttackGoal(QiZombie zombie, double speedModifier, boolean followingTargetEvenIfNotSeen) {
+            super(zombie, speedModifier, followingTargetEvenIfNotSeen);
+            this.zombie = zombie;
+        }
+
+        @Override
+        protected boolean isTimeToAttack() {
+            if(zombie.tickCount - zombie.lastBlockTick < 20) {
+                return true;
+            }
+            return super.isTimeToAttack();
+        }
+    }
+
+    private static class QiZombieUseShieldGoal extends UseShieldGoal {
+
+        private final QiZombie zombie;
+
+        public QiZombieUseShieldGoal(QiZombie zombie) {
+            super(zombie);
+            this.zombie = zombie;
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            zombie.lastBlockTick = zombie.tickCount;
         }
     }
 

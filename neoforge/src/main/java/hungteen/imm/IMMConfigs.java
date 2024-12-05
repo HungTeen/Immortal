@@ -1,6 +1,7 @@
 package hungteen.imm;
 
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.util.Constants;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
@@ -39,7 +40,7 @@ public class IMMConfigs {
 
                 builder.comment("Settings about spiritual roots.").push("Spiritual Roots Settings");
                 {
-                    final float[] chances = new float[]{0, 0.1F, 0.2F, 0.3F, 0.3F};
+                    final float[] chances = new float[]{0, 0.2F, 0.45F, 0.2F, 0.1F};
                     for (int i = 0; i < Constants.MAX_ROOT_AMOUNT; i++) {
                         ruleSettings.rootChances[i] = builder
                                 .translation("config.immortal.root_chance_" + i)
@@ -66,6 +67,20 @@ public class IMMConfigs {
             }
             builder.pop();
 
+            builder.comment("Settings about elements.").push("Element Settings");
+            {
+                elementSettings.elementDecaySpeed = builder
+                        .translation("config.immortal.element_decay_speed")
+                        .comment("The speed that elements decay, can not be zero !")
+                        .defineInRange("ElementDecaySpeed", ElementManager.DECAY_SPEED, 0, 1);
+
+                elementSettings.elementDecayValue = builder
+                        .translation("config.immortal.element_decay_value")
+                        .comment("The value that elements decay each tick, can not be zero !")
+                        .defineInRange("ElementDecayValue", ElementManager.DECAY_VALUE, 0, 1);
+            }
+            builder.pop();
+
             builder.comment("Settings about blocks.").push("Block Settings");
             {
                 blockSettings.furnaceExplodeCD = builder
@@ -78,11 +93,17 @@ public class IMMConfigs {
 
 
         public RuleSettings ruleSettings = new RuleSettings();
+        public ElementSettings elementSettings = new ElementSettings();
         public BlockSettings blockSettings = new BlockSettings();
 
         public static class RuleSettings {
             public final ModConfigSpec.DoubleValue[] rootChances = new ModConfigSpec.DoubleValue[Constants.MAX_ROOT_AMOUNT];
             public final ModConfigSpec.IntValue[] rootWeights = new ModConfigSpec.IntValue[Element.values().length];
+        }
+
+        public static class ElementSettings {
+            public ModConfigSpec.DoubleValue elementDecaySpeed;
+            public ModConfigSpec.DoubleValue elementDecayValue;
         }
 
         public static class BlockSettings {
@@ -132,6 +153,9 @@ public class IMMConfigs {
         return common().ruleSettings;
     }
 
+    public static Common.ElementSettings elementSettings(){
+        return common().elementSettings;
+    }
 
     public static Common common(){
         return COMMON_CONFIG;

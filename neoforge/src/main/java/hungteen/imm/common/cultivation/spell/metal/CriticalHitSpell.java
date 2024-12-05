@@ -41,10 +41,10 @@ public class CriticalHitSpell extends SpellTypeImpl {
      * @param attacker 攻击者。
      * @param event 受伤事件。
      */
-    public static void checkCriticalHit(Entity attacker, LivingIncomingDamageEvent event) {
+    public static void checkCriticalHit(LivingEntity attacker, LivingIncomingDamageEvent event) {
         // 玩家不走此方法。
-        if(attacker instanceof LivingEntity owner && !(attacker instanceof Player)){
-            SpellManager.activateSpell(owner, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
+        if(!(attacker instanceof Player)){
+            SpellManager.activateSpell(attacker, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
                 event.setAmount(event.getOriginalAmount() * 1.5F);
                 spawnCriticalParticles(event.getEntity());
                 playSoundAround(event.getEntity(), SoundEvents.PLAYER_ATTACK_CRIT);

@@ -1,7 +1,7 @@
 package hungteen.imm.common.event.handler;
 
 import hungteen.imm.common.event.IMMPlayerEvents;
-import hungteen.imm.common.item.artifacts.FlameGourd;
+import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

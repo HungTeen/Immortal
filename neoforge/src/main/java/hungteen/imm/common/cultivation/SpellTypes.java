@@ -19,10 +19,7 @@ import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.MetalMendingSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
 import hungteen.imm.common.cultivation.spell.water.WaterBreathingSpell;
-import hungteen.imm.common.cultivation.spell.wood.LevitationSpell;
-import hungteen.imm.common.cultivation.spell.wood.SproutSpell;
-import hungteen.imm.common.cultivation.spell.wood.WitherSpell;
-import hungteen.imm.common.cultivation.spell.wood.WoodHealingSpell;
+import hungteen.imm.common.cultivation.spell.wood.*;
 import hungteen.imm.util.Util;
 
 /**
@@ -60,6 +57,7 @@ public interface SpellTypes {
 
     /* 木系法术 - Wood Spell */
 
+    SpellType SPEED = register(new SpeedSpell());
     SpellType LEVITATION = register(new LevitationSpell());
     SpellType SPROUT = register(new SproutSpell());
     SpellType WITHER = register(new WitherSpell());

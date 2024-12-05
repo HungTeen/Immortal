@@ -6,6 +6,7 @@ import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
+import hungteen.imm.common.cultivation.spell.wood.WitherSpell;
 import hungteen.imm.common.event.handler.EntityEventHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -40,6 +41,7 @@ public class IMMEntityEvents {
             // 只考虑第一次生成。
             if(! event.loadedFromDisk()){
                 IgnitionSpell.checkIgnitionArrow(event.getEntity());
+                WitherSpell.checkWitherArrow(event.getEntity());
             }
         }
     }
