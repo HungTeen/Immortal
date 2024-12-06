@@ -1,6 +1,7 @@
 package hungteen.imm;
 
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.RegistryHandler;
 import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.command.IMMCommandHandler;

@@ -18,6 +18,18 @@ import net.minecraft.world.entity.player.Player;
  **/
 public class QiManager {
 
+    public static float getQiAmount(Entity entity) {
+        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof HasQi manaEntity ? manaEntity.getQiAmount() : 0;
+    }
+
+    public static boolean isQiEmpty(Entity entity) {
+        return getQiAmount(entity) > 0;
+    }
+
+    public static boolean isQiFull(Entity entity) {
+        return getQiAmount(entity) >= getMaxQi(entity);
+    }
+
     public static void addQi(Entity entity, float amount){
         if(entity instanceof Player player){
             PlayerUtil.addQiAmount(player, amount);
@@ -42,20 +54,30 @@ public class QiManager {
      * @param entity 生物。
      */
     public static void increaseQi(Entity entity) {
-        if(canManaIncrease(entity)){
+        if(canManaNaturalIncrease(entity)){
             float rate = LevelUtil.getSpiritualRate(entity.level(), entity.blockPosition());
             addQi(entity, rate);
         }
     }
 
-    public static double getMaxQi(LivingEntity living){
+    public static double getMaxQi(Entity entity){
+        if(entity instanceof HasQi hasQi){
+            return hasQi.getMaxQiAmount();
+        } else if(entity instanceof LivingEntity living){
+            return getLivingMaxQi(living);
+        }
+        return 0;
+    }
+
+    public static double getLivingMaxQi(LivingEntity living){
         AttributeInstance attribute = living.getAttribute(IMMAttributes.MAX_QI_AMOUNT.holder());
         return attribute == null ? 0 : attribute.getValue();
     }
 
-    public static boolean canManaIncrease(Entity entity) {
+    public static boolean canManaNaturalIncrease(Entity entity) {
         return !(entity.getVehicle() instanceof FlyingItemEntity)
                 && (entity.getId() + entity.level().getGameTime()) % Constants.SPIRITUAL_ABSORB_TIME == 0
                 && !ElementManager.isActiveReaction(entity, ElementReactions.PARASITISM);
     }
+
 }

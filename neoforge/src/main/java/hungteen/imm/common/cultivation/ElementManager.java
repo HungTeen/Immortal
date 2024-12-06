@@ -3,7 +3,7 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.util.HTColor;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.IMMConfigs;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.particle.IMMParticles;

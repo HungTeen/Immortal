@@ -24,7 +24,7 @@ public abstract class ThrowableTalismanItem extends TalismanItem {
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         final ItemStack itemstack = player.getItemInHand(hand);
-        if (!level.isClientSide && this.canUse(itemstack, player)) {
+        if (!level.isClientSide && this.canUseTalisman(itemstack, player)) {
             Snowball snowball = new Snowball(level, player);
             snowball.setItem(itemstack);
             snowball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

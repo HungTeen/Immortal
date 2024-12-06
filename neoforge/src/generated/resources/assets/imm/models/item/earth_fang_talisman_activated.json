@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/earth_fang_talisman",
+  "textures": {
+    "layer0": "imm:item/talisman"
+  }
+}

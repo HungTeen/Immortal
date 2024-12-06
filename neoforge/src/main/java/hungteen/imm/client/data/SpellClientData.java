@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.IMMConfigs;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.IMMKeyBinds;

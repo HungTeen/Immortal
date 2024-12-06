@@ -56,6 +56,12 @@ public class IMMEntities {
     /* Misc */
 
     public static final HTHolder<EntityType<ElementCrystal>> ELEMENT_AMETHYST = registerEntityType(ElementCrystal::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
+    public static final HTEntitySuit<FallingIceEntity> FALLING_ICE = registerNonLiving("falling_ice", () -> {
+        return EntityType.Builder.of(FallingIceEntity::new, MobCategory.MISC).sized(3F, 1F).clientTrackingRange(3).updateInterval(10);
+    });
+    public static final HTEntitySuit<TwistingVines> TWISTING_VINES = registerNonLiving("twisting_vines", () -> {
+        return EntityType.Builder.of(TwistingVines::new, MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(3).updateInterval(10);
+    });
     public static final HTHolder<EntityType<TeleportFormation>> TELEPORT_FORMATION = registerEntityType(TeleportFormation::new, "teleport_formation", MobCategory.MISC, builder -> builder.sized(0F, 0F));
     public static final HTHolder<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC, builder -> builder.sized(0.4F, 0.4F));
     public static final HTHolder<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC, builder -> builder.sized(0.9F, 1.8F));
@@ -230,6 +236,10 @@ public class IMMEntities {
         HTEntitySuit.EntitySuitBuilder<T> suitBuilder = EntitySuits.living(Util.prefix(name), builder);
         consumer.accept(suitBuilder);
         return EntitySuits.register(suitBuilder.build());
+    }
+
+    public static <T extends Entity> HTEntitySuit<T> registerNonLiving(String name, Supplier<EntityType.Builder<T>> builder) {
+        return EntitySuits.register(EntitySuits.nonLiving(Util.prefix(name), builder).build());
     }
 
     public static void initialize(IEventBus event) {

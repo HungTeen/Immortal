@@ -198,7 +198,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         if(spell.equals(SpellTypes.LAVA_BREATHING)){
             return this.isOnFire() ? VERY_HIGH : VERY_LOW;
         }
-        return getCategoryPriority().getOrDefault(spell.getCategory(), 0);
+        return getCategoryPriority().getOrDefault(spell.getCategory(), DEFAULT);
     }
 
     @Override
@@ -364,7 +364,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public float getMaxQiAmount() {
-        return (float) QiManager.getMaxQi(this);
+        return (float) QiManager.getLivingMaxQi(this);
     }
 
     @Override

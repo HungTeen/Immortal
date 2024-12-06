@@ -8,7 +8,6 @@ import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.common.cultivation.reaction.*;
 import hungteen.imm.common.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
@@ -126,8 +125,8 @@ public interface ElementReactions {
         @Override
         public void doReaction(Entity entity, float scale) {
             super.doReaction(entity, scale);
-            if (!EntityUtil.isManaFull(entity)) {
-                EntityUtil.addMana(entity, scale * 20);
+            if (!QiManager.isQiFull(entity)) {
+                QiManager.addQi(entity, scale * 20);
             } else {
                 if (entity instanceof LivingEntity living) {
                     living.heal(4F * scale);

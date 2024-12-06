@@ -25,13 +25,18 @@ public class TalismanExtension implements IClientItemExtensions {
         return false;
     }
 
+    /**
+     * {@link net.minecraft.client.renderer.ItemInHandRenderer}.
+     */
     private static void applyTalismanTransform(PoseStack poseStack, float partialTick, HumanoidArm arm, ItemStack stack, Player player) {
-        float f3 = 1.0F;
+        float f = (float)player.getUseItemRemainingTicks() - partialTick + 1.0F;
+
+        float f3 = 1.0F + (float)Math.sin(f * 0.2F) * 0.04F;
         int i = arm == HumanoidArm.RIGHT ? 1 : -1;
-        poseStack.translate(f3 * 0.6F * i, f3 * -0.5F, f3 * 0.0F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(i * f3 * 90.0F));
-        poseStack.mulPose(Axis.XP.rotationDegrees(f3 * 25.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(i * f3 * 30.0F));
+        poseStack.translate(f3 * 0.6F * i, f3 * -0.4F, f3 * 0.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(i * f3 * 80.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(f3 * 15.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(i * f3 * 10.0F));
     }
 
     private static void applyItemArmTransform(PoseStack poseStack, HumanoidArm hand, float equippedProg) {

@@ -37,6 +37,10 @@ public interface IMMDamageSources {
         return DamageHelper.source(causingEntity, IMMDamageTypes.WATER_ELEMENT, causingEntity);
     }
 
+    static DamageSource waterElement(Entity causingEntity, Entity owner){
+        return DamageHelper.source(causingEntity, IMMDamageTypes.WATER_ELEMENT, owner, causingEntity);
+    }
+
     static DamageSource fireElement(Entity causingEntity){
         return fireElement(causingEntity, causingEntity);
     }

@@ -1,17 +1,15 @@
 package hungteen.imm.common.entity.misc;
 
-import hungteen.htlib.common.entity.HTEntity;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.spell.common.FlyWithItemSpell;
-import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,20 +25,17 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 /**
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-02 13:47
  **/
-public class FlyingItemEntity extends HTEntity implements TraceableEntity {
+public class FlyingItemEntity extends HTTraceableEntity {
 
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(FlyingItemEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final int MAX_PASSENGER_SIZE = 1;
     private int flyingTick = 0;
-    @Nullable
-    private UUID thrower;
     private int lerpSteps;
     private double lerpX;
     private double lerpY;
@@ -113,10 +108,10 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
 
     public void updateMotion(@NotNull Entity entity){
         final float cost = FlyWithItemSpell.getFlyingCost(entity);
-        final boolean enough = EntityUtil.getMana(entity) >= cost;
+        final boolean enough = QiManager.getQiAmount(entity) >= cost;
         if(++ this.flyingTick % 20 == 0){
             if(enough){
-                EntityUtil.addMana(entity, - cost);
+                QiManager.addQi(entity, - cost);
             } else {
                 entity.stopRiding();
                 return;
@@ -189,27 +184,11 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
         return player.getVehicle() != null && player.getVehicle() == this;
     }
 
-    @Nullable
-    @Override
-    public Entity getOwner() {
-        if (this.thrower != null) {
-            Level level = this.level();
-            if (level instanceof ServerLevel serverlevel) {
-                return serverlevel.getEntity(this.thrower);
-            }
-        }
-
-        return null;
-    }
-
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("FlyingItemStack")){
             this.setItemStack(ItemStack.parseOptional(registryAccess(), tag.getCompound("FlyingItemStack")));
-        }
-        if (tag.hasUUID("Thrower")) {
-            this.thrower = tag.getUUID("Thrower");
         }
         if(tag.contains("FlyingTick")){
             this.flyingTick = tag.getInt("FlyingTick");
@@ -220,9 +199,6 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("FlyingItemStack", this.getItemStack().save(registryAccess()));
-        if (this.thrower != null) {
-            tag.putUUID("Thrower", this.thrower);
-        }
         tag.putInt("FlyingTick", this.flyingTick);
     }
 
@@ -230,14 +206,6 @@ public class FlyingItemEntity extends HTEntity implements TraceableEntity {
     public void setItemStack(ItemStack itemStack) {
         entityData.set(ITEM_STACK, itemStack);
         refreshDimensions();
-    }
-
-    public void setThrower(@NotNull Entity thrower) {
-        this.setThrower(thrower.getUUID());
-    }
-
-    public void setThrower(@Nullable UUID uuid) {
-        this.thrower = uuid;
     }
 
     public ItemStack getItemStack() {

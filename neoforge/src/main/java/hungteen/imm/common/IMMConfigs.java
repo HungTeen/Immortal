@@ -1,4 +1,4 @@
-package hungteen.imm;
+package hungteen.imm.common;
 
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;

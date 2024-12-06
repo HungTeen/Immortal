@@ -12,12 +12,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.RenderTypeHelper;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -32,6 +40,31 @@ public class RenderUtil {
 
     public static final ResourceLocation WIDGETS = Util.get().guiTexture("widgets");
     public static final ResourceLocation EMPTY_ENTITY_TEXTURE = Util.get().entityTexture("empty");
+
+    public static void renderBlock(BlockRenderDispatcher dispatcher, Entity iceEntity, PoseStack poseStack, MultiBufferSource bufferSource, BlockState blockstate, int x, int y){
+        poseStack.pushPose();
+        BlockPos blockpos = BlockPos.containing(iceEntity.getX(), iceEntity.getBoundingBox().maxY, iceEntity.getZ());
+        poseStack.translate(-0.5 + x, 0.0, -0.5 + y);
+        var model = dispatcher.getBlockModel(blockstate);
+        for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(iceEntity.blockPosition())), ModelData.EMPTY))
+            dispatcher
+                    .getModelRenderer()
+                    .tesselateBlock(
+                            iceEntity.level(),
+                            dispatcher.getBlockModel(blockstate),
+                            blockstate,
+                            blockpos,
+                            poseStack,
+                            bufferSource.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)),
+                            false,
+                            RandomSource.create(),
+                            blockstate.getSeed(iceEntity.blockPosition()),
+                            OverlayTexture.NO_OVERLAY,
+                            ModelData.EMPTY,
+                            renderType
+                    );
+        poseStack.popPose();
+    }
 
     public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
         RenderHelper.renderScaledText(stack, ClientHelper.font(), IMMClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);

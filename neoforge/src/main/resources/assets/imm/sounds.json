@@ -3,9 +3,21 @@
     "subtitle": "sound.imm.releasing",
     "sounds": [{"name": "imm:spell/releasing"}]
   },
+  "talisman_use": {
+    "subtitle": "sound.imm.talisman_use",
+    "sounds": [{"name": "imm:item/talisman/use"}]
+  },
   "pvz_zombie_ambient": {
     "subtitle": "sound.imm.pvz_zombie_ambient",
     "sounds": [{"name": "imm:entity/pvz_zombie/ambient1"},{"name": "imm:entity/pvz_zombie/ambient2"},{"name": "imm:entity/pvz_zombie/ambient3"},{"name": "imm:entity/pvz_zombie/ambient4"},{"name": "imm:entity/pvz_zombie/ambient5"}]
+  },
+  "falling_ice_finish": {
+    "subtitle": "sound.imm.falling_ice_finish",
+    "sounds": [{"name": "imm:entity/falling_ice/finish1"},{"name": "imm:entity/falling_ice/finish2"}, {"name": "imm:entity/falling_ice/finish3"}]
+  },
+  "falling_ice_hit": {
+    "subtitle": "sound.imm.falling_ice_hit",
+    "sounds": [{"name": "imm:entity/falling_ice/hit1"},{"name": "imm:entity/falling_ice/hit2"}]
   },
   "bi_fang_ambient": {
     "subtitle": "sound.imm.bi_fang_ambient",

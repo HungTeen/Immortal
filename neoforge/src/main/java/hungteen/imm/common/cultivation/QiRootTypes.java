@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.IMMConfigs;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.util.TipUtil;

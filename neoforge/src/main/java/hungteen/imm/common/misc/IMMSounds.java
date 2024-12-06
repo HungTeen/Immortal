@@ -22,9 +22,16 @@ public interface IMMSounds {
 
     HTHolder<SoundEvent> RELEASING = create("releasing");
 
+    /* Item */
+
+    HTHolder<SoundEvent> TALISMAN_USE = create("talisman_use");
+
     /* Entity */
 
     HTHolder<SoundEvent> PVZ_ZOMBIE_AMBIENT = create("pvz_zombie_ambient");
+
+    HTHolder<SoundEvent> FALLING_ICE_FINISH = create("falling_ice_finish");
+    HTHolder<SoundEvent> FALLING_ICE_HIT = create("falling_ice_hit");
 
     HTHolder<SoundEvent> BI_FANG_AMBIENT = create("bi_fang_ambient");
     HTHolder<SoundEvent> BI_FANG_ROAR = create("bi_fang_roar");

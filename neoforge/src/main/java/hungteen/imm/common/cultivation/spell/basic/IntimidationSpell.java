@@ -15,6 +15,7 @@ import hungteen.imm.common.effect.IMMEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -36,6 +37,9 @@ public class IntimidationSpell extends SpellTypeImpl {
 
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
+        if(owner instanceof Mob mob && mob.getTarget() == null){
+            return false;
+        }
         final double range = CultivationManager.getSpiritRange(owner);
         final AABB aabb = EntityHelper.getEntityAABB(owner, range, range / 2);
         final RealmType realm = RealmManager.getRealm(owner);

@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/falling_ice_talisman",
+  "textures": {
+    "layer0": "imm:item/talisman"
+  }
+}

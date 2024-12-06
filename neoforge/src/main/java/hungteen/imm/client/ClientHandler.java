@@ -18,7 +18,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
  **/
 public class ClientHandler {
 
-    private static final ItemPropertyFunction USED = (stack, level, entity, val) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+    private static final ItemPropertyFunction USED = (stack, level, entity, val) -> entity != null && entity.isUsingItem() && entity.getUseItem().equals(stack) ? 1.0F : 0.0F;
     private static final ItemPropertyFunction USING = (stack, level, entity, val) -> {
         if (entity == null) {
             return 0.0F;

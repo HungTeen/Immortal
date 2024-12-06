@@ -8,16 +8,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-11-04 10:17
  **/
 public class ParticleUtil {
@@ -30,9 +30,22 @@ public class ParticleUtil {
         return block(state).setPos(pos);
     }
 
-    public static void spawnEntityParticle(Entity entity, ParticleOptions particle, int count, double speed){
+    public static void spawnEntityParticle(Entity entity, ParticleOptions particle, int count, double speed) {
         ParticleHelper.spawnParticles(entity.level(), particle, entity.getX(), entity.getY(0.5), entity.getZ(), count, entity.getBbWidth(), entity.getBbHeight() / 2, speed);
     }
+
+    /**
+     * 参考吃东西的粒子效果，找到生成位置。。
+     */
+    public static Vec3 getUsingItemPos(LivingEntity living) {
+        double d0 = (double) (-living.getRandom().nextFloat()) * 0.6 - 0.3;
+        Vec3 vec31 = new Vec3(((double) living.getRandom().nextFloat() - 0.5) * 0.3, d0, 0.6);
+        vec31 = vec31.xRot(-living.getXRot() * (float) (Math.PI / 180.0));
+        vec31 = vec31.yRot(-living.getYRot() * (float) (Math.PI / 180.0));
+        vec31 = vec31.add(living.getX(), living.getEyeY(), living.getZ());
+        return vec31;
+    }
+
 //    public static void spawnLineSpiritualParticle(Level world, float red, float green, float blue, Vec3 origin, Vec3 target, float particleRatio, int particleCountEach, double offsetScale) {
 //        double distance = origin.distanceTo(target);
 //        int particleNum = Mth.ceil(distance * (double) particleRatio);
@@ -45,11 +58,11 @@ public class ParticleUtil {
 //        }
 //    }
 
-    public static void spawnClientParticles(ServerLevel level, ParticleOptions particle, Vec3 vec, int amount, double dst, double speed) {
+    public static void spawnClientParticles(Level level, ParticleOptions particle, Vec3 vec, int amount, double dst, double speed) {
         ParticleHelper.spawnClientParticles(level, particle, vec.x(), vec.y(), vec.z(), amount, dst, dst, dst, speed);
     }
 
-    public static void spawnClientParticles(ServerLevel level, ParticleOptions particle, double x, double y, double z, int amount, double dst, double speed) {
+    public static void spawnClientParticles(Level level, ParticleOptions particle, double x, double y, double z, int amount, double dst, double speed) {
         ParticleHelper.spawnClientParticles(level, particle, x, y, z, amount, dst, dst, dst, speed);
     }
 

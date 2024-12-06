@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/lightning_talisman",
+  "textures": {
+    "layer0": "imm:item/talisman"
+  }
+}

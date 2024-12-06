@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "render_type": "minecraft:solid",
+  "textures": {
+    "bottom": "imm:block/falling_ice_bottom",
+    "side": "imm:block/falling_ice_side",
+    "top": "imm:block/falling_ice_top"
+  }
+}

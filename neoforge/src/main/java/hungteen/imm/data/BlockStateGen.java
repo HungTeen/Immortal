@@ -4,9 +4,9 @@ import hungteen.htlib.data.HTBlockStateGen;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.block.artifacts.TeleportAnchorBlock;
+import hungteen.imm.common.block.artifacts.WoolCushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.block.plants.GourdStemBlock;
 import hungteen.imm.common.block.plants.IMMCropBlock;
@@ -80,13 +80,20 @@ public class BlockStateGen extends HTBlockStateGen {
             });
         });
 
+        /* Blocks with top, bottom and side textures. */
+        List.of(
+                IMMBlocks.FALLING_ICE.get()
+        ).forEach(block -> {
+            this.gen(block, b -> simpleBlock(b, models().cubeBottomTop(name(block),
+                                    StringHelper.suffix(BlockHelper.blockTexture(b), "side"),
+                                    StringHelper.suffix(BlockHelper.blockTexture(b), "bottom"),
+                                    StringHelper.suffix(BlockHelper.blockTexture(b), "top")
+                            ).renderType(solid())
+                    )
+            );
+        });
+
         /* Crops with age property. */
-//        Arrays.asList(
-//                Pair.of(ImmortalBlocks.GOURD_STEM.get(), GourdStemBlock.AGE)
-////                Pair.of(BlockRegister.TOXIC_SHROOM.get(), ToxicShroomBlock.AGE),
-//        ).forEach(pair -> {
-//            crop(pair.getFirst(), pair.getSecond(), cutout());
-//        });
         this.gen(IMMBlocks.GOURD_STEM.get(), b -> crop(b, GourdStemBlock.AGE, cutout()));
 
         /* Woods */
@@ -115,6 +122,7 @@ public class BlockStateGen extends HTBlockStateGen {
             this.addedBlocks.add(block);
         });
 
+        /* Wood Cushion */
         BlockHelper.get().filterValues(WoolCushionBlock.class::isInstance).stream()
                 .map(WoolCushionBlock.class::cast).forEach(block -> {
                     getVariantBuilder(block).forAllStates(state -> {

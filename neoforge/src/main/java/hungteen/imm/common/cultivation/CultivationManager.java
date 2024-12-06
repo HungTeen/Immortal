@@ -3,7 +3,7 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.util.WeightedList;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.IMMConfigs;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.*;

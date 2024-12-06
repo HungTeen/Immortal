@@ -288,6 +288,8 @@
   "info.imm.spell.can_not_evade_below": "脚下没有空闲的区域，或遁术被阻挡",
   "info.imm.spell.not_on_ground": "不在地面",
   "info.imm.spell.no_crystal_around": "周围没有元素水晶",
+
+  "info.imm.talisman.no_enough_qi": "灵力不足，此符箓需要%f灵力",
   "_comment9": "--------------------------------------------附魔-------------------------------------------",
   "_comment10": "--------------------------------------------药水效果-------------------------------------------",
   "effect.imm.break_through": "突破",

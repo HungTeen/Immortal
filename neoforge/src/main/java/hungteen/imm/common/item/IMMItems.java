@@ -15,7 +15,7 @@ import hungteen.imm.common.item.artifact.WoodBowItem;
 import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.*;
-import hungteen.imm.common.item.talisman.FireballTalismanItem;
+import hungteen.imm.common.item.talisman.*;
 import hungteen.imm.common.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
@@ -88,7 +88,11 @@ HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(
 
     /* Talisman Tab Items */
 
-    HTHolder<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", FireballTalismanItem::new);
+    HTHolder<Item> LIGHTNING_TALISMAN = ITEMS.register("lightning_talisman", LightningTalisman::new);
+    HTHolder<Item> TWISTING_VINE_TALISMAN = ITEMS.register("twisting_vine_talisman", TwistingVineTalisman::new);
+    HTHolder<Item> FALLING_ICE_TALISMAN = ITEMS.register("falling_ice_talisman", FallingIceTalisman::new);
+    HTHolder<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", FireballTalisman::new);
+    HTHolder<Item> EARTH_FANG_TALISMAN = ITEMS.register("earth_fang_talisman", EarthFangTalisman::new);
 
     /* Misc Tab Items */
 

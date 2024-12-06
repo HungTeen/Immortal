@@ -2,6 +2,7 @@ package hungteen.imm.common.cultivation.spell.fire;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class LavaBreathingSpell extends SpellTypeImpl {
 
     public LavaBreathingSpell() {
-        super("lava_breathing", properties().maxLevel(1).mana(80).cd(400));
+        super("lava_breathing", properties(SpellUsageCategory.BUFF_SELF).maxLevel(1).mana(80).cd(400));
     }
 
     @Override

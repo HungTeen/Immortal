@@ -1,0 +1,6 @@
+{
+  "parent": "imm:item/twisting_vine_talisman",
+  "textures": {
+    "layer0": "imm:item/talisman"
+  }
+}

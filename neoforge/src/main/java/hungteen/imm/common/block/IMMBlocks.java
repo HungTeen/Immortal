@@ -11,6 +11,7 @@ import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.api.artifact.ArtifactRank;
+import hungteen.imm.common.block.ambient.FallingIceBlock;
 import hungteen.imm.common.block.ambient.SpiritBedrock;
 import hungteen.imm.common.block.artifacts.*;
 import hungteen.imm.common.block.plants.*;
@@ -55,6 +56,7 @@ public interface IMMBlocks {
     /* Natural Blocks */
 
     HTBlockSuit<Block> SPIRIT_BEDROCK = register("spirit_bedrock", SpiritBedrock::new);
+    HTBlockSuit<Block> FALLING_ICE = register("falling_ice", FallingIceBlock::new);
     HTBlockSuit<Block> CINNABAR_ORE = register("cinnabar_ore", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 
     /* Special Blocks */

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "imm:falling_ice"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "imm:blocks/falling_ice"
+}

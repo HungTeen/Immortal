@@ -7,10 +7,12 @@ import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
 import hungteen.imm.common.cultivation.spell.wood.WitherSpell;
+import hungteen.imm.common.entity.misc.TwistingVines;
 import hungteen.imm.common.event.handler.EntityEventHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
@@ -50,6 +52,16 @@ public class IMMEntityEvents {
     public static void onProjectileImpact(ProjectileImpactEvent event){
         if(EntityHelper.isServer(event.getProjectile())){
             EntityEventHandler.attachElementWhenImpact(event.getProjectile(), event.getRayTraceResult());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityMount(EntityMountEvent event){
+        if(EntityHelper.isServer(event.getEntity())){
+            // 不能主动取消对藤蔓的骑乘。
+            if(event.getEntityBeingMounted() instanceof TwistingVines && !event.isMounting()){
+                event.setCanceled(true);
+            }
         }
     }
 

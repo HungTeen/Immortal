@@ -36,7 +36,7 @@ import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixirs.ElixirItem;
-import hungteen.imm.common.item.talisman.DurationTalismanItem;
+import hungteen.imm.common.item.talisman.DurationTalisman;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -158,7 +158,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event){
-        event.registerItem(new TalismanExtension(), ItemHelper.get().filterValues(DurationTalismanItem.class::isInstance).toArray(Item[]::new));
+        event.registerItem(new TalismanExtension(), ItemHelper.get().filterValues(DurationTalisman.class::isInstance).toArray(Item[]::new));
     }
 
     @SubscribeEvent

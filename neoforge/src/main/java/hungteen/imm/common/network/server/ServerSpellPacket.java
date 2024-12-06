@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.common.network.ServerPacketContext;
 import hungteen.htlib.common.network.packet.PlayToServerPacket;
-import hungteen.imm.IMMConfigs;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.SpellTypes;

@@ -7,7 +7,6 @@ import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.entity.HasQi;
 import hungteen.imm.api.entity.HasRoot;
 import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.spell.SpellType;
@@ -237,31 +236,6 @@ public class EntityUtil {
 
     public static boolean hasLearnedSpell(Entity entity, SpellType spell) {
         return hasLearnedSpell(entity, spell, 1);
-    }
-
-    public static float getMana(Entity entity) {
-        return entity instanceof Player player ? PlayerUtil.getQiAmount(player) : entity instanceof HasQi manaEntity ? manaEntity.getQiAmount() : 0;
-    }
-
-    public static void addMana(Entity entity, float amount) {
-        if (entity instanceof Player player) {
-            PlayerUtil.addQiAmount(player, amount);
-        } else if (entity instanceof HasQi manaEntity) {
-            manaEntity.addQiAmount(amount);
-        }
-    }
-
-    public static boolean hasMana(Entity entity) {
-        return getMana(entity) > 0;
-    }
-
-    public static boolean isManaFull(Entity entity) {
-        if (entity instanceof Player player) {
-            return PlayerUtil.isQiFull(player);
-        } else if (entity instanceof HasQi manaEntity) {
-            return manaEntity.isQiFull();
-        }
-        return true;
     }
 
     /* Data Operations */
