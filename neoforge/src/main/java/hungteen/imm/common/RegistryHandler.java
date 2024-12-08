@@ -15,12 +15,12 @@ import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
-import hungteen.imm.common.entity.human.setting.HumanSettings;
+import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.manuals.ManualTypes;
 import hungteen.imm.common.impl.manuals.SecretManuals;
@@ -31,12 +31,12 @@ import hungteen.imm.common.impl.registry.TradeTypes;
 import hungteen.imm.common.item.IMMComponents;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.IMMMapDecorationTypes;
 import hungteen.imm.common.menu.IMMMenus;
-import hungteen.imm.common.misc.IMMSounds;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.common.recipe.IMMRecipes;
-import hungteen.imm.common.rune.behavior.BehaviorRunes;
-import hungteen.imm.common.rune.filter.FilterRuneTypes;
+import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
+import hungteen.imm.common.cultivation.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.world.entity.IMMDummyEntities;
 import hungteen.imm.common.world.feature.IMMFeatures;
@@ -106,6 +106,7 @@ public class RegistryHandler {
         IMMFeatures.initialize(modBus);
         IMMComponents.initialize(modBus);
         IMMAttachments.initialize(modBus);
+        IMMMapDecorationTypes.initialize(modBus);
     }
 
     public static void initialize() {

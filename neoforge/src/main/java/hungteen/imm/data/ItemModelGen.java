@@ -169,8 +169,8 @@ public class ItemModelGen extends HTItemModelGen {
             ItemModelBuilder pullingBuilder = this.gen(name(item) + suffix, parent, ItemHelper.itemTexture(item, suffix));
             baseBuilder.override()
                     .model(pullingBuilder)
-                    .predicate(WoodBowItem.PULL, pullArray[i])
-                    .predicate(WoodBowItem.PULLING, 1);
+                    .predicate(WoodBowItem.PULLING, pullArray[i])
+                    .predicate(WoodBowItem.PULLED, 1);
         }
         this.add(item);
     }

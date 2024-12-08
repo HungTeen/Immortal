@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
  * @author HungTeen
  * @create 2022-12-07 15:28
  **/
-public class HumanMeleeAttack extends Behavior<HumanEntity> {
+public class HumanMeleeAttack extends Behavior<HumanLikeEntity> {
     private final int cooldown;
 
     public HumanMeleeAttack(int cooldown) {
@@ -31,13 +31,13 @@ public class HumanMeleeAttack extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel serverLevel, HumanEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel serverLevel, HumanLikeEntity entity) {
         final LivingEntity target = this.getAttackTarget(entity);
         return BehaviorUtils.canSee(entity, target) && entity.isWithinMeleeAttackRange(target);
     }
 
     @Override
-    protected void start(ServerLevel level, HumanEntity entity, long time) {
+    protected void start(ServerLevel level, HumanLikeEntity entity, long time) {
         LivingEntity target = this.getAttackTarget(entity);
         BehaviorUtils.lookAtEntity(entity, target);
         entity.swing(InteractionHand.MAIN_HAND);

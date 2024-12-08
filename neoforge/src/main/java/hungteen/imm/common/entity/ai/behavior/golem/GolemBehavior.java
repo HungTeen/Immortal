@@ -2,9 +2,9 @@ package hungteen.imm.common.entity.ai.behavior.golem;
 
 import hungteen.imm.common.entity.golem.GolemEntity;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
-import hungteen.imm.common.rune.behavior.BehaviorRunes;
-import hungteen.imm.common.rune.behavior.IBehaviorRune;
-import hungteen.imm.common.rune.filter.IFilterRune;
+import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
+import hungteen.imm.common.cultivation.rune.behavior.IBehaviorRune;
+import hungteen.imm.common.cultivation.rune.filter.IFilterRune;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;

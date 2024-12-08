@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 
@@ -27,11 +28,15 @@ public class TwistingVinesRender extends EntityRenderer<TwistingVines> {
     }
 
     @Override
-    public void render(TwistingVines iceEntity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        super.render(iceEntity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+    public void render(TwistingVines vines, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        super.render(vines, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.pushPose();
+        float ticks = Mth.lerp(partialTick, vines.lastSpawnTicks, vines.getSpawnTicks());
+        vines.lastSpawnTicks = ticks;
+        float dy = Mth.sin(Math.min(0, (ticks - TwistingVines.SPAWN_CD)) / TwistingVines.SPAWN_CD);
+        poseStack.translate(0, dy, 0);
         VineBlock.PROPERTY_BY_DIRECTION.forEach((direction, property) -> {
-            RenderUtil.renderBlock(dispatcher, iceEntity, poseStack, bufferSource, Blocks.VINE.defaultBlockState().setValue(property, true), 0, 0);
+            RenderUtil.renderBlock(dispatcher, vines, poseStack, bufferSource, Blocks.VINE.defaultBlockState().setValue(property, true), 0, 0);
         });
         poseStack.popPose();
     }

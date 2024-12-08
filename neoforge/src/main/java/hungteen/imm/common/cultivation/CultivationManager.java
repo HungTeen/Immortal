@@ -11,7 +11,7 @@ import hungteen.imm.api.entity.HasRoot;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
-import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.world.entity.trial.BreakThroughRaid;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;

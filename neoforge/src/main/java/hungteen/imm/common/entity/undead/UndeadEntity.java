@@ -4,6 +4,7 @@ import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.entity.IMMMob;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -57,7 +58,8 @@ public abstract class UndeadEntity extends IMMMob implements Enemy {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, HumanLikeEntity.class, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
     protected void addBehaviourGoals(){

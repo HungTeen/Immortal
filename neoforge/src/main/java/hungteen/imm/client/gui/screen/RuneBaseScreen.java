@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.menu.RuneBaseMenu;
-import hungteen.imm.common.rune.RuneCategories;
+import hungteen.imm.common.cultivation.rune.RuneCategories;
 import hungteen.imm.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

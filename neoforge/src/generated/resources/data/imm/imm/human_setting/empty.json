@@ -1,0 +1,7 @@
+{
+  "predict_setting": {
+    "type": "imm:wandering_cultivator",
+    "match_realms": [],
+    "require_roots": []
+  }
+}

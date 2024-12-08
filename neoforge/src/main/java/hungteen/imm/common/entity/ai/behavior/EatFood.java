@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
  * @program Immortal
  * @create 2023/3/2 20:10
  */
-public class EatFood extends Behavior<HumanEntity> {
+public class EatFood extends Behavior<HumanLikeEntity> {
 
     private long finishUsingTick = 0;
 
@@ -24,31 +24,31 @@ public class EatFood extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, HumanEntity entity, long time) {
+    protected boolean canStillUse(ServerLevel level, HumanLikeEntity entity, long time) {
         return time > finishUsingTick || EntityUtil.isOffHolding(entity, ItemUtil::isFood);
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel level, HumanLikeEntity entity) {
         return entity.getHealth() < entity.getMaxHealth() && (! entity.isUsingItem() || entity.getHealth() < entity.getMaxHealth() * 0.6F) && EntityUtil.isOffHolding(entity, ItemStack::isEmpty) && entity.hasItemStack(ItemUtil::isFood);
     }
 
     @Override
-    protected void start(ServerLevel level, HumanEntity entity, long time) {
+    protected void start(ServerLevel level, HumanLikeEntity entity, long time) {
         entity.switchInventory(InteractionHand.OFF_HAND, ItemUtil::isFood);
         entity.startUsingItem(InteractionHand.OFF_HAND);
         this.finishUsingTick = time + entity.getOffhandItem().getUseDuration(entity);
     }
 
     @Override
-    protected void tick(ServerLevel serverLevel, HumanEntity entity, long time) {
+    protected void tick(ServerLevel serverLevel, HumanLikeEntity entity, long time) {
         if(time == this.finishUsingTick || timedOut(time + 1)){
             entity.getOffhandItem().finishUsingItem(serverLevel, entity);
         }
     }
 
     @Override
-    protected void stop(ServerLevel serverLevel, HumanEntity entity, long time) {
+    protected void stop(ServerLevel serverLevel, HumanLikeEntity entity, long time) {
         if(entity.isUsingItem()){
             entity.stopUsingItem();
         }

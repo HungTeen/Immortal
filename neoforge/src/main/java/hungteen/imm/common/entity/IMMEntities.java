@@ -16,11 +16,9 @@ import hungteen.imm.common.entity.golem.CopperGolem;
 import hungteen.imm.common.entity.golem.CreeperGolem;
 import hungteen.imm.common.entity.golem.IronGolem;
 import hungteen.imm.common.entity.golem.SnowGolem;
-import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.entity.human.cultivator.EmptyCultivator;
-import hungteen.imm.common.entity.human.cultivator.SpiritualBeginnerCultivator;
-import hungteen.imm.common.entity.human.villager.CommonVillager;
-import hungteen.imm.common.entity.human.villager.IMMVillager;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
+import hungteen.imm.common.entity.human.cultivator.WanderingCultivator;
+import hungteen.imm.common.entity.human.pillager.Chillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
 import hungteen.imm.common.entity.undead.QiSkeleton;
@@ -30,6 +28,7 @@ import hungteen.imm.util.Colors;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
@@ -48,33 +47,49 @@ import java.util.function.Supplier;
  * @author HungTeen
  * @create 2022-10-02 15:01
  **/
-public class IMMEntities {
+public interface IMMEntities {
 
-    private static final HTVanillaRegistry<EntityType<?>> ENTITY_TYPES = HTRegistryManager.vanilla(Registries.ENTITY_TYPE, Util.id());
-    private static final Map<HTHolder<?>, String> MAP = new HashMap<>();
+    HTVanillaRegistry<EntityType<?>> ENTITY_TYPES = HTRegistryManager.vanilla(Registries.ENTITY_TYPE, Util.id());
+    @Deprecated
+    Map<HTHolder<?>, String> MAP = new HashMap<>();
 
     /* Misc */
 
-    public static final HTHolder<EntityType<ElementCrystal>> ELEMENT_AMETHYST = registerEntityType(ElementCrystal::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
-    public static final HTEntitySuit<FallingIceEntity> FALLING_ICE = registerNonLiving("falling_ice", () -> {
+    HTHolder<EntityType<ElementCrystal>> ELEMENT_AMETHYST = registerEntityType(ElementCrystal::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
+    HTEntitySuit<FallingIceEntity> FALLING_ICE = registerNonLiving("falling_ice", () -> {
         return EntityType.Builder.of(FallingIceEntity::new, MobCategory.MISC).sized(3F, 1F).clientTrackingRange(3).updateInterval(10);
     });
-    public static final HTEntitySuit<TwistingVines> TWISTING_VINES = registerNonLiving("twisting_vines", () -> {
+    HTEntitySuit<TwistingVines> TWISTING_VINES = registerNonLiving("twisting_vines", () -> {
         return EntityType.Builder.of(TwistingVines::new, MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(3).updateInterval(10);
     });
-    public static final HTHolder<EntityType<TeleportFormation>> TELEPORT_FORMATION = registerEntityType(TeleportFormation::new, "teleport_formation", MobCategory.MISC, builder -> builder.sized(0F, 0F));
-    public static final HTHolder<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC, builder -> builder.sized(0.4F, 0.4F));
-    public static final HTHolder<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC, builder -> builder.sized(0.9F, 1.8F));
-    public static final HTHolder<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F));
-    public static final HTHolder<EntityType<ThrowingItemEntity>> THROWING_ITEM = registerEntityType(ThrowingItemEntity::new, "throwing_item", MobCategory.MISC, builder -> builder.clientTrackingRange(3).updateInterval(10));
-    public static final HTHolder<EntityType<PoisonWind>> POISON_WIND = registerEntityType(PoisonWind::new, "poison_wind", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10));
-    public static final HTHolder<EntityType<Tornado>> TORNADO = registerEntityType(Tornado::new, "tornado", MobCategory.MISC, builder -> builder.sized(2F, 2F));
+    HTHolder<EntityType<TeleportFormation>> TELEPORT_FORMATION = registerEntityType(TeleportFormation::new, "teleport_formation", MobCategory.MISC, builder -> builder.sized(0F, 0F));
+    HTHolder<EntityType<SpiritualPearl>> SPIRITUAL_PEARL = registerEntityType(SpiritualPearl::new, "spiritual_pearl", MobCategory.MISC, builder -> builder.sized(0.4F, 0.4F));
+    HTHolder<EntityType<SpiritualFlame>> SPIRITUAL_FLAME = registerEntityType(SpiritualFlame::new, "spiritual_flame", MobCategory.MISC, builder -> builder.sized(0.9F, 1.8F));
+    HTHolder<EntityType<FlyingItemEntity>> FLYING_ITEM = registerEntityType(FlyingItemEntity::new, "flying_item", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F));
+    HTHolder<EntityType<ThrowingItemEntity>> THROWING_ITEM = registerEntityType(ThrowingItemEntity::new, "throwing_item", MobCategory.MISC, builder -> builder.clientTrackingRange(3).updateInterval(10));
+    HTHolder<EntityType<PoisonWind>> POISON_WIND = registerEntityType(PoisonWind::new, "poison_wind", MobCategory.MISC, builder -> builder.sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10));
+    HTHolder<EntityType<Tornado>> TORNADO = registerEntityType(Tornado::new, "tornado", MobCategory.MISC, builder -> builder.sized(2F, 2F));
 
     /* Human */
 
-    public static final HTHolder<EntityType<EmptyCultivator>> EMPTY_CULTIVATOR = registerEntityType(EmptyCultivator::new, "empty_cultivator", IMMMobCategories.HUMAN);
-    public static final HTHolder<EntityType<SpiritualBeginnerCultivator>> SPIRITUAL_BEGINNER_CULTIVATOR = registerEntityType(SpiritualBeginnerCultivator::new, "spiritual_beginner_cultivator", IMMMobCategories.HUMAN);
-    public static final HTHolder<EntityType<CommonVillager>> COMMON_VILLAGER = registerEntityType(CommonVillager::new, "common_villager", IMMMobCategories.HUMAN);
+    HTEntitySuit<WanderingCultivator> WANDERING_CULTIVATOR = registerLiving("wandering_cultivator", () -> {
+        return EntityType.Builder.of(WanderingCultivator::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.8F)
+                .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
+        }, builder -> builder
+                    .attribute(() -> HumanLikeEntity.createAttributes().build())
+                    .spawnEgg(ColorHelper.DYE_WHITE.rgb(), ColorHelper.BLACK.rgb())
+                    .spawn(SpawnPlacementTypes.ON_GROUND)
+    );
+    HTEntitySuit<Chillager> CHILLAGER = registerLiving("chillager", () -> {
+                return EntityType.Builder.of(Chillager::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.95F)
+                        .passengerAttachments(2.0F).ridingOffset(-0.6F).clientTrackingRange(8);
+            }, builder -> builder
+                    .attribute(() -> Chillager.createAttributes().build())
+                    .spawnEgg(ColorHelper.DYE_WHITE.rgb(), ColorHelper.BLUE.rgb())
+                    .spawn(SpawnPlacementTypes.ON_GROUND)
+    );
+
+//    public static final HTHolder<EntityType<CommonVillager>> COMMON_VILLAGER = registerEntityType(CommonVillager::new, "common_villager", IMMMobCategory.HUMAN);
 
 //    /* Creature */
 //
@@ -83,20 +98,20 @@ public class IMMEntities {
 
     /* Monster */
 
-    public static final HTHolder<EntityType<SharpStake>> SHARP_STAKE = registerEntityType(SharpStake::new, "sharp_stake", MobCategory.MONSTER, builder -> builder.sized(1F, 1.05F));
-    public static final HTHolder<EntityType<BiFang>> BI_FANG = registerEntityType(BiFang::new, "bi_fang", MobCategory.MONSTER, builder -> builder.sized(0.9F, 3.2F).fireImmune());
+    HTHolder<EntityType<SharpStake>> SHARP_STAKE = registerEntityType(SharpStake::new, "sharp_stake", MobCategory.MONSTER, builder -> builder.sized(1F, 1.05F));
+    HTHolder<EntityType<BiFang>> BI_FANG = registerEntityType(BiFang::new, "bi_fang", MobCategory.MONSTER, builder -> builder.sized(0.9F, 3.2F).fireImmune());
 
     /* Spirit */
 
-    public static final HTHolder<EntityType<MetalSpirit>> METAL_SPIRIT = registerEntityType(MetalSpirit::new, "metal_spirit", MobCategory.CREATURE, builder -> builder.sized(0.9F, 1.4F));
-    public static final HTHolder<EntityType<WoodSpirit>> WOOD_SPIRIT = registerEntityType(WoodSpirit::new, "wood_spirit", MobCategory.CREATURE, builder -> builder.sized(0.95F, 1.6F));
-    public static final HTHolder<EntityType<WaterSpirit>> WATER_SPIRIT = registerEntityType(WaterSpirit::new, "water_spirit", MobCategory.CREATURE, builder -> builder.sized(0.85F, 1.3F));
-    public static final HTHolder<EntityType<FireSpirit>> FIRE_SPIRIT = registerEntityType(FireSpirit::new, "fire_spirit", MobCategory.CREATURE, builder -> builder.sized(0.6F, 0.7F).fireImmune());
-    public static final HTHolder<EntityType<EarthSpirit>> EARTH_SPIRIT = registerEntityType(EarthSpirit::new, "earth_spirit", MobCategory.CREATURE, builder -> builder.sized(0.9F, 1F));
+    HTHolder<EntityType<MetalSpirit>> METAL_SPIRIT = registerEntityType(MetalSpirit::new, "metal_spirit", MobCategory.CREATURE, builder -> builder.sized(0.9F, 1.4F));
+    HTHolder<EntityType<WoodSpirit>> WOOD_SPIRIT = registerEntityType(WoodSpirit::new, "wood_spirit", MobCategory.CREATURE, builder -> builder.sized(0.95F, 1.6F));
+    HTHolder<EntityType<WaterSpirit>> WATER_SPIRIT = registerEntityType(WaterSpirit::new, "water_spirit", MobCategory.CREATURE, builder -> builder.sized(0.85F, 1.3F));
+    HTHolder<EntityType<FireSpirit>> FIRE_SPIRIT = registerEntityType(FireSpirit::new, "fire_spirit", MobCategory.CREATURE, builder -> builder.sized(0.6F, 0.7F).fireImmune());
+    HTHolder<EntityType<EarthSpirit>> EARTH_SPIRIT = registerEntityType(EarthSpirit::new, "earth_spirit", MobCategory.CREATURE, builder -> builder.sized(0.9F, 1F));
 
     /* Undead */
 
-    public static final HTEntitySuit<QiZombie> QI_ZOMBIE = registerLiving("qi_zombie", () -> {
+    HTEntitySuit<QiZombie> QI_ZOMBIE = registerLiving("qi_zombie", () -> {
         return EntityType.Builder.of(QiZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
                 .eyeHeight(1.74F).passengerAttachments(2.0125F).ridingOffset(-0.7F).clientTrackingRange(8);
     }, builder -> builder
@@ -104,7 +119,7 @@ public class IMMEntities {
             .spawnEgg(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN)
             .spawn(SpawnPlacementTypes.ON_GROUND)
     );
-    public static final HTEntitySuit<QiSkeleton> QI_SKELETON = registerLiving("lingerer", () -> {
+    HTEntitySuit<QiSkeleton> QI_SKELETON = registerLiving("lingerer", () -> {
                 return EntityType.Builder.of(QiSkeleton::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
                         .eyeHeight(1.74F).ridingOffset(-0.7F).clientTrackingRange(8);
             }, builder -> builder
@@ -115,17 +130,12 @@ public class IMMEntities {
 
     /* Golem */
 
-    public static final HTHolder<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
-    public static final HTHolder<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", MobCategory.CREATURE, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
-    public static final HTHolder<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", MobCategory.CREATURE, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
-    public static final HTHolder<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", MobCategory.CREATURE, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
+    HTHolder<EntityType<IronGolem>> IRON_GOLEM = registerEntityType(IronGolem::new, "iron_golem", MobCategory.CREATURE, b -> b.sized(1.4F, 2.7F).clientTrackingRange(10));
+    HTHolder<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", MobCategory.CREATURE, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
+    HTHolder<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", MobCategory.CREATURE, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
+    HTHolder<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", MobCategory.CREATURE, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
 
-    public static void addEntityAttributes(EntityAttributeCreationEvent ev) {
-        /* Human */
-        ev.put(EMPTY_CULTIVATOR.get(), HumanEntity.createAttributes().build());
-        ev.put(SPIRITUAL_BEGINNER_CULTIVATOR.get(), HumanEntity.createAttributes().build());
-        ev.put(COMMON_VILLAGER.get(), IMMVillager.createAttributes().build());
-
+    static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* Creature */
 //        ev.put(GRASS_CARP.get(), GrassCarp.createAttributes().build());
 //        ev.put(SILK_WORM.get(), SilkWorm.createAttributes().build());
@@ -148,12 +158,7 @@ public class IMMEntities {
         ev.put(COPPER_GOLEM.get(), CopperGolem.createAttributes().build());
     }
 
-    public static void registerPlacements(RegisterSpawnPlacementsEvent ev) {
-        /* Human */
-        ev.register(EMPTY_CULTIVATOR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
-        ev.register(SPIRITUAL_BEGINNER_CULTIVATOR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
-        ev.register(COMMON_VILLAGER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
-
+    static void registerPlacements(RegisterSpawnPlacementsEvent ev) {
         /* Creature */
 
         /* Monster */
@@ -173,12 +178,8 @@ public class IMMEntities {
     /**
      * initialize spawn eggs.
      */
-    public static void registerSpawnEggs(RegisterEvent event) {
+    static void registerSpawnEggs(RegisterEvent event) {
         List.of(
-                /* Human */
-                Pair.of(EMPTY_CULTIVATOR, Pair.of(ColorHelper.DYE_WHITE, ColorHelper.BLACK)),
-                Pair.of(SPIRITUAL_BEGINNER_CULTIVATOR, Pair.of(ColorHelper.DYE_WHITE, ColorHelper.BLACK)),
-
                 /* Creature */
 //                Pair.of(GRASS_CARP, Pair.of(ColorHelper.GREEN, ColorHelper.DARK_GREEN)),
 //                Pair.of(SILK_WORM, Pair.of(ColorHelper.WHITE, ColorHelper.EARTH_ROOT)),
@@ -228,21 +229,21 @@ public class IMMEntities {
         return object;
     }
     
-    public static HTVanillaRegistry<EntityType<?>> registry() {
+    static HTVanillaRegistry<EntityType<?>> registry() {
         return ENTITY_TYPES;
     }
 
-    public static <T extends Entity> HTEntitySuit<T> registerLiving(String name, Supplier<EntityType.Builder<T>> builder, Consumer<HTEntitySuit.EntitySuitBuilder<T>> consumer) {
+    static <T extends Entity> HTEntitySuit<T> registerLiving(String name, Supplier<EntityType.Builder<T>> builder, Consumer<HTEntitySuit.EntitySuitBuilder<T>> consumer) {
         HTEntitySuit.EntitySuitBuilder<T> suitBuilder = EntitySuits.living(Util.prefix(name), builder);
         consumer.accept(suitBuilder);
         return EntitySuits.register(suitBuilder.build());
     }
 
-    public static <T extends Entity> HTEntitySuit<T> registerNonLiving(String name, Supplier<EntityType.Builder<T>> builder) {
+    static <T extends Entity> HTEntitySuit<T> registerNonLiving(String name, Supplier<EntityType.Builder<T>> builder) {
         return EntitySuits.register(EntitySuits.nonLiving(Util.prefix(name), builder).build());
     }
 
-    public static void initialize(IEventBus event) {
+    static void initialize(IEventBus event) {
         NeoHelper.initRegistry(registry(), event);
     }
 

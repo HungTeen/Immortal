@@ -3,6 +3,9 @@ package hungteen.imm.common.entity.human.setting.trade;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.ItemStack;
 
@@ -17,16 +20,20 @@ import java.util.List;
  * @param tradeCount 此交易可以进行多少次。
  * @param xp 交易后给予多少修行经验。
  **/
-public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount, float xp) {
+public record TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount, FloatProvider xp) {
     public static final Codec<TradeEntry> CODEC = RecordCodecBuilder.<TradeEntry>mapCodec(instance -> instance.group(
             ItemStack.OPTIONAL_CODEC.listOf().fieldOf("cost_items").forGetter(TradeEntry::costItems),
             ItemStack.OPTIONAL_CODEC.listOf().fieldOf("result_items").forGetter(TradeEntry::resultItems),
-            IntProvider.NON_NEGATIVE_CODEC.fieldOf("trade_count").forGetter(TradeEntry::tradeCount),
-            Codec.floatRange(0, Float.MAX_VALUE).optionalFieldOf("xp", 0F).forGetter(TradeEntry::xp)
+            IntProvider.NON_NEGATIVE_CODEC.optionalFieldOf("trade_count", ConstantInt.of(1)).forGetter(TradeEntry::tradeCount),
+            FloatProvider.codec(0, Float.MAX_VALUE).optionalFieldOf("xp", ConstantFloat.of(1)).forGetter(TradeEntry::xp)
     ).apply(instance, TradeEntry::new)).codec();
 
+    public TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems){
+        this(costItems, resultItems, ConstantInt.of(1));
+    }
+
     public TradeEntry(List<ItemStack> costItems, List<ItemStack> resultItems, IntProvider tradeCount){
-        this(costItems, resultItems, tradeCount, 0F);
+        this(costItems, resultItems, tradeCount, ConstantFloat.of(1));
     }
 
     /**

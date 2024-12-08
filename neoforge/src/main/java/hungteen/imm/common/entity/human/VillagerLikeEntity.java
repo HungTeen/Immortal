@@ -11,12 +11,12 @@ import net.minecraft.world.level.Level;
  * @author HungTeen
  * @create 2022-11-16 22:49
  **/
-public abstract class VillagerLikeEntity extends HumanEntity {
+public abstract class VillagerLikeEntity extends HumanLikeEntity {
 
     public static final int MOCK_ANIMATION_FLAG = 0;
     public AnimationState mockAnimationState = new AnimationState();
 
-    public VillagerLikeEntity(EntityType<? extends HumanEntity> type, Level level) {
+    public VillagerLikeEntity(EntityType<? extends HumanLikeEntity> type, Level level) {
         super(type, level);
     }
 

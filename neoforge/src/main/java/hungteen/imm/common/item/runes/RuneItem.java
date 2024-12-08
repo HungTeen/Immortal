@@ -1,7 +1,7 @@
 package hungteen.imm.common.item.runes;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.common.cultivation.rune.ICraftableRune;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;

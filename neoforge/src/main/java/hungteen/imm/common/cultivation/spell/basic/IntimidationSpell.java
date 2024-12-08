@@ -11,12 +11,14 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
-import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;
+
+import javax.annotation.Nullable;
 
 /**
  * 威压法术。
@@ -27,7 +29,7 @@ import net.minecraft.world.phys.AABB;
 public class IntimidationSpell extends SpellTypeImpl {
 
     public IntimidationSpell() {
-        super("intimidation", properties(SpellUsageCategory.CUSTOM).maxLevel(1).cd(300).mana(20));
+        super("intimidation", properties(SpellUsageCategory.CUSTOM_BUFF).maxLevel(1).cd(300).mana(20));
     }
 
     public static boolean canUseOn(LivingEntity owner, LivingEntity target){
@@ -60,4 +62,18 @@ public class IntimidationSpell extends SpellTypeImpl {
         return true;
     }
 
+    @Override
+    public int getCastingPriority(LivingEntity living) {
+        if(living instanceof Mob mob){
+            if(hasLargeRealm(living, mob.getTarget()) || hasLargeRealm(living, mob.getLastHurtByMob())){
+                return HIGH;
+            }
+            return LOW;
+        }
+        return super.getCastingPriority(living);
+    }
+
+    private static boolean hasLargeRealm(LivingEntity owner, @Nullable LivingEntity target){
+        return target != null && RealmManager.hasRealmGapAndLarger(owner, target);
+    }
 }

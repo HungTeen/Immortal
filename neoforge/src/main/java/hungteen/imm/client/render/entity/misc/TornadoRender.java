@@ -2,7 +2,7 @@ package hungteen.imm.client.render.entity.misc;
 
 import hungteen.htlib.client.render.entity.HTEntityRender;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.TornadoModel;
+import hungteen.imm.client.model.entity.misc.TornadoModel;
 import hungteen.imm.common.entity.misc.Tornado;
 import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

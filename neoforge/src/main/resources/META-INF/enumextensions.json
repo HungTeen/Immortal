@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/world/entity/MobCategory",
+      "name": "IMM_HUMAN",
+      "constructor": "(Ljava/lang/String;IZZI)V",
+      "parameters": {
+        "class": "hungteen/imm/common/entity/IMMMobCategory",
+        "field": "HUMAN"
+      }
+    }
+  ]
+}

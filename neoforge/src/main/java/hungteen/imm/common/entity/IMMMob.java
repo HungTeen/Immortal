@@ -13,7 +13,6 @@ import hungteen.imm.api.event.EntityRandomSpellEvent;
 import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
@@ -111,10 +110,13 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
      */
     public RealmType getInitialRealm(ServerLevelAccessor accessor, DifficultyInstance difficulty) {
         List<MultiRealm> multiRealms = getMultiRealms();
-        List<Integer> weights = MathUtil.genLinearWeights(multiRealms.size(), calculateDifficulty(difficulty), 1.2);
-        MultiRealm multiRealm = SimpleWeightedList.list(multiRealms, weights).getItem(accessor.getRandom()).orElseThrow();
-        RealmType[] realms = multiRealm.getRealms();
-        return realms[accessor.getRandom().nextInt(realms.length)];
+        if(! multiRealms.isEmpty()){
+            List<Integer> weights = MathUtil.genLinearWeights(multiRealms.size(), calculateDifficulty(difficulty), 1.2);
+            MultiRealm multiRealm = SimpleWeightedList.list(multiRealms, weights).getItem(accessor.getRandom()).orElseThrow();
+            RealmType[] realms = multiRealm.getRealms();
+            return realms[accessor.getRandom().nextInt(realms.length)];
+        }
+        return RealmTypes.MORTALITY;
     }
 
     public float calculateDifficulty(DifficultyInstance difficulty) {
@@ -184,21 +186,10 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public boolean canUseSpell(SpellType spell) {
-        if (spell.getCategory() == SpellUsageCategory.PLAYER_ONLY) {
-            return false;
-        }
         if (spell.getCategory().requireEntityTarget()) {
             return EntityHelper.isEntityValid(this.getTarget());
         }
         return true;
-    }
-
-    @Override
-    public int getSpellUsePriority(SpellType spell) {
-        if(spell.equals(SpellTypes.LAVA_BREATHING)){
-            return this.isOnFire() ? VERY_HIGH : VERY_LOW;
-        }
-        return getCategoryPriority().getOrDefault(spell.getCategory(), DEFAULT);
     }
 
     @Override
@@ -266,13 +257,15 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     @Override
     public final void updateRealm(RealmType newRealm) {
-        EntityRealmEvent.Pre preEvent = new EntityRealmEvent.Pre(this, getRealm(), newRealm);
-        if (!EventUtil.post(preEvent)) {
-            newRealm = preEvent.getAfterRealm();
-            RealmManager.updateRealmAttributes(this, getRealm(), newRealm);
-            onUpdateRealm(newRealm);
-            this.setRealm(newRealm);
-            EventUtil.post(new EntityRealmEvent.Post(this, getRealm(), newRealm));
+        if(! this.getRealm().equals(newRealm)) {
+            EntityRealmEvent.Pre preEvent = new EntityRealmEvent.Pre(this, getRealm(), newRealm);
+            if (!EventUtil.post(preEvent)) {
+                newRealm = preEvent.getAfterRealm();
+                RealmManager.updateRealmAttributes(this, getRealm(), newRealm);
+                onUpdateRealm(newRealm);
+                this.setRealm(newRealm);
+                EventUtil.post(new EntityRealmEvent.Post(this, getRealm(), newRealm));
+            }
         }
     }
 
@@ -380,6 +373,15 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     @Override
     public int getSpellLevel(SpellType spell) {
         return learnedSpells.getOrDefault(spell, 0);
+    }
+
+    @Override
+    public void learnSpell(SpellType spell, int level) {
+        learnedSpells.put(spell, level);
+    }
+
+    public void clearLearnedSpells(){
+        learnedSpells.clear();
     }
 
     @Override

@@ -15,7 +15,7 @@ import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.behavior.IdleBehavior;
 import hungteen.imm.common.entity.ai.behavior.UseSpell;
 import hungteen.imm.common.entity.misc.Tornado;
-import hungteen.imm.common.misc.IMMSounds;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.BehaviorUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.MathUtil;

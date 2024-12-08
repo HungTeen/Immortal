@@ -8,8 +8,8 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.ElementReactions;
 import hungteen.imm.common.cultivation.QiManager;
-import hungteen.imm.common.effect.IMMEffects;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.common.entity.effect.IMMEffects;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EffectUtil;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -116,7 +116,7 @@ public abstract class InhibitionReaction extends ElementReactionImpl {
                 QiManager.addQi(entity, - scale * 2.5F);
             } else {
                 if(entity.getRandom().nextFloat() < 0.1F){
-                    entity.hurt(IMMDamageSources.elementReaction(entity), scale * 2F);
+                    entity.hurt(DamageUtil.elementReaction(entity), scale * 2F);
                 }
             }
         });

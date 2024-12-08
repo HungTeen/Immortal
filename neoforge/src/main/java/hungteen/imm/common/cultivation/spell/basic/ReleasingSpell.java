@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +32,7 @@ public class ReleasingSpell extends SpellTypeImpl {
                 return false;
             }
             ElementalMasterySpell.addElement(player, result.getEntity(), false, false, 10F);
-            result.getEntity().hurt(IMMDamageSources.qi(owner), 3F);
+            result.getEntity().hurt(DamageUtil.qi(owner), 3F);
 
             player.swing(handOpt.get());
             ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);

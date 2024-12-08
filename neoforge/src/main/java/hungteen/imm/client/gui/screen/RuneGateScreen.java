@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.common.menu.RuneGateMenu;
-import hungteen.imm.common.rune.filter.IFilterRuneType;
+import hungteen.imm.common.cultivation.rune.filter.IFilterRuneType;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;

@@ -8,15 +8,15 @@ import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.CodecHelper;
-import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.entity.human.setting.HumanSectData;
+import hungteen.imm.common.entity.human.cultivator.CultivatorType;
+import hungteen.imm.common.entity.human.setting.HumanSetting;
+import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,11 +42,10 @@ public interface IMMDataSerializers {
     HTHolder<EntityDataSerializer<RealmType>> REALM = DATA_SERIALIZERS.register("realm", () -> new SimpleEntityDataSerializer<>(RealmTypes.registry()));
     HTHolder<EntityDataSerializer<SpellType>> SPELL = DATA_SERIALIZERS.register("spell", () -> new SimpleEntityDataSerializer<>(SpellTypes.registry()));
     HTHolder<EntityDataSerializer<Optional<SpellType>>> OPT_SPELL = DATA_SERIALIZERS.register("opt_spell", () -> new OptionalEntityDataSerializer<>(IMMDataSerializers.SPELL));
-
-    HTHolder<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
-    HTHolder<EntityDataSerializer<HumanEntity.HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanEntity.HumanSectData.CODEC));
-
+    HTHolder<EntityDataSerializer<CultivatorType>> CULTIVATOR_TYPE = DATA_SERIALIZERS.register("cultivator_type", () -> EntityDataSerializer.forValueType(CultivatorType.STREAM_CODEC));
     HTHolder<EntityDataSerializer<HumanSetting>> HUMAN_SETTING = DATA_SERIALIZERS.register("human_setting", () -> new CodecEntityDataSerializer<>("HumanSetting", HumanSetting.CODEC));
+    HTHolder<EntityDataSerializer<ISectType>> SECT = DATA_SERIALIZERS.register("sect", () -> new SimpleEntityDataSerializer<>(SectTypes.registry()));
+    HTHolder<EntityDataSerializer<HumanSectData>> HUMAN_SECT_DATA = DATA_SERIALIZERS.register("human_sect_data", () -> new CodecEntityDataSerializer<>("HumanSectData", HumanSectData.CODEC));
 
     static void initialize(IEventBus event){
         NeoHelper.initRegistry(DATA_SERIALIZERS, event);

@@ -18,7 +18,7 @@ import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
-import hungteen.imm.common.misc.IMMSounds;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
 import hungteen.imm.util.Util;

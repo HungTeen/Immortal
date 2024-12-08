@@ -2,7 +2,7 @@ package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.helper.impl.BlockHelper;
-import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.common.cultivation.rune.ICraftableRune;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;

@@ -8,7 +8,7 @@ import hungteen.imm.IMMInitializer;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.item.IMMComponents;
 import hungteen.imm.common.item.runes.RuneItem;
-import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.common.cultivation.rune.ICraftableRune;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;

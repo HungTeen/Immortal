@@ -2,7 +2,7 @@ package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.impl.BlockHelper;
-import hungteen.imm.common.misc.IMMBannerPatterns;
+import hungteen.imm.common.item.IMMBannerPatterns;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;

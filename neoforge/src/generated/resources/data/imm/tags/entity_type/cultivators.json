@@ -1,7 +1,6 @@
 {
   "values": [
     "minecraft:player",
-    "imm:empty_cultivator",
-    "imm:spiritual_beginner_cultivator"
+    "imm:wandering_cultivator"
   ]
 }

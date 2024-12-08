@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -22,7 +22,7 @@ import java.util.function.Predicate;
  * @author HungTeen
  * @create 2022-12-07 16:36
  **/
-public class EnderPearlReach extends Behavior<HumanEntity> {
+public class EnderPearlReach extends Behavior<HumanLikeEntity> {
 
     private final float chance;
     private final int duration;
@@ -40,17 +40,17 @@ public class EnderPearlReach extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, HumanEntity entity, long time) {
+    protected boolean canStillUse(ServerLevel level, HumanLikeEntity entity, long time) {
         return this.getAttackTarget(entity).isPresent();
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel level, HumanLikeEntity entity) {
         return this.getAttackTarget(entity).isPresent() && entity.distanceToSqr(this.getAttackTarget(entity).get()) >= 100 && ! entity.filterFromInventory(stack -> stack.is(Items.ENDER_PEARL)).isEmpty() && predicate.test(this.getAttackTarget(entity).get());
     }
 
     @Override
-    protected void start(ServerLevel level, HumanEntity entity, long time) {
+    protected void start(ServerLevel level, HumanLikeEntity entity, long time) {
         if(entity.getRandom().nextFloat() < this.chance){
             entity.switchInventory(InteractionHand.OFF_HAND, stack -> stack.is(Items.ENDER_PEARL));
             final LivingEntity target = this.getAttackTarget(entity).get();
@@ -69,11 +69,11 @@ public class EnderPearlReach extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected void tick(ServerLevel level, HumanEntity entity, long time) {
+    protected void tick(ServerLevel level, HumanLikeEntity entity, long time) {
     }
 
     @Override
-    protected void stop(ServerLevel level, HumanEntity entity, long time) {
+    protected void stop(ServerLevel level, HumanLikeEntity entity, long time) {
         if(entity.getOffhandItem().is(Items.ENDER_PEARL)){
             entity.switchInventory(InteractionHand.OFF_HAND, ItemStack::isEmpty);
         }

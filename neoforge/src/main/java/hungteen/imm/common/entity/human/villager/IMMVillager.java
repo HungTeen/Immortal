@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.human.villager;
 
 import com.mojang.serialization.Dynamic;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.common.entity.human.VillagerLikeEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -23,12 +23,12 @@ import javax.annotation.Nullable;
  **/
 public abstract class IMMVillager extends VillagerLikeEntity {
 
-    public IMMVillager(EntityType<? extends HumanEntity> type, Level level) {
+    public IMMVillager(EntityType<? extends HumanLikeEntity> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return HumanEntity.createAttributes()
+        return HumanLikeEntity.createAttributes()
                 .add(Attributes.MAX_HEALTH, 30D)
                 .add(Attributes.ATTACK_DAMAGE, 2D)
                 .add(Attributes.MOVEMENT_SPEED, 0.32D);

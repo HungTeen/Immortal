@@ -128,18 +128,6 @@
         "weight": 10
       },
       {
-        "type": "imm:empty_cultivator",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 2
-      },
-      {
-        "type": "imm:spiritual_beginner_cultivator",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
         "type": "imm:metal_spirit",
         "maxCount": 1,
         "minCount": 1,
@@ -152,6 +140,7 @@
         "weight": 60
       }
     ],
+    "imm:human": [],
     "misc": [],
     "monster": [
       {

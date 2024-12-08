@@ -18,6 +18,18 @@ import java.util.Optional;
  **/
 public interface SpellType extends SimpleEntry {
 
+    /* Priority Enum */
+
+    int VERY_HIGH = 100;
+    int HIGH = 50;
+    int MID_HIGH = 25;
+    int LITTLE_HIGH = 10;
+    int DEFAULT = 0;
+    int LITTLE_LOW = -10;
+    int MID_LOW = -25;
+    int LOW = -50;
+    int VERY_LOW = -100;
+
     /**
      * 法术被触发。
      *
@@ -75,14 +87,33 @@ public interface SpellType extends SimpleEntry {
         return Optional.empty();
     }
 
-    int getPriority();
+    /**
+     * @return 法术的实战优先级。
+     */
+    default int getCastingPriority(LivingEntity living){
+        return getCategory().getDefaultPriority();
+    }
 
+    /**
+     * @return 法术的 GUI 显示优先级。
+     */
+    int getScreenPriority();
+
+    /**
+     * @return 法术的模组优先级。
+     */
     int getModPriority();
 
+    /**
+     * @return 法术的射线检测方块模式。
+     */
     default ClipContext.Block getBlockClipMode(int level){
         return ClipContext.Block.COLLIDER;
     }
 
+    /**
+     * @return 法术的射线检测流体模式。
+     */
     default ClipContext.Fluid getFluidClipMode(int level){
         return ClipContext.Fluid.NONE;
     }
@@ -93,6 +124,11 @@ public interface SpellType extends SimpleEntry {
      */
     SpellUsageCategory getCategory();
 
+    /**
+     * 获取各个等级的法术描述。
+     * @param level 法术等级。
+     * @return Get the spell description.
+     */
     MutableComponent getSpellDesc(int level);
 
     /**

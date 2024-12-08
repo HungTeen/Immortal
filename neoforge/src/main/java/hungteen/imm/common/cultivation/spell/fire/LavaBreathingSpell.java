@@ -24,4 +24,8 @@ public class LavaBreathingSpell extends SpellTypeImpl {
         return true;
     }
 
+    @Override
+    public int getCastingPriority(LivingEntity living) {
+        return living.isOnFire() ? VERY_HIGH : VERY_LOW;
+    }
 }

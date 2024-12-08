@@ -6,7 +6,7 @@ import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.common.cultivation.reaction.*;
-import hungteen.imm.common.effect.IMMEffects;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;

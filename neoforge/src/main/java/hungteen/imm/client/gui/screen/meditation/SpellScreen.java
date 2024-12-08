@@ -217,7 +217,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<S
     public List<SpellType> getItems() {
         return SpellTypes.registry().getValues().stream()
                 .filter(type -> PlayerUtil.hasLearnedSpell(getMinecraft().player, type))
-                .sorted(Comparator.comparingInt(SpellType::getPriority))
+                .sorted(Comparator.comparingInt(SpellType::getScreenPriority))
                 .sorted(Comparator.comparingInt(SpellType::getModPriority))
                 .toList();
     }

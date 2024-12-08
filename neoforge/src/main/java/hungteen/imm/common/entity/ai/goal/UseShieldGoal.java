@@ -44,7 +44,8 @@ public class UseShieldGoal extends Goal {
             if(itemInHand.isPresent()){
                 // 被攻击的五秒内或者距离敌人很近。
                 boolean aware = (this.entity.tickCount - this.entity.getLastHurtByMobTimestamp() <= 100);
-                if(aware || (this.entity.getTarget() != null && this.entity.distanceTo(this.entity.getTarget()) < 4) || entity.getRandom().nextFloat() < 0.25F){
+                if(aware || (this.entity.getTarget() != null && this.entity.distanceTo(this.entity.getTarget()) < 4)
+                        || (this.entity.getTarget() != null && this.entity.distanceTo(this.entity.getTarget()) < 10 && entity.getRandom().nextFloat() < 0.25F)){
                     this.usingHand = itemInHand.get();
                     return true;
                 } else {

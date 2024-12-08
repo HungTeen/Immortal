@@ -2,7 +2,7 @@ package hungteen.imm.common.menu;
 
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
-import hungteen.imm.common.rune.RuneCategories;
+import hungteen.imm.common.cultivation.rune.RuneCategories;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;

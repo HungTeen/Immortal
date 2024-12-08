@@ -1,7 +1,7 @@
 package hungteen.imm.common.world.structure;
 
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.entity.IMMMobCategories;
+import hungteen.imm.common.entity.IMMMobCategory;
 import hungteen.imm.common.tag.IMMBiomeTags;
 import hungteen.imm.common.world.structure.structures.TeleportRuinStructure;
 import hungteen.imm.util.Util;
@@ -55,14 +55,11 @@ public interface IMMStructures {
                 new Structure.StructureSettings(
                         biomes.getOrThrow(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET),
                         Map.of(
-                                IMMMobCategories.HUMAN, new StructureSpawnOverride(
+                                IMMMobCategory.HUMAN.getValue(), new StructureSpawnOverride(
                                         StructureSpawnOverride.BoundingBoxType.STRUCTURE,
                                         WeightedRandomList.create(List.of(
                                                         new MobSpawnSettings.SpawnerData(
-                                                                IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), 25, 1, 1
-                                                        ),
-                                                        new MobSpawnSettings.SpawnerData(
-                                                                IMMEntities.EMPTY_CULTIVATOR.get(), 10, 1, 1
+                                                                IMMEntities.WANDERING_CULTIVATOR.get(), 25, 1, 1
                                                         )
                                                 )
                                         )

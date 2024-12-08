@@ -1,7 +1,9 @@
 package hungteen.imm.compat.jade;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.cultivation.*;
+import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.HasQi;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.util.EntityUtil;

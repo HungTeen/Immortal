@@ -1,6 +1,6 @@
 package hungteen.imm.data.tag;
 
-import hungteen.imm.common.misc.damage.IMMDamageTypes;
+import hungteen.imm.common.IMMDamageTypes;
 import hungteen.imm.common.tag.IMMDamageTypeTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;

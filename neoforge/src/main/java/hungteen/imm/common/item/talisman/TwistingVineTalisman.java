@@ -26,7 +26,7 @@ public class TwistingVineTalisman extends DurationTalisman {
             TwistingVines vines = new TwistingVines(IMMEntities.TWISTING_VINES.get(), level);
             vines.setPos(destination);
             vines.setOwner(entity);
-            vines.setVineHealth(1000);
+            vines.setVineHealth(500);
             level.addFreshEntity(vines);
         }
         return super.finishUsingItem(stack, level, entity);

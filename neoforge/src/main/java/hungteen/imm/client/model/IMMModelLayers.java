@@ -23,12 +23,6 @@ public interface IMMModelLayers {
 
     /* Human */
 
-    ModelLayerLocation CULTIVATOR = create("cultivator");
-    ModelLayerLocation CULTIVATOR_INNER_ARMOR = createInnerArmor("cultivator");
-    ModelLayerLocation CULTIVATOR_OUTER_ARMOR = createOuterArmor("cultivator");
-    ModelLayerLocation CULTIVATOR_SLIM = create("cultivator_slim");
-    ModelLayerLocation CULTIVATOR_SLIM_INNER_ARMOR = createInnerArmor("cultivator_slim");
-    ModelLayerLocation CULTIVATOR_SLIM_OUTER_ARMOR = createOuterArmor("cultivator_slim");
     ModelLayerLocation VILLAGER = create("villager");
     ModelLayerLocation PILLAGER = create("pillager");
 
@@ -56,6 +50,14 @@ public interface IMMModelLayers {
     ModelLayerLocation SNOW_GOLEM = create("snow_golem");
     ModelLayerLocation CREEPER_GOLEM = create("creeper_golem");
     ModelLayerLocation COPPER_GOLEM = create("copper_golem");
+
+    static LayerDefinition innerArmor() {
+        return INNER_ARMOR;
+    }
+
+    static LayerDefinition outerArmor() {
+        return OUTER_ARMOR;
+    }
 
     static ModelLayerLocation create(String name) {
         return createLocation(name, "main");

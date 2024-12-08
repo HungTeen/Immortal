@@ -7,7 +7,7 @@ import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ParticleUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -99,7 +99,7 @@ public class FireSpirit extends ElementSpirit{
             return !(target instanceof FireSpirit);
         }, (target, factor) -> {
             ElementManager.addElementAmount(target, Element.FIRE, false, scale * 2 * factor);
-            target.hurt(IMMDamageSources.fireElement(this), scale * factor * 6);
+            target.hurt(DamageUtil.fireElement(this), scale * factor * 6);
         });
         this.playSound(SoundEvents.GENERIC_EXPLODE.value());
     }

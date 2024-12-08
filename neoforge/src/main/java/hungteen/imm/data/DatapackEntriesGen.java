@@ -1,11 +1,11 @@
 package hungteen.imm.data;
 
 import hungteen.htlib.data.HTRegistriesDatapackGenerator;
-import hungteen.imm.common.entity.human.setting.HumanSettings;
+import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.misc.IMMBannerPatterns;
-import hungteen.imm.common.misc.damage.IMMDamageTypes;
+import hungteen.imm.common.item.IMMBannerPatterns;
+import hungteen.imm.common.IMMDamageTypes;
 import hungteen.imm.common.world.biome.IMMBiomeModifiers;
 import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.common.world.feature.IMMFeatures;

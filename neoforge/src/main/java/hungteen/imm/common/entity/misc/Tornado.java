@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -102,10 +102,10 @@ public class Tornado extends HTTraceableEntity implements IEntityWithComplexSpaw
                 return target != getOwner();
             }, (target, scale) -> {
                 if (isFireTornado()) {
-                    target.hurt(IMMDamageSources.fireElement(this), Math.min(1, 2F * scale * getScale()));
+                    target.hurt(DamageUtil.fireElement(this), Math.min(1, 2F * scale * getScale()));
                     ElementManager.addElementAmount(target, Element.FIRE, false, 2 * getScale(), 20);
                 } else {
-                    target.hurt(IMMDamageSources.woodElement(this), Math.min(1, 1F * scale * getScale()));
+                    target.hurt(DamageUtil.woodElement(this), Math.min(1, 1F * scale * getScale()));
                 }
                 ElementManager.addElementAmount(target, Element.WOOD, false, 3 * getScale(), 20);
                 if (this.getRestTick() == 0) {

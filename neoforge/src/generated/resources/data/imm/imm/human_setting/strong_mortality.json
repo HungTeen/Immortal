@@ -1,0 +1,393 @@
+{
+  "predict_setting": {
+    "type": "imm:wandering_cultivator",
+    "match_realms": [
+      "imm:mortality"
+    ],
+    "require_roots": []
+  },
+  "slot_settings": [
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 15,
+              "min_inclusive": 5
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:porkchop"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 3,
+              "min_inclusive": 1
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:golden_apple"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 64,
+              "min_inclusive": 32
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:arrow"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 4,
+              "min_inclusive": 2
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:ender_pearl"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 1,
+              "min_inclusive": 1
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:shield"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 25,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:bow"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:iron_sword"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:diamond_sword"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:iron_helmet"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:diamond_helmet"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:iron_chestplate"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:diamond_chestplate"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:iron_leggings"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:diamond_leggings"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:iron_boots"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 20,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:diamond_boots"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "trade_setting": {
+    "entry_count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 4,
+      "min_inclusive": 2
+    },
+    "trade_entries": [
+      {
+        "data": {
+          "cost_items": [
+            {
+              "count": 1,
+              "id": "minecraft:diamond"
+            }
+          ],
+          "result_items": [
+            {
+              "count": 8,
+              "id": "minecraft:emerald"
+            }
+          ],
+          "trade_count": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 2,
+            "min_inclusive": 1
+          },
+          "xp": 1.0
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "count": 1,
+              "id": "minecraft:diamond"
+            }
+          ],
+          "result_items": [
+            {
+              "count": 3,
+              "id": "minecraft:melon_seeds"
+            }
+          ],
+          "trade_count": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 3,
+            "min_inclusive": 1
+          },
+          "xp": 1.0
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "count": 1,
+              "id": "minecraft:diamond"
+            }
+          ],
+          "result_items": [
+            {
+              "count": 3,
+              "id": "minecraft:pumpkin_seeds"
+            }
+          ],
+          "trade_count": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 3,
+            "min_inclusive": 1
+          },
+          "xp": 1.0
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "cost_items": [
+            {
+              "count": 1,
+              "id": "minecraft:diamond"
+            }
+          ],
+          "result_items": [
+            {
+              "count": 3,
+              "id": "minecraft:beetroot_seeds"
+            }
+          ],
+          "trade_count": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 3,
+            "min_inclusive": 1
+          },
+          "xp": 1.0
+        },
+        "weight": 10
+      }
+    ]
+  },
+  "weight": 100
+}

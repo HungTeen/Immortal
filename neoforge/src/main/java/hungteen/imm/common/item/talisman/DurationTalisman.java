@@ -3,7 +3,7 @@ package hungteen.imm.common.item.talisman;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.QiManager;
-import hungteen.imm.common.misc.IMMSounds;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

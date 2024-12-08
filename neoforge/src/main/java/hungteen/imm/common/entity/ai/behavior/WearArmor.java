@@ -1,7 +1,7 @@
 package hungteen.imm.common.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
  * @program Immortal
  * @create 2023/3/2 20:10
  */
-public class WearArmor extends Behavior<HumanEntity> {
+public class WearArmor extends Behavior<HumanLikeEntity> {
 
     private EquipmentSlot slot;
     private static final int CD = 20;
@@ -27,12 +27,12 @@ public class WearArmor extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, HumanEntity entity, long time) {
+    protected boolean canStillUse(ServerLevel level, HumanLikeEntity entity, long time) {
         return time > this.finishUsingTick || entity.getItemBySlot(this.slot).isEmpty() && EntityUtil.isOffHolding(entity, ItemUtil::isArmor);
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, HumanEntity entity) {
+    protected boolean checkExtraStartConditions(ServerLevel level, HumanLikeEntity entity) {
         if(! entity.getOffhandItem().isEmpty() || entity.getRandom().nextFloat() < 0.1F) return false;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if(slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR) continue;
@@ -45,13 +45,13 @@ public class WearArmor extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected void start(ServerLevel level, HumanEntity entity, long time) {
+    protected void start(ServerLevel level, HumanLikeEntity entity, long time) {
         entity.switchInventory(InteractionHand.OFF_HAND, s -> ItemUtil.isArmor(s, this.slot));
         this.finishUsingTick = time + CD;
     }
 
     @Override
-    protected void tick(ServerLevel serverLevel, HumanEntity entity, long time) {
+    protected void tick(ServerLevel serverLevel, HumanLikeEntity entity, long time) {
         if(time == this.finishUsingTick){
             entity.setItemSlot(slot, entity.getOffhandItem().copy());
             entity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
@@ -59,6 +59,6 @@ public class WearArmor extends Behavior<HumanEntity> {
     }
 
     @Override
-    protected void stop(ServerLevel serverLevel, HumanEntity entity, long time) {
+    protected void stop(ServerLevel serverLevel, HumanLikeEntity entity, long time) {
     }
 }

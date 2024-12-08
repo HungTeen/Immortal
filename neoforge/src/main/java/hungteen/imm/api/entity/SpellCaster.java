@@ -1,17 +1,15 @@
 package hungteen.imm.api.entity;
 
+import com.mojang.datafixers.util.Pair;
 import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.SpellManager;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * 使用法术的生物。
@@ -20,14 +18,6 @@ import java.util.stream.Stream;
  * @create 2023/8/19 15:49
  */
 public interface SpellCaster extends HasQi {
-
-    int VERY_HIGH = 100;
-    int HIGH = 50;
-    int LITTLE_HIGH = 10;
-    int DEFAULT = 0;
-    int LITTLE_LOW = -10;
-    int LOW = -50;
-    int VERY_LOW = -100;
 
     /**
      * @return 法术是否在冷却之中。
@@ -50,25 +40,34 @@ public interface SpellCaster extends HasQi {
     int getSpellLevel(SpellType spell);
 
     /**
-     * 获取当前法术使用优先级。
+     * 获取能够主动触发的法术，并根据实体的具体情况为其设置优先级，优先级小于 0 的法术不会被触发。<br>
+     * 对于可以触发的法术，会根据优先级进行一个随机，优先级为100的法术必触发，优先级为 0 的法术有 10% 的概率触发。<br>
      */
-    default Map<SpellUsageCategory, Integer> getCategoryPriority(){
-        return Map.of();
-    }
-
-    /**
-     * 获取优先级排序后的可用法术。
-     */
-    default List<Spell> getSortedSpells(){
-        return getNonPassiveSpells().filter(this::canUseSpell).sorted((spell1, spell2) -> {
-            return getSpellUsePriority(spell2) - getSpellUsePriority(spell1);
-        }).map(type -> new Spell(type, getSpellLevel(type))).toList();
+    static Spell randomChooseWithPriority(SpellCaster caster){
+        List<Pair<Spell, Integer>> candidateSpells = caster.getLearnedSpellTypes().stream()
+                .filter(SpellManager::canMobTrigger)
+                .filter(caster::canUseSpell)
+                .map(type -> Pair.of(new Spell(type, caster.getSpellLevel(type)), caster.getSpellUsePriority(type)))
+                .sorted((a, b) -> b.getSecond() - a.getSecond())
+                .filter(pair -> pair.getSecond() >= 0)
+                .toList();
+        final HTHitResult result = caster.createHitResult();
+        for (var pair : candidateSpells) {
+            Spell spell = pair.getFirst();
+            int priority = pair.getSecond();
+            if(caster.self().getRandom().nextInt(10) < Math.clamp(priority, 1, priority / 10) && spell.spell().checkActivate(caster.self(), result, spell.level())){
+                return spell;
+            }
+        }
+        return null;
     }
 
     /**
      * 优先级大的在前。
      */
-    int getSpellUsePriority(SpellType spell);
+    default int getSpellUsePriority(SpellType spell){
+        return spell.getCastingPriority(self());
+    }
 
     /**
      * @return 是否有足够的灵气使用法术。
@@ -76,6 +75,11 @@ public interface SpellCaster extends HasQi {
     default boolean canUseSpell(SpellType spell){
         return getQiAmount() >= spell.getConsumeMana();
     }
+
+    /**
+     * 学习法术。
+     */
+    void learnSpell(SpellType spell, int level);
 
     /**
      * @return 是否学习过指定法术。
@@ -90,17 +94,13 @@ public interface SpellCaster extends HasQi {
     Set<SpellType> getLearnedSpellTypes();
 
     /**
-     * @return 获取能够主动触发的法术。
-     */
-    default Stream<SpellType> getNonPassiveSpells(){
-        return getLearnedSpellTypes().stream().filter(SpellManager::canMobTrigger);
-    }
-
-    /**
      * @return 获取法术释放所需的环境信息。
      */
     HTHitResult createHitResult();
 
+    /**
+     * @return 获取实体自身。
+     */
     Mob self();
 
 }

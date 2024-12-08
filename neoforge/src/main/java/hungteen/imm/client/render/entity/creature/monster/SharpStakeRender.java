@@ -2,7 +2,7 @@ package hungteen.imm.client.render.entity.creature.monster;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.CubeModel;
+import hungteen.imm.client.model.entity.misc.CubeModel;
 import hungteen.imm.client.render.entity.layer.WoodStakeLayer;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
 import hungteen.imm.util.Util;

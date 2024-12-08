@@ -6,8 +6,8 @@ import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.misc.IMMSounds;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.common.IMMSounds;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -70,11 +70,10 @@ public class FallingIceEntity extends HTTraceableEntity implements IEntityWithCo
                 }
             }
             HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            if(hitresult.getType() != HitResult.Type.MISS){
-                // 加一个速度判断，防止卡住。
-                if(hitresult instanceof BlockHitResult blockHitResult || (!this.isFloating() && Math.abs(this.getDeltaMovement().y()) < 0.01) || this.isInWater()){
-                    this.onHit();
-                }
+            // 加一个速度判断，防止卡住。
+            if((hitresult.getType() != HitResult.Type.MISS && hitresult instanceof BlockHitResult blockHitResult)
+                    || (!this.isFloating() && Math.abs(this.getDeltaMovement().y()) < 0.01) || this.isInWater()){
+                this.onHit();
             }
         } else {
             ParticleHelper.spawnClientParticles(this.level(), ParticleTypes.CLOUD, position(), 3, 1.5D, 0.1D);
@@ -88,7 +87,7 @@ public class FallingIceEntity extends HTTraceableEntity implements IEntityWithCo
             ParticleHelper.sendParticles(serverLevel, new BlockParticleOption(ParticleTypes.BLOCK, IMMBlocks.FALLING_ICE.get().defaultBlockState()), getX(), getY(), getZ(), 30, 1.5, 0.2D, 1.5, 0.1D);
             AABB aabb = EntityUtil.getEntityAABB(this).inflate(2, 2, 2);
             EntityHelper.getPredicateEntities(this, aabb, LivingEntity.class, JavaHelper::alwaysTrue).forEach(target -> {
-                target.hurt(IMMDamageSources.waterElement(this, this.getOwner()), 5F);
+                target.hurt(DamageUtil.waterElement(this, this.getOwner()), 5F);
                 ElementManager.addPercentElement(target, Element.WATER, false,1.2F);
             });
             this.remove(RemovalReason.DISCARDED);

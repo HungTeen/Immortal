@@ -37,7 +37,7 @@ public abstract class IMMGrowableMob extends IMMMob {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(AGE, 1); // [1, max age].
+        builder.define(AGE, 1);
     }
 
     @Override
@@ -95,9 +95,6 @@ public abstract class IMMGrowableMob extends IMMMob {
     public void onAgeChangeTo(int age, boolean firstSpawn){
         if(EntityHelper.isServer(this)){
             this.updateRealmByAge(age);
-            if(! firstSpawn){
-//                this.setRealmStage(RealmStage.PRELIMINARY);
-            }
         }
         this.setAge(age);
     }

@@ -1,10 +1,9 @@
 package hungteen.imm.data.loot;
 
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.misc.IMMLoots;
+import hungteen.imm.common.IMMLoots;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;

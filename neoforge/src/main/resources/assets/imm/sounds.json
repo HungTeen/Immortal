@@ -19,6 +19,22 @@
     "subtitle": "sound.imm.falling_ice_hit",
     "sounds": [{"name": "imm:entity/falling_ice/hit1"},{"name": "imm:entity/falling_ice/hit2"}]
   },
+  "chillager_idle": {
+    "subtitle": "sound.imm.chillager_idle",
+    "sounds": [{"name": "imm:entity/chillager/idle1"},{"name": "imm:entity/chillager/idle2"},{"name": "imm:entity/chillager/idle3"}]
+  },
+  "chillager_attack": {
+    "subtitle": "sound.imm.chillager_attack",
+    "sounds": [{"name": "imm:entity/chillager/attack1"},{"name": "imm:entity/chillager/attack2"},{"name": "imm:entity/chillager/attack3"}]
+  },
+  "chillager_hurt": {
+    "subtitle": "sound.imm.chillager_hurt",
+    "sounds": [{"name": "imm:entity/chillager/hurt1"},{"name": "imm:entity/chillager/hurt2"},{"name": "imm:entity/chillager/hurt3"}]
+  },
+  "chillager_death": {
+    "subtitle": "sound.imm.chillager_death",
+    "sounds": [{"name": "imm:entity/chillager/death1"},{"name": "imm:entity/chillager/death2"},{"name": "imm:entity/chillager/death3"}]
+  },
   "bi_fang_ambient": {
     "subtitle": "sound.imm.bi_fang_ambient",
     "sounds": [{"name": "imm:entity/bi_fang/ambient1"},{"name": "imm:entity/bi_fang/ambient2"},{"name": "imm:entity/bi_fang/ambient3"}]

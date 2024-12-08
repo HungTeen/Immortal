@@ -1,11 +1,12 @@
 package hungteen.imm.common.entity.human.cultivator;
 
 import hungteen.htlib.util.WeightedList;
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.IMMDataSerializers;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
+import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -14,19 +15,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
- * 是否碰到敌人直接逃跑
- * 碰到敌人先远战/近战
- * 是否喜欢留后手（藏杀手锏）
- *
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-22 22:16
  **/
-public abstract class Cultivator extends HumanEntity {
+public abstract class Cultivator extends HumanLikeEntity {
 
-    private static final EntityDataAccessor<Integer> CULTIVATOR_TYPE = SynchedEntityData.defineId(Cultivator.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<CultivatorType> CULTIVATOR_TYPE = SynchedEntityData.defineId(Cultivator.class, IMMDataSerializers.CULTIVATOR_TYPE.get());
 
-    public Cultivator(EntityType<? extends HumanEntity> type, Level level) {
+    public Cultivator(EntityType<? extends HumanLikeEntity> type, Level level) {
         super(type, level);
         this.xpReward = 10;
     }
@@ -34,14 +31,14 @@ public abstract class Cultivator extends HumanEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(CULTIVATOR_TYPE, CultivatorTypes.SLIM_STEVE.ordinal());
+        builder.define(CULTIVATOR_TYPE, CultivatorType.SLIM_STEVE);
     }
 
     @Override
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
         // 随机选择散修类型。
-        WeightedList.create(CultivatorTypes.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
+        WeightedList.create(CultivatorType.values()).getRandomItem(accessor.getRandom()).ifPresent(this::setCultivatorType);
         this.setCustomName(this.getCultivatorType().getDisplayName());
         if(! getCultivatorType().isCommon()){
             this.modifyAttributes(getCultivatorType());
@@ -51,7 +48,7 @@ public abstract class Cultivator extends HumanEntity {
     /**
      * 对于特殊的散修类型，可以修改一些数值。
      */
-    public void modifyAttributes(CultivatorTypes type){
+    public void modifyAttributes(CultivatorType type){
 
     }
 
@@ -63,23 +60,21 @@ public abstract class Cultivator extends HumanEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(tag.contains("CultivatorType")){
-            this.setCultivatorType(CultivatorTypes.valueOf(tag.getString("CultivatorType")));
-        }
+        NBTUtil.read(tag, CultivatorType.CODEC, "CultivatorType", this::setCultivatorType);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("CultivatorType", this.getCultivatorType().name());
+        NBTUtil.write(tag, CultivatorType.CODEC, "CultivatorType", this.getCultivatorType());
     }
 
-    public void setCultivatorType(CultivatorTypes skin){
-        entityData.set(CULTIVATOR_TYPE, skin.ordinal());
+    public void setCultivatorType(CultivatorType skin){
+        entityData.set(CULTIVATOR_TYPE, skin);
     }
 
-    public CultivatorTypes getCultivatorType(){
-        return CultivatorTypes.values()[entityData.get(CULTIVATOR_TYPE)];
+    public CultivatorType getCultivatorType(){
+        return entityData.get(CULTIVATOR_TYPE);
     }
 
     public boolean isSlim() {

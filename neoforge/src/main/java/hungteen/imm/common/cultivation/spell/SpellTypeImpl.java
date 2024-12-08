@@ -3,7 +3,7 @@ package hungteen.imm.common.cultivation.spell;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
-import hungteen.imm.common.misc.IMMSounds;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import hungteen.imm.util.enums.SpellSortCategories;
@@ -107,7 +107,7 @@ public abstract class SpellTypeImpl implements SpellType {
     }
 
     @Override
-    public int getPriority() {
+    public int getScreenPriority() {
         return priority;
     }
 

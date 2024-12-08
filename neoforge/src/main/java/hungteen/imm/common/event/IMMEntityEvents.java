@@ -59,7 +59,7 @@ public class IMMEntityEvents {
     public static void onEntityMount(EntityMountEvent event){
         if(EntityHelper.isServer(event.getEntity())){
             // 不能主动取消对藤蔓的骑乘。
-            if(event.getEntityBeingMounted() instanceof TwistingVines && !event.isMounting()){
+            if(event.getEntityBeingMounted() instanceof TwistingVines vines && !event.isMounting() && vines.isAlive()){
                 event.setCanceled(true);
             }
         }

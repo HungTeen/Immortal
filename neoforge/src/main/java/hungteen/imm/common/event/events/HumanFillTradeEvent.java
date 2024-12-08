@@ -1,6 +1,6 @@
 package hungteen.imm.common.event.events;
 
-import hungteen.imm.common.entity.human.HumanEntity;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
@@ -11,16 +11,16 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
  */
 public class HumanFillTradeEvent extends LivingEvent {
 
-    private final HumanEntity human;
+    private final HumanLikeEntity human;
     private final TradeOffers tradeOffers;
 
-    public HumanFillTradeEvent(HumanEntity entity, TradeOffers offers) {
+    public HumanFillTradeEvent(HumanLikeEntity entity, TradeOffers offers) {
         super(entity);
         this.human = entity;
         this.tradeOffers = offers;
     }
 
-    public HumanEntity getHuman() {
+    public HumanLikeEntity getHuman() {
         return human;
     }
 

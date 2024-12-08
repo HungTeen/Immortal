@@ -7,11 +7,9 @@ import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.behavior.*;
 import hungteen.imm.common.entity.ai.behavior.villager.Mock;
-import hungteen.imm.common.entity.human.cultivator.EmptyCultivatorAi;
-import hungteen.imm.common.tag.IMMEntityTags;
+import hungteen.imm.common.entity.human.HumanLikeAi;
 import hungteen.imm.util.BrainUtil;
 import hungteen.imm.util.ItemUtil;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
@@ -117,21 +115,8 @@ public class IMMVillagerAi {
                 new StartFighting<>(IMMVillagerAi::findNearestValidAttackTarget),
                 //吃东西
                 new EatFood(),
-                //四处逛逛
-                new RunOne<>(ImmutableList.of(
-                        Pair.of(RandomStroll.stroll(speed), 1),
-                        Pair.of(SetWalkTargetFromLookTarget.create(speed, 3), 1),
-                        Pair.of(InteractWith.of(EntityType.CAT, 8, MemoryModuleType.INTERACTION_TARGET, speed, 3), 1),
-                        Pair.of(InteractWith.of(EntityType.WOLF, 8, MemoryModuleType.INTERACTION_TARGET, speed, 2), 1),
-                        Pair.of(new DoNothing(30, 60), 1)
-                )),
-                //瞅你咋地
-                new RunOne<>(ImmutableList.of(
-                        Pair.of(SetEntityLookTarget.create(EntityType.PLAYER, 12.0F), 1),
-                        Pair.of(SetEntityLookTarget.create(type -> type.getType().is(IMMEntityTags.HUMAN_BEINGS), 8.0F), 1),
-                        Pair.of(SetEntityLookTarget.create(8.0F), 1),
-                        Pair.of(new DoNothing(30, 60), 1)
-                )),
+                HumanLikeAi.createIdleMovementBehaviors(speed),
+                HumanLikeAi.createIdleLookBehaviors(),
                 new Mock(),
                 new UseShield(20, 30)
         ));
@@ -149,7 +134,7 @@ public class IMMVillagerAi {
                 // 攻击范围内清除路径，范围外则搜索路径
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 // 对皮脆的敌人，直接冲过去近战
-                Pair.of(2, new EnderPearlReach(0.2F, 100, EmptyCultivatorAi::lowLevelLiving)),
+                Pair.of(2, new EnderPearlReach(0.2F, 100, HumanLikeAi::lowLevelLiving)),
                 Pair.of(3, new HumanMeleeAttack(40)),
                 Pair.of(4, new UseShield(15, 30))
         ), Set.of(Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)));

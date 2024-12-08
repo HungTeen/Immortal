@@ -4,22 +4,22 @@
     {
       "model": "imm:item/wood_bow_pulling_0",
       "predicate": {
-        "imm:pull": 0.0,
-        "imm:pulling": 1.0
+        "imm:pulled": 1.0,
+        "imm:pulling": 0.0
       }
     },
     {
       "model": "imm:item/wood_bow_pulling_1",
       "predicate": {
-        "imm:pull": 0.65,
-        "imm:pulling": 1.0
+        "imm:pulled": 1.0,
+        "imm:pulling": 0.65
       }
     },
     {
       "model": "imm:item/wood_bow_pulling_2",
       "predicate": {
-        "imm:pull": 0.9,
-        "imm:pulling": 1.0
+        "imm:pulled": 1.0,
+        "imm:pulling": 0.9
       }
     }
   ],

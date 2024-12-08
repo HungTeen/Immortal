@@ -1,0 +1,96 @@
+{
+  "predict_setting": {
+    "type": "imm:chillager",
+    "match_realms": [
+      "imm:qi_refining_level_1",
+      "imm:qi_refining_level_2",
+      "imm:qi_refining_level_3",
+      "imm:qi_refining_level_4",
+      "imm:qi_refining_level_5",
+      "imm:qi_refining_level_6",
+      "imm:qi_refining_level_7",
+      "imm:qi_refining_level_8",
+      "imm:qi_refining_level_9",
+      "imm:qi_refining_level_10",
+      "imm:qi_refining_level_11",
+      "imm:qi_refining_level_12",
+      "imm:qi_refining_level_13"
+    ],
+    "require_roots": []
+  },
+  "slot_settings": [
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 32,
+              "min_inclusive": 16
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:cooked_rabbit"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 3,
+              "min_inclusive": 1
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:golden_apple"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 4,
+              "min_inclusive": 2
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:ender_pearl"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 16,
+              "min_inclusive": 8
+            },
+            "item": {
+              "count": 1,
+              "id": "imm:falling_ice_talisman"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "weight": 100
+}

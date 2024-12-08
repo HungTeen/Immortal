@@ -16,17 +16,18 @@ import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
+import hungteen.imm.client.model.entity.misc.CubeModel;
+import hungteen.imm.client.model.entity.misc.ElementCrystalModel;
+import hungteen.imm.client.model.entity.misc.TornadoModel;
 import hungteen.imm.client.model.entity.spirit.*;
-import hungteen.imm.client.model.entity.villager.PillagerModel;
-import hungteen.imm.client.model.entity.villager.VillagerModel;
+import hungteen.imm.client.model.entity.human.villager.PillagerModel;
+import hungteen.imm.client.model.entity.human.villager.VillagerModel;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
-import hungteen.imm.client.render.entity.human.CommonVillagerRender;
-import hungteen.imm.client.render.entity.human.CultivatorRender;
 import hungteen.imm.client.render.entity.misc.ElementCrystalRender;
 import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
 import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
@@ -40,10 +41,7 @@ import hungteen.imm.common.item.talisman.DurationTalisman;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -82,11 +80,6 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.POISON_WIND.get(), EmptyEffectRender::new);
         event.registerEntityRenderer(IMMEntities.TORNADO.get(), TornadoRender::new);
 
-        /* Human */
-        event.registerEntityRenderer(IMMEntities.COMMON_VILLAGER.get(), CommonVillagerRender::new);
-        event.registerEntityRenderer(IMMEntities.EMPTY_CULTIVATOR.get(), CultivatorRender::new);
-        event.registerEntityRenderer(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), CultivatorRender::new);
-
         /* Creature */
 //        event.registerEntityRenderer(ImmortalEntities.GRASS_CARP.get(), GrassCarpRender::new);
 //        event.registerEntityRenderer(ImmortalEntities.SILK_WORM.get(), SilkWormRender::new);
@@ -117,9 +110,6 @@ public class ClientRegister {
      */
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        LayerDefinition INNER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
-        LayerDefinition OUTER_ARMOR = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
-
         /* Misc */
         event.registerLayerDefinition(IMMModelLayers.ELEMENT_CRYSTAL, ElementCrystalModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.TORNADO, TornadoModel::createBodyLayer);
@@ -127,12 +117,6 @@ public class ClientRegister {
         /* Human */
         event.registerLayerDefinition(IMMModelLayers.VILLAGER, VillagerModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.PILLAGER, PillagerModel::createBodyLayer);
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false));
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_OUTER_ARMOR, () -> OUTER_ARMOR);
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM, () -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, true));
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_INNER_ARMOR, () -> INNER_ARMOR);
-        event.registerLayerDefinition(IMMModelLayers.CULTIVATOR_SLIM_OUTER_ARMOR, () -> OUTER_ARMOR);
 
         /* Creature */
         event.registerLayerDefinition(IMMModelLayers.GRASS_CARP, GrassCarpModel::createBodyLayer);

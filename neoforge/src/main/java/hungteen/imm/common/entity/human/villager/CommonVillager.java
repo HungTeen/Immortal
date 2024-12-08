@@ -1,8 +1,6 @@
 package hungteen.imm.common.entity.human.villager;
 
-import hungteen.imm.api.cultivation.CultivationType;
-import hungteen.imm.common.entity.human.HumanEntity;
-import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.entity.human.HumanLikeEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -13,12 +11,8 @@ import net.minecraft.world.level.Level;
  **/
 public class CommonVillager extends IMMVillager {
 
-    public CommonVillager(EntityType<? extends HumanEntity> type, Level level) {
+    public CommonVillager(EntityType<? extends HumanLikeEntity> type, Level level) {
         super(type, level);
     }
 
-    @Override
-    public CultivationType getCultivationType() {
-        return CultivationTypes.SPIRITUAL;
-    }
 }

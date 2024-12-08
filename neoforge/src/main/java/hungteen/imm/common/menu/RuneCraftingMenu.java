@@ -2,8 +2,8 @@ package hungteen.imm.common.menu;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.common.rune.ICraftableRune;
-import hungteen.imm.common.rune.RuneCategories;
+import hungteen.imm.common.cultivation.rune.ICraftableRune;
+import hungteen.imm.common.cultivation.rune.RuneCategories;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.sounds.SoundEvents;

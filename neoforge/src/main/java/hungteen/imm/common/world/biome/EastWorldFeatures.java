@@ -46,9 +46,7 @@ public class EastWorldFeatures {
     }
 
     public static void addSpiritualCultivator(MobSpawnSettings.Builder builder){
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.EMPTY_CULTIVATOR.get(), 2, 1, 1));
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(IMMEntities.SPIRITUAL_BEGINNER_CULTIVATOR.get(), 1, 1, 1));
-    }
+           }
 
     public static void addSpirit(MobSpawnSettings.Builder builder, Element...elements){
         for(Element element : elements){

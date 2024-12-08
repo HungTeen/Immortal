@@ -10,5 +10,6 @@ import net.minecraft.world.entity.npc.Npc;
  * @author HungTeen
  * @create 2022-10-21 18:33
  **/
-public interface HumanLike extends Cultivatable, SpellCaster, SectMember, RangedAttackMob, InventoryCarrier, Npc, Trader {
+public interface HumanLike extends Cultivatable, SectMember, RangedAttackMob, InventoryCarrier, Npc, Trader {
+
 }

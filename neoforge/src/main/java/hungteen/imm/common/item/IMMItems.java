@@ -16,7 +16,7 @@ import hungteen.imm.common.item.elixirs.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.*;
 import hungteen.imm.common.item.talisman.*;
-import hungteen.imm.common.rune.behavior.BehaviorRunes;
+import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;

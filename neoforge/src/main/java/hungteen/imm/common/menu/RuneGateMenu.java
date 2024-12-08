@@ -1,9 +1,9 @@
 package hungteen.imm.common.menu;
 
 import com.mojang.datafixers.util.Pair;
+import hungteen.imm.common.cultivation.rune.filter.*;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
-import hungteen.imm.common.rune.RuneCategories;
-import hungteen.imm.common.rune.filter.*;
+import hungteen.imm.common.cultivation.rune.RuneCategories;
 import hungteen.imm.util.BlockUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;

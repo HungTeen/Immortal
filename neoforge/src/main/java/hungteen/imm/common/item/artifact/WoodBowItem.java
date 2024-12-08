@@ -27,7 +27,7 @@ import java.util.List;
  **/
 public class WoodBowItem extends BowItem implements ArtifactItem {
 
-    public static final ResourceLocation PULL = Util.prefix("pull");
+    public static final ResourceLocation PULLED = Util.prefix("pulled");
     public static final ResourceLocation PULLING = Util.prefix("pulling");
     private static final float QI_COST = 10;
 

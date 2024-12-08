@@ -2,7 +2,7 @@ package hungteen.imm.client.render.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import hungteen.imm.client.model.entity.CubeModel;
+import hungteen.imm.client.model.entity.misc.CubeModel;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.common.entity.creature.monster.SharpStake;
 import net.minecraft.client.renderer.MultiBufferSource;

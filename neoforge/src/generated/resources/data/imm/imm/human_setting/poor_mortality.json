@@ -1,0 +1,292 @@
+{
+  "predict_setting": {
+    "type": "imm:wandering_cultivator",
+    "match_realms": [
+      "imm:mortality"
+    ],
+    "require_roots": []
+  },
+  "slot_settings": [
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 15,
+              "min_inclusive": 5
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:apple"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 64,
+              "min_inclusive": 32
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:rotten_flesh"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 16,
+              "min_inclusive": 8
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:arrow"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 1,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:ender_pearl"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 1,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:shield"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 4,
+              "min_inclusive": 1
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:bow"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:wooden_sword"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:stone_sword"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:leather_helmet"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:chainmail_helmet"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:leather_chestplate"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:chainmail_chestplate"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:leather_leggings"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:chainmail_leggings"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:leather_boots"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "count": 1,
+            "enchant_point": {
+              "type": "minecraft:uniform",
+              "max_inclusive": 8,
+              "min_inclusive": 0
+            },
+            "item": {
+              "count": 1,
+              "id": "minecraft:chainmail_boots"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "weight": 100
+}

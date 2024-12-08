@@ -24,7 +24,7 @@ public class VanillaCultivationCompat {
     private static final Map<TagKey<DamageType>, RealmType> DAMAGE_REALM_MAP = new HashMap<>();
 
     public static void fillEntityMap(){
-        addKillXp(IMMEntities.EMPTY_CULTIVATOR.get(), 1);
+        addKillXp(IMMEntities.WANDERING_CULTIVATOR.get(), 1);
 
 //        put(EntityType.ENDERMAN, RealmTypes.QI_REFINING, 0.4F);
 //        put(EntityType.PIGLIN, RealmTypes.YAOGUAI_LEVEL_1, 0.5F);

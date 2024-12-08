@@ -12,7 +12,7 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.Constants;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.MathUtil;
@@ -134,7 +134,7 @@ public class SpiritualFlame extends HTEntity implements IEntityWithComplexSpawn,
             ElementManager.addElementAmount(target, Element.FIRE, false, this.flamePercent() * 10 * percent);
         }
         if(percent > 0.5F){
-            target.hurt(IMMDamageSources.spiritualFlame(this), percent * 8);
+            target.hurt(DamageUtil.spiritualFlame(this), percent * 8);
         }
         LevelUtil.playSound(level(), SoundEvents.FIRE_EXTINGUISH, SoundSource.AMBIENT, target.position());
         this.addQiAmount(-50 * percent);

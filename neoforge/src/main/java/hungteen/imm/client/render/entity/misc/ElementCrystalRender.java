@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import hungteen.htlib.util.HTColor;
 import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.ElementCrystalModel;
+import hungteen.imm.client.model.entity.misc.ElementCrystalModel;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.misc.ElementCrystal;
 import hungteen.imm.util.Util;

@@ -1,7 +1,7 @@
 package hungteen.imm.client.render.entity.human;
 
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.villager.PillagerModel;
+import hungteen.imm.client.model.entity.human.villager.PillagerModel;
 import hungteen.imm.common.entity.human.pillager.IMMPillager;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

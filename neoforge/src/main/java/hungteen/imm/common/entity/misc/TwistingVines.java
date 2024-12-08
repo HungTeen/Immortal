@@ -1,10 +1,13 @@
 package hungteen.imm.common.entity.misc;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.htlib.util.helper.impl.ParticleHelper;
+import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.RealmManager;
+import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.NBTUtil;
 import hungteen.imm.util.ParticleUtil;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,8 +18,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
 /**
@@ -26,9 +29,10 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
  **/
 public class TwistingVines extends HTTraceableEntity implements IEntityWithComplexSpawn {
 
-    private static final int SPAWN_CD = 20;
+    public static final int SPAWN_CD = 10;
     private static final EntityDataAccessor<Integer> SPAWN_TICKS = SynchedEntityData.defineId(TwistingVines.class, EntityDataSerializers.INT);
     public int vineHealth = 100;
+    public float lastSpawnTicks = 0;
 
     public TwistingVines(EntityType<?> type, Level world) {
         super(type, world);
@@ -54,7 +58,7 @@ public class TwistingVines extends HTTraceableEntity implements IEntityWithCompl
     public void tick() {
         super.tick();
         if(EntityHelper.isServer(this)){
-            if(this.getSpawnTicks() < SPAWN_CD){
+            if(! this.isClimbUp()){
                 this.setSpawnTicks(this.getSpawnTicks() + 1);
             }
             if(this.getPassengers().isEmpty()){
@@ -67,10 +71,10 @@ public class TwistingVines extends HTTraceableEntity implements IEntityWithCompl
                 this.disappear();
             }
         } else {
-            if(this.getSpawnTicks() < SPAWN_CD){
+            if(!this.isClimbUp()){
                 BlockState blockState = level().getBlockState(blockPosition().below());
                 if(blockState.isSolid()){
-                    ParticleUtil.spawnParticleOnFace(level(), blockPosition(), Direction.DOWN, ParticleUtil.block(blockState), 5, Vec3.ZERO, 0.5);
+                    ParticleHelper.spawnClientParticles(level(), ParticleUtil.block(blockState), getX(), getY(), getZ(), 5, 0.5, 0.2, 0.05, 0.1);
                 }
             }
         }
@@ -80,18 +84,33 @@ public class TwistingVines extends HTTraceableEntity implements IEntityWithCompl
     public void disappear(){
         playSound(SoundEvents.VINE_BREAK);
         if(level() instanceof ServerLevel serverLevel){
-//            ParticleHelper.sendParticles(serverLevel, ParticleUtil.block(Blocks.VINE.defaultBlockState()), getX(), getY(), getZ(), 10, 0.5, 0.1, 0.5, 0.05D);
+            ParticleHelper.sendParticles(serverLevel, ParticleUtil.block(Blocks.VINE.defaultBlockState()), getX(), getY(0.5), getZ(), 30, 0.5, 0.5, 0.5, 0.05D);
         }
         this.discard();
+        this.ejectPassengers();
     }
 
     @Override
     public void push(Entity entity) {
         // 抓碰到的第一个实体。
-        if(this.getPassengers().isEmpty()){
+        if(this.getPassengers().isEmpty() && this.isClimbUp()){
             entity.startRiding(this);
+            entity.hurt(DamageUtil.woodElement(this, this.getOwner()), 2);
+            ElementManager.addPercentElement(entity, Element.WOOD, false, 1, 1.5F);
         }
         super.push(entity);
+    }
+
+    /**
+     * @return 从土里爬出来了。
+     */
+    public boolean isClimbUp(){
+        return this.getSpawnTicks() >= SPAWN_CD;
+    }
+
+    @Override
+    public boolean shouldRiderSit() {
+        return false;
     }
 
     @Override

@@ -3,7 +3,7 @@ package hungteen.imm.common.item.talisman;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.misc.FallingIceEntity;
-import hungteen.imm.common.misc.IMMSounds;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

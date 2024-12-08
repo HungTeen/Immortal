@@ -82,6 +82,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' } // Spark.
 }
 
 dependencies {
@@ -96,7 +97,9 @@ dependencies {
 //    localRuntime "vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}-NEOFORGE"
 
     implementation "curse.maven:jade-324717:${jade_version}"
+
     implementation "curse.maven:worldedit-225608:${worldedit_version}"
+    implementation "curse.maven:spark-361579:${spark_version}"
 
 //    implementation "curse.maven:configured-457570:${configured_version}"
 

@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.misc.damage.IMMDamageSources;
+import hungteen.imm.util.DamageUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +38,7 @@ public class FlamingReaction extends GenerationReaction {
         super.doReaction(entity, scale);
         if(! this.robustReaction && entity.level().getRandom().nextFloat() < 0.1F){
             entity.setRemainingFireTicks(Math.min(2, (int)(scale * 5)) * 20);
-            entity.hurt(IMMDamageSources.elementReaction(entity), scale * 2);
+            entity.hurt(DamageUtil.elementReaction(entity), scale * 2);
         }
         if (entity.level() instanceof ServerLevel level && level.getRandom().nextFloat() < 0.3F) {
             ParticleHelper.sendParticles(level, ParticleTypes.FLAME, entity.getX(), entity.getY(0.5F), entity.getZ(), 5, 0.1F);

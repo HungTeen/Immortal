@@ -1,6 +1,6 @@
 package hungteen.imm.common.entity.ai.behavior;
 
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMMemories;
@@ -36,14 +36,7 @@ public class UseSpell {
                 // 自身不能触发法术。
                 return false;
             } else {
-                Spell usingSpell = null;
-                final HTHitResult result = mob.createHitResult();
-                for (Spell spell : mob.getSortedSpells()) {
-                    if(spell.spell().checkActivate(mob, result, spell.level())){
-                        usingSpell = spell;
-                        break;
-                    }
-                }
+                Spell usingSpell = SpellCaster.randomChooseWithPriority(mob);
                 if(usingSpell != null){
                     mob.trigger(usingSpell);
                     mob.getBrain().setMemoryWithExpiry(IMMMemories.SPELL_COOLING_DOWN.get(), true, usingSpell.spell().getCooldown() + cdProvider.sample(mob.getRandom()));

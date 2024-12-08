@@ -2,7 +2,7 @@ package hungteen.imm.common.item.runes.filter;
 
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.common.rune.ICraftableRune;
+import hungteen.imm.common.cultivation.rune.ICraftableRune;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
