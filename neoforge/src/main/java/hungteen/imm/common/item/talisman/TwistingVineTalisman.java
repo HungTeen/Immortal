@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Optional;
+
 /**
  * @author PangTeen
  * @program Immortal
@@ -22,12 +24,18 @@ public class TwistingVineTalisman extends DurationTalisman {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if(! level.isClientSide){
             EntityUtil.playSound(level, entity, SoundEvents.BONE_MEAL_USE);
-            Vec3 destination = getTargetPosition(entity);
-            TwistingVines vines = new TwistingVines(IMMEntities.TWISTING_VINES.get(), level);
-            vines.setPos(destination);
-            vines.setOwner(entity);
-            vines.setVineHealth(500);
-            level.addFreshEntity(vines);
+            Optional<Vec3> targetOpt = getTargetPosition(entity);
+            if(targetOpt.isPresent()){
+                Vec3 destination = targetOpt.get();
+                TwistingVines vines = new TwistingVines(IMMEntities.TWISTING_VINES.get(), level);
+                vines.setPos(destination);
+                vines.setOwner(entity);
+                vines.setVineHealth(500);
+                level.addFreshEntity(vines);
+            } else {
+                EntityUtil.sendTip(entity, NO_TARGET);
+                return stack;
+            }
         }
         return super.finishUsingItem(stack, level, entity);
     }

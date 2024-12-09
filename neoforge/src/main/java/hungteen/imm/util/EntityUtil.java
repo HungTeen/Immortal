@@ -15,6 +15,7 @@ import hungteen.imm.common.capability.entity.IMMEntityData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,8 +55,10 @@ import java.util.stream.Collectors;
  **/
 public class EntityUtil {
 
-    public static void playSound(Entity entity, SoundEvent sound, SoundSource soundSource) {
-//        NetworkHelper.sendToClient(entity.level(), entity.position(), 64, new PlaySoundPacket(entity.blockPosition(), effectOn, soundSource));
+    public static void sendTip(Entity entity, Component tip){
+        if(entity instanceof Player player){
+            PlayerHelper.sendTipTo(player, tip);
+        }
     }
 
     public static void knockback(LivingEntity target, double strength, double dx, double dz){
@@ -257,8 +260,14 @@ public class EntityUtil {
         consumer.accept(getData(entity));
     }
 
+    /**
+     * TODO 生物也会消耗。
+     */
     public static boolean notConsume(Entity entity) {
-        return entity instanceof Player player && PlayerUtil.notConsume(player);
+        if(entity instanceof Player player){
+            return PlayerUtil.notConsume(player);
+        }
+        return true;
     }
 
     public static void playSound(Level level, Entity entity, SoundEvent soundEvent) {

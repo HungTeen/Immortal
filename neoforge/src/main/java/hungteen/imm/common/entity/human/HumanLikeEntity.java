@@ -317,7 +317,9 @@ public abstract class HumanLikeEntity extends IMMGrowableMob implements HumanLik
                 IMMMemories.UNABLE_MELEE_ATTACK.get(),
                 IMMMemories.UNABLE_RANGE_ATTACK.get(),
                 IMMMemories.NEAREST_BOAT.get(),
-                IMMMemories.NEAREST_PROJECTILE.get()
+                IMMMemories.NEAREST_PROJECTILE.get(),
+                /* Using Item */
+                IMMMemories.USING_ITEM_COOLING_DOWN.get()
         );
     }
 

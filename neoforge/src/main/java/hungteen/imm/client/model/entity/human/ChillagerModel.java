@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 
 /**
@@ -100,6 +101,20 @@ public class ChillagerModel<T extends Chillager> extends AnimatedEntityModel<T> 
 			this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount * 0.5F;
 			this.leftLeg.yRot = 0.0F;
 			this.leftLeg.zRot = 0.0F;
+		}
+
+		if(entity.isUsingItem()){
+			if(entity.getUsedItemHand() == InteractionHand.MAIN_HAND){
+				this.rightArm.xRot = -1;
+				this.rightArm.yRot = -0.5F;
+				this.leftArm.xRot = 0;
+				this.leftArm.yRot = 0F;
+			} else {
+				this.leftArm.xRot = -1;
+				this.leftArm.yRot = 0.5F;
+				this.rightArm.xRot = 0;
+				this.rightArm.yRot = 0F;
+			}
 		}
 
 		this.cape.xRot = entity.capeRotate;

@@ -15,6 +15,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -55,9 +56,8 @@ public class ItemUtil {
         return DyedItemColor.applyDyes(new ItemStack(item), colors.stream().map(DyeItem::byColor).toList());
     }
 
-    public static boolean isFood(ItemStack stack) {
-//        return stack.is;
-        return false;
+    public static boolean isFood(ItemStack stack, LivingEntity living) {
+        return stack.getFoodProperties(living) != null;
     }
 
     public static boolean isArmor(ItemStack stack) {

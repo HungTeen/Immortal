@@ -19,16 +19,14 @@ public class QiParticle extends HTTextureParticle {
     private final SpriteSet sprites;
 
     public QiParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(clientLevel, x, y, z, 0.5D - RANDOM.nextDouble(), ySpeed, 0.5D - RANDOM.nextDouble());
+        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         this.friction = 0.96F;
         this.gravity = 0F;
         this.speedUpWhenYMotionIsBlocked = true;
-        this.yd *= 0.2F;
-        if (xSpeed == 0.0D && zSpeed == 0.0D) {
-            this.xd *= 0.1F;
-            this.zd *= 0.1F;
-        }
+        this.xd = xSpeed;
+        this.yd = ySpeed;
+        this.zd = zSpeed;
 
         this.quadSize *= 0.75F;
         this.lifetime = (int)(8.0D / (Math.random() * 0.8D + 0.2D));

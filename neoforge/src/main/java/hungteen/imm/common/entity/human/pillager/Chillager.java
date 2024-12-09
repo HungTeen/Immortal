@@ -1,7 +1,9 @@
 package hungteen.imm.common.entity.human.pillager;
 
 import com.mojang.serialization.Dynamic;
+import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.IMMSounds;
+import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.entity.ai.IMMActivities;
@@ -19,8 +21,10 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,6 +46,11 @@ public class Chillager extends VillagerLikeEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.32D)
                 .add(Attributes.ARMOR, 6)
                 ;
+    }
+
+    @Override
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
+        return List.of(QiRootTypes.WATER);
     }
 
     @Override

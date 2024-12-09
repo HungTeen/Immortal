@@ -113,8 +113,6 @@ public class IMMVillagerAi {
         brain.addActivity(Activity.IDLE, 10, ImmutableList.of(
                 //寻找目标
                 new StartFighting<>(IMMVillagerAi::findNearestValidAttackTarget),
-                //吃东西
-                new EatFood(),
                 HumanLikeAi.createIdleMovementBehaviors(speed),
                 HumanLikeAi.createIdleLookBehaviors(),
                 new Mock(),
@@ -129,7 +127,6 @@ public class IMMVillagerAi {
         brain.addActivityWithConditions(IMMActivities.MELEE_FIGHT.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, new SwitchMeleeAttackItem(0.05F)),
-                Pair.of(1, new WearArmor()),
 //                Pair.of(1, new MeleeKeepDistance(speed)),
                 // 攻击范围内清除路径，范围外则搜索路径
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
@@ -148,7 +145,6 @@ public class IMMVillagerAi {
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
 //                Pair.of(1, new BackUpIfTooClose<>(64, speed)),
                 Pair.of(1, new SwitchRangeAttackItem(0.08F)),
-                Pair.of(1, new WearArmor()),
                 // 攻击范围内清除路径，范围外则搜索路径
                 Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(speed)),
                 // 用远程攻击
@@ -167,8 +163,6 @@ public class IMMVillagerAi {
         brain.addActivityWithConditions(IMMActivities.ESCAPE.get(), ImmutableList.of(
                 Pair.of(0, StopAttackingIfTargetInvalid.create()),
                 Pair.of(1, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, speed, 12, true)),
-                Pair.of(1, new WearArmor()),
-                Pair.of(2, new EatFood()),
                 Pair.of(3, new UseShield(20, 30)),
                 Pair.of(4, new HumanMeleeAttack(35))
         ), Set.of(Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)));

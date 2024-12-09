@@ -3,7 +3,7 @@ package hungteen.imm.common.entity.human;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import hungteen.imm.common.entity.ai.behavior.BreakBoat;
-import hungteen.imm.common.entity.ai.behavior.EatFood;
+import hungteen.imm.common.entity.ai.behavior.StartUsingItem;
 import hungteen.imm.common.entity.ai.behavior.WearArmor;
 import hungteen.imm.common.tag.IMMEntityTags;
 import net.minecraft.world.entity.EntityType;
@@ -29,7 +29,7 @@ public class HumanLikeAi {
     public static ImmutableList<? extends BehaviorControl<? super HumanLikeEntity>> createCoreBehaviors(float speed) {
         return ImmutableList.of(
                 new BreakBoat(),
-                new EatFood(),
+                StartUsingItem.eatFood(),
                 new Swim(0.8F),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),

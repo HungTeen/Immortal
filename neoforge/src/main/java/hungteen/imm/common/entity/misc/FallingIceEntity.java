@@ -1,12 +1,11 @@
 package hungteen.imm.common.entity.misc;
 
-import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.cultivation.Element;
+import hungteen.imm.common.IMMSounds;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.IMMSounds;
 import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.NBTUtil;
@@ -86,7 +85,9 @@ public class FallingIceEntity extends HTTraceableEntity implements IEntityWithCo
             playSound(IMMSounds.FALLING_ICE_HIT.get());
             ParticleHelper.sendParticles(serverLevel, new BlockParticleOption(ParticleTypes.BLOCK, IMMBlocks.FALLING_ICE.get().defaultBlockState()), getX(), getY(), getZ(), 30, 1.5, 0.2D, 1.5, 0.1D);
             AABB aabb = EntityUtil.getEntityAABB(this).inflate(2, 2, 2);
-            EntityHelper.getPredicateEntities(this, aabb, LivingEntity.class, JavaHelper::alwaysTrue).forEach(target -> {
+            EntityHelper.getPredicateEntities(this, aabb, LivingEntity.class, e -> {
+                return !e.equals(this.getOwner());
+            }).forEach(target -> {
                 target.hurt(DamageUtil.waterElement(this, this.getOwner()), 5F);
                 ElementManager.addPercentElement(target, Element.WATER, false,1.2F);
             });
@@ -104,12 +105,6 @@ public class FallingIceEntity extends HTTraceableEntity implements IEntityWithCo
 
     protected boolean canHitEntity(Entity target) {
         return false;
-//        if (!target.canBeHitByProjectile()) {
-//            return false;
-//        } else {
-//            Entity entity = this.getOwner();
-//            return entity == null || !entity.isPassengerOfSameVehicle(target);
-//        }
     }
 
     @Override

@@ -85,6 +85,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
         if (!accessor.isClientSide()) {
             Optional.ofNullable(this.getSpawnSound()).ifPresent(l -> this.playSound(l, this.getSoundVolume(), this.getVoicePitch()));
             this.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
+            this.setHealth(this.getMaxHealth());
         }
         return super.finalizeSpawn(accessor, difficultyInstance, spawnType, data);
     }

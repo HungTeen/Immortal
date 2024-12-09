@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
  * @program Immortal
  * @create 2023/3/2 20:10
  */
+@Deprecated
 public class WearArmor extends Behavior<HumanLikeEntity> {
 
     private EquipmentSlot slot;

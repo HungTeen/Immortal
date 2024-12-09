@@ -30,6 +30,7 @@ public class IMMMemories {
     public static final HTHolder<MemoryModuleType<Boolean>> UNABLE_RANGE_ATTACK = register("unable_range_attack");
     public static final HTHolder<MemoryModuleType<Projectile>> NEAREST_PROJECTILE = register("nearest_projectile");
     public static final HTHolder<MemoryModuleType<Boolean>> SPELL_COOLING_DOWN = register("spell_cooling_down");
+    public static final HTHolder<MemoryModuleType<Boolean>> USING_ITEM_COOLING_DOWN = register("using_item_cooling_down");
     public static final HTHolder<MemoryModuleType<Boolean>> IDLE_COOLING_DOWN = register("idle_cooling_down");
     public static final HTHolder<MemoryModuleType<ElementCrystal>> ELEMENT_AMETHYST = register("element_amethyst");
     public static final HTHolder<MemoryModuleType<BlockPos>> HOME = register("home");

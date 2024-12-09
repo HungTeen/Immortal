@@ -2,9 +2,12 @@ package hungteen.imm.common.item.talisman;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.client.particle.IMMParticles;
-import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.IMMSounds;
-import hungteen.imm.util.*;
+import hungteen.imm.common.cultivation.QiManager;
+import hungteen.imm.util.EntityUtil;
+import hungteen.imm.util.ItemUtil;
+import hungteen.imm.util.ParticleUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -16,11 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,16 +49,6 @@ public abstract class DurationTalisman extends TalismanItem {
             return InteractionResultHolder.consume(stack);
         }
         return InteractionResultHolder.fail(stack);
-    }
-
-    public Vec3 getTargetPosition(Entity entity){
-        HitResult hitResult = EntityUtil.getHitResult(entity, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY);
-        if(hitResult instanceof EntityHitResult entityHitResult){
-            return entityHitResult.getEntity().position();
-        } else if(hitResult instanceof BlockHitResult blockHitResult){
-            return blockHitResult.getLocation();
-        }
-        return entity.position();
     }
 
     /**
@@ -93,7 +82,7 @@ public abstract class DurationTalisman extends TalismanItem {
         if (level.isClientSide() && remainingUseDuration % 4 == 0) {
             for (int i = 0; i < 4; ++i) {
                 Vec3 pos = ParticleUtil.getUsingItemPos(livingEntity);
-                ParticleUtil.spawnClientParticles(level, IMMParticles.QI.get(), pos, 1, 0.05, 0.05);
+                ParticleUtil.spawnClientParticles(level, IMMParticles.QI.get(), pos, 1, 0.1, 0.1);
             }
         }
     }
