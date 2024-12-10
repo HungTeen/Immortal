@@ -54,8 +54,7 @@ public class AdvancementGen extends HTAdvancementGen {
             HolderLookup.RegistryLookup<Structure> structures = registries.lookup(StructureHelper.get().resourceKey()).get();
             AdvancementHolder imMortal = root(IMMItems.GOURD_SEEDS.get(), "im_mortal", Util.mc().blockTexture("copper_block"))
                     .addCriterion("mortal", PlayerTrigger.TriggerInstance.tick())
-                    .rewards(AdvancementRewards.Builder.recipe(ElixirManager.elixirRecipe(IMMItems.FIVE_FLOWERS_ELIXIR.get()))
-                            .addRecipe(ElixirManager.elixirRecipe(IMMItems.SPIRITUAL_INSPIRATION_ELIXIR.get()))
+                    .rewards(AdvancementRewards.Builder.recipe(ElixirManager.elixirRecipe(IMMItems.INSPIRATION_ELIXIR.get()))
                     ).save(saver, loc("im_mortal"));
             task(imMortal, Items.EMERALD, "spiritual_stone")
                     .addCriterion("get_spiritual_stone", InventoryChangeTrigger.TriggerInstance.hasItems(Items.EMERALD))

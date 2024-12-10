@@ -41,7 +41,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
         PlayerHelper.getClientPlayer().ifPresent(player -> {
             // 灵眼的作用。
             if(PlayerUtil.isSpellOnCircle(player, SpellTypes.SPIRIT_EYES)) {
-                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && CultivationManager.mayHaveRoots(entityAccessor.getEntity())) {
+                if (PlayerUtil.hasLearnedSpell(player, SpellTypes.SPIRIT_EYES, 1) && QiManager.mayHaveRoots(entityAccessor.getEntity())) {
                     List<QiRootType> roots = PlayerUtil.filterSpiritRoots(player, EntityUtil.getRoots(entityAccessor.getEntity()));
                     iTooltip.add(QiRootTypes.getCategory().append(": ").append(QiRootTypes.getRoots(roots)));
                 }
@@ -65,7 +65,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
             // 要开启调试模式。
             if(Util.isDebugMode()){
                 final List<Component> debugComponents = new ArrayList<>();
-                final Map<Element, Float> elements = ElementManager.getElements(entityAccessor.getEntity());
+                final Map<Element, Float> elements = ElementManager.getElementMap(entityAccessor.getEntity());
                 final List<Element> list = PlayerUtil.filterElements(player, Arrays.stream(Element.values()).toList());
                 if(!list.isEmpty()){
                     for (Element element : list) {

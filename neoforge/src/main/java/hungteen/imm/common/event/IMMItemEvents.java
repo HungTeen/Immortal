@@ -14,7 +14,7 @@ public class IMMItemEvents {
     @SubscribeEvent
     public static void gatherComponents(ItemTooltipEvent event){
         // 添加法器标识。
-//        final RealmType type = CultivationManager.getRealm(event.getItemStack());
+//        final RealmType type = CultivationManager.getRank(event.getItemStack());
 //        if(CultivationManager.notCommon(type)){
 //            event.getToolTip().add(1, type.getComponent());
 //        }

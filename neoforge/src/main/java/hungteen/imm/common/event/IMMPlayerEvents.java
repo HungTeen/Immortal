@@ -53,7 +53,7 @@ public class IMMPlayerEvents {
 
     @SubscribeEvent
     public static void onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
-//        if(CultivationManager.getRealm(event.getEntity()).getCultivationType().isSpiritual()){
+//        if(CultivationManager.getRank(event.getEntity()).getCultivationType().isSpiritual()){
 //            EntityUtil.addQiAmount(event.getEntity(), event.getOrb().getValue() * 0.4F);
 //            event.getOrb().discard();
 //            event.setCanceled(true);

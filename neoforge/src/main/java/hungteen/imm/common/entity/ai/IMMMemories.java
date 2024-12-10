@@ -5,7 +5,7 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -32,7 +32,7 @@ public class IMMMemories {
     public static final HTHolder<MemoryModuleType<Boolean>> SPELL_COOLING_DOWN = register("spell_cooling_down");
     public static final HTHolder<MemoryModuleType<Boolean>> USING_ITEM_COOLING_DOWN = register("using_item_cooling_down");
     public static final HTHolder<MemoryModuleType<Boolean>> IDLE_COOLING_DOWN = register("idle_cooling_down");
-    public static final HTHolder<MemoryModuleType<ElementCrystal>> ELEMENT_AMETHYST = register("element_amethyst");
+    public static final HTHolder<MemoryModuleType<ElementAmethyst>> ELEMENT_AMETHYST = register("element_amethyst");
     public static final HTHolder<MemoryModuleType<BlockPos>> HOME = register("home");
 
     private static <U> HTHolder<MemoryModuleType<U>> register(String name){

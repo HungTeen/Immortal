@@ -216,7 +216,7 @@ public class ElixirRoomBlockEntity extends FunctionalFurnaceBlockEntity {
     }
 
     public ArtifactRank getArtifactType() {
-        return RealmManager.getRealm(getBlockState());
+        return RealmManager.getRank(getBlockState());
     }
 
     @Override

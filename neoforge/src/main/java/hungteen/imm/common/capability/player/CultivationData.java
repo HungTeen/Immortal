@@ -159,7 +159,9 @@ public class CultivationData implements HTPlayerData {
     }
 
     public float getCultivation() {
-        return Arrays.stream(ExperienceType.values()).map(xp -> Math.min(CultivationManager.getEachCultivation(playerData.getPlayer(), this.realmType), getExperience(xp))).reduce(0F, Float::sum);
+        return Arrays.stream(ExperienceType.values())
+                .map(xp -> Math.min(CultivationManager.getMaxExperience(playerData.getPlayer(), this.realmType), getExperience(xp)))
+                .reduce(0F, Float::sum);
     }
 
     public void sendExperienceUpdatePacket(ExperienceType type, float value) {
@@ -218,7 +220,7 @@ public class CultivationData implements HTPlayerData {
 
     public RealmNode getRealmNode(boolean update) {
         if (this.realmNodeCache == null || update) {
-            this.realmNodeCache = CultivationManager.findRealmNode(this.realmType);
+            this.realmNodeCache = RealmManager.findRealmNode(this.realmType);
         }
         return this.realmNodeCache;
     }

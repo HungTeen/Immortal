@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.Arrays;
 
@@ -51,12 +50,9 @@ public class ClientHandler {
 //        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
     }
 
-    /**
-     * {@link ClientRegister#setUpClient(FMLClientSetupEvent)}
-     */
     public static void registerCultivatorTypes() {
         Arrays.stream(CultivatorType.values())
-                .filter((type -> type.getProfileUUID().isPresent() || type.getProfileName().isPresent()))
+                .filter((type -> ! type.isCommon()))
                 .forEach(type -> {
                     if (type.getProfileUUID().isPresent()) {
                         SkullBlockEntity.fetchGameProfile(type.getProfileUUID().get()).thenAcceptAsync(opt -> {

@@ -3,7 +3,6 @@ package hungteen.imm.common.item.artifact;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.util.ItemUtil;
@@ -56,7 +55,7 @@ public class WoodBowItem extends BowItem implements ArtifactItem {
 
     public static void attachElementOnArrow(LivingEntity shooter, Projectile projectile, float percent, float maxPercent){
         if(QiManager.hasEnoughQi(shooter, QI_COST)) {
-            List<Element> elements = CultivationManager.getElements(shooter).toList();
+            List<Element> elements = ElementManager.getElements(shooter).toList();
             if (!elements.isEmpty()) {
                 Element element = RandomUtil.choose(shooter.getRandom(), elements);
                 ElementManager.addPercentElement(projectile, element, false, percent, maxPercent);

@@ -80,13 +80,13 @@ public class RealmNode {
     }
 
     @Nullable
-    public RealmNode next() {
+    public List<RealmNode> next() {
         return next(realm.getCultivationType());
     }
 
     @Nullable
-    public RealmNode next(CultivationType type) {
-        return nextRealms.stream().filter(l -> l.realm.getCultivationType() == type).findAny().orElse(null);
+    public List<RealmNode> next(CultivationType type) {
+        return nextRealms.stream().filter(l -> l.realm.getCultivationType() == type).toList();
     }
 
     public void add(RealmType type) {

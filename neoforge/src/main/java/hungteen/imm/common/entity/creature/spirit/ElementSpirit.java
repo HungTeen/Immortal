@@ -18,6 +18,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -169,7 +170,7 @@ public abstract class ElementSpirit extends IMMMob {
     }
 
     @Override
-    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor, MobSpawnType spawnType) {
         return List.of(QiRootTypes.SPIRIT, getSpiritualRoot());
     }
 

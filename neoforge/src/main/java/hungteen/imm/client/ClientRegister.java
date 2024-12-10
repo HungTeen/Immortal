@@ -11,17 +11,20 @@ import hungteen.imm.client.gui.overlay.MeditationOverlay;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
-import hungteen.imm.client.model.entity.*;
+import hungteen.imm.client.model.bake.IMMBakeModels;
+import hungteen.imm.client.model.entity.BiFangModel;
+import hungteen.imm.client.model.entity.GrassCarpModel;
+import hungteen.imm.client.model.entity.SilkWormModel;
 import hungteen.imm.client.model.entity.golem.CopperGolemModel;
 import hungteen.imm.client.model.entity.golem.CreeperGolemModel;
 import hungteen.imm.client.model.entity.golem.IronGolemModel;
 import hungteen.imm.client.model.entity.golem.SnowGolemModel;
+import hungteen.imm.client.model.entity.human.villager.PillagerModel;
+import hungteen.imm.client.model.entity.human.villager.VillagerModel;
 import hungteen.imm.client.model.entity.misc.CubeModel;
 import hungteen.imm.client.model.entity.misc.ElementCrystalModel;
 import hungteen.imm.client.model.entity.misc.TornadoModel;
 import hungteen.imm.client.model.entity.spirit.*;
-import hungteen.imm.client.model.entity.human.villager.PillagerModel;
-import hungteen.imm.client.model.entity.human.villager.VillagerModel;
 import hungteen.imm.client.render.entity.creature.monster.BiFangRender;
 import hungteen.imm.client.render.entity.creature.monster.SharpStakeRender;
 import hungteen.imm.client.render.entity.golem.CopperGolemRender;
@@ -36,7 +39,7 @@ import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
-import hungteen.imm.common.item.elixirs.ElixirItem;
+import hungteen.imm.common.item.elixir.ElixirItem;
 import hungteen.imm.common.item.talisman.DurationTalisman;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
@@ -61,7 +64,6 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
-        ClientHandler.registerCultivatorTypes();
         ev.enqueueWork(() -> {
             ClientHandler.registerScreen();
             ClientHandler.registerItemProperties();
@@ -159,20 +161,20 @@ public class ClientRegister {
 //        });
     }
 
-//    @SubscribeEvent
-//    public static void registerBlockColors(RegisterColorHandlersEvent.Block event){
-//        event.initialize((blockState, getter, pos, id) -> {
-//            if(blockState.getBlock() instanceof GourdGrownBlock gourdGrownBlock){
-//                return gourdGrownBlock.getType().getColor();
-//            }
-//            return ColorHelper.BLACK.rgb();
-//        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
-//    }
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event){
+        event.register((blockState, getter, pos, id) -> {
+            if(blockState.getBlock() instanceof GourdGrownBlock gourdGrownBlock){
+                return gourdGrownBlock.getType().getColor();
+            }
+            return ColorHelper.BLACK.rgb();
+        }, BlockUtil.getGourds().stream().map(Pair::getSecond).toArray(GourdGrownBlock[]::new));
+    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event){
         ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream().map(ElixirItem.class::cast).forEach(elixirItem -> {
-            event.register((stack, id) -> elixirItem.getColor(id), elixirItem);
+            event.register(elixirItem::getColor, elixirItem);
         });
         event.register((stack, id) -> {
             if(stack.getItem() instanceof GourdBlockItem gourdBlockItem){
@@ -196,12 +198,12 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.ModifyBakingResult event) {
-//        IMMBakeModels.registerBakeModels(event);
+        IMMBakeModels.registerBakeModels(event);
     }
 
     @SubscribeEvent
     public static void bakeModel(ModelEvent.RegisterAdditional event) {
-//        IMMBakeModels.registerBakeModels(event);
+        IMMBakeModels.registerBakeModels(event);
     }
 
 }

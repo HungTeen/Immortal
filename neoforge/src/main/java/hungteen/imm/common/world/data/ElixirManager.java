@@ -5,7 +5,7 @@ import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.elixirs.CustomElixirItem;
+import hungteen.imm.common.item.elixir.CustomElixirItem;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -98,9 +98,11 @@ public class ElixirManager extends SavedData {
      * used in item model gen.
      */
     public static ResourceLocation getOuterLayer(Rarity rarity){
-        return rarity == Rarity.COMMON ? Util.prefix("item/elixir_human_layer") :
-                rarity == Rarity.UNCOMMON ? Util.prefix("item/elixir_earth_layer") :
-                        Util.prefix("item/elixir_heaven_layer");
+        return switch (rarity){
+            case RARE -> Util.prefix("item/elixir_earth_layer");
+            case EPIC -> Util.prefix("item/elixir_heaven_layer");
+            default -> Util.prefix("item/elixir_human_layer");
+        };
     }
 
     public static BitSet getElixirValue(ServerLevel level, Item item) {

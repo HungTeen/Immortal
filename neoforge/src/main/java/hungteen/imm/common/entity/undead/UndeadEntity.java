@@ -2,7 +2,7 @@ package hungteen.imm.common.entity.undead;
 
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.util.NBTUtil;
@@ -85,8 +85,8 @@ public abstract class UndeadEntity extends IMMMob implements Enemy {
     }
 
     @Override
-    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
-        return CultivationManager.getQiRoots(accessor.getRandom(), ROOT_COUNT_WEIGHT);
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor, MobSpawnType spawnType) {
+        return QiManager.getQiRoots(accessor.getRandom(), ROOT_COUNT_WEIGHT);
     }
 
     @Override

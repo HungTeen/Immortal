@@ -17,6 +17,8 @@ import hungteen.imm.common.entity.golem.CreeperGolem;
 import hungteen.imm.common.entity.golem.IronGolem;
 import hungteen.imm.common.entity.golem.SnowGolem;
 import hungteen.imm.common.entity.human.HumanLikeEntity;
+import hungteen.imm.common.entity.human.cultivator.MortalityPlayer;
+import hungteen.imm.common.entity.human.cultivator.RealityPlayer;
 import hungteen.imm.common.entity.human.cultivator.WanderingCultivator;
 import hungteen.imm.common.entity.human.pillager.Chillager;
 import hungteen.imm.common.entity.misc.*;
@@ -55,7 +57,10 @@ public interface IMMEntities {
 
     /* Misc */
 
-    HTHolder<EntityType<ElementCrystal>> ELEMENT_AMETHYST = registerEntityType(ElementCrystal::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
+    HTEntitySuit<QiRootCrystal> QI_ROOT_CRYSTAL = registerNonLiving("qi_root_crystal", () -> {
+        return EntityType.Builder.of(QiRootCrystal::new, MobCategory.MISC).sized(1F, 1F).clientTrackingRange(3).updateInterval(4);
+    });
+    HTHolder<EntityType<ElementAmethyst>> ELEMENT_AMETHYST = registerEntityType(ElementAmethyst::new, "element_amethyst", MobCategory.MISC, builder -> builder.sized(0.5F, 1.2F));
     HTEntitySuit<FallingIceEntity> FALLING_ICE = registerNonLiving("falling_ice", () -> {
         return EntityType.Builder.of(FallingIceEntity::new, MobCategory.MISC).sized(3F, 1F).clientTrackingRange(3).updateInterval(10);
     });
@@ -72,6 +77,19 @@ public interface IMMEntities {
 
     /* Human */
 
+    HTEntitySuit<RealityPlayer> REALITY_PLAYER = registerLiving("reality_player", () -> {
+                return EntityType.Builder.of(RealityPlayer::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.95F)
+                        .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
+            }, builder -> builder
+                    .attribute(() -> HumanLikeEntity.createAttributes().build())
+    );
+    HTEntitySuit<MortalityPlayer> MORTALITY_PLAYER = registerLiving("mortality_player", () -> {
+                return EntityType.Builder.of(MortalityPlayer::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.95F)
+                        .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
+            }, builder -> builder
+                    .attribute(() -> HumanLikeEntity.createAttributes().build())
+                    .spawnEgg(ColorHelper.BLACK.rgb(), ColorHelper.WHITE.rgb())
+    );
     HTEntitySuit<WanderingCultivator> WANDERING_CULTIVATOR = registerLiving("wandering_cultivator", () -> {
         return EntityType.Builder.of(WanderingCultivator::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.8F)
                 .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);

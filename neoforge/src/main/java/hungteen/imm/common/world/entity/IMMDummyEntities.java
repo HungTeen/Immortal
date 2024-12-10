@@ -3,6 +3,7 @@ package hungteen.imm.common.world.entity;
 import hungteen.htlib.common.world.entity.DummyEntity;
 import hungteen.htlib.common.world.entity.DummyEntityType;
 import hungteen.htlib.common.world.entity.HTLibDummyEntities;
+import hungteen.imm.common.world.entity.trial.MortalityTrial;
 import hungteen.imm.util.Util;
 
 /**
@@ -12,8 +13,7 @@ import hungteen.imm.util.Util;
  **/
 public interface IMMDummyEntities {
 
-//    public static final DummyEntityType<BreakThroughTrial> BREAK_THROUGH_TRIAL = initialize("break_through_trial", BreakThroughTrial::new);
-    DummyEntityType<SpiritRegion> SPIRIT_REGION = register("spirit_region", SpiritRegion::new);
+    DummyEntityType<MortalityTrial> MORTALITY_TRIAL = register("mortality_trial", MortalityTrial::new);
 
     /**
      * Load the class.

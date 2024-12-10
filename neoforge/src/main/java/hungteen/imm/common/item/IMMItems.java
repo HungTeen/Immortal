@@ -12,7 +12,7 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.common.item.artifact.SpiritualPearlItem;
 import hungteen.imm.common.item.artifact.WoodBowItem;
-import hungteen.imm.common.item.elixirs.*;
+import hungteen.imm.common.item.elixir.*;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.*;
 import hungteen.imm.common.item.talisman.*;
@@ -61,10 +61,9 @@ public interface IMMItems {
 
     /* Elixir Tab Items */
 
-    HTHolder<Item> FIVE_FLOWERS_ELIXIR = ITEMS.register("five_flowers_elixir", FiveFlowersElixir::new);
-    HTHolder<Item> SPIRITUAL_INSPIRATION_ELIXIR = ITEMS.register("spiritual_inspiration_elixir", SpiritualInspirationElixir::new);
-    HTHolder<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", GatherBreathElixir::new);
-    HTHolder<Item> REFINE_BREATH_ELIXIR = ITEMS.register("refine_breath_elixir", RefineBreathElixir::new);
+    HTHolder<Item> INSPIRATION_ELIXIR = ITEMS.register("inspiration_elixir", InspirationElixir::new);
+//    HTHolder<Item> GATHER_BREATH_ELIXIR = ITEMS.register("gather_breath_elixir", GatherBreathElixir::new);
+//    HTHolder<Item> REFINE_BREATH_ELIXIR = ITEMS.register("refine_breath_elixir", RefineBreathElixir::new);
     //    public static final HTHolder<Item> ANTIDOTE_ELIXIR = ITEMS.initialize("antidote_elixir", AntidoteElixir::new);
 //    public static final HTHolder<Item> SPIRIT_RECOVERY_ELIXIR = ITEMS.initialize("spirit_recovery_elixir", SpiritualElixir.SpiritRecoveryElixir::new);
 //    public static final HTHolder<Item> ABSTINENCE_ELIXIR = ITEMS.initialize("abstinence_elixir", AbstinenceElixir::new);
@@ -85,9 +84,6 @@ HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(
 //    public static final HTHolder<Item> BRONZE_SHOVEL = ITEMS.initialize("bronze_shovel", () -> new ShovelItem(ImmortalTiers.BRONZE, 7));
 //    public static final HTHolder<Item> BRONZE_HOE = ITEMS.initialize("bronze_hoe", () -> new HoeItem(ImmortalTiers.BRONZE, 7));
 //    public static final HTHolder<Item> BRONZE_HAMMER = ITEMS.initialize("bronze_hammer", () -> new HammerItem(ImmortalTiers.BRONZE));
-
-    /* Talisman Tab Items */
-
     HTHolder<Item> LIGHTNING_TALISMAN = ITEMS.register("lightning_talisman", LightningTalisman::new);
     HTHolder<Item> TWISTING_VINE_TALISMAN = ITEMS.register("twisting_vine_talisman", TwistingVineTalisman::new);
     HTHolder<Item> FALLING_ICE_TALISMAN = ITEMS.register("falling_ice_talisman", FallingIceTalisman::new);
@@ -125,12 +121,5 @@ HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(
     static void initialize(IEventBus event){
         NeoHelper.initRegistry(registry(), event);
     }
-
-//    /**
-//     * initialize spawn eggs
-//     */
-//    private static HTHolder<ForgeSpawnEggItem> registerSpawnEgg(String name, HTHolder<? extends EntityType<? extends Mob>> entityType, int color1, int color2){
-//        return ITEMS.initialize(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, color1, color2, new Item.Properties().tab(PVZItemTabs.PVZ_MISC)));
-//    }
 
 }

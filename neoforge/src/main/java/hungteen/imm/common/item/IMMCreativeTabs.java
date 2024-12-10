@@ -7,15 +7,14 @@ import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.api.artifact.ArtifactBlock;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.item.elixirs.CustomElixirItem;
-import hungteen.imm.common.item.elixirs.ElixirItem;
+import hungteen.imm.common.item.elixir.CustomElixirItem;
+import hungteen.imm.common.item.elixir.ElixirItem;
 import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.ItemUtil;
@@ -28,10 +27,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -80,9 +76,8 @@ public interface IMMCreativeTabs {
                             if(itemSet.contains(item)) return false; // 已经被添加，不再考虑。
                             if(item instanceof ElixirItem) return false; // 排除丹药。
                             if(item instanceof SecretManualItem) return false; // 排除秘籍。
-                            if(item instanceof ArtifactItem) return false; // 排除物品法器。
+                            if(item instanceof ArtifactItem) return false; // 排除法器。
                             if(item instanceof BlockItem blockItem) {
-                                if (blockItem.getBlock() instanceof ArtifactBlock) return false; // 排除方块法器。
                                 if(blockItem.getBlock() instanceof CushionBlock) return false; // 排除坐垫。
                             }
                             if(item instanceof RuneItem) return false;
@@ -92,7 +87,7 @@ public interface IMMCreativeTabs {
     );
 
     HTHolder<CreativeModeTab> ELIXIRS = register("elixirs", builder ->
-            builder.icon(() -> new ItemStack((IMMItems.FIVE_FLOWERS_ELIXIR.get())))
+            builder.icon(() -> new ItemStack((IMMItems.INSPIRATION_ELIXIR.get())))
                     .withTabsBefore(MATERIALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         output.acceptAll(ItemHelper.get().filterValues(ElixirItem.class::isInstance).stream()
@@ -116,9 +111,9 @@ public interface IMMCreativeTabs {
                     .withTabsBefore(SECRET_MANUALS.getRegistryName())
                     .displayItems((parameters, output) -> {
                         ItemHelper.get().filterValues(item -> {
-                            return RealmManager.notCommon(RealmManager.getRealm(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
+                            return RealmManager.notCommon(RealmManager.getRank(new ItemStack(item))) && item != IMMBlocks.RUNE_WORK_BENCH.get().asItem();
                         }).stream().map(ItemStack::new)
-//                                .sorted(Comparator.comparingInt(l -> RealmManager.getRealm(l).getRealmValue()))
+                                .sorted(Comparator.comparingInt(l -> RealmManager.getRank(l).ordinal()))
                                 .forEach(output::accept);
                     })
     );
@@ -147,20 +142,16 @@ public interface IMMCreativeTabs {
 //            });
         } else if (event.getTabKey().equals(CreativeModeTabs.FUNCTIONAL_BLOCKS)) {
             BlockUtil.getWoolCushions().forEach(pair -> event.accept(new ItemStack(pair.getSecond())));
-//            event.acceptAll(List.of(
-//                    new ItemStack(IMMBlocks.TELEPORT_ANCHOR.get()),
-//                    new ItemStack(IMMBlocks.COPPER_FURNACE.get())
-//            ));
         } else if (event.getTabKey().equals(CreativeModeTabs.FOOD_AND_DRINKS)) {
-//            getFoodItems().forEach(event::accept);
+            getFoodItems().forEach(event::accept);
         } else if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
             getBannerPatterns().forEach(event::accept);
         }
     }
 
-//    private static List<Item> getFoodItems(){
-//        return Util.get().filterValues(ItemHelper.get(), Item::isEdible);
-//    }
+    private static List<Item> getFoodItems(){
+        return Util.get().filterValues(ItemHelper.get(), stack -> stack.getDefaultInstance().getFoodProperties(null) != null);
+    }
 
     private static List<Item> getBannerPatterns(){
         return ItemUtil.getBannerPatterns().stream().map(Map.Entry::getValue).toList();

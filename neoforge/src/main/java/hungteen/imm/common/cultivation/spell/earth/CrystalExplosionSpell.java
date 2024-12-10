@@ -2,7 +2,7 @@ package hungteen.imm.common.cultivation.spell.earth;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.HTHitResult;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -23,9 +23,9 @@ public class CrystalExplosionSpell extends SpellTypeImpl {
     @Override
     public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
         final AABB aabb = EntityHelper.getEntityAABB(owner, 8F, 3F);
-        final List<ElementCrystal> amethysts = EntityHelper.getPredicateEntities(owner, aabb, ElementCrystal.class, EntityHelper::isEntityValid);
+        final List<ElementAmethyst> amethysts = EntityHelper.getPredicateEntities(owner, aabb, ElementAmethyst.class, EntityHelper::isEntityValid);
         if (!amethysts.isEmpty()) {
-            amethysts.forEach(ElementCrystal::explode);
+            amethysts.forEach(ElementAmethyst::explode);
             return true;
         } else {
             this.sendTip(owner, "no_crystal_around");

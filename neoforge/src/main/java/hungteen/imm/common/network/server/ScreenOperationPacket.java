@@ -40,7 +40,7 @@ public record ScreenOperationPacket(OperationType operationType, int value) impl
                 CultivationManager.meditate(player);
             }
             case BREAK_THROUGH -> {
-
+                CultivationManager.breakThroughStart(player);
             }
             case SET_SPAWN_POINT -> {
                 // See SetSpawnCommand.

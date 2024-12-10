@@ -128,7 +128,7 @@ public class FlameGourd extends ArtifactItemImpl {
      */
     public static boolean canStoreFlame(ItemStack stack, FlameGourd gourd, SpiritualFlame flame){
         return false;
-//        return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRealm());
+//        return canStoreFlame(gourd.getArtifactRealm(stack), flame.getRank());
     }
 
     public static boolean canStoreFlame(RealmType artifactType, RealmType realmType){

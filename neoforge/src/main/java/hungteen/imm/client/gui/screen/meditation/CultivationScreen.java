@@ -130,22 +130,22 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         final Player player = ClientUtil.player();
         switch (item) {
             case ELIXIR_CULTIVATION -> {
-                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceType.ELIXIR), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.ELIXIR), x, y, PlayerUtil.getExperience(player, ExperienceType.ELIXIR), CultivationManager.getMaxExperience(player), false);
             }
             case FIGHT_CULTIVATION -> {
-                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceType.FIGHTING), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.FIGHTING), x, y, PlayerUtil.getExperience(player, ExperienceType.FIGHTING), CultivationManager.getMaxExperience(player), false);
             }
             case LEARN_CULTIVATION -> {
-                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceType.SPELL), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.SPELL), x, y, PlayerUtil.getExperience(player, ExperienceType.SPELL), CultivationManager.getMaxExperience(player), false);
             }
 //            case MISSION_CULTIVATION -> {
-//                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), PlayerUtil.getEachMaxCultivation(player), false);
+//                this.renderProgressWithText(graphics, RealmManager.getExperienceComponent(ExperienceTypes.MISSION), x, y, PlayerUtil.getExperience(player, ExperienceTypes.MISSION), CultivationManager.getMaxExperience(player), false);
 //            }
             case PERSONALITY_CULTIVATION -> {
-                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceType.PERSONALITY), PlayerUtil.getEachMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getExperienceComponent(ExperienceType.PERSONALITY), x, y, PlayerUtil.getExperience(player, ExperienceType.PERSONALITY), CultivationManager.getMaxExperience(player), false);
             }
             case CULTIVATION -> {
-                this.renderProgressWithText(graphics, CultivationManager.getCultivation(), x, y, PlayerUtil.getCultivation(player), PlayerUtil.getMaxCultivation(player), false);
+                this.renderProgressWithText(graphics, CultivationManager.getCultivation(), x, y, CultivationManager.getCultivation(player), CultivationManager.getMaxCultivation(player), false);
             }
             case KARMA -> {
                 final float value = KarmaManager.calculateKarma(ClientUtil.player());

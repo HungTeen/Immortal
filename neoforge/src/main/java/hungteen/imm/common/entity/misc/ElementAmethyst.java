@@ -20,9 +20,9 @@ import net.minecraft.world.phys.AABB;
  * @author HungTeen
  * @create 2023-09-18 12:49
  **/
-public class ElementCrystal extends HTEntity {
+public class ElementAmethyst extends HTEntity {
 
-    public ElementCrystal(EntityType<?> type, Level world) {
+    public ElementAmethyst(EntityType<?> type, Level world) {
         super(type, world);
     }
 
@@ -62,7 +62,7 @@ public class ElementCrystal extends HTEntity {
             final double distance = dx * dx + dz * dz;
             final float percent = (float) (1 - distance / 8);
             if (percent > 0) {
-                ElementManager.getElements(this).forEach((element, value) -> {
+                ElementManager.getElementMap(this).forEach((element, value) -> {
                     if (element != Element.EARTH) {
                         ElementManager.addElementAmount(target, element, false, value * percent);
                     }

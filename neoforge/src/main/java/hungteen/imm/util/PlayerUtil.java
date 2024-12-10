@@ -9,7 +9,6 @@ import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.capability.player.SpellData;
-import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
@@ -110,7 +109,7 @@ public class PlayerUtil {
         setData(player, l -> {
             CultivationData cultivationData = l.getCultivationData();
             cultivationData.clearSpiritualRoot();
-            CultivationManager.getQiRoots(player.getRandom()).forEach(cultivationData::addRoot);
+            QiManager.getQiRoots(player.getRandom()).forEach(cultivationData::addRoot);
         });
     }
 
@@ -254,24 +253,19 @@ public class PlayerUtil {
         setData(player, data -> data.getCultivationData().addExperience(type, value));
     }
 
+    public static void adjustExperience(Player player, ExperienceType type, float percent) {
+        setData(player, data -> {
+            float experience = data.getCultivationData().getExperience(type);
+            data.getCultivationData().setExperience(type, experience * percent);
+        });
+    }
+
     public static float getExperience(Player player, ExperienceType type) {
         return getData(player, l -> l.getCultivationData().getExperience(type));
     }
 
     public static float getCultivation(Player player) {
         return getData(player, l -> l.getCultivationData().getCultivation());
-    }
-
-    public static float getEachMaxCultivation(Player player) {
-        return getData(player, l -> CultivationManager.getEachCultivation(player, l.getCultivationData().getRealmType()));
-    }
-
-    public static float getMaxCultivation(Player player) {
-        return getData(player, l -> CultivationManager.getRequiredCultivation(player, l.getCultivationData().getRealmType()));
-    }
-
-    public static boolean reachThreshold(Player player) {
-        return CultivationManager.hasThreshold(player) || getCultivation(player) >= getMaxCultivation(player);
     }
 
     /* Operations about Player Range Data */
@@ -343,7 +337,7 @@ public class PlayerUtil {
      * @return 玩家是否坐在坐垫上。
      */
     public static boolean sitOnCushion(Player player){
-        return BlockUtil.isCushion(player.level(), player.blockPosition());
+        return BlockUtil.isCushion(player.level(), player.blockPosition()) || BlockUtil.isCushion(player.level(), player.blockPosition().above());
     }
 
     public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {

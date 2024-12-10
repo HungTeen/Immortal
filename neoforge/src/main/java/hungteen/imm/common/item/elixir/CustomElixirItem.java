@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.elixirs;
+package hungteen.imm.common.item.elixir;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -6,7 +6,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class CustomElixirItem extends ElixirItem {
     private static final String EFFECTS = "ElixirEffects";
 
     public CustomElixirItem() {
-        super(ColorHelper.BLACK.rgb());
+        super(new Properties(), ColorHelper.BLACK.rgb());
     }
 
     @Override
@@ -55,8 +54,4 @@ public class CustomElixirItem extends ElixirItem {
         return new ListTag();
     }
 
-    @Override
-    public Rarity getElixirRarity() {
-        return Rarity.UNCOMMON;
-    }
 }

@@ -25,6 +25,7 @@ public class CultivatorRender<T extends Cultivator> extends LivingEntityRenderer
 
     protected CultivatorModel<T> defaultModel = null;
     protected CultivatorModel<T> slimModel = null;
+    protected PlayerSkin insecureSkin;
 
     public CultivatorRender(EntityRendererProvider.Context context) {
         super(context, new CultivatorModel<>(IMMEntityRenderers.WANDERING_CULTIVATOR.getPart(context, ModelLayerType.MAIN), false), 0.5F);
@@ -66,8 +67,10 @@ public class CultivatorRender<T extends Cultivator> extends LivingEntityRenderer
         if (entity.getCultivatorType().getSkinLocation().isPresent()) {
             return entity.getCultivatorType().getSkinLocation().get();
         } else if (entity.getCultivatorType().getGameProfile().isPresent()) {
-            PlayerSkin insecureSkin = Minecraft.getInstance().getSkinManager().getInsecureSkin(entity.getCultivatorType().getGameProfile().get());
-            entity.getCultivatorType().setSlim(insecureSkin.model() == PlayerSkin.Model.SLIM);
+            if(insecureSkin == null){
+                insecureSkin = Minecraft.getInstance().getSkinManager().getInsecureSkin(entity.getCultivatorType().getGameProfile().get());
+                entity.getCultivatorType().setSlim(insecureSkin.model() == PlayerSkin.Model.SLIM);
+            }
             return insecureSkin.texture();
         }
         return DefaultPlayerSkin.getDefaultTexture();

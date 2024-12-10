@@ -7,18 +7,24 @@ import hungteen.htlib.common.registry.suit.HTEntitySuit;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.human.ChillagerModel;
 import hungteen.imm.client.model.entity.human.CultivatorModel;
+import hungteen.imm.client.model.entity.human.PlayerLikeModel;
+import hungteen.imm.client.model.entity.misc.CubeModel;
 import hungteen.imm.client.model.entity.undead.QiSkeletonModel;
 import hungteen.imm.client.model.entity.undead.QiZombieModel;
 import hungteen.imm.client.render.entity.human.ChillagerRender;
 import hungteen.imm.client.render.entity.human.CultivatorRender;
+import hungteen.imm.client.render.entity.human.RealityPlayerRender;
 import hungteen.imm.client.render.entity.misc.FallingIceRender;
+import hungteen.imm.client.render.entity.misc.QiRootCrystalRender;
 import hungteen.imm.client.render.entity.misc.TwistingVinesRender;
 import hungteen.imm.client.render.entity.undead.QiSkeletonRender;
 import hungteen.imm.client.render.entity.undead.QiZombieRender;
 import hungteen.imm.common.entity.IMMEntities;
+import hungteen.imm.common.entity.human.cultivator.RealityPlayer;
 import hungteen.imm.common.entity.human.cultivator.WanderingCultivator;
 import hungteen.imm.common.entity.human.pillager.Chillager;
 import hungteen.imm.common.entity.misc.FallingIceEntity;
+import hungteen.imm.common.entity.misc.QiRootCrystal;
 import hungteen.imm.common.entity.misc.TwistingVines;
 import hungteen.imm.common.entity.undead.QiSkeleton;
 import hungteen.imm.common.entity.undead.QiZombie;
@@ -37,11 +43,23 @@ public interface IMMEntityRenderers {
 
     /* Misc */
 
+    HTClientEntitySuit<QiRootCrystal> QI_ROOT_CRYSTAL = register(IMMEntities.QI_ROOT_CRYSTAL, builder -> builder
+            .renderer(QiRootCrystalRender::new)
+            .mainLayer(CubeModel::createBodyLayer)
+    );
     HTClientEntitySuit<FallingIceEntity> FALLING_ICE = registerSimple(IMMEntities.FALLING_ICE, FallingIceRender::new);
     HTClientEntitySuit<TwistingVines> TWISTING_VINES = registerSimple(IMMEntities.TWISTING_VINES, TwistingVinesRender::new);
 
     /* Human */
-
+    HTClientEntitySuit<RealityPlayer> REALITY_PLAYER = register(IMMEntities.REALITY_PLAYER, builder -> builder
+            .renderer(RealityPlayerRender::new)
+            .mainLayer(() -> PlayerLikeModel.createBodyLayer(CubeDeformation.NONE, false))
+            .layer(ModelLayerType.INNER_ARMOR, IMMModelLayers::innerArmor)
+            .layer(ModelLayerType.OUTER_ARMOR, IMMModelLayers::outerArmor)
+            .layer(ModelLayerType.MAIN_SLIM, () -> PlayerLikeModel.createBodyLayer(CubeDeformation.NONE, true))
+            .layer(ModelLayerType.INNER_ARMOR_SLIM, IMMModelLayers::innerArmor)
+            .layer(ModelLayerType.OUTER_ARMOR_SLIM, IMMModelLayers::outerArmor)
+    );
     HTClientEntitySuit<WanderingCultivator> WANDERING_CULTIVATOR = register(IMMEntities.WANDERING_CULTIVATOR, builder -> builder
             .renderer(CultivatorRender::new)
             .mainLayer(() -> CultivatorModel.createBodyLayer(CubeDeformation.NONE, false))

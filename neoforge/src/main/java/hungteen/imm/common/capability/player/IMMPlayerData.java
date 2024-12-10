@@ -4,9 +4,11 @@ import com.mojang.serialization.Codec;
 import hungteen.htlib.api.registry.EnumEntry;
 import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.capability.HTPlayerData;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.network.MiscDataPacket;
 import hungteen.imm.common.network.SectRelationPacket;
@@ -212,8 +214,14 @@ public class IMMPlayerData implements HTPlayerData {
     }
 
     public void setFloatData(FloatData rangeData, float value) {
-        if (rangeData == FloatData.QI_AMOUNT) {
-            value = Mth.clamp(value, 0, PlayerUtil.getMaxQi(player));
+        switch (rangeData){
+            case QI_AMOUNT -> value = Mth.clamp(value, 0, PlayerUtil.getMaxQi(player));
+            case BREAK_THROUGH_PROGRESS -> {
+                value = Mth.clamp(value, 0, 1);
+                if(value == 1 && getPlayer() instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.holder(), 6000, getCultivationData().getRealmType().getRealmLevel().level()));
+                }
+            }
         }
         floatMap.put(rangeData, value);
         sendFloatDataPacket(rangeData, value);

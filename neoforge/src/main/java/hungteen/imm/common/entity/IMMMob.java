@@ -94,7 +94,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
      * 加入世界前的最后处理。
      */
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
-        this.qiRoots.addAll(this.getInitialRoots(accessor));
+        this.qiRoots.addAll(this.getInitialRoots(accessor, spawnType));
         this.updateRealm(this.getInitialRealm(accessor, difficultyInstance));
         getInitialSpells(accessor, difficultyInstance, this.getRealm()).forEach(spell -> this.learnedSpells.put(spell.spell(), spell.level()));
     }
@@ -102,7 +102,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     /**
      * 随机初始化灵根。
      */
-    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor, MobSpawnType spawnType) {
         return List.of();
     }
 
@@ -134,7 +134,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
 
     public List<Spell> getInitialSpells(ServerLevelAccessor accessor, DifficultyInstance difficulty, RealmType realm) {
         List<Spell> spells = new ArrayList<>();
-        Set<Element> elements = CultivationManager.getElements(this).collect(Collectors.toSet());
+        Set<Element> elements = ElementManager.getElements(this).collect(Collectors.toSet());
         for (Element element : elements) {
             spells.addAll(getRandomSpells(accessor.getRandom(), element, realm));
         }

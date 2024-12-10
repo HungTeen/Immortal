@@ -10,13 +10,8 @@ import hungteen.htlib.api.registry.SimpleEntry;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.capability.player.IMMPlayerData;
-import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.cultivation.SpellManager;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.world.levelgen.IMMLevels;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.util.PlayerUtil;
@@ -380,7 +375,7 @@ public class IMMCommand {
 
     private static int setRealm(CommandSourceStack source, Collection<? extends ServerPlayer> targets, RealmType realm, boolean force) {
         for (ServerPlayer player : targets) {
-            final boolean result = CultivationManager.checkAndSetRealm(player, realm, force);
+            final boolean result = RealmManager.checkAndSetRealm(player, realm, force);
             final Component info = result ?realm.getComponent() : COMMAND_CULTIVATION_NOT_ENOUGH;
             PlayerHelper.sendMsgTo(player, info);
             source.sendSuccess(() -> getPlayerInfo(player, info), true);

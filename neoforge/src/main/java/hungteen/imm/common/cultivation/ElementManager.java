@@ -9,7 +9,7 @@ import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.capability.entity.IMMEntityData;
 import hungteen.imm.common.entity.IMMAttributes;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMEntityTags;
 import hungteen.imm.util.Colors;
@@ -31,11 +31,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
+ * 管理元素相关方法。
  * @author PangTeen
  * @program Immortal
  * @create 2023/7/1 15:19
@@ -45,8 +49,8 @@ public class ElementManager {
     public static final int SYNC_UPDATE_CD = 20;
     public static final float ONCE_COST_BASELINE = 20F;
     public static final float DURATION_COST_BASELINE = 0.25F;
-    public static final double DECAY_SPEED = 0.02;
-    public static final double DECAY_VALUE = 0.05;
+    public static final double DEFAULT_DECAY_SPEED = 0.02;
+    public static final double DEFAULT_DECAY_VALUE = 0.05;
     private static final Map<Element, Element> TARGET_ELEMENTS = new EnumMap<>(Element.class);
     private static final Map<Element, TagKey<Block>> ELEMENT_BLOCK_TAGS = new EnumMap<>(Element.class);
     private static final Map<Element, Supplier<SimpleParticleType>> ELEMENT_PARTICLE_MAP = new EnumMap<>(Element.class);
@@ -126,8 +130,9 @@ public class ElementManager {
     public static void clientTickElements(Level level, Entity entity) {
         if (level.getRandom().nextFloat() < 0.2F) {
             for (Element element : Element.values()) {
+                // 业元素不显示粒子。
                 if (element == Element.SPIRIT) {
-                    continue; // 业元素不显示粒子。
+                    continue;
                 }
                 final float elementAmount = getAmount(entity, element, false);
                 final int particleCount = Math.min(Mth.ceil(elementAmount / 15), 5);
@@ -158,16 +163,15 @@ public class ElementManager {
      * @return 越大衰减越快。
      */
     public static float getDecayFactor(Entity entity) {
+        // 实体有对应衰减属性。
         if (entity instanceof LivingEntity living && living.getAttributes().hasAttribute(IMMAttributes.ELEMENT_DECAY_FACTOR.holder())) {
             return (float) living.getAttributeValue(IMMAttributes.ELEMENT_DECAY_FACTOR.holder());
         }
-        if(entity instanceof Projectile){
-            return 0.4F;
-        }
-        if (entity instanceof ElementCrystal) {
-            return 0.25F;
-        }
-        return 1F;
+        return switch (entity){
+            case Projectile ignored -> 0.4F;
+            case ElementAmethyst ignored -> 0.25F;
+            default -> 1;
+        };
     }
 
     public static float getDecayAmount(Entity entity, Element element, boolean robust) {
@@ -188,13 +192,11 @@ public class ElementManager {
     }
     
     public static float getDecaySpeed(){
-        return 0.02F;
-//        return IMMConfigs.elementSettings().elementDecaySpeed.get().floatValue();
+        return IMMConfigs.elementSettings().elementDecaySpeed.get().floatValue();
     }
     
     public static float getDecayValue(){
-        return 0.05F;
-//        return IMMConfigs.elementSettings().elementDecayValue.get().floatValue();
+        return IMMConfigs.elementSettings().elementDecayValue.get().floatValue();
     }
 
     /**
@@ -233,6 +235,17 @@ public class ElementManager {
                 }
             }
         }
+    }
+
+    /**
+     * @return 获取实体的元素。
+     */
+    public static Stream<Element> getElements(Entity entity){
+        Set<Element> elements = new HashSet<>();
+        QiManager.getRoots(entity).forEach(root -> {
+            elements.addAll(root.getElements());
+        });
+        return elements.stream();
     }
 
     /**
@@ -350,7 +363,7 @@ public class ElementManager {
         EntityUtil.setData(entity, IMMEntityData::clearElements);
     }
 
-    public static Map<Element, Float> getElements(Entity entity) {
+    public static Map<Element, Float> getElementMap(Entity entity) {
         return EntityUtil.getData(entity, IMMEntityData::getElementMap);
     }
 

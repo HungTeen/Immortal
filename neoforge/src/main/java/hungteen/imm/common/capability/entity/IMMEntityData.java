@@ -1,5 +1,7 @@
 package hungteen.imm.common.capability.entity;
 
+import hungteen.htlib.common.world.entity.DummyEntity;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.cultivation.Element;
@@ -7,9 +9,12 @@ import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.ElementReactions;
 import hungteen.imm.common.network.client.EntityElementPacket;
+import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.util.MathUtil;
+import hungteen.imm.util.NBTUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
@@ -33,6 +38,7 @@ public class IMMEntityData implements INBTSerializable<CompoundTag> {
     private final Map<ElementReaction, Float> activeReactions = new HashMap<>();
     private Entity lastAttachedEntity = null;
     private float quenchBladeDamage = 0;
+    private int trialId;
     private boolean dirty = false;
 
     public static IMMEntityData create(IAttachmentHolder holder){
@@ -75,6 +81,7 @@ public class IMMEntityData implements INBTSerializable<CompoundTag> {
             tag.putInt("LastAttachedEntity", this.lastAttachedEntity.getId());
         }
         tag.putFloat("QuenchBladeDamage", this.quenchBladeDamage);
+        tag.putInt("TrialId", this.trialId);
         return tag;
     }
 
@@ -113,6 +120,7 @@ public class IMMEntityData implements INBTSerializable<CompoundTag> {
         if(tag.contains("QuenchBladeDamage")){
             this.quenchBladeDamage = tag.getFloat("QuenchBladeDamage");
         }
+        NBTUtil.read(tag, tag::getInt, "TrialId", this::setTrialId);
     }
 
     public void tick() {
@@ -275,6 +283,22 @@ public class IMMEntityData implements INBTSerializable<CompoundTag> {
 
     public float getQuenchBladeDamage() {
         return quenchBladeDamage;
+    }
+
+    public int getTrialId() {
+        return trialId;
+    }
+
+    public void setTrialId(int trialId) {
+        this.trialId = trialId;
+    }
+
+    public Optional<BreakThroughTrial> getTrial(ServerLevel serverLevel){
+        Optional<DummyEntity> opt = DummyEntityManager.getDummyEntity(serverLevel, this.trialId);
+        if(opt.isPresent() && opt.get() instanceof BreakThroughTrial trial){
+            return Optional.of(trial);
+        }
+        return Optional.empty();
     }
 
     /**

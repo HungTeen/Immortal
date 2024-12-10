@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -43,11 +42,13 @@ public abstract class IMMGrowableMob extends IMMMob {
     @Override
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
-        this.onAgeChangeTo(getRandomSpawnAge().sample(accessor.getRandom()), true);
+        if(spawnType != MobSpawnType.SPAWN_EGG){
+            this.onAgeChangeTo(getInitialAge(accessor, difficultyInstance), true);
+        }
     }
 
-    public IntProvider getRandomSpawnAge(){
-        return UniformInt.of(1, this.getMaxAge());
+    public int getInitialAge(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance){
+        return UniformInt.of(1, this.getMaxAge()).sample(accessor.getRandom());
     }
 
     @Override

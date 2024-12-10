@@ -4,6 +4,7 @@ import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.ElementManager;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.reaction.GenerationReaction;
 import hungteen.imm.common.cultivation.reaction.GildingReaction;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
@@ -84,9 +85,18 @@ public class IMMLivingEvents {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void preLivingDamageHighly(LivingDamageEvent.Pre event){
+        if(event.getEntity().level() instanceof ServerLevel level) {
+            RealmManager.realmAttackGap(event);
+        }
+    }
+
     @SubscribeEvent
     public static void preLivingDamage(LivingDamageEvent.Pre event){
-        InhibitionReaction.cut(event);
+        if(event.getEntity().level() instanceof ServerLevel level) {
+            InhibitionReaction.cut(event);
+        }
     }
 
     @SubscribeEvent

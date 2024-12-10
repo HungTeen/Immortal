@@ -5,10 +5,11 @@ import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.RegistryHandler;
 import hungteen.imm.common.advancement.AdvancementHandler;
 import hungteen.imm.common.command.IMMCommandHandler;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
 import hungteen.imm.data.DataGenHandler;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -56,7 +57,8 @@ public class IMMInitializer {
         event.enqueueWork(() -> {
 ////            PotionRecipeHandler.registerPotionRecipes();
             RegistryHandler.registerCompostable();
-            CultivationManager.init();
+            VanillaCultivationCompat.fillEntityMap();
+            RealmNode.updateRealmTree();
         });
         NetworkHandler.init();
     }

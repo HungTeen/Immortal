@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.elixirs;
+package hungteen.imm.common.item.elixir;
 
 /**
  * @program Immortal
@@ -19,6 +19,6 @@ public class FoundationElixir {
 //
 //    @Override
 //    protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-//        return same(RealmTypes.SPIRITUAL_LEVEL_3).apply(getRealm(livingEntity));
+//        return same(RealmTypes.SPIRITUAL_LEVEL_3).apply(getRank(livingEntity));
 //    }
 }

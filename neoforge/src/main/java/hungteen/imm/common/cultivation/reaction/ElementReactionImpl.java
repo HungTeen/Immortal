@@ -4,7 +4,7 @@ import hungteen.htlib.util.helper.RandomHelper;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.entity.IMMEntities;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
@@ -65,8 +65,8 @@ public abstract class ElementReactionImpl implements ElementReaction {
         });
     }
 
-    protected Optional<ElementCrystal> spawnAmethyst(Entity entity) {
-        final ElementCrystal amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
+    protected Optional<ElementAmethyst> spawnAmethyst(Entity entity) {
+        final ElementAmethyst amethyst = IMMEntities.ELEMENT_AMETHYST.get().create(entity.level());
         if (amethyst != null) {
             amethyst.setPos(entity.position());
             final double dx = RandomHelper.doubleRange(entity.level().getRandom(), 0.1F);

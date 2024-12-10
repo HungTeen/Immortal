@@ -6,7 +6,7 @@ import hungteen.imm.client.util.RenderUtil;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.entity.misc.ElementCrystalModel;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.util.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +21,7 @@ import net.minecraft.util.FastColor;
  * @author HungTeen
  * @create 2023-09-18 20:30
  **/
-public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
+public class ElementCrystalRender extends EntityRenderer<ElementAmethyst> {
 
     private static final ResourceLocation TEXTURE = Util.get().entityTexture("element_crystal");
     private static final RenderType CUTOUT = RenderType.entityCutoutNoCull(TEXTURE);
@@ -36,7 +36,7 @@ public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
     }
 
     @Override
-    public void render(ElementCrystal entityIn, float entityYaw, float partialTicks, PoseStack stack,
+    public void render(ElementAmethyst entityIn, float entityYaw, float partialTicks, PoseStack stack,
                        MultiBufferSource bufferIn, int packedLightIn) {
         final HTColor color = ElementManager.getElementColor(entityIn, false);
         stack.pushPose();
@@ -48,7 +48,7 @@ public class ElementCrystalRender extends EntityRenderer<ElementCrystal> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ElementCrystal entity) {
+    public ResourceLocation getTextureLocation(ElementAmethyst entity) {
         return null;
     }
 

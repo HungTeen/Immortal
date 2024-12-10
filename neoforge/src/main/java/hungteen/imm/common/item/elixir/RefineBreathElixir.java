@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.elixirs;
+package hungteen.imm.common.item.elixir;
 
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.RandomHelper;
@@ -24,16 +24,16 @@ import java.util.Optional;
 public class RefineBreathElixir extends ElixirItem {
 
     public RefineBreathElixir() {
-        super(ColorHelper.DYE_RED.rgb());
+        super(withRarity(Rarity.UNCOMMON), ColorHelper.DYE_RED.rgb());
     }
 
     @Override
     protected void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (EntityHelper.isServer(livingEntity) && livingEntity instanceof Player player) {
             if (CultivationManager.canLevelUp(player)) {
-                CultivationManager.checkAndAddBreakThroughProgress(player, (float) RandomHelper.getMinMax(player.getRandom(), 0.16F, 0.38F));
+                CultivationManager.addBreakThroughProgress(player, (float) RandomHelper.getMinMax(player.getRandom(), 0.16F, 0.38F));
             } else {
-                CultivationManager.checkAndAddBreakThroughProgress(player, 1F);
+                CultivationManager.addBreakThroughProgress(player, 1F);
             }
         }
     }
@@ -46,10 +46,5 @@ public class RefineBreathElixir extends ElixirItem {
     @Override
     public Optional<RealmType> getHighestRealm(CultivationType cultivationType) {
         return getLowestRealm(cultivationType);
-    }
-
-    @Override
-    public Rarity getElixirRarity() {
-        return Rarity.UNCOMMON;
     }
 }

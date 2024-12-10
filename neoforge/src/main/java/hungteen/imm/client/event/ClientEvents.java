@@ -1,6 +1,7 @@
 package hungteen.imm.client.event;
 
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.client.ClientHandler;
 import hungteen.imm.client.data.SpellClientData;
 import hungteen.imm.client.gui.screen.meditation.MeditationScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
@@ -11,6 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.Optional;
 
@@ -37,6 +39,11 @@ public class ClientEvents {
                 }
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event){
+        ClientHandler.registerCultivatorTypes();
     }
 
 }

@@ -162,7 +162,7 @@ public class BiFang extends IMMGrowableMob implements Enemy {
     }
 
     @Override
-    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor, MobSpawnType spawnType) {
         return List.of(QiRootTypes.FIRE, QiRootTypes.WOOD);
     }
 

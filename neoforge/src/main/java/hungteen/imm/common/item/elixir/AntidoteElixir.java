@@ -1,14 +1,4 @@
-package hungteen.imm.common.item.elixirs;
-
-import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.api.IMMAPI;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
-
-import java.util.Optional;
+package hungteen.imm.common.item.elixir;
 
 /**
  * @program Immortal
@@ -31,7 +21,7 @@ public class AntidoteElixir{
 //
 //    @Override
 //    protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-//        return immortal().apply(IMMAPI.get().getRealm(livingEntity));
+//        return immortal().apply(IMMAPI.get().getRank(livingEntity));
 //    }
 
 }

@@ -10,7 +10,7 @@ import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.HumanLike;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.api.spell.Spell;
-import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMGrowableMob;
 import hungteen.imm.common.entity.IMMMob;
@@ -142,6 +142,11 @@ public abstract class HumanLikeEntity extends IMMGrowableMob implements HumanLik
         this.updateHumanSetting();
     }
 
+    @Override
+    public int getInitialAge(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance) {
+        return getMaxAge();
+    }
+
     /**
      * 填充背包 & 交易列表 & 法术列表。
      */
@@ -150,8 +155,8 @@ public abstract class HumanLikeEntity extends IMMGrowableMob implements HumanLik
     }
 
     @Override
-    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor) {
-        return CultivationManager.getQiRoots(accessor.getRandom());
+    protected Collection<QiRootType> getInitialRoots(ServerLevelAccessor accessor, MobSpawnType spawnType) {
+        return QiManager.getQiRoots(accessor.getRandom());
     }
 
     @Override

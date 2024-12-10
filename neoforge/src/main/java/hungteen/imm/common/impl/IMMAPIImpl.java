@@ -55,7 +55,7 @@ public class IMMAPIImpl implements IMMAPI {
 
 //    @Override
 //    public IRealmType getEntityRealm(Entity entity) {
-//        return RealmManager.getRealm(entity);
+//        return RealmManager.getRank(entity);
 //    }
 //
 //    @Override

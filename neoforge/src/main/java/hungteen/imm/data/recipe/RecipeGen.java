@@ -84,13 +84,9 @@ public class RecipeGen extends RecipeProvider {
     }
 
     protected void buildShapelessRecipes(RecipeOutput consumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, IMMItems.FIVE_FLOWERS_ELIXIR.get())
-                .requires(Items.SUNFLOWER)
-                .requires(Items.LILAC)
-                .requires(Items.ROSE_BUSH)
-                .requires(Items.PEONY)
-                .requires(Items.SPORE_BLOSSOM)
-                .unlockedBy("has_flower", has(ItemTags.FLOWERS))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, IMMItems.INSPIRATION_ELIXIR.get())
+                .requires(IMMBlocks.GANODERMA.get(), 3)
+                .unlockedBy("has_flower", has(IMMBlocks.GANODERMA.get()))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IMMItems.JOSS_PAPER.get())
                 .requires(Items.BAMBOO)
@@ -128,15 +124,15 @@ public class RecipeGen extends RecipeProvider {
      * Recipes for Elixir Furnace.
      */
     protected void buildElixirRecipes(RecipeOutput consumer) {
-        genElixir(consumer, IMMItems.SPIRITUAL_INSPIRATION_ELIXIR.get(), 200, 1, Arrays.asList(
+        genElixir(consumer, IMMItems.INSPIRATION_ELIXIR.get(), 200, 1, Arrays.asList(
                 IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get()
         ));
-        genElixir(consumer, IMMItems.GATHER_BREATH_ELIXIR.get(), 300, 1, Arrays.asList(
-                Items.PITCHER_POD, IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), IMMItems.SPIRITUAL_WOOD.get()
-        ));
-        genElixir(consumer, IMMItems.REFINE_BREATH_ELIXIR.get(), 500, 1, Arrays.asList(
-                Items.DIAMOND, Items.DIAMOND, IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), Items.BLAZE_ROD
-        ));
+//        genElixir(consumer, IMMItems.GATHER_BREATH_ELIXIR.get(), 300, 1, Arrays.asList(
+//                Items.PITCHER_POD, IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), IMMItems.SPIRITUAL_WOOD.get()
+//        ));
+//        genElixir(consumer, IMMItems.REFINE_BREATH_ELIXIR.get(), 500, 1, Arrays.asList(
+//                Items.DIAMOND, Items.DIAMOND, IMMBlocks.GANODERMA.get(), IMMBlocks.GANODERMA.get(), IMMItems.SPIRITUAL_WOOD.get(), Items.BLAZE_ROD
+//        ));
     }
 
 //    private void genSmithing(RecipeOutput consumer, ItemLike result, int requireLevel, boolean needRecovery, int needSmithingValue, float speedMultiple, List<String> pattern, Consumer<SmithingRecipeBuilder> patternConsumer){

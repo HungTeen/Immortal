@@ -1,17 +1,16 @@
-package hungteen.imm.common.item.elixirs;
+package hungteen.imm.common.item.elixir;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.cultivation.RealmManager;
-import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,22 +21,25 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
+ * 灵丹妙药。
  * @program Immortal
  * @author HungTeen
  * @create 2022-10-16 13:16
  **/
 public abstract class ElixirItem extends Item {
 
-//    private static final String ACCURACY = "Accuracy";
     private final int color;
 
-    public ElixirItem(int color) {
-        super(new Properties().stacksTo(16));
+    public ElixirItem(Properties properties, int color) {
+        super(properties.stacksTo(16));
         this.color = color;
+    }
+
+    public static Properties withRarity(Rarity rarity){
+        return new Item.Properties().rarity(rarity);
     }
 
     @Override
@@ -59,14 +61,6 @@ public abstract class ElixirItem extends Item {
         if(canOpt.isPresent()){
             if(canOpt.get()){
                 eatElixir(level, livingEntity, stack);
-//                Accuracies accuracy = getAccuracy(stack);
-//                if(Accuracies.hasUsage(accuracy)){
-//                    eatElixir(level, livingEntity, stack, getAccuracy(stack));
-//                } else if(accuracy == Accuracies.TRASH){
-//                    eatTrash(level, livingEntity, stack);
-//                } else if(accuracy == Accuracies.TOXIC){
-//                    eatToxic(level, livingEntity, stack);
-//                }
             } else{
                 explode(level, livingEntity, stack);
             }
@@ -91,16 +85,9 @@ public abstract class ElixirItem extends Item {
 
     protected abstract void eatElixir(Level level, LivingEntity livingEntity, ItemStack stack);
 
-//    protected void eatTrash(Level level, LivingEntity livingEntity, ItemStack stack){
-//
-//    }
-//
-//    protected void eatToxic(Level level, LivingEntity livingEntity, ItemStack stack){
-//
-//    }
-
     /**
-     * 判断服用丹药的结果。
+     * 判断服用丹药的结果。<br>
+     * 修炼类型不匹配，则食用无效；境界太低，爆体而亡；境界太高，食用无效。
      * @return False to explode, True to successfully eat elixir, absent to pass.
      */
     public Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack){
@@ -109,13 +96,13 @@ public abstract class ElixirItem extends Item {
         var lowRealm = getLowestRealm(cultivationType);
         var highRealm = getHighestRealm(cultivationType);
         if(lowRealm.isEmpty() && highRealm.isEmpty()){
-            return Optional.empty(); // 修炼类型不匹配，则食用无效。
+            return Optional.empty();
         } else if(lowRealm.isPresent() && lowRealm.get().getRealmValue() > realm.getRealmValue()){
-            return Optional.of(false); // 境界太低，爆体而亡。
+            return Optional.of(false);
         } else if(highRealm.isPresent() && highRealm.get().getRealmValue() < realm.getRealmValue()){
-            return Optional.empty(); // 境界太高，食用无效。
+            return Optional.of(false);
         } else {
-            return Optional.of(true); // 正好适合。
+            return Optional.of(true);
         }
     }
 
@@ -140,14 +127,6 @@ public abstract class ElixirItem extends Item {
                 components.add(TipUtil.tooltip("elixir.realm_not_match", cultivationType.getComponent().getString()));
             }
         });
-//        final Accuracies accuracy = getAccuracy(stack);
-//        if(Accuracies.hasUsage(accuracy)){
-//            final ResourceLocation location = ItemHelper.get().getKey(this);
-//            components.add(Component.translatable("tooltip." + location.getNamespace() + "." + location.getPath(), getUsagesComponentArgs(accuracy)).withStyle(ChatFormatting.GREEN));
-//        }
-//        components.add(Component.translatable("tooltip.imm.elixir.accuracy", getAccuracyValue(stack) + "%").withStyle(accuracy.getFormats())
-//                .append(Accuracies.getComponent(accuracy))
-//        );
     }
 
     public boolean validCultivationType(CultivationType cultivationType){
@@ -159,89 +138,21 @@ public abstract class ElixirItem extends Item {
     }
 
     public Optional<RealmType> getHighestRealm(CultivationType cultivationType){
-        return getLowestRealm(cultivationType);
+        return Optional.empty();
     }
 
-    public int getColor(int id){
-        return id == 0 ? color : -1;
+    public int getColor(ItemStack stack, int id){
+        return id == 0 ? FastColor.ARGB32.opaque(color) : -1;
     }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity living) {
-        return 30;
+        return 40;
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.EAT;
-    }
-
-    public static RealmType getRealm(LivingEntity livingEntity){
-//        return IMMAPI.get().getEntityRealm(livingEntity);
-        return RealmTypes.NOT_IN_REALM;
-    }
-
-//    public static void setAccuracy(ItemStack stack, int accuracy){
-//        stack.getOrCreateTag().putInt(ACCURACY, accuracy);
-//    }
-//
-//    public static int getAccuracyValue(ItemStack stack) {
-//        return stack.getOrCreateTag().getInt(ACCURACY);
-//    }
-//
-//    public static Accuracies getAccuracy(ItemStack stack) {
-//        return getAccuracy(getAccuracyValue(stack));
-//    }
-//
-//    public static Accuracies getAccuracy(int accuracy) {
-//        List<Accuracies> list = Arrays.stream(Accuracies.values()).sorted(Comparator.comparingInt(Accuracies::getAccuracy)).toList();
-//        for (Accuracies accuracies : list) {
-//            if(accuracy <= accuracies.getAccuracy()){
-//                return accuracies;
-//            }
-//        }
-//        return Accuracies.MASTER;
-//    }
-
-//    @Override
-//    public Rarity getRarity(ItemStack stack) {
-//        return this.getElixirRarity();
-//    }
-
-    public abstract Rarity getElixirRarity();
-
-    public enum Accuracies {
-        TRASH(20, ChatFormatting.DARK_GRAY),
-        TOXIC(40, ChatFormatting.DARK_GREEN),
-        COMMON(60, ChatFormatting.GREEN),
-        NICE(70, ChatFormatting.BLUE),
-        EXCELLENT(80, ChatFormatting.DARK_BLUE),
-        PERFECT(90, ChatFormatting.DARK_PURPLE),
-        MASTER(100, ChatFormatting.GOLD);
-
-        private final int accuracy;
-        private final List<ChatFormatting> formats;
-
-        public static MutableComponent getComponent(Accuracies accuracy){
-            return Component.translatable("misc.imm.accuracy." + accuracy.toString().toLowerCase(Locale.ROOT)).withStyle(accuracy.getFormats());
-        }
-
-        public static boolean hasUsage(Accuracies accuracy){
-            return accuracy != Accuracies.TRASH && accuracy != Accuracies.TOXIC;
-        }
-
-        Accuracies(int accuracy, ChatFormatting ... formats) {
-            this.formats = List.of(formats);
-            this.accuracy = accuracy;
-        }
-
-        public int getAccuracy() {
-            return accuracy;
-        }
-
-        public ChatFormatting[] getFormats(){
-            return this.formats.toArray(new ChatFormatting[0]);
-        }
     }
 
 }

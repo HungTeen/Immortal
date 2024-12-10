@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:ganoderma"
+    },
+    {
+      "item": "imm:ganoderma"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "imm:inspiration_elixir"
+  }
+}

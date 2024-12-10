@@ -9,7 +9,7 @@ import hungteen.imm.common.impl.registry.IMMWoods;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.common.item.artifact.MeleeAttackItem;
 import hungteen.imm.common.item.artifact.WoodBowItem;
-import hungteen.imm.common.item.elixirs.ElixirItem;
+import hungteen.imm.common.item.elixir.ElixirItem;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.FilterRuneItem;
 import hungteen.imm.common.item.talisman.TalismanItem;
@@ -119,7 +119,7 @@ public class ItemModelGen extends HTItemModelGen {
             } else if(item instanceof ElixirItem elixirItem){
                 // for elixir items.
                 addedItems.add(item);
-                genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(elixirItem.getElixirRarity()));
+                genNormal(name(item), Util.prefix("item/elixir"), ElixirManager.getOuterLayer(elixirItem.getDefaultInstance().getRarity()));
             } else if(item instanceof MeleeAttackItem){
                 addedItems.add(item);
                 genHeld(name(item), ItemHelper.itemTexture(item));

@@ -87,17 +87,19 @@ public class RestingScreen extends MeditationScreen {
         super.render(graphics, mouseX, mouseY, partialTicks);
         final int x = (this.width >> 1) - 91;
         int y = this.height - 32 + 3;
-//        CommonOverlay.renderSpiritualMana(graphics, this.width, this.height, x, y);
-        // Render Break Through Bar.
-        if (PlayerUtil.reachThreshold(ClientUtil.player())) {
-            y -= 20;
-            graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
-            final float progress = CultivationManager.getBreakThroughProgress(ClientUtil.player());
-            final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);
-            graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, backManaLen, MANA_BAR_HEIGHT);
-            final float scale = 1;
-            final Component text = TipUtil.PERCENT.apply(progress);
-            RenderUtil.renderCenterScaledText(graphics.pose(), text, (width >> 1), y - 6, scale, ColorHelper.GOLD.rgb(), ColorHelper.BLACK.rgb());
+        if(ClientUtil.player() != null){
+            CommonOverlay.renderSpiritualMana(graphics, ClientUtil.player(), this.width, this.height, x, y);
+            // Render Break Through Bar.
+            if (CultivationManager.reachThreshold(ClientUtil.player())) {
+                y -= 20;
+                graphics.blit(OVERLAY, x, y, 0, 0, MANA_BAR_LEN, MANA_BAR_HEIGHT);
+                final float progress = CultivationManager.getBreakThroughProgress(ClientUtil.player());
+                final int backManaLen = Mth.floor((MANA_BAR_LEN - 2) * progress);
+                graphics.blit(OVERLAY, x + 1, y + 1, 1, 16, backManaLen, MANA_BAR_HEIGHT - 1);
+                final float scale = 1;
+                final Component text = TipUtil.PERCENT.apply(progress);
+                RenderUtil.renderCenterScaledText(graphics.pose(), text, (width >> 1), y - 6, scale, ColorHelper.GOLD.rgb(), ColorHelper.BLACK.rgb());
+            }
         }
     }
 

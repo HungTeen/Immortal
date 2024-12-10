@@ -133,7 +133,7 @@ public enum CultivatorType implements WeightedEntry, StringRepresentable {
     }
 
     /**
-     * 不是定制类型。
+     * 不是定制类型，不需要获取 Profile。
      * @return Not specific type.
      */
     public boolean isCommon() {

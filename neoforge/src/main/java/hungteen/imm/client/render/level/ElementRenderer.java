@@ -47,7 +47,7 @@ public class ElementRenderer {
         final Player player = PlayerHelper.getClientPlayer().get();
         if (player != entity && canSeeElements(player, entity, distance)) {
             final float scale = ELEMENT_LEN * 1F / 16 / 2F;
-            final Map<Element, Float> elements = ElementManager.getElements(entity);
+            final Map<Element, Float> elements = ElementManager.getElementMap(entity);
             final List<Element> list = PlayerUtil.filterElements(ClientUtil.player(), elements.keySet().stream().toList());
             final int cnt = list.size();
             final float barWidth = cnt + (cnt - 1) * ELEMENT_INTERVAL;

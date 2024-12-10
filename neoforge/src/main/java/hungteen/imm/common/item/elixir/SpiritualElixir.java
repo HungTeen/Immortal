@@ -1,4 +1,4 @@
-package hungteen.imm.common.item.elixirs;
+package hungteen.imm.common.item.elixir;
 
 /**
  * @program Immortal
@@ -49,7 +49,7 @@ public abstract class SpiritualElixir {
 //
 //        @Override
 //        protected Optional<Boolean> checkEating(Level level, LivingEntity livingEntity, ItemStack stack) {
-//            return immortal().apply(getRealm(livingEntity));
+//            return immortal().apply(getRank(livingEntity));
 //        }
 //    }
 

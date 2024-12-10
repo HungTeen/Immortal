@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#minecraft:flowers"
+            "items": "imm:ganoderma"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "imm:five_flowers_elixir"
+        "recipe": "imm:inspiration_elixir"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "imm:five_flowers_elixir"
+      "imm:inspiration_elixir"
     ]
   }
 }

@@ -160,7 +160,7 @@ public abstract class MeditationScreen extends HTScreen {
 
     public enum MeditationType {
 
-        CULTIVATION(() -> new ItemStack(IMMItems.FIVE_FLOWERS_ELIXIR.get())),
+        CULTIVATION(() -> new ItemStack(IMMItems.INSPIRATION_ELIXIR.get())),
 
         RESTING(() -> new ItemStack(BlockHelper.get().get(WoolCushionBlock.getWoolCushionLocation(DyeColor.RED)).get())),
 

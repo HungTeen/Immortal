@@ -11,7 +11,7 @@ import hungteen.imm.common.entity.IMMMob;
 import hungteen.imm.common.entity.ai.IMMActivities;
 import hungteen.imm.common.entity.ai.IMMMemories;
 import hungteen.imm.common.entity.ai.IMMSensors;
-import hungteen.imm.common.entity.misc.ElementCrystal;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.BehaviorUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -159,7 +159,7 @@ public class EarthSpirit extends ElementSpirit {
         super.customServerAiStep();
     }
 
-    public void eat(ElementCrystal amethyst){
+    public void eat(ElementAmethyst amethyst){
         final float amount = ElementManager.getElementAmount(amethyst, Element.EARTH, false);
         ElementManager.addElementAmount(this, Element.EARTH, false, amount);
         ElementManager.addElementAmount(this, Element.SPIRIT, false, amount);
@@ -191,7 +191,7 @@ public class EarthSpirit extends ElementSpirit {
                 instance.registered(MemoryModuleType.LOOK_TARGET),
                 instance.present(IMMMemories.ELEMENT_AMETHYST.get())
         ).apply(instance, (walkTarget, lookTarget, amethyst) -> (level, mob, time) -> {
-            ElementCrystal elementAmethyst = instance.get(amethyst);
+            ElementAmethyst elementAmethyst = instance.get(amethyst);
             if (mob.closerThan(elementAmethyst, 2)) {
                 walkTarget.erase();
             } else {
@@ -213,7 +213,7 @@ public class EarthSpirit extends ElementSpirit {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, EarthSpirit spirit) {
-            final Optional<ElementCrystal> opt = spirit.getBrain().getMemory(IMMMemories.ELEMENT_AMETHYST.get());
+            final Optional<ElementAmethyst> opt = spirit.getBrain().getMemory(IMMMemories.ELEMENT_AMETHYST.get());
             return spirit.isIdle() && opt.isPresent() && spirit.closerThan(opt.get(), 2);
         }
 

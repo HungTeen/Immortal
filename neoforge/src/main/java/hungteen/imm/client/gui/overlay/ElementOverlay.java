@@ -39,7 +39,7 @@ public class ElementOverlay {
                 topPos += 14;
             }
             final Entity entity = PlayerHelper.getClientPlayer().get();
-            final Map<Element, Float> elements = ElementManager.getElements(entity);
+            final Map<Element, Float> elements = ElementManager.getElementMap(entity);
             final List<Element> list = PlayerUtil.filterElements(ClientUtil.player(), Arrays.stream(Element.values()).toList());
             final int cnt = elements.size();
             final int barWidth = cnt * ELEMENT_LEN + (cnt - 1) * ELEMENT_GUI_INTERVAL;
