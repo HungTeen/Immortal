@@ -5,7 +5,6 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.common.world.entity.DummyEntityType;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.cultivation.RealmTypes;
@@ -13,15 +12,14 @@ import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -37,27 +35,27 @@ public abstract class BreakThroughTrial extends DummyEntity {
 
     private final RealmType realmType;
     private final float difficulty;
-    private final int trialLength;
+    private final ServerBossEvent progressBar;
     private ServerPlayer trialPlayer;
     private UUID uuid;
     private int tickCount;
 
-    public BreakThroughTrial(DummyEntityType<?> dummyEntityType, ServerPlayer trialPlayer, RealmType realmType, float difficulty, int trialLength) {
+    public BreakThroughTrial(DummyEntityType<?> dummyEntityType, ServerPlayer trialPlayer, RealmType realmType, float difficulty) {
         super(dummyEntityType, trialPlayer.serverLevel(), trialPlayer.position());
         this.realmType = realmType;
         this.difficulty = difficulty;
-        this.trialLength = trialLength;
         this.trialPlayer = trialPlayer;
         this.uuid = trialPlayer.getUUID();
+        this.progressBar = createProgressBar();
     }
 
     public BreakThroughTrial(DummyEntityType<?> dummyEntityType, Level level, CompoundTag trialTag) {
         super(dummyEntityType, level, trialTag);
+        this.progressBar = createProgressBar();
         this.realmType = CodecHelper.parse(RealmTypes.registry().byNameCodec(), trialTag.get("RealmType"))
                 .resultOrPartial(msg -> IMMAPI.logger().error(msg))
                 .orElseThrow();
         this.difficulty = trialTag.getFloat("Difficulty");
-        this.trialLength = trialTag.getInt("TrialLength");
     }
 
     public static Optional<BreakThroughTrial> getTrialFor(ServerPlayer player){
@@ -82,26 +80,6 @@ public abstract class BreakThroughTrial extends DummyEntity {
 
     }
 
-    /**
-     * 突破时玩家死亡不会真的死亡，但是突破真的失败。
-     * {@link hungteen.imm.common.event.IMMLivingEvents#onLivingDeath(LivingDeathEvent)}
-     */
-    public static boolean checkTrialFail(ServerPlayer player) {
-        final List<BreakThroughTrial> trials = DummyEntityManager.getDummyEntities(player.serverLevel()).stream()
-                .filter(BreakThroughTrial.class::isInstance).map(BreakThroughTrial.class::cast).filter(l -> {
-                    return player.equals(l.getTrialPlayer()) && player.distanceToSqr(l.position) < 3000;
-                }).toList();
-        if (trials.size() > 0) {
-            player.setHealth(2.0F); // 给点保底的血量。
-            player.addEffect(EffectHelper.viewEffect(MobEffects.REGENERATION, 100, 1));
-            player.addEffect(EffectHelper.viewEffect(MobEffects.BLINDNESS, 100, 1));
-            player.addEffect(EffectHelper.viewEffect(MobEffects.CONFUSION, 60, 0));
-            player.addEffect(EffectHelper.viewEffect(MobEffects.MOVEMENT_SLOWDOWN, 80, 0));
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
@@ -122,7 +100,7 @@ public abstract class BreakThroughTrial extends DummyEntity {
 
     @Override
     public void tick() {
-        if(this.getTrialPlayer() == null || this.getLevel().getDifficulty() == Difficulty.NORMAL){
+        if(this.getTrialPlayer() == null || this.getLevel().getDifficulty() == Difficulty.PEACEFUL){
             this.remove();
         }
         ++ this.tickCount;
@@ -135,7 +113,13 @@ public abstract class BreakThroughTrial extends DummyEntity {
         }
     }
 
+    protected void tickProgressBar() {
+        this.progressBar.setProgress(this.tickCount * 1.0F / this.getTrialLength());
+    }
+
     public abstract void tickTrial(ServerPlayer player);
+
+    public abstract ServerBossEvent createProgressBar();
 
     public void finishTrial(ServerPlayer player){
 
@@ -179,9 +163,7 @@ public abstract class BreakThroughTrial extends DummyEntity {
         return difficulty;
     }
 
-    public int getTrialLength() {
-        return trialLength;
-    }
+    public abstract int getTrialLength();
 
     public RealmType getRealmType() {
         return realmType;

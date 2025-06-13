@@ -5,6 +5,7 @@ import hungteen.htlib.api.registry.PTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
+import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author PangTeen
@@ -23,6 +25,9 @@ public interface IMMPoiTypes {
 
     HTVanillaRegistry<PoiType> POI_TYPES = HTRegistryManager.vanilla(Registries.POINT_OF_INTEREST_TYPE, Util.id());
 
+    PTHolder<PoiType> CUSHION = POI_TYPES.registerForHolder("cushion", () -> new PoiType(
+            BlockUtil.getCushions().map(Block::defaultBlockState).collect(Collectors.toSet()), 1, 1
+    ));
     PTHolder<PoiType> SPIRIT_ANCHOR = POI_TYPES.registerForHolder("spirit_anchor", () -> new PoiType(
             getBlockStates(IMMBlocks.SPIRIT_ANCHOR.get()), 1, 1
     ));

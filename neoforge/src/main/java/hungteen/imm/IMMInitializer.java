@@ -9,6 +9,7 @@ import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.IMMCreativeTabs;
 import hungteen.imm.common.network.NetworkHandler;
+import hungteen.imm.common.world.IMMGameRules;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
 import hungteen.imm.data.DataGenHandler;
 import net.neoforged.bus.api.EventPriority;
@@ -48,6 +49,7 @@ public class IMMInitializer {
         /* Misc Initialization */
         IMMConfigs.init(container);
         AdvancementHandler.init();
+        IMMGameRules.init();
 
         /* Custom Registry */
         RegistryHandler.initialize();

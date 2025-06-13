@@ -8,14 +8,13 @@ import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.capability.HTPlayerData;
-import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.cultivation.RealmManager;
-import hungteen.imm.common.cultivation.RealmTypes;
+import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.network.client.ExperienceChangePacket;
 import hungteen.imm.common.network.client.QiRootAndRealmPacket;
+import hungteen.imm.common.world.IMMGameRules;
 import hungteen.imm.util.EventUtil;
+import hungteen.imm.util.PlayerUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -89,7 +88,9 @@ public class CultivationData implements HTPlayerData {
 
     @Override
     public void initialize() {
-
+        if(IMMGameRules.randomQiRoots(playerData.getPlayer().level())) {
+            PlayerUtil.setRoots(playerData.getPlayer(), QiManager.getQiRoots(playerData.getPlayer().getRandom()));
+        }
     }
 
     @Override

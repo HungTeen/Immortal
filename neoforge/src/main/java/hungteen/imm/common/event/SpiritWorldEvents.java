@@ -34,7 +34,7 @@ public class SpiritWorldEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void cancelDeath(LivingDeathEvent event){
         if(isInSpiritWorld(event.getEntity().level()) && event.getEntity() instanceof ServerPlayer serverPlayer){
-            CultivationManager.breakThroughFail(serverPlayer);
+            CultivationManager.dieInSpiritWorld(serverPlayer);
             event.setCanceled(true);
         }
     }

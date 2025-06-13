@@ -10,7 +10,6 @@ import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.impl.registry.SectTypes;
-import hungteen.imm.common.network.MiscDataPacket;
 import hungteen.imm.common.network.SectRelationPacket;
 import hungteen.imm.common.network.client.FloatDataPacket;
 import hungteen.imm.common.network.client.IntegerDataPacket;
@@ -259,20 +258,6 @@ public class IMMPlayerData implements HTPlayerData {
 
     public MiscData getMiscData() {
         return miscData;
-    }
-
-    public void sendMiscDataPacket(MiscDataPacket.Types type) {
-        sendMiscDataPacket(type, "");
-    }
-
-    public void sendMiscDataPacket(MiscDataPacket.Types type, String data) {
-        sendMiscDataPacket(type, data, 0F);
-    }
-
-    public void sendMiscDataPacket(MiscDataPacket.Types type, String data, float value) {
-        if (getPlayer() instanceof ServerPlayer) {
-//            NetworkHelper.sendToClient((ServerPlayer) getPlayer(), new MiscDataPacket(type, data, value));
-        }
     }
 
     public Player getPlayer() {

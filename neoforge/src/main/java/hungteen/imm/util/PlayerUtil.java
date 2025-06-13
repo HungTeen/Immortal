@@ -1,6 +1,7 @@
 package hungteen.imm.util;
 
 import hungteen.htlib.util.helper.MathHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISectType;
@@ -12,8 +13,11 @@ import hungteen.imm.common.capability.player.SpellData;
 import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.network.client.MiscDataPacket;
+import hungteen.imm.common.world.IMMGameRules;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -109,7 +113,11 @@ public class PlayerUtil {
         setData(player, l -> {
             CultivationData cultivationData = l.getCultivationData();
             cultivationData.clearSpiritualRoot();
-            QiManager.getQiRoots(player.getRandom()).forEach(cultivationData::addRoot);
+            if(IMMGameRules.randomQiRoots(player.level())){
+                setRoots(player, QiManager.getQiRoots(player.getRandom()));
+            } else {
+                sendMiscDataPacket(player, MiscDataPacket.MiscType.OPEN_QI_ROOT_SCREEN);
+            }
         });
     }
 
@@ -119,6 +127,14 @@ public class PlayerUtil {
 
     public static List<QiRootType> getRoots(Player player) {
         return getData(player, l -> l.getCultivationData().getRoots());
+    }
+
+    public static void setRoots(Player player, List<QiRootType> roots) {
+        setData(player, l -> {
+            CultivationData cultivationData = l.getCultivationData();
+            cultivationData.clearSpiritualRoot();
+            roots.forEach(cultivationData::addRoot);
+        });
     }
 
     public static boolean knowRoots(Player player) {
@@ -342,8 +358,14 @@ public class PlayerUtil {
 
     public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {
         if (!isSitInMeditation(player)) {
+            // 如果玩家没有灵根，先选择灵根。
+            if(! IMMGameRules.randomQiRoots(player.level()) && PlayerUtil.getRoots(player).isEmpty()) {
+                sendMiscDataPacket(player, MiscDataPacket.MiscType.OPEN_QI_ROOT_SCREEN);
+                return false;
+            }
             final Vec3 vec = MathHelper.toVec3(pos);
-            List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(MathHelper.toVec3(pos), 8F, 5F), (entity) -> {
+            //TODO 更完善的安全检查。
+            List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(vec, 8F, 5F), (entity) -> {
                 return entity.isPreventingPlayerRest(player);
             });
             if (list.isEmpty()) {
@@ -379,6 +401,20 @@ public class PlayerUtil {
 
     public static CultivationType getCultivationType(Player player) {
         return getPlayerRealm(player).getCultivationType();
+    }
+
+    public static void sendMiscDataPacket(Player player, MiscDataPacket.MiscType type) {
+        sendMiscDataPacket(player, type, "");
+    }
+
+    public static void sendMiscDataPacket(Player player, MiscDataPacket.MiscType type, String data) {
+        sendMiscDataPacket(player, type, data, 0F);
+    }
+
+    public static void sendMiscDataPacket(Player player, MiscDataPacket.MiscType type, String data, float value) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            NetworkHelper.sendToClient(serverPlayer, new MiscDataPacket(type, data, value));
+        }
     }
 
 }

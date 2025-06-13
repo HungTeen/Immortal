@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  */
 public abstract class MeditationScreen extends HTScreen {
 
-    protected static final ResourceLocation TEXTURE = Util.get().containerTexture("cultivation");
+    protected static final ResourceLocation TEXTURE = Util.get().guiTexture("cultivation");
     private static final int SWITCH_BAR_WIDTH = 92;
     private static final int SWITCH_BAR_HEIGHT = 39;
     private static final int SWITCH_BAR_Y_OFFSET = 5;
@@ -102,6 +102,11 @@ public abstract class MeditationScreen extends HTScreen {
         final String keyRight = ClientUtil.getKey(InputConstants.KEY_RIGHT).getDisplayName().getString();
         final Component tip = TipUtil.gui("meditation.switch", keyA, keyLeft, keyD, keyRight);
         RenderUtil.renderCenterScaledText(graphics.pose(), tip, this.width >> 1, SWITCH_BAR_Y_OFFSET + 40, 0.6F, ColorHelper.WHITE.rgb(), ColorHelper.BLACK.rgb());
+    }
+
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
     }
 
     @Override

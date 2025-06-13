@@ -4,9 +4,9 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.ColorHelper;
-import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
@@ -16,7 +16,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * @program Immortal
@@ -81,6 +83,26 @@ public interface QiRootTypes {
             ChatFormatting.DARK_PURPLE
     ));
 
+    QiRootType LIGHTNING = register(new QiRootTypeImpl(
+            "lightning",
+            Set.of(Element.METAL, Element.WOOD),
+            8,
+            ColorHelper.LIGHT_PURPLE.rgb(),
+            0.5F,
+            7,
+            ChatFormatting.LIGHT_PURPLE
+    ));
+
+    QiRootType ICE = register(new QiRootTypeImpl(
+            "ice",
+            Set.of(Element.WATER),
+            10,
+            ColorHelper.DYE_CYAN.rgb(),
+            0.5F,
+            9,
+            ChatFormatting.BLUE
+    ));
+
     static MutableComponent getCategory() {
         return TipUtil.misc("spiritual_root");
     }
@@ -108,8 +130,29 @@ public interface QiRootTypes {
     /**
      * 仅支持单元素灵根，多元素灵根请另外继承。
      */
-    record QiRootTypeImpl(String name, Element element, int priority,
-                          int spiritualColor, int id, ChatFormatting textColor) implements QiRootType {
+    record QiRootTypeImpl(String name, Set<Element> elements, int priority,
+                          int spiritualColor, Supplier<Weight> weight, Float specialRootChance, int id, ChatFormatting textColor) implements QiRootType {
+
+        public QiRootTypeImpl(
+                String name,
+                Element element,
+                int priority,
+                int spiritualColor,
+                int id,
+                ChatFormatting textColor) {
+            this(name, Set.of(element), priority, spiritualColor, () -> Weight.of(IMMConfigs.getRootWeight(element)), null, id, textColor);
+        }
+
+        public QiRootTypeImpl(
+                String name,
+                Set<Element> elements,
+                int priority,
+                int spiritualColor,
+                float specialRootChance,
+                int id,
+                ChatFormatting textColor) {
+            this(name, elements, priority, spiritualColor, () -> Weight.of(0), specialRootChance, id, textColor);
+        }
 
         @Override
         public String getModID() {
@@ -123,28 +166,29 @@ public interface QiRootTypes {
 
         @Override
         public Set<Element> getElements() {
-            return Set.of(element());
+            return elements();
         }
 
         @Override
         public boolean isCommonRoot() {
-            return !(element() == Element.SPIRIT);
+            return elements().size() == 1 && ! elements().contains(Element.SPIRIT);
         }
 
         @Override
-        public boolean isSpecialRoot() {
-            return false;
+        public Optional<Float> getSpecialRootChance() {
+            return Optional.ofNullable(specialRootChance());
         }
 
         @Override
         public Weight getWeight() {
-            return Weight.of(IMMConfigs.getRootWeight(element()));
+            return weight().get();
         }
 
         @Override
         public int getSpiritualColor() {
-            return this.spiritualColor;
+            return spiritualColor();
         }
+
 
         @Override
         public Pair<Integer, Integer> getTexturePos() {
@@ -154,6 +198,11 @@ public interface QiRootTypes {
         @Override
         public ResourceLocation getTexture() {
             return Util.get().guiTexture("elements");
+        }
+
+        @Override
+        public int getSortPriority() {
+            return priority();
         }
 
     }

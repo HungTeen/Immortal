@@ -101,6 +101,8 @@ public class CultivationManager {
             if(EventUtil.post(new BreakThroughEvent.Start(player, trial))){
                 return;
             }
+            // 移除旧的突破考验，防止出现多于一个的情况。
+            BreakThroughTrial.getTrialFor(player).ifPresent(BreakThroughTrial::remove);
             DummyEntityManager.addEntity(player.serverLevel(), trial);
             player.removeEffect(IMMEffects.BREAK_THROUGH.holder());
         }
@@ -115,19 +117,23 @@ public class CultivationManager {
                 RealmManager.updateRealm(player, nextRealm);
             });
             trial.remove();
+            // 传送回现实世界。
+            SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
         });
     }
 
-    public static void breakThroughFail(ServerPlayer player){
+    public static void dieInSpiritWorld(ServerPlayer player){
         BreakThroughTrial.getTrialFor(player).ifPresent(trial -> {
             EventUtil.post(new BreakThroughEvent.Failure(player, trial.getRealmType()));
             trial.remove();
+            clearBreakThroughProgress(player);
+            float reductionPercent = 1 - (float) IMMConfigs.realmSettings().breakThroughFailReduction.getAsDouble();
+            PlayerUtil.adjustExperience(player, ExperienceType.ELIXIR, reductionPercent);
+            PlayerUtil.adjustExperience(player, ExperienceType.PERSONALITY, reductionPercent);
         });
-        clearBreakThroughProgress(player);
-        float reductionPercent = 1 - (float) IMMConfigs.realmSettings().breakThroughFailReduction.getAsDouble();
-        PlayerUtil.adjustExperience(player, ExperienceType.ELIXIR, reductionPercent);
-        PlayerUtil.adjustExperience(player, ExperienceType.PERSONALITY, reductionPercent);
-
+        // 传送回现实世界。
+        SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
+        player.setHealth(player.getMaxHealth());
     }
 
     public static float getTrialDifficulty(Player player, RealmType realm){
@@ -142,22 +148,6 @@ public class CultivationManager {
      */
     public static void meditate(ServerPlayer player){
         SpiritWorldDimension.teleportToSpiritRegion(player.serverLevel(), player);
-//        final RealmStage currentStage = PlayerUtil.getPlayerRealmStage(player);
-//        getNextRealmStatus(currentRealm, currentStage).ifPresent(status -> {
-//            final RealmType nextRealm = status.realm();
-//            final RealmStage nextStage = status.stage();
-//            if(player.level() instanceof ServerLevel serverLevel){
-//                final float difficulty = getTrialDifficulty(player, currentRealm, currentStage);
-////                WeightedList.create(breakThroughRaids(player.level()).stream().filter(raid -> {
-////                    return raid.match(nextRealm, nextStage, difficulty);
-////                }).toList()).getRandomItem(player.getRandom()).ifPresentOrElse(raid -> {
-//////                    DummyEntityManager.addEntity(serverLevel, new BreakThroughTrial(serverLevel, player, difficulty, raid));
-////                    PlayerUtil.addIntegerData(player, PlayerRangeIntegers.BREAK_THROUGH_TRIES, 1);
-////                }, () -> {
-////                    breakThroughStart(player, nextRealm, nextStage);
-////                });
-//            }
-//        });
     }
 
     /**

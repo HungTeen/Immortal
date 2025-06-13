@@ -29,6 +29,8 @@ import java.util.stream.Collectors;
  **/
 public class QiManager {
 
+    public static final int MAX_ROOT_AMOUNT = 5;
+
     /**
      * 玩家灵根的生成规则： <br>
      * 1. 首先依据概率选择是几个灵根（0 - 5）。 <br>

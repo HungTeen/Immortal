@@ -34,6 +34,7 @@ import net.minecraft.world.level.portal.DimensionTransition;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author HungTeen
@@ -72,6 +73,9 @@ public class IMMCommand {
                         )
                         .then(Commands.literal("query")
                                 .executes(command -> queryRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
+                        )
+                        .then(Commands.literal("clear")
+                                .executes(command -> clearRoot(command.getSource(), EntityArgument.getPlayers(command, "targets")))
                         )
                 ));
 
@@ -237,6 +241,13 @@ public class IMMCommand {
         for (ServerPlayer player : targets) {
             PlayerUtil.resetRoots(player);
             showPlayerRoots(source, player, true);
+        }
+        return targets.size();
+    }
+
+    private static int clearRoot(CommandSourceStack source, Collection<? extends ServerPlayer> targets) {
+        for (ServerPlayer player : targets) {
+            PlayerUtil.setRoots(player, List.of());
         }
         return targets.size();
     }

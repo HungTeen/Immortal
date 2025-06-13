@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -38,36 +39,44 @@ public interface QiRootType extends SimpleEntry, WeightedEntry {
     boolean isCommonRoot();
 
     /**
+     * 获取变异灵根的概率。
+     * @return 变异灵根的概率，范围在0-1之间。如果为空则说明不是变异灵根。
+     */
+    Optional<Float> getSpecialRootChance();
+
+    /**
      * 是否为特殊变异灵根，此种灵根不能和任何灵根同时存在。
      * @return true if this is a special root.
      */
-    boolean isSpecialRoot();
+    default boolean isSpecialRoot(){
+        return getSpecialRootChance().isPresent();
+    }
 
     /**
      * 灵根产生的权重。
-     * the spawn weight of spiritual roots.
+     * @return the spawn weight of spiritual roots.
      */
     @Override
     Weight getWeight();
 
     /**
-     * 对应的灵气是什么颜色。
+     * @return 对应的灵气是什么颜色。
      */
     int getSpiritualColor();
 
     /**
-     * 元素图标的位置。
+     * @return 元素图标的位置。
      */
     Pair<Integer, Integer> getTexturePos();
 
     /**
-     * 图片的地址
+     * @return 灵根图片的地址
      */
     ResourceLocation getTexture();
 
-//    /**
-//     * 炼丹炉中的排序。
-//     */
-//    int getSortPriority();
+    /**
+     * @return 排序优先级。
+     */
+    int getSortPriority();
 
 }

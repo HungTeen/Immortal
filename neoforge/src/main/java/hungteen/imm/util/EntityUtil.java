@@ -85,6 +85,15 @@ public class EntityUtil {
         return Optional.empty();
     }
 
+
+    public static <T extends Entity> Optional<T> create(ServerLevel level, EntityType<T> entityType, BlockPos pos, MobSpawnType spawnType) {
+        return Optional.ofNullable(entityType.create(level, null, pos, spawnType, false, false));
+    }
+
+    public static <T extends Entity> Optional<T> create(ServerLevel level, EntityType<T> entityType, BlockPos pos, MobSpawnType spawnType, boolean shouldOffsetY, boolean shouldOffsetYMore) {
+        return Optional.ofNullable(entityType.create(level, null, pos, spawnType, shouldOffsetY, shouldOffsetYMore));
+    }
+
     /**
      * @param attacker  考虑范围的中心，通常是攻击者。
      * @param predicate 搜索目标过滤。

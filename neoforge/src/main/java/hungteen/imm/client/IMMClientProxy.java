@@ -1,17 +1,20 @@
 package hungteen.imm.client;
 
+import hungteen.htlib.client.util.ClientHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.data.ClientData;
+import hungteen.imm.client.gui.screen.meditation.SelectRootScreen;
+import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
-import hungteen.imm.api.spell.ElementReaction;
-import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Objects;
@@ -58,5 +61,12 @@ public class IMMClientProxy extends IMMProxy {
     @Override
     public boolean isShiftKeyDown(){
         return Screen.hasShiftDown();
+    }
+
+    @Override
+    public void openQiRootScreen(Player player) {
+        if(ClientHelper.screen() == null){
+            mc().setScreen(new SelectRootScreen());
+        }
     }
 }

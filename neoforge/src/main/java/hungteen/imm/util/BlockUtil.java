@@ -3,6 +3,7 @@ package hungteen.imm.util;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.impl.BlockHelper;
 import hungteen.imm.common.block.artifacts.WoolCushionBlock;
+import hungteen.imm.common.block.base.CushionBlock;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.tag.IMMBlockTags;
 import net.minecraft.core.BlockPos;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @program Immortal
@@ -58,6 +60,10 @@ public class BlockUtil {
             }
         }
         return null;
+    }
+
+    public static Stream<Block> getCushions(){
+        return BlockHelper.get().values().stream().filter(CushionBlock.class::isInstance);
     }
 
     public static List<Pair<ResourceLocation, Block>> getWoolCushions(){

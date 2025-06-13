@@ -6,6 +6,7 @@ import hungteen.imm.client.IMMClientProxy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Optional;
@@ -59,5 +60,9 @@ public class IMMProxy {
 
     public boolean isShiftKeyDown(){
         return false;
+    }
+
+    public void openQiRootScreen(Player player) {
+
     }
 }
