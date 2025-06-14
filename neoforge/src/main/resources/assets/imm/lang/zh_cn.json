@@ -483,7 +483,7 @@
   "misc.imm.element.spirit": "业",
 
   "misc.imm.qi_root": "灵根",
-  "misc.imm.no_qi_root": "未知",
+  "misc.imm.no_qi_root": "没有灵根",
   "misc.imm.root.common": "普通灵根",
   "misc.imm.root.special": "变异灵根",
   "misc.imm.root.metal": "金",
@@ -521,7 +521,7 @@
 
   "misc.imm.cultivation_type.empty": "无",
   "misc.imm.cultivation_type.mortal": "凡人",
-  "misc.imm.cultivation_type.spiritual": "灵修",
+  "misc.imm.cultivation_type.qi": "灵修",
   "misc.imm.cultivation_type.monster": "妖修",
   "misc.imm.cultivation_type.undead": "亡灵",
   "misc.imm.cultivation_type.wizard": "魔法师",

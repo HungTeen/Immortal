@@ -2,8 +2,6 @@ package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTTagsProvider;
 import hungteen.htlib.util.helper.impl.StructureHelper;
-import hungteen.imm.common.tag.IMMStructureTags;
-import hungteen.imm.common.world.structure.IMMStructures;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -25,8 +23,8 @@ public class StructureTagGen extends HTTagsProvider<Structure> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(IMMStructureTags.TELEPORT_RUINS)
-                .add(IMMStructures.TELEPORT_RUIN);
+//        this.tag(IMMStructureTags.TELEPORT_RUINS)
+//                .add(IMMStructures.TELEPORT_RUIN);
     }
 
 }

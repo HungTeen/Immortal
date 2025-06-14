@@ -1,7 +1,6 @@
 package hungteen.imm.common.cultivation.spell.basic;
 
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.HTHitResult;
@@ -11,7 +10,6 @@ import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.CultivationManager;
 import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
-import hungteen.imm.common.entity.effect.IMMEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,10 +48,10 @@ public class IntimidationSpell extends SpellTypeImpl {
         }).forEach(target -> {
             //TODO 防止误伤队友。
             final RealmType targetRealm = RealmManager.getRealm(target);
-            final int gap = RealmManager.getRealmGap(realm, targetRealm);
+            final float gap = RealmManager.getRealmGap(realm, targetRealm);
             // 威压百分比扣血，但不会扣完。
-            target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
-            target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.holder(), 600, gap));
+//            target.setHealth(Math.max(1F, (float) (target.getHealth() * Math.pow(0.8F, gap))));
+//            target.addEffect(EffectHelper.viewEffect(IMMEffects.OPPRESSION.holder(), 600, gap));
             if(target instanceof ServerPlayer player){
                 PlayerHelper.playClientSound(player, SoundEvents.ELDER_GUARDIAN_CURSE);
                 ParticleHelper.sendParticles(player.serverLevel(), IMMParticles.INTIMIDATION.get(), player.getX(), player.getY(), player.getZ(), 1, 0);

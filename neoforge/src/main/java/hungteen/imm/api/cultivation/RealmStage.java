@@ -4,6 +4,7 @@ import hungteen.htlib.api.registry.EnumEntry;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * 每个境界会有不同的阶段。
  * @author PangTeen
  * @program Immortal
  * @create 2023/2/24 9:51

@@ -50,9 +50,9 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                     final RealmType realm = RealmManager.getRealm(entityAccessor.getEntity());
                     final MutableComponent component = RealmTypes.getCategory().append(": ");
                     if (RealmManager.hasRealmGap(playerRealm, realm) && !RealmManager.compare(playerRealm, realm)) {
-                        final int gap = RealmManager.getRealmGap(playerRealm, realm);
+                        final float gap = RealmManager.getRealmGap(playerRealm, realm);
                         // 只有一个大境界的差距也是可以显示的。
-                        if (gap == 1) {
+                        if (gap <= 1) {
                             iTooltip.add(component.append(realm.getComponent()));
                         } else {
                             iTooltip.add(TipUtil.UNKNOWN);

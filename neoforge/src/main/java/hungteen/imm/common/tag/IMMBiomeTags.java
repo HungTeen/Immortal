@@ -23,6 +23,7 @@ public interface IMMBiomeTags {
 
     /* IMM */
 
+    TagKey<Biome> CAN_SPAWN_MOB = tag("can_spawn_mob");
     TagKey<Biome> HAS_TELEPORT_RUIN = tag("has_structure/teleport_ruin");
     TagKey<Biome> HAS_PLAINS_TRADING_MARKET = tag("has_structure/plains_trading_market");
     TagKey<Biome> HAS_SPIRITUAL_FLAME_ALTAR = tag("has_structure/spiritual_flame_altar");

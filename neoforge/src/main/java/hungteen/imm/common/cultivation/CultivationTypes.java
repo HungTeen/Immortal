@@ -30,7 +30,7 @@ public interface CultivationTypes {
     /**
      * 正常意义的灵修。
      */
-    CultivationType SPIRITUAL = register("spiritual",true);
+    CultivationType QI = register("qi",true);
 
     /**
      * 妖修 & 妖兽.

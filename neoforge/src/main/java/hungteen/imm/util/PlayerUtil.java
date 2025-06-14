@@ -15,6 +15,7 @@ import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.network.client.MiscDataPacket;
 import hungteen.imm.common.world.IMMGameRules;
+import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -357,7 +358,7 @@ public class PlayerUtil {
     }
 
     public static boolean sitToMeditate(Player player, BlockPos pos, float yOffset, boolean relyOnBlock) {
-        if (!isSitInMeditation(player)) {
+        if (!isSitInMeditation(player) && player instanceof ServerPlayer serverPlayer) {
             // 如果玩家没有灵根，先选择灵根。
             if(! IMMGameRules.randomQiRoots(player.level()) && PlayerUtil.getRoots(player).isEmpty()) {
                 sendMiscDataPacket(player, MiscDataPacket.MiscType.OPEN_QI_ROOT_SCREEN);
@@ -368,7 +369,7 @@ public class PlayerUtil {
             List<Monster> list = player.level().getEntitiesOfClass(Monster.class, MathHelper.getAABB(vec, 8F, 5F), (entity) -> {
                 return entity.isPreventingPlayerRest(player);
             });
-            if (list.isEmpty()) {
+            if (list.isEmpty() && BreakThroughTrial.getTrialFor(serverPlayer).isEmpty()) {
                 if (EntityUtil.sitToMeditate(player, pos, yOffset, relyOnBlock)) {
                     setIntegerData(player, IMMPlayerData.IntegerData.IS_MEDITATING, 1);
                     return true;
@@ -401,6 +402,14 @@ public class PlayerUtil {
 
     public static CultivationType getCultivationType(Player player) {
         return getPlayerRealm(player).getCultivationType();
+    }
+
+    public static CultivationType getCultivationDirection(Player player) {
+        return getData(player, data -> data.getCultivationData().getCultivationType());
+    }
+
+    public static void setCultivationDirection(Player player, CultivationType cultivationType) {
+        setData(player, data -> data.getCultivationData().setCultivationType(cultivationType));
     }
 
     public static void sendMiscDataPacket(Player player, MiscDataPacket.MiscType type) {

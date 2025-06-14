@@ -35,6 +35,7 @@ import java.util.function.Predicate;
  */
 public class CultivationScreen extends MeditationScreen implements IScrollableScreen<CultivationScreen.CultivationEntries> {
 
+    private static final MutableComponent NO_QI_ROOT = TipUtil.misc("no_qi_root");
     private static final int LIVING_WIDTH = 46;
     private static final int LIVING_HEIGHT = 66;
     private static final int PROGRESS_BAR_WIDTH = 101;
@@ -98,7 +99,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
             final List<QiRootType> roots = PlayerUtil.filterSpiritRoots(ClientUtil.player(), PlayerUtil.getRoots(ClientUtil.player()));
             final int len = roots.size();
             if(len == 0){
-                RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.misc("no_spiritual_root"), posX + 32, posY + 1, 1F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
+                RenderUtil.renderCenterScaledText(graphics.pose(), NO_QI_ROOT, posX + 32, posY + 1, 1F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
             } else {
                 final int interval = (65 - len * ElementOverlay.ELEMENT_LEN) / (len + 1);
                 posX += interval;

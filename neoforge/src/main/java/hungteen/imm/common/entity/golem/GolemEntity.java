@@ -282,7 +282,7 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
 
     @Override
     public CultivationType getCultivationType() {
-        return CultivationTypes.SPIRITUAL;
+        return CultivationTypes.QI;
     }
 
     public static class GolemRuneContainer extends SimpleContainer {

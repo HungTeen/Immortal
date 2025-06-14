@@ -29,11 +29,6 @@ public enum RealmPeriod implements RealmStage {
     SOPHISTICATION(false),
 
     /**
-     * 小圆满。
-     */
-    CLOSE_TO_PERFECTION(true),
-
-    /**
      * 大圆满。
      */
     PERFECTION(true),
@@ -53,7 +48,7 @@ public enum RealmPeriod implements RealmStage {
 
     @Override
     public boolean hasThreshold(RealmType type) {
-        return this != CLOSE_TO_PERFECTION;
+        return this != PERFECTION;
     }
 
     @Override

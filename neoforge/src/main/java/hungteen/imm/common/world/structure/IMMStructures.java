@@ -3,7 +3,6 @@ package hungteen.imm.common.world.structure;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.IMMMobCategory;
 import hungteen.imm.common.tag.IMMBiomeTags;
-import hungteen.imm.common.world.structure.structures.TeleportRuinStructure;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -43,14 +42,14 @@ public interface IMMStructures {
 //        SpiritualPlainsVillage.initStructures(context);
         final HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         final HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
-        context.register(TELEPORT_RUIN, new TeleportRuinStructure(
-                new Structure.StructureSettings(
-                        biomes.getOrThrow(IMMBiomeTags.HAS_TELEPORT_RUIN),
-                        Map.of(),
-                        GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
-                        TerrainAdjustment.NONE
-                ))
-        );
+//        context.register(TELEPORT_RUIN, new TeleportRuinStructure(
+//                new Structure.StructureSettings(
+//                        biomes.getOrThrow(IMMBiomeTags.HAS_TELEPORT_RUIN),
+//                        Map.of(),
+//                        GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
+//                        TerrainAdjustment.NONE
+//                ))
+//        );
         context.register(PLAINS_TRADING_MARKET, new JigsawStructure(
                 new Structure.StructureSettings(
                         biomes.getOrThrow(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET),

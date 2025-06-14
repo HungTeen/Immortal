@@ -20,6 +20,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
@@ -75,6 +76,11 @@ public class SpiritWorldDimension {
 
     public static void teleportBackFromSpiritRegion(ServerLevel level, ServerPlayer player) {
         if (isSpiritWorld(level)) {
+            // 玩家删除之前的坐垫。
+            if (player.getVehicle() instanceof SeatEntity seat) {
+                PlayerUtil.quitResting(player);
+                level.setBlock(seat.blockPosition(), Blocks.AIR.defaultBlockState(), 3);
+            }
             // 玩家传送回现实世界。
             MiscData.IMMPosition position = PlayerUtil.getData(player, data -> data.getMiscData().getLastPosBeforeSpiritWorld());
             if (position == null) {
@@ -110,7 +116,7 @@ public class SpiritWorldDimension {
                     poi -> poi.is(IMMPoiTypes.CUSHION.getRegistryName()),
                     player.blockPosition(),
                     3,
-                    PoiManager.Occupancy.HAS_SPACE
+                    PoiManager.Occupancy.ANY
             ).min((p1, p2) -> {
                 return (int) (p1.getPos().distSqr(player.blockPosition()) - p2.getPos().distSqr(player.blockPosition()));
             }).ifPresent(poi -> {

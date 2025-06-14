@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#c:is_cold/overworld",
+  "spawners": {
+    "type": "imm:chillager",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 10
+  }
+}

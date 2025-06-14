@@ -4,7 +4,6 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.event.events.BreakThroughEvent;
@@ -12,12 +11,14 @@ import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.common.world.entity.trial.MortalityTrial;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.util.EventUtil;
+import hungteen.imm.util.LevelUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -98,38 +99,28 @@ public class CultivationManager {
         BreakThroughTrial.Factory factory = BREAK_THROUGH_MAP.getOrDefault(oldRealm, null);
         if(factory != null){
             BreakThroughTrial trial = factory.create(player, oldRealm, getTrialDifficulty(player, oldRealm));
-            if(EventUtil.post(new BreakThroughEvent.Start(player, trial))){
+            BreakThroughEvent.Start startTrialEvent = new BreakThroughEvent.Start(player, trial);
+            if(EventUtil.post(startTrialEvent)){
                 return;
             }
+            trial = startTrialEvent.getTrial();
             // 移除旧的突破考验，防止出现多于一个的情况。
             BreakThroughTrial.getTrialFor(player).ifPresent(BreakThroughTrial::remove);
             DummyEntityManager.addEntity(player.serverLevel(), trial);
             player.removeEffect(IMMEffects.BREAK_THROUGH.holder());
+            PlayerUtil.quitResting(player);
+            LevelUtil.playSound(player.serverLevel(), SoundEvents.WITHER_SPAWN, SoundSource.NEUTRAL, player.position());
         }
     }
 
-    public static void breakThroughSuccess(ServerPlayer player){
-        BreakThroughTrial.getTrialFor(player).ifPresent(trial -> {
-            EventUtil.post(new BreakThroughEvent.Success(player, trial.getRealmType()));
-            PlayerHelper.playClientSound(player, SoundEvents.PLAYER_LEVELUP);
-            // 更新到新的境界。
-            RealmManager.getNextRealm(trial.getRealmType(), true).ifPresent(nextRealm -> {
-                RealmManager.updateRealm(player, nextRealm);
-            });
-            trial.remove();
-            // 传送回现实世界。
-            SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
-        });
-    }
-
+    /**
+     * 在精神领域死亡，玩家将被传送回现实世界，并且触发试炼失败。
+     * @param player
+     */
     public static void dieInSpiritWorld(ServerPlayer player){
         BreakThroughTrial.getTrialFor(player).ifPresent(trial -> {
-            EventUtil.post(new BreakThroughEvent.Failure(player, trial.getRealmType()));
+            trial.punishTrial(player);
             trial.remove();
-            clearBreakThroughProgress(player);
-            float reductionPercent = 1 - (float) IMMConfigs.realmSettings().breakThroughFailReduction.getAsDouble();
-            PlayerUtil.adjustExperience(player, ExperienceType.ELIXIR, reductionPercent);
-            PlayerUtil.adjustExperience(player, ExperienceType.PERSONALITY, reductionPercent);
         });
         // 传送回现实世界。
         SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
@@ -148,6 +139,13 @@ public class CultivationManager {
      */
     public static void meditate(ServerPlayer player){
         SpiritWorldDimension.teleportToSpiritRegion(player.serverLevel(), player);
+    }
+
+    /**
+     * 玩家点击修行界面的结束冥想按钮，将玩家传送回对应现实世界的位置。
+     */
+    public static void quitMeditate(ServerPlayer player){
+        SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
     }
 
     /**

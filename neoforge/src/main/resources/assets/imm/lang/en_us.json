@@ -481,7 +481,7 @@
   "misc.imm.element.spirit": "Spirit",
 
   "misc.imm.qi_root": "Root",
-  "misc.imm.no_qi_root": "Unknown",
+  "misc.imm.no_qi_root": "No Root",
   "misc.imm.root.common": "Common",
   "misc.imm.root.special": "Special",
   "misc.imm.root.metal": "Metal",
@@ -519,7 +519,7 @@
 
   "misc.imm.cultivation_type.empty": "Empty",
   "misc.imm.cultivation_type.mortal": "Mortal",
-  "misc.imm.cultivation_type.spiritual": "Spiritual",
+  "misc.imm.cultivation_type.qi": "Cultivator",
   "misc.imm.cultivation_type.monster": "Monster",
   "misc.imm.cultivation_type.undead": "Undead",
   "misc.imm.cultivation_type.wizard": "Wizard",

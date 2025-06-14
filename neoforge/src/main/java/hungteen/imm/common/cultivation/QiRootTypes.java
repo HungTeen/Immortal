@@ -104,7 +104,7 @@ public interface QiRootTypes {
     ));
 
     static MutableComponent getCategory() {
-        return TipUtil.misc("spiritual_root");
+        return TipUtil.misc("qi_root");
     }
 
     static MutableComponent getRoots(List<QiRootType> roots) {
@@ -116,7 +116,7 @@ public interface QiRootTypes {
             }
             return component;
         }
-        return TipUtil.misc("no_spiritual_root");
+        return TipUtil.misc("no_qi_root");
     }
 
     static QiRootType register(QiRootType type) {

@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.OptionalLong;
@@ -25,23 +24,23 @@ public interface IMMDimensionTypes {
     ResourceLocation SPIRIT_WORLD_EFFECTS = Util.prefix("spirit_world");
 
     static void register(BootstrapContext<DimensionType> context){
-        context.register(EAST_WORLD, new DimensionType(
-                OptionalLong.empty(),
-                true,
-                false,
-                false,
-                true,
-                1.0D,
-                true,
-                false,
-                -64,
-                384,
-                384,
-                BlockTags.INFINIBURN_OVERWORLD,
-                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
-                0.0F,
-                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
-        ));
+//        context.register(EAST_WORLD, new DimensionType(
+//                OptionalLong.empty(),
+//                true,
+//                false,
+//                false,
+//                true,
+//                1.0D,
+//                true,
+//                false,
+//                -64,
+//                384,
+//                384,
+//                BlockTags.INFINIBURN_OVERWORLD,
+//                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
+//                0.0F,
+//                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
+//        ));
         context.register(SPIRIT_WORLD, new DimensionType(
                 OptionalLong.empty(),
                 false,

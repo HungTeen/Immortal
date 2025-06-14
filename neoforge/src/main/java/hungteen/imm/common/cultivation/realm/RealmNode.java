@@ -1,15 +1,18 @@
 package hungteen.imm.common.cultivation.realm;
 
+import hungteen.htlib.util.helper.JavaHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.common.cultivation.RealmTypes;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * 修行的境界节点，整个修行体系可以看做一棵树。
@@ -19,44 +22,35 @@ public class RealmNode {
 
     private static final RealmNode ROOT = new RealmNode(RealmTypes.MORTALITY);
     private final RealmType realm;
-    private final HashSet<RealmNode> nextRealms = new HashSet<>();
+    private final Map<CultivationType, RealmNode> nextRealms = new HashMap<>();
 
     /**
      * 构建整个修行体系的树。
      */
     public static void updateRealmTree() {
-        ROOT.add(RealmTypes.QI_REFINING.first());
-        List<RealmNode> qiRefiningNodes = addMultiStage(RealmTypes.QI_REFINING.getRealms());
-        qiRefiningNodes.forEach(node -> node.add(RealmTypes.FOUNDATION.pre()));
-        List<RealmNode> foundationNodes = addMultiStage(RealmTypes.FOUNDATION.getRealms());
-        foundationNodes.forEach(node -> node.add(RealmTypes.CORE_SHAPING.pre()));
-        List<RealmNode> coreShapingNodes = addMultiStage(RealmTypes.CORE_SHAPING.getRealms());
+        RealmNode lastQiRefiningNode = addMultiStage(ROOT, RealmTypes.QI_REFINING.getRealms(), CultivationTypes.QI);
+        RealmNode lastFoundationNode = addMultiStage(lastQiRefiningNode, RealmTypes.FOUNDATION.getRealms(), CultivationTypes.QI);
+        RealmNode lastCoreShapingNode = addMultiStage(lastFoundationNode, RealmTypes.CORE_SHAPING.getRealms(), CultivationTypes.QI);
     }
 
     /**
      * Add a hierarchy list.
-     * @return realm nodes that can break through to next realm.
+     * @return the last realm node.
      */
-    public static List<RealmNode> addMultiStage(RealmType[] realmTypes){
-        List<RealmNode> nodes = new ArrayList<>();
-        RealmNode prev = null;
+    public static RealmNode addMultiStage(RealmNode prevRealm, RealmType[] realmTypes, CultivationType type){
         for (RealmType realmType : realmTypes) {
-            RealmNode now = new RealmNode(realmType);
-            if (realmType.canLevelUp()) {
-                nodes.add(now);
-            }
-            if (prev != null) {
-                prev.add(now);
-            }
-            prev = now;
+            RealmNode curRealm = getOrCreate(realmType);
+            prevRealm.add(curRealm, type);
+            prevRealm = curRealm;
         }
-        return nodes;
+        return prevRealm;
     }
 
-    @NotNull
-    public static RealmNode seekRealm(RealmType type){
-        RealmNode node = seekRealm(ROOT, type);
-        return node == null ? ROOT : node;
+    /**
+     * Find the realm node with the same realm type.
+     */
+    public static Optional<RealmNode> getNodeOpt(RealmType type){
+        return Optional.ofNullable(seekRealm(ROOT, type));
     }
 
     @Nullable
@@ -66,7 +60,7 @@ public class RealmNode {
         } else if(root.realm == type) {
             return root;
         }
-        for (RealmNode nextRealm : root.nextRealms) {
+        for (RealmNode nextRealm : root.nextRealms.values()) {
             final RealmNode node = seekRealm(nextRealm, type);
             if(node != null) {
                 return node;
@@ -75,30 +69,32 @@ public class RealmNode {
         return null;
     }
 
+    public static RealmNode getOrCreate(RealmType realm) {
+        return getNodeOpt(realm).orElseGet(() -> new RealmNode(realm));
+    }
+
     RealmNode(@NotNull RealmType realm) {
         this.realm = realm;
     }
 
-    @Nullable
-    public List<RealmNode> next() {
-        return next(realm.getCultivationType());
+    public List<RealmNode> nextRealms() {
+        return nextRealms.values().stream().toList();
     }
 
-    @Nullable
-    public List<RealmNode> next(CultivationType type) {
-        return nextRealms.stream().filter(l -> l.realm.getCultivationType() == type).toList();
+    public Optional<RealmNode> next(CultivationType type) {
+        return JavaHelper.getOpt(nextRealms, type);
     }
 
-    public void add(RealmType type) {
-        this.add(new RealmNode(type));
+    public void add(RealmType realm, CultivationType type) {
+        this.add(new RealmNode(realm), type);
     }
 
-    public void add(RealmNode node) {
-        if (nextRealms.stream().anyMatch(l -> l.realm == node.realm)) {
-            IMMAPI.logger().warn("Duplicate realm node : {}", node.realm.getRegistryName());
-        } else {
-            nextRealms.add(node);
+    public void add(RealmNode node, CultivationType type) {
+        if(nextRealms.containsKey(type)){
+            IMMAPI.logger().warn("Replaced old realm node {} with new one {} for type {} in realm {}",
+                    nextRealms.get(type).realm, node.realm, type, this.realm);
         }
+        nextRealms.put(type, node);
     }
 
     public RealmType getRealm() {

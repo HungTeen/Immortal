@@ -5,6 +5,7 @@ import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.artifact.ArtifactBlock;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
+import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.api.entity.Cultivatable;
@@ -12,7 +13,6 @@ import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.tag.IMMBlockTags;
-import hungteen.imm.common.tag.IMMDamageTypeTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
 import hungteen.imm.util.PlayerUtil;
@@ -30,8 +30,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static hungteen.imm.compat.minecraft.VanillaCultivationCompat.getDamageSourceRealm;
-
 /**
  * @author PangTeen
  * @program Immortal
@@ -47,19 +45,15 @@ public class RealmManager {
 //        ));
     }
 
-    /**
-     * Find the realm node with the same realm type.
-     */
-    public static RealmNode findRealmNode(RealmType realmType){
-        return RealmNode.seekRealm(realmType);
-    }
-
-    public static Optional<RealmType> getNextRealm(RealmType realmType, boolean hasThreshold){
-        RealmNode realmNode = findRealmNode(realmType);
-        return realmNode.next().stream()
-                .filter(node -> node.getRealm().hasThreshold() == hasThreshold)
-                .map(RealmNode::getRealm)
-                .findAny();
+    public static Optional<RealmType> getNextRealm(RealmType realmType, CultivationType cultivationType){
+        Optional<RealmNode> nodeOpt = RealmNode.getNodeOpt(realmType);
+        if(nodeOpt.isPresent()){
+            Optional<RealmNode> nextNodeOpt = nodeOpt.get().next(cultivationType);
+            if(nextNodeOpt.isPresent()){
+                return Optional.of(nextNodeOpt.get().getRealm());
+            }
+        }
+        return Optional.empty();
     }
 
     public static void getRealm(CompoundTag tag, String name, Consumer<RealmType> consumer){
@@ -111,24 +105,37 @@ public class RealmManager {
     public static void realmAttackGap(LivingDamageEvent.Pre event) {
         final LivingEntity self = event.getEntity();
         final DamageSource source = event.getSource();
-        final double amount = event.getOriginalDamage();
+        final double amount = event.getNewDamage();
         double gapAmount = amount;
-        int gap = 0;
+        int realmGap = 0;
         if (source.getEntity() != null) {
             // 伤害来源的境界差距。
-            gap = getRealmGap(self, source.getEntity());
+            realmGap = getRealmGap(self, source.getEntity());
         } else {
-            // 伤害来源是环境。
-            gap = source.is(IMMDamageTypeTags.IGNORE_REALM) ? 0 : getRealmGap(getRealm(self), getDamageSourceRealm(source));
+            // TODO 伤害来源是环境。
+//            gap = source.is(IMMDamageTypeTags.IGNORE_REALM) ? 0 : getRealmGap(getRealm(self), getDamageSourceRealm(source));
         }
-        if (gap > 0) {
-            // 伤害减免。
-            gapAmount = amount * Math.pow(1 - IMMConfigs.realmSettings().realmReceiveDamageReduction.getAsDouble(), gap);
-        } else if(gap < 0){
-            gapAmount = amount * Math.pow(1 + IMMConfigs.realmSettings().realmDealDamageIncrease.getAsDouble(), -gap);
+        if(realmGap == 0){
+            // 计算小境界差距。
+            if (source.getEntity() != null) {
+                float stageGap = getStageGap(self, source.getEntity());
+                double multiplier = 1 + (realmAttackMultiplier(stageGap > 0 ? 1 : -1) - 1) * Math.abs(stageGap);
+                gapAmount = amount * multiplier;
+            }
+        } else {
+            gapAmount = amount * realmAttackMultiplier(realmGap);
         }
         // 理论上伤害不能低于0.1。
         event.setNewDamage((float) Math.max(Math.min(0.1F, amount), gapAmount));
+    }
+
+    public static double realmAttackMultiplier(int gap){
+        if(gap > 0){
+            return Math.pow(1 - IMMConfigs.realmSettings().realmReceiveDamageReduction.getAsDouble(), gap);
+        } else if(gap < 0){
+            return Math.pow(1 + IMMConfigs.realmSettings().realmDealDamageIncrease.getAsDouble(), -gap);
+        }
+        return 1.0;
     }
 
     /**
@@ -164,11 +171,23 @@ public class RealmManager {
         return getRealmGap(getRealm(entity1), getRealm(entity2));
     }
 
+    public static float getStageGap(Entity entity1, Entity entity2) {
+        return getStageGap(getRealm(entity1), getRealm(entity2));
+    }
+
     /**
+     * 计算大境界差距。
      * @return 正数表示左边境界大。
      */
     public static int getRealmGap(RealmType realm1, RealmType realm2) {
         return realm1.getRealmValue() / 100 - realm2.getRealmValue() / 100;
+    }
+
+    public static float getStageGap(RealmType realm1, RealmType realm2) {
+        if(hasRealmGap(realm1, realm2)){
+            return getRealmGap(realm1, realm2);
+        }
+        return (realm1.getRealmValue() - realm2.getRealmValue()) * 1F / 100;
     }
 
     /**

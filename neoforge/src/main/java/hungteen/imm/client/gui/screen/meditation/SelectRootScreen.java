@@ -150,7 +150,7 @@ public class SelectRootScreen extends HTScreen implements IScrollableScreen<QiRo
             posY += 12;
 
         } else {
-            RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.misc("no_qi_root"), posX + 32, posY + 1, 0.8F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
+            RenderUtil.renderCenterScaledText(graphics.pose(), TipUtil.UNKNOWN, posX + 32, posY + 1, 0.8F, ColorHelper.RED.rgb(), ColorHelper.BLACK.rgb());
         }
     }
 

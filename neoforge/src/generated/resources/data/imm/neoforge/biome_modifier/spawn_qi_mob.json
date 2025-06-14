@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#imm:can_spawn_mob",
+  "spawners": {
+    "type": "imm:chillager",
+    "maxCount": 1,
+    "minCount": 1,
+    "weight": 10
+  }
+}

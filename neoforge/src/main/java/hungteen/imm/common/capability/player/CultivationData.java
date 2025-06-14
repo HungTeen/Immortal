@@ -2,6 +2,7 @@ package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.api.cultivation.CultivationType;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmType;
@@ -33,6 +34,7 @@ public class CultivationData implements HTPlayerData {
     private final HashSet<QiRootType> roots = new HashSet<>();
     private final EnumMap<ExperienceType, Float> experienceMap = new EnumMap<>(ExperienceType.class);
     private RealmType realmType = RealmTypes.MORTALITY;
+    private CultivationType cultivationType = CultivationTypes.NONE;
     private RealmNode realmNodeCache;
 
     public CultivationData(IMMPlayerData playerData) {
@@ -59,6 +61,9 @@ public class CultivationData implements HTPlayerData {
         CodecHelper.encodeNbt(RealmTypes.registry().byNameCodec(), this.realmType)
                 .resultOrPartial()
                 .ifPresent(nbt -> tag.put("PlayerRealmType", nbt));
+        CodecHelper.encodeNbt(CultivationTypes.registry().byNameCodec(), this.cultivationType)
+                .resultOrPartial()
+                .ifPresent(nbt -> tag.put("NextCultivationType", nbt));
         return tag;
     }
 
@@ -83,6 +88,11 @@ public class CultivationData implements HTPlayerData {
             CodecHelper.parse(RealmTypes.registry().byNameCodec(), nbt.get("PlayerRealmType"))
                     .resultOrPartial()
                     .ifPresent(realmType -> this.realmType = realmType);
+        }
+        if (nbt.contains("NextCultivationType")) {
+            CodecHelper.parse(CultivationTypes.registry().byNameCodec(), nbt.get("NextCultivationType"))
+                    .resultOrPartial()
+                    .ifPresent(cultivationType -> this.cultivationType = cultivationType);
         }
     }
 
@@ -209,6 +219,20 @@ public class CultivationData implements HTPlayerData {
 
     }
 
+    /**
+     * 目测应该不需要同步到客户端。
+     */
+    public void setCultivationType(CultivationType cultivationType) {
+        this.cultivationType = cultivationType;
+    }
+
+    /**
+     * @return 指明下一个境界的晋升方向。
+     */
+    public CultivationType getCultivationType() {
+        return cultivationType;
+    }
+
     public void sendRootAndRealmUpdatePacket() {
         if (playerData.getPlayer() instanceof ServerPlayer serverPlayer) {
             NetworkHelper.sendToClient(serverPlayer, new QiRootAndRealmPacket(getRoots(), getRealmType()));
@@ -221,7 +245,9 @@ public class CultivationData implements HTPlayerData {
 
     public RealmNode getRealmNode(boolean update) {
         if (this.realmNodeCache == null || update) {
-            this.realmNodeCache = RealmManager.findRealmNode(this.realmType);
+            RealmNode.getNodeOpt(this.realmType).ifPresent(node -> {
+                this.realmNodeCache = node;
+            });
         }
         return this.realmNodeCache;
     }

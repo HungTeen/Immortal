@@ -44,14 +44,16 @@ public class BiomeTagGen extends HTTagsProvider<Biome> {
         bind(IMMBiomes.BAMBOO_JUNGLE, BiomeTags.IS_JUNGLE, Tags.Biomes.IS_HOT, Tags.Biomes.IS_WET);
 
         /* IMM */
+        this.tag(IMMBiomeTags.CAN_SPAWN_MOB)
+                .addTags(Tags.Biomes.IS_PLAINS, Tags.Biomes.IS_FOREST, Tags.Biomes.IS_DESERT);
         this.tag(IMMBiomeTags.HAS_TELEPORT_RUIN)
                 .add(Biomes.PLAINS, Biomes.SAVANNA_PLATEAU);
         this.tag(IMMBiomeTags.HAS_PLAINS_TRADING_MARKET)
-                .add(IMMBiomes.PLAINS);
+                .add(IMMBiomes.PLAINS, Biomes.MEADOW);
         this.tag(IMMBiomeTags.HAS_SPIRITUAL_FLAME_ALTAR)
-                .add(IMMBiomes.SAVANNA);
+                .add(IMMBiomes.SAVANNA, Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.WINDSWEPT_SAVANNA);
         this.tag(IMMBiomeTags.HAS_SPIRIT_LAB)
-                .add(IMMBiomes.CUT_DARK_FOREST);
+                .add(IMMBiomes.CUT_DARK_FOREST, Biomes.DARK_FOREST);
     }
 
     @SafeVarargs

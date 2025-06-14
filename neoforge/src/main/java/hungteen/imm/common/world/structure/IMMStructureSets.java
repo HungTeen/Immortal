@@ -24,10 +24,10 @@ public interface IMMStructureSets {
 
     static void register(BootstrapContext<StructureSet> context) {
         final HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
-        context.register(TELEPORT_RUINS, new StructureSet(
-                structures.getOrThrow(IMMStructures.TELEPORT_RUIN),
-                new RandomSpreadStructurePlacement(28, 12, RandomSpreadType.LINEAR, 957627271)
-        ));
+//        context.register(TELEPORT_RUINS, new StructureSet(
+//                structures.getOrThrow(IMMStructures.TELEPORT_RUIN),
+//                new RandomSpreadStructurePlacement(28, 12, RandomSpreadType.LINEAR, 957627271)
+//        ));
         context.register(PLAINS_TRADING_MARKET_SET, new StructureSet(
                 structures.getOrThrow(IMMStructures.PLAINS_TRADING_MARKET),
                 new RandomSpreadStructurePlacement(

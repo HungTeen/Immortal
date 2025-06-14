@@ -45,34 +45,34 @@ public interface RealmTypes {
 
     MultiLevelRealm QI_REFINING = builder("qi_refining", RealmStep.values(13))
             .cultivation(5, 10, 20, 30, 45, 60, 80, 100, 125, 150, 180, 210, 250)
-            .realmValue(15, 75)
+            .realmValue(8, 80)
             .health(MathUtil.sameArray(13, 2))
             .qi(MathUtil.uniformArray(13, 15, 75, true))
-            .type(CultivationTypes.SPIRITUAL)
+            .type(CultivationTypes.QI)
             .multiLevel();
 
     MultiPeriodRealm FOUNDATION = builder("foundation", RealmPeriod.values())
-            .cultivation(300, 400, 500, 550, 600)
+            .cultivation(300, 400, 500, 550)
             .health(MathUtil.sameArray(5, 5))
-            .qi(100, 110, 120, 125, 125)
+            .qi(100, 110, 120, 125)
             .realmValue(115, 175)
-            .type(CultivationTypes.SPIRITUAL)
+            .type(CultivationTypes.QI)
             .multiPeriod();
 
     MultiPeriodRealm CORE_SHAPING = builder("core_shaping", RealmPeriod.values())
-            .cultivation(750, 900, 1050, 1200, 1350)
+            .cultivation(750, 900, 1050, 1200)
             .health(MathUtil.sameArray(5, 8))
-            .qi(150, 160, 170, 175, 175)
+            .qi(150, 160, 170, 175)
             .realmValue(215, 275)
-            .type(CultivationTypes.SPIRITUAL)
+            .type(CultivationTypes.QI)
             .multiPeriod();
 
     /* 妖修 */
 
     MultiLevelRealm YAOGUAI_LEVEL_1 = builder("yaoguai_level_1", RealmStep.values(10))
             .cultivation(10, 20, 40, 60, 80, 105, 135, 175, 205, 275)
-            .realmValue(8, 80)
-            .qi(MathUtil.uniformArray(10, 24, 60, true))
+            .realmValue(9, 90)
+            .qi(MathUtil.uniformArray(10, 15, 60, true))
             .armor(MathUtil.sameArray(10, 2))
             .type(CultivationTypes.YAOGUAI)
             .multiLevel();
@@ -80,7 +80,7 @@ public interface RealmTypes {
     MultiPeriodRealm YAOGUAI_LEVEL_2 = builder("yaoguai_level_2", RealmRank.values())
             .emptyCultivation()
             .realmValue(120, 150)
-            .qi(70, 75, 80)
+            .qi(70, 75, 80, 80)
             .armor(MathUtil.sameArray(10, 4))
             .type(CultivationTypes.YAOGUAI)
             .multiPeriod();
@@ -88,7 +88,15 @@ public interface RealmTypes {
     MultiPeriodRealm YAOGUAI_LEVEL_3 = builder("yaoguai_level_3", RealmRank.values())
             .emptyCultivation()
             .realmValue(160, 190)
-            .qi(95, 100, 110)
+            .qi(95, 100, 110, 110)
+            .armor(MathUtil.sameArray(10, 6))
+            .type(CultivationTypes.YAOGUAI)
+            .multiPeriod();
+
+    MultiPeriodRealm YAOGUAI_LEVEL_4 = builder("yaoguai_level_4", RealmRank.values())
+            .emptyCultivation()
+            .realmValue(220, 250)
+            .qi(130, 140, 150, 150)
             .armor(MathUtil.sameArray(10, 6))
             .type(CultivationTypes.YAOGUAI)
             .multiPeriod();
@@ -118,7 +126,7 @@ public interface RealmTypes {
 
     /* 灵火 */
 
-    RealmType SPIRITUAL_FLAME_1 = nonLiving("spiritual_flame_1", 90, CultivationTypes.SPIRITUAL);
+    RealmType SPIRITUAL_FLAME_1 = nonLiving("spiritual_flame_1", 90, CultivationTypes.QI);
 
 //    RealmType SPIRITUAL_FLAME_2 = initialize(new RealmType("spiritual_flame_2", 100, 200, 125, 120, CultivationTypes.SPIRITUAL));
 //
@@ -183,8 +191,7 @@ public interface RealmTypes {
         public MutableComponent getComponent() {
             // 从注册名中截取出阶段名。
             String replace = name().replace(getStage().getName(), "");
-            String substring = replace.substring(0, replace.length() - 1);
-            return TipUtil.misc("realm." + substring, stage().getComponent()).withStyle(style());
+            return TipUtil.misc("realm." + replace, stage().getComponent()).withStyle(style());
         }
 
         @Override

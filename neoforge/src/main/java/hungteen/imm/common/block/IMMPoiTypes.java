@@ -26,7 +26,9 @@ public interface IMMPoiTypes {
     HTVanillaRegistry<PoiType> POI_TYPES = HTRegistryManager.vanilla(Registries.POINT_OF_INTEREST_TYPE, Util.id());
 
     PTHolder<PoiType> CUSHION = POI_TYPES.registerForHolder("cushion", () -> new PoiType(
-            BlockUtil.getCushions().map(Block::defaultBlockState).collect(Collectors.toSet()), 1, 1
+            BlockUtil.getCushions()
+                    .flatMap(block -> block.getStateDefinition().getPossibleStates().stream())
+                    .collect(Collectors.toSet()), 1, 1
     ));
     PTHolder<PoiType> SPIRIT_ANCHOR = POI_TYPES.registerForHolder("spirit_anchor", () -> new PoiType(
             getBlockStates(IMMBlocks.SPIRIT_ANCHOR.get()), 1, 1

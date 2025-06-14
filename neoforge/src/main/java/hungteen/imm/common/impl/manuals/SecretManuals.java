@@ -35,7 +35,7 @@ public interface SecretManuals {
     HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.codec(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
 
     static void register(BootstrapContext<SecretManual> context){
-        final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.SPIRITUAL);
+        final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.QI);
         final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.first(), true);
         final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION.pre(), true);
         final ILearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.CORE_SHAPING.pre(), true);

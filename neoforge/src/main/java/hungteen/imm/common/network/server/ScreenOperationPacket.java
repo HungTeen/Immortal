@@ -39,6 +39,9 @@ public record ScreenOperationPacket(OperationType operationType, int value) impl
             case MEDITATE -> {
                 CultivationManager.meditate(player);
             }
+            case QUIT_MEDITATION -> {
+                CultivationManager.quitMeditate(player);
+            }
             case BREAK_THROUGH -> {
                 CultivationManager.breakThroughStart(player);
             }

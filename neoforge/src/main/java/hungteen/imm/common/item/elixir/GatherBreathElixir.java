@@ -40,7 +40,7 @@ public class GatherBreathElixir extends ElixirItem {
 
     @Override
     public Optional<RealmType> getLowestRealm(CultivationType cultivationType) {
-        return cultivationType == CultivationTypes.SPIRITUAL ? Optional.of(RealmTypes.QI_REFINING.first()) : Optional.empty();
+        return cultivationType == CultivationTypes.QI ? Optional.of(RealmTypes.QI_REFINING.first()) : Optional.empty();
     }
 
     @Override
