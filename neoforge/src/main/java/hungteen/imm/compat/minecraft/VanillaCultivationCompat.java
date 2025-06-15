@@ -2,65 +2,45 @@ package hungteen.imm.compat.minecraft;
 
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.cultivation.CultivationManager;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.entity.IMMEntities;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
+ * 兼容一些修仙设定和数值。
  * @author PangTeen
  * @program Immortal
  * @create 2024/11/26 15:55
  **/
 public class VanillaCultivationCompat {
 
-    private static final Map<EntityType<?>, RealmType> DEFAULT_REALM_MAP = new HashMap<>();
-    private static final Map<EntityType<?>, Float> KILL_XP_MAP = new HashMap<>();
-    private static final Map<TagKey<DamageType>, RealmType> DAMAGE_REALM_MAP = new HashMap<>();
-
     public static void fillEntityMap(){
-        addKillXp(IMMEntities.WANDERING_CULTIVATOR.get(), 1);
-
-//        put(EntityType.ENDERMAN, RealmTypes.QI_REFINING, 0.4F);
-//        put(EntityType.PIGLIN, RealmTypes.YAOGUAI_LEVEL_1, 0.5F);
-//        put(EntityType.BLAZE, RealmTypes.YAOGUAI_LEVEL_1, 0.5F);
-//        put(EntityType.HOGLIN, RealmTypes.YAOGUAI_LEVEL_2, 0.7F);
-//        put(EntityType.RAVAGER, RealmTypes.YAOGUAI_LEVEL_3, 1F);
+        put(EntityType.ENDERMAN, 0.3F);
+        put(EntityType.ENDERMITE, 0.25F);
+        put(EntityType.PHANTOM, 0.3F);
+        put(EntityType.WITHER_SKELETON, 0.3F);
+        put(EntityType.VEX, 0.4F);
+        put(EntityType.EVOKER, RealmTypes.QI_REFINING.level(8));
+        put(EntityType.ILLUSIONER, RealmTypes.QI_REFINING.level(11));
+        put(EntityType.RAVAGER, RealmTypes.YAOGUAI_LEVEL_1.level(5));
+        put(EntityType.IRON_GOLEM, RealmTypes.YAOGUAI_LEVEL_1.level(6));
+        put(EntityType.SNIFFER, RealmTypes.YAOGUAI_LEVEL_1.level(8));
+        put(EntityType.WARDEN, RealmTypes.YAOGUAI_LEVEL_3.pre());
+        put(EntityType.WITHER, RealmTypes.YAOGUAI_LEVEL_4.pre());
+        put(EntityType.ENDER_DRAGON, RealmTypes.YAOGUAI_LEVEL_4.pre());
     }
 
     public static void put(EntityType<?> type, RealmType realm, float xp){
-        addDefaultRealm(type, realm);
-        addKillXp(type, xp);
+        put(type, realm);
+        put(type, xp);
     }
 
-    public static void addDefaultRealm(EntityType<?> type, RealmType realm){
-        DEFAULT_REALM_MAP.put(type, realm);
+    public static void put(EntityType<?> type, float xp){
+        CultivationManager.addKillXp(type, xp);
     }
 
-    public static RealmType getDefaultRealm(EntityType<?> type, RealmType defaultRealm){
-        return DEFAULT_REALM_MAP.getOrDefault(type, defaultRealm);
-    }
-
-    public static RealmType getDamageSourceRealm(DamageSource source){
-        for (Map.Entry<TagKey<DamageType>, RealmType> entry : DAMAGE_REALM_MAP.entrySet()) {
-            if(source.is(entry.getKey())){
-                return entry.getValue();
-            }
-        }
-        return RealmTypes.NOT_IN_REALM;
-    }
-
-    public static void addKillXp(EntityType<?> type, float value){
-        KILL_XP_MAP.put(type, value);
-    }
-
-    public static float getKillXp(EntityType<?> type){
-        return KILL_XP_MAP.getOrDefault(type, CultivationManager.DEFAULT_KILL_XP);
+    public static void put(EntityType<?> type, RealmType realm){
+        RealmManager.addDefaultRealm(type, realm);
     }
 
 }

@@ -1,14 +1,11 @@
 package hungteen.imm.client.model.bake;
 
 import hungteen.imm.client.util.ClientUtil;
-import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.item.IMMItems;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.neoforged.neoforge.client.event.ModelEvent;
-
-import java.util.Optional;
 
 /**
  * @program Immortal
@@ -42,10 +39,10 @@ public class IMMBakeModels {
         ItemUtil.getLargeHeldItems().forEach(item -> {
             event.register(LargeHeldItemBakeModel.getHeldModelLocation(item));
         });
-        Optional.ofNullable(ClientUtil.level()).ifPresent(level -> {
-            SecretManuals.registry().getValues(level).forEach(manual -> {
-                event.register(ClientUtil.getModelLocation(manual.model()));
-            });
-        });
+//        Optional.ofNullable(ClientUtil.level()).ifPresent(level -> {
+//            SecretManuals.registry().getValues(level).forEach(manual -> {
+//                event.register(ClientUtil.getModelLocation(manual.model()));
+//            });
+//        });
     }
 }

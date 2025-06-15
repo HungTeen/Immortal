@@ -4,6 +4,7 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.event.events.BreakThroughEvent;
@@ -21,6 +22,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -34,9 +36,9 @@ import java.util.Map;
  **/
 public class CultivationManager {
 
-    public static final int MAX_VALID_KILL_COUNT = 5;
-    public static final float DEFAULT_KILL_XP = 0.2F;
+    private static final Map<EntityType<?>, Float> KILL_XP_MAP = new HashMap<>();
     private static final Map<RealmType, BreakThroughTrial.Factory> BREAK_THROUGH_MAP = new HashMap<>();
+    public static final float DEFAULT_KILL_XP = 0.2F;
 
     static {
         BREAK_THROUGH_MAP.put(RealmTypes.MORTALITY, MortalityTrial::new);
@@ -71,10 +73,17 @@ public class CultivationManager {
     }
 
     /**
-     * 修为达到了当前境界的升级门槛。
+     * 修为达到了当前境界的升级门槛，但遇到了瓶颈。
      */
     public static boolean reachThreshold(Player player) {
         return CultivationManager.hasThreshold(player) && getCultivation(player) >= getMaxCultivation(player);
+    }
+
+    /**
+     * 修为达到了当前境界的升级门槛，并且没有瓶颈。
+     */
+    public static boolean canFreeLevelUp(Player player) {
+        return ! CultivationManager.hasThreshold(player) && getCultivation(player) >= getMaxCultivation(player);
     }
 
     /**
@@ -163,14 +172,6 @@ public class CultivationManager {
         PlayerUtil.setFloatData(player, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS, 0);
     }
 
-    public static void onPlayerKillLiving(ServerPlayer player, LivingEntity living){
-        final int count = player.getStats().getValue(Stats.ENTITY_KILLED, living.getType());
-        if(count < MAX_VALID_KILL_COUNT){
-//            final float xp = getKillXp(living.getType()) * (1 - count * 1F / MAX_VALID_KILL_COUNT);
-//            PlayerUtil.addExperience(player, ExperienceTypes.FIGHTING, xp);
-        }
-    }
-
     public static boolean canBreakThrough(Player player){
         return PlayerUtil.getFloatData(player, IMMPlayerData.FloatData.BREAK_THROUGH_PROGRESS) >= 1;
     }
@@ -199,6 +200,40 @@ public class CultivationManager {
 
     public static void addSpell(Player player, float amount){
         PlayerUtil.addExperience(player, ExperienceType.SPELL, amount);
+    }
+
+    public static void addFightingXp(Player player, float amount){
+        PlayerUtil.addExperience(player, ExperienceType.FIGHTING, amount);
+    }
+
+    public static void addPersonalityXp(Player player, float amount){
+        PlayerUtil.addExperience(player, ExperienceType.PERSONALITY, amount);
+    }
+
+    public static void addKillXp(EntityType<?> type, float value){
+        KILL_XP_MAP.put(type, value);
+    }
+
+    public static float getKillXp(EntityType<?> type){
+        return KILL_XP_MAP.getOrDefault(type, DEFAULT_KILL_XP);
+    }
+
+    public static float getKillXp(LivingEntity living){
+        RealmType realm = RealmManager.getRealm(living);
+        // TODO 击杀数值优化。
+        if(realm.getRealmValue() > 0){
+            return realm.getRealmValue() * 0.04F;
+        }
+        return getKillXp(living.getType());
+    }
+
+    public static void onPlayerKillLiving(ServerPlayer player, LivingEntity living){
+        int count = player.getStats().getValue(Stats.ENTITY_KILLED, living.getType());
+        int maxValidCount = IMMConfigs.cultivationSetting().maxValidKillCount.get();
+        if(count < maxValidCount){
+            final float xp = getKillXp(living) * (1 - count * 1F / maxValidCount);
+            addFightingXp(player, xp);
+        }
     }
 
     public static MutableComponent getExperienceComponent(){

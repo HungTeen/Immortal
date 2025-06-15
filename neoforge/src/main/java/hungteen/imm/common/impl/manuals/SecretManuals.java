@@ -1,13 +1,16 @@
 package hungteen.imm.common.impl.manuals;
 
+import com.mojang.serialization.Codec;
 import hungteen.htlib.api.registry.HTCodecRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IManualContent;
+import hungteen.imm.api.spell.IScrollContent;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.CultivationTypes;
+import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
@@ -15,8 +18,13 @@ import hungteen.imm.common.impl.manuals.requirments.CultivationTypeRequirement;
 import hungteen.imm.common.impl.manuals.requirments.ElementRequirement;
 import hungteen.imm.common.impl.manuals.requirments.RealmRequirement;
 import hungteen.imm.common.impl.manuals.requirments.SpellRequirement;
+import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
@@ -34,7 +42,7 @@ public interface SecretManuals {
 
     HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.codec(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
 
-    static void register(BootstrapContext<SecretManual> context){
+    static void register(BootstrapContext<SecretManual> context) {
         final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.QI);
         final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.first(), true);
         final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION.pre(), true);
@@ -165,87 +173,140 @@ public interface SecretManuals {
         /* 元素精通 */
         for (Element element : Element.values()) {
             final SpellType spell = ElementalMasterySpell.getSpell(element);
-            register(context, spell, 1, builder -> {
+            SecretScroll mastery1 = register(context, spell, 1, builder -> {
                 builder.require(spiritual_level_2)
 //                        .require(new EMPRequirement(1))
                         .require(SpellRequirement.single(SpellTypes.RELEASING, 1));
             });
-            register(context, spell, 2, builder -> {
+            SecretScroll mastery2 = register(context, spell, 2, builder -> {
                 builder.require(spiritual_level_2)
 //                        .require(new EMPRequirement(2))
                         .require(SpellRequirement.single(SpellTypes.DISPERSAL, 1));
             });
-            register(context, spell, 3, builder -> {
+            SecretScroll mastery3 = register(context, spell, 3, builder -> {
                 builder.require(spiritual_level_3)
 //                        .require(new EMPRequirement(3))
-                        ;
+                ;
             });
+            register(context, Util.prefix(element.name().toLowerCase() + "element_manual"), TipUtil.manual("element_manual", ElementManager.name(element)), List.of(
+                    mastery1, mastery2, mastery3)
+            );
         }
     }
 
-    static void register(BootstrapContext<SecretManual> context, SpellType spell, int level, Consumer<Builder> consumer){
-        if(level > 0 && level <= spell.getMaxLevel()){
-            final Builder builder = builder(spell, level);
-            if(level > 1){
-                builder.require(new SpellRequirement(List.of(com.mojang.datafixers.util.Pair.of(spell, level - 1))));
+    /**
+     * 注册成套的功法秘籍。
+     */
+    static void register(BootstrapContext<SecretManual> context, ResourceLocation title, List<SecretScroll> scrolls) {
+        context.register(registry().createKey(title), new SecretManual(
+                scrolls,
+                Util.prefix("item/secret_manual"),
+                TipUtil.misc(title.getPath()),
+                Optional.of(TipUtil.manual("category.manual")),
+                Optional.empty(),
+                false
+        ));
+    }
+
+    /**
+     * 注册成套的功法秘籍。
+     */
+    static void register(BootstrapContext<SecretManual> context, ResourceLocation key, Component title, List<SecretScroll> scrolls) {
+        context.register(registry().createKey(key), new SecretManual(
+                scrolls,
+                Util.prefix("item/secret_manual"),
+                title,
+                Optional.of(TipUtil.manual("category.manual")),
+                Optional.empty(),
+                false
+        ));
+    }
+
+    /**
+     * 注册单页的法术卷轴。
+     * @return 卷轴。
+     */
+    static SecretScroll register(BootstrapContext<SecretManual> context, SpellType spell, int level, Consumer<SpellScrollBuilder> consumer) {
+        if (level > 0 && level <= spell.getMaxLevel()) {
+            final SpellScrollBuilder builder = builder(spell, level);
+            if (level > 1) {
+                builder.require(new SpellRequirement(List.of(Spell.create(spell, level - 1))));
             }
             consumer.accept(builder);
-            context.register(spellManual(spell, level), builder.build());
-        } else {
-            Util.warn("Secret Manuals Warn : Invalid spell level !");
+            SecretScroll scroll = builder.build();
+            context.register(createSpellKey(spell, level), new SecretManual(
+                    List.of(scroll),
+                    Util.prefix("item/secret_scroll"),
+                    scroll.getTitle(),
+                    Optional.of(TipUtil.manual("category.spell")),
+                    Optional.empty(),
+                    false
+            ));
+            return scroll;
         }
+        throw new RuntimeException("Secret Manuals Error : Invalid spell level for " + spell.getLocation() + " ! Level must be between 1 and " + spell.getMaxLevel() + ".");
     }
 
-    static HTCodecRegistry<SecretManual> registry(){
-        return TUTORIALS;
-    }
-
-    static Builder builder(SpellType spell){
+    static SpellScrollBuilder builder(SpellType spell) {
         return builder(spell, 1);
     }
 
-    static Builder builder(SpellType spell, int level){
-        return builder(new LearnSpellManual(spell, level));
+    static SpellScrollBuilder builder(SpellType spell, int level) {
+        return builder(new LearnSpellScroll(spell, level));
     }
 
-    static Builder builder(IManualContent content){
-        return new Builder(content);
+    static SpellScrollBuilder builder(IScrollContent content) {
+        return new SpellScrollBuilder(content);
     }
 
-    static ResourceKey<SecretManual> spellManual(SpellType spell) {
-        return spellManual(spell, 1);
+    static ResourceKey<SecretManual> createSpellKey(SpellType spell) {
+        return createSpellKey(spell, 1);
     }
 
-    static ResourceKey<SecretManual> spellManual(SpellType spell, int level) {
+    static ResourceKey<SecretManual> createSpellKey(SpellType spell, int level) {
         return registry().createKey(StringHelper.suffix(spell.getLocation(), String.valueOf(level)));
     }
+
+    static Codec<ResourceKey<SecretManual>> resourceKeyCodec() {
+        return ResourceKey.codec(SecretManuals.registry().getRegistryKey());
+    }
+
+    static StreamCodec<RegistryFriendlyByteBuf, ResourceKey<SecretManual>> resourceKeyStreamCodec() {
+        return ByteBufCodecs.fromCodecWithRegistries(resourceKeyCodec());
+    }
+
+    static HTCodecRegistry<SecretManual> registry() {
+        return TUTORIALS;
+    }
+
 
     static ResourceKey<SecretManual> create(String name) {
         return registry().createKey(Util.prefix(name));
     }
 
-    class Builder {
+    class SpellScrollBuilder {
 
-        private final IManualContent content;
+        private final IScrollContent content;
         private final List<ILearnRequirement> requirements = new ArrayList<>();
-        private ResourceLocation model = Util.prefix("secret_manual");
+        private Component title = null;
 
-        public Builder(IManualContent content) {
+        public SpellScrollBuilder(IScrollContent content) {
             this.content = content;
         }
 
-        public Builder require(ILearnRequirement requirement) {
+        public SpellScrollBuilder require(ILearnRequirement requirement) {
             requirements.add(requirement);
             return this;
         }
 
-        public Builder model(ResourceLocation model) {
-            this.model = model;
+        public SpellScrollBuilder title(Component title) {
+            this.title = title;
             return this;
         }
 
-        public SecretManual build() {
-            return new SecretManual(requirements, content, model, Optional.empty());
+        public SecretScroll build() {
+            return new SecretScroll(requirements, content, Optional.ofNullable(title));
         }
     }
+
 }

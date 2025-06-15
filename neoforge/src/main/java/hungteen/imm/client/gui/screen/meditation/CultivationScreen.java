@@ -33,7 +33,7 @@ import java.util.function.Predicate;
  * @program Immortal
  * @create 2023/7/27 14:42
  */
-public class CultivationScreen extends MeditationScreen implements IScrollableScreen<CultivationScreen.CultivationEntries> {
+public class CultivationScreen extends MeditationScreen implements IScrollableScreen<CultivationScreen.CultivationEntry> {
 
     private static final MutableComponent NO_QI_ROOT = TipUtil.misc("no_qi_root");
     private static final int LIVING_WIDTH = 46;
@@ -42,7 +42,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     private static final int PROGRESS_BAR_HEIGHT = 5;
     private static final int KARMA_WIDTH = 40;
     private static final int KARMA_HEIGHT = 18;
-    private final ScrollComponent<CultivationEntries> scrollComponent;
+    private final ScrollComponent<CultivationEntry> scrollComponent;
 
     public CultivationScreen() {
         super(MeditationType.CULTIVATION);
@@ -115,19 +115,19 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
     }
 
     @Override
-    public List<CultivationEntries> getItems() {
-        return Arrays.stream(CultivationEntries.values()).filter(l -> {
+    public List<CultivationEntry> getItems() {
+        return Arrays.stream(CultivationEntry.values()).filter(l -> {
             return PlayerHelper.getClientPlayer().map(l::canDisplay).orElse(false);
         }).toList();
     }
 
     @Override
-    public void renderTooltip(Level level, GuiGraphics graphics, CultivationEntries item, int slotId, int x, int y) {
+    public void renderTooltip(Level level, GuiGraphics graphics, CultivationEntry item, int slotId, int x, int y) {
 
     }
 
     @Override
-    public void renderItem(Level level, GuiGraphics graphics, CultivationEntries item, int slotId, int x, int y) {
+    public void renderItem(Level level, GuiGraphics graphics, CultivationEntry item, int slotId, int x, int y) {
         final Player player = ClientUtil.player();
         switch (item) {
             case ELIXIR_CULTIVATION -> {
@@ -201,7 +201,7 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
         return PlayerUtil.getPlayerRealm(player).getCultivationType().requireQi();
     }
 
-    public enum CultivationEntries {
+    public enum CultivationEntry {
 
         ELIXIR_CULTIVATION,
 
@@ -227,11 +227,11 @@ public class CultivationScreen extends MeditationScreen implements IScrollableSc
 
         private final Predicate<Player> canDisplay;
 
-        CultivationEntries() {
+        CultivationEntry() {
             this.canDisplay = JavaHelper::alwaysTrue;
         }
 
-        CultivationEntries(Predicate<Player> canDisplay) {
+        CultivationEntry(Predicate<Player> canDisplay) {
             this.canDisplay = canDisplay;
         }
 

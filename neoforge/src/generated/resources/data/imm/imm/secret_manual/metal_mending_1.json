@@ -1,17 +1,31 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:metal_mending"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
-    },
-    {
-      "type": "imm:element",
-      "element": "Metal"
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:metal_mending"
+      },
+      "requirements": [
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:element",
+          "elements": [
+            "Metal"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "title": {
+    "translate": "spell.imm.metal_mending"
+  }
 }

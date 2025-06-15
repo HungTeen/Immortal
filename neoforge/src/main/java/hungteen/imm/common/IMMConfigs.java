@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * @program Immortal
+ * @program imm
  * @author HungTeen
  * @create 2022-09-24 16:17
  **/
@@ -42,16 +42,16 @@ public class IMMConfigs {
                 {
                     final float[] chances = new float[]{0, 0.2F, 0.45F, 0.2F, 0.1F};
                     for (int i = 0; i < Constants.MAX_ROOT_AMOUNT; i++) {
-                        qiSettings.rootChances[i] = builder
-                                .translation("config.immortal.root_chance_" + i)
+                        qiSetting.rootChances[i] = builder
+                                .translation("config.imm.root_chance_" + i)
                                 .comment("The chance that players have " + i + " qi roots.")
                                 .defineInRange("RootChance" + i, chances[i], 0, 1);
                     }
 
                     final int[] weights = new int[]{100, 100, 100, 100, 100, 40};
                     for (int i = 0; i < Element.values().length; i++) {
-                        qiSettings.rootWeights[i] = builder
-                                .translation("config.immortal." + Element.values()[i].name().toLowerCase() + "_root_weight")
+                        qiSetting.rootWeights[i] = builder
+                                .translation("config.imm." + Element.values()[i].name().toLowerCase() + "_root_weight")
                                 .comment("The weight that players have " + Element.values()[i].name().toLowerCase() + " spiritual root.")
                                 .defineInRange(Element.values()[i].getSerializedName() + "RootChance", weights[i], 0, 1000000);
                     }
@@ -63,13 +63,13 @@ public class IMMConfigs {
 
             builder.comment("Settings about elements.").push("Element Settings");
             {
-                elementSettings.elementDecaySpeed = builder
-                        .translation("config.immortal.element_decay_speed")
+                elementSetting.elementDecaySpeed = builder
+                        .translation("config.imm.element_decay_speed")
                         .comment("The speed that elements decay, can not be zero !")
                         .defineInRange("ElementDecaySpeed", ElementManager.DEFAULT_DECAY_SPEED, 0, 1);
 
-                elementSettings.elementDecayValue = builder
-                        .translation("config.immortal.element_decay_value")
+                elementSetting.elementDecayValue = builder
+                        .translation("config.imm.element_decay_value")
                         .comment("The value that elements decay each tick, can not be zero !")
                         .defineInRange("ElementDecayValue", ElementManager.DEFAULT_DECAY_VALUE, 0, 1);
             }
@@ -77,26 +77,34 @@ public class IMMConfigs {
 
             builder.comment("Settings about realms.").push("Realm Settings");
             {
-                realmSettings.realmReceiveDamageReduction = builder
-                        .translation("config.immortal.realm_receive_damage_reduction")
+                realmSetting.realmReceiveDamageReduction = builder
+                        .translation("config.imm.realm_receive_damage_reduction")
                         .comment("The damage reduction that player receive when they are in a higher realm.")
                         .defineInRange("RealmReceiveDamageReduction", 0.5, 0, 1);
 
-                realmSettings.realmDealDamageIncrease = builder
-                        .translation("config.immortal.realm_deal_damage_increase")
+                realmSetting.realmDealDamageIncrease = builder
+                        .translation("config.imm.realm_deal_damage_increase")
                         .comment("The damage increase that player deal when they are in a higher realm.")
                         .defineInRange("RealmDealDamageIncrease", 0.1, 0, 1);
 
-                realmSettings.breakThroughFailReduction = builder
-                        .translation("config.immortal.break_through_fail_reduction")
+                realmSetting.breakThroughFailReduction = builder
+                        .translation("config.imm.break_through_fail_reduction")
                         .comment("The reduction factor that player get when they failed at the break through.")
                         .defineInRange("BreakThroughFailReduction", 0.75, 0, 1);
             }
 
+            builder.comment("Settings about cultivation.").push("Cultivation Settings");
+            {
+                cultivationSetting.maxValidKillCount = builder
+                        .translation("config.imm.max_valid_kill_count")
+                        .comment("The maximum valid kill count for experience.")
+                        .defineInRange("MaxValidKillCount", 3, 0, 1000000);
+            }
+
             builder.comment("Settings about blocks.").push("Block Settings");
             {
-                blockSettings.furnaceExplodeCD = builder
-                        .translation("config.immortal.furnace_explode_cd")
+                blockSetting.furnaceExplodeCD = builder
+                        .translation("config.imm.furnace_explode_cd")
                         .comment("How long will furnace explode when it went wrong.")
                         .defineInRange("FurnaceExplodeCD", 200, 0, 1000000);
             }
@@ -104,28 +112,33 @@ public class IMMConfigs {
         }
 
 
-        public QiSettings qiSettings = new QiSettings();
-        public ElementSettings elementSettings = new ElementSettings();
-        public RealmSettings realmSettings = new RealmSettings();
-        public BlockSettings blockSettings = new BlockSettings();
+        public QiSetting qiSetting = new QiSetting();
+        public ElementSetting elementSetting = new ElementSetting();
+        public RealmSetting realmSetting = new RealmSetting();
+        public CultivationSetting cultivationSetting = new CultivationSetting();
+        public BlockSetting blockSetting = new BlockSetting();
 
-        public static class QiSettings {
+        public static class QiSetting {
             public final ModConfigSpec.DoubleValue[] rootChances = new ModConfigSpec.DoubleValue[Constants.MAX_ROOT_AMOUNT];
             public final ModConfigSpec.IntValue[] rootWeights = new ModConfigSpec.IntValue[Element.values().length];
         }
 
-        public static class ElementSettings {
+        public static class ElementSetting {
             public ModConfigSpec.DoubleValue elementDecaySpeed;
             public ModConfigSpec.DoubleValue elementDecayValue;
         }
 
-        public static class RealmSettings {
+        public static class RealmSetting {
             public ModConfigSpec.DoubleValue realmReceiveDamageReduction;
             public ModConfigSpec.DoubleValue realmDealDamageIncrease;
             public ModConfigSpec.DoubleValue breakThroughFailReduction;
         }
+        
+        public static class CultivationSetting {
+            public ModConfigSpec.IntValue maxValidKillCount;
+        }
 
-        public static class BlockSettings {
+        public static class BlockSetting {
             public ModConfigSpec.IntValue furnaceExplodeCD;
         }
 
@@ -135,12 +148,12 @@ public class IMMConfigs {
 
         public Client(ModConfigSpec.Builder builder) {
                 defaultSpellCircle = builder
-                        .translation("config.immortal.default_spell_circle")
+                        .translation("config.imm.default_spell_circle")
                         .comment("Use the default setting to control spell circle.")
                         .define("DefaultSpellCircle", true);
 
                 displayElementIconAboveHead = builder
-                        .translation("config.immortal.display_element_icon_above_head")
+                        .translation("config.imm.display_element_icon_above_head")
                         .comment("Display the element icon above the player's head.")
                         .define("DisplayElementIconAboveHead", true);
         }
@@ -153,7 +166,7 @@ public class IMMConfigs {
     /* Common */
 
     public static double getRootCountChance(int count){
-        return qiSettings().rootChances[count].get();
+        return qiSetting().rootChances[count].get();
     }
 
     public static double[] getRootChances(){
@@ -165,19 +178,23 @@ public class IMMConfigs {
     }
 
     public static int getRootWeight(Element element){
-        return qiSettings().rootWeights[element.ordinal()].get();
+        return qiSetting().rootWeights[element.ordinal()].get();
     }
 
-    public static Common.QiSettings qiSettings(){
-        return common().qiSettings;
+    public static Common.QiSetting qiSetting(){
+        return common().qiSetting;
     }
 
-    public static Common.ElementSettings elementSettings(){
-        return common().elementSettings;
+    public static Common.ElementSetting elementSetting(){
+        return common().elementSetting;
     }
 
-    public static Common.RealmSettings realmSettings(){
-        return common().realmSettings;
+    public static Common.RealmSetting realmSetting(){
+        return common().realmSetting;
+    }
+
+    public static Common.CultivationSetting cultivationSetting(){
+        return common().cultivationSetting;
     }
 
     public static Common common(){

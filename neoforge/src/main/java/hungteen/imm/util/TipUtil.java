@@ -46,6 +46,10 @@ public class TipUtil {
         return Component.translatable("spell." + Util.id() + "." + name, objects);
     }
 
+    public static MutableComponent manual(String name, Object... objects){
+        return Component.translatable("manual." + Util.id() + "." + name, objects);
+    }
+
     public static MutableComponent misc(String name, Object... objects){
         return Component.translatable("misc." + Util.id() + "." + name, objects);
     }

@@ -4,15 +4,18 @@ import hungteen.htlib.client.util.ClientHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.data.ClientData;
+import hungteen.imm.client.gui.screen.SecretManualScreen;
 import hungteen.imm.client.gui.screen.meditation.SelectRootScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
+import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -67,6 +70,13 @@ public class IMMClientProxy extends IMMProxy {
     public void openQiRootScreen(Player player) {
         if(ClientHelper.screen() == null){
             mc().setScreen(new SelectRootScreen());
+        }
+    }
+
+    @Override
+    public void openManualScreen(Player player, SecretManual manual, int page, InteractionHand hand) {
+        if(ClientHelper.screen() == null){
+            mc().setScreen(new SecretManualScreen(manual, page, hand));
         }
     }
 }

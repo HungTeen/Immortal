@@ -1,22 +1,40 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 2,
-    "spell": "imm:spirit_eyes"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:spell",
-      "require_spells": [
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 2,
+        "spell": "imm:spirit_eyes"
+      },
+      "requirements": [
         {
-          "level": 1,
-          "spell": "imm:spirit_eyes"
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:spirit_eyes"
+            }
+          ]
+        },
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
         }
       ]
-    },
-    {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
     }
-  ]
+  ],
+  "title": {
+    "extra": [
+      " ",
+      {
+        "translate": "manual.imm.level2"
+      }
+    ],
+    "translate": "spell.imm.spirit_eyes"
+  }
 }

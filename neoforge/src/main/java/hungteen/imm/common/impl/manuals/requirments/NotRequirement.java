@@ -31,7 +31,7 @@ public record NotRequirement(ILearnRequirement requirement) implements ILearnReq
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return TipUtil.misc("requirement.not").append("{").append(requirement().getRequirementInfo(player)).append("}");
+        return TipUtil.manual("requirement.not").append("{").append(requirement().getRequirementInfo(player)).append("}");
     }
 
     @Override

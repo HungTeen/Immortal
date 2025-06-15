@@ -23,7 +23,7 @@ public interface RequirementTypes {
     IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
     IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
     IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
-    IRequirementType<SpiritualRootRequirement> SPIRITUAL_ROOT = register(new RequirementType<>("spiritual_root", SpiritualRootRequirement.CODEC));
+    IRequirementType<QiRootRequirement> QI_ROOT = register(new RequirementType<>("qi_root", QiRootRequirement.CODEC));
     IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
     IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
 

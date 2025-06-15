@@ -118,15 +118,15 @@ public interface IMMCreativeTabs {
                     })
     );
 
-    HTHolder<CreativeModeTab> RUNES = register("runes", builder ->
-            builder.icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
-                    .withTabsBefore(ARTIFACTS.getRegistryName())
-                    .displayItems((parameters, output) -> {
-                        ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
-                            output.accept(new ItemStack(item));
-                        });
-                    })
-    );
+//    HTHolder<CreativeModeTab> RUNES = register("runes", builder ->
+//            builder.icon(() -> new ItemStack((IMMItems.ITEM_FILTER_RUNE.get())))
+//                    .withTabsBefore(ARTIFACTS.getRegistryName())
+//                    .displayItems((parameters, output) -> {
+//                        ItemHelper.get().filterValues(RuneItem.class::isInstance).forEach(item -> {
+//                            output.accept(new ItemStack(item));
+//                        });
+//                    })
+//    );
 
     static void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {

@@ -11,6 +11,7 @@ import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.entity.misc.ThrowingItemEntity;
 import hungteen.imm.common.event.handler.LivingEventHandler;
 import hungteen.imm.util.DamageUtil;
@@ -118,6 +119,16 @@ public class IMMLivingEvents {
         // Cause by player.
         if(ev.getSource().getEntity() instanceof ServerPlayer player) {
             CultivationManager.onPlayerKillLiving(player, ev.getEntity());
+        }
+    }
+
+    public static void onEffectExpired(MobEffectEvent.Expired event) {
+        // 超时时随机扣除突破进度。
+        if(event.getEffectInstance().is(IMMEffects.BREAK_THROUGH.holder())) {
+            if(event.getEntity() instanceof ServerPlayer serverPlayer){
+                float random = serverPlayer.getRandom().nextFloat();
+                CultivationManager.addBreakThroughProgress(serverPlayer, - random);
+            }
         }
     }
 

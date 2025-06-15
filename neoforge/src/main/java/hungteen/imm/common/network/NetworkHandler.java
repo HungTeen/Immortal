@@ -4,6 +4,7 @@ import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.network.client.*;
 import hungteen.imm.common.network.server.ScreenOperationPacket;
+import hungteen.imm.common.network.server.ServerManualPacket;
 import hungteen.imm.common.network.server.ServerSelectQiRootPacket;
 import hungteen.imm.common.network.server.ServerSpellPacket;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -72,6 +73,11 @@ public class NetworkHandler {
                 ServerSelectQiRootPacket.TYPE,
                 ServerSelectQiRootPacket.STREAM_CODEC,
                 NeoHelper.wrapServerHandler(ServerSelectQiRootPacket::process)
+        );
+        registrar.playToServer(
+                ServerManualPacket.TYPE,
+                ServerManualPacket.STREAM_CODEC,
+                NeoHelper.wrapServerHandler(ServerManualPacket::process)
         );
 //        registrar.playToServer(
 //                EmptyClickPacket.TYPE,

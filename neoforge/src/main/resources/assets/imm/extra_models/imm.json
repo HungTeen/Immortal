@@ -1,0 +1,6 @@
+{
+  "models": [
+    "imm:item/secret_scroll",
+    "imm:item/secret_manual"
+  ]
+}

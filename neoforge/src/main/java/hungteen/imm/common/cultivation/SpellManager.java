@@ -264,7 +264,7 @@ public class SpellManager {
         if (spell.getMaxLevel() == 1) {
             return spell.getComponent();
         }
-        return spell.getComponent().append("(").append(TipUtil.misc("level" + level)).append(")");
+        return spell.getComponent().append(" ").append(TipUtil.manual("level" + level));
     }
 
     @FunctionalInterface

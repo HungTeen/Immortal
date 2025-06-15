@@ -192,11 +192,11 @@ public class ElementManager {
     }
     
     public static float getDecaySpeed(){
-        return IMMConfigs.elementSettings().elementDecaySpeed.get().floatValue();
+        return IMMConfigs.elementSetting().elementDecaySpeed.get().floatValue();
     }
     
     public static float getDecayValue(){
-        return IMMConfigs.elementSettings().elementDecayValue.get().floatValue();
+        return IMMConfigs.elementSetting().elementDecayValue.get().floatValue();
     }
 
     /**

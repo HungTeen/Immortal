@@ -12,32 +12,25 @@ import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.block.IMMPoiTypes;
 import hungteen.imm.common.blockentity.IMMBlockEntities;
 import hungteen.imm.common.capability.IMMAttachments;
-import hungteen.imm.common.cultivation.CultivationTypes;
-import hungteen.imm.common.cultivation.QiRootTypes;
-import hungteen.imm.common.cultivation.RealmTypes;
-import hungteen.imm.common.entity.effect.IMMEffects;
+import hungteen.imm.common.cultivation.*;
+import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
+import hungteen.imm.common.cultivation.rune.filter.FilterRuneTypes;
 import hungteen.imm.common.entity.IMMAttributes;
 import hungteen.imm.common.entity.IMMDataSerializers;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.entity.ai.*;
+import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
-import hungteen.imm.common.impl.manuals.ManualTypes;
+import hungteen.imm.common.impl.manuals.ScrollTypes;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
-import hungteen.imm.common.cultivation.ElementReactions;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.impl.registry.TradeTypes;
-import hungteen.imm.common.item.IMMComponents;
-import hungteen.imm.common.item.IMMCreativeTabs;
-import hungteen.imm.common.item.IMMItems;
-import hungteen.imm.common.item.IMMMapDecorationTypes;
+import hungteen.imm.common.item.*;
 import hungteen.imm.common.menu.IMMMenus;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.common.recipe.IMMRecipes;
-import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
-import hungteen.imm.common.cultivation.rune.filter.FilterRuneTypes;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.world.entity.IMMDummyEntities;
 import hungteen.imm.common.world.feature.IMMFeatures;
 import hungteen.imm.common.world.structure.IMMStructurePieces;
@@ -100,6 +93,7 @@ public class RegistryHandler {
         IMMPoiTypes.initialize(modBus);
         IMMProfessions.initialize(modBus);
         IMMSounds.initialize(modBus);
+        IMMDataComponents.initialize(modBus);
 //        IMMPoolTypes.initialize(modBus);
         IMMStructureTypes.initialize(modBus);
         IMMStructurePieces.initialize(modBus);
@@ -120,7 +114,7 @@ public class RegistryHandler {
         SpellTypes.registry().initialize();
         ElixirEffects.registry().initialize();
         HumanSettings.registry().initialize();
-        ManualTypes.registry().initialize();
+        ScrollTypes.registry().initialize();
         RequirementTypes.registry().initialize();
         SecretManuals.registry().initialize();
         QiRootTypes.registry().initialize();
@@ -130,7 +124,6 @@ public class RegistryHandler {
         FilterRuneTypes.register();
         SectTypes.register();
 //        ItemUtil.registerLargeHeldItems();
-
         /* Client */
         HTLibProxy.get().runOnClient(() -> () -> {
             IMMEntityRenderers.initialize();

@@ -50,7 +50,7 @@ public class MortalityTrial extends SurvivalTrial {
 
     @Override
     public int getTrialLength() {
-        return 60;
+        return 6000;
     }
 
 }

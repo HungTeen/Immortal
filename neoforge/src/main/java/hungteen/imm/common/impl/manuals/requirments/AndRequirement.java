@@ -38,7 +38,7 @@ public record AndRequirement(List<ILearnRequirement> requirements) implements IL
         MutableComponent component = Component.literal("");
         for(int i = 0; i < requirements().size(); ++ i){
             component.append("{").append(requirements().get(i).getRequirementInfo(player)).append("}");
-            if(i < requirements().size() - 1) component.append(TipUtil.misc("requirement.and"));
+            if(i < requirements().size() - 1) component.append(TipUtil.manual("requirement.and"));
         }
         return component;
     }

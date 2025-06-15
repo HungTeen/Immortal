@@ -1,22 +1,45 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:metal_mastery"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
-    },
-    {
-      "type": "imm:spell",
-      "require_spells": [
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:metal_mastery"
+      },
+      "requirements": [
         {
-          "level": 1,
-          "spell": "imm:releasing"
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:releasing"
+            }
+          ]
         }
       ]
     }
-  ]
+  ],
+  "title": {
+    "extra": [
+      " ",
+      {
+        "translate": "manual.imm.level1"
+      }
+    ],
+    "translate": "spell.imm.elemental_mastery",
+    "with": [
+      {
+        "translate": "misc.imm.element.metal"
+      }
+    ]
+  }
 }

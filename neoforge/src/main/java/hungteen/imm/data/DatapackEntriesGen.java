@@ -1,11 +1,11 @@
 package hungteen.imm.data;
 
 import hungteen.htlib.data.HTRegistriesDatapackGenerator;
+import hungteen.imm.common.IMMDamageTypes;
 import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.common.item.IMMBannerPatterns;
-import hungteen.imm.common.IMMDamageTypes;
 import hungteen.imm.common.world.biome.IMMBiomeModifiers;
 import hungteen.imm.common.world.biome.IMMBiomes;
 import hungteen.imm.common.world.feature.IMMFeatures;
@@ -14,10 +14,10 @@ import hungteen.imm.common.world.levelgen.IMMDimensionTypes;
 import hungteen.imm.common.world.levelgen.IMMLevelStems;
 import hungteen.imm.common.world.levelgen.IMMNoiseParamLists;
 import hungteen.imm.common.world.levelgen.IMMNoiseSettings;
+import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.common.world.structure.IMMProcessorLists;
 import hungteen.imm.common.world.structure.IMMStructureSets;
 import hungteen.imm.common.world.structure.IMMStructures;
-import hungteen.imm.common.world.structure.IMMPools;
 import hungteen.imm.util.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;

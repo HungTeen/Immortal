@@ -14,12 +14,16 @@ import hungteen.imm.common.capability.player.CultivationData;
 import hungteen.imm.common.cultivation.realm.RealmNode;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
-import hungteen.imm.compat.minecraft.VanillaCultivationCompat;
+import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -36,6 +42,9 @@ import java.util.function.Consumer;
  * @create 2024/11/30 15:13
  **/
 public class RealmManager {
+
+    private static final Map<EntityType<?>, RealmType> DEFAULT_REALM_MAP = new HashMap<>();
+    private static final Map<TagKey<DamageType>, RealmType> DAMAGE_REALM_MAP = new HashMap<>();
 
     static {
 //        DAMAGE_REALM_MAP.putAll(Map.of(
@@ -63,10 +72,14 @@ public class RealmManager {
         }
     }
 
-    public static void updateRealm(LivingEntity living, RealmType newRealm){
+    /**
+     * 获得境界上的提升。
+     */
+    public static void realmLevelUp(LivingEntity living, RealmType newRealm){
         if(living instanceof Player player){
             PlayerUtil.setData(player, data -> data.getCultivationData().setRealmType(newRealm));
         }
+        EntityUtil.playSound(living.level(), living, SoundEvents.PLAYER_LEVELUP);
     }
 
     /**
@@ -131,9 +144,9 @@ public class RealmManager {
 
     public static double realmAttackMultiplier(int gap){
         if(gap > 0){
-            return Math.pow(1 - IMMConfigs.realmSettings().realmReceiveDamageReduction.getAsDouble(), gap);
+            return Math.pow(1 - IMMConfigs.realmSetting().realmReceiveDamageReduction.getAsDouble(), gap);
         } else if(gap < 0){
-            return Math.pow(1 + IMMConfigs.realmSettings().realmDealDamageIncrease.getAsDouble(), -gap);
+            return Math.pow(1 + IMMConfigs.realmSetting().realmDealDamageIncrease.getAsDouble(), -gap);
         }
         return 1.0;
     }
@@ -156,6 +169,23 @@ public class RealmManager {
                 instance.addOrReplacePermanentModifier(modifier);
             }
         });
+    }
+
+    public static void addDefaultRealm(EntityType<?> type, RealmType realm){
+        DEFAULT_REALM_MAP.put(type, realm);
+    }
+
+    public static RealmType getDefaultRealm(EntityType<?> type, RealmType defaultRealm){
+        return DEFAULT_REALM_MAP.getOrDefault(type, defaultRealm);
+    }
+
+    public static RealmType getDamageSourceRealm(DamageSource source){
+        for (Map.Entry<TagKey<DamageType>, RealmType> entry : DAMAGE_REALM_MAP.entrySet()) {
+            if(source.is(entry.getKey())){
+                return entry.getValue();
+            }
+        }
+        return RealmTypes.NOT_IN_REALM;
     }
 
     /**
@@ -211,9 +241,9 @@ public class RealmManager {
             if (entity instanceof Player player) {
                 return PlayerUtil.getPlayerRealm(player);
             }
-            return VanillaCultivationCompat.getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
+            return getDefaultRealm(entity.getType(), RealmTypes.MORTALITY);
         } else {
-            return VanillaCultivationCompat.getDefaultRealm(entity.getType(), RealmTypes.NOT_IN_REALM);
+            return getDefaultRealm(entity.getType(), RealmTypes.NOT_IN_REALM);
         }
     }
 

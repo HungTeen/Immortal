@@ -37,7 +37,7 @@ public record OrRequirement(List<ILearnRequirement> requirements) implements ILe
         MutableComponent component = Component.literal("");
         for(int i = 0; i < requirements().size(); ++ i){
             component.append("{").append(requirements().get(i).getRequirementInfo(player)).append("}");
-            if(i < requirements().size() - 1) component.append(TipUtil.misc("requirement.or"));
+            if(i < requirements().size() - 1) component.append(TipUtil.manual("requirement.or"));
         }
         return component;
     }

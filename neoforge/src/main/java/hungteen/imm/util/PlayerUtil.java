@@ -33,8 +33,10 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -128,6 +130,10 @@ public class PlayerUtil {
 
     public static List<QiRootType> getRoots(Player player) {
         return getData(player, l -> l.getCultivationData().getRoots());
+    }
+
+    public static Set<Element> getElements(Player player) {
+        return getRoots(player).stream().flatMap(root -> root.getElements().stream()).collect(Collectors.toSet());
     }
 
     public static void setRoots(Player player, List<QiRootType> roots) {

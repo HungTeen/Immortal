@@ -1,14 +1,12 @@
 package hungteen.imm.common.impl.manuals.requirments;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.spell.ILearnRequirement;
 import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellManager;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,27 +20,24 @@ import java.util.List;
  * @program Immortal
  * @create 2023/7/17 16:28
  */
-public record SpellRequirement(List<Pair<SpellType, Integer>> spells) implements ILearnRequirement {
+public record SpellRequirement(List<Spell> spells) implements ILearnRequirement {
 
     public static final MapCodec<SpellRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.mapPair(
-                    SpellTypes.registry().byNameCodec().fieldOf("spell"),
-                    Codec.intRange(0, Integer.MAX_VALUE).fieldOf("level")
-            ).codec().listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
+            Spell.CODEC.listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
     ).apply(instance, SpellRequirement::new));
 
     public static SpellRequirement single(SpellType spell, int level) {
-        return new SpellRequirement(List.of(Pair.of(spell, level)));
+        return new SpellRequirement(List.of(Spell.create(spell, level)));
     }
 
     public static SpellRequirement pair(SpellType spell1, int level1, SpellType spell2, int level2) {
-        return new SpellRequirement(List.of(Pair.of(spell1, level1), Pair.of(spell2, level2)));
+        return new SpellRequirement(List.of(Spell.create(spell1, level1), Spell.create(spell2, level2)));
     }
 
     @Override
     public boolean check(Level level, Player player) {
         return spells().stream().allMatch(p -> {
-            return PlayerUtil.hasLearnedSpell(player, p.getFirst(), p.getSecond());
+            return PlayerUtil.hasLearnedSpell(player, p.spell(), p.level());
         });
     }
 
@@ -53,9 +48,9 @@ public record SpellRequirement(List<Pair<SpellType, Integer>> spells) implements
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        MutableComponent component = TipUtil.misc("requirement.spell");
+        MutableComponent component = TipUtil.manual("requirement.spell");
         for(int i = 0; i < spells().size(); i++) {
-            component.append(SpellManager.spellName(spells().get(i).getFirst(), spells().get(i).getSecond()));
+            component.append(SpellManager.spellName(spells().get(i).spell(), spells().get(i).level()));
             if(i < spells().size() - 1) {
                 component.append(", ");
             }

@@ -1,26 +1,25 @@
 package hungteen.imm.common.item;
 
-import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.PlayerHelper;
-import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.event.events.PlayerLearnManualEvent;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.common.impl.manuals.SecretScroll;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
-import hungteen.imm.util.*;
+import hungteen.imm.util.EventUtil;
+import hungteen.imm.util.TipUtil;
+import hungteen.imm.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,13 +27,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * 既可以当做卷轴使用，也可以当做秘籍使用的物品。
  * @program Immortal
  * @author HungTeen
  * @create 2022-11-18 19:11
  **/
 public class SecretManualItem extends Item {
-
-    public static final String SECRET_MANUAL = "SecretManual";
 
     public SecretManualItem() {
         super(new Properties().stacksTo(1));
@@ -43,107 +41,128 @@ public class SecretManualItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         final ItemStack stack = player.getItemInHand(hand);
-        final Optional<SecretManual> manual = getSecretManual(level, stack);
-        if(manual.isPresent()){
-            if(manual.get().canLearn(level, player)) {
-                player.startUsingItem(hand);
-                return InteractionResultHolder.consume(stack);
+        final Optional<SecretManual> manual = getSecretManual(player.level(), stack);
+        manual.ifPresent(secretManual -> Util.getProxy().openManualScreen(player, secretManual, getManualPage(stack), hand));
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    public static void changePage(ServerPlayer player, InteractionHand hand, int page) {
+        ItemStack item = player.getItemInHand(hand);
+        if(item.is(IMMItems.SECRET_MANUAL.get())){
+            setManualPage(item, page);
+        }
+    }
+
+    public static void learnManual(ServerPlayer player, InteractionHand hand, int page){
+        ItemStack item = player.getItemInHand(hand);
+        if(item.is(IMMItems.SECRET_MANUAL.get())){
+            Optional<SecretManual> secretManual = getSecretManual(player.serverLevel(), item);
+            if(secretManual.isPresent() && page >= 0 && page < secretManual.get().scrolls().size()){
+                SecretScroll scroll = secretManual.get().scrolls().get(page);
+                if(scroll.canLearn(player.serverLevel(), player)) {
+                    scroll.learn(player.serverLevel(), player);
+                    EventUtil.post(new PlayerLearnManualEvent(player, item, scroll));
+                }
             }
-            return InteractionResultHolder.fail(stack);
-        }
-        return super.use(level, player, hand);
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack stack, int tick) {
-        if(! level.isClientSide() && tick % 20 == 0){
-            EntityUtil.playSound(level, living, SoundEvents.BOOK_PAGE_TURN);
         }
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
-        final Optional<SecretManual> manual = getSecretManual(level, stack);
-        if(! level.isClientSide() && manual.isPresent() && living instanceof Player player){
-            manual.get().learn(level, player);
-            EventUtil.post(new PlayerLearnManualEvent(player, stack, manual.get()));
-            if(! PlayerUtil.notConsume(player)){
-                stack.shrink(1);
+    public Component getName(ItemStack stack) {
+        Optional<Player> player = PlayerHelper.getClientPlayer();
+        if(player.isPresent()){
+            Optional<Component> component = getSecretManual(player.get().level(), stack).map(SecretManual::title);
+            if(component.isPresent()){
+                return component.get().copy().withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD);
             }
-            return stack;
         }
-        return super.finishUsingItem(stack, level, living);
-    }
-
-    @Override
-    public int getUseDuration(ItemStack stack, LivingEntity living) {
-        return 60;
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BLOCK;
+        return super.getName(stack);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
-        if(context != null) {
-            getSecretManualPair(context.level(), stack).ifPresent(res -> {
-//                components.add(res.getSecond().getManualTitle().withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
-//                components.add(res.getSecond().getContentInfo().withStyle(ChatFormatting.GRAY));
-                PlayerHelper.getClientPlayer().ifPresent(p -> {
-                    if(! res.getSecond().getRequirementInfo(p).isEmpty()){
-                        if(Util.getProxy().isShiftKeyDown()){
+        if(context != null && context.level() != null){
+            Optional<SecretManual> secretManual = getSecretManual(context.level(), stack);
+            Optional<SecretScroll> secretScroll = getSecretScroll(context.level(), stack);
+            if(secretManual.isPresent()){
+                secretManual.get().desc().ifPresent(c -> {
+                    components.add(c.copy().withStyle(ChatFormatting.GRAY));
+                });
+            }
+            if(secretScroll.isPresent()){
+                Optional<Player> opt = PlayerHelper.getClientPlayer();
+                if(opt.isPresent()) {
+                    if (!secretScroll.get().getRequirementInfo(opt.get()).isEmpty()) {
+                        if (Util.getProxy().isShiftKeyDown()) {
                             components.add(TipUtil.tooltip(this, "requirements").withStyle(ChatFormatting.RED));
-                            components.addAll(res.getSecond().getRequirementInfo(p));
+                            components.addAll(secretScroll.get().getRequirementInfo(opt.get()));
                         } else {
                             components.add(TipUtil.rune("shift_to_see_details").withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
                         }
                     }
-                });
-            });
+                }
+            }
         }
     }
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-        return PlayerHelper.getClientPlayer().flatMap(p -> getSecretManualPair(p.level(), stack).map(Pair::getSecond).map(ManualToolTip::new));
-    }
-
-    public static ItemStack create(SpellType spell, int level) {
-        return create(SecretManuals.spellManual(spell, level));
-    }
-
-    public static ItemStack create(ResourceKey<SecretManual> key) {
-        final ItemStack stack = new ItemStack(IMMItems.SECRET_MANUAL.get());
-//        setSpellBook(stack, key.location());
-        return stack;
-    }
-
-//    public static void setSpellBook(ItemStack stack, ResourceLocation spellBook) {
-//        stack.getOrCreateTag().putString(SECRET_MANUAL, spellBook.toString());
-//    }
-//
-//    public static Optional<ResourceLocation> getLocation(ItemStack stack) {
-//        return stack.getOrCreateTag().contains(SECRET_MANUAL) ? Optional.of(new ResourceLocation(stack.getOrCreateTag().getString(SECRET_MANUAL))) : Optional.empty();
-//    }
-
-    public static Optional<ResourceKey<SecretManual>> getResourceKey(ItemStack stack) {
-//        return getLocation(stack).map(l -> SecretManuals.registry().createKey(l));
-        return Optional.empty();
-    }
-
-    public static Optional<SecretManual> getSecretManual(@Nullable Level level, ItemStack stack) {
-        final Optional<ResourceKey<SecretManual>> opt = getResourceKey(stack);
-        if(opt.isPresent() && level != null){
-            return SecretManuals.registry().getOptValue(level, opt.get());
+        Optional<Player> player = PlayerHelper.getClientPlayer();
+        if(player.isPresent()){
+            Optional<SecretManual> secretManual = getSecretManual(player.get().level(), stack);
+            Optional<SecretScroll> secretScroll = getSecretScroll(player.get().level(), stack);
+            if(secretScroll.isPresent() && secretManual.isPresent()){
+                return Optional.of(new ManualToolTip(secretManual.get(), secretScroll.get()));
+            }
         }
         return Optional.empty();
     }
 
-    public static Optional<Pair<ResourceKey<SecretManual>, SecretManual>> getSecretManualPair(Level level, ItemStack stack) {
-        final Optional<ResourceKey<SecretManual>> opt = getResourceKey(stack);
-        return opt.flatMap(secretManualResourceKey -> SecretManuals.registry().getOptValue(level, secretManualResourceKey).map(r -> Pair.of(secretManualResourceKey, r)));
+    public static ItemStack create(ResourceKey<SecretManual> key) {
+        final ItemStack stack = new ItemStack(IMMItems.SECRET_MANUAL.get());
+        setSecretManual(stack, key);
+        return stack;
+    }
+
+    /**
+     * @return 获取当前正在看的秘籍。
+     */
+    public static Optional<SecretManual> getSecretManual(Level level, ItemStack stack) {
+        return getSecretManualKey(stack).flatMap(key -> SecretManuals.registry().getOptValue(level, key));
+    }
+
+    /**
+     * @return 获取当前正在看的卷轴。
+     */
+    public static Optional<SecretScroll> getSecretScroll(Level level, ItemStack stack) {
+        return getSecretManual(level, stack).map(manual -> {
+            return manual.scrolls().get(Math.clamp(getManualPage(stack), 0, manual.scrolls().size() - 1));
+        });
+    }
+
+    public static void setSecretManual(ItemStack stack, ResourceKey<SecretManual> manual) {
+        stack.set(IMMDataComponents.SECRET_MANUAL, manual);
+    }
+
+    /**
+     * @return 获取秘籍的注册名。
+     */
+    public static Optional<ResourceKey<SecretManual>> getSecretManualKey(ItemStack stack) {
+        return Optional.ofNullable(stack.get(IMMDataComponents.SECRET_MANUAL));
+    }
+
+    /**
+     * @return 获取当前正在看的页码，默认为 0。
+     */
+    public static Integer getManualPage(ItemStack stack) {
+        return stack.getOrDefault(IMMDataComponents.MANUAL_PAGE, 0);
+    }
+
+    /**
+     * 设置当前正在看的页码。
+     */
+    public static void setManualPage(ItemStack stack, int page) {
+        stack.set(IMMDataComponents.MANUAL_PAGE, page);
     }
 
 }

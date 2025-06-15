@@ -1,22 +1,45 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 3,
-    "spell": "imm:earth_mastery"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:spell",
-      "require_spells": [
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 3,
+        "spell": "imm:earth_mastery"
+      },
+      "requirements": [
         {
-          "level": 2,
-          "spell": "imm:earth_mastery"
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 2,
+              "spell": "imm:earth_mastery"
+            }
+          ]
+        },
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:core_shaping_preliminary"
         }
       ]
-    },
-    {
-      "type": "imm:realm",
-      "realm_type": "imm:core_shaping_preliminary"
     }
-  ]
+  ],
+  "title": {
+    "extra": [
+      " ",
+      {
+        "translate": "manual.imm.level3"
+      }
+    ],
+    "translate": "spell.imm.elemental_mastery",
+    "with": [
+      {
+        "translate": "misc.imm.element.earth"
+      }
+    ]
+  }
 }

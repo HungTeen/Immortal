@@ -25,4 +25,8 @@ public class GuiUtil {
         playSound(SoundEvents.UI_BUTTON_CLICK);
     }
 
+    public static void playTurnPageSound() {
+        playSound(SoundEvents.BOOK_PAGE_TURN);
+    }
+
 }

@@ -60,8 +60,8 @@ public class SelectRootScreen extends HTScreen implements IScrollableScreen<QiRo
     private int displayTick = 0;
 
     public SelectRootScreen() {
-        this.imageWidth = 214;
-        this.imageHeight = 129;
+        this.imageWidth = 189;
+        this.imageHeight = 214;
         this.scrollComponent = new ScrollComponent<>(this, 23, 23, 4, 3) {
             @Override
             protected boolean onClick(Minecraft mc, Screen screen, QiRootType root, int slotId) {

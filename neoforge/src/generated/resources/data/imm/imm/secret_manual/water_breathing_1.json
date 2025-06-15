@@ -1,17 +1,31 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:water_breathing"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
-    },
-    {
-      "type": "imm:element",
-      "element": "Water"
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:water_breathing"
+      },
+      "requirements": [
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:element",
+          "elements": [
+            "Water"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "title": {
+    "translate": "spell.imm.water_breathing"
+  }
 }

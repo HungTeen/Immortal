@@ -1,17 +1,37 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:burning"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:qi_refining_level_1"
-    },
-    {
-      "type": "imm:element",
-      "element": "Fire"
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:burning"
+      },
+      "requirements": [
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:qi_refining_level_1"
+        },
+        {
+          "type": "imm:element",
+          "elements": [
+            "Fire"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "title": {
+    "extra": [
+      " ",
+      {
+        "translate": "manual.imm.level1"
+      }
+    ],
+    "translate": "spell.imm.burning"
+  }
 }

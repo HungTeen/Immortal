@@ -36,7 +36,7 @@ public record EMPRequirement(int level) implements ILearnRequirement {
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return TipUtil.misc("requirement.emp", ElementalMasterySpell.requireEMP(player, level()));
+        return TipUtil.manual("requirement.emp", ElementalMasterySpell.requireEMP(player, level()));
     }
 
     @Override

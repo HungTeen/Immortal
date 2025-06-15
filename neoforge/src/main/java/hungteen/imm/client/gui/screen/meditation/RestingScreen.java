@@ -53,7 +53,7 @@ public class RestingScreen extends MeditationScreen {
                 if(! PlayerUtil.sitOnCushion(ClientUtil.player())){
                     return false;
                 }
-                return CultivationManager.canBreakThrough(ClientUtil.player());
+                return !isInSpiritWorld() || CultivationManager.canBreakThrough(ClientUtil.player());
             }
 
             @Override

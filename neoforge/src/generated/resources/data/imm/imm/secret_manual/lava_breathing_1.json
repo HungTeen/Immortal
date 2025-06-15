@@ -1,17 +1,31 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:lava_breathing"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
-    },
-    {
-      "type": "imm:element",
-      "element": "Fire"
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:lava_breathing"
+      },
+      "requirements": [
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:element",
+          "elements": [
+            "Fire"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "title": {
+    "translate": "spell.imm.lava_breathing"
+  }
 }

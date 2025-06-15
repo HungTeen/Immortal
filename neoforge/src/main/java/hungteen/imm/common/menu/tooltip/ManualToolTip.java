@@ -1,7 +1,9 @@
 package hungteen.imm.common.menu.tooltip;
 
 import hungteen.imm.common.impl.manuals.SecretManual;
+import hungteen.imm.common.impl.manuals.SecretScroll;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -21,21 +23,23 @@ public class ManualToolTip implements TooltipComponent {
     public static final int SINGLE_WIDTH = ICON_WIDTH + 4;
 
     private final SecretManual secretManual;
+    private final SecretScroll secretScroll;
 
-    public ManualToolTip(SecretManual secretManual){
+    public ManualToolTip(SecretManual secretManual, SecretScroll secretScroll){
         this.secretManual = secretManual;
+        this.secretScroll = secretScroll;
     }
 
-    public MutableComponent getManualTitle(){
-        return secretManual.getManualTitle().withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD);
+    public Component getManualCategory(){
+        return secretManual.category().orElse(Component.empty());
     }
 
     public MutableComponent getContentInfo(){
-        return secretManual.getContentInfo().withStyle(ChatFormatting.GRAY);
+        return secretScroll.getContentInfo().withStyle(ChatFormatting.GRAY);
     }
 
     public Optional<ResourceLocation> getTexture(){
-        return secretManual.getTexture();
+        return secretScroll.getRenderLogo();
     }
 
 }

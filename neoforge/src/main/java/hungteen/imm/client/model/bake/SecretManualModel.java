@@ -1,5 +1,6 @@
 package hungteen.imm.client.model.bake;
 
+import hungteen.htlib.client.util.ClientHelper;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.item.SecretManualItem;
 import net.minecraft.client.Minecraft;
@@ -73,10 +74,12 @@ public class SecretManualModel implements BakedModel {
             @Override
             public BakedModel resolve(@NotNull BakedModel original, @NotNull ItemStack stack,
                                       @Nullable ClientLevel world, @Nullable LivingEntity entity, int seed) {
-                final Optional<SecretManual> manual = SecretManualItem.getSecretManual(world, stack);
-                if (manual.isPresent()) {
-                    final ModelResourceLocation modelPath = new ModelResourceLocation(manual.get().model(), "inventory");
-                    return Minecraft.getInstance().getModelManager().getModel(modelPath);
+                if(world != null) {
+                    final Optional<SecretManual> manual = SecretManualItem.getSecretManual(world, stack);
+                    if (manual.isPresent()) {
+                        final ModelResourceLocation modelPath = ClientHelper.getStandaloneModelLocation(manual.get().model());
+                        return Minecraft.getInstance().getModelManager().getModel(modelPath);
+                    }
                 }
                 return original;
             }

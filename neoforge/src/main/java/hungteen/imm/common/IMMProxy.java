@@ -3,8 +3,10 @@ package hungteen.imm.common;
 import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.IMMClientProxy;
+import hungteen.imm.common.impl.manuals.SecretManual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -63,6 +65,10 @@ public class IMMProxy {
     }
 
     public void openQiRootScreen(Player player) {
+
+    }
+
+    public void openManualScreen(Player player, SecretManual manual, int page, InteractionHand hand) {
 
     }
 }

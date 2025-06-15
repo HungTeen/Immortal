@@ -5,7 +5,6 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import hungteen.htlib.common.world.entity.DummyEntityType;
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.MathHelper;
-import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.cultivation.ExperienceType;
@@ -43,7 +42,7 @@ public abstract class BreakThroughTrial extends DummyEntity {
 
     private final RealmType realmType;
     private final float difficulty;
-    private final ServerBossEvent progressBar;
+    protected final ServerBossEvent progressBar;
     private ServerPlayer trialPlayer;
     private UUID uuid;
     protected int tickCount;
@@ -159,12 +158,10 @@ public abstract class BreakThroughTrial extends DummyEntity {
      * @param player 试炼玩家。
      */
     public void finishTrial(ServerPlayer player){
-        player.playSound(SoundEvents.PLAYER_LEVELUP);
         EventUtil.post(new BreakThroughEvent.Success(player, getRealmType()));
-        PlayerHelper.playClientSound(player, SoundEvents.PLAYER_LEVELUP);
         // 更新到新的境界。
         RealmManager.getNextRealm(getRealmType(), PlayerUtil.getCultivationDirection(player)).ifPresent(nextRealm -> {
-            RealmManager.updateRealm(player, nextRealm);
+            RealmManager.realmLevelUp(player, nextRealm);
         });
 //        // 传送回现实世界。
 //        SpiritWorldDimension.teleportBackFromSpiritRegion(player.serverLevel(), player);
@@ -177,7 +174,7 @@ public abstract class BreakThroughTrial extends DummyEntity {
     public void punishTrial(ServerPlayer player){
         EventUtil.post(new BreakThroughEvent.Failure(player, getRealmType()));
         CultivationManager.clearBreakThroughProgress(player);
-        float reductionPercent = 1 - (float) IMMConfigs.realmSettings().breakThroughFailReduction.getAsDouble();
+        float reductionPercent = 1 - (float) IMMConfigs.realmSetting().breakThroughFailReduction.getAsDouble();
         PlayerUtil.adjustExperience(player, ExperienceType.ELIXIR, reductionPercent);
         PlayerUtil.adjustExperience(player, ExperienceType.PERSONALITY, reductionPercent);
     }

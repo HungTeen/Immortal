@@ -80,12 +80,12 @@ public class ElementalMasterySpell extends SpellTypeImpl {
 
     @Override
     public MutableComponent getComponent() {
-        return TipUtil.spell("elemental_mastery", ElementManager.name(element).getString());
+        return TipUtil.spell("elemental_mastery", ElementManager.name(element));
     }
 
     @Override
     public MutableComponent getSpellDesc(int level) {
-        return TipUtil.spell("elemental_mastery_" + level, ElementManager.name(element).getString());
+        return TipUtil.spell("elemental_mastery_" + level, ElementManager.name(element));
     }
 
     public Element getElement() {

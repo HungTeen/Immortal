@@ -7,6 +7,7 @@ import hungteen.imm.api.spell.ILearnRequirement;
 import hungteen.imm.api.spell.IRequirementType;
 import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.util.PlayerUtil;
+import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -38,7 +39,7 @@ public record CultivationTypeRequirement(CultivationType cultivationType) implem
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        return cultivationType().getComponent();
+        return TipUtil.manual("requirement.cultivation_type", cultivationType().getComponent());
     }
 
     @Override

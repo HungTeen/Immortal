@@ -8,6 +8,7 @@ import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,14 +20,14 @@ import java.util.List;
  * @author HungTeen
  * @create 2023-08-17 21:21
  **/
-public record SpiritualRootRequirement(List<QiRootType> roots) implements ILearnRequirement {
+public record QiRootRequirement(List<QiRootType> roots) implements ILearnRequirement {
 
-    public static final MapCodec<SpiritualRootRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            QiRootTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(SpiritualRootRequirement::roots)
-    ).apply(instance, SpiritualRootRequirement::new));
+    public static final MapCodec<QiRootRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            QiRootTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(QiRootRequirement::roots)
+    ).apply(instance, QiRootRequirement::new));
 
-    public static SpiritualRootRequirement single(QiRootType root){
-        return new SpiritualRootRequirement(List.of(root));
+    public static QiRootRequirement single(QiRootType root){
+        return new QiRootRequirement(List.of(root));
     }
 
     @Override
@@ -43,18 +44,18 @@ public record SpiritualRootRequirement(List<QiRootType> roots) implements ILearn
 
     @Override
     public MutableComponent getRequirementInfo(Player player) {
-        MutableComponent component = TipUtil.misc("requirement.root");
-        for(int i = 0; i < roots().size(); i++) {
-            component.append(roots().get(i).getComponent());
-            if(i < roots().size() - 1) {
-                component.append(", ");
+        if(! roots().isEmpty()){
+            MutableComponent component = roots().get(0).getComponent();
+            for(int i = 1; i < roots().size(); i++) {
+                component.append(", ").append(roots().get(i).getComponent());
             }
+            return TipUtil.manual("requirement.root", component);
         }
-        return component;
+        return Component.empty();
     }
 
     @Override
     public IRequirementType<?> getType() {
-        return RequirementTypes.SPIRITUAL_ROOT;
+        return RequirementTypes.QI_ROOT;
     }
 }

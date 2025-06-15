@@ -2,10 +2,7 @@ package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.util.helper.CodecHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
-import hungteen.imm.api.cultivation.CultivationType;
-import hungteen.imm.api.cultivation.ExperienceType;
-import hungteen.imm.api.cultivation.QiRootType;
-import hungteen.imm.api.cultivation.RealmType;
+import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.common.advancement.trigger.PlayerRealmChangeTrigger;
 import hungteen.imm.common.capability.HTPlayerData;
@@ -148,15 +145,12 @@ public class CultivationData implements HTPlayerData {
     public void setExperience(ExperienceType type, float value) {
         this.experienceMap.put(type, value);
         if (isServer()) {
-            // TODO 修为满了突破。
-//            final RealmStage currentStage = this.realmType.getStage();
-//            // 没有门槛时，自动进到下一个阶段。
-//            if (!currentStage.hasThreshold() && currentStage.hasNextStage()) {
-//                final RealmStage nextStage = RealmStage.next(currentStage);
-//                if (this.getCultivation() >= CultivationManager.getStageRequiredCultivation(this.getRealmType(), nextStage)) {
-//                    this.setRealmStage(nextStage);
-//                }
-//            }
+            // 没有门槛时，自动进到下一个阶段。
+            Optional<RealmType> nextRealm = RealmManager.getNextRealm(this.realmType, this.cultivationType);
+            while (CultivationManager.canFreeLevelUp(playerData.getPlayer()) && nextRealm.isPresent()) {
+                RealmManager.realmLevelUp(playerData.getPlayer(), nextRealm.get());
+                nextRealm = RealmManager.getNextRealm(this.realmType, this.cultivationType);
+            }
         }
         this.sendExperienceUpdatePacket(type, value);
     }

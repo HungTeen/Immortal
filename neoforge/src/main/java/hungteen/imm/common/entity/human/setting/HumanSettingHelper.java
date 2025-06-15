@@ -4,14 +4,12 @@ import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.WeightedList;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.entity.human.setting.loot.ItemEntry;
 import hungteen.imm.common.entity.human.setting.loot.SlotSetting;
 import hungteen.imm.common.entity.human.setting.trade.TradeEntry;
-import hungteen.imm.common.item.SecretManualItem;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -19,7 +17,6 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 
@@ -55,13 +52,13 @@ public abstract class HumanSettingHelper {
         return SETTING_CACHE.get(entityType);
     }
 
-    public static TradeEntry emeraldTrade(int emerald, SpellType spell, int level){
-        return new TradeEntry(
-                List.of(new ItemStack(Items.EMERALD, emerald)),
-                List.of(SecretManualItem.create(spell, level)),
-                constant(1)
-        );
-    }
+//    public static TradeEntry emeraldTrade(int emerald, SpellType spell, int level){
+//        return new TradeEntry(
+//                List.of(new ItemStack(Items.EMERALD, emerald)),
+//                List.of(SecretManualItem.create(spell, level)),
+//                constant(1)
+//        );
+//    }
 
     public static TradeEntry trade(Item item, int count, Item result, int resultCount){
         return new TradeEntry(

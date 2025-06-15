@@ -1,0 +1,92 @@
+{
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.manual"
+  },
+  "model": "imm:item/secret_manual",
+  "scrolls": [
+    {
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:fire_mastery"
+      },
+      "requirements": [
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:releasing"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 2,
+        "spell": "imm:fire_mastery"
+      },
+      "requirements": [
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:fire_mastery"
+            }
+          ]
+        },
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:dispersal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 3,
+        "spell": "imm:fire_mastery"
+      },
+      "requirements": [
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 2,
+              "spell": "imm:fire_mastery"
+            }
+          ]
+        },
+        {
+          "type": "imm:realm",
+          "realm_type": "imm:core_shaping_preliminary"
+        }
+      ]
+    }
+  ],
+  "title": {
+    "translate": "manual.imm.element_manual",
+    "with": [
+      {
+        "translate": "misc.imm.element.fire"
+      }
+    ]
+  }
+}

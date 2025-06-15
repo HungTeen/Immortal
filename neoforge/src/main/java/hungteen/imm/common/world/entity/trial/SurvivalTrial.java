@@ -88,6 +88,16 @@ public abstract class SurvivalTrial extends BreakThroughTrial {
     }
 
     @Override
+    protected void tickProgressBar() {
+        super.tickProgressBar();
+        int leftTick = getTrialLength() - tickCount;
+        int leftMinute = leftTick / 1200;
+        int leftSecond = leftTick % 1200 / 20;
+        String formatTime = String.format("%02d:%02d", leftMinute, leftSecond);
+        this.progressBar.setName(TITLE.append(" - " + formatTime));
+    }
+
+    @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         if (tag.contains("LastSpawnTick")) {

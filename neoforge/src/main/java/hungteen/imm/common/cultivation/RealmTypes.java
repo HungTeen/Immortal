@@ -190,8 +190,14 @@ public interface RealmTypes {
         @Override
         public MutableComponent getComponent() {
             // 从注册名中截取出阶段名。
-            String replace = name().replace(getStage().getName(), "");
-            return TipUtil.misc("realm." + replace, stage().getComponent()).withStyle(style());
+            String stageName = getStage().getName();
+            String fullName = name();
+            String realmName = fullName;
+            if(fullName.contains(stageName)){
+                String replace = name().replace(getStage().getName(), "");
+                realmName = replace.substring(0, replace.length() - 1);
+            }
+            return TipUtil.misc("realm." + realmName, stage().getComponent()).withStyle(style());
         }
 
         @Override

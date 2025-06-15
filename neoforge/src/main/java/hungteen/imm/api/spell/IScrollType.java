@@ -8,7 +8,7 @@ import hungteen.htlib.api.registry.SimpleEntry;
  * @program Immortal
  * @create 2023/7/17 15:20
  */
-public interface IManualType<P extends IManualContent> extends SimpleEntry {
+public interface IScrollType<P extends IScrollContent> extends SimpleEntry {
 
     MapCodec<P> codec();
 }

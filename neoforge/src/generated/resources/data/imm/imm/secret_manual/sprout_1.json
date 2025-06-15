@@ -1,26 +1,40 @@
 {
-  "content": {
-    "type": "imm:learn_spell",
-    "level": 1,
-    "spell": "imm:sprout"
+  "can_skip_page": false,
+  "category": {
+    "translate": "manual.imm.category.spell"
   },
-  "requirements": [
+  "model": "imm:item/secret_scroll",
+  "scrolls": [
     {
-      "type": "imm:realm",
-      "realm_type": "imm:foundation_preliminary"
-    },
-    {
-      "type": "imm:element",
-      "element": "Wood"
-    },
-    {
-      "type": "imm:spell",
-      "require_spells": [
+      "content": {
+        "type": "imm:learn_spell",
+        "level": 1,
+        "spell": "imm:sprout"
+      },
+      "requirements": [
         {
-          "level": 1,
-          "spell": "imm:releasing"
+          "type": "imm:realm",
+          "realm_type": "imm:foundation_preliminary"
+        },
+        {
+          "type": "imm:element",
+          "elements": [
+            "Wood"
+          ]
+        },
+        {
+          "type": "imm:spell",
+          "require_spells": [
+            {
+              "level": 1,
+              "spell": "imm:releasing"
+            }
+          ]
         }
       ]
     }
-  ]
+  ],
+  "title": {
+    "translate": "spell.imm.sprout"
+  }
 }
