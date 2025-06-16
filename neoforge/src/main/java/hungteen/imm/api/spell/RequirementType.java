@@ -6,9 +6,9 @@ import hungteen.htlib.api.registry.SimpleEntry;
 /**
  * @author PangTeen
  * @program Immortal
- * @create 2023/7/17 15:20
+ * @create 2023/7/17 15:42
  */
-public interface IScrollType<P extends IScrollContent> extends SimpleEntry {
+public interface RequirementType<P extends LearnRequirement> extends SimpleEntry {
 
     MapCodec<P> codec();
 }

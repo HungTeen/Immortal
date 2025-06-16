@@ -2,8 +2,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 15:50
  */
-public record NotRequirement(ILearnRequirement requirement) implements ILearnRequirement{
+public record NotRequirement(LearnRequirement requirement) implements LearnRequirement {
 
     public static final MapCodec<NotRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RequirementTypes.getCodec().fieldOf("requirement").forGetter(NotRequirement::requirement)
@@ -35,7 +35,7 @@ public record NotRequirement(ILearnRequirement requirement) implements ILearnReq
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.NOT;
     }
 }

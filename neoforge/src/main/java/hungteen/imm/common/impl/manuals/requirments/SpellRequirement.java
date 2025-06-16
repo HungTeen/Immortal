@@ -2,8 +2,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellManager;
@@ -20,7 +20,7 @@ import java.util.List;
  * @program Immortal
  * @create 2023/7/17 16:28
  */
-public record SpellRequirement(List<Spell> spells) implements ILearnRequirement {
+public record SpellRequirement(List<Spell> spells) implements LearnRequirement {
 
     public static final MapCodec<SpellRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Spell.CODEC.listOf().optionalFieldOf("require_spells", List.of()).forGetter(SpellRequirement::spells)
@@ -59,7 +59,7 @@ public record SpellRequirement(List<Spell> spells) implements ILearnRequirement 
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.SPELL;
     }
 

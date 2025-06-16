@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.cultivation.RealmType;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.common.cultivation.RealmTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -18,14 +18,14 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/8/17 15:16
  */
-public record RealmRequirement(RealmType realmType, boolean lowest) implements ILearnRequirement {
+public record RealmRequirement(RealmType realmType, boolean lowest) implements LearnRequirement {
 
     public static final MapCodec<RealmRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RealmTypes.registry().byNameCodec().fieldOf("realm_type").forGetter(RealmRequirement::realmType),
             Codec.BOOL.optionalFieldOf("lowest", true).forGetter(RealmRequirement::lowest)
     ).apply(instance, RealmRequirement::new));
 
-    public static ILearnRequirement create(RealmType type, boolean lowest){
+    public static LearnRequirement create(RealmType type, boolean lowest){
         return new RealmRequirement(type, lowest);
     }
 
@@ -46,7 +46,7 @@ public record RealmRequirement(RealmType realmType, boolean lowest) implements I
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.REALM;
     }
 }

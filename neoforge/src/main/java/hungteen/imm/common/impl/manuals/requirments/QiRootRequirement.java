@@ -2,8 +2,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.common.cultivation.QiRootTypes;
 import hungteen.imm.util.PlayerUtil;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author HungTeen
  * @create 2023-08-17 21:21
  **/
-public record QiRootRequirement(List<QiRootType> roots) implements ILearnRequirement {
+public record QiRootRequirement(List<QiRootType> roots) implements LearnRequirement {
 
     public static final MapCodec<QiRootRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             QiRootTypes.registry().byNameCodec().listOf().optionalFieldOf("roots", List.of()).forGetter(QiRootRequirement::roots)
@@ -55,7 +55,7 @@ public record QiRootRequirement(List<QiRootType> roots) implements ILearnRequire
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.QI_ROOT;
     }
 }

@@ -39,7 +39,7 @@ public class RuneGateMenu extends RuneBaseMenu {
     }
 
     public RuneGateMenu(int id, Inventory inventory, ContainerLevelAccess access) {
-        super(id, IMMMenus.RUNE_GATE.get(), inventory, access);
+        super(id, IMMMenuTypes.RUNE_GATE.get(), inventory, access);
         this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM) {
             @Override
             public void setChanged() {

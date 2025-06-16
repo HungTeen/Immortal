@@ -9,6 +9,7 @@ import hungteen.imm.client.gui.overlay.CommonOverlay;
 import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.client.gui.overlay.MeditationOverlay;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
+import hungteen.imm.client.gui.screen.InscriptionTableScreen;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
@@ -41,6 +42,7 @@ import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixir.ElixirItem;
 import hungteen.imm.common.item.talisman.DurationTalisman;
+import hungteen.imm.common.menu.IMMMenuTypes;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -65,7 +67,6 @@ public class ClientRegister {
     @SubscribeEvent
     public static void setUpClient(FMLClientSetupEvent ev){
         ev.enqueueWork(() -> {
-            ClientHandler.registerScreen();
             ClientHandler.registerItemProperties();
         });
     }
@@ -140,6 +141,19 @@ public class ClientRegister {
         event.registerLayerDefinition(IMMModelLayers.SNOW_GOLEM, SnowGolemModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.CREEPER_GOLEM, CreeperGolemModel::createBodyLayer);
         event.registerLayerDefinition(IMMModelLayers.COPPER_GOLEM, CopperGolemModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerMenuScreen(RegisterMenuScreensEvent event){
+        event.register(IMMMenuTypes.INSCRIPTION_TABLE.get(), InscriptionTableScreen::new);
+        //        MenuScreens.initialize(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
+//        MenuScreens.initialize(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
+//        MenuScreens.initialize(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
+////        MenuScreens.initialize(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
+//        MenuScreens.initialize(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
+//        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
     }
 
     @SubscribeEvent

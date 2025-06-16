@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 15:26
  */
-public interface IScrollContent {
+public interface ScrollContent {
 
     /**
      * @return 是否能学习此卷轴。
@@ -40,7 +40,7 @@ public interface IScrollContent {
     /**
      * @return 卷轴的类型。
      */
-    IScrollType<?> getType();
+    ScrollType<?> getType();
 
     /**
      * @return 该卷轴的图标。

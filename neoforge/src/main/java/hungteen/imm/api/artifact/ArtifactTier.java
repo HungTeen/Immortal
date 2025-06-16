@@ -7,7 +7,7 @@ import net.minecraft.world.item.Tier;
  * @author HungTeen
  * @create 2022-11-14 15:43
  **/
-public interface IArtifactTier extends Tier {
+public interface ArtifactTier extends Tier {
 
     /**
      * Addition attack damage value of the artifact tier.
@@ -34,7 +34,7 @@ public interface IArtifactTier extends Tier {
     ArtifactRank getArtifactRealm();
 
     /**
-     * Replace this method with {@link IArtifactTier#getAttackSpeed()} ()}
+     * Replace this method with {@link ArtifactTier#getAttackSpeed()} ()}
      * @return speed bonus.
      */
     @Override
@@ -43,7 +43,7 @@ public interface IArtifactTier extends Tier {
     }
 
     /**
-     * Replace this method with {@link IArtifactTier#getAttackDamage()}
+     * Replace this method with {@link ArtifactTier#getAttackDamage()}
      * @return damage bonus.
      */
     @Override

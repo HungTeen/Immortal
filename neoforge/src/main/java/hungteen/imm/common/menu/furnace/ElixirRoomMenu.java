@@ -2,7 +2,7 @@ package hungteen.imm.common.menu.furnace;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.common.blockentity.ElixirRoomBlockEntity;
-import hungteen.imm.common.menu.IMMMenus;
+import hungteen.imm.common.menu.IMMMenuTypes;
 import hungteen.imm.common.recipe.ElixirRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,8 +12,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class ElixirRoomMenu extends FunctionalFurnaceMenu<ElixirRoomBlockEntity>
     }
 
     public ElixirRoomMenu(int id, Inventory inventory, ContainerData accessData, BlockPos pos) {
-        super(id, IMMMenus.ELIXIR_ROOM.get(), inventory, accessData, pos);
+        super(id, IMMMenuTypes.ELIXIR_ROOM.get(), inventory, accessData, pos);
 
 //        this.addInventories(73, 53, 3, 3, 0, (i, x, y) -> {
 //            return new SlotItemHandler(this.blockEntity.getItemHandler(), i, x, y) {

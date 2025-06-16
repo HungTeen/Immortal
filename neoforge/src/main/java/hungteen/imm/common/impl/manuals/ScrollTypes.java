@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
-import hungteen.imm.api.spell.IScrollContent;
-import hungteen.imm.api.spell.IScrollType;
+import hungteen.imm.api.spell.ScrollContent;
+import hungteen.imm.api.spell.ScrollType;
 import hungteen.imm.util.Util;
 
 /**
@@ -15,23 +15,23 @@ import hungteen.imm.util.Util;
  */
 public interface ScrollTypes {
 
-    HTCustomRegistry<IScrollType<?>> TYPES = HTRegistryManager.custom(Util.prefix("scroll_type"));
+    HTCustomRegistry<ScrollType<?>> TYPES = HTRegistryManager.custom(Util.prefix("scroll_type"));
 
-    IScrollType<LearnSpellScroll> LEARN_SPELL = register(new ManualType<>("learn_spell", LearnSpellScroll.CODEC));
+    ScrollType<LearnSpellScroll> LEARN_SPELL = register(new ScrollTypeImpl<>("learn_spell", LearnSpellScroll.CODEC));
 
-    static HTCustomRegistry<IScrollType<?>> registry(){
+    static HTCustomRegistry<ScrollType<?>> registry(){
         return TYPES;
     }
 
-    static <T extends IScrollContent> IScrollType<T> register(IScrollType<T> type){
+    static <T extends ScrollContent> ScrollType<T> register(ScrollType<T> type){
         return registry().register(type.getLocation(), type);
     }
 
-    static Codec<IScrollContent> getManualCodec() {
-        return ScrollTypes.registry().byNameCodec().dispatch(IScrollContent::getType, IScrollType::codec);
+    static Codec<ScrollContent> getManualCodec() {
+        return ScrollTypes.registry().byNameCodec().dispatch(ScrollContent::getType, ScrollType::codec);
     }
 
-    record ManualType<P extends IScrollContent>(String name, MapCodec<P> codec) implements IScrollType<P> {
+    record ScrollTypeImpl<P extends ScrollContent>(String name, MapCodec<P> codec) implements ScrollType<P> {
 
         @Override
         public String getModID() {

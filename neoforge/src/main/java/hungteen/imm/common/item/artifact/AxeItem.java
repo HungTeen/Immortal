@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import net.minecraft.tags.BlockTags;
 
 /**
@@ -10,7 +10,7 @@ import net.minecraft.tags.BlockTags;
  **/
 public class AxeItem extends DiggerItem {
 
-    public AxeItem(IArtifactTier tier, float digSpeed) {
+    public AxeItem(ArtifactTier tier, float digSpeed) {
         super(MeleeAttackTypes.AXE, tier, digSpeed, BlockTags.MINEABLE_WITH_AXE);
     }
 

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * @author HungTeen
  * @create 2022-10-24 12:14
  **/
-public abstract class ImmortalMenuProvider implements MenuProvider {
+public abstract class IMMMenuProvider implements MenuProvider {
 
     @Override
     public Component getDisplayName() {

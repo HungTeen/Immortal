@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.IMMToolActions;
 import hungteen.imm.util.PlayerUtil;
@@ -29,7 +29,7 @@ public class HammerItem extends MeleeAttackItem {
     private static final String VALID_POS = "ValidPos";
     private static final String BLOCK_POS = "BlockPos";
 
-    public HammerItem(IArtifactTier tier) {
+    public HammerItem(ArtifactTier tier) {
         super(MeleeAttackTypes.HAMMER, tier);
     }
 

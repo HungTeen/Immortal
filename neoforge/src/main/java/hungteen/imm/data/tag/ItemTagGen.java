@@ -1,7 +1,9 @@
 package hungteen.imm.data.tag;
 
 import hungteen.htlib.data.tag.HTItemTagGen;
+import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.talisman.TalismanItem;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.Util;
@@ -34,6 +36,11 @@ public class ItemTagGen extends HTItemTagGen {
         );
         this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_ONE).add(Items.EMERALD);
 //        this.tag(IMMItemTags.SPIRITUAL_STONES_LEVEL_TWO).add(Items.DIAMOND);
+
+        this.tag(IMMItemTags.EMPTY_TALISMANS).add(IMMItems.JOSS_PAPER.get());
+        ItemHelper.get().filterValues(TalismanItem.class::isInstance).forEach(item -> {
+            this.tag(IMMItemTags.TALISMANS).add(item);
+        });
 
         this.tag(IMMItemTags.COMMON_ARTIFACTS).add(Items.ENDER_PEARL);
 //        this.tag(IMMItemTags.MODERATE_ARTIFACTS).add(Items.TRIDENT);

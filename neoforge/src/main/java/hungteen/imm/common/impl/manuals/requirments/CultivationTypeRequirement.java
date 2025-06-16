@@ -3,8 +3,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.cultivation.CultivationType;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -17,13 +17,13 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 16:02
  */
-public record CultivationTypeRequirement(CultivationType cultivationType) implements ILearnRequirement {
+public record CultivationTypeRequirement(CultivationType cultivationType) implements LearnRequirement {
 
     public static final MapCodec<CultivationTypeRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             CultivationTypes.registry().byNameCodec().fieldOf("cultivation_type").forGetter(CultivationTypeRequirement::cultivationType)
     ).apply(instance, CultivationTypeRequirement::new));
 
-    public static ILearnRequirement create(CultivationType type){
+    public static LearnRequirement create(CultivationType type){
         return new CultivationTypeRequirement(type);
     }
 
@@ -43,7 +43,7 @@ public record CultivationTypeRequirement(CultivationType cultivationType) implem
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.CULTIVATION_TYPE;
     }
 }

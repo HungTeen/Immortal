@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.common.ItemAbility;
  **/
 public class ShortSwordItem extends MeleeAttackItem {
 
-    public ShortSwordItem(IArtifactTier tier) {
+    public ShortSwordItem(ArtifactTier tier) {
         super(MeleeAttackTypes.SHORT_SWORD, tier);
     }
 

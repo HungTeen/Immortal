@@ -49,7 +49,7 @@ public class RuneCraftingMenu extends RuneBaseMenu {
     }
 
     public RuneCraftingMenu(int id, Inventory inventory, ContainerLevelAccess access) {
-        super(id, IMMMenus.RUNE_CRAFT.get(), inventory, access);
+        super(id, IMMMenuTypes.RUNE_CRAFT.get(), inventory, access);
         this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM){
             @Override
             public void setChanged() {

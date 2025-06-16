@@ -2,8 +2,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,7 +17,7 @@ import java.util.List;
  * @program Immortal
  * @create 2023/7/17 15:50
  */
-public record OrRequirement(List<ILearnRequirement> requirements) implements ILearnRequirement{
+public record OrRequirement(List<LearnRequirement> requirements) implements LearnRequirement {
 
     public static final MapCodec<OrRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RequirementTypes.getCodec().listOf().fieldOf("requirements").forGetter(OrRequirement::requirements)
@@ -43,7 +43,7 @@ public record OrRequirement(List<ILearnRequirement> requirements) implements ILe
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.OR;
     }
 }

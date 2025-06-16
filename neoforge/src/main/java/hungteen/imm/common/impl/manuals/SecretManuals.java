@@ -5,8 +5,8 @@ import hungteen.htlib.api.registry.HTCodecRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IScrollContent;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.ScrollContent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.CultivationTypes;
@@ -43,10 +43,10 @@ public interface SecretManuals {
     HTCodecRegistry<SecretManual> TUTORIALS = HTRegistryManager.codec(Util.prefix("secret_manual"), () -> SecretManual.CODEC, () -> SecretManual.CODEC);
 
     static void register(BootstrapContext<SecretManual> context) {
-        final ILearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.QI);
-        final ILearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.first(), true);
-        final ILearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION.pre(), true);
-        final ILearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.CORE_SHAPING.pre(), true);
+        final LearnRequirement spiritual = CultivationTypeRequirement.create(CultivationTypes.QI);
+        final LearnRequirement spiritual_level_1 = RealmRequirement.create(RealmTypes.QI_REFINING.first(), true);
+        final LearnRequirement spiritual_level_2 = RealmRequirement.create(RealmTypes.FOUNDATION.pre(), true);
+        final LearnRequirement spiritual_level_3 = RealmRequirement.create(RealmTypes.CORE_SHAPING.pre(), true);
 
         /* 基本法术 */
         register(context, SpellTypes.MEDITATION, 1, builder -> {
@@ -255,7 +255,7 @@ public interface SecretManuals {
         return builder(new LearnSpellScroll(spell, level));
     }
 
-    static SpellScrollBuilder builder(IScrollContent content) {
+    static SpellScrollBuilder builder(ScrollContent content) {
         return new SpellScrollBuilder(content);
     }
 
@@ -286,15 +286,15 @@ public interface SecretManuals {
 
     class SpellScrollBuilder {
 
-        private final IScrollContent content;
-        private final List<ILearnRequirement> requirements = new ArrayList<>();
+        private final ScrollContent content;
+        private final List<LearnRequirement> requirements = new ArrayList<>();
         private Component title = null;
 
-        public SpellScrollBuilder(IScrollContent content) {
+        public SpellScrollBuilder(ScrollContent content) {
             this.content = content;
         }
 
-        public SpellScrollBuilder require(ILearnRequirement requirement) {
+        public SpellScrollBuilder require(LearnRequirement requirement) {
             requirements.add(requirement);
             return this;
         }

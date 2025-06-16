@@ -214,6 +214,7 @@
   "gui.imm.secret_manual.next": "Next",
   "gui.imm.secret_manual.requirements": "Preconditions:",
   "gui.imm.secret_manual.description": "Description:",
+  "gui.imm.inscription_table": "Inscription Table",
   "gui.imm.rune_title.craft": "Rune Craft Table",
   "gui.imm.rune_tab_title.craft": "Rune",
   "gui.imm.rune_title.gate": "Gate Craft Table",

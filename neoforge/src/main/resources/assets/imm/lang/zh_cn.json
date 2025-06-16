@@ -214,6 +214,7 @@
   "gui.imm.secret_manual.next": "下一卷",
   "gui.imm.secret_manual.requirements": "前置要求：",
   "gui.imm.secret_manual.description": "法术描述：",
+  "gui.imm.inscription_table": "符咒绘制台",
   "gui.imm.rune_title.craft": "合成模式",
   "gui.imm.rune_tab_title.craft": "合成",
   "gui.imm.rune_title.gate": "逻辑模式",

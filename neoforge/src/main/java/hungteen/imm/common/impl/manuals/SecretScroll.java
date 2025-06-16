@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.ExperienceType;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IScrollContent;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.ScrollContent;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
 import hungteen.imm.util.PlayerUtil;
@@ -28,7 +28,7 @@ import java.util.Optional;
  * @program Immortal
  * @create 2023/7/17 16:52
  */
-public record SecretScroll(List<ILearnRequirement> requirements, IScrollContent content, Optional<Component> title) {
+public record SecretScroll(List<LearnRequirement> requirements, ScrollContent content, Optional<Component> title) {
     public static final Codec<SecretScroll> CODEC = RecordCodecBuilder.<SecretScroll>mapCodec(instance -> instance.group(
             RequirementTypes.getCodec().listOf().optionalFieldOf("requirements", List.of()).forGetter(SecretScroll::requirements),
             ScrollTypes.getManualCodec().fieldOf("content").forGetter(SecretScroll::content),

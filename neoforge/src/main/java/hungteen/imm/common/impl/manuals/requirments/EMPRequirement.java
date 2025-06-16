@@ -3,8 +3,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.cultivation.spell.basic.ElementalMasterySpell;
 import hungteen.imm.util.PlayerUtil;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
  * @author HungTeen
  * @create 2023-08-17 22:53
  **/
-public record EMPRequirement(int level) implements ILearnRequirement {
+public record EMPRequirement(int level) implements LearnRequirement {
 
     public static final MapCodec<EMPRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("level").forGetter(EMPRequirement::level)
@@ -40,7 +40,7 @@ public record EMPRequirement(int level) implements ILearnRequirement {
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.EMP;
     }
 }

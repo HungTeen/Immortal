@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 15:42
  */
-public interface ILearnRequirement {
+public interface LearnRequirement {
 
     /**
      * @return 是否满足学习要求。
@@ -27,6 +27,6 @@ public interface ILearnRequirement {
      */
     MutableComponent getRequirementInfo(Player player);
 
-    IRequirementType<?> getType();
+    RequirementType<?> getType();
 
 }

@@ -4,7 +4,6 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
-import hungteen.imm.IMMInitializer;
 import hungteen.imm.common.menu.furnace.ElixirRoomMenu;
 import hungteen.imm.common.menu.furnace.SpiritualFurnaceMenu;
 import hungteen.imm.util.Util;
@@ -18,19 +17,19 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
  * @author HungTeen
  * @create 2022-10-09 10:19
  **/
-public class IMMMenus {
+public interface IMMMenuTypes {
 
-    private static final HTVanillaRegistry<MenuType<?>> CONTAINER_TYPES = HTRegistryManager.vanilla(Registries.MENU, Util.id());
+    HTVanillaRegistry<MenuType<?>> TYPES = HTRegistryManager.vanilla(Registries.MENU, Util.id());
 
-    public static final HTHolder<MenuType<MerchantTradeMenu>> CULTIVATOR_TRADE = CONTAINER_TYPES.register("cultivator_trade", () -> {
+    HTHolder<MenuType<MerchantTradeMenu>> CULTIVATOR_TRADE = registry().register("cultivator_trade", () -> {
         return IMenuTypeExtension.create(((windowId, inv, data) -> new MerchantTradeMenu(windowId, inv)));
     });
 
-    public static final HTHolder<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = CONTAINER_TYPES.register("spiritual_furnace", () -> {
+    HTHolder<MenuType<SpiritualFurnaceMenu>> SPIRITUAL_FURNACE = registry().register("spiritual_furnace", () -> {
         return IMenuTypeExtension.create(SpiritualFurnaceMenu::new);
     });
 
-    public static final HTHolder<MenuType<ElixirRoomMenu>> ELIXIR_ROOM = CONTAINER_TYPES.register("elixir_room", () -> {
+    HTHolder<MenuType<ElixirRoomMenu>> ELIXIR_ROOM = registry().register("elixir_room", () -> {
         return IMenuTypeExtension.create(ElixirRoomMenu::new);
     });
 
@@ -38,29 +37,31 @@ public class IMMMenus {
 //        return IMenuTypeExtension.create(SmithingArtifactMenu::new);
 //    });
 
-    public static final HTHolder<MenuType<GolemInventoryMenu>> GOLEM_INVENTORY = CONTAINER_TYPES.register("golem_inventory", () -> {
+    HTHolder<MenuType<GolemInventoryMenu>> GOLEM_INVENTORY = registry().register("golem_inventory", () -> {
         return IMenuTypeExtension.create(GolemInventoryMenu::new);
     });
 
-    public static final HTHolder<MenuType<RuneCraftingMenu>> RUNE_CRAFT = CONTAINER_TYPES.register("rune_craft", () -> {
+    HTHolder<MenuType<InscriptionTableMenu>> INSCRIPTION_TABLE = registry().register("inscription_table", () -> {
+        return IMenuTypeExtension.create((id, inventory, data) -> new InscriptionTableMenu(id, inventory));
+    });
+
+    HTHolder<MenuType<RuneCraftingMenu>> RUNE_CRAFT = registry().register("rune_craft", () -> {
         return IMenuTypeExtension.create((id, inventory, data) -> new RuneCraftingMenu(id, inventory));
     });
 
-    public static final HTHolder<MenuType<RuneGateMenu>> RUNE_GATE = CONTAINER_TYPES.register("rune_gate", () -> {
+    HTHolder<MenuType<RuneGateMenu>> RUNE_GATE = registry().register("rune_gate", () -> {
         return IMenuTypeExtension.create((id, inventory, data) -> new RuneGateMenu(id, inventory));
     });
 
-    public static final HTHolder<MenuType<RuneBindMenu>> RUNE_BIND = CONTAINER_TYPES.register("rune_bind", () -> {
+    HTHolder<MenuType<RuneBindMenu>> RUNE_BIND = registry().register("rune_bind", () -> {
         return IMenuTypeExtension.create((id, inventory, data) -> new RuneBindMenu(id, inventory));
     });
 
-    public static HTVanillaRegistry<MenuType<?>> registry() {
-        return CONTAINER_TYPES;
+    static HTVanillaRegistry<MenuType<?>> registry() {
+        return TYPES;
     }
-    /**
-     * {@link IMMInitializer#defferRegister(IEventBus)}
-     */
-    public static void initialize(IEventBus event){
+
+    static void initialize(IEventBus event){
         NeoHelper.initRegistry(registry(), event);
     }
 

@@ -64,6 +64,7 @@ public interface IMMBlocks {
     HTBlockSuit<Block> SPIRIT_ANCHOR = register("spirit_anchor", SpiritAnchorBlock::new);
     HTBlockSuit<Block> TELEPORT_ANCHOR = register("teleport_anchor", TeleportAnchorBlock::new);
     HTBlockSuit<Block> RUNE_WORK_BENCH = register("rune_work_bench", RuneWorkBench::new);
+    HTBlockSuit<Block> INSCRIPTION_TABLE = register("inscription_table", InscriptionTable::new);
 
     /* Entity Blocks */
 

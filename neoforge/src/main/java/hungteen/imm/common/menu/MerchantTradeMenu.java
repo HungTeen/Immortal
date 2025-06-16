@@ -37,7 +37,7 @@ public class MerchantTradeMenu extends HTContainerMenu {
     }
 
     public MerchantTradeMenu(int id, Inventory playerInv, Trader trader) {
-        super(id, IMMMenus.CULTIVATOR_TRADE.get());
+        super(id, IMMMenuTypes.CULTIVATOR_TRADE.get());
         this.player = playerInv.player;
         this.trader = trader;
         this.tradeContainer = new TradeContainer(this, this.trader, COST_SIZE, RESULT_SIZE);

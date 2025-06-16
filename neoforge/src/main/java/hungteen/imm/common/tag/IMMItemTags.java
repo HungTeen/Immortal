@@ -33,6 +33,9 @@ public interface IMMItemTags {
     TagKey<Item> SPIRITUAL_STONES_LEVEL_ONE = tag("spiritual_stone/level_one_stones");
     //    TagKey<Item> SPIRITUAL_STONES_LEVEL_TWO = uniformTag("spiritual_stone/level_two_stones");
 
+    TagKey<Item> EMPTY_TALISMANS = tag("empty_talismans");
+    TagKey<Item> TALISMANS = tag("talismans");
+
     TagKey<Item> COMMON_ARTIFACTS = tag("artifacts/common");
     TagKey<Item> MODERATE_ARTIFACTS = tag("artifacts/moderate");
     TagKey<Item> ADVANCED_ARTIFACTS = tag("artifacts/advanced");

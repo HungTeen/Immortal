@@ -1,6 +1,7 @@
 package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellsTrigger;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -184,6 +186,13 @@ public class SpellData implements HTPlayerData {
 
     public int getSpellLevel(@NotNull SpellType spell) {
         return this.learnSpells.getOrDefault(spell, 0);
+    }
+
+    public List<Spell> getLearnedSpells(){
+        return this.learnSpells.entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .map(entry -> Spell.create(entry.getKey(), entry.getValue()))
+                .toList();
     }
 
     public void sendSpellPacket(ClientSpellPacket.SpellOption option, SpellType spell, long num) {

@@ -5,6 +5,7 @@ import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.cultivation.*;
 import hungteen.imm.api.registry.ISectType;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.capability.IMMAttachments;
 import hungteen.imm.common.capability.player.CultivationData;
@@ -229,6 +230,10 @@ public class PlayerUtil {
 
     public static float getSpellCooldownValue(Player player, SpellType spell) {
         return getData(player, data -> data.getSpellData().getSpellCoolDown(spell));
+    }
+
+    public static List<Spell> getLearnedSpells(Player player) {
+        return getData(player, data -> data.getSpellData().getLearnedSpells());
     }
 
     public static boolean hasLearnedSpell(Player player, SpellType spell) {

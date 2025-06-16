@@ -3,8 +3,8 @@ package hungteen.imm.common.impl.manuals;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import hungteen.imm.api.spell.IScrollContent;
-import hungteen.imm.api.spell.IScrollType;
+import hungteen.imm.api.spell.ScrollContent;
+import hungteen.imm.api.spell.ScrollType;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.util.PlayerUtil;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
  * @program Immortal
  * @create 2023/7/17 15:33
  */
-public record LearnSpellScroll(SpellType spellType, int level) implements IScrollContent {
+public record LearnSpellScroll(SpellType spellType, int level) implements ScrollContent {
     
     public static final MapCodec<LearnSpellScroll> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SpellTypes.registry().byNameCodec().fieldOf("spell").forGetter(LearnSpellScroll::spellType),
@@ -45,7 +45,7 @@ public record LearnSpellScroll(SpellType spellType, int level) implements IScrol
     }
 
     @Override
-    public IScrollType<?> getType() {
+    public ScrollType<?> getType() {
         return ScrollTypes.LEARN_SPELL;
     }
 

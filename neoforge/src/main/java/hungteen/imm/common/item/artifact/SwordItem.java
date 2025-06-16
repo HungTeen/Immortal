@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
  **/
 public class SwordItem extends MeleeAttackItem {
 
-    public SwordItem(IArtifactTier tier) {
+    public SwordItem(ArtifactTier tier) {
         super(MeleeAttackTypes.SWORD, tier);
     }
 

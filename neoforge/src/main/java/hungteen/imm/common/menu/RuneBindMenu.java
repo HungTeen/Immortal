@@ -38,7 +38,7 @@ public class RuneBindMenu extends RuneBaseMenu{
     }
 
     public RuneBindMenu(int id, Inventory inventory, ContainerLevelAccess access) {
-        super(id, IMMMenus.RUNE_BIND.get(), inventory, access);
+        super(id, IMMMenuTypes.RUNE_BIND.get(), inventory, access);
         this.inputContainer = new SimpleContainer(INPUT_SLOT_NUM) {
 
             @Override

@@ -3,7 +3,7 @@ package hungteen.imm.common.menu.furnace;
 import hungteen.htlib.common.menu.HTContainerMenu;
 import hungteen.imm.common.block.IMMBlocks;
 import hungteen.imm.common.blockentity.SpiritualFurnaceBlockEntity;
-import hungteen.imm.common.menu.IMMMenus;
+import hungteen.imm.common.menu.IMMMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +33,7 @@ public class SpiritualFurnaceMenu extends HTContainerMenu {
     }
 
     public SpiritualFurnaceMenu(int id, Inventory inventory, ContainerData accessData, BlockPos pos) {
-        super(id, IMMMenus.SPIRITUAL_FURNACE.get());
+        super(id, IMMMenuTypes.SPIRITUAL_FURNACE.get());
         this.accessData = accessData;
         this.player = inventory.player;
         this.accessLevel = ContainerLevelAccess.create(inventory.player.level(), pos);

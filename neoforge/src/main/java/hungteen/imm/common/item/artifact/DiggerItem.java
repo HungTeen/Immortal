@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +20,7 @@ public abstract class DiggerItem extends MeleeAttackItem{
     private final TagKey<Block> fitBlockTag;
     protected final float digSpeed;
 
-    public DiggerItem(MeleeAttackTypes meleeAttackType, IArtifactTier tier, float digSpeed, TagKey<Block> fitBlockTag) {
+    public DiggerItem(MeleeAttackTypes meleeAttackType, ArtifactTier tier, float digSpeed, TagKey<Block> fitBlockTag) {
         super(meleeAttackType, tier);
         this.digSpeed = digSpeed;
         this.fitBlockTag = fitBlockTag;

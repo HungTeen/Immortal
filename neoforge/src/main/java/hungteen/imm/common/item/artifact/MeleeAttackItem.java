@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import hungteen.imm.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ public abstract class MeleeAttackItem extends ArtifactItemImpl {
     protected final float attackSpeed;
     protected final float attackRange;
 
-    public MeleeAttackItem(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
+    public MeleeAttackItem(IMeleeAttackType meleeAttackType, ArtifactTier tier) {
         super(new Properties().stacksTo(1).durability(tier.getUses())
                 .attributes(create(meleeAttackType, tier)), tier.getArtifactRealm());
         this.meleeAttackType = meleeAttackType;
@@ -46,7 +46,7 @@ public abstract class MeleeAttackItem extends ArtifactItemImpl {
         this.attackRange = tier.getAttackRange() + this.meleeAttackType.getBaseAttackRange();
     }
 
-    public static ItemAttributeModifiers create(IMeleeAttackType meleeAttackType, IArtifactTier tier) {
+    public static ItemAttributeModifiers create(IMeleeAttackType meleeAttackType, ArtifactTier tier) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Util.prefix("Artifact modifier"), tier.getAttackDamage() + meleeAttackType.getBaseAttackDamage(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(Util.prefix("Artifact modifier"), tier.getAttackSpeed() + meleeAttackType.getBaseAttackSpeed(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)

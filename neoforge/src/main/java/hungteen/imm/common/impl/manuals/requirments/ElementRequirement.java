@@ -3,8 +3,8 @@ package hungteen.imm.common.impl.manuals.requirments;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
@@ -21,7 +21,7 @@ import java.util.Set;
  * @author HungTeen
  * @create 2023-08-17 22:46
  **/
-public record ElementRequirement(List<Element> elements) implements ILearnRequirement {
+public record ElementRequirement(List<Element> elements) implements LearnRequirement {
 
     public static final MapCodec<ElementRequirement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Element.CODEC.listOf().fieldOf("elements").forGetter(ElementRequirement::elements)
@@ -55,7 +55,7 @@ public record ElementRequirement(List<Element> elements) implements ILearnRequir
     }
 
     @Override
-    public IRequirementType<?> getType() {
+    public RequirementType<?> getType() {
         return RequirementTypes.ELEMENT;
     }
 }

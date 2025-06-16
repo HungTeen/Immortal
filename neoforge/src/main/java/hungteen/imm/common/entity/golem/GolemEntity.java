@@ -10,7 +10,7 @@ import hungteen.imm.common.entity.ai.behavior.golem.GolemBehavior;
 import hungteen.imm.common.cultivation.CultivationTypes;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.menu.GolemInventoryMenu;
-import hungteen.imm.common.menu.ImmortalMenuProvider;
+import hungteen.imm.common.menu.IMMMenuProvider;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -142,7 +142,7 @@ public abstract class GolemEntity extends IMMMob implements ContainerListener {
         if(hand == InteractionHand.MAIN_HAND && canInteractWith(player)){
             if(player instanceof ServerPlayer serverPlayer){
                 this.setInteractPlayer(player);
-                serverPlayer.openMenu(new ImmortalMenuProvider() {
+                serverPlayer.openMenu(new IMMMenuProvider() {
                     @Override
                     public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new GolemInventoryMenu(id, inventory, GolemEntity.this.getId());

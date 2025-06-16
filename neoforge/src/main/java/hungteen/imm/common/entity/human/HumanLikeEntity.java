@@ -21,7 +21,7 @@ import hungteen.imm.common.entity.human.setting.HumanSetting;
 import hungteen.imm.common.entity.human.setting.HumanSettingHelper;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffer;
 import hungteen.imm.common.entity.human.setting.trade.TradeOffers;
-import hungteen.imm.common.menu.ImmortalMenuProvider;
+import hungteen.imm.common.menu.IMMMenuProvider;
 import hungteen.imm.common.menu.MerchantTradeMenu;
 import hungteen.imm.common.network.TradeOffersPacket;
 import hungteen.imm.util.BehaviorUtil;
@@ -369,7 +369,7 @@ public abstract class HumanLikeEntity extends IMMGrowableMob implements HumanLik
 //            }
             if (EntityHelper.isServer(this) && player instanceof ServerPlayer serverPlayer) {
                 this.setTradingPlayer(player);
-                serverPlayer.openMenu(new ImmortalMenuProvider() {
+                serverPlayer.openMenu(new IMMMenuProvider() {
                     @Override
                     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                         return new MerchantTradeMenu(id, inventory, HumanLikeEntity.this);

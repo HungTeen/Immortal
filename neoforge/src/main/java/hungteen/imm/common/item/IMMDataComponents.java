@@ -4,6 +4,7 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
+import hungteen.imm.common.codec.SpellInstance;
 import hungteen.imm.common.impl.manuals.SecretManual;
 import hungteen.imm.common.impl.manuals.SecretManuals;
 import hungteen.imm.util.Util;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.neoforged.bus.api.IEventBus;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 /**
@@ -29,6 +31,12 @@ public interface IMMDataComponents {
             .persistent(SecretManuals.resourceKeyCodec()).networkSynchronized(SecretManuals.resourceKeyStreamCodec())
     );
     HTHolder<DataComponentType<Integer>> MANUAL_PAGE = register("manual_page", builder -> builder
+            .persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+    HTHolder<DataComponentType<List<SpellInstance>>> SPELL_INSTANCES = register("spell_instances", builder -> builder
+            .persistent(SpellInstance.CODEC_LIST).networkSynchronized(SpellInstance.STREAM_CODEC)
+    );
+    HTHolder<DataComponentType<Integer>> MAX_SPELL_SLOT = register("max_spell_slot", builder -> builder
             .persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
     );
 

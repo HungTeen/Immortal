@@ -1,6 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.IArtifactTier;
+import hungteen.imm.api.artifact.ArtifactTier;
 import net.minecraft.tags.BlockTags;
 
 /**
@@ -10,7 +10,7 @@ import net.minecraft.tags.BlockTags;
  **/
 public class PickaxeItem extends DiggerItem {
 
-    public PickaxeItem(IArtifactTier tier, float digSpeed) {
+    public PickaxeItem(ArtifactTier tier, float digSpeed) {
         super(MeleeAttackTypes.PICKAXE, tier, digSpeed, BlockTags.MINEABLE_WITH_PICKAXE);
     }
 

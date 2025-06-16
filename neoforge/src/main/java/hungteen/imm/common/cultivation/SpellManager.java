@@ -3,11 +3,14 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.event.ActivateSpellEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.common.codec.SpellInstance;
+import hungteen.imm.common.item.IMMDataComponents;
 import hungteen.imm.common.network.client.ClientSpellPacket;
 import hungteen.imm.common.network.server.ServerSpellPacket;
 import hungteen.imm.util.*;
@@ -16,6 +19,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -247,6 +251,45 @@ public class SpellManager {
 
     public static boolean isValidSpellPos(int position) {
         return position >= 0 && position < Constants.SPELL_CIRCLE_SIZE;
+    }
+
+    public static List<SpellInstance> getSpellsInItem(ItemStack stack){
+        return stack.getOrDefault(IMMDataComponents.SPELL_INSTANCES, List.of());
+    }
+
+    public static void putSpellInItem(ItemStack stack, SpellInstance spellInstance) {
+        List<SpellInstance> spells = getSpellsInItem(stack);
+        if(spells.size() < getMaxSpellSlot(stack)){
+            spells.add(spellInstance);
+            stack.set(IMMDataComponents.SPELL_INSTANCES, spells);
+        }
+    }
+
+    /**
+     * @return 该物品的法术槽位是否已经满了。
+     */
+    public static boolean isSpellFull(ItemStack stack){
+        return getSpellsInItem(stack).size() < getMaxSpellSlot(stack);
+    }
+
+    /**
+     * 获取物品最大的法术槽位，如果获取不到则查询获取。
+     */
+    public static int getMaxSpellSlot(ItemStack stack){
+        if(! stack.has(IMMDataComponents.MAX_SPELL_SLOT)){
+            setSpellSlot(stack);
+        }
+        return stack.getOrDefault(IMMDataComponents.MAX_SPELL_SLOT, 0);
+    }
+
+    public static void setSpellSlot(ItemStack stack){
+        int maxSlot = 0;
+        if(stack.getItem() instanceof ArtifactItem artifactItem){
+            maxSlot = artifactItem.getMaxSpellSlot(stack);
+        }
+        if(maxSlot != 0){
+            stack.set(IMMDataComponents.MAX_SPELL_SLOT, maxSlot);
+        }
     }
 
     public static MutableComponent getCostComponent(int cost) {

@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
-import hungteen.imm.api.spell.ILearnRequirement;
-import hungteen.imm.api.spell.IRequirementType;
+import hungteen.imm.api.spell.LearnRequirement;
+import hungteen.imm.api.spell.RequirementType;
 import hungteen.imm.util.Util;
 
 /**
@@ -15,31 +15,31 @@ import hungteen.imm.util.Util;
  */
 public interface RequirementTypes {
 
-    HTCustomRegistry<IRequirementType<?>> TYPES = HTRegistryManager.custom(Util.prefix("requirement_type"));
+    HTCustomRegistry<RequirementType<?>> TYPES = HTRegistryManager.custom(Util.prefix("requirement_type"));
 
-    IRequirementType<AndRequirement> AND = register(new RequirementType<>("and", AndRequirement.CODEC));
-    IRequirementType<OrRequirement> OR = register(new RequirementType<>("or", OrRequirement.CODEC));
-    IRequirementType<NotRequirement> NOT = register(new RequirementType<>("not", NotRequirement.CODEC));
-    IRequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementType<>("cultivation_type", CultivationTypeRequirement.CODEC));
-    IRequirementType<RealmRequirement> REALM = register(new RequirementType<>("realm", RealmRequirement.CODEC));
-    IRequirementType<SpellRequirement> SPELL = register(new RequirementType<>("spell", SpellRequirement.CODEC));
-    IRequirementType<QiRootRequirement> QI_ROOT = register(new RequirementType<>("qi_root", QiRootRequirement.CODEC));
-    IRequirementType<ElementRequirement> ELEMENT = register(new RequirementType<>("element", ElementRequirement.CODEC));
-    IRequirementType<EMPRequirement> EMP = register(new RequirementType<>("emp", EMPRequirement.CODEC));
+    RequirementType<AndRequirement> AND = register(new RequirementTypeImpl<>("and", AndRequirement.CODEC));
+    RequirementType<OrRequirement> OR = register(new RequirementTypeImpl<>("or", OrRequirement.CODEC));
+    RequirementType<NotRequirement> NOT = register(new RequirementTypeImpl<>("not", NotRequirement.CODEC));
+    RequirementType<CultivationTypeRequirement> CULTIVATION_TYPE = register(new RequirementTypeImpl<>("cultivation_type", CultivationTypeRequirement.CODEC));
+    RequirementType<RealmRequirement> REALM = register(new RequirementTypeImpl<>("realm", RealmRequirement.CODEC));
+    RequirementType<SpellRequirement> SPELL = register(new RequirementTypeImpl<>("spell", SpellRequirement.CODEC));
+    RequirementType<QiRootRequirement> QI_ROOT = register(new RequirementTypeImpl<>("qi_root", QiRootRequirement.CODEC));
+    RequirementType<ElementRequirement> ELEMENT = register(new RequirementTypeImpl<>("element", ElementRequirement.CODEC));
+    RequirementType<EMPRequirement> EMP = register(new RequirementTypeImpl<>("emp", EMPRequirement.CODEC));
 
-    static HTCustomRegistry<IRequirementType<?>> registry() {
+    static HTCustomRegistry<RequirementType<?>> registry() {
         return TYPES;
     }
 
-    static <T extends ILearnRequirement> IRequirementType<T> register(IRequirementType<T> type) {
+    static <T extends LearnRequirement> RequirementType<T> register(RequirementType<T> type) {
         return registry().register(type.getLocation(), type);
     }
 
-    static Codec<ILearnRequirement> getCodec() {
-        return RequirementTypes.registry().byNameCodec().dispatch(ILearnRequirement::getType, IRequirementType::codec);
+    static Codec<LearnRequirement> getCodec() {
+        return RequirementTypes.registry().byNameCodec().dispatch(LearnRequirement::getType, RequirementType::codec);
     }
 
-    record RequirementType<P extends ILearnRequirement>(String name, MapCodec<P> codec) implements IRequirementType<P> {
+    record RequirementTypeImpl<P extends LearnRequirement>(String name, MapCodec<P> codec) implements RequirementType<P> {
 
         @Override
         public String getModID() {

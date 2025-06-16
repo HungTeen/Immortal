@@ -39,17 +39,6 @@ public class ClientHandler {
         ItemProperties.register(IMMItems.WOOD_BOW.get(), WoodBowItem.PULLING, USING);
     }
 
-    public static void registerScreen() {
-//        MenuScreens.initialize(IMMMenus.CULTIVATOR_TRADE.get(), MerchantTradeScreen::new);
-//        MenuScreens.initialize(IMMMenus.SPIRITUAL_FURNACE.get(), SpiritualFurnaceScreen::new);
-//        MenuScreens.initialize(IMMMenus.ELIXIR_ROOM.get(), ElixirRoomScreen::new);
-////        MenuScreens.initialize(ImmortalMenus.SMITHING_ARTIFACT.get(), SmithingArtifactScreen::new);
-//        MenuScreens.initialize(IMMMenus.GOLEM_INVENTORY.get(), GolemInventoryScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_CRAFT.get(), RuneCraftScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_GATE.get(), RuneGateScreen::new);
-//        MenuScreens.initialize(IMMMenus.RUNE_BIND.get(), RuneBindScreen::new);
-    }
-
     public static void registerCultivatorTypes() {
         Arrays.stream(CultivatorType.values())
                 .filter((type -> ! type.isCommon()))

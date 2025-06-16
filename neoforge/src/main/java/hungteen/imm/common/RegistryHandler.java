@@ -28,7 +28,7 @@ import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.impl.registry.TradeTypes;
 import hungteen.imm.common.item.*;
-import hungteen.imm.common.menu.IMMMenus;
+import hungteen.imm.common.menu.IMMMenuTypes;
 import hungteen.imm.common.recipe.IMMRecipeSerializers;
 import hungteen.imm.common.recipe.IMMRecipes;
 import hungteen.imm.common.world.entity.IMMDummyEntities;
@@ -84,7 +84,7 @@ public class RegistryHandler {
         IMMSchedules.initialize(modBus);
         IMMRecipes.initialize(modBus);
         IMMRecipeSerializers.initialize(modBus);
-        IMMMenus.initialize(modBus);
+        IMMMenuTypes.initialize(modBus);
         IMMParticles.initialize(modBus);
         IMMDataSerializers.initialize(modBus);
         IMMMemories.initialize(modBus);
@@ -111,6 +111,7 @@ public class RegistryHandler {
         /* IMM */
         CultivationTypes.registry().initialize();
         RealmTypes.registry().initialize();
+        TriggerConditions.registry().initialize();
         SpellTypes.registry().initialize();
         ElixirEffects.registry().initialize();
         HumanSettings.registry().initialize();

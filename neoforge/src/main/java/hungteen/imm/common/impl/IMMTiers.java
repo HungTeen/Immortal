@@ -1,7 +1,6 @@
 package hungteen.imm.common.impl;
 
 import hungteen.imm.api.artifact.ArtifactRank;
-import hungteen.imm.api.artifact.IArtifactTier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -18,10 +17,10 @@ import java.util.function.Supplier;
  **/
 public class IMMTiers {
 
-    public static final IArtifactTier STONE = new ArtifactTier(-5, ArtifactRank.COMMON, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
-    public static final IArtifactTier BRONZE = new ArtifactTier(0F, ArtifactRank.COMMON, 300, () -> Ingredient.of(Items.COPPER_INGOT));
+    public static final hungteen.imm.api.artifact.ArtifactTier STONE = new ArtifactTier(-5, ArtifactRank.COMMON, 131, () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS));
+    public static final hungteen.imm.api.artifact.ArtifactTier BRONZE = new ArtifactTier(0F, ArtifactRank.COMMON, 300, () -> Ingredient.of(Items.COPPER_INGOT));
 
-    public static class ArtifactTier implements IArtifactTier {
+    public static class ArtifactTier implements hungteen.imm.api.artifact.ArtifactTier {
 
         private final float attackDamage;
         private final float attackSpeed;
