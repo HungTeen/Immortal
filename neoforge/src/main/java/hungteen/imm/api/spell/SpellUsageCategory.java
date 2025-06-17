@@ -1,6 +1,7 @@
 package hungteen.imm.api.spell;
 
 /**
+ * 给生物 AI 用的。
  * @program Immortal
  * @author HungTeen
  * @create 2023-09-03 19:26

@@ -6,23 +6,24 @@ import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.entity.SpellCaster;
 import hungteen.imm.api.event.ActivateSpellEvent;
-import hungteen.imm.api.spell.Spell;
-import hungteen.imm.api.spell.SpellType;
-import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.api.spell.*;
 import hungteen.imm.common.codec.SpellInstance;
 import hungteen.imm.common.item.IMMDataComponents;
 import hungteen.imm.common.network.client.ClientSpellPacket;
 import hungteen.imm.common.network.server.ServerSpellPacket;
 import hungteen.imm.util.*;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -47,6 +48,11 @@ public class SpellManager {
 //            }
 //        }
 //    }
+
+    public static boolean canPlaceOnCircle(SpellType spell){
+        //TODO 可放置在轮盘的法术。
+        return true;
+    }
 
     /**
      * Only on Client Side.
@@ -81,35 +87,59 @@ public class SpellManager {
      */
     public static void activateSpell(Player player) {
         final Optional<Spell> instance = canActivateSpell(player, null, true);
-        instance.ifPresent(value -> activateSpell(player, value, (owner, result, spell, level) -> spell.checkActivate(owner, result, level)));
+        instance.ifPresent(spell -> activateSpell(player, spell, new SpellCastContext(player, spell)));
     }
 
     /**
      * 有些被选择的法术可以被动释放法术，此处进行通用检查。
      */
-    public static void activateRandomSpell(LivingEntity entity, Predicate<SpellType> predicate, ISpellTrigger trigger) {
+    public static void activateRandomSpell(LivingEntity entity, Predicate<SpellType> predicate) {
         final Optional<Spell> instance = getMatchSpellRandomly(entity, predicate);
-        instance.ifPresent(value -> activateSpell(entity, value, trigger));
+        instance.ifPresent(spell -> activateSpell(entity, spell, new SpellCastContext(entity, spell)));
     }
 
     /**
      * 有些被选择的法术可以被动释放法术，此处进行通用检查。
      */
-    public static void activateSpell(LivingEntity entity, @NotNull SpellType spell, ISpellTrigger trigger) {
-        final Optional<Spell> instance = canActivateSpell(entity, spell, false);
-        instance.ifPresent(value -> activateSpell(entity, value, trigger));
+    public static void activateSpell(LivingEntity entity, @NotNull SpellType spellType) {
+        final Optional<Spell> instance = canActivateSpell(entity, spellType, false);
+        instance.ifPresent(spell -> activateSpell(entity, spell, new SpellCastContext(entity, spell)));
+    }
+
+    /**
+     * 检查法器的法术槽位的触发情况。
+     */
+    public static void activateSpell(LivingEntity entity, TriggerCondition condition) {
+        condition.getValidSlots().forEach(slot -> {
+            activateSpell(entity, condition, entity.getItemBySlot(slot));
+        });
+    }
+
+    /**
+     * 检查法器的法术槽位的触发情况。
+     * @param entity 触发生物。
+     * @param condition 触发条件。
+     * @param stack 触发的物品。
+     */
+    public static void activateSpell(LivingEntity entity, TriggerCondition condition, ItemStack stack) {
+        if(getMaxSpellSlot(stack) > 0){
+            for(SpellInstance instance : getSpellsInItem(stack)){
+                if(instance.condition() == condition){
+                    activateSpell(entity, instance.spell(), new SpellCastContext(entity, instance.spell().level(), condition, stack));
+                    return;
+                }
+            }
+        }
     }
 
     /**
      * 被动释放法术都会运行这里。
      * @param entity 释放法术的生物。
      * @param spell 被释放的法术。
-     * @param trigger 触发器。
      */
-    private static void activateSpell(LivingEntity entity, Spell spell, ISpellTrigger trigger) {
+    private static void activateSpell(LivingEntity entity, Spell spell, SpellCastContext context) {
         if (!EventUtil.post(new ActivateSpellEvent.Pre(entity, spell))) {
-            final HTHitResult result = createHitResult(entity, spell);
-            final boolean success = trigger.checkActivate(entity, result, spell.spell(), spell.level());
+            final boolean success = spell.spell().checkActivate(context);
             if (success) {
                 // 播放触发音效。
                 spell.spell().getTriggerSound().ifPresent(sound -> {
@@ -127,10 +157,10 @@ public class SpellManager {
     private static void postActivateSpell(LivingEntity entity, Spell spell) {
         if (entity instanceof Player player) {
             PlayerUtil.cooldownSpell(player, spell.spell(), getSpellCDTime(player, spell.spell()));
-            costMana(player, spell.spell().getConsumeMana());
+            costMana(player, spell.spell().getConsumeQi());
         } else if (entity instanceof SpellCaster caster) {
             caster.setCoolDown(spell.spell().getCooldown());
-            caster.addQiAmount(-spell.spell().getConsumeMana());
+            caster.addQiAmount(-spell.spell().getConsumeQi());
         }
         EventUtil.post(new ActivateSpellEvent.Post(entity, spell));
     }
@@ -183,10 +213,10 @@ public class SpellManager {
                 // 冷却结束。
                 if (!PlayerUtil.isSpellOnCoolDown(player, spell)) {
                     // 灵力足够。
-                    if (PlayerUtil.getQiAmount(player) >= spell.getConsumeMana()) {
+                    if (PlayerUtil.getQiAmount(player) >= spell.getConsumeQi()) {
                         return Optional.of(new Spell(spell, level));
                     } else if (sendTip) {
-                        PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_mana", spell.getConsumeMana()).withStyle(ChatFormatting.RED));
+                        PlayerHelper.sendTipTo(player, TipUtil.info("spell.no_enough_qi", spell.getConsumeQi()).withStyle(ChatFormatting.RED));
                     }
                 } else if (sendTip) {
                     PlayerHelper.sendTipTo(player, SPELL_ON_CD.withStyle(ChatFormatting.RED));
@@ -254,7 +284,7 @@ public class SpellManager {
     }
 
     public static List<SpellInstance> getSpellsInItem(ItemStack stack){
-        return stack.getOrDefault(IMMDataComponents.SPELL_INSTANCES, List.of());
+        return stack.getOrDefault(IMMDataComponents.SPELL_INSTANCES, new ArrayList<>());
     }
 
     public static void putSpellInItem(ItemStack stack, SpellInstance spellInstance) {
@@ -269,7 +299,7 @@ public class SpellManager {
      * @return 该物品的法术槽位是否已经满了。
      */
     public static boolean isSpellFull(ItemStack stack){
-        return getSpellsInItem(stack).size() < getMaxSpellSlot(stack);
+        return getSpellsInItem(stack).size() >= getMaxSpellSlot(stack);
     }
 
     /**
@@ -287,9 +317,25 @@ public class SpellManager {
         if(stack.getItem() instanceof ArtifactItem artifactItem){
             maxSlot = artifactItem.getMaxSpellSlot(stack);
         }
+        if(stack.is(Tags.Items.ENCHANTABLES)){
+            maxSlot = 1;
+        }
         if(maxSlot != 0){
             stack.set(IMMDataComponents.MAX_SPELL_SLOT, maxSlot);
         }
+    }
+
+    public static List<Component> getSpellTooltips(Spell spell){
+        final List<Component> components = new ArrayList<>();
+        final SpellType item = spell.spell();
+        final int lvl = spell.level();
+        components.add(item.getComponent().append("(" + lvl + "/" + item.getMaxLevel() + ")").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
+        for (int i = 1; i <= lvl; ++i) {
+            components.add(item.getSpellDesc(i).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
+        }
+        components.add(SpellManager.getCostComponent(item.getConsumeQi()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
+        components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
+        return components;
     }
 
     public static MutableComponent getCostComponent(int cost) {
@@ -313,7 +359,7 @@ public class SpellManager {
     @FunctionalInterface
     public interface ISpellTrigger {
 
-        boolean checkActivate(LivingEntity owner, HTHitResult result, SpellType spell, int level);
+        boolean checkActivate(SpellCastContext context);
 
     }
 

@@ -1,7 +1,10 @@
 package hungteen.imm.common.menu.tooltip;
 
+import hungteen.imm.common.codec.SpellInstance;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ItemStack;
 
 /**
  * @program Immortal
@@ -12,14 +15,22 @@ public class ArtifactToolTip implements TooltipComponent {
 
     private static final int HEIGHT = 18;
     private static final int WIDTH = 18;
-    private final ItemStack artifact;
+    private final SpellInstance instance;
 
-    public ArtifactToolTip(ItemStack artifact) {
-        this.artifact = artifact.copy();
+    public ArtifactToolTip(SpellInstance instance) {
+        this.instance = instance;
     }
 
-    public ItemStack getArtifact() {
-        return artifact;
+    public Component getSpellTitle(){
+        return instance.spell().spell().getComponent().withStyle(ChatFormatting.YELLOW);
+    }
+
+    public Component getConditionTitle(){
+        return instance.condition().getDescription();
+    }
+
+    public ResourceLocation getSpellTexture(){
+        return instance.spell().spell().getSpellTexture();
     }
 
     public int getHeight(){

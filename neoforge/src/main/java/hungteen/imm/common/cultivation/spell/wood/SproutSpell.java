@@ -2,13 +2,12 @@ package hungteen.imm.common.cultivation.spell.wood;
 
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.spell.RequireEmptyHandSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -24,36 +23,36 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SproutSpell extends RequireEmptyHandSpell {
 
     public SproutSpell() {
-        super("sprout", properties().maxLevel(1).mana(50).cd(400));
+        super("sprout", property().maxLevel(1).mana(50).cd(400));
     }
 
     /**
      * {@link BoneMealItem#useOn(UseOnContext)}.
      */
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, InteractionHand hand, int level) {
+    public boolean checkActivate(SpellCastContext context, InteractionHand hand) {
         boolean success = false;
-        if (result.hasBlock() && result.getBlockPos() != null && result.getDirection() != null) {
-            final BlockPos blockpos = result.getBlockPos();
-            final BlockPos blockpos1 = blockpos.relative(result.getDirection());
-            if (applySprout(owner.level(), blockpos)) {
-                if (! owner.level().isClientSide()) {
-                    owner.level().levelEvent(1505, blockpos, 0);
+        if(context.targetStateOpt().isPresent()){
+            final BlockPos blockpos = context.targetPos();
+            final BlockPos blockpos1 = blockpos.relative(context.direction());
+            if (applySprout(context.level(), blockpos)) {
+                if (! context.level().isClientSide()) {
+                    context.level().levelEvent(1505, blockpos, 0);
                 }
 
                 success = true;
             } else {
-                final BlockState blockstate = owner.level().getBlockState(blockpos);
-                final boolean flag = blockstate.isFaceSturdy(owner.level(), blockpos, result.getDirection());
-                if (flag && BoneMealItem.growWaterPlant(ItemStack.EMPTY, owner.level(), blockpos1, result.getDirection())) {
-                    if (! owner.level().isClientSide()) {
-                        owner.level().levelEvent(1505, blockpos1, 0);
+                final BlockState blockstate = context.level().getBlockState(blockpos);
+                final boolean flag = blockstate.isFaceSturdy(context.level(), blockpos, context.direction());
+                if (flag && BoneMealItem.growWaterPlant(ItemStack.EMPTY, context.level(), blockpos1, context.direction())) {
+                    if (! context.level().isClientSide()) {
+                        context.level().levelEvent(1505, blockpos1, 0);
                     }
                     success = true;
                 }
             }
             if(success){
-                ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), MathHelper.toVec3(blockpos), 1, 0.1, 0.1);
+                ParticleHelper.spawnLineMovingParticle(context.level(), IMMParticles.QI.get(), context.owner().getEyePosition(), MathHelper.toVec3(blockpos), 1, 0.1, 0.1);
             }
         }
         return success;

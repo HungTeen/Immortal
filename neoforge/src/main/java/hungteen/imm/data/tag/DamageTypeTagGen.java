@@ -38,18 +38,19 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
         this.tag(IMMDamageTypeTags.IMM_REALM_LEVEL_3)
                 .add(DamageTypes.LAVA, DamageTypes.DROWN, DamageTypes.STARVE, DamageTypes.WITHER);
 
-        this.tag(IMMDamageTypeTags.SPIRITUALS).add(IMMDamageTypes.QI);
+        this.tag(IMMDamageTypeTags.QI_DAMAGES).add(IMMDamageTypes.QI, IMMDamageTypes.QI_FLAME, IMMDamageTypes.SPIRIT);
+        this.tag(IMMDamageTypeTags.SPIRIT_DAMAGES).add(IMMDamageTypes.SPIRIT, IMMDamageTypes.SPIRIT_ELEMENT);
         this.tag(IMMDamageTypeTags.ELEMENTS)
-                .add(IMMDamageTypes.WOOD_ELEMENT, IMMDamageTypes.WATER_ELEMENT, IMMDamageTypes.FIRE_ELEMENT);
+                .add(IMMDamageTypes.METAL_ELEMENT, IMMDamageTypes.WOOD_ELEMENT, IMMDamageTypes.WATER_ELEMENT, IMMDamageTypes.FIRE_ELEMENT, IMMDamageTypes.EARTH_ELEMENT, IMMDamageTypes.SPIRIT_ELEMENT);
 
     }
 
     private void vanilla(){
         this.tag(DamageTypeTags.BYPASSES_ARMOR)
-                .addTag(IMMDamageTypeTags.SPIRITUALS)
-                .add(IMMDamageTypes.ELEMENT_REACTION)
+                .addTag(IMMDamageTypeTags.SPIRIT_DAMAGES)
         ;
-        this.tag(DamageTypeTags.BYPASSES_SHIELD).addTag(IMMDamageTypeTags.ELEMENTS);
+        this.tag(DamageTypeTags.BYPASSES_SHIELD)
+                .addTag(IMMDamageTypeTags.ELEMENTS);
     }
 
     private void uniform(){

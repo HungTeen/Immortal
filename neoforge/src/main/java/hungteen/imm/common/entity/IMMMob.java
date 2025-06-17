@@ -3,7 +3,6 @@ package hungteen.imm.common.entity;
 import com.mojang.serialization.Codec;
 import hungteen.htlib.util.SimpleWeightedList;
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.QiRootType;
 import hungteen.imm.api.cultivation.RealmLevel;
@@ -12,6 +11,7 @@ import hungteen.imm.api.entity.Cultivatable;
 import hungteen.imm.api.event.EntityRandomSpellEvent;
 import hungteen.imm.api.event.EntityRealmEvent;
 import hungteen.imm.api.spell.Spell;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.realm.MultiRealm;
@@ -196,7 +196,7 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     @Override
     public void trigger(@NotNull Spell spell) {
         this.setUsingSpell(spell.spell());
-        this.addQiAmount(-spell.spell().getConsumeMana());
+        this.addQiAmount(-spell.spell().getConsumeQi());
         this.setCoolDown(spell.spell().getCooldown());
         this.usedSpell(spell);
     }
@@ -206,8 +206,8 @@ public abstract class IMMMob extends PathfinderMob implements IEntityWithComplex
     }
 
     @Override
-    public HTHitResult createHitResult() {
-        return new HTHitResult(this.getTarget());
+    public void fillSpellContext(SpellCastContext context) {
+        context.setTarget(this.getTarget());
     }
 
     /**

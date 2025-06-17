@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.helper.ColorHelper;
 import hungteen.htlib.util.helper.MathHelper;
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.client.IMMClientProxy;
 import hungteen.imm.client.data.SpellClientData;
@@ -63,7 +64,7 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<S
         this.scrollComponent = new ScrollComponent<>(this, 16, 6, 5) {
             @Override
             protected boolean onClick(Minecraft mc, Screen screen, SpellType spell, int slotId) {
-                if (spell.canPlaceOnCircle()) {
+                if (SpellManager.canPlaceOnCircle(spell)) {
                     if (SpellScreen.this.noSelection() || SpellScreen.this.selectOnList()) {
                         SpellScreen.this.selectPos = slotId + 1; // 选择当前法术。
                     } else if (SpellScreen.this.selectOnCircle()) {
@@ -231,20 +232,15 @@ public class SpellScreen extends MeditationScreen implements IScrollableScreen<S
     public void renderTooltip(Level level, GuiGraphics graphics, SpellType item, int id, int x, int y) {
         final List<Component> components = new ArrayList<>();
         final int lvl = PlayerUtil.getSpellLevel(ClientUtil.player(), item);
-        components.add(item.getComponent().append("(" + lvl + "/" + item.getMaxLevel() + ")").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD));
-        for (int i = 1; i <= lvl; ++i) {
-            components.add(item.getSpellDesc(i).withStyle(ChatFormatting.GREEN).withStyle(ChatFormatting.ITALIC));
-        }
-        components.add(SpellManager.getCostComponent(item.getConsumeMana()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
-        components.add(SpellManager.getCDComponent(item.getCooldown()).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.UNDERLINE));
-        if (!item.canPlaceOnCircle()) {
+        components.addAll(SpellManager.getSpellTooltips(new Spell(item, lvl)));
+        if (!SpellManager.canPlaceOnCircle(item)) {
             components.add(TipUtil.tooltip("can_not_select").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         }
         graphics.renderTooltip(font, components, Optional.empty(), x, y);
     }
 
     public void setSpellAt(int pos, @Nullable SpellType spell) {
-        if (spell != null && spell.canPlaceOnCircle()) {
+        if (spell != null && SpellManager.canPlaceOnCircle(spell)) {
             NetworkHelper.sendToServer(new ServerSpellPacket(spell, ServerSpellPacket.SpellOption.SET_SPELL_ON_CIRCLE, pos));
         } else if(spell == null){
             NetworkHelper.sendToServer(new ServerSpellPacket(ServerSpellPacket.SpellOption.REMOVE_SPELL_ON_CIRCLE, pos));

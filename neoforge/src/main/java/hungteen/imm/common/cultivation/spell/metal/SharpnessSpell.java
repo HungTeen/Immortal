@@ -1,14 +1,9 @@
 package hungteen.imm.common.cultivation.spell.metal;
 
-import hungteen.imm.api.cultivation.Element;
-import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.cultivation.SpellManager;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import javax.annotation.Nullable;
@@ -21,7 +16,7 @@ import javax.annotation.Nullable;
 public class SharpnessSpell extends SpellTypeImpl {
 
     public SharpnessSpell() {
-        super("sharpness", properties().mana(25).cd(50).maxLevel(1));
+        super("sharpness", property().mana(25).cd(50).maxLevel(1));
     }
 
     /**
@@ -29,12 +24,12 @@ public class SharpnessSpell extends SpellTypeImpl {
      * @param owner 造成伤害的实体。
      */
     public static void checkSharpening(@Nullable Entity owner, LivingIncomingDamageEvent event){
-        if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Element.METAL, true)){
-            SpellManager.activateSpell(entity, SpellTypes.SHARPNESS, (p, result, spell, level) -> {
-                event.setAmount(event.getOriginalAmount() * 1.5F);
-                return true;
-            });
-        }
+//        if(owner instanceof LivingEntity entity && isMeleeAttack(event.getSource()) && ElementManager.hasElement(entity, Element.METAL, true)){
+//            SpellManager.activateSpell(entity, SpellTypes.SHARPNESS, (p, result, spell, level) -> {
+//                event.setAmount(event.getOriginalAmount() * 1.5F);
+//                return true;
+//            });
+//        }
     }
 
     private static boolean isMeleeAttack(DamageSource source){

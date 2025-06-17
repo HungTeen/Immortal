@@ -1,8 +1,8 @@
 package hungteen.imm.api.entity;
 
 import com.mojang.datafixers.util.Pair;
-import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.spell.Spell;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.cultivation.SpellManager;
 import net.minecraft.world.entity.Mob;
@@ -51,11 +51,12 @@ public interface SpellCaster extends HasQi {
                 .sorted((a, b) -> b.getSecond() - a.getSecond())
                 .filter(pair -> pair.getSecond() >= 0)
                 .toList();
-        final HTHitResult result = caster.createHitResult();
         for (var pair : candidateSpells) {
             Spell spell = pair.getFirst();
             int priority = pair.getSecond();
-            if(caster.self().getRandom().nextInt(10) < Math.clamp(priority, 1, priority / 10) && spell.spell().checkActivate(caster.self(), result, spell.level())){
+            SpellCastContext context = new SpellCastContext(caster.self(), spell.level());
+            caster.fillSpellContext(context);
+            if(caster.self().getRandom().nextInt(10) < Math.clamp(priority, 1, priority / 10) && spell.spell().checkActivate(context)){
                 return spell;
             }
         }
@@ -73,7 +74,7 @@ public interface SpellCaster extends HasQi {
      * @return 是否有足够的灵气使用法术。
      */
     default boolean canUseSpell(SpellType spell){
-        return getQiAmount() >= spell.getConsumeMana();
+        return getQiAmount() >= spell.getConsumeQi();
     }
 
     /**
@@ -94,9 +95,9 @@ public interface SpellCaster extends HasQi {
     Set<SpellType> getLearnedSpellTypes();
 
     /**
-     * @return 获取法术释放所需的环境信息。
+     * 补充法术释放所需的上下文信息。
      */
-    HTHitResult createHitResult();
+    void fillSpellContext(SpellCastContext context);
 
     /**
      * @return 获取实体自身。

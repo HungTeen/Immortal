@@ -47,10 +47,6 @@ public abstract class MeditationScreen extends HTScreen {
     @Override
     protected void init() {
         super.init();
-//        this.quitButton = Button.builder(Component.translatable("multiplayer.stopSleeping"), (p_96074_) -> {
-//            this.sendWakeUp();
-//        }).bounds((this.width - QUIT_BUTTON_WIDTH) / 2, this.height - 40, QUIT_BUTTON_WIDTH, QUIT_BUTTON_HEIGHT).build();
-//        this.addRenderableWidget(this.quitButton);
     }
 
     /**

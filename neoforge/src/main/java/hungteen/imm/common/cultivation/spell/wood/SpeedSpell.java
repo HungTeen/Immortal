@@ -1,11 +1,11 @@
 package hungteen.imm.common.cultivation.spell.wood;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 
 /**
  * @author PangTeen
@@ -15,12 +15,12 @@ import net.minecraft.world.entity.LivingEntity;
 public class SpeedSpell extends SpellTypeImpl {
 
     public SpeedSpell() {
-        super("speed", properties(SpellUsageCategory.BUFF_SELF).maxLevel(1).mana(15).cd(200));
+        super("speed", property(SpellUsageCategory.BUFF_SELF).maxLevel(1).mana(15).cd(200));
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.MOVEMENT_SPEED, 100, 2));
+    public boolean checkActivate(SpellCastContext context) {
+        context.owner().addEffect(EffectHelper.viewEffect(MobEffects.MOVEMENT_SPEED, Mth.ceil(200 * context.scale()), 2));
         return true;
     }
 

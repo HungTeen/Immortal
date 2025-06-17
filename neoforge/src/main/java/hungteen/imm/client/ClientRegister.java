@@ -10,6 +10,7 @@ import hungteen.imm.client.gui.overlay.ElementOverlay;
 import hungteen.imm.client.gui.overlay.MeditationOverlay;
 import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.screen.InscriptionTableScreen;
+import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
@@ -43,6 +44,7 @@ import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixir.ElixirItem;
 import hungteen.imm.common.item.talisman.DurationTalisman;
 import hungteen.imm.common.menu.IMMMenuTypes;
+import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
@@ -201,7 +203,7 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event){
 //        event.initialize(ElementToolTip.class, ClientElementToolTip::new);
-//        event.initialize(ArtifactToolTip.class, ClientArtifactToolTip::new);
+        event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
         event.register(ManualToolTip.class, ClientManualToolTip::new);
     }
 

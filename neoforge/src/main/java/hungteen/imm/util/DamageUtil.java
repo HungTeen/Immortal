@@ -26,8 +26,12 @@ public interface DamageUtil {
         return DamageHelper.source(causingEntity, IMMDamageTypes.QI, causingEntity);
     }
 
+    static DamageSource spirit(Entity causingEntity){
+        return DamageHelper.source(causingEntity, IMMDamageTypes.SPIRIT, causingEntity);
+    }
+
     static DamageSource spiritualFlame(Entity causingEntity){
-        return DamageHelper.source(causingEntity, IMMDamageTypes.SPIRITUAL_FLAME, causingEntity);
+        return DamageHelper.source(causingEntity, IMMDamageTypes.QI_FLAME, causingEntity);
     }
 
     static DamageSource elementReaction(Entity sourceEntity){

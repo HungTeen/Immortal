@@ -22,7 +22,8 @@ public interface IMMDamageTypeTags {
     TagKey<DamageType> IMM_REALM_LEVEL_1 = tag("imm_realms/level_1");
     TagKey<DamageType> IMM_REALM_LEVEL_2 = tag("imm_realms/level_2");
     TagKey<DamageType> IMM_REALM_LEVEL_3 = tag("imm_realms/level_3");
-    TagKey<DamageType> SPIRITUALS = tag("spirituals");
+    TagKey<DamageType> QI_DAMAGES = tag("qi_damages");
+    TagKey<DamageType> SPIRIT_DAMAGES = tag("spirit_damages");
     TagKey<DamageType> ELEMENTS = tag("elements");
 
     private static TagKey<DamageType> tag(String name){

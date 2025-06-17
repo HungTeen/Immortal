@@ -1,12 +1,14 @@
 package hungteen.imm.common.cultivation.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
+import hungteen.imm.api.spell.InscriptionType;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.IMMSounds;
+import hungteen.imm.common.cultivation.InscriptionTypes;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
-import hungteen.imm.util.enums.SpellSortCategories;
+import hungteen.imm.util.enums.SpellSortCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -24,30 +26,35 @@ import java.util.Optional;
  */
 public abstract class SpellTypeImpl implements SpellType {
 
+    public static final String NO_EMPTY_HAND = "no_empty_hand";
+    public static final String NO_TARGET = "no_target";
+    public static final String TARGET_TOO_FAR_AWAY = "target_too_far_away";
+    public static final String ONLY_VALID_FOR_LOW_REALM = "only_valid_for_low_realm";
+    public static final String NO_ITEM_IN_HANDS = "no_item_in_hands";
     private static int id = 0;
     private final String name;
     private final int maxLevel;
     private final int consumeMana;
     private final int cooldown;
     private final boolean canTrigger;
-    private final boolean canPlaceOnCircle;
     private final int priority;
     private final SpellUsageCategory category;
+    private final InscriptionType inscriptionType;
     private final ResourceLocation resourceLocation;
 
-    public SpellTypeImpl(String name, SpellProperties properties) {
-        this(name, properties.maxLevel, properties.consumeMana, properties.cooldown, properties.canTrigger, properties.canPlaceOnCircle, id ++, properties.usageCategory);
+    public SpellTypeImpl(String name, SpellProperty property) {
+        this(name, property.maxLevel, property.consumeMana, property.cooldown, property.canTrigger, id ++, property.usageCategory, property.inscriptionType);
     }
 
-    private SpellTypeImpl(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, boolean canPlaceOnCircle, int priority, SpellUsageCategory category) {
+    private SpellTypeImpl(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, int priority, SpellUsageCategory category, InscriptionType inscriptionType) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.consumeMana = consumeMana;
         this.cooldown = cooldown;
         this.canTrigger = canTrigger;
-        this.canPlaceOnCircle = canPlaceOnCircle;
         this.priority = priority;
         this.category = category;
+        this.inscriptionType = inscriptionType;
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
 
@@ -82,7 +89,7 @@ public abstract class SpellTypeImpl implements SpellType {
     }
 
     @Override
-    public int getConsumeMana() {
+    public int getConsumeQi() {
         return this.consumeMana;
     }
 
@@ -102,11 +109,6 @@ public abstract class SpellTypeImpl implements SpellType {
     }
 
     @Override
-    public boolean canPlaceOnCircle() {
-        return canPlaceOnCircle;
-    }
-
-    @Override
     public int getScreenPriority() {
         return priority;
     }
@@ -119,6 +121,11 @@ public abstract class SpellTypeImpl implements SpellType {
     @Override
     public SpellUsageCategory getCategory() {
         return category;
+    }
+
+    @Override
+    public InscriptionType getInscriptionType(int level) {
+        return inscriptionType;
     }
 
     @Override
@@ -143,54 +150,59 @@ public abstract class SpellTypeImpl implements SpellType {
 
     @Override
     public MutableComponent getComponent() {
-        return Util.get().lang("spell", getName());
+        return TipUtil.spell(name());
     }
 
-    public static SpellProperties properties(){
-        return properties(SpellUsageCategory.PLAYER_ONLY);
+    public static SpellProperty property(){
+        return property(SpellUsageCategory.PLAYER_ONLY);
     }
 
-    public static SpellProperties properties(SpellUsageCategory category){
-        return new SpellProperties(category);
+    public static SpellProperty property(SpellUsageCategory category){
+        return property(category, InscriptionTypes.NONE);
     }
 
-    public static class SpellProperties {
+    public static SpellProperty property(SpellUsageCategory category, InscriptionType inscriptionType){
+        return new SpellProperty(category, inscriptionType);
+    }
+
+    public static class SpellProperty {
 
         private final SpellUsageCategory usageCategory;
+        private final InscriptionType inscriptionType;
         private int maxLevel = 1;
         private int consumeMana = 0;
         private int cooldown = 0;
         private boolean canTrigger = true;
-        private boolean canPlaceOnCircle = true;
-        private SpellSortCategories sortCategory = SpellSortCategories.MISC;
+        private SpellSortCategory sortCategory = SpellSortCategory.MISC;
 
-        public SpellProperties(SpellUsageCategory category) {
+        public SpellProperty(SpellUsageCategory category, InscriptionType inscriptionType) {
             this.usageCategory = category;
+            this.inscriptionType = inscriptionType;
         }
 
-        public SpellProperties maxLevel(int maxLevel){
+        public SpellProperty maxLevel(int maxLevel){
             this.maxLevel = maxLevel;
             return this;
         }
 
-        public SpellProperties mana(int mana){
+        public SpellProperty mana(int mana){
             this.consumeMana = mana;
             return this;
         }
 
-        public SpellProperties cd(int cd){
+        public SpellProperty cd(int cd){
             this.cooldown = cd;
             return this;
         }
 
-        public SpellProperties notTrigger(){
+        public SpellProperty notTrigger(){
             this.canTrigger = false;
             return this;
         }
 
-        public SpellProperties notOnCircle(){
-            this.canPlaceOnCircle = false;
-            return this.notTrigger();
+        public SpellProperty sortCategory(SpellSortCategory sortCategory) {
+            this.sortCategory = sortCategory;
+            return this;
         }
 
     }

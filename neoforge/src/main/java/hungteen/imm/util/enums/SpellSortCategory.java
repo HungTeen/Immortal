@@ -5,7 +5,7 @@ package hungteen.imm.util.enums;
  * @author PangTeen
  * @create 2023/10/30 18:31
  **/
-public enum SpellSortCategories {
+public enum SpellSortCategory {
 
     BASIC(100),
 
@@ -31,7 +31,7 @@ public enum SpellSortCategories {
 
     private final int priority;
 
-    SpellSortCategories(int priority) {
+    SpellSortCategory(int priority) {
         this.priority = priority;
     }
 

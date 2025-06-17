@@ -3,13 +3,16 @@ package hungteen.imm.client.gui.screen;
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.client.gui.screen.HTContainerScreen;
 import hungteen.htlib.util.helper.ColorHelper;
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.TriggerCondition;
 import hungteen.imm.client.gui.IScrollableScreen;
 import hungteen.imm.client.gui.component.ScrollComponent;
 import hungteen.imm.client.util.RenderUtil;
+import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.menu.InscriptionTableMenu;
+import hungteen.imm.common.network.server.ServerInscriptionPacket;
 import hungteen.imm.util.Colors;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
@@ -22,7 +25,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program Immortal
@@ -58,7 +63,8 @@ public class InscriptionTableScreen extends HTContainerScreen<InscriptionTableMe
                 } else {
                     selectedSpell = item;
                 }
-                return super.onClick(mc, screen, item, slotId);
+                NetworkHelper.sendToServer(new ServerInscriptionPacket(Optional.ofNullable(InscriptionTableScreen.this.selectedSpell), Optional.ofNullable(InscriptionTableScreen.this.selectedCondition)));
+                return true;
             }
         };
         this.conditionScrollComponent = new ScrollComponent<>(new InscriptionConditionScreen(this), 60, 16, 5, 1){
@@ -69,7 +75,8 @@ public class InscriptionTableScreen extends HTContainerScreen<InscriptionTableMe
                 } else {
                     selectedCondition = item;
                 }
-                return super.onClick(mc, screen, item, slotId);
+                NetworkHelper.sendToServer(new ServerInscriptionPacket(Optional.ofNullable(InscriptionTableScreen.this.selectedSpell), Optional.ofNullable(InscriptionTableScreen.this.selectedCondition)));
+                return true;
             }
         };
         this.player = inv.player;
@@ -85,11 +92,29 @@ public class InscriptionTableScreen extends HTContainerScreen<InscriptionTableMe
     }
 
     @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        if(mouseX < this.width >> 1) return this.spellScrollComponent.mouseScrolled(deltaX);
+        return this.conditionScrollComponent.mouseScrolled(deltaY);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int key) {
+        if (!this.spellScrollComponent.mouseClicked(getMinecraft(), this, mouseX, mouseY, key)) {
+            if (!this.conditionScrollComponent.mouseClicked(getMinecraft(), this, mouseX, mouseY, key)) {
+                return super.mouseClicked(mouseX, mouseY, key);
+            }
+        }
+        return true;
+    }
+
+    @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
         RenderUtil.renderCenterScaledText(graphics.pose(), TITLE, this.width >> 1, this.topPos + 12, 1, Colors.WORD, ColorHelper.BLACK.rgb());
         this.spellScrollComponent.renderItems(getMinecraft(), graphics);
         this.spellScrollComponent.renderTooltip(getMinecraft(), graphics, mouseX, mouseY);
+        this.conditionScrollComponent.renderItems(getMinecraft(), graphics);
+        this.conditionScrollComponent.renderTooltip(getMinecraft(), graphics, mouseX, mouseY);
         this.renderTooltip(graphics, mouseX, mouseY);
     }
 
@@ -132,13 +157,15 @@ public class InscriptionTableScreen extends HTContainerScreen<InscriptionTableMe
         public void renderItem(Level level, GuiGraphics graphics, Spell item, int slotId, int x, int y) {
             graphics.blit(item.spell().getSpellTexture(), x + 1, y + 1, 0, 0, 16, 16, 16, 16);
             if(screen.selectedSpell == item){
-                graphics.blit(RenderUtil.WIDGETS, x - 1, y - 1, 18, 58, 22, 22);
+                graphics.blit(RenderUtil.WIDGETS, x - 2, y - 2, 15, 58, 22, 22);
             }
         }
 
         @Override
         public void renderTooltip(Level level, GuiGraphics graphics, Spell item, int slotId, int x, int y) {
-
+            List<Component> components = new ArrayList<>();
+            components.addAll(SpellManager.getSpellTooltips(item));
+            graphics.renderTooltip(screen.font, components, Optional.empty(), x, y);
         }
     }
 
@@ -160,12 +187,14 @@ public class InscriptionTableScreen extends HTContainerScreen<InscriptionTableMe
             if(screen.selectedCondition == item){
                 graphics.blit(TEXTURE, x, y, 81, 230, 61, 16);
             }
-            graphics.drawString(screen.font, item.getComponent(), x + 2, y + 2, ColorHelper.BLACK.rgb());
+            RenderUtil.renderCenterScaledText(graphics.pose(), item.getComponent(), x + 30, y + 6, 0.7F, Colors.WORD, ColorHelper.BLACK.rgb());
         }
 
         @Override
         public void renderTooltip(Level level, GuiGraphics graphics, TriggerCondition item, int slotId, int x, int y) {
-
+            List<Component> components = new ArrayList<>();
+            components.add(item.getDescription());
+            graphics.renderTooltip(screen.font, components, Optional.empty(), x, y);
         }
     }
 

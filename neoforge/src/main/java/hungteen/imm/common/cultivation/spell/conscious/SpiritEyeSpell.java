@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 public class SpiritEyeSpell extends SpellTypeImpl {
 
     public SpiritEyeSpell() {
-        super("spirit_eyes", properties().maxLevel(2).notTrigger());
+        super("spirit_eyes", property().maxLevel(2).notTrigger());
     }
 
     public static boolean knowOwnSpiritRoots(Player player){

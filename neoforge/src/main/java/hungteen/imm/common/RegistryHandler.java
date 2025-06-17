@@ -113,6 +113,7 @@ public class RegistryHandler {
         RealmTypes.registry().initialize();
         TriggerConditions.registry().initialize();
         SpellTypes.registry().initialize();
+        InscriptionTypes.registry().initialize();
         ElixirEffects.registry().initialize();
         HumanSettings.registry().initialize();
         ScrollTypes.registry().initialize();
@@ -120,7 +121,7 @@ public class RegistryHandler {
         SecretManuals.registry().initialize();
         QiRootTypes.registry().initialize();
         TradeTypes.TradeType.register();
-        ElementReactions.registry();
+        ElementReactions.registry().initialize();
         BehaviorRunes.register();
         FilterRuneTypes.register();
         SectTypes.register();

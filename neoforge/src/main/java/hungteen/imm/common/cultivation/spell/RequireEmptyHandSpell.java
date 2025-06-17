@@ -1,9 +1,8 @@
 package hungteen.imm.common.cultivation.spell;
 
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Optional;
 
@@ -14,24 +13,24 @@ import java.util.Optional;
  **/
 public abstract class RequireEmptyHandSpell extends SpellTypeImpl {
 
-    public RequireEmptyHandSpell(String name, SpellProperties properties) {
+    public RequireEmptyHandSpell(String name, SpellProperty properties) {
         super(name, properties);
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        Optional<InteractionHand> handOpt = EntityUtil.getEmptyHand(owner);
+    public boolean checkActivate(SpellCastContext context) {
+        Optional<InteractionHand> handOpt = EntityUtil.getEmptyHand(context.owner());
         if(handOpt.isEmpty()){
-            this.sendTip(owner, "no_empty_hand");
+            sendTip(context.owner(), NO_EMPTY_HAND);
             return false;
         }
-        if(checkActivate(owner, result, handOpt.get(), level)){
-            owner.swing(handOpt.get());
+        if(checkActivate(context, handOpt.get())){
+            context.owner().swing(handOpt.get());
             return true;
         }
         return false;
     }
 
-    public abstract boolean checkActivate(LivingEntity owner, HTHitResult result, InteractionHand hand, int level);
+    public abstract boolean checkActivate(SpellCastContext context, InteractionHand hand);
 
 }

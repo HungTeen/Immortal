@@ -2,17 +2,14 @@ package hungteen.imm.common.item.artifact;
 
 import hungteen.htlib.client.util.RenderHelper;
 import hungteen.imm.api.artifact.ArtifactRank;
-import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.util.Colors;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @program Immortal
@@ -46,11 +43,11 @@ public class RawArtifactBox extends ArtifactItemImpl {
 
     }
 
-    @Override
-    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-        final ItemStack artifact = getArtifactItem(stack);
-        return artifact.isEmpty() ? Optional.empty() : Optional.of(new ArtifactToolTip(artifact));
-    }
+//    @Override
+//    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+//        final ItemStack artifact = getArtifactItem(stack);
+//        return artifact.isEmpty() ? Optional.empty() : Optional.of(new ArtifactToolTip(artifact));
+//    }
 
     public static void setArtifactItem(ItemStack stack, ItemStack artifactItem){
 //        stack.getOrCreateTag().put(ARTIFACT_ITEM, artifactItem.serializeNBT());

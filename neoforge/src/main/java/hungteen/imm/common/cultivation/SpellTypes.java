@@ -42,6 +42,10 @@ public interface SpellTypes {
 
     SpellType SPIRIT_EYES = register(new SpiritEyeSpell());
 
+    /* 普通法术 - Common Spell */
+
+    SpellType SPEED = register(new SpeedSpell());
+
     /* 御物术 - Object Controlling */
 
     SpellType PICKUP_ITEM = register(new PickupItemSpell());
@@ -57,7 +61,6 @@ public interface SpellTypes {
 
     /* 木系法术 - Wood Spell */
 
-    SpellType SPEED = register(new SpeedSpell());
     SpellType LEVITATION = register(new LevitationSpell());
     SpellType SPROUT = register(new SproutSpell());
     SpellType WITHER = register(new WitherSpell());

@@ -1,13 +1,12 @@
 package hungteen.imm.common.cultivation.spell.basic;
 
 import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.util.DamageUtil;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
@@ -20,22 +19,22 @@ import java.util.Optional;
 public class ReleasingSpell extends SpellTypeImpl {
 
     public ReleasingSpell() {
-        super("releasing", properties().maxLevel(1).mana(20).cd(160));
+        super("releasing", property().maxLevel(1).mana(20).cd(160));
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        if(result.getEntity() != null && owner instanceof Player player){
-            Optional<InteractionHand> handOpt = EntityUtil.getEmptyHand(owner);
+    public boolean checkActivate(SpellCastContext context) {
+        if(context.targetOpt().isPresent() && context.owner() instanceof Player player){
+            Optional<InteractionHand> handOpt = EntityUtil.getEmptyHand(context.owner());
             if(handOpt.isEmpty()){
-                this.sendTip(owner, "no_empty_hand");
+                sendTip(context.owner(), NO_EMPTY_HAND);
                 return false;
             }
-            ElementalMasterySpell.addElement(player, result.getEntity(), false, false, 10F);
-            result.getEntity().hurt(DamageUtil.qi(owner), 3F);
+            ElementalMasterySpell.addElement(player, context.targetOpt().get(), false, false, 10F * context.scale());
+            context.targetOpt().get().hurt(DamageUtil.qi(context.owner()), 3F * context.scale());
 
             player.swing(handOpt.get());
-            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+            ParticleHelper.spawnLineMovingParticle(context.owner().level(), IMMParticles.QI.get(), context.owner().getEyePosition(), context.targetOpt().get().getEyePosition(), 1, 0.1, 0.1);
             return true;
         }
         return false;

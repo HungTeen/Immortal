@@ -2,6 +2,7 @@ package hungteen.imm.client.event;
 
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.client.gui.overlay.CommonOverlay;
+import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.render.level.ElementRenderer;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.client.util.ClientUtil;
@@ -48,6 +49,7 @@ public class RenderEvents {
 
     @SubscribeEvent
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event){
+        ClientArtifactToolTip.handleArtifactSpell(event.getItemStack(), event.getTooltipElements());
 //        if(ElixirManager.isElixirIngredient(event.getItemStack())){
 //            List<Either<FormattedText, TooltipComponent>> components = event.getTooltipElements();
 //            components.add(components.size(), Either.right(new ElementToolTip(ElixirManager.getElixirIngredient(event.getItemStack()))));

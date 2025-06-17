@@ -2,9 +2,7 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
-import hungteen.imm.common.cultivation.CultivationManager;
-import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.cultivation.RealmManager;
+import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.reaction.GenerationReaction;
 import hungteen.imm.common.cultivation.reaction.GildingReaction;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
@@ -55,6 +53,7 @@ public class IMMLivingEvents {
             SharpnessSpell.checkSharpening(attacker, event);
             if(DamageUtil.isMeleeDamage(event.getSource()) && attacker != null){
                 if(attacker instanceof LivingEntity livingAttacker){
+                    SpellManager.activateSpell(livingAttacker, TriggerConditions.ATTACK);
                     CriticalHitSpell.checkCriticalHit(livingAttacker, event);
                     ElementalMasterySpell.checkActivateMetal(livingAttacker, event.getEntity());
                 }

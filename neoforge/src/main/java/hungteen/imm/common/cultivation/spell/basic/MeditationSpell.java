@@ -1,11 +1,10 @@
 package hungteen.imm.common.cultivation.spell.basic;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -17,15 +16,15 @@ import net.minecraft.world.entity.player.Player;
 public class MeditationSpell extends SpellTypeImpl {
 
     public MeditationSpell() {
-        super("meditation", properties().maxLevel(1).mana(0).cd(600));
+        super("meditation", property().maxLevel(1).mana(0).cd(600));
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        if(owner instanceof Player player){
+    public boolean checkActivate(SpellCastContext context) {
+        if(context.owner() instanceof Player player){
             return PlayerUtil.sitToMeditate(player, player.blockPosition(), (float) (player.getY() - player.blockPosition().getY()), false);
-        } else if(EntityHelper.isEntityValid(owner)){
-            EntityUtil.sitToMeditate(owner, owner.blockPosition(), (float) (owner.getY() - owner.blockPosition().getY()), false);
+        } else if(EntityHelper.isEntityValid(context.owner())){
+            EntityUtil.sitToMeditate(context.owner(), context.owner().blockPosition(), (float) (context.owner().getY() - context.owner().blockPosition().getY()), false);
             return true;
         }
         return false;

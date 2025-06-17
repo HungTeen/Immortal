@@ -1,10 +1,9 @@
 package hungteen.imm.common.cultivation.spell.wood;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
-import hungteen.imm.api.HTHitResult;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 
 /**
  * @program Immortal
@@ -14,13 +13,14 @@ import net.minecraft.world.entity.LivingEntity;
 public class LevitationSpell extends SpellTypeImpl {
 
     public LevitationSpell() {
-        super("levitation", properties().maxLevel(1).mana(10).cd(35));
+        super("levitation", property().maxLevel(1).mana(10).cd(35));
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.LEVITATION, 30, 1));
-        owner.addEffect(EffectHelper.viewEffect(MobEffects.SLOW_FALLING, 60, 2));
+    public boolean checkActivate(SpellCastContext context) {
+        context.owner().addEffect(EffectHelper.viewEffect(MobEffects.LEVITATION, 30, 1));
+        context.owner().addEffect(EffectHelper.viewEffect(MobEffects.SLOW_FALLING, 60, 2));
         return true;
     }
+
 }

@@ -1,7 +1,6 @@
 package hungteen.imm.api.spell;
 
 import hungteen.htlib.api.registry.SimpleEntry;
-import hungteen.imm.api.HTHitResult;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -31,14 +30,10 @@ public interface SpellType extends SimpleEntry {
     int VERY_LOW = -100;
 
     /**
-     * 法术被触发。
-     *
-     * @param owner  who activated this spell.
-     * @param result target.
-     * @param level  spell level.
-     * @return activate successfully.
+     * @param context 施法上下文。
+     * @return 返回 true 则表示法术被触发。
      */
-    default boolean checkActivate(LivingEntity owner, HTHitResult result, int level){
+    default boolean checkActivate(SpellCastContext context){
         return false;
     }
 
@@ -52,7 +47,7 @@ public interface SpellType extends SimpleEntry {
      * 施放此法术需要消耗多少灵力。
      * @return How many spiritual mana will cost, only consider the start stage.
      */
-    int getConsumeMana();
+    int getConsumeQi();
 
     /**
      * 此法术的冷却时间。
@@ -72,12 +67,6 @@ public interface SpellType extends SimpleEntry {
      * @return Whether can the spell be triggered.
      */
     boolean canTrigger();
-
-    /**
-     * 法术是否能被放置在法术轮盘上。
-     * @return Whether can the spell be place on circle.
-     */
-    boolean canPlaceOnCircle();
 
     /**
      * 法术触发时的音效。
@@ -123,6 +112,12 @@ public interface SpellType extends SimpleEntry {
      * @return Whether can the spell be learned by non-player entities.
      */
     SpellUsageCategory getCategory();
+
+    /**
+     * 控制此法术能够绘制在哪些法器上。
+     * @return 绘制类型。
+     */
+    InscriptionType getInscriptionType(int level);
 
     /**
      * 获取各个等级的法术描述。

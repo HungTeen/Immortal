@@ -1,12 +1,7 @@
 package hungteen.imm.common.cultivation.spell.basic;
 
-import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.HTHitResult;
-import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 /**
  * @author PangTeen
@@ -16,16 +11,12 @@ import net.minecraft.world.entity.player.Player;
 public class DispersalSpell extends SpellTypeImpl {
 
     public DispersalSpell() {
-        super("dispersal", properties().maxLevel(1).mana(30).cd(200));
+        super("dispersal", property().maxLevel(1).mana(5).cd(100));
     }
 
     @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        if(owner instanceof Player player && owner.level() instanceof ServerLevel serverLevel){
-            ElementalMasterySpell.addElement(player, player, true, false, 10);
-            ParticleHelper.spawnParticles(serverLevel, IMMParticles.QI.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
-            return true;
-        }
+    public boolean checkActivate(SpellCastContext context) {
+        // TODO 神识外放。
         return false;
     }
 

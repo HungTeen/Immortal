@@ -17,11 +17,6 @@ import java.util.Optional;
  **/
 public class ManualToolTip implements TooltipComponent {
 
-    public static final int TEXT_HEIGHT = 8;
-    public static final int ICON_WIDTH = 10;
-    public static final int SINGLE_HEIGHT = TEXT_HEIGHT + ICON_WIDTH;
-    public static final int SINGLE_WIDTH = ICON_WIDTH + 4;
-
     private final SecretManual secretManual;
     private final SecretScroll secretScroll;
 

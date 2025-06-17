@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,7 +134,7 @@ public class InscriptionTableMenu extends HTContainerMenu {
                     return matchArtifact(spell);
                 }
                 return false;
-            }).toList();
+            }).sorted(Comparator.comparing(spell -> spell.spell().getRegistryName())).toList();
         }
         return List.of();
     }
@@ -149,8 +150,11 @@ public class InscriptionTableMenu extends HTContainerMenu {
         return spell.spell() instanceof TalismanSpell;
     }
 
+    /**
+     * @return 法术要能够兼容物品。
+     */
     public boolean matchArtifact(Spell spell) {
-        return !matchTalisman(spell);
+        return !matchTalisman(spell) && spell.spell().getInscriptionType(spell.level()).compatWith(player, getCoreItem());
     }
 
     public Optional<Spell> getSelectedSpell() {
@@ -228,6 +232,12 @@ public class InscriptionTableMenu extends HTContainerMenu {
         }
 
         return result;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        this.access.execute((level, pos) -> this.clearContainer(player, this.inputSlots));
     }
 
     @Override

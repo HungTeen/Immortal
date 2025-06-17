@@ -2,21 +2,15 @@ package hungteen.imm.common.cultivation.spell.basic;
 
 import com.mojang.datafixers.util.Pair;
 import hungteen.htlib.util.WeightedList;
-import hungteen.htlib.util.helper.impl.ParticleHelper;
-import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.cultivation.RealmLevel;
 import hungteen.imm.api.spell.Spell;
-import hungteen.imm.client.particle.IMMParticles;
 import hungteen.imm.common.cultivation.ElementManager;
-import hungteen.imm.common.cultivation.SpellManager;
-import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import hungteen.imm.util.EntityUtil;
 import hungteen.imm.util.PlayerUtil;
 import hungteen.imm.util.TipUtil;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.Entity;
@@ -39,43 +33,43 @@ import java.util.function.Consumer;
 public class ElementalMasterySpell extends SpellTypeImpl {
 
     private static final float AMOUNT = 20;
-    private static final int ELEMENTAL_MASTERY_MAX_LEVEL = 5;
+    private static final int ELEMENTAL_MASTERY_MAX_LEVEL = 3;
     private static final Map<Element, ElementalMasterySpell> MASTERY_MAP = new EnumMap<>(Element.class);
     private final Element element;
 
     public ElementalMasterySpell(Element element) {
-        super(element.name().toLowerCase() + "_mastery", properties().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).cd(200).mana(25));
+        super(element.name().toLowerCase() + "_mastery", property().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).cd(200).mana(25).notTrigger());
         this.element = element;
         MASTERY_MAP.put(element, this);
     }
 
-    @Override
-    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-        if(result.getEntity() != null){
-            addElement(owner, result.getEntity(), element, false, true, AMOUNT);
-            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
-            return true;
-        } else {
-            if(level >= 2 && owner.level() instanceof ServerLevel serverLevel){
-                addElement(owner, owner, element, true, true, AMOUNT);
-                ParticleHelper.spawnParticles(serverLevel, IMMParticles.QI.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
-                return true;
-            }
-        }
-        return false;
-    }
+    //    @Override
+//    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
+//        if(result.getEntity() != null){
+//            addElement(owner, result.getEntity(), element, false, true, AMOUNT);
+//            ParticleHelper.spawnLineMovingParticle(owner.level(), IMMParticles.QI.get(), owner.getEyePosition(), result.getEntity().getEyePosition(), 1, 0.1, 0.1);
+//            return true;
+//        } else {
+//            if(level >= 2 && owner.level() instanceof ServerLevel serverLevel){
+//                addElement(owner, owner, element, true, true, AMOUNT);
+//                ParticleHelper.spawnParticles(serverLevel, IMMParticles.QI.get(), owner.getX(), owner.getEyeY(), owner.getZ(), 10, owner.getBbWidth(), 0.5,0.1);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * 近战攻击有概率附着金元素。
      */
     public static void checkActivateMetal(LivingEntity attacker, LivingEntity target){
-        SpellManager.activateSpell(attacker, SpellTypes.METAL_MASTERY, (owner, result, spell, level) -> {
-            if(owner.getRandom().nextFloat() < 0.2F){
-                addElement(owner, target, Element.METAL, false, true, AMOUNT);
-                return true;
-            }
-            return false;
-        });
+//        SpellManager.activateSpell(attacker, SpellTypes.METAL_MASTERY, (owner, result, spell, level) -> {
+//            if(owner.getRandom().nextFloat() < 0.2F){
+//                addElement(owner, target, Element.METAL, false, true, AMOUNT);
+//                return true;
+//            }
+//            return false;
+//        });
     }
 
     @Override
