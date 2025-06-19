@@ -2,6 +2,7 @@ package hungteen.imm.common.cultivation.spell.water;
 
 import hungteen.htlib.util.helper.impl.EffectHelper;
 import hungteen.imm.api.spell.SpellCastContext;
+import hungteen.imm.common.cultivation.InscriptionTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.world.effect.MobEffects;
 
@@ -13,7 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 public class WaterBreathingSpell extends SpellTypeImpl {
 
     public WaterBreathingSpell() {
-        super("water_breathing", property().maxLevel(1).qi(60).cd(300));
+        super("water_breathing", property(InscriptionTypes.ANY).maxLevel(1).qi(60).cd(300));
     }
 
     @Override

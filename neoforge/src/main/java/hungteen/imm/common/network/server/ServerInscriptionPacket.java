@@ -35,8 +35,7 @@ public record ServerInscriptionPacket(Optional<Spell> spell, Optional<TriggerCon
     public void process(ServerPacketContext serverPacketContext) {
         ServerPlayer player = serverPacketContext.player();
         if(player.containerMenu instanceof InscriptionTableMenu menu){
-            menu.setSelectedSpell(spell.orElse(null));
-            menu.setTriggerCondition(condition.orElse(null));
+            menu.updateSpellAndCondition(spell.orElse(null), condition.orElse(null));
         }
     }
 

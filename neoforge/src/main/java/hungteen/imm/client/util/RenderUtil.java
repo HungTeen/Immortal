@@ -13,6 +13,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -23,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -41,7 +43,7 @@ public class RenderUtil {
     public static final ResourceLocation WIDGETS = Util.get().guiTexture("widgets");
     public static final ResourceLocation EMPTY_ENTITY_TEXTURE = Util.get().entityTexture("empty");
 
-    public static void renderBlock(BlockRenderDispatcher dispatcher, Entity iceEntity, PoseStack poseStack, MultiBufferSource bufferSource, BlockState blockstate, int x, int y){
+    public static void renderBlock(BlockRenderDispatcher dispatcher, Entity iceEntity, PoseStack poseStack, MultiBufferSource bufferSource, BlockState blockstate, int x, int y) {
         poseStack.pushPose();
         BlockPos blockpos = BlockPos.containing(iceEntity.getX(), iceEntity.getBoundingBox().maxY, iceEntity.getZ());
         poseStack.translate(-0.5 + x, 0.0, -0.5 + y);
@@ -66,16 +68,23 @@ public class RenderUtil {
         poseStack.popPose();
     }
 
-    public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
+    public static void renderGhostItem(GuiGraphics guiGraphics, ItemStack stack, int j, int k) {
+        guiGraphics.fill(j, k, j + 16, k + 16, 822018048);
+        guiGraphics.renderFakeItem(stack, j, k);
+        guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), j, k, j + 16, k + 16, 822083583);
+    }
+
+    public static void renderScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor) {
         RenderHelper.renderScaledText(stack, ClientHelper.font(), IMMClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
-    public static void renderCenterScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor){
+
+    public static void renderCenterScaledText(PoseStack stack, Component text, float x, float y, float scale, int color, int outlineColor) {
         RenderHelper.renderCenterScaledText(stack, ClientHelper.font(), IMMClientProxy.mc().renderBuffers().bufferSource(), text, x, y, scale, color, outlineColor, TextRenderType.NORMAL, LightTexture.FULL_BRIGHT);
     }
 
     public static void renderEntityInInventoryFollowsMouse(GuiGraphics graphics, int posX, int posY, float scale, float deltaX, float deltaY, LivingEntity living) {
-        float f = (float)Math.atan(deltaX / 40.0F);
-        float f1 = (float)Math.atan(deltaY / 40.0F);
+        float f = (float) Math.atan(deltaX / 40.0F);
+        float f1 = (float) Math.atan(deltaY / 40.0F);
         // Forge: Allow passing in direct angle components instead of mouse position
         renderEntityInInventoryFollowsAngle(graphics, posX, posY, scale, f, f1, living);
     }
@@ -83,8 +92,8 @@ public class RenderUtil {
     public static void renderEntityInInventoryFollowsAngle(GuiGraphics graphics, int posX, int posY, float scale, float angleXComponent, float angleYComponent, LivingEntity living) {
         float f = angleXComponent;
         float f1 = angleYComponent;
-        Quaternionf quaternionf = (new Quaternionf()).rotateZ((float)Math.PI);
-        Quaternionf quaternionf1 = (new Quaternionf()).rotateX(f1 * 20.0F * ((float)Math.PI / 180F));
+        Quaternionf quaternionf = (new Quaternionf()).rotateZ((float) Math.PI);
+        Quaternionf quaternionf1 = (new Quaternionf()).rotateX(f1 * 20.0F * ((float) Math.PI / 180F));
         quaternionf.mul(quaternionf1);
         float f2 = living.yBodyRot;
         float f3 = living.getYRot();
@@ -126,7 +135,7 @@ public class RenderUtil {
         Lighting.setupFor3DItems();
     }
 
-    public static void commonTranslate(PoseStack stack, float scale){
+    public static void commonTranslate(PoseStack stack, float scale) {
         stack.scale(-1.0F, -1.0F, 1.0F);
         stack.scale(scale, scale, scale);
         stack.translate(0.0, -1.501, 0.0);
@@ -153,11 +162,11 @@ public class RenderUtil {
         if (i > k) {
             int l = i - k;
             double d0 = (double) net.minecraft.Util.getMillis() / 1000.0;
-            double d1 = Math.max((double)l * 0.5, 3.0);
+            double d1 = Math.max((double) l * 0.5, 3.0);
             double d2 = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * d0 / d1)) / 2.0 + 0.5;
-            double d3 = Mth.lerp(d2, 0.0, (double)l);
+            double d3 = Mth.lerp(d2, 0.0, (double) l);
             guiGraphics.enableScissor(minX, minY, maxX, maxY);
-            guiGraphics.drawString(font, text, minX - (int)d3, j, color, shadow);
+            guiGraphics.drawString(font, text, minX - (int) d3, j, color, shadow);
             guiGraphics.disableScissor();
         } else {
             int i1 = Mth.clamp(centerX, minX + i / 2, maxX - i / 2);

@@ -1,5 +1,6 @@
 package hungteen.imm.common.event;
 
+import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.api.event.SpellCooldownEvent;
@@ -9,6 +10,7 @@ import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
+import hungteen.imm.common.network.server.ServerEmptyClickPacket;
 import hungteen.imm.common.tag.IMMBlockTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.InteractionResult;
@@ -71,6 +73,14 @@ public class IMMPlayerEvents {
 //        SpellManager.checkSpellAction(event.getEntity(), event.getSpell(), event.getRealmValue());
 //    }
 
+    /**
+     * Client Only.
+     */
+    @SubscribeEvent
+    public static void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event){
+        NetworkHelper.sendToServer(new ServerEmptyClickPacket(true, event.getHand()));
+    }
+
     @SubscribeEvent
     public static void onPlayerInteractSpec(PlayerInteractEvent.EntityInteractSpecific event) {
         if (EntityHelper.isServer(event.getEntity())) {
@@ -120,7 +130,9 @@ public class IMMPlayerEvents {
     @SubscribeEvent
     public static void onPlayerTossItem(ItemTossEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
-            PlayerEventHandler.onTossItem(event.getPlayer(), event.getEntity());
+            if(SpellManager.activateSpell(event.getPlayer(), TriggerConditions.TOSS, event.getEntity().getItem())){
+                event.setCanceled(true);
+            }
         }
     }
 

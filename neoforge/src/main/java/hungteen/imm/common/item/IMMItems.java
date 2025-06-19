@@ -91,6 +91,7 @@ public interface IMMItems {
     HTHolder<Item> FALLING_ICE_TALISMAN = ITEMS.register("falling_ice_talisman", () -> new DurationTalismanItem(SpellTypes.FALLING_ICE));
     HTHolder<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", () -> new DurationTalismanItem(SpellTypes.FIREBALL));
     HTHolder<Item> EARTH_FANG_TALISMAN = ITEMS.register("earth_fang_talisman", () -> new DurationTalismanItem(SpellTypes.EARTH_FANG));
+    HTHolder<Item> WOOD_HEALING_TALISMAN = ITEMS.register("wood_healing_talisman", () -> new DurationTalismanItem(SpellTypes.WOOD_HEALING));
 
     /* Misc Tab Items */
 

@@ -24,6 +24,7 @@ import hungteen.imm.common.entity.human.pillager.Chillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
 import hungteen.imm.common.entity.misc.talisman.SproutTalismanEntity;
+import hungteen.imm.common.entity.misc.talisman.WoodHealingTalismanEntity;
 import hungteen.imm.common.entity.undead.QiSkeleton;
 import hungteen.imm.common.entity.undead.QiZombie;
 import hungteen.imm.common.item.IMMSpawnEggItem;
@@ -159,7 +160,9 @@ public interface IMMEntities {
     HTEntitySuit<SproutTalismanEntity> SPROUT_TALISMAN = registerNonLiving("sprout_talisman", () -> {
         return EntityType.Builder.of(SproutTalismanEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10);
     });
-
+    HTEntitySuit<WoodHealingTalismanEntity> WOOD_HEALING_TALISMAN = registerNonLiving("wood_healing_talisman", () -> {
+        return EntityType.Builder.of(WoodHealingTalismanEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10);
+    });
 
     static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* Creature */

@@ -1,4 +1,4 @@
-package hungteen.imm.common.cultivation.spell.wood;
+package hungteen.imm.common.cultivation.spell.spirit;
 
 import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.api.spell.SpellUsageCategory;

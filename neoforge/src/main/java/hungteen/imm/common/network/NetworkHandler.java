@@ -81,11 +81,11 @@ public class NetworkHandler {
                 ServerInscriptionPacket.STREAM_CODEC,
                 NeoHelper.wrapServerHandler(ServerInscriptionPacket::process)
         );
-//        registrar.playToServer(
-//                EmptyClickPacket.TYPE,
-//                EmptyClickPacket.STREAM_CODEC,
-//                NeoHelper.wrapServerHandler(EmptyClickPacket::process)
-//        );
+        registrar.playToServer(
+                ServerEmptyClickPacket.TYPE,
+                ServerEmptyClickPacket.STREAM_CODEC,
+                NeoHelper.wrapServerHandler(ServerEmptyClickPacket::process)
+        );
     }
 
     public static void init() {

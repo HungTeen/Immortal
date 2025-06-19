@@ -9,7 +9,7 @@ import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
-import hungteen.imm.common.cultivation.spell.wood.WitherSpell;
+import hungteen.imm.common.cultivation.spell.spirit.WitherSpell;
 import hungteen.imm.common.entity.misc.TwistingVines;
 import hungteen.imm.common.event.handler.EntityEventHandler;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +19,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 /**
@@ -74,15 +73,6 @@ public class IMMEntityEvents {
         if(EntityHelper.isServer(event.getEntity())){
             // 不能主动取消对藤蔓的骑乘。
             if(event.getEntityBeingMounted() instanceof TwistingVines vines && !event.isMounting() && vines.isAlive()){
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onItemToss(ItemTossEvent event){
-        if(EntityHelper.isServer(event.getEntity())){
-            if(SpellManager.activateSpell(event.getPlayer(), TriggerConditions.TOSS, event.getEntity().getItem())){
                 event.setCanceled(true);
             }
         }

@@ -31,6 +31,7 @@ public interface TriggerConditions {
     TriggerCondition IMPACT = register("impact", TriggerCondition.ARMOR);
     TriggerCondition CAST = register("cast", TriggerCondition.ARMOR);
     TriggerCondition COOLDOWN = register("cooldown", TriggerCondition.ARMOR);
+    TriggerCondition SWING = register("swing", TriggerCondition.HANDS);
 
     static TriggerCondition register(String name, List<EquipmentSlot> slots) {
         TriggerConditionImpl triggerCondition = new TriggerConditionImpl(name, slots){
@@ -40,6 +41,23 @@ public interface TriggerConditions {
             }
         };
         return registry().register(triggerCondition.getLocation(), triggerCondition);
+    }
+
+    static Component getSlotComponent(TriggerCondition condition){
+        List<EquipmentSlot> slots = condition.getValidSlots();
+        if(! slots.isEmpty()){
+            MutableComponent component = TipUtil.spell("condition.slots");
+            component.append(getSlotComponent(slots.get(0)));
+            for(int i = 1; i < slots.size(); ++ i){
+                component.append(",").append(getSlotComponent(slots.get(i)));
+            }
+            return component;
+        }
+        return Component.empty();
+    }
+
+    static Component getSlotComponent(EquipmentSlot slot){
+        return TipUtil.spell("condition." + slot.getName());
     }
 
     static HTCustomRegistry<TriggerCondition> registry(){

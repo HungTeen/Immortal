@@ -19,6 +19,7 @@ import hungteen.imm.common.cultivation.spell.fire.LavaBreathingSpell;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.MetalMendingSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
+import hungteen.imm.common.cultivation.spell.spirit.WitherSpell;
 import hungteen.imm.common.cultivation.spell.talisman.*;
 import hungteen.imm.common.cultivation.spell.water.WaterBreathingSpell;
 import hungteen.imm.common.cultivation.spell.wood.*;
@@ -66,7 +67,7 @@ public interface SpellTypes {
     SpellType LEVITATION = register(new LevitationSpell());
     TalismanSpell TWISTING_VINE = registerTalisman(new TwistingVineSpell());
     TalismanSpell SPROUT = registerTalisman(new SproutSpell());
-    SpellType WOOD_HEALING = register(new WoodHealingSpell());
+    TalismanSpell WOOD_HEALING = registerTalisman(new WoodHealingSpell());
 
     /* 水系法术 - Water Spell */
 

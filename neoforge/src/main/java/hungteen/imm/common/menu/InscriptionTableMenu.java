@@ -20,11 +20,11 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @program Immortal
@@ -107,9 +107,37 @@ public class InscriptionTableMenu extends HTContainerMenu {
     public void slotsChanged(Container inventory) {
         super.slotsChanged(inventory);
         if (inventory == this.inputSlots) {
-            this.spells = getAlternativeSpells();
-            this.conditions = getAlternativeConditions();
+            this.updateSpellList();
             this.createResult();
+        }
+    }
+
+    public void updateSpellAndCondition(@Nullable Spell spell, @Nullable TriggerCondition condition){
+        if(this.selectedSpell != spell){
+            this.setSelectedSpell(spell);
+            this.updateConditionList(spell);
+        }
+        if(condition != null && !this.conditions.contains(condition)){
+            condition = null;
+        }
+        if(this.triggerCondition != condition){
+            this.setTriggerCondition(condition);
+        }
+        this.createResult();
+    }
+
+    public void updateSpellList(){
+        this.spells = getAlternativeSpells();
+        if(this.selectedSpell != null && !this.spells.contains(this.selectedSpell)){
+            this.selectedSpell = null;
+        }
+        updateConditionList(this.selectedSpell);
+    }
+
+    public void updateConditionList(@Nullable Spell spell){
+        this.conditions = getAlternativeConditions(spell);
+        if(this.triggerCondition != null && !this.conditions.contains(this.triggerCondition)){
+            this.triggerCondition = null;
         }
     }
 
@@ -151,13 +179,13 @@ public class InscriptionTableMenu extends HTContainerMenu {
         return List.of();
     }
 
-    public List<TriggerCondition> getAlternativeConditions() {
+    public List<TriggerCondition> getAlternativeConditions(@Nullable Spell spell) {
         // 选择了法术才能选择条件。
-        if(this.selectedSpell != null && isValidArtifact(getCoreItem())){
+        if(spell != null && isValidArtifact(getCoreItem())){
             // TODO 重复的触发条件不能出现在同一个物品上。
             return TriggerConditions.registry().helper().values().stream()
                     .filter(condition -> {
-                        return condition.compatWith(player, getCoreItem()) && this.selectedSpell.spell().compatWith(condition, selectedSpell.level());
+                        return spell.spell().compatWith(condition, spell.level()) && condition.compatWith(player, getCoreItem());
                     }).toList();
         }
         return List.of();
@@ -170,22 +198,20 @@ public class InscriptionTableMenu extends HTContainerMenu {
         return spell.spell().getInscriptionType(spell.level()).compatWith(player, getCoreItem());
     }
 
-    public Optional<Spell> getSelectedSpell() {
-        return Optional.ofNullable(selectedSpell);
+    public Spell getSelectedSpell() {
+        return selectedSpell;
     }
 
     public void setSelectedSpell(Spell spell) {
         this.selectedSpell = spell;
-        this.createResult();
     }
 
-    public Optional<TriggerCondition> getTriggerCondition() {
-        return Optional.ofNullable(triggerCondition);
+    public TriggerCondition getTriggerCondition() {
+        return triggerCondition;
     }
 
     public void setTriggerCondition(TriggerCondition condition) {
         this.triggerCondition = condition;
-        this.createResult();
     }
 
     public boolean isTalisman(ItemStack stack){
@@ -251,6 +277,14 @@ public class InscriptionTableMenu extends HTContainerMenu {
         }
 
         return result;
+    }
+
+    public int getSlotX(int id){
+        return this.getSlot(id).x;
+    }
+
+    public int getSlotY(int id){
+        return this.getSlot(id).y;
     }
 
     @Override

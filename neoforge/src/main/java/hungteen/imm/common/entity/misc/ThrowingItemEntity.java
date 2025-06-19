@@ -1,5 +1,6 @@
 package hungteen.imm.common.entity.misc;
 
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
@@ -14,6 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -24,7 +27,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,6 +41,8 @@ import java.util.Optional;
 public class ThrowingItemEntity extends ThrowableItemProjectile {
 
     private static final EntityDataAccessor<Boolean> WORK_FINISHED = SynchedEntityData.defineId(ThrowingItemEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final Logger log = LoggerFactory.getLogger(ThrowingItemEntity.class);
+    private int workFinishTick;
     private int spellLevel = 1;
 
     public ThrowingItemEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
@@ -62,6 +70,10 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
             }
         }
         if (this.workFinished()) {
+            if(this.getWorkFinishTick() > 0){
+                collectDropItem();
+                this.setWorkFinishTick(this.getWorkFinishTick() - 1);
+            }
             if (!this.noPhysics) {
                 this.noPhysics = true;
             }
@@ -69,6 +81,12 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
                 this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1.2F));
                 if (!this.level().isClientSide() && entity.distanceTo(this) < 2) {
                     EntityUtil.addItem(entity, this.getItem());
+                    this.getPassengers().forEach(e -> {
+                        if(e instanceof ItemEntity item && entity instanceof Player player){
+                            item.setPickUpDelay(0);
+                            item.playerTouch(player);
+                        }
+                    });
                     this.discard();
                 }
             }, () -> {
@@ -88,6 +106,7 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult result) {
         if (!this.workFinished()) {
             this.setWorkFinished(true);
+            this.setWorkFinishTick(2);
             super.onHit(result);
         }
     }
@@ -118,7 +137,21 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (getSpellLevel() > 1 && getOwner() instanceof ServerPlayer serverPlayer) {
+            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverPlayer.serverLevel());
+            fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
             ThrowItemSpell.destroyBlock(serverPlayer, this.level(), result.getBlockPos(), this.getItem());
+            collectDropItem();
+        }
+    }
+
+    public void collectDropItem(){
+        if (getSpellLevel() > 1){
+            List<ItemEntity> items = EntityHelper.getPredicateEntities(this, EntityHelper.getEntityAABB(this, 2, 2), ItemEntity.class, target -> {
+                return target.getAge() <= 2 && ! target.isPassenger();
+            });
+            items.forEach(item -> {
+                item.startRiding(this, true);
+            });
         }
     }
 
@@ -131,6 +164,11 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     }
 
     @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return true;
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("WorkFinished")) {
@@ -139,6 +177,9 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         if (tag.contains("SpellLevel")) {
             this.setSpellLevel(tag.getInt("SpellLevel"));
         }
+        if (tag.contains("WorkFinishTick")) {
+            this.setWorkFinishTick(tag.getInt("WorkFinishTick"));
+        }
     }
 
     @Override
@@ -146,6 +187,15 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("WorkFinished", this.workFinished());
         tag.putInt("SpellLevel", this.getSpellLevel());
+        tag.putInt("WorkFinishTick", this.getWorkFinishTick());
+    }
+
+    public void setWorkFinishTick(int workFinishTick) {
+        this.workFinishTick = workFinishTick;
+    }
+
+    public int getWorkFinishTick() {
+        return workFinishTick;
     }
 
     @Override

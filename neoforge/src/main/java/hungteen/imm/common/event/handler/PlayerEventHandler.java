@@ -1,11 +1,13 @@
 package hungteen.imm.common.event.handler;
 
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.event.IMMPlayerEvents;
 import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.util.EntityUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -20,7 +22,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
  **/
 public class PlayerEventHandler {
 
-    public static void onTossItem(Player player, ItemEntity itemEntity) {
+    public static void onLeftClickEmpty(ServerPlayer player, InteractionHand hand) {
+        SpellManager.activateSpell(player, TriggerConditions.SWING, context -> {});
     }
 
     public static InteractionResult onTraceEntity(Player player, InteractionHand hand, EntityHitResult hitResult) {
