@@ -5,7 +5,6 @@ import hungteen.htlib.api.registry.EnumEntry;
 import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.htlib.util.helper.NetworkHelper;
 import hungteen.htlib.util.helper.impl.EffectHelper;
-import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.registry.ISectType;
 import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.entity.effect.IMMEffects;
@@ -61,13 +60,8 @@ public class IMMPlayerData implements HTPlayerData {
     }
 
     public void tick() {
-        if (EntityHelper.isServer(player)) {
-//            // 突破检测。
-//            if (this.getFloatData(FloatData.BREAK_THROUGH_PROGRESS) >= 1) {
-//                if ((player.tickCount & 1) == 0) {
-//                    player.addEffect(EffectHelper.viewEffect(IMMEffects.BREAK_THROUGH.holder(), 200, 0));
-//                }
-//            }
+        if (player instanceof ServerPlayer serverPlayer) {
+            spellData.tickSpellQueue(serverPlayer);
         }
     }
 

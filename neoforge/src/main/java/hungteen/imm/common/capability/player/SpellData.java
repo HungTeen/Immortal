@@ -1,6 +1,7 @@
 package hungteen.imm.common.capability.player;
 
 import hungteen.htlib.util.helper.NetworkHelper;
+import hungteen.imm.api.event.SpellCooldownEvent;
 import hungteen.imm.api.spell.Spell;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.common.advancement.trigger.PlayerLearnSpellTrigger;
@@ -9,6 +10,7 @@ import hungteen.imm.common.capability.HTPlayerData;
 import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.network.client.ClientSpellPacket;
 import hungteen.imm.util.Constants;
+import hungteen.imm.util.EventUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,9 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -33,10 +33,24 @@ public class SpellData implements HTPlayerData {
     private final HashMap<SpellType, Integer> learnSpells = new HashMap<>();
     private final HashMap<SpellType, Long> spellCDs = new HashMap<>();
     private final SpellType[] spellList = new SpellType[Constants.SPELL_CIRCLE_SIZE];
+    private final PriorityQueue<SpellType> cooldownQueue;
+    private final List<SpellType> cooldownSpells = new ArrayList<>();
     private SpellType preparingSpell = null;
 
     public SpellData(IMMPlayerData playerData) {
         this.playerData = playerData;
+        this.cooldownQueue = new PriorityQueue<>(
+                (spell1, spell2) -> Long.compare(getSpellCoolDown(spell1), getSpellCoolDown(spell2))
+        );
+    }
+
+    public void tickSpellQueue(ServerPlayer serverPlayer){
+        // 不断地检查冷却队列中的法术，如果它们的冷却时间已过，则从队列中移除并通知客户端。
+        while(!cooldownQueue.isEmpty() && !isSpellOnCoolDown(cooldownQueue.peek())){
+            SpellType spell = cooldownQueue.poll();
+            NetworkHelper.sendToClient(serverPlayer, new ClientSpellPacket(spell, ClientSpellPacket.SpellOption.REMOVE_COOLDOWN_SPELL, 0));
+            EventUtil.post(new SpellCooldownEvent(serverPlayer, spell));
+        }
     }
 
     @Override
@@ -167,8 +181,13 @@ public class SpellData implements HTPlayerData {
         return false;
     }
 
+    public long getSpellCoolDown(SpellType spell) {
+        return this.spellCDs.getOrDefault(spell, 0L);
+    }
+
     public void cooldownSpell(@NotNull SpellType spell, long num) {
         this.spellCDs.put(spell, num);
+        this.cooldownQueue.add(spell);
         this.sendSpellPacket(ClientSpellPacket.SpellOption.COOL_DOWN, spell, num);
     }
 
@@ -176,8 +195,31 @@ public class SpellData implements HTPlayerData {
         return this.spellCDs.containsKey(spell) && this.spellCDs.get(spell) > playerData.getGameTime();
     }
 
-    public float getSpellCoolDown(@NotNull SpellType spell) {
+    public float getSpellCoolDownPercent(@NotNull SpellType spell) {
         return isSpellOnCoolDown(spell) ? (this.spellCDs.get(spell) - playerData.getGameTime()) * 1.0F / spell.getCooldown() : 0;
+    }
+
+    /**
+     * Client Only.
+     */
+    public void addCooldownSpell(@NotNull SpellType spell) {
+        if (!this.cooldownSpells.contains(spell)) {
+            this.cooldownSpells.add(spell);
+        }
+    }
+
+    /**
+     * Client Only.
+     */
+    public void removeCooldownSpell(@NotNull SpellType spell) {
+        this.cooldownSpells.remove(spell);
+    }
+
+    /**
+     * Client Only.
+     */
+    public List<SpellType> getCooldownSpells() {
+        return this.cooldownSpells;
     }
 
     public boolean hasLearnedSpell(@NotNull SpellType spell, int level) {

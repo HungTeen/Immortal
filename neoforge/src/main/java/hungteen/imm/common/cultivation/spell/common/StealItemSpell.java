@@ -10,7 +10,7 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class StealItemSpell extends SpellTypeImpl {
 
     public StealItemSpell() {
-        super("steal_item", property().maxLevel(1).mana(50).cd(1800));
+        super("steal_item", property().maxLevel(1).qi(50).cd(1800));
     }
 
 //    @Override

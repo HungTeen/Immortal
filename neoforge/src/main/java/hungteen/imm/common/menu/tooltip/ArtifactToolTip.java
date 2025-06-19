@@ -1,6 +1,7 @@
 package hungteen.imm.common.menu.tooltip;
 
 import hungteen.imm.common.codec.SpellInstance;
+import hungteen.imm.common.cultivation.SpellManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +23,7 @@ public class ArtifactToolTip implements TooltipComponent {
     }
 
     public Component getSpellTitle(){
-        return instance.spell().spell().getComponent().withStyle(ChatFormatting.YELLOW);
+        return SpellManager.spellName(instance.spell()).withStyle(ChatFormatting.YELLOW);
     }
 
     public Component getConditionTitle(){

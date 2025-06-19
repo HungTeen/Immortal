@@ -20,7 +20,7 @@ import java.util.Optional;
 public class BurningSpell extends SpellTypeImpl {
 
     public BurningSpell() {
-        super("burning", property().mana(30).cd(200).maxLevel(2));
+        super("burning", property().qi(30).cd(200).maxLevel(2));
     }
 
     @Override

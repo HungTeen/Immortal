@@ -11,7 +11,7 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class DispersalSpell extends SpellTypeImpl {
 
     public DispersalSpell() {
-        super("dispersal", property().maxLevel(1).mana(5).cd(100));
+        super("dispersal", property().maxLevel(1).qi(5).cd(100));
     }
 
     @Override

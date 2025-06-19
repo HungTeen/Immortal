@@ -21,7 +21,7 @@ public class IgnitionSpell extends SpellTypeImpl {
     private static final float FIRE_AMOUNT = 10;
 
     public IgnitionSpell() {
-        super("ignition", property(SpellUsageCategory.DEBUFF_TARGET).mana(15).cd(60).maxLevel(1));
+        super("ignition", property(SpellUsageCategory.DEBUFF_TARGET).qi(15).cd(60).maxLevel(1));
     }
 
     /**

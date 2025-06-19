@@ -1,19 +1,25 @@
 package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
+import hungteen.imm.api.HTHitResult;
 import hungteen.imm.api.IMMAPI;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiManager;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
 import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
 import hungteen.imm.common.cultivation.spell.wood.WitherSpell;
 import hungteen.imm.common.entity.misc.TwistingVines;
 import hungteen.imm.common.event.handler.EntityEventHandler;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 /**
@@ -40,8 +46,11 @@ public class IMMEntityEvents {
     public static void onEntityJoin(EntityJoinLevelEvent event){
         if(! event.getLevel().isClientSide()){
             EntityEventHandler.compatTargetGoal(event.getEntity());
-            // 只考虑第一次生成。
-            if(! event.loadedFromDisk()){
+            // 只考虑投掷物的第一次生成。
+            if(! event.loadedFromDisk() && event.getEntity() instanceof Projectile projectile && projectile.getOwner() instanceof LivingEntity living){
+                SpellManager.activateSpell(living, TriggerConditions.SHOOT, context -> {
+                    context.setTarget(event.getEntity());
+                });
                 IgnitionSpell.checkIgnitionArrow(event.getEntity());
                 WitherSpell.checkWitherArrow(event.getEntity());
             }
@@ -51,6 +60,11 @@ public class IMMEntityEvents {
     @SubscribeEvent
     public static void onProjectileImpact(ProjectileImpactEvent event){
         if(EntityHelper.isServer(event.getProjectile())){
+            if(event.getProjectile().getOwner() instanceof LivingEntity living){
+                SpellManager.activateSpell(living, TriggerConditions.IMPACT, context -> {
+                    context.setHitResult(HTHitResult.create(event.getRayTraceResult()));
+                });
+            }
             EntityEventHandler.attachElementWhenImpact(event.getProjectile(), event.getRayTraceResult());
         }
     }
@@ -60,6 +74,15 @@ public class IMMEntityEvents {
         if(EntityHelper.isServer(event.getEntity())){
             // 不能主动取消对藤蔓的骑乘。
             if(event.getEntityBeingMounted() instanceof TwistingVines vines && !event.isMounting() && vines.isAlive()){
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemToss(ItemTossEvent event){
+        if(EntityHelper.isServer(event.getEntity())){
+            if(SpellManager.activateSpell(event.getPlayer(), TriggerConditions.TOSS, event.getEntity().getItem())){
                 event.setCanceled(true);
             }
         }

@@ -1,7 +1,5 @@
 package hungteen.imm.common.item.artifact;
 
-import hungteen.imm.api.artifact.ArtifactRank;
-
 /**
  * @program Immortal
  * @author PangTeen
@@ -9,8 +7,8 @@ import hungteen.imm.api.artifact.ArtifactRank;
  **/
 public class WritingBrushItem extends ArtifactItemImpl {
 
-    public WritingBrushItem(Properties properties, ArtifactRank realmType) {
-        super(properties.stacksTo(1), realmType);
+    public WritingBrushItem(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
 }

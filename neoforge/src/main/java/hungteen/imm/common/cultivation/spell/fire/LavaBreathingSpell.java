@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class LavaBreathingSpell extends SpellTypeImpl {
 
     public LavaBreathingSpell() {
-        super("lava_breathing", property(SpellUsageCategory.BUFF_SELF).maxLevel(1).mana(80).cd(400));
+        super("lava_breathing", property(SpellUsageCategory.BUFF_SELF).maxLevel(1).qi(80).cd(400));
     }
 
     @Override

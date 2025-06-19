@@ -100,13 +100,16 @@ public class SpellOverlay {
             ClientUtil.push("renderPreparedSpell");
             List<SpellType> spells = new ArrayList<>();
             final SpellType mainSpell = PlayerUtil.getPreparingSpell(ClientUtil.player());
-            if(mainSpell != null) spells.add(mainSpell);
-            for(int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++ i){
-                final SpellType curSpell = PlayerUtil.getSpellAt(ClientUtil.player(), i);
-                if(curSpell != null && PlayerUtil.isSpellOnCoolDown(ClientUtil.player(), curSpell) && !spells.contains(curSpell)){
-                    spells.add(curSpell);
-                }
+            if(mainSpell != null) {
+                spells.add(mainSpell);
             }
+            spells.addAll(PlayerUtil.getCooldownSpell(ClientUtil.player()));
+//            for(int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++ i){
+//                final SpellType curSpell = PlayerUtil.getSpellAt(ClientUtil.player(), i);
+//                if(curSpell != null && PlayerUtil.isSpellOnCoolDown(ClientUtil.player(), curSpell) && !spells.contains(curSpell)){
+//                    spells.add(curSpell);
+//                }
+//            }
             int displayCount = spells.size();
             if(displayCount > 0){
                 final int stride = SPELL_SLOT_LEN / 2;

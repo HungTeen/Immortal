@@ -3,6 +3,8 @@ package hungteen.imm.common.cultivation;
 import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.api.spell.InscriptionType;
+import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.TipUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,7 +30,14 @@ public interface InscriptionTypes {
     InscriptionType ANY = registry().register(Util.prefix("any"), new InscriptionTypeImpl("any") {
         @Override
         public boolean compatWith(LivingEntity living, ItemStack item) {
-            return true;
+            return !item.is(IMMItemTags.EMPTY_TALISMANS);
+        }
+    });
+
+    InscriptionType JOSS_PAPER = registry().register(Util.prefix("joss_paper"), new InscriptionTypeImpl("joss_paper") {
+        @Override
+        public boolean compatWith(LivingEntity living, ItemStack item) {
+            return item.is(IMMItems.JOSS_PAPER.get());
         }
     });
 

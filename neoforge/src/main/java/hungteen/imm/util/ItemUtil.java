@@ -5,10 +5,8 @@ import hungteen.htlib.api.registry.HTHolder;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.imm.IMMInitializer;
-import hungteen.imm.api.artifact.ArtifactRank;
-import hungteen.imm.common.item.IMMComponents;
-import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.cultivation.rune.ICraftableRune;
+import hungteen.imm.common.item.runes.RuneItem;
 import hungteen.imm.common.tag.IMMItemTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -34,14 +32,6 @@ public class ItemUtil {
 
     private static final String SUFFIX = "large_held";
     private static final List<HTHolder<Item>> LARGE_HELD_ITEMS = new ArrayList<>();
-
-    public static Item.Properties artifact(ArtifactRank rank){
-        return new Item.Properties().stacksTo(1).component(IMMComponents.ARTIFACT_RANK, rank);
-    }
-
-    public static ArtifactRank getRank(ItemStack stack){
-        return stack.getOrDefault(IMMComponents.ARTIFACT_RANK.get(), ArtifactRank.COMMON);
-    }
 
     public static MutableComponent desc(ItemStack stack, Object... args){
         return TipUtil.desc(stack.getItem(), args).withStyle(ChatFormatting.GRAY);

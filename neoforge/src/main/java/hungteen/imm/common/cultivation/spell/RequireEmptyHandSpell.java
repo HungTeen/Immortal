@@ -21,7 +21,7 @@ public abstract class RequireEmptyHandSpell extends SpellTypeImpl {
     public boolean checkActivate(SpellCastContext context) {
         Optional<InteractionHand> handOpt = EntityUtil.getEmptyHand(context.owner());
         if(handOpt.isEmpty()){
-            sendTip(context.owner(), NO_EMPTY_HAND);
+            sendTip(context, NO_EMPTY_HAND);
             return false;
         }
         if(checkActivate(context, handOpt.get())){

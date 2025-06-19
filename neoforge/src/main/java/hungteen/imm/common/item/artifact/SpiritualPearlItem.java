@@ -1,7 +1,6 @@
 package hungteen.imm.common.item.artifact;
 
 import hungteen.htlib.util.helper.RandomHelper;
-import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.capability.player.IMMPlayerData;
 import hungteen.imm.common.entity.misc.SpiritualPearl;
 import hungteen.imm.util.LevelUtil;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 public class SpiritualPearlItem extends ArtifactItemImpl {
 
     public SpiritualPearlItem() {
-        super(ArtifactRank.COMMON);
+        super(artifactProperties());
     }
 
     @Override

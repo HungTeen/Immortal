@@ -38,7 +38,7 @@ public class ElementalMasterySpell extends SpellTypeImpl {
     private final Element element;
 
     public ElementalMasterySpell(Element element) {
-        super(element.name().toLowerCase() + "_mastery", property().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).cd(200).mana(25).notTrigger());
+        super(element.name().toLowerCase() + "_mastery", property().maxLevel(ELEMENTAL_MASTERY_MAX_LEVEL).cd(200).qi(25).notTrigger());
         this.element = element;
         MASTERY_MAP.put(element, this);
     }

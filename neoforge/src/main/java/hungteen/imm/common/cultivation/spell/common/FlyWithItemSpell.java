@@ -23,7 +23,7 @@ import java.util.Optional;
 public class FlyWithItemSpell extends SpellTypeImpl {
 
     public FlyWithItemSpell() {
-        super("fly_with_item", property().maxLevel(2).mana(20).cd(1000));
+        super("fly_with_item", property().maxLevel(2).qi(20).cd(1000));
     }
 
     @Override

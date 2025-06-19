@@ -2,8 +2,11 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.event.SpellCooldownEvent;
 import hungteen.imm.common.block.artifacts.SpiritualFurnaceBlock;
 import hungteen.imm.common.capability.player.IMMPlayerData;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.event.handler.PlayerEventHandler;
 import hungteen.imm.common.tag.IMMBlockTags;
@@ -13,7 +16,10 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
-import net.neoforged.neoforge.event.entity.player.*;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
@@ -78,6 +84,11 @@ public class IMMPlayerEvents {
         result = PlayerEventHandler.rayTrace(event.getEntity(), event.getHand());
         if(result.consumesAction()){
             event.setCanceled(true);
+        } else {
+            if(SpellManager.activateSpell(event.getEntity(), TriggerConditions.RIGHT_CLICK, event.getItemStack())){
+                result = InteractionResult.SUCCESS;
+                event.setCanceled(true);
+            }
         }
         event.setCancellationResult(result);
     }
@@ -117,6 +128,15 @@ public class IMMPlayerEvents {
     public static void onPlayerCriticalHit(CriticalHitEvent event) {
         if (EntityHelper.isServer(event.getEntity())) {
             CriticalHitSpell.checkCriticalHit(event.getEntity(), event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSpellCast(SpellCooldownEvent event) {
+        if(!event.getEntity().level().isClientSide()) {
+            SpellManager.activateSpell(event.getEntity(), TriggerConditions.COOLDOWN, context -> {
+                context.setEvent(event);
+            });
         }
     }
 

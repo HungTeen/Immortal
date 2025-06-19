@@ -1,5 +1,6 @@
 package hungteen.imm.common.item.blockitem;
 
+import hungteen.imm.api.artifact.ArtifactCategory;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
 import net.minecraft.world.item.BlockItem;
@@ -19,6 +20,11 @@ public class ArtifactBlockItem extends BlockItem implements ArtifactItem {
 
     @Override
     public ArtifactRank getArtifactRealm(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public ArtifactCategory getArtifactCategory() {
         return null;
     }
 }

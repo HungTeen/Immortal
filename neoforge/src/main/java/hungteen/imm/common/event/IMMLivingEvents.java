@@ -2,6 +2,7 @@ package hungteen.imm.common.event;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.api.event.ActivateSpellEvent;
 import hungteen.imm.common.cultivation.*;
 import hungteen.imm.common.cultivation.reaction.GenerationReaction;
 import hungteen.imm.common.cultivation.reaction.GildingReaction;
@@ -49,11 +50,18 @@ public class IMMLivingEvents {
     @SubscribeEvent
     public static void incomeDamage(LivingIncomingDamageEvent event){
         if(event.getEntity().level() instanceof ServerLevel level) {
+            // 被攻击的生物。
+            LivingEntity hurtEntity = event.getEntity();
+            SpellManager.activateSpell(hurtEntity, TriggerConditions.HURT);
+
+            // 攻击者。
             Entity attacker = event.getSource().getEntity();
             SharpnessSpell.checkSharpening(attacker, event);
             if(DamageUtil.isMeleeDamage(event.getSource()) && attacker != null){
                 if(attacker instanceof LivingEntity livingAttacker){
-                    SpellManager.activateSpell(livingAttacker, TriggerConditions.ATTACK);
+                    SpellManager.activateSpell(livingAttacker, TriggerConditions.ATTACK, context -> {
+                        context.setEvent(event);
+                    });
                     CriticalHitSpell.checkCriticalHit(livingAttacker, event);
                     ElementalMasterySpell.checkActivateMetal(livingAttacker, event.getEntity());
                 }
@@ -121,6 +129,7 @@ public class IMMLivingEvents {
         }
     }
 
+    @SubscribeEvent
     public static void onEffectExpired(MobEffectEvent.Expired event) {
         // 超时时随机扣除突破进度。
         if(event.getEffectInstance().is(IMMEffects.BREAK_THROUGH.holder())) {
@@ -130,5 +139,15 @@ public class IMMLivingEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onSpellCast(ActivateSpellEvent.Post event) {
+        if(!event.getEntity().level().isClientSide()) {
+            SpellManager.activateSpell(event.getEntity(), TriggerConditions.CAST, context -> {
+                context.setEvent(event);
+            });
+        }
+    }
+
 
 }

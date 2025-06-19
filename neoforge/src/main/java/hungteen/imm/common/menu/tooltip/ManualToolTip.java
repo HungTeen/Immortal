@@ -1,7 +1,7 @@
 package hungteen.imm.common.menu.tooltip;
 
-import hungteen.imm.common.impl.manuals.SecretManual;
-import hungteen.imm.common.impl.manuals.SecretScroll;
+import hungteen.imm.common.cultivation.manual.SecretManual;
+import hungteen.imm.common.cultivation.manual.SecretScroll;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

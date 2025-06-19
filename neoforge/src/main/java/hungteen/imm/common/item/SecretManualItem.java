@@ -2,9 +2,9 @@ package hungteen.imm.common.item;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.common.event.events.PlayerLearnManualEvent;
-import hungteen.imm.common.impl.manuals.SecretManual;
-import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.impl.manuals.SecretScroll;
+import hungteen.imm.common.cultivation.manual.SecretManual;
+import hungteen.imm.common.cultivation.impl.SecretManuals;
+import hungteen.imm.common.cultivation.manual.SecretScroll;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
 import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.TipUtil;

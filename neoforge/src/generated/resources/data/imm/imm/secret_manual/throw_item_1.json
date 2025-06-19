@@ -29,6 +29,12 @@
     }
   ],
   "title": {
+    "extra": [
+      " ",
+      {
+        "translate": "manual.imm.level1"
+      }
+    ],
     "translate": "spell.imm.throw_item"
   }
 }

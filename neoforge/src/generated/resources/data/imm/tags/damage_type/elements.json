@@ -1,7 +1,10 @@
 {
   "values": [
+    "imm:metal_element",
     "imm:wood_element",
     "imm:water_element",
-    "imm:fire_element"
+    "imm:fire_element",
+    "imm:earth_element",
+    "imm:spirit_element"
   ]
 }

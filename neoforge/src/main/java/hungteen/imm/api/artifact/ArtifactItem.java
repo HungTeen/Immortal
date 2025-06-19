@@ -16,10 +16,15 @@ public interface ArtifactItem {
     ArtifactRank getArtifactRealm(ItemStack stack);
 
     /**
+     * @return 法器类型。
+     */
+    ArtifactCategory getArtifactCategory();
+
+    /**
      * @return 法器的法术槽位。
      */
     default int getMaxSpellSlot(ItemStack stack){
-        return 0;
+        return 1;
     }
 
 }

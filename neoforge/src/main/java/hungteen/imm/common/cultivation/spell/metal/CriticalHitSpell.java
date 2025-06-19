@@ -2,9 +2,12 @@ package hungteen.imm.common.cultivation.spell.metal;
 
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.api.spell.SpellUsageCategory;
+import hungteen.imm.common.cultivation.SpellManager;
+import hungteen.imm.common.cultivation.SpellTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,19 +22,19 @@ import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 public class CriticalHitSpell extends SpellTypeImpl {
 
     public CriticalHitSpell() {
-        super("critical_hit", property(SpellUsageCategory.TRIGGERED_PASSIVE).maxLevel(1).mana(20).cd(40));
+        super("critical_hit", property(SpellUsageCategory.TRIGGERED_PASSIVE).maxLevel(1).qi(20).cd(40));
     }
 
     public static void checkCriticalHit(Player owner, CriticalHitEvent event) {
-//        SpellManager.activateSpell(owner, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
-//            if(! event.isVanillaCritical()){
-//                event.setDamageMultiplier(1.5F);
-//                spawnCriticalParticles(event.getTarget());
-//                playSoundAround(event.getTarget(), SoundEvents.PLAYER_ATTACK_CRIT);
-//                return true;
-//            }
-//            return false;
-//        });
+        SpellManager.activateSpell(owner, SpellTypes.CRITICAL_HIT, context -> {
+            if(! event.isVanillaCritical()){
+                event.setDamageMultiplier(1.5F * context.scale());
+                spawnCriticalParticles(event.getTarget());
+                playSoundAround(event.getTarget(), SoundEvents.PLAYER_ATTACK_CRIT);
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -40,14 +43,14 @@ public class CriticalHitSpell extends SpellTypeImpl {
      */
     public static void checkCriticalHit(LivingEntity attacker, LivingIncomingDamageEvent event) {
         // 玩家不走此方法。
-//        if(!(attacker instanceof Player)){
-//            SpellManager.activateSpell(attacker, SpellTypes.CRITICAL_HIT, (p, result, spell, level) -> {
-//                event.setAmount(event.getOriginalAmount() * 1.5F);
-//                spawnCriticalParticles(event.getEntity());
-//                playSoundAround(event.getEntity(), SoundEvents.PLAYER_ATTACK_CRIT);
-//                return true;
-//            });
-//        }
+        if(!(attacker instanceof Player)){
+            SpellManager.activateSpell(attacker, SpellTypes.CRITICAL_HIT, context -> {
+                event.setAmount(event.getOriginalAmount() * 1.5F * context.scale());
+                spawnCriticalParticles(event.getEntity());
+                playSoundAround(event.getEntity(), SoundEvents.PLAYER_ATTACK_CRIT);
+                return true;
+            });
+        }
     }
 
     private static void spawnCriticalParticles(Entity entity) {

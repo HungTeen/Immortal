@@ -7,16 +7,17 @@ import hungteen.htlib.common.item.HTItem;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.htlib.util.helper.StringHelper;
 import hungteen.htlib.util.helper.impl.ItemHelper;
-import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.common.block.IMMBlocks;
+import hungteen.imm.common.cultivation.SpellTypes;
+import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.item.artifact.FlameGourd;
 import hungteen.imm.common.item.artifact.SpiritualPearlItem;
 import hungteen.imm.common.item.artifact.WoodBowItem;
-import hungteen.imm.common.item.elixir.*;
+import hungteen.imm.common.item.elixir.CustomElixirItem;
+import hungteen.imm.common.item.elixir.InspirationElixir;
 import hungteen.imm.common.item.runes.BehaviorRuneItem;
 import hungteen.imm.common.item.runes.filter.*;
 import hungteen.imm.common.item.talisman.*;
-import hungteen.imm.common.cultivation.rune.behavior.BehaviorRunes;
 import hungteen.imm.common.tag.IMMBannerPatternTags;
 import hungteen.imm.util.Util;
 import net.minecraft.core.registries.Registries;
@@ -76,7 +77,7 @@ public interface IMMItems {
     HTHolder<Item> SPIRITUAL_PEARL = ITEMS.register("spiritual_pearl", SpiritualPearlItem::new);
 //    public static final HTHolder<Item> RAW_ARTIFACT_BOX = ITEMS.initialize("raw_artifact_box", RawArtifactBox::new);
 //    public static final HTHolder<Item> STONE_HAMMER = ITEMS.initialize("stone_hammer", () -> new HammerItem(ImmortalTiers.STONE));
-HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(ArtifactRank.COMMON));
+    HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", FlameGourd::new);
 //    public static final HTHolder<Item> BRONZE_SWORD = ITEMS.initialize("bronze_sword", () -> new SwordItem(ImmortalTiers.BRONZE));
 //    public static final HTHolder<Item> BRONZE_SHORT_SWORD = ITEMS.initialize("bronze_short_sword", () -> new ShortSwordItem(ImmortalTiers.BRONZE));
 //    public static final HTHolder<Item> BRONZE_AXE = ITEMS.initialize("bronze_axe", () -> new AxeItem(ImmortalTiers.BRONZE, 7));
@@ -84,11 +85,12 @@ HTHolder<Item> FLAME_GOURD = ITEMS.register("flame_gourd", () -> new FlameGourd(
 //    public static final HTHolder<Item> BRONZE_SHOVEL = ITEMS.initialize("bronze_shovel", () -> new ShovelItem(ImmortalTiers.BRONZE, 7));
 //    public static final HTHolder<Item> BRONZE_HOE = ITEMS.initialize("bronze_hoe", () -> new HoeItem(ImmortalTiers.BRONZE, 7));
 //    public static final HTHolder<Item> BRONZE_HAMMER = ITEMS.initialize("bronze_hammer", () -> new HammerItem(ImmortalTiers.BRONZE));
-    HTHolder<Item> LIGHTNING_TALISMAN = ITEMS.register("lightning_talisman", LightningTalisman::new);
-    HTHolder<Item> TWISTING_VINE_TALISMAN = ITEMS.register("twisting_vine_talisman", TwistingVineTalisman::new);
-    HTHolder<Item> FALLING_ICE_TALISMAN = ITEMS.register("falling_ice_talisman", FallingIceTalisman::new);
-    HTHolder<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", FireballTalisman::new);
-    HTHolder<Item> EARTH_FANG_TALISMAN = ITEMS.register("earth_fang_talisman", EarthFangTalisman::new);
+    HTHolder<Item> SPROUT_TALISMAN = ITEMS.register("sprout_talisman", () -> new DurationTalismanItem(SpellTypes.SPROUT));
+    HTHolder<Item> LIGHTNING_TALISMAN = ITEMS.register("lightning_talisman", () -> new DurationTalismanItem(SpellTypes.LIGHTNING));
+    HTHolder<Item> TWISTING_VINE_TALISMAN = ITEMS.register("twisting_vine_talisman", () -> new DurationTalismanItem(SpellTypes.TWISTING_VINE));
+    HTHolder<Item> FALLING_ICE_TALISMAN = ITEMS.register("falling_ice_talisman", () -> new DurationTalismanItem(SpellTypes.FALLING_ICE));
+    HTHolder<Item> FIREBALL_TALISMAN = ITEMS.register("fireball_talisman", () -> new DurationTalismanItem(SpellTypes.FIREBALL));
+    HTHolder<Item> EARTH_FANG_TALISMAN = ITEMS.register("earth_fang_talisman", () -> new DurationTalismanItem(SpellTypes.EARTH_FANG));
 
     /* Misc Tab Items */
 

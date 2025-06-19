@@ -3,6 +3,7 @@ package hungteen.imm.common.entity.misc;
 import hungteen.htlib.util.helper.impl.ItemHelper;
 import hungteen.htlib.util.helper.impl.ParticleHelper;
 import hungteen.imm.client.particle.IMMParticles;
+import hungteen.imm.common.cultivation.spell.common.ThrowItemSpell;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -10,14 +11,19 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 
 import java.util.Optional;
 
@@ -29,6 +35,7 @@ import java.util.Optional;
 public class ThrowingItemEntity extends ThrowableItemProjectile {
 
     private static final EntityDataAccessor<Boolean> WORK_FINISHED = SynchedEntityData.defineId(ThrowingItemEntity.class, EntityDataSerializers.BOOLEAN);
+    private int spellLevel = 1;
 
     public ThrowingItemEntity(EntityType<? extends ThrowableItemProjectile> type, Level level) {
         super(type, level);
@@ -59,19 +66,19 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
                 this.noPhysics = true;
             }
             Optional.ofNullable(this.getOwner()).ifPresentOrElse(entity -> {
-                this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1F));
+                this.setDeltaMovement(entity.getEyePosition().subtract(this.position()).normalize().scale(1.2F));
                 if (!this.level().isClientSide() && entity.distanceTo(this) < 2) {
                     EntityUtil.addItem(entity, this.getItem());
                     this.discard();
                 }
             }, () -> {
-                if(!this.level().isClientSide()){
+                if (!this.level().isClientSide()) {
                     this.spawnAtLocation(this.getItem());
                     this.discard();
                 }
             });
         } else {
-            if(this.tickCount > 100){
+            if (this.tickCount > 100) {
                 this.setWorkFinished(true);
             }
         }
@@ -88,13 +95,39 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
+        if(getOwner() instanceof ServerPlayer serverPlayer && result.getEntity() instanceof LivingEntity living){
+            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverPlayer.serverLevel());
+            fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, this.getItem());
+            if(getItem().interactLivingEntity(fakePlayer, living, InteractionHand.MAIN_HAND).consumesAction()) {
+                return;
+            }
+            if(living.interact(fakePlayer, InteractionHand.MAIN_HAND).consumesAction()){
+                return;
+            }
+        }
         double damage = 1F + ItemHelper.getItemBonusDamage(this.getItem(), EquipmentSlot.MAINHAND);
         result.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), (float) damage);
-        if(EntityUtil.ownerOrSelf(this) instanceof LivingEntity living && living.level() instanceof ServerLevel serverLevel){
+        if (EntityUtil.ownerOrSelf(this) instanceof LivingEntity living && living.level() instanceof ServerLevel serverLevel) {
             this.getItem().hurtAndBreak(3, serverLevel, living, (e) -> {
                 this.discard();
             });
         }
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        if (getSpellLevel() > 1 && getOwner() instanceof ServerPlayer serverPlayer) {
+            ThrowItemSpell.destroyBlock(serverPlayer, this.level(), result.getBlockPos(), this.getItem());
+        }
+    }
+
+    public void setSpellLevel(int spellLevel) {
+        this.spellLevel = spellLevel;
+    }
+
+    public int getSpellLevel() {
+        return spellLevel;
     }
 
     @Override
@@ -103,12 +136,16 @@ public class ThrowingItemEntity extends ThrowableItemProjectile {
         if (tag.contains("WorkFinished")) {
             this.setWorkFinished(tag.getBoolean("WorkFinished"));
         }
+        if (tag.contains("SpellLevel")) {
+            this.setSpellLevel(tag.getInt("SpellLevel"));
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("WorkFinished", this.workFinished());
+        tag.putInt("SpellLevel", this.getSpellLevel());
     }
 
     @Override

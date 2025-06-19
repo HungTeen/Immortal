@@ -42,9 +42,13 @@ public record ClientSpellPacket(SpellType spell, SpellOption option, long num) i
             case LEARN -> PlayerUtil.learnSpell(player, spell(), (int) num());
             case SET_SPELL_ON_CIRCLE -> PlayerUtil.setSpellAt(player, (int) num(), spell());
             case REMOVE_SPELL_ON_CIRCLE -> PlayerUtil.removeSpellAt(player, (int) num());
-            case COOL_DOWN -> PlayerUtil.cooldownSpell(player, spell(), num());
+            case COOL_DOWN -> {
+                PlayerUtil.cooldownSpell(player, spell(), num());
+                PlayerUtil.addCooldownSpell(player, spell());
+            }
             case PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, spell());
             case CLEAR_PREPARING_SPELL -> PlayerUtil.setPreparingSpell(player, null);
+            case REMOVE_COOLDOWN_SPELL -> PlayerUtil.removeCooldownSpell(player, spell());
         }
     }
 
@@ -75,9 +79,20 @@ public record ClientSpellPacket(SpellType spell, SpellOption option, long num) i
          */
         COOL_DOWN,
 
+        /**
+         * 法术准备完成。
+         */
         PREPARING_SPELL,
 
+        /**
+         * 清除正在准备的法术。
+         */
         CLEAR_PREPARING_SPELL,
+
+        /**
+         * 移除正在冷却的法术。
+         */
+        REMOVE_COOLDOWN_SPELL,
 
         ;
 

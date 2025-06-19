@@ -13,7 +13,7 @@ public class CrystalHeartSpell extends SpellTypeImpl {
     private static final int MAX_COUNT = 6;
 
     public CrystalHeartSpell() {
-        super("crystal_heart", property().maxLevel(1).mana(60).cd(200));
+        super("crystal_heart", property().maxLevel(1).qi(60).cd(200));
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.Event;
 
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public class SpellCastContext {
     private Direction direction;
     private ItemStack usingItem;
     private TriggerCondition triggerCondition;
+    private Event event;
+    private boolean sendTip;
 
     public SpellCastContext(LivingEntity owner, int spellLevel, TriggerCondition condition, ItemStack usingItem) {
         this(owner, spellLevel, 1F, null, null, null, null, usingItem, condition);
@@ -99,6 +102,13 @@ public class SpellCastContext {
         return spellScale;
     }
 
+    public void setHitResult(HTHitResult result){
+        setTarget(result.getEntity());
+        setTargetState(result.getBlockState(level()));
+        setTargetPos(result.getBlockPos());
+        setDirection(result.getDirection());
+    }
+
     public void setTarget(Entity target) {
         this.target = target;
     }
@@ -111,6 +121,10 @@ public class SpellCastContext {
         return targetOpt().orElseThrow();
     }
 
+    public void setTargetState(BlockState targetState) {
+        this.targetState = targetState;
+    }
+
     public Optional<BlockState> targetStateOpt() {
         return Optional.ofNullable(targetState);
     }
@@ -119,12 +133,20 @@ public class SpellCastContext {
         return targetStateOpt().orElseThrow();
     }
 
+    public void setTargetPos(BlockPos targetPos) {
+        this.targetPos = targetPos;
+    }
+
     public Optional<BlockPos> targetPosOpt() {
         return Optional.ofNullable(targetPos);
     }
 
     public BlockPos targetPos() {
         return targetPosOpt().orElseThrow();
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     public Optional<Direction> directionOpt() {
@@ -146,4 +168,29 @@ public class SpellCastContext {
         return triggerCondition != null;
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    /**
+     * @return 法术触发相关的事件。
+     */
+    public Optional<Event> getEventOpt() {
+        return Optional.ofNullable(event);
+    }
+
+    public Event getEvent() {
+        return getEventOpt().orElseThrow();
+    }
+
+    public void setSendTip(boolean sendTip) {
+        this.sendTip = sendTip;
+    }
+
+    /**
+     * @return 是否发送触发失败提示。
+     */
+    public boolean sendTip() {
+        return sendTip;
+    }
 }

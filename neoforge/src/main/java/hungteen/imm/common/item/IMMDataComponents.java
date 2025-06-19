@@ -5,8 +5,8 @@ import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.htlib.common.impl.registry.HTVanillaRegistry;
 import hungteen.htlib.util.NeoHelper;
 import hungteen.imm.common.codec.SpellInstance;
-import hungteen.imm.common.impl.manuals.SecretManual;
-import hungteen.imm.common.impl.manuals.SecretManuals;
+import hungteen.imm.common.cultivation.manual.SecretManual;
+import hungteen.imm.common.cultivation.impl.SecretManuals;
 import hungteen.imm.util.Util;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -37,6 +37,9 @@ public interface IMMDataComponents {
             .persistent(SpellInstance.CODEC_LIST).networkSynchronized(SpellInstance.STREAM_CODEC)
     );
     HTHolder<DataComponentType<Integer>> MAX_SPELL_SLOT = register("max_spell_slot", builder -> builder
+            .persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+    HTHolder<DataComponentType<Integer>> SPELL_LEVEL = register("spell_level", builder -> builder
             .persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
     );
 

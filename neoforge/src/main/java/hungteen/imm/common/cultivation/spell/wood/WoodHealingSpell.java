@@ -12,7 +12,7 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class WoodHealingSpell extends SpellTypeImpl {
 
     public WoodHealingSpell() {
-        super("wood_healing", property(SpellUsageCategory.BUFF_SELF).maxLevel(1).mana(40).cd(400));
+        super("wood_healing", property(SpellUsageCategory.BUFF_SELF).maxLevel(1).qi(40).cd(400));
     }
 
     @Override

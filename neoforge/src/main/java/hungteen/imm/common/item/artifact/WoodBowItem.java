@@ -1,10 +1,12 @@
 package hungteen.imm.common.item.artifact;
 
+import hungteen.imm.api.artifact.ArtifactCategory;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.common.cultivation.ElementManager;
 import hungteen.imm.common.cultivation.QiManager;
+import hungteen.imm.common.cultivation.impl.ArtifactCategories;
 import hungteen.imm.util.ItemUtil;
 import hungteen.imm.util.RandomUtil;
 import hungteen.imm.util.Util;
@@ -31,7 +33,7 @@ public class WoodBowItem extends BowItem implements ArtifactItem {
     private static final float QI_COST = 10;
 
     public WoodBowItem() {
-        super(ItemUtil.artifact(ArtifactRank.MODERATE).durability(500));
+        super(new Properties().stacksTo(1).durability(500));
     }
 
     public WoodBowItem(Properties properties) {
@@ -66,7 +68,12 @@ public class WoodBowItem extends BowItem implements ArtifactItem {
 
     @Override
     public ArtifactRank getArtifactRealm(ItemStack stack) {
-        return ItemUtil.getRank(stack);
+        return ArtifactRank.MODERATE;
+    }
+
+    @Override
+    public ArtifactCategory getArtifactCategory() {
+        return ArtifactCategories.DEFAULT;
     }
 
     @Override

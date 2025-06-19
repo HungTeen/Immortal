@@ -229,7 +229,7 @@ public class PlayerUtil {
     }
 
     public static float getSpellCooldownValue(Player player, SpellType spell) {
-        return getData(player, data -> data.getSpellData().getSpellCoolDown(spell));
+        return getData(player, data -> data.getSpellData().getSpellCoolDownPercent(spell));
     }
 
     public static List<Spell> getLearnedSpells(Player player) {
@@ -255,6 +255,27 @@ public class PlayerUtil {
 
     public static void setPreparingSpell(Player player, @Nullable SpellType type) {
         setData(player, data -> data.getSpellData().setPreparingSpell(type));
+    }
+
+    /**
+     * 增加客户端的冷却法术显示。
+     */
+    public static void addCooldownSpell(Player player, SpellType spell) {
+        setData(player, data -> data.getSpellData().addCooldownSpell(spell));
+    }
+
+    /**
+     * 移除客户端的冷却法术显示。
+     */
+    public static void removeCooldownSpell(Player player, SpellType spell) {
+        setData(player, data -> data.getSpellData().addCooldownSpell(spell));
+    }
+
+    /**
+     * @return 所有正在冷却的法术。
+     */
+    public static List<SpellType> getCooldownSpell(Player player) {
+        return getData(player, data -> data.getSpellData().getCooldownSpells());
     }
 
     /* Sect Related Methods */

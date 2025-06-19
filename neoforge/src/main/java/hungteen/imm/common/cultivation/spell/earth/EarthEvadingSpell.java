@@ -13,7 +13,7 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class EarthEvadingSpell extends SpellTypeImpl {
 
     public EarthEvadingSpell() {
-        super("earth_evading", property().maxLevel(1).mana(75).cd(300));
+        super("earth_evading", property().maxLevel(1).qi(75).cd(300));
     }
 
     @Override

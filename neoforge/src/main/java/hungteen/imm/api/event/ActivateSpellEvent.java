@@ -1,6 +1,7 @@
 package hungteen.imm.api.event;
 
 import hungteen.imm.api.spell.Spell;
+import hungteen.imm.api.spell.SpellCastContext;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -14,10 +15,12 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
 public class ActivateSpellEvent extends LivingEvent {
 
     private final Spell spell;
+    private final SpellCastContext context;
 
-    public ActivateSpellEvent(LivingEntity entity, Spell spell) {
+    public ActivateSpellEvent(LivingEntity entity, Spell spell, SpellCastContext context) {
         super(entity);
         this.spell = spell;
+        this.context = context;
     }
 
     public Spell getSpell() {
@@ -29,8 +32,8 @@ public class ActivateSpellEvent extends LivingEvent {
      */
     public static final class Pre extends ActivateSpellEvent implements ICancellableEvent {
 
-        public Pre(LivingEntity living, Spell spell) {
-            super(living, spell);
+        public Pre(LivingEntity living, Spell spell, SpellCastContext context) {
+            super(living, spell, context);
         }
 
     }
@@ -41,8 +44,8 @@ public class ActivateSpellEvent extends LivingEvent {
     public static final class Post extends ActivateSpellEvent {
 
 
-        public Post(LivingEntity living, Spell spell) {
-            super(living, spell);
+        public Post(LivingEntity living, Spell spell, SpellCastContext context) {
+            super(living, spell, context);
         }
 
     }

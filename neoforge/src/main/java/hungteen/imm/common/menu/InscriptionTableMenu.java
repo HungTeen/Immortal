@@ -9,6 +9,7 @@ import hungteen.imm.common.codec.SpellInstance;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.item.IMMItems;
+import hungteen.imm.common.item.talisman.TalismanItem;
 import hungteen.imm.common.tag.IMMItemTags;
 import hungteen.imm.util.PlayerUtil;
 import net.minecraft.world.Container;
@@ -68,7 +69,7 @@ public class InscriptionTableMenu extends HTContainerMenu {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 // 只有符箓或不可堆叠的物品可以放进来。
-                return stack.getMaxStackSize() == 1 || stack.is(IMMItemTags.EMPTY_TALISMANS);
+                return isValidArtifact(stack) || isTalisman(stack);
             }
         });
         this.addSlot(new Slot(this.inputSlots, 1, LARGE_WIDTH + GAP_WIDTH + 29, 69) {
@@ -78,6 +79,12 @@ public class InscriptionTableMenu extends HTContainerMenu {
             }
         });
         this.addSlot(new Slot(this.resultSlot, 0, LARGE_WIDTH + GAP_WIDTH + 45, 39) {
+
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+
             @Override
             public boolean mayPickup(Player player) {
                 return !resultSlot.isEmpty();
@@ -108,12 +115,16 @@ public class InscriptionTableMenu extends HTContainerMenu {
 
     public void createResult(){
         ItemStack result = ItemStack.EMPTY;
-        if(isTalisman()){
+        if(this.inputSlots.getItem(1).isEmpty()){
+            return;
+        }
+        if(isTalisman(getCoreItem())){
             // 选择了法术 & 法术是符箓法术。
             if(selectedSpell != null && selectedSpell.spell() instanceof TalismanSpell talismanSpell) {
                 result = talismanSpell.getTalismanItem(selectedSpell.level());
+                TalismanItem.setSpellLevel(result, selectedSpell.level());
             }
-        } else if(isValidArtifact() && selectedSpell != null && triggerCondition != null && matchArtifact(selectedSpell)) {
+        } else if(isValidArtifact(getCoreItem()) && selectedSpell != null && triggerCondition != null && matchSpell(selectedSpell)) {
             ItemStack copy = getCoreItem().copy();
             SpellInstance spellInstance = new SpellInstance(selectedSpell, triggerCondition);
             SpellManager.putSpellInItem(copy, spellInstance);
@@ -127,11 +138,12 @@ public class InscriptionTableMenu extends HTContainerMenu {
      */
     public List<Spell> getAlternativeSpells() {
         if(player != null && ! getCoreItem().isEmpty()){
+            ItemStack item = getCoreItem();
             return PlayerUtil.getLearnedSpells(player).stream().filter(spell -> {
-                if(isTalisman()){
-                    return matchTalisman(spell);
-                } else if(isValidArtifact()){
-                    return matchArtifact(spell);
+                if(isTalisman(item)){
+                    return matchSpell(spell);
+                } else if(isValidArtifact(item)){
+                    return matchSpell(spell);
                 }
                 return false;
             }).sorted(Comparator.comparing(spell -> spell.spell().getRegistryName())).toList();
@@ -140,21 +152,22 @@ public class InscriptionTableMenu extends HTContainerMenu {
     }
 
     public List<TriggerCondition> getAlternativeConditions() {
-        if(isValidArtifact()){
-            return TriggerConditions.registry().helper().values();
+        // 选择了法术才能选择条件。
+        if(this.selectedSpell != null && isValidArtifact(getCoreItem())){
+            // TODO 重复的触发条件不能出现在同一个物品上。
+            return TriggerConditions.registry().helper().values().stream()
+                    .filter(condition -> {
+                        return condition.compatWith(player, getCoreItem()) && this.selectedSpell.spell().compatWith(condition, selectedSpell.level());
+                    }).toList();
         }
         return List.of();
-    }
-
-    public boolean matchTalisman(Spell spell){
-        return spell.spell() instanceof TalismanSpell;
     }
 
     /**
      * @return 法术要能够兼容物品。
      */
-    public boolean matchArtifact(Spell spell) {
-        return !matchTalisman(spell) && spell.spell().getInscriptionType(spell.level()).compatWith(player, getCoreItem());
+    public boolean matchSpell(Spell spell) {
+        return spell.spell().getInscriptionType(spell.level()).compatWith(player, getCoreItem());
     }
 
     public Optional<Spell> getSelectedSpell() {
@@ -175,20 +188,26 @@ public class InscriptionTableMenu extends HTContainerMenu {
         this.createResult();
     }
 
-    public boolean isTalisman(){
-        return getCoreItem().is(IMMItemTags.EMPTY_TALISMANS);
+    public boolean isTalisman(ItemStack stack){
+        return stack.is(IMMItemTags.EMPTY_TALISMANS);
     }
 
     /**
      * @return 是否是可以绘制法术的法器（法术槽没满）。
      */
-    public boolean isValidArtifact(){
-        ItemStack stack = getCoreItem();
-        return !stack.isEmpty() && !isTalisman() && stack.getMaxStackSize() == 1 && !SpellManager.isSpellFull(stack);
+    public boolean isValidArtifact(ItemStack stack){
+        return !stack.isEmpty() && !isTalisman(stack) && stack.getMaxStackSize() == 1 && !SpellManager.isSpellFull(stack);
     }
 
     public ItemStack getCoreItem(){
         return this.inputSlots.getItem(0);
+    }
+
+    /**
+     * @return 是否有丹砂。
+     */
+    public boolean hasIngredient(){
+        return !this.inputSlots.getItem(1).isEmpty();
     }
 
     @Override

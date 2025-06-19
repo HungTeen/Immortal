@@ -83,7 +83,7 @@ public class IMMEntityProvider implements IEntityComponentProvider, IServerDataP
                 if(PlayerUtil.isCreativeOrSpectator(player)){
                     final CompoundTag nbt = entityAccessor.getServerData();
                     if(nbt.contains("Mana") && nbt.contains("MaxMana")){
-                        debugComponents.add(TipUtil.tooltip("mana", String.format("%.1f", nbt.getFloat("Mana")), String.format("%.1f", nbt.getFloat("MaxMana"))));
+                        debugComponents.add(TipUtil.tooltip("qi", String.format("%.1f", nbt.getFloat("Mana")), String.format("%.1f", nbt.getFloat("MaxMana"))));
                     }
                 }
                 if(! debugComponents.isEmpty()){

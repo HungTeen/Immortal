@@ -1,8 +1,9 @@
 package hungteen.imm.common.item.artifact;
 
+import hungteen.imm.api.artifact.ArtifactCategory;
 import hungteen.imm.api.artifact.ArtifactItem;
 import hungteen.imm.api.artifact.ArtifactRank;
-import hungteen.imm.common.item.IMMComponents;
+import hungteen.imm.common.cultivation.impl.ArtifactCategories;
 import hungteen.imm.util.ItemUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -24,12 +25,12 @@ public abstract class ArtifactItemImpl extends Item implements ArtifactItem {
     protected static final UUID ARTIFACT_ATTACK_SPEED_UUID = UUID.fromString("a0c22552-6166-11ed-9b6a-0242ac120002");
     protected static final UUID ARTIFACT_REACH_DISTANCE_UUID = UUID.fromString("a0c2296c-6166-11ed-9b6a-0242ac120002");
 
-    public ArtifactItemImpl(ArtifactRank realmType) {
-        this(new Properties().stacksTo(1), realmType);
+    public ArtifactItemImpl(Properties properties) {
+        super(properties);
     }
 
-    public ArtifactItemImpl(Properties properties, ArtifactRank realmType) {
-        super(properties.component(IMMComponents.ARTIFACT_RANK, realmType));
+    public static Properties artifactProperties(){
+        return new Properties().stacksTo(1);
     }
 
     @Override
@@ -39,7 +40,11 @@ public abstract class ArtifactItemImpl extends Item implements ArtifactItem {
 
     @Override
     public ArtifactRank getArtifactRealm(ItemStack stack) {
-        return this.components().getOrDefault(IMMComponents.ARTIFACT_RANK.get(), ArtifactRank.COMMON);
+        return ArtifactRank.COMMON;
     }
 
+    @Override
+    public ArtifactCategory getArtifactCategory() {
+        return ArtifactCategories.DEFAULT;
+    }
 }

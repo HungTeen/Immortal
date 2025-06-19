@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 public class MeditationSpell extends SpellTypeImpl {
 
     public MeditationSpell() {
-        super("meditation", property().maxLevel(1).mana(0).cd(600));
+        super("meditation", property().maxLevel(1).qi(0).cd(600));
     }
 
     @Override

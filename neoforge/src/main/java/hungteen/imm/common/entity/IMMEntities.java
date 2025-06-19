@@ -23,6 +23,7 @@ import hungteen.imm.common.entity.human.cultivator.WanderingCultivator;
 import hungteen.imm.common.entity.human.pillager.Chillager;
 import hungteen.imm.common.entity.misc.*;
 import hungteen.imm.common.entity.misc.formation.TeleportFormation;
+import hungteen.imm.common.entity.misc.talisman.SproutTalismanEntity;
 import hungteen.imm.common.entity.undead.QiSkeleton;
 import hungteen.imm.common.entity.undead.QiZombie;
 import hungteen.imm.common.item.IMMSpawnEggItem;
@@ -152,6 +153,13 @@ public interface IMMEntities {
     HTHolder<EntityType<SnowGolem>> SNOW_GOLEM = registerEntityType(SnowGolem::new, "snow_golem", MobCategory.CREATURE, b -> b.sized(0.7F, 1.9F).clientTrackingRange(8));
     HTHolder<EntityType<CreeperGolem>> CREEPER_GOLEM = registerEntityType(CreeperGolem::new, "creeper_golem", MobCategory.CREATURE, b -> b.sized(0.6F, 1.7F).clientTrackingRange(8));
     HTHolder<EntityType<CopperGolem>> COPPER_GOLEM = registerEntityType(CopperGolem::new, "copper_golem", MobCategory.CREATURE, b -> b.sized(0.8F, 1.1F).clientTrackingRange(8));
+
+    /* Talisman */
+
+    HTEntitySuit<SproutTalismanEntity> SPROUT_TALISMAN = registerNonLiving("sprout_talisman", () -> {
+        return EntityType.Builder.of(SproutTalismanEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(3).updateInterval(10);
+    });
+
 
     static void addEntityAttributes(EntityAttributeCreationEvent ev) {
         /* Creature */

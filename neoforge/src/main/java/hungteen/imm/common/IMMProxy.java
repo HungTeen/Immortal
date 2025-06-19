@@ -3,7 +3,7 @@ package hungteen.imm.common;
 import hungteen.htlib.platform.HTLibPlatformAPI;
 import hungteen.imm.api.spell.ElementReaction;
 import hungteen.imm.client.IMMClientProxy;
-import hungteen.imm.common.impl.manuals.SecretManual;
+import hungteen.imm.common.cultivation.manual.SecretManual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.InteractionHand;

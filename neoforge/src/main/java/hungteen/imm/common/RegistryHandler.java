@@ -22,9 +22,9 @@ import hungteen.imm.common.entity.ai.*;
 import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.entity.human.HumanSettings;
 import hungteen.imm.common.impl.codec.ElixirEffects;
-import hungteen.imm.common.impl.manuals.ScrollTypes;
-import hungteen.imm.common.impl.manuals.SecretManuals;
-import hungteen.imm.common.impl.manuals.requirments.RequirementTypes;
+import hungteen.imm.common.cultivation.impl.ScrollTypes;
+import hungteen.imm.common.cultivation.impl.SecretManuals;
+import hungteen.imm.common.cultivation.manual.requirement.RequirementTypes;
 import hungteen.imm.common.impl.registry.SectTypes;
 import hungteen.imm.common.impl.registry.TradeTypes;
 import hungteen.imm.common.item.*;
@@ -98,7 +98,6 @@ public class RegistryHandler {
         IMMStructureTypes.initialize(modBus);
         IMMStructurePieces.initialize(modBus);
         IMMFeatures.initialize(modBus);
-        IMMComponents.initialize(modBus);
         IMMAttachments.initialize(modBus);
         IMMMapDecorationTypes.initialize(modBus);
     }

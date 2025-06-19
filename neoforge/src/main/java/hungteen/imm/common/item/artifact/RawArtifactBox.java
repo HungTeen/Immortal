@@ -24,7 +24,7 @@ public class RawArtifactBox extends ArtifactItemImpl {
     private static final String SPIRITUAL_VALUE_REQUIRED = "SpiritualValueRequired";
 
     public RawArtifactBox() {
-        super(ArtifactRank.UNKNOWN);
+        super(artifactProperties());
     }
 
 //    @Override

@@ -9,7 +9,7 @@ import hungteen.imm.client.gui.screen.meditation.SelectRootScreen;
 import hungteen.imm.client.render.level.ReactionRenderer;
 import hungteen.imm.client.util.ClientUtil;
 import hungteen.imm.common.IMMProxy;
-import hungteen.imm.common.impl.manuals.SecretManual;
+import hungteen.imm.common.cultivation.manual.SecretManual;
 import hungteen.imm.common.network.SmithingPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

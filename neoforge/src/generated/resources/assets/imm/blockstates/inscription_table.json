@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "imm:block/inscription_table"
+    }
+  }
+}

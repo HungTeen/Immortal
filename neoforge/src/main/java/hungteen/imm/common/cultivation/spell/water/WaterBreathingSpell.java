@@ -13,7 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 public class WaterBreathingSpell extends SpellTypeImpl {
 
     public WaterBreathingSpell() {
-        super("water_breathing", property().maxLevel(1).mana(60).cd(300));
+        super("water_breathing", property().maxLevel(1).qi(60).cd(300));
     }
 
     @Override

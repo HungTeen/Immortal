@@ -45,7 +45,7 @@ public interface SpellType extends SimpleEntry {
 
     /**
      * 施放此法术需要消耗多少灵力。
-     * @return How many spiritual mana will cost, only consider the start stage.
+     * @return How many spiritual qi will cost, only consider the start stage.
      */
     int getConsumeQi();
 
@@ -118,6 +118,13 @@ public interface SpellType extends SimpleEntry {
      * @return 绘制类型。
      */
     InscriptionType getInscriptionType(int level);
+
+    /**
+     * @return 检查符咒是否可以与触发条件兼容。
+     */
+    default boolean compatWith(TriggerCondition condition, int level){
+        return true;
+    }
 
     /**
      * 获取各个等级的法术描述。

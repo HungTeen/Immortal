@@ -4,6 +4,7 @@ import hungteen.htlib.api.registry.HTCustomRegistry;
 import hungteen.htlib.common.impl.registry.HTRegistryManager;
 import hungteen.imm.api.cultivation.Element;
 import hungteen.imm.api.spell.SpellType;
+import hungteen.imm.api.spell.TalismanSpell;
 import hungteen.imm.common.cultivation.spell.basic.*;
 import hungteen.imm.common.cultivation.spell.common.FlyWithItemSpell;
 import hungteen.imm.common.cultivation.spell.common.PickupBlockSpell;
@@ -18,6 +19,7 @@ import hungteen.imm.common.cultivation.spell.fire.LavaBreathingSpell;
 import hungteen.imm.common.cultivation.spell.metal.CriticalHitSpell;
 import hungteen.imm.common.cultivation.spell.metal.MetalMendingSpell;
 import hungteen.imm.common.cultivation.spell.metal.SharpnessSpell;
+import hungteen.imm.common.cultivation.spell.talisman.*;
 import hungteen.imm.common.cultivation.spell.water.WaterBreathingSpell;
 import hungteen.imm.common.cultivation.spell.wood.*;
 import hungteen.imm.util.Util;
@@ -62,18 +64,20 @@ public interface SpellTypes {
     /* 木系法术 - Wood Spell */
 
     SpellType LEVITATION = register(new LevitationSpell());
-    SpellType SPROUT = register(new SproutSpell());
-    SpellType WITHER = register(new WitherSpell());
+    TalismanSpell TWISTING_VINE = registerTalisman(new TwistingVineSpell());
+    TalismanSpell SPROUT = registerTalisman(new SproutSpell());
     SpellType WOOD_HEALING = register(new WoodHealingSpell());
 
     /* 水系法术 - Water Spell */
 
     SpellType WATER_BREATHING = register(new WaterBreathingSpell());
+    TalismanSpell FALLING_ICE = registerTalisman(new FallingIceSpell());
 
     /* 火系法术 - Fire Spell */
 
     SpellType BURNING = register(new BurningSpell());
     SpellType LAVA_BREATHING = register(new LavaBreathingSpell());
+    TalismanSpell FIREBALL = registerTalisman(new FireballSpell());
     SpellType IGNITION = register(new IgnitionSpell());
 
     /* 土系法术 - Earth Spell */
@@ -81,6 +85,14 @@ public interface SpellTypes {
     //    public static final ISpellType EARTH_EVADING = initialize(new EarthEvadingSpell());
     SpellType CRYSTAL_EXPLOSION = register(new CrystalExplosionSpell());
     SpellType CRYSTAL_HEART = register(new CrystalHeartSpell());
+
+    /* 业系法术 - Spirit Spell */
+
+    SpellType WITHER = register(new WitherSpell());
+
+    /* 雷系法术 - Lightning Spell */
+
+    TalismanSpell LIGHTNING = registerTalisman(new LightningSpell());
 
     /* 元素精通 - Element Mastery */
 
@@ -90,6 +102,10 @@ public interface SpellTypes {
     SpellType FIRE_MASTERY = register(new ElementalMasterySpell(Element.FIRE));
     SpellType EARTH_MASTERY = register(new ElementalMasterySpell(Element.EARTH));
     SpellType SPIRIT_MASTERY = register(new ElementalMasterySpell(Element.SPIRIT));
+
+    /* 多元素法术 */
+
+    TalismanSpell EARTH_FANG = registerTalisman(new EarthFangTalisman());
 
     //    public static final ISpellType ADVANCE_CONSCIOUSNESS = new SpellType("advance_consciousness", 7, 50, 500,
 //            lvl -> {
@@ -106,6 +122,16 @@ public interface SpellTypes {
 
     static SpellType register(SpellType spellType) {
         return registry().register(spellType.getLocation(), spellType);
+    }
+
+    static TalismanSpell registerTalisman(TalismanSpell spellType) {
+        SpellType spell = registry().register(spellType.getLocation(), spellType);
+        if(spell instanceof TalismanSpell talismanSpell){
+            return talismanSpell;
+        }
+        throw new RuntimeException(
+                "SpellType " + spellType.getLocation() + " is not a TalismanSpell, please check your code."
+        );
     }
 
 }

@@ -39,7 +39,7 @@ public abstract class MeleeAttackItem extends ArtifactItemImpl {
 
     public MeleeAttackItem(IMeleeAttackType meleeAttackType, ArtifactTier tier) {
         super(new Properties().stacksTo(1).durability(tier.getUses())
-                .attributes(create(meleeAttackType, tier)), tier.getArtifactRealm());
+                .attributes(create(meleeAttackType, tier)));
         this.meleeAttackType = meleeAttackType;
         this.attackDamage = tier.getAttackDamage() + this.meleeAttackType.getBaseAttackDamage();
         this.attackSpeed = tier.getAttackSpeed() + this.meleeAttackType.getBaseAttackSpeed();

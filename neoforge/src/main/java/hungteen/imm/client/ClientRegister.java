@@ -12,6 +12,7 @@ import hungteen.imm.client.gui.overlay.SpellOverlay;
 import hungteen.imm.client.gui.screen.InscriptionTableScreen;
 import hungteen.imm.client.gui.tooltip.ClientArtifactToolTip;
 import hungteen.imm.client.gui.tooltip.ClientManualToolTip;
+import hungteen.imm.client.gui.tooltip.ClientTalismanToolTip;
 import hungteen.imm.client.model.IMMModelLayers;
 import hungteen.imm.client.model.bake.IMMBakeModels;
 import hungteen.imm.client.model.entity.BiFangModel;
@@ -33,19 +34,17 @@ import hungteen.imm.client.render.entity.golem.CopperGolemRender;
 import hungteen.imm.client.render.entity.golem.CreeperGolemRender;
 import hungteen.imm.client.render.entity.golem.IronGolemRender;
 import hungteen.imm.client.render.entity.golem.SnowGolemRender;
-import hungteen.imm.client.render.entity.misc.ElementCrystalRender;
-import hungteen.imm.client.render.entity.misc.FlyingItemEntityRender;
-import hungteen.imm.client.render.entity.misc.ThrowingItemEntityRender;
-import hungteen.imm.client.render.entity.misc.TornadoRender;
+import hungteen.imm.client.render.entity.misc.*;
 import hungteen.imm.client.render.entity.spirit.*;
 import hungteen.imm.common.block.plants.GourdGrownBlock;
 import hungteen.imm.common.entity.IMMEntities;
 import hungteen.imm.common.item.blockitem.GourdBlockItem;
 import hungteen.imm.common.item.elixir.ElixirItem;
-import hungteen.imm.common.item.talisman.DurationTalisman;
+import hungteen.imm.common.item.talisman.DurationTalismanItem;
 import hungteen.imm.common.menu.IMMMenuTypes;
 import hungteen.imm.common.menu.tooltip.ArtifactToolTip;
 import hungteen.imm.common.menu.tooltip.ManualToolTip;
+import hungteen.imm.common.menu.tooltip.TalismanToolTip;
 import hungteen.imm.util.BlockUtil;
 import hungteen.imm.util.Util;
 import net.minecraft.client.model.geom.LayerDefinitions;
@@ -106,6 +105,9 @@ public class ClientRegister {
         event.registerEntityRenderer(IMMEntities.CREEPER_GOLEM.get(), CreeperGolemRender::new);
         event.registerEntityRenderer(IMMEntities.COPPER_GOLEM.get(), CopperGolemRender::new);
 
+        /* Talisman */
+        event.registerEntityRenderer(IMMEntities.SPROUT_TALISMAN.getEntityType(), RangeEffectTalismanRender::new);
+
         /* Block Entity */
 //        event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);
     }
@@ -160,7 +162,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event){
-        event.registerItem(new TalismanExtension(), ItemHelper.get().filterValues(DurationTalisman.class::isInstance).toArray(Item[]::new));
+        event.registerItem(new TalismanExtension(), ItemHelper.get().filterValues(DurationTalismanItem.class::isInstance).toArray(Item[]::new));
     }
 
     @SubscribeEvent
@@ -205,6 +207,7 @@ public class ClientRegister {
 //        event.initialize(ElementToolTip.class, ClientElementToolTip::new);
         event.register(ArtifactToolTip.class, ClientArtifactToolTip::new);
         event.register(ManualToolTip.class, ClientManualToolTip::new);
+        event.register(TalismanToolTip.class, ClientTalismanToolTip::new);
     }
 
     @SubscribeEvent

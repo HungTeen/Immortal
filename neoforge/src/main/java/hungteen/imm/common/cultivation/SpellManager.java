@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -82,12 +83,18 @@ public class SpellManager {
         PlayerUtil.setPreparingSpell(player, spell);
     }
 
+    public static ISpellTrigger defaultTrigger(SpellType spellType){
+        return context -> spellType.checkActivate(context);
+    }
+
     /**
      * 主动通过按键释放法术。
      */
     public static void activateSpell(Player player) {
         final Optional<Spell> instance = canActivateSpell(player, null, true);
-        instance.ifPresent(spell -> activateSpell(player, spell, new SpellCastContext(player, spell)));
+        instance.ifPresent(spell -> {
+            activateSpell(player, spell, new SpellCastContext(player, spell), defaultTrigger(spell.spell()));
+        });
     }
 
     /**
@@ -95,24 +102,61 @@ public class SpellManager {
      */
     public static void activateRandomSpell(LivingEntity entity, Predicate<SpellType> predicate) {
         final Optional<Spell> instance = getMatchSpellRandomly(entity, predicate);
-        instance.ifPresent(spell -> activateSpell(entity, spell, new SpellCastContext(entity, spell)));
+        instance.ifPresent(spell -> {
+            SpellCastContext context = new SpellCastContext(entity, spell);
+            context.setSendTip(false);
+            activateSpell(entity, spell, context, defaultTrigger(spell.spell()));
+        });
     }
 
     /**
      * 有些被选择的法术可以被动释放法术，此处进行通用检查。
      */
-    public static void activateSpell(LivingEntity entity, @NotNull SpellType spellType) {
+    public static void activateSpell(LivingEntity entity, @NotNull SpellType spellType, Consumer<SpellCastContext> consumer){
+        activateSpell(entity, spellType, defaultTrigger(spellType), consumer);
+    }
+
+    /**
+     * 有些被选择的法术可以被动释放法术，此处进行通用检查。
+     */
+    public static void activateSpell(LivingEntity entity, @NotNull SpellType spellType, ISpellTrigger spellTrigger){
+        activateSpell(entity, spellType, spellTrigger, context -> {});
+    }
+
+    /**
+     * 有些被选择的法术可以被动释放法术，此处进行通用检查。
+     */
+    public static void activateSpell(LivingEntity entity, @NotNull SpellType spellType, ISpellTrigger spellTrigger, Consumer<SpellCastContext> consumer) {
         final Optional<Spell> instance = canActivateSpell(entity, spellType, false);
-        instance.ifPresent(spell -> activateSpell(entity, spell, new SpellCastContext(entity, spell)));
+        instance.ifPresent(spell -> {
+            SpellCastContext context = new SpellCastContext(entity, spell);
+            context.setSendTip(false);
+            consumer.accept(context);
+            activateSpell(entity, spell, context, spellTrigger);
+        });
     }
 
     /**
      * 检查法器的法术槽位的触发情况。
      */
     public static void activateSpell(LivingEntity entity, TriggerCondition condition) {
+        activateSpell(entity, condition, context -> {});
+    }
+
+    /**
+     * 检查法器的法术槽位的触发情况。
+     */
+    public static void activateSpell(LivingEntity entity, TriggerCondition condition, Consumer<SpellCastContext> consumer) {
         condition.getValidSlots().forEach(slot -> {
-            activateSpell(entity, condition, entity.getItemBySlot(slot));
+            activateSpell(entity, condition, entity.getItemBySlot(slot), consumer);
         });
+    }
+
+    /**
+     * 检查指定法器的法术槽位的触发情况。
+     */
+    public static boolean activateSpell(LivingEntity entity, TriggerCondition condition, ItemStack stack){
+        return activateSpell(entity, condition, stack, context -> {});
     }
 
     /**
@@ -120,26 +164,32 @@ public class SpellManager {
      * @param entity 触发生物。
      * @param condition 触发条件。
      * @param stack 触发的物品。
+     * @param consumer 补充上下文信息。
      */
-    public static void activateSpell(LivingEntity entity, TriggerCondition condition, ItemStack stack) {
+    public static boolean activateSpell(LivingEntity entity, TriggerCondition condition, ItemStack stack, Consumer<SpellCastContext> consumer) {
         if(getMaxSpellSlot(stack) > 0){
             for(SpellInstance instance : getSpellsInItem(stack)){
                 if(instance.condition() == condition){
-                    activateSpell(entity, instance.spell(), new SpellCastContext(entity, instance.spell().level(), condition, stack));
-                    return;
+                    SpellCastContext context = new SpellCastContext(entity, instance.spell().level(), condition, stack);
+                    consumer.accept(context);
+                    return activateSpell(entity, instance.spell(), context, defaultTrigger(instance.spell().spell()));
                 }
             }
         }
+        return false;
     }
 
     /**
      * 被动释放法术都会运行这里。
      * @param entity 释放法术的生物。
      * @param spell 被释放的法术。
+     * @param context 法术释放的上下文。
+     * @param spellTrigger 法术触发器（用于被动法术）。
+     * @return 法术是否释放成功。
      */
-    private static void activateSpell(LivingEntity entity, Spell spell, SpellCastContext context) {
-        if (!EventUtil.post(new ActivateSpellEvent.Pre(entity, spell))) {
-            final boolean success = spell.spell().checkActivate(context);
+    private static boolean activateSpell(LivingEntity entity, Spell spell, SpellCastContext context, ISpellTrigger spellTrigger) {
+        if (!EventUtil.post(new ActivateSpellEvent.Pre(entity, spell, context))) {
+            final boolean success = spellTrigger.checkActivate(context);
             if (success) {
                 // 播放触发音效。
                 spell.spell().getTriggerSound().ifPresent(sound -> {
@@ -147,14 +197,16 @@ public class SpellManager {
                         PlayerHelper.playClientSound(player, sound);
                     }
                 });
-                postActivateSpell(entity, spell);
+                postActivateSpell(entity, spell, context);
             } else if (entity instanceof Player player) {
                 PlayerUtil.cooldownSpell(player, spell.spell(), FAIL_CD);
             }
+            return success;
         }
+        return false;
     }
 
-    private static void postActivateSpell(LivingEntity entity, Spell spell) {
+    private static void postActivateSpell(LivingEntity entity, Spell spell, SpellCastContext context) {
         if (entity instanceof Player player) {
             PlayerUtil.cooldownSpell(player, spell.spell(), getSpellCDTime(player, spell.spell()));
             costMana(player, spell.spell().getConsumeQi());
@@ -162,7 +214,7 @@ public class SpellManager {
             caster.setCoolDown(spell.spell().getCooldown());
             caster.addQiAmount(-spell.spell().getConsumeQi());
         }
-        EventUtil.post(new ActivateSpellEvent.Post(entity, spell));
+        EventUtil.post(new ActivateSpellEvent.Post(entity, spell, context));
     }
 
     public static Optional<Spell> canActivateSpell(LivingEntity entity, @Nullable SpellType targetSpell, boolean sendTip) {
@@ -317,7 +369,7 @@ public class SpellManager {
         if(stack.getItem() instanceof ArtifactItem artifactItem){
             maxSlot = artifactItem.getMaxSpellSlot(stack);
         }
-        if(stack.is(Tags.Items.ENCHANTABLES)){
+        if(stack.is(Tags.Items.ENCHANTABLES) || stack.is(Tags.Items.TOOLS)){
             maxSlot = 1;
         }
         if(maxSlot != 0){
@@ -349,6 +401,10 @@ public class SpellManager {
         return TipUtil.tooltip("spell_cd", Mth.ceil(cd * 1.0F / 20));
     }
 
+    public static MutableComponent spellName(Spell spell){
+        return spellName(spell.spell(), spell.level());
+    }
+
     public static MutableComponent spellName(SpellType spell, int level) {
         if (spell.getMaxLevel() == 1) {
             return spell.getComponent();
@@ -359,7 +415,7 @@ public class SpellManager {
     @FunctionalInterface
     public interface ISpellTrigger {
 
-        boolean checkActivate(SpellCastContext context);
+        boolean checkActivate( SpellCastContext context);
 
     }
 

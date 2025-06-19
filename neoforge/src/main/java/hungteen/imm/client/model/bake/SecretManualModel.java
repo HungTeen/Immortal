@@ -1,7 +1,7 @@
 package hungteen.imm.client.model.bake;
 
 import hungteen.htlib.client.util.ClientHelper;
-import hungteen.imm.common.impl.manuals.SecretManual;
+import hungteen.imm.common.cultivation.manual.SecretManual;
 import hungteen.imm.common.item.SecretManualItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

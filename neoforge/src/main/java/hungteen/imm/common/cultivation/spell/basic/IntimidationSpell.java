@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 public class IntimidationSpell extends SpellTypeImpl {
 
     public IntimidationSpell() {
-        super("intimidation", property(SpellUsageCategory.CUSTOM_BUFF).maxLevel(1).cd(300).mana(10));
+        super("intimidation", property(SpellUsageCategory.CUSTOM_BUFF).maxLevel(1).cd(300).qi(10));
     }
 
     public static boolean canUseOn(LivingEntity owner, LivingEntity target){
@@ -46,7 +46,7 @@ public class IntimidationSpell extends SpellTypeImpl {
             if(context.owner() instanceof Player){
                 final double range = CultivationManager.getSpiritRange(context.owner());
                 if(context.owner().distanceTo(context.target()) > range){
-                    sendTip(context.owner(), TARGET_TOO_FAR_AWAY);
+                    sendTip(context, TARGET_TOO_FAR_AWAY);
                     return false;
                 }
             }
@@ -66,11 +66,11 @@ public class IntimidationSpell extends SpellTypeImpl {
                 if(context.target() instanceof LivingEntity living && living.getHealth() > 1) {
                     context.target().hurt(DamageUtil.spirit(context.owner()), 1F);
                 }
-                sendTip(context.owner(), ONLY_VALID_FOR_LOW_REALM);
+                sendTip(context, ONLY_VALID_FOR_LOW_REALM);
                 return false;
             }
         } else {
-            sendTip(context.owner(), NO_TARGET);
+            sendTip(context, NO_TARGET);
         }
         return true;
     }

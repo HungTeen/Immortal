@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 public class WitherSpell extends RequireEmptyHandSpell {
 
     public WitherSpell() {
-        super("wither", property(SpellUsageCategory.TRIGGERED_PASSIVE).maxLevel(1).mana(50).cd(450));
+        super("wither", property(SpellUsageCategory.TRIGGERED_PASSIVE).maxLevel(1).qi(50).cd(450));
     }
 
     @Override

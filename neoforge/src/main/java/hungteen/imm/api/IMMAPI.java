@@ -107,7 +107,7 @@ public interface IMMAPI {
      * 获取玩家灵气值。
      *
      * @param player query player.
-     * @return how many spiritual mana in player.
+     * @return how many spiritual qi in player.
      */
     default float getSpiritualMana(Player player){
         return 0F;

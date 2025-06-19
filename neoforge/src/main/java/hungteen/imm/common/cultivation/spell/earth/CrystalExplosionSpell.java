@@ -11,7 +11,7 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class CrystalExplosionSpell extends SpellTypeImpl {
 
     public CrystalExplosionSpell() {
-        super("crystal_explosion", property().maxLevel(1).mana(100).cd(400));
+        super("crystal_explosion", property().maxLevel(1).qi(100).cd(400));
     }
 
     @Override

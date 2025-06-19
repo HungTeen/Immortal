@@ -2,6 +2,7 @@ package hungteen.imm.common.cultivation.spell;
 
 import hungteen.htlib.util.helper.PlayerHelper;
 import hungteen.imm.api.spell.InscriptionType;
+import hungteen.imm.api.spell.SpellCastContext;
 import hungteen.imm.api.spell.SpellType;
 import hungteen.imm.api.spell.SpellUsageCategory;
 import hungteen.imm.common.IMMSounds;
@@ -14,7 +15,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ public abstract class SpellTypeImpl implements SpellType {
     private static int id = 0;
     private final String name;
     private final int maxLevel;
-    private final int consumeMana;
+    private final int consumeQi;
     private final int cooldown;
     private final boolean canTrigger;
     private final int priority;
@@ -43,13 +43,13 @@ public abstract class SpellTypeImpl implements SpellType {
     private final ResourceLocation resourceLocation;
 
     public SpellTypeImpl(String name, SpellProperty property) {
-        this(name, property.maxLevel, property.consumeMana, property.cooldown, property.canTrigger, id ++, property.usageCategory, property.inscriptionType);
+        this(name, property.maxLevel, property.consumeQi, property.cooldown, property.canTrigger, id ++, property.usageCategory, property.inscriptionType);
     }
 
-    private SpellTypeImpl(String name, int maxLevel, int consumeMana, int cooldown, boolean canTrigger, int priority, SpellUsageCategory category, InscriptionType inscriptionType) {
+    private SpellTypeImpl(String name, int maxLevel, int consumeQi, int cooldown, boolean canTrigger, int priority, SpellUsageCategory category, InscriptionType inscriptionType) {
         this.name = name;
         this.maxLevel = maxLevel;
-        this.consumeMana = consumeMana;
+        this.consumeQi = consumeQi;
         this.cooldown = cooldown;
         this.canTrigger = canTrigger;
         this.priority = priority;
@@ -58,8 +58,8 @@ public abstract class SpellTypeImpl implements SpellType {
         this.resourceLocation = Util.get().texture("spell/" + this.name);
     }
 
-    public static void sendTip(LivingEntity owner, String msg){
-        if(owner instanceof Player player){
+    public static void sendTip(SpellCastContext context, String msg){
+        if(context.sendTip() && context.owner() instanceof Player player){
             PlayerHelper.sendTipTo(player, TipUtil.info("spell." + msg).withStyle(ChatFormatting.RED));
         }
     }
@@ -90,7 +90,7 @@ public abstract class SpellTypeImpl implements SpellType {
 
     @Override
     public int getConsumeQi() {
-        return this.consumeMana;
+        return this.consumeQi;
     }
 
     @Override
@@ -157,6 +157,10 @@ public abstract class SpellTypeImpl implements SpellType {
         return property(SpellUsageCategory.PLAYER_ONLY);
     }
 
+    public static SpellProperty property(InscriptionType inscriptionType){
+        return property(SpellUsageCategory.PLAYER_ONLY, inscriptionType);
+    }
+
     public static SpellProperty property(SpellUsageCategory category){
         return property(category, InscriptionTypes.NONE);
     }
@@ -170,7 +174,7 @@ public abstract class SpellTypeImpl implements SpellType {
         private final SpellUsageCategory usageCategory;
         private final InscriptionType inscriptionType;
         private int maxLevel = 1;
-        private int consumeMana = 0;
+        private int consumeQi = 0;
         private int cooldown = 0;
         private boolean canTrigger = true;
         private SpellSortCategory sortCategory = SpellSortCategory.MISC;
@@ -185,8 +189,8 @@ public abstract class SpellTypeImpl implements SpellType {
             return this;
         }
 
-        public SpellProperty mana(int mana){
-            this.consumeMana = mana;
+        public SpellProperty qi(int mana){
+            this.consumeQi = mana;
             return this;
         }
 
