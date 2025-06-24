@@ -100,10 +100,11 @@ public class SpellOverlay {
             ClientUtil.push("renderPreparedSpell");
             List<SpellType> spells = new ArrayList<>();
             final SpellType mainSpell = PlayerUtil.getPreparingSpell(ClientUtil.player());
-            if(mainSpell != null) {
-                spells.add(mainSpell);
-            }
             spells.addAll(PlayerUtil.getCooldownSpell(ClientUtil.player()));
+            if(mainSpell != null) {
+                spells.remove(mainSpell);
+                spells.addFirst(mainSpell);
+            }
 //            for(int i = 0; i < Constants.SPELL_CIRCLE_SIZE; ++ i){
 //                final SpellType curSpell = PlayerUtil.getSpellAt(ClientUtil.player(), i);
 //                if(curSpell != null && PlayerUtil.isSpellOnCoolDown(ClientUtil.player(), curSpell) && !spells.contains(curSpell)){

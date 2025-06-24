@@ -86,7 +86,7 @@ public class ClientUtil {
     }
 
     public static boolean canRenderOverlay() {
-        return screen() == null && ! option().hideGui && level() != null && player() != null && ! player().isSpectator();
+        return ! option().hideGui && level() != null && player() != null && ! player().isSpectator();
     }
 
 }

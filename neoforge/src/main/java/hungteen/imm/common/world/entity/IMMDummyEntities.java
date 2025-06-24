@@ -4,6 +4,7 @@ import hungteen.htlib.common.world.entity.DummyEntity;
 import hungteen.htlib.common.world.entity.DummyEntityType;
 import hungteen.htlib.common.world.entity.HTLibDummyEntities;
 import hungteen.imm.common.world.entity.trial.MortalityTrial;
+import hungteen.imm.common.world.entity.trial.QiRefiningTrial;
 import hungteen.imm.util.Util;
 
 /**
@@ -14,6 +15,7 @@ import hungteen.imm.util.Util;
 public interface IMMDummyEntities {
 
     DummyEntityType<MortalityTrial> MORTALITY_TRIAL = register("mortality_trial", MortalityTrial::new);
+    DummyEntityType<QiRefiningTrial> QI_REFINING_TRIAL = register("qi_refining", QiRefiningTrial::new);
 
     /**
      * Load the class.

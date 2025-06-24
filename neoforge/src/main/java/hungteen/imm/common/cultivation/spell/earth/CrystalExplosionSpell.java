@@ -1,7 +1,13 @@
 package hungteen.imm.common.cultivation.spell.earth;
 
+import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.spell.SpellCastContext;
+import hungteen.imm.common.cultivation.InscriptionTypes;
 import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
+import hungteen.imm.common.entity.misc.ElementAmethyst;
+import net.minecraft.world.phys.AABB;
+
+import java.util.List;
 
 /**
  * @program Immortal
@@ -11,24 +17,20 @@ import hungteen.imm.common.cultivation.spell.SpellTypeImpl;
 public class CrystalExplosionSpell extends SpellTypeImpl {
 
     public CrystalExplosionSpell() {
-        super("crystal_explosion", property().maxLevel(1).qi(100).cd(400));
+        super("crystal_explosion", property(InscriptionTypes.ANY).maxLevel(1).qi(100).cd(400));
     }
 
     @Override
     public boolean checkActivate(SpellCastContext context) {
-        return super.checkActivate(context);
+        final AABB aabb = EntityHelper.getEntityAABB(context.owner(), 8F, 3F);
+        final List<ElementAmethyst> amethysts = EntityHelper.getPredicateEntities(context.owner(), aabb, ElementAmethyst.class, EntityHelper::isEntityValid);
+        if (!amethysts.isEmpty()) {
+            amethysts.forEach(ElementAmethyst::explode);
+            return true;
+        } else {
+            sendTip(context, NO_CRYSTAL_AROUND);
+            return false;
+        }
     }
 
-//    @Override
-//    public boolean checkActivate(LivingEntity owner, HTHitResult result, int level) {
-//        final AABB aabb = EntityHelper.getEntityAABB(owner, 8F, 3F);
-//        final List<ElementAmethyst> amethysts = EntityHelper.getPredicateEntities(owner, aabb, ElementAmethyst.class, EntityHelper::isEntityValid);
-//        if (!amethysts.isEmpty()) {
-//            amethysts.forEach(ElementAmethyst::explode);
-//            return true;
-//        } else {
-//            this.sendTip(owner, "no_crystal_around");
-//            return false;
-//        }
-//    }
 }

@@ -22,10 +22,10 @@ public interface TriggerConditions {
 
     HTCustomRegistry<TriggerCondition> SPELL_TYPES = HTRegistryManager.custom(Util.prefix("trigger_condition"));
 
-    TriggerCondition ATTACK = register("attack", TriggerCondition.MAIN_HAND);
+    TriggerCondition ATTACK = register("attack", TriggerCondition.HANDS);
     TriggerCondition TOSS = register("toss", TriggerCondition.EMPTY);
     TriggerCondition HURT = register("hurt", TriggerCondition.ALL);
-    TriggerCondition BREAK = register("break", TriggerCondition.MAIN_HAND);
+    TriggerCondition BREAK = register("break", TriggerCondition.HANDS);
     TriggerCondition RIGHT_CLICK = register("right_click", TriggerCondition.EMPTY);
     TriggerCondition SHOOT = register("shoot", TriggerCondition.HANDS);
     TriggerCondition IMPACT = register("impact", TriggerCondition.ARMOR);

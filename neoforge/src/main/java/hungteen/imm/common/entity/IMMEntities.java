@@ -47,8 +47,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * @program Immortal
  * @author HungTeen
+ * @program Immortal
  * @create 2022-10-02 15:01
  **/
 public interface IMMEntities {
@@ -84,6 +84,7 @@ public interface IMMEntities {
                         .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
             }, builder -> builder
                     .attribute(() -> HumanLikeEntity.createAttributes().build())
+                    .noEgg()
     );
     HTEntitySuit<MortalityPlayer> MORTALITY_PLAYER = registerLiving("mortality_player", () -> {
                 return EntityType.Builder.of(MortalityPlayer::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.95F)
@@ -93,9 +94,9 @@ public interface IMMEntities {
                     .spawnEgg(ColorHelper.BLACK.rgb(), ColorHelper.WHITE.rgb())
     );
     HTEntitySuit<WanderingCultivator> WANDERING_CULTIVATOR = registerLiving("wandering_cultivator", () -> {
-        return EntityType.Builder.of(WanderingCultivator::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.8F)
-                .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
-        }, builder -> builder
+                return EntityType.Builder.of(WanderingCultivator::new, IMMMobCategory.HUMAN.getValue()).sized(0.6F, 1.8F)
+                        .eyeHeight(1.62F).vehicleAttachment(Player.DEFAULT_VEHICLE_ATTACHMENT).clientTrackingRange(8);
+            }, builder -> builder
                     .attribute(() -> HumanLikeEntity.createAttributes().build())
                     .spawnEgg(ColorHelper.DYE_WHITE.rgb(), ColorHelper.BLACK.rgb())
                     .spawn(SpawnPlacementTypes.ON_GROUND)
@@ -132,12 +133,12 @@ public interface IMMEntities {
     /* Undead */
 
     HTEntitySuit<QiZombie> QI_ZOMBIE = registerLiving("qi_zombie", () -> {
-        return EntityType.Builder.of(QiZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
-                .eyeHeight(1.74F).passengerAttachments(2.0125F).ridingOffset(-0.7F).clientTrackingRange(8);
-    }, builder -> builder
-            .attribute(() -> QiZombie.createAttributes().build())
-            .spawnEgg(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN)
-            .spawn(SpawnPlacementTypes.ON_GROUND)
+                return EntityType.Builder.of(QiZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
+                        .eyeHeight(1.74F).passengerAttachments(2.0125F).ridingOffset(-0.7F).clientTrackingRange(8);
+            }, builder -> builder
+                    .attribute(() -> QiZombie.createAttributes().build())
+                    .spawnEgg(Colors.ZOMBIE_AQUA, Colors.ZOMBIE_SKIN)
+                    .spawn(SpawnPlacementTypes.ON_GROUND)
     );
     HTEntitySuit<QiSkeleton> QI_SKELETON = registerLiving("lingerer", () -> {
                 return EntityType.Builder.of(QiSkeleton::new, MobCategory.MONSTER).sized(0.6F, 1.9F)
@@ -257,7 +258,7 @@ public interface IMMEntities {
         MAP.put(object, name);
         return object;
     }
-    
+
     static HTVanillaRegistry<EntityType<?>> registry() {
         return ENTITY_TYPES;
     }

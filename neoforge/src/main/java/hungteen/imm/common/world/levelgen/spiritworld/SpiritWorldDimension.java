@@ -55,6 +55,7 @@ public class SpiritWorldDimension {
                     EntityUtil.create(level, IMMEntities.REALITY_PLAYER.get(), seat.blockPosition(), MobSpawnType.EVENT).ifPresent(realityPlayer -> {
                         realityPlayer.startRiding(seat);
                         realityPlayer.setOwner(player);
+                        realityPlayer.setSpirit(true);
                         level.addFreshEntity(realityPlayer);
                     });
                 }

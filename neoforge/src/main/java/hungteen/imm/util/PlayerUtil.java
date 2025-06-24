@@ -268,7 +268,7 @@ public class PlayerUtil {
      * 移除客户端的冷却法术显示。
      */
     public static void removeCooldownSpell(Player player, SpellType spell) {
-        setData(player, data -> data.getSpellData().addCooldownSpell(spell));
+        setData(player, data -> data.getSpellData().removeCooldownSpell(spell));
     }
 
     /**

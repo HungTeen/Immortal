@@ -6,10 +6,12 @@ import hungteen.imm.api.cultivation.ExperienceType;
 import hungteen.imm.api.cultivation.RealmType;
 import hungteen.imm.common.IMMConfigs;
 import hungteen.imm.common.capability.player.IMMPlayerData;
+import hungteen.imm.common.cultivation.realm.MultiRealm;
 import hungteen.imm.common.entity.effect.IMMEffects;
 import hungteen.imm.common.event.events.BreakThroughEvent;
 import hungteen.imm.common.world.entity.trial.BreakThroughTrial;
 import hungteen.imm.common.world.entity.trial.MortalityTrial;
+import hungteen.imm.common.world.entity.trial.QiRefiningTrial;
 import hungteen.imm.common.world.levelgen.spiritworld.SpiritWorldDimension;
 import hungteen.imm.util.EventUtil;
 import hungteen.imm.util.LevelUtil;
@@ -42,6 +44,13 @@ public class CultivationManager {
 
     static {
         BREAK_THROUGH_MAP.put(RealmTypes.MORTALITY, MortalityTrial::new);
+        put(RealmTypes.QI_REFINING, QiRefiningTrial::new);
+    }
+
+    public static void put(MultiRealm multiRealm, BreakThroughTrial.Factory factory){
+        for (RealmType realm : multiRealm.getRealms()) {
+            BREAK_THROUGH_MAP.put(realm, factory);
+        }
     }
 
     public static float getMaxExperience(Player player) {

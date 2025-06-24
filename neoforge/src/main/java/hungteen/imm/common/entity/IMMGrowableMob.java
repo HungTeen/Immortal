@@ -42,9 +42,7 @@ public abstract class IMMGrowableMob extends IMMMob {
     @Override
     public void serverFinalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance, MobSpawnType spawnType) {
         super.serverFinalizeSpawn(accessor, difficultyInstance, spawnType);
-        if(spawnType != MobSpawnType.SPAWN_EGG){
-            this.onAgeChangeTo(getInitialAge(accessor, difficultyInstance), true);
-        }
+        this.onAgeChangeTo(getInitialAge(accessor, difficultyInstance), true);
     }
 
     public int getInitialAge(ServerLevelAccessor accessor, DifficultyInstance difficultyInstance){

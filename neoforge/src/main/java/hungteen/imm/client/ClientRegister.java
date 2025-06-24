@@ -107,6 +107,7 @@ public class ClientRegister {
 
         /* Talisman */
         event.registerEntityRenderer(IMMEntities.SPROUT_TALISMAN.getEntityType(), RangeEffectTalismanRender::new);
+        event.registerEntityRenderer(IMMEntities.WOOD_HEALING_TALISMAN.getEntityType(), RangeEffectTalismanRender::new);
 
         /* Block Entity */
 //        event.registerBlockEntityRenderer(IMMBlockEntities.SPIRITUAL_FURNACE.get(), FurnaceBlockEntityRender::new);

@@ -31,6 +31,7 @@ public abstract class SpellTypeImpl implements SpellType {
     public static final String TARGET_TOO_FAR_AWAY = "target_too_far_away";
     public static final String ONLY_VALID_FOR_LOW_REALM = "only_valid_for_low_realm";
     public static final String NO_ITEM_IN_HANDS = "no_item_in_hands";
+    public static final String NO_CRYSTAL_AROUND = "no_crystal_around";
     private static int id = 0;
     private final String name;
     private final int maxLevel;

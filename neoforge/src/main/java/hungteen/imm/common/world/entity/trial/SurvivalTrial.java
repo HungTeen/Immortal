@@ -94,7 +94,8 @@ public abstract class SurvivalTrial extends BreakThroughTrial {
         int leftMinute = leftTick / 1200;
         int leftSecond = leftTick % 1200 / 20;
         String formatTime = String.format("%02d:%02d", leftMinute, leftSecond);
-        this.progressBar.setName(TITLE.append(" - " + formatTime));
+        MutableComponent title = TITLE.copy().append(" - " + formatTime);
+        this.progressBar.setName(title);
     }
 
     @Override

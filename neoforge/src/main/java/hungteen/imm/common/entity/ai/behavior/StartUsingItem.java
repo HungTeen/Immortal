@@ -72,8 +72,8 @@ public class StartUsingItem {
                 if(entityPredicate.test(mob)) {
                     mob.switchInventory(hand, stack -> itemPredicate.test(mob, stack));
                     mob.startUsingItem(hand);
+                    mob.getBrain().setMemoryWithExpiry(IMMMemories.USING_ITEM_COOLING_DOWN.get(), true, cdProvider.sample(level.random));
                 }
-                mob.getBrain().setMemoryWithExpiry(IMMMemories.USING_ITEM_COOLING_DOWN.get(), true, cdProvider.sample(level.random));
                 return true;
             }
             return false;

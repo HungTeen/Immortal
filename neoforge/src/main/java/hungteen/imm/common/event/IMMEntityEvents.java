@@ -8,8 +8,6 @@ import hungteen.imm.common.cultivation.QiManager;
 import hungteen.imm.common.cultivation.SpellManager;
 import hungteen.imm.common.cultivation.TriggerConditions;
 import hungteen.imm.common.cultivation.reaction.InhibitionReaction;
-import hungteen.imm.common.cultivation.spell.fire.IgnitionSpell;
-import hungteen.imm.common.cultivation.spell.spirit.WitherSpell;
 import hungteen.imm.common.entity.misc.TwistingVines;
 import hungteen.imm.common.event.handler.EntityEventHandler;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,8 +48,6 @@ public class IMMEntityEvents {
                 SpellManager.activateSpell(living, TriggerConditions.SHOOT, context -> {
                     context.setTarget(event.getEntity());
                 });
-                IgnitionSpell.checkIgnitionArrow(event.getEntity());
-                WitherSpell.checkWitherArrow(event.getEntity());
             }
         }
     }

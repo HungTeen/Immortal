@@ -49,7 +49,7 @@ public record ElementRequirement(List<Element> elements) implements LearnRequire
             for(int i = 1; i < elements.size(); ++ i){
                 component.append(", ").append(ElementManager.name(elements().get(i)));
             }
-            return TipUtil.info("requirement.element", component);
+            return TipUtil.manual("requirement.element", component);
         }
         return Component.empty();
     }

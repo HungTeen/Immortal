@@ -2,6 +2,7 @@ package hungteen.imm.common.entity.human.cultivator;
 
 import hungteen.htlib.util.helper.impl.EntityHelper;
 import hungteen.imm.api.IMMAPI;
+import hungteen.imm.common.cultivation.RealmManager;
 import hungteen.imm.common.entity.human.HumanLikeEntity;
 import hungteen.imm.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +10,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -32,6 +34,7 @@ public abstract class PlayerLikeEntity extends HumanLikeEntity implements Tracea
 
     public PlayerLikeEntity(EntityType<? extends HumanLikeEntity> type, Level level) {
         super(type, level);
+        setPersistenceRequired();
     }
 
     @Override
@@ -48,13 +51,24 @@ public abstract class PlayerLikeEntity extends HumanLikeEntity implements Tracea
     public void tick() {
         super.tick();
         if(EntityHelper.isServer(this)){
-            if(this.getOwner() == null){
-                if(++ missingTick >= 20){
-                    this.discard();
-                    IMMAPI.logger().error("PlayerLikeEntity missing owner, discard entity.");
-                }
+            if(this.tickCount % 20 == 0){
+                this.getPlayerOpt().ifPresent(p -> {
+                    // 和玩家的装备保持一致。
+                    for(EquipmentSlot slot : EquipmentSlot.values()){
+                        this.setItemSlot(slot, p.getItemBySlot(slot));
+                    }
+                    if(++ missingTick >= 20){
+                        this.discard();
+                        IMMAPI.logger().error("PlayerLikeEntity missing owner, discard entity.");
+                    }
+                });
             }
         }
+    }
+
+    @Override
+    public void checkDespawn() {
+        super.checkDespawn();
     }
 
     @Override
@@ -84,6 +98,9 @@ public abstract class PlayerLikeEntity extends HumanLikeEntity implements Tracea
     public void setOwner(@javax.annotation.Nullable Player entity) {
         this.owner = entity;
         this.ownerUUID = entity == null ? null : entity.getUUID();
+        if(entity != null){
+            this.setRealm(RealmManager.getRealm(entity));
+        }
     }
 
     @Nullable
@@ -103,7 +120,6 @@ public abstract class PlayerLikeEntity extends HumanLikeEntity implements Tracea
                 }
             }
         }
-
         return this.owner;
     }
 
